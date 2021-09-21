@@ -10,11 +10,18 @@ RSpec.describe Extractor do
     extractor = Extractor.new([])
     builtin_constraints = extractor.extractBuiltin([file])
     user_constraints = builtin_constraints.select { |c| c.class_name == "User" }
-    it { expect(user_constraints.length).to eql 7 }
+    it { expect(user_constraints.length).to eql 10 }
 
     user_length_constraints = user_constraints.select { |c| c.is_a? LengthConstraint }
-    user_unique_constraints = user_constraints.select { |c| c.is_a? UniqueConstraint }
     it { expect(user_length_constraints.length).to eql 4 }
+
+    user_presence_constraints = user_constraints.select { |c| c.is_a? PresenceConstraint }
+    it { expect(user_presence_constraints.length).to eql 3 }
+
+    user_format_constraints = user_constraints.select { |c| c.is_a? FormatConstraint }
+    it { expect(user_format_constraints.length).to eql 1 }
+
+    user_unique_constraints = user_constraints.select { |c| c.is_a? UniqueConstraint }
     it { expect(user_unique_constraints.length).to eql 1 }
 
     anonymous_user_constraints = builtin_constraints.select { |c| c.class_name == "AnonymousUser" }

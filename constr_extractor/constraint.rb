@@ -13,7 +13,7 @@ class InclusionConstraint < Constraint
 end
 
 class UniqueConstraint < Constraint
-  attr_accessor :cond
+  attr_accessor :cond, :case_sensitive
 
   def to_string
   end
@@ -28,6 +28,13 @@ end
 
 class LengthConstraint < Constraint
   attr_accessor :min, :max
+
+  def to_string
+  end
+end
+
+class FormatConstraint < Constraint
+  attr_accessor :format
 
   def to_string
   end

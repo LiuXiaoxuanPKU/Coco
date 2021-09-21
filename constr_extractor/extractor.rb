@@ -56,32 +56,101 @@ class Extractor
   end
 
   def extractBultinValidator(ast, classname)
+    puts ast.source
     validate_type = ast.children[0].source
     case validate_type
     when "validates_presence_of"
-      constraints = [Constraint.new]
+      constraints = extractBuiltinPresence(ast, classname)
     when "validates_uniqueness_of"
-      constraints = [Constraint.new]
+      constraints = extractBuiltinUnique(ast, classname)
     when "validates_format_of"
-      constraints = [Constraint.new]
+      constraints = extractBuiltinFormat(ast, classname)
     when "validates_inclusion_of"
-      constraints = [Constraint.new]
+      constraints = extractBuiltinInclusion(ast, classname)
     when "validates_length_of"
       constraints = extractBuiltinLength(ast, classname)
     end
     return constraints
   end
 
-  def extractBuiltinUnique()
+  def extractBuiltinUnique(ast, classname)
+    fields = []
+    constraints = []
+    content = ast[1].children
+    cond = nil
+    case_sensitive = nil
+    content.each { |node|
+      field = handle_symbol_literal_node(node)
+      fields << field unless field.nil?
+      node.children.each { |n|
+        k, v = handle_assoc_node(n)
+        if !k.nil? and k == "if"
+          cond = v
+        end
+        if !k.nil? and k == "case_sensitive"
+          case_sensitive = (v.source.downcase == "true")
+        end
+      }
+    }
+    fields.each { |field|
+      c = UniqueConstraint.new
+      c.cond = cond
+      c.class_name = classname
+      c.field_name = field
+      c.case_sensitive = case_sensitive
+      constraints << c
+    }
+    return constraints
   end
 
-  def extractBuiltinPresence()
+  def extractBuiltinPresence(ast, classname)
+    fields = []
+    constraints = []
+    content = ast[1].children
+    cond = nil
+    content.each { |node|
+      field = handle_symbol_literal_node(node)
+      fields << field unless field.nil?
+      k, v = handle_assoc_node(node[0])
+      if !k.nil? and k == "if"
+        cond = v
+      end
+    }
+    fields.each { |field|
+      c = PresenceConstraint.new
+      c.cond = cond
+      c.class_name = classname
+      c.field_name = field
+      constraints << c
+    }
+    return constraints
   end
 
-  def extractBuiltinInclusion()
+  def extractBuiltinInclusion(ast, classname)
+    []
   end
 
-  def extractBuiltinFormat()
+  def extractBuiltinFormat(ast, classname)
+    constraints = []
+    fields = []
+    format = nil
+    content = ast[1].children
+    content.each { |node|
+      field = handle_symbol_literal_node(node)
+      fields << field unless field.nil?
+      k, v = handle_assoc_node(node[0])
+      if k == "with"
+        format = v.source
+      end
+    }
+    fields.each { |field|
+      c = FormatConstraint.new
+      c.format = format
+      c.class_name = classname
+      c.field_name = field
+      constraints << c
+    }
+    return constraints
   end
 
   def extractBuiltinLength(ast, classname)
@@ -130,3 +199,11 @@ class Extractor
   # input: list of files
   # output: list of constraints
 end
+
+# s(
+#     s(:assoc,
+#         s(:symbol_literal, s(:symbol, s(:kw, "if"))),
+#         s(:call, s(:var_ref, s(:const, "Proc")), :".", s(:ident, "new"), s(:brace_block, s(:block_var, s(:params, s(s(:ident, "user")), nil, nil, nil, nil, nil, nil), false), s(s(:binary, s(:call, s(:var_ref, s(:ident, "user")), :".", s(:ident, "login_changed?")), :"&&", s(:call, s(:call, s(:var_ref, s(:ident, "user")), :".", s(:ident, "login")), :".", s(:ident, "present?"))))))
+#     ),
+#     s(:assoc, s(:symbol_literal, s(:symbol, s(:ident, "case_sensitive"))), s(:var_ref, s(:kw, "false")))
+# )
