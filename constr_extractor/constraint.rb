@@ -28,10 +28,10 @@ class UniqueConstraint < Constraint
     {
       :constraint_type => "unique",
       :class_name => @class_name,
-      :field => @field,
+      :field_name => @field_name,
       :cond => @cond,
-      :case_sensitive => case_sensitive,
-      :scope => scope,
+      :case_sensitive => @case_sensitive,
+      :scope => @scope,
     }.to_json
   end
 end
@@ -39,20 +39,57 @@ end
 class PresenceConstraint < Constraint
   attr_accessor :cond
 
+  def initialize(class_name, field_name, cond)
+    @class_name = class_name
+    @field_name = field_name
+    @cond = cond
+  end
+
   def to_string
+    {
+      :constraint_type => "presence",
+      :class_name => @class_name,
+      :field_name => @field_name,
+    }.to_json
   end
 end
 
 class LengthConstraint < Constraint
   attr_accessor :min, :max
 
+  def initialize(class_name, field_name, min, max)
+    @class_name = class_name
+    @field_name = field_name
+    @min = min
+    @max = max
+  end
+
   def to_string
+    {
+      :constraint_type => "length",
+      :class_name => @class_name,
+      :field_name => @field_name,
+      :min => @min,
+      :max => @max,
+    }.to_json
   end
 end
 
 class FormatConstraint < Constraint
   attr_accessor :format
 
+  def initialize(class_name, field_name, format_regex)
+    @class_name = class_name
+    @field_name = field_name
+    @format = format_regex
+  end
+
   def to_string
+    {
+      :constraint_type => "format",
+      :class_name => @class_name,
+      :field_name => @field_name,
+      :format => @format,
+    }.to_json
   end
 end

@@ -119,10 +119,7 @@ class Extractor
       end
     }
     fields.each { |field|
-      c = PresenceConstraint.new
-      c.cond = cond
-      c.class_name = classname
-      c.field_name = field
+      c = PresenceConstraint.new(classname, field, cond)
       constraints << c
     }
     return constraints
@@ -146,10 +143,7 @@ class Extractor
       end
     }
     fields.each { |field|
-      c = FormatConstraint.new
-      c.format = format
-      c.class_name = classname
-      c.field_name = field
+      c = FormatConstraint.new(classname, field, format)
       constraints << c
     }
     return constraints
@@ -175,11 +169,7 @@ class Extractor
       }
     }
     fields.each { |field|
-      constraint = LengthConstraint.new
-      constraint.class_name = classname
-      constraint.field_name = field
-      constraint.min = min
-      constraint.max = max
+      constraint = LengthConstraint.new(classname, field, min, max)
       constraints << constraint
     }
     return constraints
