@@ -13,7 +13,7 @@ class InclusionConstraint < Constraint
 end
 
 class UniqueConstraint < Constraint
-  attr_accessor :cond, :case_sensitive
+  attr_accessor :cond, :case_sensitive, :scope
 
   def to_string
   end
