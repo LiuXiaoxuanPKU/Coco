@@ -56,7 +56,7 @@ class Extractor
   end
 
   def extractBultinValidator(ast, classname)
-    puts ast.source
+    # puts ast.source
     validate_type = ast.children[0].source
     case validate_type
     when "validates_presence_of"
@@ -76,6 +76,7 @@ class Extractor
   def extractBuiltinUnique(ast, classname)
     fields = []
     constraints = []
+    scope = []
     content = ast[1].children
     cond = nil
     case_sensitive = nil
@@ -90,14 +91,15 @@ class Extractor
         if !k.nil? and k == "case_sensitive"
           case_sensitive = (v.source.downcase == "true")
         end
+        if !k.nil? and k == "scope"
+          v.children.each { |s|
+            scope << handle_symbol_literal_node(s[0])
+          }
+        end
       }
     }
     fields.each { |field|
-      c = UniqueConstraint.new
-      c.cond = cond
-      c.class_name = classname
-      c.field_name = field
-      c.case_sensitive = case_sensitive
+      c = UniqueConstraint.new(classname, field, cond, case_sensitive, scope)
       constraints << c
     }
     return constraints
@@ -162,13 +164,15 @@ class Extractor
     content.each { |node|
       field = handle_symbol_literal_node(node)
       fields << field unless field.nil?
-      k, v = handle_assoc_node(node[0])
-      if !k.nil? && k == "maximum"
-        max = v.source
-      end
-      if !k.nil? && k == "minimum"
-        min = v.source
-      end
+      node.each { |n|
+        k, v = handle_assoc_node(n)
+        if !k.nil? && k == "maximum" && v.type.to_s == "int"
+          max = v.source.to_i
+        end
+        if !k.nil? && k == "minimum" && v.type.to_s == "int"
+          min = v.source.to_i
+        end
+      }
     }
     fields.each { |field|
       constraint = LengthConstraint.new
@@ -199,11 +203,3 @@ class Extractor
   # input: list of files
   # output: list of constraints
 end
-
-# s(
-#     s(:assoc,
-#         s(:symbol_literal, s(:symbol, s(:kw, "if"))),
-#         s(:call, s(:var_ref, s(:const, "Proc")), :".", s(:ident, "new"), s(:brace_block, s(:block_var, s(:params, s(s(:ident, "user")), nil, nil, nil, nil, nil, nil), false), s(s(:binary, s(:call, s(:var_ref, s(:ident, "user")), :".", s(:ident, "login_changed?")), :"&&", s(:call, s(:call, s(:var_ref, s(:ident, "user")), :".", s(:ident, "login")), :".", s(:ident, "present?"))))))
-#     ),
-#     s(:assoc, s(:symbol_literal, s(:symbol, s(:ident, "case_sensitive"))), s(:var_ref, s(:kw, "false")))
-# )

@@ -64,8 +64,8 @@ RSpec.describe Extractor do
 
     version_constraints = getVersionBuiltinConstraints().select { |c| c.class_name == "Version" }
     version_name_len_constraint = version_constraints.select { |c| c.is_a?(LengthConstraint) && c.field_name == "name" }[0]
-    it { expect(user_identity_len_constraint.max).to eql 60 }
-    it { expect(user_identity_len_constraint.min).to eql nil }
+    it { expect(version_name_len_constraint.max).to eql 60 }
+    it { expect(version_name_len_constraint.min).to eql nil }
   end
 
   describe "extractUnique" do
