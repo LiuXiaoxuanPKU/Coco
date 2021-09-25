@@ -1,8 +1,17 @@
 require "yard"
+require "pathname"
+
+class ConstraintClass
+  attr_accessor :name, :constrants, :parents
+
+  def initialize(ast)
+    puts ast[0]
+    puts ast[1]
+  end
+end
 
 # more about yard ast
 # 1. parse_model_constraint.rb
-# 2.
 class ConstraintFile
   attr_accessor :ast
 
@@ -13,21 +22,31 @@ class ConstraintFile
     # doc:
     @ast = YARD::Parser::Ruby::RubyParser.parse(contents).root
     @name = filename
-    @class = getClass
-    # puts @ast.type
-    # puts @ast.length
-    # puts @ast.children[0].source
-    # puts @ast.children[2].source
-    # puts @ast.children[0].source
-    # puts @ast.children[2].source
-  end
-
-  def getClass
+    @classes = []
+    @ast.children.each { |class_ast|
+      if class_ast.type.to_s == "class"
+        class_obj = ConstraintClass.new(class_ast)
+        @classes << class_obj
+      end
+    }
+    puts "==========#{@classes.length}"
   end
 end
 
 class FileReader
   def self.readDir(dir)
+    root = Pathname(dir)
+    files = []
+    dirs = []
+    Pathname(root).find do |path|
+      unless path == root
+        dirs << path if path.directory?
+        files << path if path.file?
+      end
+    end
+    constraint_files = []
+    files.each { |file| constraint_files << self.readFile(file) }
+    return files
   end
 
   def self.readFile(filename)
