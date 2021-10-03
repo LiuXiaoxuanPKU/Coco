@@ -5,8 +5,8 @@ class ConstraintClass
   attr_accessor :name, :constrants, :parents
 
   def initialize(ast)
-    puts ast[0]
-    puts ast[1]
+    # puts ast[0]
+    # puts ast[1]
   end
 end
 
@@ -29,7 +29,7 @@ class ConstraintFile
         @classes << class_obj
       end
     }
-    puts "==========#{@classes.length}"
+    # puts "==========#{@classes.length}"
   end
 end
 
