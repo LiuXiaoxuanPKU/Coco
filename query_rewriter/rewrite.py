@@ -71,16 +71,6 @@ def add_limit_one(q, constraints):
 
     return False, None
 
-def remove_distinct_helper(left_t, right_t, constraints):
-    """
-    Dealing with join case of remove distinct
-    input:
-
-    return:
-        U_out: a set of columns with unique constraints in the output table of join
-        R_out: (intermediate) output table from join
-    """
-    pass
 
 def remove_distinct(q, constraints):
     if not 'distinct' in q:
