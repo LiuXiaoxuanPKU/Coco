@@ -71,9 +71,24 @@ def add_limit_one(q, constraints):
 
     return False, None
 
+def remove_distinct_helper(left_t, right_t, constraints):
+    """
+    Dealing with join case of remove distinct
+    input:
+
+    return:
+        U_out: a set of columns with unique constraints in the output table of join
+        R_out: (intermediate) output table from join
+    """
+    
+    pass
 
 def remove_distinct(q, constraints):
-    pass
+    # base case: select from single table with no joins
+    if isinstance(q['from']):
+        pass
+    else: 
+        pass
 
 
 def str2int(q, constraints):
@@ -138,5 +153,7 @@ if __name__ == "__main__":
     for sql in sqls:
         print(sql.strip())
         sql_obj = parse(sql.strip())
-        print(sql_obj)
+        # print(sql_obj)
+        print(json.dumps(sql_obj, indent=4))
+        print(isinstance(sql_obj['from'], str))
         # rewrite(sql_obj, constraints)

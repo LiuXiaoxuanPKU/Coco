@@ -117,6 +117,21 @@ class TestRewrite(unittest.TestCase):
         self.assertFalse(can_rewrite2)
         self.assertEqual(len(rewrite_fields2), 0)
 
+    def test_remove_distinct(self):
+        # base case: one table, select column has unique constraint
+        sql1 = "SELECT distinct(name) from users where name = $1"
+        can_rewrite1, rewrite_sql1 = rewrite.remove_distinct(parse(sql1), self.unique_constraints)
+        self.assertTrue(can_rewrite1)
+        self.assertTrue('distinct' not in rewrite_sql1)
+
+        # inner join case
+        sql2 = "SELECT distinct(project.id) from users INNER JOIN projects where projects.id = users.project_id and projects.id = 1"
+        can_rewrite2, rewrite_sql2 = rewrite.remove_distinct(parse(sql2), self.unique_constraints)
+        self.assertTrue(can_rewrite2)
+        self.assertTrue('distinct' not in rewrite_sql2)
+
+        # left outer join case
+        sql3 = "SELECT * from users LEFT JOIN projects where projects.id = users.project_id and projects.id = 1"
 
 if __name__ == '__main__':
     unittest.main()
