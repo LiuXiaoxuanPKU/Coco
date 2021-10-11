@@ -80,13 +80,21 @@ def remove_distinct_helper(left_t, right_t, constraints):
         U_out: a set of columns with unique constraints in the output table of join
         R_out: (intermediate) output table from join
     """
-    
     pass
 
 def remove_distinct(q, constraints):
-    # base case: select from single table with no joins
-    if isinstance(q['from']):
-        pass
+    if not 'distinct' in q:
+        return False, None
+    has_join = check_query_has_join(q)
+    # base case: no joins, projection columns has at least one with unique constraint
+    if not has_join:
+        projections = q['select']
+        table = q['from']
+        for field in projections:
+            if find_constraint(constraints, table, field, UniqueConstraint):
+                rewrite_q = q.copy()
+                rewrite_q['select'] = q['select']['distinct']
+                return True, rewrite_q
     else: 
         pass
 
@@ -147,13 +155,12 @@ def rewrite(q, constraints):
 
 if __name__ == "__main__":
     filename = "query.sql"
-    constraints = [UniqueConstraint("users", "name")]
+    constraints = [UniqueConstraint("users", "name"), UniqueConstraint("project", "id")]
     with open(filename, 'r') as f:
         sqls = f.readlines()
     for sql in sqls:
         print(sql.strip())
         sql_obj = parse(sql.strip())
-        # print(sql_obj)
+        print(sql_obj['select'])
         print(json.dumps(sql_obj, indent=4))
-        print(isinstance(sql_obj['from'], str))
         # rewrite(sql_obj, constraints)
