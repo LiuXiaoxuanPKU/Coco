@@ -73,20 +73,35 @@ def add_limit_one(q, constraints):
 
 
 def remove_distinct(q, constraints):
-    if not 'distinct' in q:
+    def contain_dintinct(q):
+        """return True if sql contain 'distinct' key word."""
+        if not isinstance(q['select'], dict):
+            return False
+        elif 'distinct' not in q['select']['value']:
+            return False
+        return True
+
+    if not contain_dintinct(q):
         return False, None
     has_join = check_query_has_join(q)
+
     # base case: no joins, projection columns has at least one with unique constraint
     if not has_join:
-        projections = q['select']
+        # {'value': ['users.name', 'users.id']}
+        # {'value': 'name'}
+        # {'value': '*'}
+        projections = q['select']['value']['distinct']['value']
+        print(projections)
         table = q['from']
-        for field in projections:
-            if find_constraint(constraints, table, field, UniqueConstraint):
-                rewrite_q = q.copy()
-                rewrite_q['select'] = q['select']['distinct']
-                return True, rewrite_q
+        print(table)
+        # for proj in projections:
+        #     table, field = proj.split(".")
+        #     if find_constraint(constraints, table, field, UniqueConstraint):
+        #         rewrite_q = q.copy()
+        #         rewrite_q['select'] = projections
+        #         return True, rewrite_q
     else: 
-        pass
+        return False, None
 
 
 def str2int(q, constraints):
@@ -141,6 +156,9 @@ def rewrite(q, constraints):
         q, constraints)
     if can_strformat_precheck:
         print("String format precheck", format(q), formatcheck_fields)
+    can_remove_distinct, rewrite_q = remove_distinct(q, constraints)
+    if can_remove_distinct:
+        print("Remove Distinct", format(rewrite_q))
 
 
 if __name__ == "__main__":
@@ -151,6 +169,6 @@ if __name__ == "__main__":
     for sql in sqls:
         print(sql.strip())
         sql_obj = parse(sql.strip())
-        print(sql_obj['select'])
+        # print(sql_obj['select'])
         print(json.dumps(sql_obj, indent=4))
-        # rewrite(sql_obj, constraints)
+        rewrite(sql_obj, constraints)

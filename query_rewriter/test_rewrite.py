@@ -122,8 +122,40 @@ class TestRewrite(unittest.TestCase):
         sql1 = "SELECT distinct(name) from users where name = $1"
         can_rewrite1, rewrite_sql1 = rewrite.remove_distinct(parse(sql1), self.unique_constraints)
         self.assertTrue(can_rewrite1)
-        self.assertTrue('distinct' not in rewrite_sql1)
+        # self.assertTrue('distinct' not in rewrite_sql1)
+        # self.assertEquals(rewrite_sql1,
+        #     "SELECT name from users where name = $1")
 
+        # base case2: one table, select multiple columns, at least one has unique constraint
+        sql2 = "SELECT distinct(users.name, users.id) from users where name = $1"
+        can_rewrite2, rewrite_2 = rewrite.remove_distinct(parse(sql2), self.unique_constraints)
+        self.assertTrue(can_rewrite2)
+
+        # base case3: one table, select all columns, at least one has unique constraints
+        sql3 = "SELECT distinct(*) from users where name = $1"
+        can_rewrite3, rewrite_3 = rewrite.remove_distinct(parse(sql3), self.unique_constraints)
+        self.assertTrue(can_rewrite3)
+
+        # no remove distinct case
+        sql4 = "SELECT * from users INNER JOIN projects where projects.id = users.project_id and projects.id = 1"
+        can_rewrite4, rewrite_sql4 = rewrite.remove_distinct(parse(sql4), self.unique_constraints)
+        self.assertFalse(can_rewrite4)
+        self.assertTrue(rewrite_sql4 == None)
+
+        # no remove distinct case2
+        sql6 = "SELECT count(name) from users where name = 'lily' LIMIT 1"
+        can_rewrite6, rewrite_sql6 = rewrite.remove_distinct(parse(sql6), self.unique_constraints)
+        self.assertFalse(can_rewrite6)
+        self.assertTrue(rewrite_sql6 == None)
+
+        # no remove distinct case3
+        sql7 = "SELECT projects.id, project.name from users INNER JOIN projects where projects.id = users.project_id and projects.id = 1"
+        can_rewrite7, rewrite_sql7 = rewrite.remove_distinct(parse(sql7), self.unique_constraints)
+        self.assertFalse(can_rewrite7)
+        self.assertTrue(rewrite_sql7 == None)
+
+
+    def test_remove_distinct_join(self):
         # inner join case
         sql2 = "SELECT distinct(project.id) from users INNER JOIN projects where projects.id = users.project_id and projects.id = 1"
         can_rewrite2, rewrite_sql2 = rewrite.remove_distinct(parse(sql2), self.unique_constraints)
@@ -136,16 +168,13 @@ class TestRewrite(unittest.TestCase):
         self.assertTrue(can_rewrite3)
         self.assertTrue('distinct' not in rewrite_sql3)
 
-        # no remove distinct case
-        sql4 = "SELECT * from users INNER JOIN projects where projects.id = users.project_id and projects.id = 1"
-        can_rewrite4, rewrite_sql4 = rewrite.remove_distinct(parse(sql4), self.unique_constraints)
-        self.assertFalse(can_rewrite4)
-        self.assertTrue(rewrite_sql4 == None)
-
         # inner join left join case 
         sql5 = "SELECT country.country_name_eng, city.city_name, customer.customer_name FROM country INNER JOIN city ON city.country_id = country.id LEFT JOIN customer ON customer.city_id = city.id"
         can_rewrite5, rewrite_sql5 = rewrite.remove_distinct(parse(sql5)), self.unique_constraints
         self.assertTrue(can_rewrite5)
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
