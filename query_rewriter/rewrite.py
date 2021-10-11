@@ -71,6 +71,24 @@ def add_limit_one(q, constraints):
 
     return False, None
 
+def check_table_contain_constraints(table, constraints, constraint_type):
+    """Return True if a certain type constraint appear in table."""
+    for constraint in constraints:
+        if constraint.table == table and isinstance(constraint, constraint_type):
+            return True
+    return False
+
+def single_table_remove(projections, constraints, tables):
+    """Return True if we can remove distinct given projections and constraints"""
+    # projections possible format
+    # {'value': ['users.name', 'users.id']} -> ['name', 'id']
+    # {'value': 'name'} -> ['name']
+    # {'value': '*'}
+    if projections == "*":
+        return check_table_contain_constraints(tables, constraints, UniqueConstraint)
+    if isinstance(projections, str):
+        return find_constraint(constraints, tables, projections, UniqueConstraint)
+    return False
 
 def remove_distinct(q, constraints):
     def contain_dintinct(q):
@@ -84,24 +102,20 @@ def remove_distinct(q, constraints):
     if not contain_dintinct(q):
         return False, None
     has_join = check_query_has_join(q)
-
+    to_remove = False
+    projections = q['select']['value']['distinct']['value']
+    table = q['from']
     # base case: no joins, projection columns has at least one with unique constraint
     if not has_join:
-        # {'value': ['users.name', 'users.id']}
-        # {'value': 'name'}
-        # {'value': '*'}
-        projections = q['select']['value']['distinct']['value']
-        print(projections)
-        table = q['from']
-        print(table)
-        # for proj in projections:
-        #     table, field = proj.split(".")
-        #     if find_constraint(constraints, table, field, UniqueConstraint):
-        #         rewrite_q = q.copy()
-        #         rewrite_q['select'] = projections
-        #         return True, rewrite_q
+        to_remove = single_table_remove(projections, constraints, table)
+    # join case
     else: 
-        return False, None
+        pass
+    if to_remove:
+        rewrite_q = q.copy()
+        rewrite_q['select'] = q['select']['value']['distinct']['value']
+        return True, rewrite_q
+    return False, None
 
 
 def str2int(q, constraints):
@@ -169,6 +183,5 @@ if __name__ == "__main__":
     for sql in sqls:
         print(sql.strip())
         sql_obj = parse(sql.strip())
-        # print(sql_obj['select'])
         print(json.dumps(sql_obj, indent=4))
         rewrite(sql_obj, constraints)
