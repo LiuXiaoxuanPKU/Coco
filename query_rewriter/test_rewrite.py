@@ -131,7 +131,15 @@ class TestRewrite(unittest.TestCase):
         self.assertTrue('distinct' not in rewrite_sql2)
 
         # left outer join case
-        sql3 = "SELECT * from users LEFT JOIN projects where projects.id = users.project_id and projects.id = 1"
+        sql3 = "SELECT distinct(project.id) from users LEFT JOIN projects where projects.id = users.project_id and projects.id = 1"
+        can_rewrite3, rewrite_sql3 = rewrite.remove_distinct(parse(sql3), self.unique_constraints)
+        self.assertTrue(can_rewrite3)
+        self.assertTrue('distinct' not in rewrite_sql3)
+
+        # 
+        sql4 = "SELECT country.country_name_eng, city.city_name, customer.customer_name FROM country INNER JOIN city ON city.country_id = country.id LEFT JOIN customer ON customer.city_id = city.id;"
+        can_rewrite4, rewrite_sql4 = rewrite.remove_distinct(parse(sql4)), self.unique_constraints
+        self.assertTrue(can_rewrite4)
 
 if __name__ == '__main__':
     unittest.main()
