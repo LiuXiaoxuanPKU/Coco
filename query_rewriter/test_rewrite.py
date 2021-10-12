@@ -122,9 +122,6 @@ class TestRewrite(unittest.TestCase):
         sql1 = "SELECT distinct(name) from users where name = $1"
         can_rewrite1, rewrite_sql1 = rewrite.remove_distinct(parse(sql1), self.unique_constraints)
         self.assertTrue(can_rewrite1)
-        # self.assertTrue('distinct' not in rewrite_sql1)
-        # self.assertEquals(rewrite_sql1,
-        #     "SELECT name from users where name = $1")
 
         # base case2: one table, select multiple columns, at least one has unique constraint
         sql2 = "SELECT distinct(users.name, users.id) from users where name = $1"

@@ -88,6 +88,15 @@ def single_table_remove(projections, constraints, tables):
         return check_table_contain_constraints(tables, constraints, UniqueConstraint)
     if isinstance(projections, str):
         return find_constraint(constraints, tables, projections, UniqueConstraint)
+    if isinstance(projections, list):
+        for proj in projections:
+            if '.' in proj:
+                table, field = proj.split(".")
+                if find_constraint(constraints, table, field, UniqueConstraint):
+                    return True
+            else:
+                if find_constraint(constraints, tables, proj, UniqueConstraint):
+                    return True
     return False
 
 def remove_distinct(q, constraints):
