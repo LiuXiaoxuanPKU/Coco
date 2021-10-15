@@ -71,12 +71,8 @@ def add_limit_one(q, constraints):
 
     return False, None
 
-def check_table_contain_constraints(table, constraints, constraint_type):
-    """Return True if a certain type constraint appear in table."""
-    for constraint in constraints:
-        if constraint.table == table and isinstance(constraint, constraint_type):
-            return True
-    return False
+#=================================================================================================================
+# helper functions for remove distinct
 
 def table_unique_set(table, constraints):
     s = set()
@@ -117,6 +113,21 @@ def unalias(alias_to_table, col):
             col = alias_to_table[table] + '.' + field
     return col
 
+def r_in_to_u_in(r_in, constraints, alias_to_table):
+    if isinstance(r_in, dict):
+        # case for handling AS 
+        if 'name' in r_in:
+            alias_to_table[r_in['name']] = r_in = r_in['value']
+        # case for handing nested query
+        else:
+            #rewrite the nested query
+            #rewritten = rewrite(r_in['value'], constraints)
+            #r_in['value'] = rewritten
+            rewritten = r_in['value']
+            # u_out from the nested query will be u_in
+            return query_to_u_out(rewritten, constraints, {})
+    return table_unique_set(r_in, constraints)
+
 def remove_distinct(q, constraints):
     def contain_distinct(q):
         """return True if sql contain 'distinct' key word."""
@@ -126,27 +137,23 @@ def remove_distinct(q, constraints):
 
     if not contain_distinct(q):
         return False, None
-    has_join = check_query_has_join(q)
+    
     alias_to_table = {}
+    u_out = query_to_u_out(q, constraints, alias_to_table)
+    return remove_distinct_projection(q, u_out, alias_to_table)
+
+def query_to_u_out(q, constraints, alias_to_table):
     tables = q['from']
-    projections = q['select']['value']['distinct']
-    # base case: no joins, do some weird handling to make this work with the rest of the code
-    if not has_join:
+    # no joins case
+    if not isinstance(tables, list):
         tables = [tables]
     r_in1 = tables[0]
-    # additional handling for AS 
-    if isinstance(r_in1, dict):
-        alias_to_table[r_in1['name']] = r_in1 = r_in1['value']
-    #get unique set of initial table
-    u_in1 = table_unique_set(r_in1, constraints)
+    u_in1 = r_in_to_u_in(r_in1, constraints, alias_to_table)
     for t in tables[1:]:
         if 'inner join' in t:
             #get table 2 and its unique set
             r_in2 = t['inner join']
-            # additional handling for AS 
-            if isinstance(r_in2, dict):
-                alias_to_table[r_in2['name']] = r_in2 = r_in2['value']
-            u_in2 = table_unique_set(r_in2, constraints)
+            u_in2 = r_in_to_u_in(r_in2, constraints, alias_to_table)
             #check fail: u_out is empty set. else, u_out is union of u_in1 and u_in2.
             if check_join_conditions(t, u_in1, u_in2, alias_to_table):
                 u_in1 = u_in1.union(u_in2)
@@ -155,32 +162,36 @@ def remove_distinct(q, constraints):
         elif 'left outer join' in t:
             #get table 2 and its unique set
             r_in2 = t['left outer join']
-            # additional handling for AS 
-            if isinstance(r_in2, dict):
-                alias_to_table[r_in2['name']] = r_in2 = r_in2['value']
-            u_in2 = table_unique_set(r_in2, constraints)
+            u_in2 = r_in_to_u_in(r_in2, constraints, alias_to_table)
             #check fail: u_out is empty set. else, u_out is u_in1.
             if not check_join_conditions(t, u_in1, u_in2, alias_to_table):
                 u_in1 = set()
-    # lotta cases to handle individually here
+    return u_in1
+
+def remove_distinct_projection(q, u_in, alias_to_table):
+    '''Only the "Project" step of the remove distinct algorithm.'''
+    projections = q['select']['value']['distinct']
     if isinstance(projections, dict):
         if isinstance(projections['value'], list):
             for col in projections['value']:
-                if unalias(alias_to_table, col) in u_in1:
+                if unalias(alias_to_table, col) in u_in:
                     rewrite_q = q.copy()
                     rewrite_q['select'] = projections['value']
                     return True, rewrite_q
-        elif projections['value'] == '*' and u_in1 or unalias(alias_to_table, projections['value']) in u_in1:
+        elif projections['value'] == '*' and u_in or unalias(alias_to_table, projections['value']) in u_in:
             rewrite_q = q.copy()
             rewrite_q['select'] = projections['value']
             return True, rewrite_q
     elif isinstance(projections, list):
         for d in projections:
-            if unalias(alias_to_table, d['value']) in u_in1:
+            if unalias(alias_to_table, d['value']) in u_in:
                 rewrite_q = q.copy()
                 rewrite_q['select'] = projections
                 return True, rewrite_q
     return False, None
+
+# end remove distinct
+#=================================================================================================================
 
 def str2int(q, constraints):
     enum_fields = get_constraint_fields(constraints, InclusionConstraint)

@@ -155,6 +155,10 @@ class TestRewrite(unittest.TestCase):
         self.assertFalse(can_rewrite7)
         self.assertTrue(rewrite_sql7 == None)
 
+        # base case4: one table
+        sql8 = "SELECT distinct(name, id) from users where name = $1"
+        can_rewrite8, rewrite_8 = rewrite.remove_distinct(parse(sql8), self.unique_constraints)
+        self.assertTrue(can_rewrite8)
 
     def test_remove_distinct_join(self):
         # non unique column in join condition case
@@ -188,22 +192,28 @@ class TestRewrite(unittest.TestCase):
         self.assertTrue('distinct' not in rewrite_sql5)
 
         # non unique join followed by unique join
-        sql5 = "SELECT DISTINCT country.country_name_eng, city.city_name, customer.customer_name FROM city LEFT OUTER JOIN customer ON customer.id = city.customer_id INNER JOIN country ON city.country_id = country.id where 1=1"
-        can_rewrite5, rewrite_sql5 = rewrite.remove_distinct(parse(sql5), self.unique_constraints)
-        self.assertFalse(can_rewrite5)
-        self.assertTrue(rewrite_sql5 == None)
+        sql6 = "SELECT DISTINCT country.country_name_eng, city.city_name, customer.customer_name FROM city LEFT OUTER JOIN customer ON customer.id = city.customer_id INNER JOIN country ON city.country_id = country.id where 1=1"
+        can_rewrite6, rewrite_sql6 = rewrite.remove_distinct(parse(sql6), self.unique_constraints)
+        self.assertFalse(can_rewrite6)
+        self.assertTrue(rewrite_sql6 == None)
 
         # chained AND in ON condition
-        sql6 = "SELECT distinct(projects.name, users.name) from users INNER JOIN projects ON projects.id > 0 AND users.project_id > 0 AND projects.id = users.project_id where projects.id = 1"
-        can_rewrite6, rewrite_sql6 = rewrite.remove_distinct(parse(sql6), self.unique_constraints)
-        self.assertTrue(can_rewrite6)
-        self.assertTrue('distinct' not in rewrite_sql6)
+        sql7 = "SELECT distinct(projects.name, users.name) from users INNER JOIN projects ON projects.id > 0 AND users.project_id > 0 AND projects.id = users.project_id where projects.id = 1"
+        can_rewrite7, rewrite_sql7 = rewrite.remove_distinct(parse(sql7), self.unique_constraints)
+        self.assertTrue(can_rewrite7)
+        self.assertTrue('distinct' not in rewrite_sql7)
 
         # query with AS statement to alias joined tables
-        sql6 = "SELECT distinct(p.name, u.name) from users AS u INNER JOIN projects AS p ON p.id > 0 AND u.project_id > 0 AND p.id = u.project_id where p.id = 1"
-        can_rewrite6, rewrite_sql6 = rewrite.remove_distinct(parse(sql6), self.unique_constraints)
-        self.assertTrue(can_rewrite6)
-        self.assertTrue('distinct' not in rewrite_sql6)
+        sql8 = "SELECT distinct(p.name, u.name) from users AS u INNER JOIN projects AS p ON p.id > 0 AND u.project_id > 0 AND p.id = u.project_id where p.id = 1"
+        can_rewrite8, rewrite_sql8 = rewrite.remove_distinct(parse(sql8), self.unique_constraints)
+        self.assertTrue(can_rewrite8)
+        self.assertTrue('distinct' not in rewrite_sql8)
+
+        # basic nested query succeed case
+        sql9 = "SELECT DISTINCT * from (SELECT * from projects INNER JOIN users ON projects.id = users.project where 1=1) where 1=1"
+        can_rewrite9, rewrite_sql9 = rewrite.remove_distinct(parse(sql9), self.unique_constraints)
+        self.assertTrue(can_rewrite9)
+        self.assertTrue('distinct' not in rewrite_sql9)
 
 if __name__ == '__main__':
     unittest.main()
