@@ -31,7 +31,7 @@ def find_field_in_predicate(field, predicate):
 def check_query_has_join(q):
     table = q['from']
     return functools.reduce(
-        lambda acc, item: acc or ('inner join' in item), table, False)
+        lambda acc, item: acc or ('inner join' in item) or ('left outer join' in item), table, False)
 
 
 def add_limit_one(q, constraints):
@@ -78,54 +78,89 @@ def check_table_contain_constraints(table, constraints, constraint_type):
             return True
     return False
 
-def single_table_remove(projections, constraints, tables):
-    """Return True if we can remove distinct given projections and constraints"""
-    # projections possible format
-    # {'value': ['users.name', 'users.id']} -> ['name', 'id']
-    # {'value': 'name'} -> ['name']
-    # {'value': '*'}
-    if projections == "*":
-        return check_table_contain_constraints(tables, constraints, UniqueConstraint)
-    if isinstance(projections, str):
-        return find_constraint(constraints, tables, projections, UniqueConstraint)
-    if isinstance(projections, list):
-        for proj in projections:
-            if '.' in proj:
-                table, field = proj.split(".")
-                if find_constraint(constraints, table, field, UniqueConstraint):
-                    return True
-            else:
-                if find_constraint(constraints, tables, proj, UniqueConstraint):
-                    return True
-    return False
+def table_unique_set(table, constraints):
+    s = set()
+    for constraint in constraints:
+        if constraint.table == table and isinstance(constraint, UniqueConstraint):
+            s.add(constraint.table + '.' + constraint.field)
+            s.add(constraint.field)
+    return s
+
 
 def remove_distinct(q, constraints):
-    def contain_dintinct(q):
+    def contain_distinct(q):
         """return True if sql contain 'distinct' key word."""
-        if not isinstance(q['select'], dict):
-            return False
-        elif 'distinct' not in q['select']['value']:
+        if not isinstance(q['select'], dict) or 'distinct' not in q['select']['value']:
             return False
         return True
 
-    if not contain_dintinct(q):
+    if not contain_distinct(q):
         return False, None
     has_join = check_query_has_join(q)
-    to_remove = False
-    projections = q['select']['value']['distinct']['value']
-    table = q['from']
-    # base case: no joins, projection columns has at least one with unique constraint
+    tables = q['from']
+    projections = q['select']['value']['distinct']
+    # base case: no joins, do some weird handling to make this work with the rest of the code
     if not has_join:
-        to_remove = single_table_remove(projections, constraints, table)
-    # join case
-    else: 
-        pass
-    if to_remove:
-        rewrite_q = q.copy()
-        rewrite_q['select'] = q['select']['value']['distinct']['value']
-        return True, rewrite_q
+        tables = [tables]
+    r_in1 = tables[0]
+    #get unique set of initial table
+    u_in1 = table_unique_set(r_in1, constraints)
+    for t in tables[1:]:
+        if 'inner join' in t:
+            r_in2 = t['inner join']
+            #get unique set of table 2
+            u_in2 = table_unique_set(r_in2, constraints)
+            success = True
+            #potentially fail if there is a join condition
+            if 'on' in t:
+                #assume uniqueness is only maintained on equality join condition
+                if 'eq' not in t['on']:
+                    success = False
+                else:
+                    #check that equality is on two unique columns
+                    for col in t['on']['eq']:
+                        success &= col in u_in1 or col in u_in2
+            #check fail: u_out is empty set. else, u_out is union of u_in1 and u_in2.
+            if success:
+                u_in1 = u_in1.union(u_in2)
+            else:
+                u_in1 = set()
+        elif 'left outer join' in t:
+            r_in2 = t['left outer join']
+            #get unique set of table 2
+            u_in2 = table_unique_set(r_in2, constraints)
+            success = True
+            #potentially fail if there is a join condition
+            if 'on' in t:
+                #assume uniqueness is only maintained on equality join condition
+                if 'eq' not in t['on']:
+                    success = False
+                else:
+                    #check that equality is on two unique columns
+                    for col in t['on']['eq']:
+                        success &= col in u_in1 or col in u_in2
+            #check fail: u_out is empty set. else, u_out is u_in1.
+            if not success:
+                u_in1 = set()
+    # lotta cases to handle individually here
+    if isinstance(projections, dict):
+        if isinstance(projections['value'], list):
+            for col in projections['value']:
+                if col in u_in1:
+                    rewrite_q = q.copy()
+                    rewrite_q['select'] = projections['value']
+                    return True, rewrite_q
+        elif projections['value'] == '*' and u_in1 or projections['value'] in u_in1:
+            rewrite_q = q.copy()
+            rewrite_q['select'] = projections['value']
+            return True, rewrite_q
+    elif isinstance(projections, list):
+        for d in projections:
+            if d['value'] in u_in1:
+                rewrite_q = q.copy()
+                rewrite_q['select'] = projections
+                return True, rewrite_q
     return False, None
-
 
 def str2int(q, constraints):
     enum_fields = get_constraint_fields(constraints, InclusionConstraint)
@@ -186,7 +221,7 @@ def rewrite(q, constraints):
 
 if __name__ == "__main__":
     filename = "query.sql"
-    constraints = [UniqueConstraint("users", "name"), UniqueConstraint("project", "id")]
+    constraints = [UniqueConstraint("users", "name"), UniqueConstraint("projects", "id"), UniqueConstraint("users", "project")]
     with open(filename, 'r') as f:
         sqls = f.readlines()
     for sql in sqls:

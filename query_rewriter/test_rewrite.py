@@ -8,7 +8,11 @@ from mo_sql_parsing import parse, format
 class TestRewrite(unittest.TestCase):
     def __init__(self, methodName: str = ...) -> None:
         super().__init__(methodName=methodName)
-        self.unique_constraints = [UniqueConstraint("users", "name")]
+        self.unique_constraints = [UniqueConstraint("users", "name"), 
+        UniqueConstraint("users", "project_id"), UniqueConstraint("projects", "id"),
+        UniqueConstraint("city", "country_id"), UniqueConstraint("country", "id"),
+        UniqueConstraint("customer", "city_id"), UniqueConstraint("city", "id"),
+        UniqueConstraint("country", "country_name_eng")]
         self.inclusion_constraints = [
             InclusionConstraint("users", "gender", ["F", "M"])]
         self.length_constraints = [LengthConstraint("users", "name", 0, 30)]
@@ -153,25 +157,41 @@ class TestRewrite(unittest.TestCase):
 
 
     def test_remove_distinct_join(self):
+        # non unique column in join condition case
+        sql1 = "SELECT distinct(projects.id) from users INNER JOIN projects ON projects.name = users.project_id where projects.id = 1"
+        can_rewrite1, rewrite_sql1 = rewrite.remove_distinct(parse(sql1), self.unique_constraints)
+        self.assertFalse(can_rewrite1)
+        self.assertTrue(rewrite_sql1 == None)
+
         # inner join case
-        sql2 = "SELECT distinct(project.id) from users INNER JOIN projects where projects.id = users.project_id and projects.id = 1"
+        sql2 = "SELECT distinct(projects.id) from users INNER JOIN projects ON projects.id = users.project_id where projects.id = 1"
         can_rewrite2, rewrite_sql2 = rewrite.remove_distinct(parse(sql2), self.unique_constraints)
         self.assertTrue(can_rewrite2)
         self.assertTrue('distinct' not in rewrite_sql2)
 
         # left outer join case
-        sql3 = "SELECT distinct(project.id) from users LEFT JOIN projects where projects.id = users.project_id and projects.id = 1"
+        sql3 = "SELECT distinct(projects.id) from projects LEFT OUTER JOIN users ON projects.id = users.project_id where projects.id = 1"
         can_rewrite3, rewrite_sql3 = rewrite.remove_distinct(parse(sql3), self.unique_constraints)
         self.assertTrue(can_rewrite3)
         self.assertTrue('distinct' not in rewrite_sql3)
 
+        # selecting non unique columns after successful join
+        sql4 = "SELECT distinct(projects.name, users.id) from users INNER JOIN projects ON projects.id = users.project_id where projects.id = 1"
+        can_rewrite4, rewrite_sql4 = rewrite.remove_distinct(parse(sql4), self.unique_constraints)
+        self.assertFalse(can_rewrite4)
+        self.assertTrue(rewrite_sql4 == None)
+
         # inner join left join case 
-        sql5 = "SELECT country.country_name_eng, city.city_name, customer.customer_name FROM country INNER JOIN city ON city.country_id = country.id LEFT JOIN customer ON customer.city_id = city.id"
-        can_rewrite5, rewrite_sql5 = rewrite.remove_distinct(parse(sql5)), self.unique_constraints
+        sql5 = "SELECT DISTINCT country.country_name_eng, city.city_name, customer.customer_name FROM country INNER JOIN city ON city.country_id = country.id LEFT OUTER JOIN customer ON customer.city_id = city.id where 1=1"
+        can_rewrite5, rewrite_sql5 = rewrite.remove_distinct(parse(sql5), self.unique_constraints)
         self.assertTrue(can_rewrite5)
+        self.assertTrue('distinct' not in rewrite_sql5)
 
-
-
+        # non unique join followed by unique join
+        sql5 = "SELECT DISTINCT country.country_name_eng, city.city_name, customer.customer_name FROM city LEFT OUTER JOIN customer ON customer.id = city.customer_id INNER JOIN country ON city.country_id = country.id where 1=1"
+        can_rewrite5, rewrite_sql5 = rewrite.remove_distinct(parse(sql5), self.unique_constraints)
+        self.assertFalse(can_rewrite5)
+        self.assertTrue(rewrite_sql5 == None)
 
 if __name__ == '__main__':
     unittest.main()
