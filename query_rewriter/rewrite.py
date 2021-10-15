@@ -86,7 +86,7 @@ def table_unique_set(table, constraints):
             s.add(constraint.field)
     return s
 
-def check_join_conditions(table, u_in1, u_in2):
+def check_join_conditions(table, u_in1, u_in2, alias_to_table):
     success = True
     #potentially fail if there is a join condition
     if 'on' in table:
@@ -100,13 +100,22 @@ def check_join_conditions(table, u_in1, u_in2):
                         #check that equality is on two unique columns
                         success = True
                         for col in d['eq']:
+                            col = unalias(alias_to_table, col)
                             success &= col in u_in1 or col in u_in2
                         break
         else:
             #check that equality is on two unique columns
             for col in table['on']['eq']:
+                col = unalias(alias_to_table, col)
                 success &= col in u_in1 or col in u_in2
     return success
+
+def unalias(alias_to_table, col):
+    if '.' in col:
+        table, field = col.split('.')
+        if table in alias_to_table:
+            col = alias_to_table[table] + '.' + field
+    return col
 
 def remove_distinct(q, constraints):
     def contain_distinct(q):
@@ -118,46 +127,56 @@ def remove_distinct(q, constraints):
     if not contain_distinct(q):
         return False, None
     has_join = check_query_has_join(q)
+    alias_to_table = {}
     tables = q['from']
     projections = q['select']['value']['distinct']
     # base case: no joins, do some weird handling to make this work with the rest of the code
     if not has_join:
         tables = [tables]
     r_in1 = tables[0]
+    # additional handling for AS 
+    if isinstance(r_in1, dict):
+        alias_to_table[r_in1['name']] = r_in1 = r_in1['value']
     #get unique set of initial table
     u_in1 = table_unique_set(r_in1, constraints)
     for t in tables[1:]:
         if 'inner join' in t:
             #get table 2 and its unique set
             r_in2 = t['inner join']
+            # additional handling for AS 
+            if isinstance(r_in2, dict):
+                alias_to_table[r_in2['name']] = r_in2 = r_in2['value']
             u_in2 = table_unique_set(r_in2, constraints)
             #check fail: u_out is empty set. else, u_out is union of u_in1 and u_in2.
-            if check_join_conditions(t, u_in1, u_in2):
+            if check_join_conditions(t, u_in1, u_in2, alias_to_table):
                 u_in1 = u_in1.union(u_in2)
             else:
                 u_in1 = set()
         elif 'left outer join' in t:
             #get table 2 and its unique set
             r_in2 = t['left outer join']
+            # additional handling for AS 
+            if isinstance(r_in2, dict):
+                alias_to_table[r_in2['name']] = r_in2 = r_in2['value']
             u_in2 = table_unique_set(r_in2, constraints)
             #check fail: u_out is empty set. else, u_out is u_in1.
-            if not check_join_conditions(t, u_in1, u_in2):
+            if not check_join_conditions(t, u_in1, u_in2, alias_to_table):
                 u_in1 = set()
     # lotta cases to handle individually here
     if isinstance(projections, dict):
         if isinstance(projections['value'], list):
             for col in projections['value']:
-                if col in u_in1:
+                if unalias(alias_to_table, col) in u_in1:
                     rewrite_q = q.copy()
                     rewrite_q['select'] = projections['value']
                     return True, rewrite_q
-        elif projections['value'] == '*' and u_in1 or projections['value'] in u_in1:
+        elif projections['value'] == '*' and u_in1 or unalias(alias_to_table, projections['value']) in u_in1:
             rewrite_q = q.copy()
             rewrite_q['select'] = projections['value']
             return True, rewrite_q
     elif isinstance(projections, list):
         for d in projections:
-            if d['value'] in u_in1:
+            if unalias(alias_to_table, d['value']) in u_in1:
                 rewrite_q = q.copy()
                 rewrite_q['select'] = projections
                 return True, rewrite_q

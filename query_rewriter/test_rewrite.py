@@ -194,7 +194,13 @@ class TestRewrite(unittest.TestCase):
         self.assertTrue(rewrite_sql5 == None)
 
         # chained AND in ON condition
-        sql6 = "SELECT distinct(projects.name, users.name) from users INNER JOIN projects ON projects.id > 0 AND users.project_id > 0 AND projects.id = users.project_id where p.id = 1"
+        sql6 = "SELECT distinct(projects.name, users.name) from users INNER JOIN projects ON projects.id > 0 AND users.project_id > 0 AND projects.id = users.project_id where projects.id = 1"
+        can_rewrite6, rewrite_sql6 = rewrite.remove_distinct(parse(sql6), self.unique_constraints)
+        self.assertTrue(can_rewrite6)
+        self.assertTrue('distinct' not in rewrite_sql6)
+
+        # query with AS statement to alias joined tables
+        sql6 = "SELECT distinct(p.name, u.name) from users AS u INNER JOIN projects AS p ON p.id > 0 AND u.project_id > 0 AND p.id = u.project_id where p.id = 1"
         can_rewrite6, rewrite_sql6 = rewrite.remove_distinct(parse(sql6), self.unique_constraints)
         self.assertTrue(can_rewrite6)
         self.assertTrue('distinct' not in rewrite_sql6)
