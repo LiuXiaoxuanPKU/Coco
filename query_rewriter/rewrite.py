@@ -86,6 +86,27 @@ def table_unique_set(table, constraints):
             s.add(constraint.field)
     return s
 
+def check_join_conditions(table, u_in1, u_in2):
+    success = True
+    #potentially fail if there is a join condition
+    if 'on' in table:
+        #assume uniqueness is only maintained on equality join condition
+        if 'eq' not in table['on']:
+            success = False
+            #check for potential equality conditions within the and
+            if 'and' in table['on']:
+                for d in table['on']['and']:
+                    if 'eq' in d:
+                        #check that equality is on two unique columns
+                        success = True
+                        for col in d['eq']:
+                            success &= col in u_in1 or col in u_in2
+                        break
+        else:
+            #check that equality is on two unique columns
+            for col in table['on']['eq']:
+                success &= col in u_in1 or col in u_in2
+    return success
 
 def remove_distinct(q, constraints):
     def contain_distinct(q):
@@ -107,40 +128,20 @@ def remove_distinct(q, constraints):
     u_in1 = table_unique_set(r_in1, constraints)
     for t in tables[1:]:
         if 'inner join' in t:
+            #get table 2 and its unique set
             r_in2 = t['inner join']
-            #get unique set of table 2
             u_in2 = table_unique_set(r_in2, constraints)
-            success = True
-            #potentially fail if there is a join condition
-            if 'on' in t:
-                #assume uniqueness is only maintained on equality join condition
-                if 'eq' not in t['on']:
-                    success = False
-                else:
-                    #check that equality is on two unique columns
-                    for col in t['on']['eq']:
-                        success &= col in u_in1 or col in u_in2
             #check fail: u_out is empty set. else, u_out is union of u_in1 and u_in2.
-            if success:
+            if check_join_conditions(t, u_in1, u_in2):
                 u_in1 = u_in1.union(u_in2)
             else:
                 u_in1 = set()
         elif 'left outer join' in t:
+            #get table 2 and its unique set
             r_in2 = t['left outer join']
-            #get unique set of table 2
             u_in2 = table_unique_set(r_in2, constraints)
-            success = True
-            #potentially fail if there is a join condition
-            if 'on' in t:
-                #assume uniqueness is only maintained on equality join condition
-                if 'eq' not in t['on']:
-                    success = False
-                else:
-                    #check that equality is on two unique columns
-                    for col in t['on']['eq']:
-                        success &= col in u_in1 or col in u_in2
             #check fail: u_out is empty set. else, u_out is u_in1.
-            if not success:
+            if not check_join_conditions(t, u_in1, u_in2):
                 u_in1 = set()
     # lotta cases to handle individually here
     if isinstance(projections, dict):

@@ -193,5 +193,11 @@ class TestRewrite(unittest.TestCase):
         self.assertFalse(can_rewrite5)
         self.assertTrue(rewrite_sql5 == None)
 
+        # chained AND in ON condition
+        sql6 = "SELECT distinct(projects.name, users.name) from users INNER JOIN projects ON projects.id > 0 AND users.project_id > 0 AND projects.id = users.project_id where p.id = 1"
+        can_rewrite6, rewrite_sql6 = rewrite.remove_distinct(parse(sql6), self.unique_constraints)
+        self.assertTrue(can_rewrite6)
+        self.assertTrue('distinct' not in rewrite_sql6)
+
 if __name__ == '__main__':
     unittest.main()
