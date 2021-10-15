@@ -74,15 +74,8 @@ def add_limit_one(q, constraints):
 #=================================================================================================================
 # helper functions for remove distinct
 
-def table_unique_set(table, constraints):
-    s = set()
-    for constraint in constraints:
-        if constraint.table == table and isinstance(constraint, UniqueConstraint):
-            s.add(constraint.table + '.' + constraint.field)
-            s.add(constraint.field)
-    return s
-
 def check_join_conditions(table, u_in1, u_in2, alias_to_table):
+    '''Check whether there is a join condition that implies joining on two unique columns.'''
     success = True
     #potentially fail if there is a join condition
     if 'on' in table:
@@ -107,6 +100,8 @@ def check_join_conditions(table, u_in1, u_in2, alias_to_table):
     return success
 
 def unalias(alias_to_table, col):
+    '''Uses alias_to_table to translate a potential aliased column col 
+    into its equivalent internal representation.'''
     if '.' in col:
         table, field = col.split('.')
         if table in alias_to_table:
@@ -114,6 +109,12 @@ def unalias(alias_to_table, col):
     return col
 
 def r_in_to_u_in(r_in, constraints, alias_to_table):
+    '''Gets the set of unique columns U_in for the input relation R_in.
+    R_in possible formats:
+    'users'
+    {'value': 'users', 'name': 'u'}
+    {'value': {'select': ..., 'from': ...}}
+    '''
     if isinstance(r_in, dict):
         # case for handling AS 
         if 'name' in r_in:
@@ -126,23 +127,15 @@ def r_in_to_u_in(r_in, constraints, alias_to_table):
             rewritten = r_in['value']
             # u_out from the nested query will be u_in
             return query_to_u_out(rewritten, constraints, {})
-    return table_unique_set(r_in, constraints)
-
-def remove_distinct(q, constraints):
-    def contain_distinct(q):
-        """return True if sql contain 'distinct' key word."""
-        if not isinstance(q['select'], dict) or 'distinct' not in q['select']['value']:
-            return False
-        return True
-
-    if not contain_distinct(q):
-        return False, None
-    
-    alias_to_table = {}
-    u_out = query_to_u_out(q, constraints, alias_to_table)
-    return remove_distinct_projection(q, u_out, alias_to_table)
+    u_in = set()
+    for constraint in constraints:
+        if constraint.table == r_in and isinstance(constraint, UniqueConstraint):
+            u_in.add(constraint.table + '.' + constraint.field)
+            u_in.add(constraint.field)
+    return u_in
 
 def query_to_u_out(q, constraints, alias_to_table):
+    '''Gets the set of unique columns U_out after going through the entire query, save for projections.'''
     tables = q['from']
     # no joins case
     if not isinstance(tables, list):
@@ -168,8 +161,30 @@ def query_to_u_out(q, constraints, alias_to_table):
                 u_in1 = set()
     return u_in1
 
+def remove_distinct(q, constraints):
+    def contain_distinct(q):
+        """return True if sql contain 'distinct' key word."""
+        if not isinstance(q['select'], dict) or 'distinct' not in q['select']['value']:
+            return False
+        return True
+
+    if not contain_distinct(q):
+        return False, None
+    
+    alias_to_table = {}
+    u_out = query_to_u_out(q, constraints, alias_to_table)
+    return remove_distinct_projection(q, u_out, alias_to_table)
+
 def remove_distinct_projection(q, u_in, alias_to_table):
-    '''Only the "Project" step of the remove distinct algorithm.'''
+    '''Only the "Project" step of the remove distinct algorithm.
+    Projections possible formats:
+    {'value': 'name'}
+    {'value': 'users.name'}
+    {'value': 'u.name'}
+    {'value': '*'}
+    {'value': ['users.name', 'users.id']}
+    [{'value': 'users.name'}, {'value': 'projects.id'}]
+    '''
     projections = q['select']['value']['distinct']
     if isinstance(projections, dict):
         if isinstance(projections['value'], list):
