@@ -114,19 +114,32 @@ def r_in_to_u_in(r_in, constraints, alias_to_table):
     'users'
     {'value': 'users', 'name': 'u'}
     {'value': {'select': ..., 'from': ...}}
+    {'value': {'select': ..., 'from': ...}, 'name': 'u'}
     '''
     if isinstance(r_in, dict):
-        # case for handling AS 
-        if 'name' in r_in:
-            alias_to_table[r_in['name']] = r_in = r_in['value']
         # case for handing nested query
-        else:
+        if isinstance(r_in['value'], dict):
             #rewrite the nested query
-            #rewritten = rewrite(r_in['value'], constraints)
-            #r_in['value'] = rewritten
+            # TODO
+            # rewritten = rewrite(r_in['value'], constraints)
+            # r_in['value'] = rewritten
             rewritten = r_in['value']
             # u_out from the nested query will be u_in
-            return query_to_u_out(rewritten, constraints, {})
+            u_out = query_to_u_out(rewritten, constraints, {})
+            # handle case with nested query + AS: the alias becomes the internal name 
+            # and as such is not included in the alias_to_table mapping but rather u_in
+            u_in = u_out
+            if 'name' in r_in:
+                u_in = set()
+                alias = r_in['name']
+                for col in u_out:
+                    if '.' not in col:
+                        u_in.add(alias + '.' + col)
+                    u_in.add(col)
+            return u_in
+        # case for handling AS 
+        elif 'name' in r_in:
+            alias_to_table[r_in['name']] = r_in = r_in['value']
     u_in = set()
     for constraint in constraints:
         if constraint.table == r_in and isinstance(constraint, UniqueConstraint):
@@ -143,18 +156,24 @@ def query_to_u_out(q, constraints, alias_to_table):
     r_in1 = tables[0]
     u_in1 = r_in_to_u_in(r_in1, constraints, alias_to_table)
     for t in tables[1:]:
-        if 'inner join' in t:
+        if 'inner join' in t or 'join' in t:
             #get table 2 and its unique set
-            r_in2 = t['inner join']
+            if 'inner join' in t:
+                r_in2 = t['inner join']
+            else:
+                r_in2 = t['join']
             u_in2 = r_in_to_u_in(r_in2, constraints, alias_to_table)
             #check fail: u_out is empty set. else, u_out is union of u_in1 and u_in2.
             if check_join_conditions(t, u_in1, u_in2, alias_to_table):
                 u_in1 = u_in1.union(u_in2)
             else:
                 u_in1 = set()
-        elif 'left outer join' in t:
+        elif 'left outer join' in t or 'left join' in t:
             #get table 2 and its unique set
-            r_in2 = t['left outer join']
+            if 'left outer join' in t:
+                r_in2 = t['left outer join']
+            else:
+                r_in2 = t['left join']
             u_in2 = r_in_to_u_in(r_in2, constraints, alias_to_table)
             #check fail: u_out is empty set. else, u_out is u_in1.
             if not check_join_conditions(t, u_in1, u_in2, alias_to_table):
@@ -263,6 +282,7 @@ def rewrite(q, constraints):
     can_remove_distinct, rewrite_q = remove_distinct(q, constraints)
     if can_remove_distinct:
         print("Remove Distinct", format(rewrite_q))
+    # TODO
 
 
 if __name__ == "__main__":
@@ -275,3 +295,4 @@ if __name__ == "__main__":
         sql_obj = parse(sql.strip())
         print(json.dumps(sql_obj, indent=4))
         rewrite(sql_obj, constraints)
+    #TODO : EXISTS, ANY

@@ -227,5 +227,11 @@ class TestRewrite(unittest.TestCase):
         self.assertTrue(can_rewrite11)
         self.assertTrue('distinct' not in rewrite_sql11)
 
+        # nested query alias succeed case
+        sql12 = "SELECT DISTINCT * from (SELECT * from projects INNER JOIN (SELECT * from users where 1=1) AS u ON projects.id = u.project_id where 1=1) where 1=1"
+        can_rewrite12, rewrite_sql12 = rewrite.remove_distinct(parse(sql12), self.unique_constraints)
+        self.assertTrue(can_rewrite12)
+        self.assertTrue('distinct' not in rewrite_sql12)
+
 if __name__ == '__main__':
     unittest.main()
