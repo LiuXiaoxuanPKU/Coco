@@ -13,7 +13,7 @@ end
 # more about yard ast
 # 1. parse_model_constraint.rb
 class ConstraintFile
-  attr_accessor :ast
+  attr_accessor :ast, :name
 
   def initialize(filename)
     file = File.open(filename)
@@ -46,7 +46,7 @@ class FileReader
     end
     constraint_files = []
     files.each { |file| constraint_files << self.readFile(file) }
-    return files
+    return constraint_files
   end
 
   def self.readFile(filename)

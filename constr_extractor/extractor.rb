@@ -1,8 +1,10 @@
 require_relative "./ast_handler"
+require_relative "./constraint"
 
 class Extractor
   BUILTIN_VALIDATOR = ["validates_presence_of", "validates_uniqueness_of", "validates_format_of",
                        "validates_length_of", "validates_inclusion_of"]
+  RULE_MAP = { :builtin => "extractBuiltin" }
 
   def initialize(rules)
     @rules = rules
@@ -15,14 +17,18 @@ class Extractor
   # {:builtin => extractBuiltin}
   # files: a list of ConstraintFile objects
   def extractAll(files)
-    @rules.each {
-      method(rule).call(files)
+    constraints = []
+    @rules.each { |rule|
+      constraints += method(RULE_MAP[rule].to_sym).call(files)
     }
+    return constraints
   end
 
   def extractBuiltin(files)
     constraints = []
-    files.each { |f| constraints += extractBuiltinHelper(f.ast) }
+    files.each { |f|
+      constraints += extractBuiltinHelper(f.ast)
+    }
     return constraints
   end
 
@@ -40,6 +46,10 @@ class Extractor
   def extractClass(ast)
     constraints = []
     class_name = ast[0].source
+    parent_class_node = ast[1]
+    if parent_class_node.nil? # does not inherit from any parent class
+      return constraints
+    end
     parent_class_name = ast[1].source
     commands = ast[2].children.select { |c| c.type.to_s == "command" }
     commands.each { |c| constraints += extractCmd(c, class_name) }

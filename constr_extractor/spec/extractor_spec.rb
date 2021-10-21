@@ -93,4 +93,10 @@ RSpec.describe Extractor do
     user_login_presence_constraint = user_presence_constraints.select { |c| c.field_name == "login" }[0]
     it { expect(user_login_presence_constraint.cond).not_to be nil }
   end
+
+  describe "only extract from ActiveRecord" do
+    filename = "spec/test_data/redmine_models/custom_field_value.rb"
+    constraints = getFileBultinConstraints(filename)
+    it { expect(constraints.length).to eql 0 }
+  end
 end
