@@ -39,11 +39,11 @@ RSpec.describe FileReader do
     group_non_member_num = findVisitOrder(order, "GroupNonMember")
     it { expect(activerecord_order_num).to eq 0 }
     it { expect(principal_order_num).to eq 1 }
-    it { user_order_num.shoud be > principal_order_num }
-    it { group_order_num.shoud be > principal_order_num }
-    it { group_non_member_num.shoud be > group_order_num }
-    it { group_builtin_num.shoud be > group_order_num }
-    it { group_anonynous_num.shoud be > group_order_num }
+    it { user_order_num.should be > principal_order_num }
+    it { group_order_num.should be > principal_order_num }
+    it { group_non_member_num.should be > group_order_num }
+    it { group_builtin_num.should be > group_order_num }
+    it { group_anonynous_num.should be > group_order_num }
   end
 
   context "#getInheritanceDic" do

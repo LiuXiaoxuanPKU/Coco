@@ -3,7 +3,7 @@ require_relative "../version"
 
 RSpec.describe Version do
   context "#endToend" do
-    rules = [:builtin]
+    rules = [:builtin, :inheritance]
     app_dir = "spec/test_data/redmine_models/"
     commit = "master"
     v = Version.new(app_dir, commit, rules)

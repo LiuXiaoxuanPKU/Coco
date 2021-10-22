@@ -77,8 +77,8 @@ class FileReader
     order = toposort(constraint_files)
     # second pass on classes to get all constants
     # TODO: fix this
-    # constraint_files_with_constants = self.setConstants(order, constraint_files)
-    constraint_files_with_constants = constraint_files
+    constraint_files_with_constants = self.setConstants(order, constraint_files)
+    # constraint_files_with_constants = constraint_files
     return constraint_files_with_constants
   end
 
@@ -131,6 +131,10 @@ class FileReader
         h = h.reject! { |k| k == c }
       end
 
+      # if the class does not have a corresponding file, it must come from lib, ignore it
+      if not class_file_map.include? c
+        next
+      end
       clas = class_file_map[c].classes.select { |class_obj| class_obj.name == c }
       raise "[Error] multiple classes have name #{clas.name}" unless (clas.length == 1)
       clas = clas[0]
@@ -153,5 +157,6 @@ class FileReader
     inheritance_info.each { |lineage|
       setConstantsLineage(lineage, constraint_files)
     }
+    return constraint_files
   end
 end

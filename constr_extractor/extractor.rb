@@ -206,15 +206,19 @@ class Extractor
       return values
     end
     lineage.each { |k, v|
-      if k != class_name
-        values << class_name
-      end
+      values << k
       v.each { |vv| values = flattenLineage(vv, class_name, values) }
     }
     return values
   end
 
   def extractClassInheritanceHelper(lineage)
+    # the class inherits from activerecord and does not have any children
+    # do not create any constraints
+    if lineage.is_a? String
+      return nil
+    end
+
     raise "[Error] Lineage #{lineage} has more than one element" unless lineage.length == 1
     class_name = lineage.keys[0]
     field = "type" # default class inheritance column
@@ -231,7 +235,10 @@ class Extractor
     # only consider active record
     inheritance_info = inheritance_info["ActiveRecord::Base"]
     inheritance_info.each { |lineage|
-      inheritance_constraints << extractClassInheritanceHelper(lineage)
+      c = extractClassInheritanceHelper(lineage)
+      unless c.nil?
+        inheritance_constraints << c
+      end
     }
     return inheritance_constraints
   end

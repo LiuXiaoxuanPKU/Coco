@@ -112,5 +112,7 @@ RSpec.describe Extractor do
     constraints = extractor.extractClassInheritance(constraint_files)
     constraints.each { |c| puts c.to_string }
     it { expect(constraints.length).to eql 1 }
+    it { expect(constraints[0].field_name).to eql "type" }
+    it { expect(constraints[0].values.length).to eql 7 }
   end
 end
