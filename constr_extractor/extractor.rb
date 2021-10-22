@@ -1,8 +1,11 @@
 require_relative "./ast_handler"
+require_relative "./constraint"
 
 class Extractor
   BUILTIN_VALIDATOR = ["validates_presence_of", "validates_uniqueness_of", "validates_format_of",
                        "validates_length_of", "validates_inclusion_of"]
+  RULE_MAP = { :builtin => "extractBuiltin",
+               :inheritance => "extractClassInheritance" }
 
   def initialize(rules)
     @rules = rules
@@ -15,14 +18,20 @@ class Extractor
   # {:builtin => extractBuiltin}
   # files: a list of ConstraintFile objects
   def extractAll(files)
-    @rules.each {
-      method(rule).call(files)
+    constraints = []
+    @rules.each { |rule|
+      constraints += method(RULE_MAP[rule].to_sym).call(files)
     }
+    return constraints
   end
 
   def extractBuiltin(files)
     constraints = []
-    files.each { |f| constraints += extractBuiltinHelper(f.ast) }
+    files.each { |f|
+      file_constraints = extractBuiltinHelper(f.ast)
+      # puts "Extract #{file_constraints.length} constraints from #{f.name}"
+      constraints += file_constraints
+    }
     return constraints
   end
 
@@ -40,6 +49,10 @@ class Extractor
   def extractClass(ast)
     constraints = []
     class_name = ast[0].source
+    parent_class_node = ast[1]
+    if parent_class_node.nil? # does not inherit from any parent class
+      return constraints
+    end
     parent_class_name = ast[1].source
     commands = ast[2].children.select { |c| c.type.to_s == "command" }
     commands.each { |c| constraints += extractCmd(c, class_name) }
@@ -187,7 +200,47 @@ class Extractor
   def extractFieldDefinition(files)
   end
 
+  def flattenLineage(lineage, class_name, values)
+    if lineage.is_a? String
+      values << lineage
+      return values
+    end
+    lineage.each { |k, v|
+      values << k
+      v.each { |vv| values = flattenLineage(vv, class_name, values) }
+    }
+    return values
+  end
+
+  def extractClassInheritanceHelper(lineage)
+    # the class inherits from activerecord and does not have any children
+    # do not create any constraints
+    if lineage.is_a? String
+      return nil
+    end
+
+    raise "[Error] Lineage #{lineage} has more than one element" unless lineage.length == 1
+    class_name = lineage.keys[0]
+    field = "type" # default class inheritance column
+    # { "Principal" => [{ "Group" => [{ "GroupBuiltin" => ["GroupNonMember", "GroupAnonymous"] }] }
+    values = flattenLineage(lineage, class_name, [])
+    constraint = InclusionConstraint.new(class_name, field, values, "class_inheritance")
+    return constraint
+  end
+
   def extractClassInheritance(files)
+    inheritance_constraints = []
+    order = FileReader.toposort(files)
+    inheritance_info = FileReader.getInheritanceDic(order, files)
+    # only consider active record
+    inheritance_info = inheritance_info["ActiveRecord::Base"]
+    inheritance_info.each { |lineage|
+      c = extractClassInheritanceHelper(lineage)
+      unless c.nil?
+        inheritance_constraints << c
+      end
+    }
+    return inheritance_constraints
   end
 
   # input: list of files

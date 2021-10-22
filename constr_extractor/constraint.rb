@@ -9,7 +9,21 @@ end
 class InclusionConstraint < Constraint
   attr_accessor :values, :type
 
+  def initialize(classname, field, values, type)
+    @class_name = classname
+    @field_name = field
+    @values = values
+    @type = type
+  end
+
   def to_string
+    {
+      :constraint_type => "inclusion",
+      :class_name => @class_name,
+      :field_name => @field_name,
+      :values => @values,
+      :type => type,
+    }
   end
 end
 

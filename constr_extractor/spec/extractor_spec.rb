@@ -93,4 +93,26 @@ RSpec.describe Extractor do
     user_login_presence_constraint = user_presence_constraints.select { |c| c.field_name == "login" }[0]
     it { expect(user_login_presence_constraint.cond).not_to be nil }
   end
+
+  describe "only extract from ActiveRecord" do
+    filename = "spec/test_data/redmine_models/custom_field_value.rb"
+    constraints = getFileBultinConstraints(filename)
+    it { expect(constraints.length).to eql 0 }
+  end
+
+  describe "extract Class Inheritance" do
+    f0 = ConstraintFile.new("spec/test_data/redmine_models/user.rb")
+    f1 = ConstraintFile.new("spec/test_data/redmine_models/principal.rb")
+    f2 = ConstraintFile.new("spec/test_data/redmine_models/group.rb")
+    f3 = ConstraintFile.new("spec/test_data/redmine_models/group_builtin.rb")
+    f4 = ConstraintFile.new("spec/test_data/redmine_models/group_anonymous.rb")
+    f5 = ConstraintFile.new("spec/test_data/redmine_models/group_non_member.rb")
+    constraint_files = [f0, f1, f2, f3, f4, f5]
+    extractor = Extractor.new([:inheritance])
+    constraints = extractor.extractClassInheritance(constraint_files)
+    constraints.each { |c| puts c.to_string }
+    it { expect(constraints.length).to eql 1 }
+    it { expect(constraints[0].field_name).to eql "type" }
+    it { expect(constraints[0].values.length).to eql 7 }
+  end
 end

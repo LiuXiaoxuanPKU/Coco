@@ -38,54 +38,54 @@ def handle_label_node(label)
   return label[0]
 end
 
-def handle_array_node(ast)
-  scope = []
-  if ast.type.to_s == "array" || ast.type.to_s == "var_ref"
-    options = nil
+# def handle_array_node(ast)
+#   scope = []
+#   if ast.type.to_s == "array" || ast.type.to_s == "var_ref"
+#     options = nil
 
-    if ast.type.to_s == "array"
-      options = ast[0]
-    end
-    if ast.type.to_s == "var_ref" && $cur_class.constants.has_key?(ast[0].source) && $cur_class.constants.has_key?(ast[0].source)
-      options = $cur_class.constants[ast[0].source][0]
-    end
+#     if ast.type.to_s == "array"
+#       options = ast[0]
+#     end
+#     if ast.type.to_s == "var_ref" && $cur_class.constants.has_key?(ast[0].source) && $cur_class.constants.has_key?(ast[0].source)
+#       options = $cur_class.constants[ast[0].source][0]
+#     end
 
-    if options.type.to_s == "list"
-      options.each do |child|
-        if child.type.to_s == "symbol_literal"
-          column = handle_symbol_literal_node(child)
-          scope << column
-        elsif child.type.to_s == "string_literal"
-          column = handle_string_literal_node(child)
-          scope << column
-        elsif child.type.to_s == "var_ref"
-          column = handle_constant_node(child)
-          scope << column
-        end
-      end
-    elsif options.type.to_s == "qsymbols_literal" || options.type.to_s == "qwords_literal"
-      options.children.each do |child|
-        if child.type.to_s == "tstring_content"
-          column = handle_tstring_content_node(child)
-          scope << column
-        end
-      end
-    end
-    return scope # return a list of all possible values
-  end
-  return nil
-end
+#     if options.type.to_s == "list"
+#       options.each do |child|
+#         if child.type.to_s == "symbol_literal"
+#           column = handle_symbol_literal_node(child)
+#           scope << column
+#         elsif child.type.to_s == "string_literal"
+#           column = handle_string_literal_node(child)
+#           scope << column
+#         elsif child.type.to_s == "var_ref"
+#           column = handle_constant_node(child)
+#           scope << column
+#         end
+#       end
+#     elsif options.type.to_s == "qsymbols_literal" || options.type.to_s == "qwords_literal"
+#       options.children.each do |child|
+#         if child.type.to_s == "tstring_content"
+#           column = handle_tstring_content_node(child)
+#           scope << column
+#         end
+#       end
+#     end
+#     return scope # return a list of all possible values
+#   end
+#   return nil
+# end
 
-def handle_constant_node(ast)
-  if $cur_class.constants.has_key?(ast.source)
-    const_value = $cur_class.constants[ast.source]
-    if const_value.type.to_s == "int"
-      return const_value.source.to_i
-    end
-    return const_value.source
-  end
-  return nil
-end
+# def handle_constant_node(ast)
+#   if $cur_class.constants.has_key?(ast.source)
+#     const_value = $cur_class.constants[ast.source]
+#     if const_value.type.to_s == "int"
+#       return const_value.source.to_i
+#     end
+#     return const_value.source
+#   end
+#   return nil
+# end
 
 def handle_tstring_content_node(ast)
   return unless ast
