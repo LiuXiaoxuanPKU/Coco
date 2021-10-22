@@ -99,4 +99,18 @@ RSpec.describe Extractor do
     constraints = getFileBultinConstraints(filename)
     it { expect(constraints.length).to eql 0 }
   end
+
+  describe "extract Class Inheritance" do
+    f0 = ConstraintFile.new("spec/test_data/redmine_models/user.rb")
+    f1 = ConstraintFile.new("spec/test_data/redmine_models/principal.rb")
+    f2 = ConstraintFile.new("spec/test_data/redmine_models/group.rb")
+    f3 = ConstraintFile.new("spec/test_data/redmine_models/group_builtin.rb")
+    f4 = ConstraintFile.new("spec/test_data/redmine_models/group_anonymous.rb")
+    f5 = ConstraintFile.new("spec/test_data/redmine_models/group_non_member.rb")
+    constraint_files = [f0, f1, f2, f3, f4, f5]
+    extractor = Extractor.new([:inheritance])
+    constraints = extractor.extractClassInheritance(constraint_files)
+    constraints.each { |c| puts c.to_string }
+    it { expect(constraints.length).to eql 1 }
+  end
 end
