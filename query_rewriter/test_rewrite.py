@@ -9,11 +9,8 @@ from mo_sql_parsing import parse, format
 class TestRewrite(unittest.TestCase):
     def __init__(self, methodName: str = ...) -> None:
         super().__init__(methodName=methodName)
-        self.unique_constraints = [UniqueConstraint("users", "name"), 
-        UniqueConstraint("users", "project_id"), UniqueConstraint("projects", "id"),
-        UniqueConstraint("city", "country_id"), UniqueConstraint("country", "id"),
-        UniqueConstraint("customer", "city_id"), UniqueConstraint("city", "id"),
-        UniqueConstraint("country", "country_name_eng")]
+        self.unique_constraints = [UniqueConstraint(
+            "users", "name"), UniqueConstraint("projects", "name"), UniqueConstraint("members", "name")]
         self.inclusion_constraints = [
             InclusionConstraint("users", "gender", ["F", "M"])]
         self.length_constraints = [LengthConstraint("users", "name", 0, 30)]
@@ -115,28 +112,28 @@ class TestRewrite(unittest.TestCase):
         self.assertEqual(format(parse(sql3 + " LIMIT 1")),
                          format(rewrite_sql3))
 
-    # def test_add_limit_one_join(self):
-    #     sql1 = "select * from users inner join projects on users.id = projects.user_id where users.name = $1 and projects.name = $2"
-    #     can_rewrite1, rewrite_sql1 = rewrite.add_limit_one(
-    #         parse(sql1), self.unique_constraints)
-    #     self.assertTrue(can_rewrite1)
-    #     self.assertTrue('limit' in rewrite_sql1)
-    #     self.assertEqual(format(parse(sql1 + " LIMIT 1")),
-    #                      format(rewrite_sql1))
+    def test_add_limit_one_join(self):
+        sql1 = "select * from users inner join projects on users.id = projects.user_id where users.name = $1 and projects.name = $2"
+        can_rewrite1, rewrite_sql1 = rewrite.add_limit_one(
+            parse(sql1), self.unique_constraints)
+        self.assertTrue(can_rewrite1)
+        self.assertTrue('limit' in rewrite_sql1)
+        self.assertEqual(format(parse(sql1 + " LIMIT 1")),
+                         format(rewrite_sql1))
 
-    #     sql2 = "select * from users inner join projects on users.id = projects.user_id where users.name = $1 or projects.name = $2"
-    #     can_rewrite2, rewrite_sql2 = rewrite.add_limit_one(
-    #         parse(sql2), self.unique_constraints)
-    #     self.assertFalse(can_rewrite2)
-    #     self.assertIsNone(rewrite_sql2)
+        sql2 = "select * from users inner join projects on users.id = projects.user_id where users.name = $1 or projects.name = $2"
+        can_rewrite2, rewrite_sql2 = rewrite.add_limit_one(
+            parse(sql2), self.unique_constraints)
+        self.assertFalse(can_rewrite2)
+        self.assertIsNone(rewrite_sql2)
 
-    #     sql3 = "select * from users inner join projects inner join members on users.id = projects.user_id and users.member_id = members.id where users.name = $1 and projects.name = $2 and members.name = $3"
-    #     can_rewrite3, rewrite_sql3 = rewrite.add_limit_one(
-    #         parse(sql3), self.unique_constraints)
-    #     self.assertTrue(can_rewrite3)
-    #     self.assertTrue('limit' in rewrite_sql3)
-    #     self.assertEqual(format(parse(sql3 + " LIMIT 1")),
-    #                      format(rewrite_sql3))
+        sql3 = "select * from users inner join projects inner join members on users.id = projects.user_id and users.member_id = members.id where users.name = $1 and projects.name = $2 and members.name = $3"
+        can_rewrite3, rewrite_sql3 = rewrite.add_limit_one(
+            parse(sql3), self.unique_constraints)
+        self.assertTrue(can_rewrite3)
+        self.assertTrue('limit' in rewrite_sql3)
+        self.assertEqual(format(parse(sql3 + " LIMIT 1")),
+                         format(rewrite_sql3))
 
     def test_str2int(self):
         sql1 = "SELECT * FROM users where gender = 'F'"
@@ -220,8 +217,12 @@ class TestRewrite(unittest.TestCase):
         self.assertTrue(can_rewrite8)
 
     def test_remove_distinct_join(self):
+        self.unique_constraints.extend([UniqueConstraint("users", "project_id"), 
+        UniqueConstraint("projects", "id"), UniqueConstraint("city", "country_id"), 
+        UniqueConstraint("country", "id"), UniqueConstraint("customer", "city_id"), 
+        UniqueConstraint("city", "id"), UniqueConstraint("country", "country_name_eng")])
         # non unique column in join condition case
-        sql1 = "SELECT distinct(projects.id) from users INNER JOIN projects ON projects.name = users.project_id where projects.id = 1"
+        sql1 = "SELECT distinct(projects.id) from users INNER JOIN projects ON projects.nondistinct = users.project_id where projects.id = 1"
         can_rewrite1, rewrite_sql1 = rewrite.remove_distinct(parse(sql1), self.unique_constraints)
         self.assertFalse(can_rewrite1)
         self.assertTrue(rewrite_sql1 == None)
@@ -239,7 +240,7 @@ class TestRewrite(unittest.TestCase):
         self.assertTrue('distinct' not in rewrite_sql3)
 
         # selecting non unique columns after successful join
-        sql4 = "SELECT distinct(projects.name, users.id) from users INNER JOIN projects ON projects.id = users.project_id where projects.id = 1"
+        sql4 = "SELECT distinct(projects.description, users.id) from users INNER JOIN projects ON projects.id = users.project_id where projects.id = 1"
         can_rewrite4, rewrite_sql4 = rewrite.remove_distinct(parse(sql4), self.unique_constraints)
         self.assertFalse(can_rewrite4)
         self.assertTrue(rewrite_sql4 == None)
@@ -291,6 +292,14 @@ class TestRewrite(unittest.TestCase):
         can_rewrite12, rewrite_sql12 = rewrite.remove_distinct(parse(sql12), self.unique_constraints)
         self.assertTrue(can_rewrite12)
         self.assertTrue('distinct' not in rewrite_sql12)
+
+        #nested distinct rewrite case
+        sql13 = "SELECT DISTINCT * from (SELECT DISTINCT * from projects INNER JOIN (SELECT DISTINCT * from users where 1=1) AS u ON projects.id = u.project_id where 1=1) where 1=1"
+        can_rewrite13, rewrite_sql13 = rewrite.remove_distinct(parse(sql13), self.unique_constraints)
+        self.assertTrue(can_rewrite13)
+        self.assertTrue('distinct' not in rewrite_sql13)
+        self.assertTrue('distinct' not in rewrite_sql13['from']['value'])
+        self.assertTrue('distinct' not in rewrite_sql13['from']['value']['from'][1]['inner join']['value'])
 
 if __name__ == '__main__':
     unittest.main()

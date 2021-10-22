@@ -202,10 +202,8 @@ def r_in_to_u_in(r_in, constraints, alias_to_table):
         # case for handing nested query
         if isinstance(r_in['value'], dict):
             #rewrite the nested query
-            # TODO
-            # rewritten = rewrite(r_in['value'], constraints)
-            # r_in['value'] = rewritten
-            rewritten = r_in['value']
+            rewritten = rewrite(r_in['value'], constraints)
+            r_in['value'] = rewritten
             # u_out from the nested query will be u_in
             u_out = query_to_u_out(rewritten, constraints, {})
             # handle case with nested query + AS: the alias becomes the internal name 
@@ -351,20 +349,21 @@ def rewrite(q, constraints):
     can_add_limit_one, rewrite_q = add_limit_one(q, constraints)
     if can_add_limit_one:
         print("Add limit 1 ", format(rewrite_q))
+        q = rewrite_q
     can_str2int, rewrite_fields = str2int(q, constraints)
     if can_str2int:
         print("String to Int", format(q), rewrite_fields)
     can_strlen_precheck, lencheck_fields = strlen_precheck(q, constraints)
     if can_strlen_precheck:
         print("Length precheck", format(q), lencheck_fields)
-    can_strformat_precheck, formatcheck_fields = strformat_precheck(
-        q, constraints)
+    can_strformat_precheck, formatcheck_fields = strformat_precheck(q, constraints)
     if can_strformat_precheck:
         print("String format precheck", format(q), formatcheck_fields)
     can_remove_distinct, rewrite_q = remove_distinct(q, constraints)
     if can_remove_distinct:
         print("Remove Distinct", format(rewrite_q))
-    # TODO
+        q = rewrite_q
+    return q
 
 
 if __name__ == "__main__":
