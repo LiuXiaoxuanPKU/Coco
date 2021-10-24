@@ -1,1 +1,0 @@
-SELECT distinct(*) from users where name = $1
