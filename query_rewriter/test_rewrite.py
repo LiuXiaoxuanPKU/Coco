@@ -297,9 +297,27 @@ class TestRewrite(unittest.TestCase):
         sql13 = "SELECT DISTINCT * from (SELECT DISTINCT * from projects INNER JOIN (SELECT DISTINCT * from users where 1=1) AS u ON projects.id = u.project_id where 1=1) where 1=1"
         can_rewrite13, rewrite_sql13 = rewrite.remove_distinct(parse(sql13), self.unique_constraints)
         self.assertTrue(can_rewrite13)
+        print(format(rewrite_sql13))
         self.assertTrue('distinct' not in rewrite_sql13)
         self.assertTrue('distinct' not in rewrite_sql13['from']['value'])
         self.assertTrue('distinct' not in rewrite_sql13['from']['value']['from'][1]['inner join']['value'])
+
+        # table.* successful case
+        sql14 = "SELECT DISTINCT p.* from projects AS p INNER JOIN users ON p.id = users.project_id where 1=1"
+        can_rewrite14, rewrite_sql14 = rewrite.remove_distinct(parse(sql14), self.unique_constraints)
+        self.assertTrue(can_rewrite14)
+        self.assertTrue('distinct' not in rewrite_sql14)
+
+    def test_real_queries(self):
+        constraints1 = [UniqueConstraint("issues", "id"), UniqueConstraint("projects", "id"), UniqueConstraint("issues", "project_id")]
+        sql1 = 'SELECT DISTINCT "issues"."created_on", "issues"."id" FROM "issues" INNER JOIN "projects" ON "projects"."id" = "issues"."project_id" INNER JOIN "custom_values" ON "custom_values"."customized_type" = $1 AND "custom_values"."customized_id" = "issues"."id" WHERE 1=1'
+        can_rewrite1, rewrite_sql1 = rewrite.remove_distinct(parse(sql1), constraints1)
+        self.assertFalse(can_rewrite1)
+
+        constraints1.append(UniqueConstraint("custom_values", "customized_type"))
+        can_rewrite1, rewrite_sql1 = rewrite.remove_distinct(parse(sql1), constraints1)
+        self.assertTrue(can_rewrite1)
+        self.assertTrue('distinct' not in rewrite_sql1)
 
 if __name__ == '__main__':
     unittest.main()

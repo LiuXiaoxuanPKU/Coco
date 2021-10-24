@@ -172,7 +172,8 @@ def check_join_conditions(table, u_in1, u_in2, alias_to_table):
                         success = True
                         for col in d['eq']:
                             col = unalias(alias_to_table, col)
-                            success &= col in u_in1 or col in u_in2
+                            # TODO: temporary handler for constants
+                            success &= col in u_in1 or col in u_in2 or col == '$1'
                         break
         else:
             #check that equality is on two unique columns
@@ -281,20 +282,33 @@ def remove_distinct_projection(q, u_in, alias_to_table):
     {'value': 'users.name'}
     {'value': 'u.name'}
     {'value': '*'}
+    {'value': 'users.*'}
+    {'value': 'u.*'}
     {'value': ['users.name', 'users.id']}
     [{'value': 'users.name'}, {'value': 'projects.id'}]
     '''
+    # TODO: table.* case
     projections = q['select']['value']['distinct']
     if isinstance(projections, dict):
-        if isinstance(projections['value'], list):
-            for col in projections['value']:
+        val = projections['value']
+        if isinstance(val, list):
+            for col in val:
                 if unalias(alias_to_table, col) in u_in:
                     rewrite_q = q.copy()
-                    rewrite_q['select'] = projections['value']
+                    rewrite_q['select'] = val
                     return True, rewrite_q
-        elif projections['value'] == '*' and u_in or unalias(alias_to_table, projections['value']) in u_in:
+        elif '.*' in val:
+            table_dot = dealias_dot = val[0:-1]
+            if val[0:-2] in alias_to_table:
+                dealias_dot = alias_to_table[val[0:-2]] + '.'
+            for col in u_in:
+                if table_dot in col or dealias_dot in col:
+                    rewrite_q = q.copy()
+                    rewrite_q['select'] = val
+                    return True, rewrite_q
+        elif val == '*' and u_in or unalias(alias_to_table, val) in u_in:
             rewrite_q = q.copy()
-            rewrite_q['select'] = projections['value']
+            rewrite_q['select'] = val
             return True, rewrite_q
     elif isinstance(projections, list):
         for d in projections:
