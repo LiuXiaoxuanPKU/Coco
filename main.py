@@ -67,25 +67,50 @@ def load_queries(query_dir):
 
 def rewrite_queries(constraints, queries):
     tests = list(queries.keys())
+    rewrite_stats = {}
+    total_queries = 0
+    rewritten_queries = 0
+    fail_parse_cnt = 0
+    test_cnt = 0
+    distinct_cnt = 0
+    limit_cnt = 0
     for i in range(len(tests)):
         rewrite_cnt = 0
         testname = tests[i]
+        # if not testname.startswith('User'):
+        #     continue
         print("=================Start rewrite test %d %s ===============" %
               (i, testname))
+        test_cnt += 1
         for i in range(len(queries[testname])):
             try:
                 org_q = parse(queries[testname][i].strip())
             except:
+                fail_parse_cnt += 1
                 print("[Error] Fail to parse ", queries[testname][i])
                 continue
-            # print(queries[testname][i].strip())
+            if "DISTINCT" in queries[testname][i]:
+                print("[Query] ", queries[testname][i].strip())
+                distinct_cnt += 1
+            if "LIMIT" not in queries[testname][i]:
+                limit_cnt += 1
             q, can_rewrite = rewrite_single_query(
                 org_q, constraints)
             if can_rewrite:
                 rewrite_cnt += 1
                 # print("org %s\n new %s\n" %
                 #       (format(queries[testname][i]), format(q)))
+        total_queries += len(queries[testname])
+        rewritten_queries += rewrite_cnt
         print("=================Finish rewrite, rewrite %d queries===============" % rewrite_cnt)
+        rewrite_stats[testname] = rewrite_cnt
+    total_queries -= fail_parse_cnt
+    print("Number of end2end tests", test_cnt)
+    print("Number of distinct candidates", distinct_cnt)
+    print("Number of limit candidates", limit_cnt)
+    print("Average number of queries", total_queries * 1.0 / test_cnt)
+    print("Avergae number of rewritten queries",
+          rewritten_queries * 1.0 / test_cnt)
 
 
 if __name__ == "__main__":

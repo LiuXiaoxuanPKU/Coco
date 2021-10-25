@@ -6,6 +6,8 @@ class Constraint:
 
 class UniqueConstraint(Constraint):
     def __init__(self, table, field) -> None:
+        if table == "principals":
+            table = "users"
         super().__init__(table, field)
 
 
