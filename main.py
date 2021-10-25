@@ -1,7 +1,9 @@
 import os
 import json
 import pickle
-from constropt.query_rewriter import rewrite
+from mo_imports import expect
+from mo_sql_parsing import parse, format
+from constropt.query_rewriter.rewrite import rewrite_single_query
 from constropt.query_rewriter import constraint
 
 
@@ -64,13 +66,26 @@ def load_queries(query_dir):
 
 
 def rewrite_queries(constraints, queries):
-    testname = list(queries.keys())[0]
-    print("=================Start rewrite ===============")
-    print("Testname %s" % testname)
-    for i in range(10):
-        print(constraints[i])
-        print(queries[testname][i])
-    print("=================Finish rewrite===============")
+    tests = list(queries.keys())
+    for i in range(len(tests)):
+        rewrite_cnt = 0
+        testname = tests[i]
+        print("=================Start rewrite test %d %s ===============" %
+              (i, testname))
+        for i in range(len(queries[testname])):
+            try:
+                org_q = parse(queries[testname][i].strip())
+            except:
+                print("[Error] Fail to parse ", queries[testname][i])
+                continue
+            # print(queries[testname][i].strip())
+            q, can_rewrite = rewrite_single_query(
+                org_q, constraints)
+            if can_rewrite:
+                rewrite_cnt += 1
+                # print("org %s\n new %s\n" %
+                #       (format(queries[testname][i]), format(q)))
+        print("=================Finish rewrite, rewrite %d queries===============" % rewrite_cnt)
 
 
 if __name__ == "__main__":

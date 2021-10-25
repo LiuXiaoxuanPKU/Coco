@@ -1,7 +1,8 @@
+import json
+import functools
 from constropt.query_rewriter.constraint import LengthConstraint, UniqueConstraint, InclusionConstraint, FormatConstraint
 # from constraint import LengthConstraint, UniqueConstraint, InclusionConstraint, FormatConstraint
 from mo_sql_parsing import parse, format
-import functools
 
 
 def find_constraint(constraints, table, field, constraint_type):
@@ -22,6 +23,9 @@ def find_field_in_predicate(field, predicate):
     key = keys[0]
     values = list(predicate[key])
 
+    # case: where 1=1
+    if isinstance(values[0], int):
+        return False
     if isinstance(values[0], str):
         return field in values
     return functools.reduce(lambda acc, item: acc or find_field_in_predicate(field, item), values, False)
@@ -44,7 +48,8 @@ def check_connect_by_and_equal(predicates):
     keys = list(predicates.keys())
     assert(len(keys) == 1)
     key = keys[0]
-    if isinstance(predicates[key][0], str):
+    # TODO: handle exist
+    if isinstance(predicates[key], list) and isinstance(predicates[key][0], str):
         return key == "eq"
     res = True
     if not key == "and":
@@ -65,23 +70,20 @@ def get_table_predicates(predicates, table):
         tmp = predicates[key][0].split('.')
         # if the predicate does not contain table name (column = ?)
         if len(tmp) == 1:
-            return predicates
+            return [predicates]
         # if the predicate contains table name (table.column = ?)
         if len(tmp) == 2 and table == tmp[0]:
-            return predicates
+            return [predicates]
         assert(len(tmp) <= 2)
-        return None
+        return []
 
     table_predicates = []
     for predicate in predicates[key]:
         p = get_table_predicates(predicate, table)
-        if p:
-            if isinstance(p, list):
-                table_predicates += p
-            else:
-                table_predicates.append(p)
+        table_predicates += p
 
     return table_predicates
+
 
 def add_limit_one(q, constraints):
     if 'limit' in q or 'where' not in q:
@@ -114,7 +116,11 @@ def add_limit_one(q, constraints):
         predicates = where_clause['and']
         return_one = False
         table = q['from']
+
         for pred in predicates:
+            # TODO: does not handle exits for now
+            if 'exists' in pred:
+                return False, None
             return_one = return_one or check_predicate_return_one_tuple(
                 list(pred.keys())[0], table, list(pred.values())[0][0])
         if return_one:
@@ -138,8 +144,12 @@ def add_limit_one(q, constraints):
                 keys = list(predicate.keys())
                 assert(len(keys) == 1)
                 cmp_key, field = keys[0], predicate[keys[0]][0]
-                # field should not contain table name
-                field = field.split('.')[1]
+                # field should contain table name
+                tokens = field.split('.')
+                if len(tokens) == 1:
+                    field = tokens[0]
+                else:
+                    field = tokens[1]
                 return_one = check_predicate_return_one_tuple(
                     cmp_key, table, field)
                 if return_one:
@@ -152,22 +162,23 @@ def add_limit_one(q, constraints):
 
     return False, None
 
-#=================================================================================================================
+# =================================================================================================================
 # helper functions for remove distinct
+
 
 def check_join_conditions(table, u_in1, u_in2, alias_to_table):
     '''Check whether there is a join condition that implies joining on two unique columns.'''
     success = True
-    #potentially fail if there is a join condition
+    # potentially fail if there is a join condition
     if 'on' in table:
-        #assume uniqueness is only maintained on equality join condition
+        # assume uniqueness is only maintained on equality join condition
         if 'eq' not in table['on']:
             success = False
-            #check for potential equality conditions within the and
+            # check for potential equality conditions within the and
             if 'and' in table['on']:
                 for d in table['on']['and']:
                     if 'eq' in d:
-                        #check that equality is on two unique columns
+                        # check that equality is on two unique columns
                         success = True
                         for col in d['eq']:
                             col = unalias(alias_to_table, col)
@@ -175,11 +186,12 @@ def check_join_conditions(table, u_in1, u_in2, alias_to_table):
                             success &= col in u_in1 or col in u_in2 or col == '$1'
                         break
         else:
-            #check that equality is on two unique columns
+            # check that equality is on two unique columns
             for col in table['on']['eq']:
                 col = unalias(alias_to_table, col)
                 success &= col in u_in1 or col in u_in2
     return success
+
 
 def unalias(alias_to_table, col):
     '''Uses alias_to_table to translate a potential aliased column col 
@@ -189,6 +201,7 @@ def unalias(alias_to_table, col):
         if table in alias_to_table:
             col = alias_to_table[table] + '.' + field
     return col
+
 
 def r_in_to_u_in(r_in, constraints, alias_to_table):
     '''Gets the set of unique columns U_in for the input relation R_in.
@@ -201,12 +214,12 @@ def r_in_to_u_in(r_in, constraints, alias_to_table):
     if isinstance(r_in, dict):
         # case for handing nested query
         if isinstance(r_in['value'], dict):
-            #rewrite the nested query
-            rewritten = rewrite_single_query(r_in['value'], constraints)
+            # rewrite the nested query
+            rewritten, _ = rewrite_single_query(r_in['value'], constraints)
             r_in['value'] = rewritten
             # u_out from the nested query will be u_in
             u_out = query_to_u_out(rewritten, constraints, {})
-            # handle case with nested query + AS: the alias becomes the internal name 
+            # handle case with nested query + AS: the alias becomes the internal name
             # and as such is not included in the alias_to_table mapping but rather u_in
             u_in = u_out
             if 'name' in r_in:
@@ -217,7 +230,7 @@ def r_in_to_u_in(r_in, constraints, alias_to_table):
                         u_in.add(alias + '.' + col)
                     u_in.add(col)
             return u_in
-        # case for handling AS 
+        # case for handling AS
         elif 'name' in r_in:
             alias_to_table[r_in['name']] = r_in = r_in['value']
     u_in = set()
@@ -226,6 +239,7 @@ def r_in_to_u_in(r_in, constraints, alias_to_table):
             u_in.add(constraint.table + '.' + constraint.field)
             u_in.add(constraint.field)
     return u_in
+
 
 def query_to_u_out(q, constraints, alias_to_table):
     '''Gets the set of unique columns U_out after going through the entire query, save for projections.'''
@@ -237,42 +251,47 @@ def query_to_u_out(q, constraints, alias_to_table):
     u_in1 = r_in_to_u_in(r_in1, constraints, alias_to_table)
     for t in tables[1:]:
         if 'inner join' in t or 'join' in t:
-            #get table 2 and its unique set
+            # get table 2 and its unique set
             if 'inner join' in t:
                 r_in2 = t['inner join']
             else:
                 r_in2 = t['join']
             u_in2 = r_in_to_u_in(r_in2, constraints, alias_to_table)
-            #check fail: u_out is empty set. else, u_out is union of u_in1 and u_in2.
+            # check fail: u_out is empty set. else, u_out is union of u_in1 and u_in2.
             if check_join_conditions(t, u_in1, u_in2, alias_to_table):
                 u_in1 = u_in1.union(u_in2)
             else:
                 u_in1 = set()
         elif 'left outer join' in t or 'left join' in t:
-            #get table 2 and its unique set
+            # get table 2 and its unique set
             if 'left outer join' in t:
                 r_in2 = t['left outer join']
             else:
                 r_in2 = t['left join']
             u_in2 = r_in_to_u_in(r_in2, constraints, alias_to_table)
-            #check fail: u_out is empty set. else, u_out is u_in1.
+            # check fail: u_out is empty set. else, u_out is u_in1.
             if not check_join_conditions(t, u_in1, u_in2, alias_to_table):
                 u_in1 = set()
     return u_in1
 
+
 def remove_distinct(q, constraints):
     def contain_distinct(q):
         """return True if sql contain 'distinct' key word."""
-        if not isinstance(q['select'], dict) or 'distinct' not in q['select']['value']:
+        # 'select': {'value': 1, 'name': 'one'}
+        if not isinstance(q['select'], dict) or \
+                isinstance(q['select']['value'], int) or \
+                'distinct' not in q['select']['value']:
             return False
         return True
 
     if not contain_distinct(q):
         return False, None
-    
+
     alias_to_table = {}
     u_out = query_to_u_out(q, constraints, alias_to_table)
     return remove_distinct_projection(q, u_out, alias_to_table)
+
 
 def remove_distinct_projection(q, u_in, alias_to_table):
     '''Only the "Project" step of the remove distinct algorithm.
@@ -317,7 +336,8 @@ def remove_distinct_projection(q, u_in, alias_to_table):
     return False, None
 
 # end remove distinct
-#=================================================================================================================
+# =================================================================================================================
+
 
 def str2int(q, constraints):
     if 'where' not in q:
@@ -364,6 +384,7 @@ def strformat_precheck(q, constraints):
 
 
 def rewrite_single_query(q, constraints):
+    can_rewrite = False
     can_add_limit_one, rewrite_q = add_limit_one(q, constraints)
     if can_add_limit_one:
         print("Add limit 1 ", format(rewrite_q))
@@ -374,14 +395,16 @@ def rewrite_single_query(q, constraints):
     can_strlen_precheck, lencheck_fields = strlen_precheck(q, constraints)
     if can_strlen_precheck:
         print("Length precheck", format(q), lencheck_fields)
-    can_strformat_precheck, formatcheck_fields = strformat_precheck(q, constraints)
+    can_strformat_precheck, formatcheck_fields = strformat_precheck(
+        q, constraints)
     if can_strformat_precheck:
         print("String format precheck", format(q), formatcheck_fields)
     can_remove_distinct, rewrite_q = remove_distinct(q, constraints)
     if can_remove_distinct:
         print("Remove Distinct", format(rewrite_q))
         q = rewrite_q
-    return q
+    can_rewrite = can_add_limit_one or can_str2int or can_strlen_precheck or can_strformat_precheck or can_remove_distinct
+    return q, can_rewrite
 
 # handle nested query cases
 
@@ -391,13 +414,15 @@ def rewrite_query():
 
 
 if __name__ == "__main__":
-    filename = "query.sql"
-    constraints = [UniqueConstraint("users", "name"), UniqueConstraint("projects", "id"), UniqueConstraint("users", "project")]
+    filename = "constropt/query_rewriter/query.sql"
+    constraints = [UniqueConstraint("users", "name"), UniqueConstraint(
+        "projects", "id"), UniqueConstraint("users", "project"),
+        InclusionConstraint("users", "gender", ['F', 'M'])]
     with open(filename, 'r') as f:
         sqls = f.readlines()
     for sql in sqls:
         print(sql.strip())
         sql_obj = parse(sql.strip())
         print(json.dumps(sql_obj, indent=4))
-        rewrite(sql_obj, constraints)
-    #TODO : EXISTS, ANY
+        rewrite_single_query(sql_obj, constraints)
+    # TODO : EXISTS, ANY
