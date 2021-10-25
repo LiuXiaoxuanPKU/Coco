@@ -15,8 +15,8 @@ rspec spec/extractor_spec.rb
 
 ## Query Rewriter
 ### Run tests
-under query_rewriter folder, run
+under root folder, run
 ````
-python test_rewrite.py # run all tests
-python test_rewrite.py TestRewrite.test_fn_name # run a single test with name test_fn_name
-```
+PYTHONPATH="./" python tests/test_rewrite.py # run all tests
+PYTHONPATH="./" python tests/test_rewrite.py TestRewrite.test_fn_name # run a single test with name test_fn_name
+````
