@@ -77,8 +77,8 @@ def rewrite_queries(constraints, queries):
     for i in range(len(tests)):
         rewrite_cnt = 0
         testname = tests[i]
-        # if not testname.startswith('User'):
-        #     continue
+        if not testname.startswith('Version'):
+            continue
         print("=================Start rewrite test %d %s ===============" %
               (i, testname))
         test_cnt += 1
@@ -89,8 +89,9 @@ def rewrite_queries(constraints, queries):
                 fail_parse_cnt += 1
                 print("[Error] Fail to parse ", queries[testname][i])
                 continue
+            print(queries[testname][i])
             if "DISTINCT" in queries[testname][i]:
-                print("[Query] ", queries[testname][i].strip())
+                print("[Distinct Query] ", queries[testname][i].strip())
                 distinct_cnt += 1
             if "LIMIT" not in queries[testname][i]:
                 limit_cnt += 1

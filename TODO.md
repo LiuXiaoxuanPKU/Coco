@@ -16,15 +16,20 @@ Currently, query rewrite is missing lots of cases, we need to first test if the 
 ## Add Limit 1
 - support unique constraints with multiple columns
 - support nested queries for add limit 1
-
+1. 
 ## Remove Distinct
 - support unique constraints with multiple columns
 
 ## Remove Predicate
 - Use z3 to remove predicates
 
+1.  **IssuesControllerTest-test_get_new_should_not_display_readonly_fields** SELECT DISTINCT "users".* FROM "users" INNER JOIN "members" ON "members"."user_id" = "users"."id" WHERE "users"."status" = $1 AND (members.project_id = 1) AND "users"."status" = $2 AND "users"."status" = $3 AND "users"."type" IN ($4, $5) LIMIT $6
+2.  
+
+
 ## String to Enumeration
 - Debug: it's missing lots, lots of cases
+- Because we don't have inclusion constraints!!
 
 # End to End Experiment
 - replace parameters with exact values
