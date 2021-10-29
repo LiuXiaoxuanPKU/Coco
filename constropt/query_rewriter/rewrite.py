@@ -240,17 +240,7 @@ def r_in_to_u_in(r_in, constraints, alias_to_table):
             u_in.add(unique_set)
     return u_in
 
-# SELECT customerName, customercity, customermail, salestotal
-# FROM onlinecustomers AS oc
-#    INNER JOIN
-#    orders AS o
-#    ON oc.customerid = o.customerid
-#    INNER JOIN
-#    sales AS s
-#    ON o.orderId = s.orderId
-#    WHERE s.id = 1
 
-# where (a = 1 or b = 9) and (c = 8 or d = 7)
 def u_in_after_filter(q, u_in, alias_to_table):
     # check if q has where clause
     if not 'where' in q:
@@ -369,10 +359,8 @@ def remove_distinct_projection(q, u_in, alias_to_table):
             table_dot = dealias_dot = val[0:-1]
             if val[0:-2] in alias_to_table:
                 dealias_dot = alias_to_table[val[0:-2]] + '.'
-            # for col in u_in:
             for subset in u_in:
-                if table_dot in subset[0] or dealias_dot in subset[0]:
-                # if table_dot in col or dealias_dot in col:
+                if table_dot in subset or dealias_dot in subset:
                     rewrite_q = q.copy()
                     rewrite_q['select'] = val
                     return True, rewrite_q
