@@ -107,7 +107,11 @@ class Extractor
         end
         if !k.nil? and k == "scope"
           v.children.each { |s|
-            scope << handle_symbol_literal_node(s[0])
+            if s.type.to_s == "symbol"
+              scope << s[0].source
+            else
+              scope << handle_symbol_literal_node(s[0])
+            end
           }
         end
       }

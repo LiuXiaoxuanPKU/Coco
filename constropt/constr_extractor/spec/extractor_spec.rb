@@ -115,4 +115,15 @@ RSpec.describe Extractor do
     it { expect(constraints[0].field_name).to eql "type" }
     it { expect(constraints[0].values.length).to eql 7 }
   end
+
+  describe "extract CustomField" do
+    filename = "spec/test_data/redmine_models/custom_field.rb"
+    constraints = getFileBultinConstraints(filename)
+    it { expect(constraints.length).to eql 6 }
+    unique_constraints = constraints.select { |c| c.is_a?(UniqueConstraint) }
+    it { expect(unique_constraints.length).to eql 1 }
+    name_unique_constraint = unique_constraints[0]
+    it { expect(name_unique_constraint.field_name).to eql "name" }
+    it { expect(name_unique_constraint.scope).to eql ["type"] }
+  end
 end
