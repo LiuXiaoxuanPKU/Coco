@@ -120,6 +120,30 @@ if __name__ == "__main__":
         os.getcwd(), app_name)
     constraints_json = extract_constraints(app_dir, constraint_output_dir)
     constraints = load_constraints(constraints_json)
-    query_dir = "%s/queries/%s_end2end.pk" % (os.getcwd(), app_name)
-    queries = load_queries(query_dir)
-    rewrite_queries(constraints, queries)
+    # query_dir = "%s/queries/%s_end2end.pk" % (os.getcwd(), app_name)
+    # queries = load_queries(query_dir)
+    # rewrite_queries(constraints, queries)
+
+    query_dir = "queries/redmine.pk"
+    queries = []
+    parse_cnt = 0
+    with open(query_dir, 'rb') as f:
+        queries = pickle.load(f)
+        
+    rewrite_cnt = 0
+    stats = {}
+    for q in queries:
+        try:
+            new_q, rewrite_types = rewrite_single_query(
+                    parse(q[1]), constraints)
+            if len(rewrite_types):
+                rewrite_cnt += 1
+                for t in rewrite_types:
+                    if t not in stats:
+                        stats[t] = 0
+                    stats[t] += 1
+        except:
+            continue
+    print("=====Total number of queries %d" % len(queries))
+    print("===== Rewrite %d queries" % rewrite_cnt)
+    print("===== Rewrite stats", stats)
