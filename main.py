@@ -36,7 +36,8 @@ def load_constraints(constraints_json):
             c = constraint.LengthConstraint(
                 obj['table'], obj['field_name'], obj['min'], obj['max'])
         elif obj["constraint_type"] == "unique":
-            c = constraint.UniqueConstraint(obj['table'], obj['field_name'])
+            c = constraint.UniqueConstraint(
+                obj['table'], obj['field_name'], obj['scope'])
         elif obj["constraint_type"] == "presence":
             c = constraint.PresenceConstraint(obj['table'], obj['field_name'])
         elif obj["constraint_type"] == "inclusion":
@@ -49,6 +50,7 @@ def load_constraints(constraints_json):
             print("[Error] Unsupport constraint type ", obj)
             exit(1)
         constraints.append(c)
+    # exit(0)
     return constraints
 
 
@@ -77,8 +79,8 @@ def rewrite_queries(constraints, queries):
     for i in range(len(tests)):
         rewrite_cnt = 0
         testname = tests[i]
-        # if not testname.startswith('User'):
-        #     continue
+        if not testname.startswith('User'):
+            continue
         print("=================Start rewrite test %d %s ===============" %
               (i, testname))
         test_cnt += 1
@@ -89,8 +91,9 @@ def rewrite_queries(constraints, queries):
                 fail_parse_cnt += 1
                 print("[Error] Fail to parse ", queries[testname][i])
                 continue
+            # print(queries[testname][i])
             if "DISTINCT" in queries[testname][i]:
-                print("[Query] ", queries[testname][i].strip())
+                # print("[Distinct Query] ", queries[testname][i].strip())
                 distinct_cnt += 1
             if "LIMIT" not in queries[testname][i]:
                 limit_cnt += 1
