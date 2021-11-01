@@ -38,17 +38,17 @@ class TestRewrite(unittest.TestCase):
 
     def test_check_connect_by_and_equal(self):
         sql1 = "select * from users where name = $1"
-        self.assertTrue(check_connect_by_and_equal(parse(sql1)['where']))
+        self.assertTrue(check_connect_by_and_equal(parse(sql1)['where'])[0])
         sql2 = "select * from users where name = $1 and id = $2"
-        self.assertTrue(check_connect_by_and_equal(parse(sql2)['where']))
+        self.assertTrue(check_connect_by_and_equal(parse(sql2)['where'])[0])
         sql3 = "select * from users where name = $1 or id = $2"
-        self.assertFalse(check_connect_by_and_equal(parse(sql3)['where']))
+        self.assertFalse(check_connect_by_and_equal(parse(sql3)['where'])[0])
         sql4 = "select * from users where name = $1 or id = $2 and gender = $3"
-        self.assertFalse(check_connect_by_and_equal(parse(sql4)['where']))
+        self.assertFalse(check_connect_by_and_equal(parse(sql4)['where'])[0])
         sql5 = "select * from users where name = $1 and id = $2 and gender > $3"
-        self.assertFalse(check_connect_by_and_equal(parse(sql5)['where']))
+        self.assertFalse(check_connect_by_and_equal(parse(sql5)['where'])[0])
         sql6 = "select * from projects inner join users on users.project_id = projects.id where users.id = 1 and project.id = 2"
-        self.assertTrue(check_connect_by_and_equal(parse(sql6)['where']))
+        self.assertTrue(check_connect_by_and_equal(parse(sql6)['where'])[0])
 
     def test_get_table_predicates(self):
         sql1 = "select * from users where name = $1"
@@ -133,6 +133,32 @@ class TestRewrite(unittest.TestCase):
         self.assertTrue('limit' in rewrite_sql3)
         self.assertEqual(format(parse(sql3 + " LIMIT 1")),
                          format(rewrite_sql3))
+    
+    def test_add_limit_one_redmine(self):
+        sql1 = "SELECT email_addresses.* FROM email_addresses WHERE email_addresses.address = $1"
+        can_rewrite1, rewrite_sql1 = rewrite.add_limit_one(
+            parse(sql1), [UniqueConstraint("email_addresses", "address")])
+        self.assertTrue(can_rewrite1)
+        self.assertTrue('limit' in rewrite_sql1)
+
+        sql2 = "SELECT users.* FROM users WHERE users.type IN ($1) AND users.login = $3"
+        can_rewrite2, rewrite_sql2 = rewrite.add_limit_one(
+            parse(sql2), [UniqueConstraint("users", "login")])
+        self.assertTrue(can_rewrite2)
+        self.assertTrue('limit' in rewrite_sql2)
+
+        sql3 = "SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = $1 AND issue_relations.issue_to_id = $2"
+        can_rewrite3, rewrite_sql3 = rewrite.add_limit_one(
+            parse(sql3), [UniqueConstraint("issue_relations", "issue_from_id", ["issue_to_id"])])
+        self.assertTrue(can_rewrite3)
+        self.assertTrue('limit' in rewrite_sql3)
+
+        sql4 = "SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type in ($1) AND users.status = $3 AND (email_addresses.address \
+            = 'redmine@somenet.foo')"
+        can_rewrite4, rewrite_sql4 = rewrite.add_limit_one(
+            parse(sql4), [UniqueConstraint("email_addresses", "address"), UniqueConstraint("email_addresses", "user_id"),  UniqueConstraint("users", "id")])
+        self.assertTrue(can_rewrite4)
+        self.assertTrue('limit' in rewrite_sql4)
 
     def test_str2int(self):
         sql1 = "SELECT * FROM users where gender = 'F'"
@@ -152,6 +178,28 @@ class TestRewrite(unittest.TestCase):
         self.assertFalse(can_rewrite3)
         self.assertEqual(len(rewrite_fields3), 0)
 
+    def test_str2int_redmine(self):
+        sql1 = "SELECT users.* FROM users WHERE users.type IN ($1, $2) AND users.id = $3 LIMIT $4"
+        can_rewrite1, rewrite_fields1 = rewrite.str2int(
+            parse(sql1),[InclusionConstraint("users", "type", [])])
+        self.assertTrue(can_rewrite1)
+        self.assertEqual(rewrite_fields1, ["users.type"])
+
+        sql2 = "SELECT enumerations.* FROM enumerations WHERE enumerations.type = $1 \
+            AND enumerations.is_default = $2 ORDER BY enumerations.position ASC LIMIT $3"
+        can_rewrite2, rewrite_fields2 = rewrite.str2int(
+            parse(sql2), [InclusionConstraint("enumerations", "type", [])])
+        self.assertTrue(can_rewrite2)
+        self.assertEqual(rewrite_fields2, ["enumerations.type"])
+
+        sql3 = "SELECT members.* FROM members INNER JOIN users ON \
+            users.id = members.user_id WHERE members.project_id = $1 AND\
+                 users.type = $2 AND users.status = $3"
+        can_rewrite3, rewrite_fields3 = rewrite.str2int(
+            parse(sql3), [InclusionConstraint("users", "type", []), InclusionConstraint("users", "status", [])])
+        self.assertTrue(can_rewrite3)
+        self.assertEqual(rewrite_fields3, ["users.type", "users.status"])
+        
     def test_strlen_precheck(self):
         sql1 = "SELECT * FROM users where name = 'bob'"
         can_rewrite1, rewrite_fields1 = rewrite.strlen_precheck(
