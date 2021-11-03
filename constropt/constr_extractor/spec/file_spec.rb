@@ -7,17 +7,23 @@ RSpec.configure do |c|
 end
 
 RSpec.describe FileReader do
-  # context "#readDir" do
-  #   dirname = "spec/test_data/redmine_models/"
-  #   constraint_files = FileReader.readDir(dirname)
-  #   cmd = "find #{dirname} -type f | wc -l"
-  #   re = %x(#{cmd})
-  #   it { expect(constraint_files.length).to eql re.to_i }
-  # end
+  context "#readDir" do
+    dirname = "spec/test_data/redmine_models/"
+    constraint_files = FileReader.readDir(dirname)
+    cmd = "find #{dirname} -type f | wc -l"
+    re = %x(#{cmd})
+    it { expect(constraint_files.length).to eql re.to_i }
+  end
 
   context "#readFile" do
     filename = "spec/test_data/redmine_models/user.rb"
-    it { expect(FileReader.readFile(filename)).not_to be nil }
+    f0 = FileReader.readFile(filename)
+    it { expect(f0).not_to be nil }
+    user_class = f0.classes.select { |c| c.name == "User" }[0]
+    constants = user_class.constants
+    it { expect(constants.length).to equal 5 }
+    it { expect(constants["LOGIN_LENGTH_LIMIT"].to_i).to equal 60 }
+    it { expect(constants["MAIL_LENGTH_LIMIT"].to_i).to equal 60 }
   end
 
   context "#toposort" do

@@ -50,7 +50,7 @@ def load_constraints(constraints_json):
             print("[Error] Unsupport constraint type ", obj)
             exit(1)
         constraints.append(c)
-    exit(0)
+    # exit(0)
     return constraints
 
 
