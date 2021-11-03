@@ -9,29 +9,26 @@ class ConstraintClass
     @file = file
     parent_node = ast[1]
     @parent = nil
+    @constants = Hash.new
+
     if not parent_node.nil?
       @parent = ast[1].source
     end
 
-    # constants = Hash.new
-    # ast.children.each { |c|
-    #   if c.type.to_s == "list"
-    #     c.children.each { |a|
-    #       if a.type.to_s == "assign"
-    #         puts a.type
-    #         puts a.source
-    #         # ignore assignment with lh = self.variable
-    #         if a.source.include? "self"
-    #           next
-    #         end
-    #         eval(a.source)
-    #       end
-    #     }
-    #   end
-    #   puts "#{c.type}"
-    # }
-    # puts "#{ast[0].source}, #{ast[1].source}"
-    # puts ast[1]
+    # set constants of the class
+    ast.children.each { |c|
+      if c.type.to_s == "list"
+        c.children.each { |a|
+          if a.type.to_s == "assign"
+            # ignore assignment with lh = self.variable
+            if a.source.include? "self"
+              next
+            end
+            @constants[a[0].source] = a[1].source
+          end
+        }
+      end
+    }
   end
 end
 
@@ -146,7 +143,45 @@ class FileReader
     return h
   end
 
-  def self.setConstantsLineage(lineage, constraint_files)
+  def self.getClassFromName(constraint_files, master)
+    constraint_files.each { |file|
+      file.classes.each { |c|
+        if c.name == master
+          return c
+        end
+      }
+    }
+    return nil
+  end
+
+  def self.mergeHash(h1, h2)
+    ret = Hash.new
+    h1.each { |k, v|
+      raise "[Error] constants conflict, key = #{k}, v1=#{h1[k]}, v2=#{h2[k]}" if h2.key?(k)
+      ret[k] = v
+    }
+    h2.each { |k, v| ret[k] = v }
+    return ret
+  end
+
+  def self.setConstantsLineage(lineage, constraint_files, constants)
+    # lineage: WikiPage
+    # lineage: {"WorkflowRule"=>["WorkflowTransition", "WorkflowPermission"]}
+    # lineage: { "Principal" => [{ "Group" => [{ "GroupBuiltin" => ["GroupNonMember", "GroupAnonymous"] }] }
+    if lineage.is_a? String # no class inherits from current class, do nothing
+      return
+    end
+    master = lineage.keys
+    raise unless master.length == 1
+    master = master[0]
+    constraint_class = self.getClassFromName(constraint_files, master)
+    raise "Class #{master} unfound" if constraint_class.nil?
+    constants = self.mergeHash(constraint_class.constants, constants)
+    constraint_class.constants = constants
+    # check if the class of file has changed as well (yes)
+    lineage[master].each { |child|
+      self.setConstantsLineage(child, constraint_files, constants)
+    }
   end
 
   def self.setConstants(order, constraint_files)
@@ -155,7 +190,7 @@ class FileReader
     raise "ActiveRecord::Base not in the inheritance" unless inheritance_info.include? "ActiveRecord::Base"
     inheritance_info = inheritance_info["ActiveRecord::Base"]
     inheritance_info.each { |lineage|
-      setConstantsLineage(lineage, constraint_files)
+      setConstantsLineage(lineage, constraint_files, Hash.new)
     }
     return constraint_files
   end
