@@ -2,7 +2,7 @@ import json
 import functools
 from enum import Enum
 from typing import ValuesView
-from constropt.query_rewriter.constraint import LengthConstraint, UniqueConstraint, InclusionConstraint, FormatConstraint
+from constropt.query_rewriter.constraint import LengthConstraint, PresenceConstraint, UniqueConstraint, InclusionConstraint, FormatConstraint
 # from constraint import LengthConstraint, UniqueConstraint, InclusionConstraint, FormatConstraint
 from mo_sql_parsing import parse, format
 
@@ -15,23 +15,30 @@ class RewriteType(Enum):
     REMOVE_PREDICATE = 5
     STRING_TO_INT = 6
 
+
 def find_constraint(constraints, table, field, constraint_type):
     # field name can be xx.xx or xx
     re = list(filter(lambda x: isinstance(x, constraint_type)
-              and x.table == table and x.field == field \
-                  or (isinstance(field, str) and x.field == field.split(".")[-1]), constraints))
+              and x.table == table and x.field == field
+                     or (isinstance(field, str) and x.field == field.split(".")[-1]), constraints))
     return len(list(re)) > 0
 
+
 def get_unqiue_constraints_fields(constraints):
-    unique_constraints =  list(filter(lambda x: isinstance(x, UniqueConstraint), constraints))
+    unique_constraints = list(
+        filter(lambda x: isinstance(x, UniqueConstraint), constraints))
+
     def add_tablename_to_field(table, fields):
         return list(map(lambda x: "%s.%s" % (table, x), fields))
-    fields = list(functools.reduce(lambda acc, x: acc + [add_tablename_to_field(x.table, [x.field] + x.scope)], 
-                                    unique_constraints, []))
+    fields = list(functools.reduce(lambda acc, x: acc + [add_tablename_to_field(x.table, [x.field] + x.scope)],
+                                   unique_constraints, []))
     return fields
 
-# return the full name of constraint, field name is in the format of xx.xx
+
 def get_constraint_fields(constraints, constraint_type):
+    '''
+    return the full name of constraint, field name is in the format of xx.xx
+    '''
     selected_constraints = filter(
         lambda x: isinstance(x, constraint_type), constraints)
     return list(map(lambda x: x.table + "." + x.field, selected_constraints))
@@ -57,11 +64,13 @@ def get_join_tables(q):
         lambda acc, item: acc + [item['inner join']] if ('inner join' in item) else acc, table, []))
     return join_tables
 
+
 def get_query_tables(q):
     join_tables = get_join_tables(q)
     table = q['from']
     org_table = [t for t in table if isinstance(t, str)]
-    return join_tables +org_table
+    return join_tables + org_table
+
 
 def check_query_has_join(q):
     return len(get_join_tables(q)) > 0
@@ -76,7 +85,7 @@ def check_connect_by_and_equal(predicates):
     key = keys[0]
     # TODO: handle exist
     if isinstance(predicates[key], list) and isinstance(predicates[key][0], str):
-        # key = in, predicates[key] = ['users.type', '$1'], 
+        # key = in, predicates[key] = ['users.type', '$1'],
         if key == "eq" or (key == "in" and isinstance(predicates[key][1], str)):
             return True, [predicates[key][0]]
     res = True
@@ -136,7 +145,8 @@ def add_limit_one(q, constraints):
         table : table name
         field : column name, should not include table name
         '''
-        connect_by_and_equal, used_fields = check_connect_by_and_equal(predicates)
+        connect_by_and_equal, used_fields = check_connect_by_and_equal(
+            predicates)
         if not connect_by_and_equal:
             return False
         full_used_fields = []
@@ -165,13 +175,14 @@ def add_limit_one(q, constraints):
         join_predicates = [ele for ele in q['from'] if 'inner join' in ele]
         join_predicate = [ele for ele in join_predicates if 'on' in ele][0]
         join_predicate = join_predicate['on']
+
         def check_join_predicate(join_predicate):
             # only handle equal join
             keys = list(join_predicate.keys())
             assert(len(keys) == 1)
             key = keys[0]
             if key != 'eq':
-                return False 
+                return False
             # equal join on unique columns
             join_columns = join_predicate[key]
             fields_list = get_unqiue_constraints_fields(constraints)
@@ -198,7 +209,7 @@ def add_limit_one(q, constraints):
                 table_predicates = get_table_predicates(predicates, table)
                 for predicate in table_predicates:
                     return_one = check_predicate_return_one_tuple(
-                            predicate, table)
+                        predicate, table)
                     can_rewrite = can_rewrite or return_one
             if not can_rewrite:
                 return False, None
@@ -213,7 +224,7 @@ def add_limit_one(q, constraints):
                 table_predicates = get_table_predicates(predicates, table)
                 for predicate in table_predicates:
                     return_one = check_predicate_return_one_tuple(
-                            predicate, table)
+                        predicate, table)
                     if not return_one:
                         return False, None
             rewrite_q = q.copy()
@@ -444,6 +455,69 @@ def strformat_precheck(q, constraints):
     can_rewrite = len(format_precheck_fields) > 0
     return can_rewrite, format_precheck_fields
 
+# =================================================================================================================
+# helper functions for remove predicate
+
+
+def find_exist_missing_fields(predicate):
+    if not isinstance(predicate, dict):
+        return [], []
+
+    key = list(predicate.keys())[0]
+    values = predicate[key]
+    if key == "missing":
+        return [], [values]
+    if key == "exists":
+        return [values], []
+
+    exist_fields = []
+    missing_fields = []
+    for value in values:
+        cur_exist_fields, cur_missing_fields = find_exist_missing_fields(value)
+        exist_fields += cur_exist_fields
+        missing_fields += cur_missing_fields
+    return exist_fields, missing_fields
+
+
+def replace_predicate(q, field, value):
+    def helper(predicate):
+        if not isinstance(predicate, dict):
+            return predicate
+        key = list(predicate.keys())[0]
+        children = predicate[key]
+        if (key == "exists" and children == field):
+            return value
+        elif (key == "missing" and children == field):
+            return value
+        else:
+            rewrite_predicates = []
+            for child in children:
+                rewrite_predicates.append(helper(child))
+            return {key: rewrite_predicates}
+    q['where'] = helper(q['where'])
+    return q
+
+
+def remove_preciate(q, constraints):
+    if 'where' not in q:
+        return False, None
+    exist_fields, missing_fields = find_exist_missing_fields(q['where'])
+    presence_fields = get_constraint_fields(constraints, PresenceConstraint)
+    q_rewritten = None
+    for field in presence_fields:
+        field_without_tablename = field.split('.')[-1]
+        if field in exist_fields:
+            q_rewritten = replace_predicate(q, field, True)
+        elif field_without_tablename in exist_fields:
+            q_rewritten = replace_predicate(q, field_without_tablename, True)
+        if field in missing_fields:
+            q_rewritten = replace_predicate(q, field, False)
+        elif field_without_tablename in missing_fields:
+            q_rewritten = replace_predicate(q, field_without_tablename, False)
+    return q_rewritten is not None, q_rewritten
+# =================================================================================================================
+# end remove predicate
+
 
 def rewrite_single_query(q, constraints):
     can_add_limit_one, rewrite_q = add_limit_one(q, constraints)
@@ -454,7 +528,7 @@ def rewrite_single_query(q, constraints):
         rewrite_type.append(RewriteType.ADD_LIMIT_ONE)
     can_str2int, rewrite_fields = str2int(q, constraints)
     if can_str2int:
-        print("String to Int", format(q), rewrite_fields)
+        # print("String to Int", format(q), rewrite_fields)
         rewrite_type.append(RewriteType.STRING_TO_INT)
     can_strlen_precheck, lencheck_fields = strlen_precheck(q, constraints)
     if can_strlen_precheck:
@@ -470,6 +544,11 @@ def rewrite_single_query(q, constraints):
         print("Remove Distinct", format(rewrite_q))
         q = rewrite_q
         rewrite_type.append(RewriteType.REMOVE_DISTINCT)
+    can_remove_predicate, rewrite_q = remove_preciate(q, constraints)
+    if can_remove_predicate:
+        print("Remove Predicate", format(rewrite_q))
+        q = rewrite_q
+        rewrite_type.append(RewriteType.REMOVE_PREDICATE)
     return q, rewrite_type
 
 # handle nested query cases
