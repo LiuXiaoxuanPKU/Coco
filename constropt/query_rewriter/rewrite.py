@@ -236,7 +236,7 @@ def r_in_to_u_in(r_in, constraints, alias_to_table):
     for constraint in constraints:
         if constraint.table == r_in and isinstance(constraint, UniqueConstraint):
             unique_lst = [constraint.field] + constraint.scope
-            unique_set = set(unique_lst + [constraint.table + '.' + col for col in unique_lst])
+            unique_set = frozenset(unique_lst + [constraint.table + '.' + col for col in unique_lst])
             u_in.add(unique_set)
     return u_in
 
@@ -258,23 +258,22 @@ def u_in_after_filter(q, u_in, alias_to_table):
                 # remove cond_column from each subset in u_in
                 for subset in u_in:
                     # id, table_name.id, t.id -> remove them all
-                    cond_column = unalias(cond_column) # table_name.id, id
+                    cond_column = unalias(alias_to_table, cond_column) # table_name.id, id
                     subset.discard(cond_column)
                     subset.discard(cond_column.split(".")[-1])
 
     # only one condition in where
-    elif "eq" in where and "$" == where["eq"][1][0]:
+    elif "eq" in where and isinstance(where["eq"][1], str) and "$" == where["eq"][1][0]:
         cond_column = where["eq"][0]
         # remove cond_column from each subset in u_in
         for subset in u_in:
             # id, table_name.id, t.id -> remove them all
-            cond_column = unalias(cond_column)  # table_name.id, id
+            cond_column = unalias(alias_to_table, cond_column)  # table_name.id, id
+            subset = set(subset)
             subset.discard(cond_column)
             subset.discard(cond_column.split(".")[-1])
+            subset = frozenset(subset)
 
-
-# select id from a where project_id = 1
-# [id, project_id]
 
 def query_to_u_out(q, constraints, alias_to_table):
     '''Gets the set of unique columns U_out after going through the entire query, save for projections.'''
@@ -328,10 +327,20 @@ def remove_distinct(q, constraints):
 
     if not contain_distinct(q):
         return False, None
-
     alias_to_table = {}
     u_out = query_to_u_out(q, constraints, alias_to_table)
+    print("u_out", u_out)
     return remove_distinct_projection(q, u_out, alias_to_table)
+
+def check_single_column_in_u_in(u_in, val) -> bool:
+    val = val.split(".")[-1]
+    n = len(val)
+    for subset in u_in:
+        check_valid = True
+        for value in subset:
+            check_valid = check_valid and value[-n:] == val
+        if check_valid: return True
+    return False
 
 
 def remove_distinct_projection(q, u_in, alias_to_table):
@@ -351,7 +360,7 @@ def remove_distinct_projection(q, u_in, alias_to_table):
         val = projections['value']
         if isinstance(val, list):
             for col in val:
-                if unalias(alias_to_table, col) in u_in:
+                if check_single_column_in_u_in(u_in, unalias(alias_to_table, col)):
                     rewrite_q = q.copy()
                     rewrite_q['select'] = val
                     return True, rewrite_q
@@ -364,7 +373,7 @@ def remove_distinct_projection(q, u_in, alias_to_table):
                     rewrite_q = q.copy()
                     rewrite_q['select'] = val
                     return True, rewrite_q
-        elif val == '*' and u_in or unalias(alias_to_table, val) in u_in:
+        elif val == '*' and u_in or check_single_column_in_u_in(u_in, val):
             rewrite_q = q.copy()
             rewrite_q['select'] = val
             return True, rewrite_q

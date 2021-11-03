@@ -5,7 +5,7 @@ class Constraint:
 
 
 class UniqueConstraint(Constraint):
-    def __init__(self, table, field, scope=None, cond=None) -> None:
+    def __init__(self, table, field, scope=[], cond=None) -> None:
         if table == "principals":
             table = "users"
 
