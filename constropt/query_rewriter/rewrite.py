@@ -224,8 +224,9 @@ def r_in_to_u_in(r_in, constraints, col_to_table_dot_col):
                 u_in = set()
                 alias = r_in['name']
                 for col in u_out:
-                    if '.' not in col:
-                        u_in.add(alias + '.' + col)
+                    # print("col is", col)
+                    # if '.' not in col:
+                    #     u_in.add(alias + '.' + col)
                     u_in.add(col)
             return u_in
         # case for handling AS
@@ -334,7 +335,7 @@ def remove_distinct(q, constraints):
         return False, None
     col_to_table_dot_col = {}
     u_out = query_to_u_out(q, constraints, col_to_table_dot_col)
-    print("u_out", u_out)
+    # print("u_out", u_out)
     return remove_distinct_projection(q, u_out, col_to_table_dot_col)
 
 def check_single_column_in_u_in(u_in, val) -> bool:
@@ -375,7 +376,9 @@ def remove_distinct_projection(q, u_in, col_to_table_dot_col):
         elif '.*' in val:
             table_dot = unalias(col_to_table_dot_col, val)[:-1]
             for subset in u_in:
-                if table_dot in subset[0]:
+                print("table_dot_is", table_dot)
+                print("subset is", subset)
+                if table_dot in ([s.split(".")[0] + "." for s in list(subset)]):
                     rewrite_q = q.copy()
                     rewrite_q['select'] = val
                     return True, rewrite_q
