@@ -181,14 +181,14 @@ def check_join_conditions(table, u_in1, u_in2, alias_to_table):
                         success = True
                         for col in d['eq']:
                             col = unalias(alias_to_table, col)
-                            # TODO: temporary handler for constants
-                            success &= {col} in u_in1 or {col} in u_in2 or col[0] == '$'
+                            # handler for constants
+                            success &= check_single_column_in_u_in(u_in1, col) or check_single_column_in_u_in(u_in2, col) or isinstance(col, str) and col[0] == '$'
                         break
         else:
             # check that equality is on two unique columns
             for col in table['on']['eq']:
                 col = unalias(alias_to_table, col)
-                success &= {col} in u_in1 or {col} in u_in2 or col[0] == '$'
+                success &= check_single_column_in_u_in(u_in1, col) or check_single_column_in_u_in(u_in2, col) or isinstance(col, str) and col[0] == '$'
     return success
 
 
@@ -259,8 +259,10 @@ def u_in_after_filter(q, u_in, alias_to_table):
                 for subset in u_in:
                     # id, table_name.id, t.id -> remove them all
                     cond_column = unalias(alias_to_table, cond_column) # table_name.id, id
+                    subset = set(subset)
                     subset.discard(cond_column)
                     subset.discard(cond_column.split(".")[-1])
+                    subset = frozenset(subset)
 
     # only one condition in where
     elif "eq" in where and isinstance(where["eq"][1], str) and "$" == where["eq"][1][0]:
@@ -359,6 +361,9 @@ def remove_distinct_projection(q, u_in, alias_to_table):
     if isinstance(projections, dict):
         val = projections['value']
         if isinstance(val, list):
+            # TODO: temporary handling for this case {'value': ['users.name', 'users.id']}
+            # we need to check if any sets in u_in are a subset of the projection set, 
+            # but u_in sets contain both table.col and col
             for col in val:
                 if check_single_column_in_u_in(u_in, unalias(alias_to_table, col)):
                     rewrite_q = q.copy()
@@ -369,7 +374,7 @@ def remove_distinct_projection(q, u_in, alias_to_table):
             if val[0:-2] in alias_to_table:
                 dealias_dot = alias_to_table[val[0:-2]] + '.'
             for subset in u_in:
-                if table_dot in subset or dealias_dot in subset:
+                if table_dot in subset[0] or dealias_dot in subset[0]:
                     rewrite_q = q.copy()
                     rewrite_q['select'] = val
                     return True, rewrite_q
@@ -380,6 +385,7 @@ def remove_distinct_projection(q, u_in, alias_to_table):
         # {'value': 'name'} case: check if {name} in u_in
     elif isinstance(projections, list):
     # [{'value': 'users.name'}, {'value': 'projects.id'}]
+    # TODO same as above
         proj_set = set([unalias(alias_to_table, d['value']) for d in projections])
         for subset in u_in:
             if subset <= proj_set:
