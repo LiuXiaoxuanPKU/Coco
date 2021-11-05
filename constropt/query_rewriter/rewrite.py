@@ -165,7 +165,7 @@ def add_limit_one(q, constraints):
 # =================================================================================================================
 # helper functions for remove distinct
 
-def check_join_conditions(table, u_in1, u_in2, alias_to_table):
+def check_join_conditions(table, u_in1, u_in2, col_to_table_dot_col):
     '''Check whether there is a join condition that implies joining on two unique columns.'''
     success = True
     # potentially fail if there is a join condition
@@ -180,29 +180,27 @@ def check_join_conditions(table, u_in1, u_in2, alias_to_table):
                         # check that equality is on two unique columns
                         success = True
                         for col in d['eq']:
-                            col = unalias(alias_to_table, col)
+                            col = unalias(col_to_table_dot_col, col)
                             # handler for constants
                             success &= check_single_column_in_u_in(u_in1, col) or check_single_column_in_u_in(u_in2, col) or isinstance(col, str) and col[0] == '$'
                         break
         else:
             # check that equality is on two unique columns
             for col in table['on']['eq']:
-                col = unalias(alias_to_table, col)
+                col = unalias(col_to_table_dot_col, col)
                 success &= check_single_column_in_u_in(u_in1, col) or check_single_column_in_u_in(u_in2, col) or isinstance(col, str) and col[0] == '$'
     return success
 
 
-def unalias(alias_to_table, col):
-    '''Uses alias_to_table to translate a potential aliased column col 
-    into its equivalent internal representation.'''
-    if '.' in col:
-        table, field = col.split('.')
-        if table in alias_to_table:
-            col = alias_to_table[table] + '.' + field
+def unalias(col_to_table_dot_col, col):
+    '''Uses col_to_table_dot_col to translate a potential aliased column col 
+    into its equivalent internal representation in the table.col form.'''
+    if col in col_to_table_dot_col:
+        return col_to_table_dot_col[col]
     return col
 
 
-def r_in_to_u_in(r_in, constraints, alias_to_table):
+def r_in_to_u_in(r_in, constraints, col_to_table_dot_col):
     '''Gets the set of unique columns U_in for the input relation R_in.
     R_in possible formats:
     'users'
@@ -210,6 +208,7 @@ def r_in_to_u_in(r_in, constraints, alias_to_table):
     {'value': {'select': ..., 'from': ...}}
     {'value': {'select': ..., 'from': ...}, 'name': 'u'}
     '''
+    alias = None
     if isinstance(r_in, dict):
         # case for handing nested query
         if isinstance(r_in['value'], dict):
@@ -219,7 +218,7 @@ def r_in_to_u_in(r_in, constraints, alias_to_table):
             # u_out from the nested query will be u_in
             u_out = query_to_u_out(rewritten, constraints, {})
             # handle case with nested query + AS: the alias becomes the internal name
-            # and as such is not included in the alias_to_table mapping but rather u_in
+            # and as such is not included in the col_to_table_dot_col mapping but rather u_in
             u_in = u_out
             if 'name' in r_in:
                 u_in = set()
@@ -231,17 +230,24 @@ def r_in_to_u_in(r_in, constraints, alias_to_table):
             return u_in
         # case for handling AS
         elif 'name' in r_in:
-            alias_to_table[r_in['name']] = r_in = r_in['value']
+            r_in, alias = r_in['value'], r_in['name']
     u_in = set()
     for constraint in constraints:
         if constraint.table == r_in and isinstance(constraint, UniqueConstraint):
             unique_lst = [constraint.field] + constraint.scope
-            unique_set = frozenset(unique_lst + [constraint.table + '.' + col for col in unique_lst])
-            u_in.add(unique_set)
+            table_unique_lst = []
+            if alias:
+                col_to_table_dot_col[alias + '.*'] = r_in + '.*'
+            for col in unique_lst:
+                col_to_table_dot_col[col] = r_in + '.' + col
+                if alias:
+                    col_to_table_dot_col[alias + '.' + col] = r_in + '.' + col
+                table_unique_lst.append(col_to_table_dot_col[col])
+            u_in.add(frozenset(table_unique_lst))
     return u_in
 
 
-def u_in_after_filter(q, u_in, alias_to_table):
+def u_in_after_filter(q, u_in, col_to_table_dot_col):
     # check if q has where clause
     if not 'where' in q:
         return
@@ -254,39 +260,36 @@ def u_in_after_filter(q, u_in, alias_to_table):
         for cond in where_conditions:
             # only take care field = constant
             if "eq" in cond and "$" == cond["eq"][1][0]:
-                cond_column = cond["eq"][0]
+                cond_column = unalias(col_to_table_dot_col, cond["eq"][0]) # table_name.id, id
                 # remove cond_column from each subset in u_in
                 for subset in u_in:
                     # id, table_name.id, t.id -> remove them all
-                    cond_column = unalias(alias_to_table, cond_column) # table_name.id, id
                     subset = set(subset)
                     subset.discard(cond_column)
                     subset.discard(cond_column.split(".")[-1])
                     subset = frozenset(subset)
-
     # only one condition in where
     elif "eq" in where and isinstance(where["eq"][1], str) and "$" == where["eq"][1][0]:
-        cond_column = where["eq"][0]
+        cond_column = unalias(col_to_table_dot_col, where["eq"][0]) # table_name.id, id
         # remove cond_column from each subset in u_in
         for subset in u_in:
             # id, table_name.id, t.id -> remove them all
-            cond_column = unalias(alias_to_table, cond_column)  # table_name.id, id
             subset = set(subset)
             subset.discard(cond_column)
             subset.discard(cond_column.split(".")[-1])
             subset = frozenset(subset)
 
 
-def query_to_u_out(q, constraints, alias_to_table):
+def query_to_u_out(q, constraints, col_to_table_dot_col):
     '''Gets the set of unique columns U_out after going through the entire query, save for projections.'''
     tables = q['from']
     # no joins case
     if not isinstance(tables, list):
         tables = [tables]
     r_in1 = tables[0]
-    u_in1 = r_in_to_u_in(r_in1, constraints, alias_to_table)
+    u_in1 = r_in_to_u_in(r_in1, constraints, col_to_table_dot_col)
     # single table case filter
-    u_in_after_filter(q, u_in1, alias_to_table)
+    u_in_after_filter(q, u_in1, col_to_table_dot_col)
     for t in tables[1:]:
         if 'inner join' in t or 'join' in t:
             # get table 2 and its unique set
@@ -294,10 +297,10 @@ def query_to_u_out(q, constraints, alias_to_table):
                 r_in2 = t['inner join']
             else:
                 r_in2 = t['join']
-            u_in2 = r_in_to_u_in(r_in2, constraints, alias_to_table)
-            u_in_after_filter(q, u_in2, alias_to_table)
+            u_in2 = r_in_to_u_in(r_in2, constraints, col_to_table_dot_col)
+            u_in_after_filter(q, u_in2, col_to_table_dot_col)
             # check fail: u_out is empty set. else, u_out is union of u_in1 and u_in2.
-            if check_join_conditions(t, u_in1, u_in2, alias_to_table):
+            if check_join_conditions(t, u_in1, u_in2, col_to_table_dot_col):
                 u_in1 = u_in1.union(u_in2)
             else:
                 u_in1 = set()
@@ -307,13 +310,13 @@ def query_to_u_out(q, constraints, alias_to_table):
                 r_in2 = t['left outer join']
             else:
                 r_in2 = t['left join']
-            u_in2 = r_in_to_u_in(r_in2, constraints, alias_to_table)
-            u_in_after_filter(q, u_in2, alias_to_table)
+            u_in2 = r_in_to_u_in(r_in2, constraints, col_to_table_dot_col)
+            u_in_after_filter(q, u_in2, col_to_table_dot_col)
             # check fail: u_out is empty set. else, u_out is u_in1.
-            if not check_join_conditions(t, u_in1, u_in2, alias_to_table):
+            if not check_join_conditions(t, u_in1, u_in2, col_to_table_dot_col):
                 u_in1 = set()
         # deal with filter after join
-        u_in_after_filter(q, u_in1, alias_to_table)
+        u_in_after_filter(q, u_in1, col_to_table_dot_col)
     return u_in1
 
 
@@ -329,10 +332,10 @@ def remove_distinct(q, constraints):
 
     if not contain_distinct(q):
         return False, None
-    alias_to_table = {}
-    u_out = query_to_u_out(q, constraints, alias_to_table)
+    col_to_table_dot_col = {}
+    u_out = query_to_u_out(q, constraints, col_to_table_dot_col)
     print("u_out", u_out)
-    return remove_distinct_projection(q, u_out, alias_to_table)
+    return remove_distinct_projection(q, u_out, col_to_table_dot_col)
 
 def check_single_column_in_u_in(u_in, val) -> bool:
     val = val.split(".")[-1]
@@ -345,7 +348,7 @@ def check_single_column_in_u_in(u_in, val) -> bool:
     return False
 
 
-def remove_distinct_projection(q, u_in, alias_to_table):
+def remove_distinct_projection(q, u_in, col_to_table_dot_col):
     '''Only the "Project" step of the remove distinct algorithm.
     Projections possible formats:
     {'value': 'name'}
@@ -361,32 +364,29 @@ def remove_distinct_projection(q, u_in, alias_to_table):
     if isinstance(projections, dict):
         val = projections['value']
         if isinstance(val, list):
-            # TODO: temporary handling for this case {'value': ['users.name', 'users.id']}
-            # we need to check if any sets in u_in are a subset of the projection set, 
-            # but u_in sets contain both table.col and col
+            proj_set = set()
             for col in val:
-                if check_single_column_in_u_in(u_in, unalias(alias_to_table, col)):
+                proj_set.add(unalias(col_to_table_dot_col, col))
+            for s in u_in:
+                if s <= proj_set:
                     rewrite_q = q.copy()
                     rewrite_q['select'] = val
                     return True, rewrite_q
         elif '.*' in val:
-            table_dot = dealias_dot = val[0:-1]
-            if val[0:-2] in alias_to_table:
-                dealias_dot = alias_to_table[val[0:-2]] + '.'
+            table_dot = col_to_table_dot_col[val][:-1]
             for subset in u_in:
-                if table_dot in subset[0] or dealias_dot in subset[0]:
+                if table_dot in subset[0]:
                     rewrite_q = q.copy()
                     rewrite_q['select'] = val
                     return True, rewrite_q
-        elif val == '*' and u_in or check_single_column_in_u_in(u_in, val):
+        elif val == '*' and u_in or check_single_column_in_u_in(u_in, unalias(col_to_table_dot_col, val)):
             rewrite_q = q.copy()
             rewrite_q['select'] = val
             return True, rewrite_q
         # {'value': 'name'} case: check if {name} in u_in
     elif isinstance(projections, list):
     # [{'value': 'users.name'}, {'value': 'projects.id'}]
-    # TODO same as above
-        proj_set = set([unalias(alias_to_table, d['value']) for d in projections])
+        proj_set = set([unalias(col_to_table_dot_col, d['value']) for d in projections])
         for subset in u_in:
             if subset <= proj_set:
                 rewrite_q = q.copy()
