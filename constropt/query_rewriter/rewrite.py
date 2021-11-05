@@ -373,7 +373,7 @@ def remove_distinct_projection(q, u_in, col_to_table_dot_col):
                     rewrite_q['select'] = val
                     return True, rewrite_q
         elif '.*' in val:
-            table_dot = col_to_table_dot_col[val][:-1]
+            table_dot = unalias(col_to_table_dot_col, val)[:-1]
             for subset in u_in:
                 if table_dot in subset[0]:
                     rewrite_q = q.copy()
