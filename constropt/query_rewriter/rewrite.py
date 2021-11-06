@@ -532,7 +532,7 @@ def rewrite_single_query(q, constraints):
         rewrite_type.append(RewriteType.STRING_TO_INT)
     can_strlen_precheck, lencheck_fields = strlen_precheck(q, constraints)
     if can_strlen_precheck:
-        print("Length precheck", format(q), lencheck_fields)
+        # print("Length precheck", format(q), lencheck_fields)
         rewrite_type.append(RewriteType.LENGTH_PRECHECK)
     can_strformat_precheck, formatcheck_fields = strformat_precheck(
         q, constraints)

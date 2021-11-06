@@ -50,7 +50,6 @@ def load_constraints(constraints_json):
             print("[Error] Unsupport constraint type ", obj)
             exit(1)
         constraints.append(c)
-    # exit(0)
     return constraints
 
 
@@ -59,6 +58,14 @@ def load_queries(query_dir):
         content = pickle.load(f)
     if query_dir.endswith("end2end.pk"):
         return content
+    if query_dir.endswith("end2end_withparam.pk"):
+        queries = {}
+        for test in content:
+            sqls_with_param = []
+            for pair in content[test]:
+                sqls_with_param.append(pair[1])
+            queries[test] = sqls_with_param
+        return queries
     else:
         queries = []
         content = list(content)
@@ -70,6 +77,7 @@ def load_queries(query_dir):
 def rewrite_queries(constraints, queries):
     tests = list(queries.keys())
     rewrite_stats = {}
+    table_stats = {}
     total_queries = 0
     rewritten_queries = 0
     fail_parse_cnt = 0
@@ -79,14 +87,18 @@ def rewrite_queries(constraints, queries):
     for i in range(len(tests)):
         rewrite_cnt = 0
         testname = tests[i]
-        if not testname.startswith('User'):
-            continue
+        # if not testname.startswith('UsersControllerTest-test_create'):
+        #     continue
         print("=================Start rewrite test %d %s ===============" %
               (i, testname))
         test_cnt += 1
         for i in range(len(queries[testname])):
             try:
                 org_q = parse(queries[testname][i].strip())
+                if isinstance(org_q['from'], str):
+                    if org_q['from'] not in table_stats:
+                        table_stats[org_q['from']] = 0
+                    table_stats[org_q['from']] += 1
             except:
                 fail_parse_cnt += 1
                 print("[Error] Fail to parse ", queries[testname][i])
@@ -97,9 +109,12 @@ def rewrite_queries(constraints, queries):
                 distinct_cnt += 1
             if "LIMIT" not in queries[testname][i]:
                 limit_cnt += 1
-            q, can_rewrite = rewrite_single_query(
+            if "IS NULL" in queries[testname][i]:
+                # print(queries[testname][i])
+                pass
+            q, rewrite_types = rewrite_single_query(
                 org_q, constraints)
-            if can_rewrite:
+            if len(rewrite_types) > 0:
                 rewrite_cnt += 1
                 # print("org %s\n new %s\n" %
                 #       (format(queries[testname][i]), format(q)))
@@ -114,6 +129,7 @@ def rewrite_queries(constraints, queries):
     print("Average number of queries", total_queries * 1.0 / test_cnt)
     print("Avergae number of rewritten queries",
           rewritten_queries * 1.0 / test_cnt)
+    print("Table stats", table_stats)
 
 
 if __name__ == "__main__":
@@ -123,30 +139,34 @@ if __name__ == "__main__":
         os.getcwd(), app_name)
     constraints_json = extract_constraints(app_dir, constraint_output_dir)
     constraints = load_constraints(constraints_json)
-    # query_dir = "%s/queries/%s_end2end.pk" % (os.getcwd(), app_name)
-    # queries = load_queries(query_dir)
-    # rewrite_queries(constraints, queries)
 
-    query_dir = "queries/redmine.pk"
-    queries = []
-    parse_cnt = 0
-    with open(query_dir, 'rb') as f:
-        queries = pickle.load(f)
-        
-    rewrite_cnt = 0
-    stats = {}
-    for q in queries:
-        try:
-            new_q, rewrite_types = rewrite_single_query(
+    run_end2end_test = False
+    if run_end2end_test:
+        query_dir = "%s/queries/%s_end2end_withparam.pk" % (
+            os.getcwd(), app_name)
+        queries = load_queries(query_dir)
+        rewrite_queries(constraints, queries)
+    else:
+        query_dir = "queries/redmine.pk"
+        queries = []
+        parse_cnt = 0
+        with open(query_dir, 'rb') as f:
+            queries = pickle.load(f)
+
+        rewrite_cnt = 0
+        stats = {}
+        for q in queries:
+            try:
+                new_q, rewrite_types = rewrite_single_query(
                     parse(q[1]), constraints)
-            if len(rewrite_types):
-                rewrite_cnt += 1
-                for t in rewrite_types:
-                    if t not in stats:
-                        stats[t] = 0
-                    stats[t] += 1
-        except:
-            continue
-    print("=====Total number of queries %d" % len(queries))
-    print("===== Rewrite %d queries" % rewrite_cnt)
-    print("===== Rewrite stats", stats)
+                if len(rewrite_types):
+                    rewrite_cnt += 1
+                    for t in rewrite_types:
+                        if t not in stats:
+                            stats[t] = 0
+                        stats[t] += 1
+            except:
+                continue
+        print("=====Total number of queries %d" % len(queries))
+        print("===== Rewrite %d queries" % rewrite_cnt)
+        print("===== Rewrite stats", stats)
