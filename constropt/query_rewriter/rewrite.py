@@ -104,31 +104,36 @@ def add_limit_one(q, constraints):
         '''
         return key == 'eq' and find_constraint(constraints, table, field, UniqueConstraint)
 
-    # case 1: no join, only has one predicate
-    if not has_inner_join and check_predicate_return_one_tuple(key, q['from'], values[0][0]):
-        rewrite_q = q.copy()
-        rewrite_q['limit'] = 1
-        return True, rewrite_q
-    # case 2: no join, predicates are connected by 'and'
-    elif not has_inner_join and key in ["and"]:
-        # as long as all predicates are connected by 'and'
-        # and there exists one predicate that returns only one tuple
-        predicates = where_clause['and']
-        return_one = False
+    if not has_inner_join:
+        # handle nested single query
         table = q['from']
-
-        for pred in predicates:
-            # TODO: does not handle exits for now
-            if 'exists' in pred:
-                return False, None
-            return_one = return_one or check_predicate_return_one_tuple(
-                list(pred.keys())[0], table, list(pred.values())[0][0])
-        if return_one:
+        if isinstance(table, dict) and isinstance(table['value'], dict):
+            rewritten, _ = rewrite_single_query(table['value'], constraints)
+            table['value'] = rewritten
+        # case 1: no join, only has one predicate
+        if check_predicate_return_one_tuple(key, table, values[0][0]):
             rewrite_q = q.copy()
             rewrite_q['limit'] = 1
             return True, rewrite_q
+        # case 2: no join, predicates are connected by 'and'
+        elif key in ["and"]:
+            # as long as all predicates are connected by 'and'
+            # and there exists one predicate that returns only one tuple
+            predicates = where_clause['and']
+            return_one = False
+
+            for pred in predicates:
+                # TODO: does not handle exits for now
+                if 'exists' in pred:
+                    return False, None
+                return_one = return_one or check_predicate_return_one_tuple(
+                    list(pred.keys())[0], table, list(pred.values())[0][0])
+            if return_one:
+                rewrite_q = q.copy()
+                rewrite_q['limit'] = 1
+                return True, rewrite_q
     # case 3: inner join, each relation returns no more than 1 tuple
-    elif has_inner_join:
+    else:
         join_tables = get_query_tables(q)
         predicates = q['where']
 
@@ -137,6 +142,10 @@ def add_limit_one(q, constraints):
 
         # for each join table, only return one tuple from that table
         for table in join_tables:
+            # rewrite nested query
+            if isinstance(table, dict) and isinstance(table['value'], dict):
+                rewritten, _ = rewrite_single_query(table['value'], constraints)
+                table['value'] = rewritten
             # get predicates on that relation
             table_predicates = get_table_predicates(predicates, table)
             return_one = False
