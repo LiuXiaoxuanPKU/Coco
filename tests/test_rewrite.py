@@ -425,6 +425,29 @@ class TestRewrite(unittest.TestCase):
         self.assertTrue(can_rewrite1)
         self.assertTrue('distinct' not in rewrite_sql1)
 
+        # real example 2
+        # extracted constraints
+        # constraints1.append(UniqueConstraint('email_address', 'address'))
+        # constraints1.append(UniqueConstraint('users', 'login'))
+        # constraint should shown in sql query
+        constraints1.append(UniqueConstraint('email_addresses', 'user_id'))
+        constraints1.append(UniqueConstraint('users', 'id'))
+        sql2 = 'SELECT DISTINCT "users".* FROM "users" INNER JOIN "email_addresses" ON "email_addresses"."user_id" = "users"."id" WHERE "users"."type" IN ($1, $2) AND (LOWER(email_addresses.address) IN ("anotheraddress@foo.bar")) ORDER BY "users"."id" ASC LIMIT $3'
+        can_rewrite2, rewrite_sql2 = rewrite.remove_distinct(parse(sql2), constraints1)
+        self.assertTrue(can_rewrite2)
+
+        # real example 3
+        # constraints actually shown
+        sql3 = 'SELECT DISTINCT "users".* FROM "users" INNER JOIN "email_addresses" ON "email_addresses"."user_id" = "users"."id" WHERE "users"."type" IN ($1, $2) AND (LOWER(email_addresses.address) IN ("newuser@foo.bar")) ORDER BY "users"."id" ASC LIMIT $3'
+        can_rewrite3, rewrite_sql3 = rewrite.remove_distinct(parse(sql3), constraints1)
+        self.assertTrue(can_rewrite3)
+
+        # real example 4
+        constraints1.append(UniqueConstraint('members', 'user_id', ['project_id']))
+        sql4 = 'SELECT DISTINCT "users".* FROM "users" INNER JOIN "members" ON "members"."user_id" = "users"."id" WHERE "users"."type" IN ($1, $2) AND "users"."status" = $3 AND (members.project_id = 6)'
+        can_rewrite4, rewrite_sql4 = rewrite.remove_distinct(parse(sql4), constraints1)
+        self.assertTrue(can_rewrite4)
+
     def test_remove_predicate(self):
         constraints1 = [PresenceConstraint("wiki_pages", "wiki_id")]
         q1 = parse(

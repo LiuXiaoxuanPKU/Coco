@@ -331,7 +331,7 @@ def u_in_after_filter(q, u_in, col_to_table_dot_col):
         where_conditions = where["and"]
         for cond in where_conditions:
             # only take care field = constant
-            if "eq" in cond and "$" == cond["eq"][1][0]:
+            if "eq" in cond and "$" == str(cond["eq"][1])[0]:
                 cond_column = unalias(col_to_table_dot_col, cond["eq"][0]) # table_name.id, id
                 # remove cond_column from each subset in u_in
                 for subset in u_in:
