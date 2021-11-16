@@ -1,4 +1,4 @@
-from constropt.query_rewriter.constraint import FormatConstraint, InclusionConstraint, LengthConstraint, PresenceConstraint, UniqueConstraint
+from constropt.query_rewriter.constraint import FormatConstraint, InclusionConstraint, LengthConstraint, NumericalConstraint, PresenceConstraint, UniqueConstraint
 from constropt.query_rewriter.rewrite import check_connect_by_and_equal, get_table_predicates, find_exist_missing_fields, replace_predicate
 from constropt.query_rewriter import rewrite
 import unittest
@@ -448,19 +448,29 @@ class TestRewrite(unittest.TestCase):
         can_rewrite4, rewrite_sql4 = rewrite.remove_distinct(parse(sql4), constraints1)
         self.assertTrue(can_rewrite4)
 
-    def test_remove_predicate(self):
+
+    def test_remove_predicate_null(self):
         constraints1 = [PresenceConstraint("wiki_pages", "wiki_id")]
         q1 = parse(
             "SELECT 1 AS one FROM wiki_pages WHERE LOWER('wiki_pages.title') = LOWER($1) AND wiki_pages.wiki_id IS NULL LIMIT $2")
-        can_rewrite1, rewrite_sql1 = rewrite.remove_preciate(q1, constraints1)
+        can_rewrite1, rewrite_sql1 = rewrite.remove_preciate_null(q1, constraints1)
         self.assertTrue(can_rewrite1)
         self.assertFalse('title' in format(rewrite_sql1))
 
         constraints2 = [PresenceConstraint("attachments", "container_type")]
         q2 = parse(
             "SELECT attachments.* FROM attachments WHERE (created_on < '2021-08-22 23:07:10.031931' AND (container_type IS NULL OR container_type = ''))")
-        can_rewrite2, rewrite_sql2 = rewrite.remove_preciate(q2, constraints2)
+        can_rewrite2, rewrite_sql2 = rewrite.remove_preciate_null(q2, constraints2)
         self.assertTrue(can_rewrite2)
+
+    def test_remove_predicate_numerical(self):
+        constraints1 = [NumericalConstraint(
+            "issue_statuses", "default_done_ratio", 0, None)]
+        q1 = parse(
+            "SELECT issue_statuses.* FROM issue_statuses WHERE (default_done_ratio >= 0)")
+        can_rewrite1, rewrite_sql1 = rewrite.remove_predicate_numerical(q1, constraints1)
+        self.assertTrue(can_rewrite1)
+        print(format(rewrite_sql1))
 
 
 if __name__ == '__main__':

@@ -54,3 +54,23 @@ class PresenceConstraint(Constraint):
 
     def __str__(self) -> str:
         return "Presence, table: %s, field: %s" % (self.table, self.field)
+
+
+class NumericalConstraint(Constraint):
+    def __init__(self, table, field, min, max) -> None:
+        super().__init__(table, field)
+        self.min = min
+        self.max = max
+        if self.min is None and self.max is None:
+            raise "[Error] Numerical Constraint, Min and Max cannot be None at the same time"
+
+    def in_range(self, v):
+        if self.min and self.max:
+            return self.min <= v and v <= self.max
+        if self.min:
+            return self.min <= v
+        if self.max:
+            return v <= self.max
+
+    def __str__(self) -> str:
+        return "Numerical, table: %s, field: %s, min: %d, max %d" % (self.table, self.field, self.min, self.max)

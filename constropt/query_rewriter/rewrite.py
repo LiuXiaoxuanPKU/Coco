@@ -2,9 +2,10 @@ import json
 import functools
 from enum import Enum
 from typing import ValuesView
-from constropt.query_rewriter.constraint import LengthConstraint, PresenceConstraint, UniqueConstraint, InclusionConstraint, FormatConstraint
+from constropt.query_rewriter.constraint import LengthConstraint, NumericalConstraint, PresenceConstraint, UniqueConstraint, InclusionConstraint, FormatConstraint
 # from constraint import LengthConstraint, UniqueConstraint, InclusionConstraint, FormatConstraint
 from mo_sql_parsing import parse, format
+import z3
 
 
 class RewriteType(Enum):
@@ -516,7 +517,7 @@ def strformat_precheck(q, constraints):
     return can_rewrite, format_precheck_fields
 
 # =================================================================================================================
-# helper functions for remove predicate
+# helper functions for remove predicate null
 
 
 def find_exist_missing_fields(predicate):
@@ -558,7 +559,7 @@ def replace_predicate(q, field, value):
     return q
 
 
-def remove_preciate(q, constraints):
+def remove_preciate_null(q, constraints):
     if 'where' not in q:
         return False, None
     exist_fields, missing_fields = find_exist_missing_fields(q['where'])
@@ -576,7 +577,72 @@ def remove_preciate(q, constraints):
             q_rewritten = replace_predicate(q, field_without_tablename, False)
     return q_rewritten is not None, q_rewritten
 # =================================================================================================================
-# end remove predicate
+# end remove predicate null
+
+
+# =================================================================================================================
+# helper functions for remove predicate numerical
+def remove_predicate_numerical(q, constraints):
+    predicate = q['where']
+
+    def get_field_constraint(field):
+        c = list(filter(lambda c: isinstance(c, NumericalConstraint)
+                        and c.field == field and c.table == q['from'], constraints))
+        if len(c) == 1:
+            return c[0]
+        elif len(c) == 0:
+            return None
+        else:
+            raise "multiple numerical constraints have the same field," + \
+                str(c)
+
+    def imply(predicate, c):
+        # create variables
+        keys = predicate.keys()
+        key = list(keys)[0]
+        field_name = predicate[key][0]
+        tmp = z3.Real('x')
+        predicate[key][0] = 'tmp'
+        s = z3.Solver()
+        if c.min is not None and c.max is not None:
+            precondition = z3.And(tmp >= c.min, tmp <= c.max)
+        elif c.min is not None:
+            precondition = tmp >= c.min
+        elif c.max is not None:
+            precondition = tmp <= c.max
+        # solve(ForAll(x, Implies(constraint, x>2))))
+        s.add(z3.ForAll(tmp, z3.Implies(precondition, eval(format(predicate)))))
+        predicate[key][0] = field_name
+        return s.check() == z3.sat
+
+    def dfs(predicate):
+        keys = predicate.keys()
+        assert(len(keys) == 1)
+        key = list(keys)[0]
+        if not (key == "and" or key == "or"):
+            # check if the variable is the constraint variable
+            c = get_field_constraint(predicate[key][0])
+            if c is None:
+                return predicate
+            if imply(predicate, c):
+                return True, True
+            else:
+                return False, predicate
+        new_children = []
+        can_rewrite = False
+        for child in predicate[key]:
+            can_rewrite_child, new_child = dfs(child)
+            can_rewrite = can_rewrite or can_rewrite_child
+            new_children.append(new_child)
+        predicate[key] = new_children
+        return can_rewrite_child, predicate 
+
+    can_rewrite, new_predicate = dfs(predicate)
+    q['where'] = new_predicate
+    return can_rewrite, q
+
+# =================================================================================================================
+# end remove predicate numerical
 
 
 def rewrite_single_query(q, constraints):
@@ -604,7 +670,7 @@ def rewrite_single_query(q, constraints):
         print("Remove Distinct", format(rewrite_q))
         q = rewrite_q
         rewrite_type.append(RewriteType.REMOVE_DISTINCT)
-    can_remove_predicate, rewrite_q = remove_preciate(q, constraints)
+    can_remove_predicate, rewrite_q = remove_preciate_null(q, constraints)
     if can_remove_predicate:
         print("Remove Predicate", format(rewrite_q))
         q = rewrite_q
@@ -631,3 +697,7 @@ if __name__ == "__main__":
         print(json.dumps(sql_obj, indent=4))
         # rewrite_single_query(sql_obj, constraints)
     # TODO : EXISTS, ANY
+    q = parse("select * from t where x > -1 and y > 1 or z < 10 or x > -5")
+    c = NumericalConstraint('t', 'x', 0, 100)
+    remove_predicate_numerical(q, [c])
+    print(q['where'])
