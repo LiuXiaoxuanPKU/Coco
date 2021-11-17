@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "constraint": {
+            "type": "unique",
+            "args": {
+                "table": "user",
+                "field": "name",
+                "scope": [],
+                "cond": "null"
+            }
+        },
+        "before": "select * from user where name = 'lily'",
+        "after": "select * from user where name = 'lily' limit 1",
+        "type": "add_limit_one",
+        "can_rewrite": true
+    },
+    {
+        "id": 2,
+        "constraint": {
+            "type": "unique",
+            "args": {
+                "table": "project",
+                "field": "name",
+                "scope": [],
+                "cond": "null"
+            }
+        },
+        "before": "select * from user where name = 'jialun' limit 1",
+        "after": "select * from user where name = 'jialun' limit 1",
+        "type": "add_limit_one",
+        "can_rewrite": false
+    }
+]

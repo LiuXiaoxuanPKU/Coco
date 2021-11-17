@@ -13,8 +13,9 @@ class RewriteType(Enum):
     REMOVE_DISTINCT = 2
     LENGTH_PRECHECK = 3
     FORMAT_PRECHECK = 4
-    REMOVE_PREDICATE = 5
-    STRING_TO_INT = 6
+    REMOVE_PREDICATE_NULL = 5
+    REMOVE_PREDICATE_NUMERICAL = 6
+    STRING_TO_INT = 7
 
 
 def find_constraint(constraints, table, field, constraint_type):
@@ -659,7 +660,7 @@ def remove_predicate_numerical(q, constraints):
             can_rewrite = can_rewrite or can_rewrite_child
             new_children.append(new_child)
         predicate[key] = new_children
-        return can_rewrite_child, predicate 
+        return can_rewrite, predicate
 
     can_rewrite, new_predicate = dfs(predicate)
     q['where'] = new_predicate
@@ -673,7 +674,7 @@ def rewrite_single_query(q, constraints):
     can_add_limit_one, rewrite_q = add_limit_one(q, constraints)
     rewrite_type = []
     if can_add_limit_one:
-        print("Add limit 1 ", format(rewrite_q))
+        # print("Add limit 1 ", format(rewrite_q))
         q = rewrite_q
         rewrite_type.append(RewriteType.ADD_LIMIT_ONE)
     can_str2int, rewrite_fields = str2int(q, constraints)
@@ -694,11 +695,18 @@ def rewrite_single_query(q, constraints):
         print("Remove Distinct", format(rewrite_q))
         q = rewrite_q
         rewrite_type.append(RewriteType.REMOVE_DISTINCT)
-    can_remove_predicate, rewrite_q = remove_preciate_null(q, constraints)
-    if can_remove_predicate:
-        print("Remove Predicate", format(rewrite_q))
+    # can_remove_predicate, rewrite_q = remove_preciate_null(q, constraints)
+    # if can_remove_predicate:
+    #     print("Remove Predicate NULL", format(rewrite_q))
+    #     q = rewrite_q
+    #     rewrite_type.append(RewriteType.REMOVE_PREDICATE_NULL)
+    can_remove_predicate_numerical, rewrite_q = remove_predicate_numerical(
+        q, constraints)
+    if can_remove_predicate_numerical:
+        print("Remove Predicate Numerical old", format(q))
+        print("Remove Predicate Numerical new", format(rewrite_q))
         q = rewrite_q
-        rewrite_type.append(RewriteType.REMOVE_PREDICATE)
+        rewrite_type.append(RewriteType.REMOVE_PREDICATE_NUMERICAL)
     return q, rewrite_type
 
 # handle nested query cases
