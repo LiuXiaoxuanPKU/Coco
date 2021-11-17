@@ -2,7 +2,6 @@ import json
 import traceback
 from mo_sql_parsing import parse, format
 
-from constropt.query_rewriter.rewrite import add_limit_one
 from constropt.query_rewriter import Rewriter
 from constropt.query_rewriter.constraint import *
 
@@ -14,9 +13,11 @@ class RewriteTestor:
         self.r = Rewriter()
         self.constraint_dic = {
             "unique": UniqueConstraint,
+            "numerical": NumericalConstraint
         }
         self.rewrite_dic = {
-            "add_limit_one": self.r.add_limit_one
+            "add_limit_one": self.r.add_limit_one,
+            "remove_predicate_numerical": self.r.remove_predicate_numerical
         }
 
     def create_constraint(self, constraint_obj):
@@ -65,4 +66,7 @@ class RewriteTestor:
 
 if __name__ == "__main__":
     testor = RewriteTestor("./tests/cases/add_limit_one.json")
+    testor.run_all()
+
+    testor = RewriteTestor("./tests/cases/remove_predicate_numerical.json")
     testor.run_all()

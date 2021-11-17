@@ -83,7 +83,8 @@ def remove_predicate_numerical(self, q, constraints):
         field_name = predicate[key][0]
         tmp = z3.Real('x')
         predicate[key][0] = 'tmp'
-        s = z3.Solver()
+
+        s_true = z3.Solver()
         if c.min is not None and c.max is not None:
             precondition = z3.And(tmp >= c.min, tmp <= c.max)
         elif c.min is not None:
@@ -91,9 +92,15 @@ def remove_predicate_numerical(self, q, constraints):
         elif c.max is not None:
             precondition = tmp <= c.max
         # solve(ForAll(x, Implies(constraint, x>2))))
-        s.add(z3.ForAll(tmp, z3.Implies(precondition, eval(format(predicate)))))
+        s_true.add(z3.ForAll(tmp, z3.Implies(
+            precondition, eval(format(predicate)))))
+
+        s_false = z3.Solver()
+        s_false.add(z3.ForAll(tmp, z3.Implies(
+            precondition, z3.Not(eval(format(predicate))))))
+
         predicate[key][0] = field_name
-        return s.check() == z3.sat
+        return s_true.check() == z3.sat, s_false.check() == z3.sat
 
     def dfs(predicate):
         keys = predicate.keys()
@@ -104,8 +111,11 @@ def remove_predicate_numerical(self, q, constraints):
             c = get_field_constraint(predicate[key][0])
             if c is None:
                 return predicate
-            if imply(predicate, c):
+            imply_true, imply_false = imply(predicate, c)
+            if imply_true:
                 return True, True
+            elif imply_false:
+                return True, False
             else:
                 return False, predicate
         new_children = []
