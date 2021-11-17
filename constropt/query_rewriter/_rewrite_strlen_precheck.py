@@ -2,7 +2,6 @@ from .constraint import *
 import functools
 
 
-@staticmethod
 def strlen_precheck(self, q, constraints):
     if 'where' not in q:
         return False, None

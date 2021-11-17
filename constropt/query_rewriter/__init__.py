@@ -1,11 +1,5 @@
 from enum import Enum
 import functools
-from ._rewrite_add_limit_one import add_limit_one
-from ._rewrite_remove_distinct import remove_distinct
-from ._rewrite_str2int import str2int
-from ._rewrite_remove_predicate import remove_predicate_numerical, remove_preciate_null
-from ._rewrite_strlen_precheck import strlen_precheck
-from ._rewrite_format_precheck import strformat_precheck
 
 
 class RewriteType(Enum):
@@ -58,32 +52,38 @@ class Rewriter:
             return field in values
         return functools.reduce(lambda acc, item: acc or self.find_field_in_predicate(field, item), values, False)
 
+    from ._rewrite_add_limit_one import add_limit_one
+    from ._rewrite_remove_distinct import remove_distinct
+    from ._rewrite_str2int import str2int
+    from ._rewrite_remove_predicate import remove_predicate_numerical, remove_preciate_null
+    from ._rewrite_strlen_precheck import strlen_precheck
+    from ._rewrite_format_precheck import strformat_precheck
+
     def rewrite_single_query(self, q, constraints):
-        can_add_limit_one, rewrite_q = add_limit_one(self, q, constraints)
+        can_add_limit_one, rewrite_q = self.add_limit_one(q, constraints)
         rewrite_type = []
         if can_add_limit_one:
             print("Add limit 1 ", format(rewrite_q))
             q = rewrite_q
             rewrite_type.append(RewriteType.ADD_LIMIT_ONE)
-        can_str2int, _ = str2int(self, q, constraints)
+        can_str2int, _ = self.str2int(q, constraints)
         if can_str2int:
             # print("String to Int", format(q), rewrite_fields)
             rewrite_type.append(RewriteType.STRING_TO_INT)
-        can_strlen_precheck, _ = strlen_precheck(self, q, constraints)
+        can_strlen_precheck, _ = self.strlen_precheck(q, constraints)
         if can_strlen_precheck:
             # print("Length precheck", format(q), lencheck_fields)
             rewrite_type.append(RewriteType.LENGTH_PRECHECK)
-        can_strformat_precheck, formatcheck_fields = strformat_precheck(
-            self, q, constraints)
+        can_strformat_precheck, formatcheck_fields = self.strformat_precheck(q, constraints)
         if can_strformat_precheck:
             print("String format precheck", format(q), formatcheck_fields)
             rewrite_type.append(RewriteType.FORMAT_PRECHECK)
-        can_remove_distinct, rewrite_q = remove_distinct(self, q, constraints)
+        can_remove_distinct, rewrite_q = self.remove_distinct(q, constraints)
         if can_remove_distinct:
             print("Remove Distinct", format(rewrite_q))
             q = rewrite_q
             rewrite_type.append(RewriteType.REMOVE_DISTINCT)
-        can_remove_predicate, rewrite_q = remove_preciate_null(self, q, constraints)
+        can_remove_predicate, rewrite_q = self.remove_preciate_null(q, constraints)
         if can_remove_predicate:
             print("Remove Predicate", format(rewrite_q))
             q = rewrite_q
