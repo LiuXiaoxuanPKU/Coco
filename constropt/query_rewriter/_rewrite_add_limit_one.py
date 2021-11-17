@@ -2,7 +2,7 @@ import functools
 from .constraint import *
 
 
-def get_unqiue_constraints_fields(constraints):
+def get_unique_constraints_fields(constraints):
     unique_constraints = list(
         filter(lambda x: isinstance(x, UniqueConstraint), constraints))
 
@@ -91,18 +91,43 @@ def add_limit_one(self, q, constraints):
             if "." not in field:
                 field = "%s.%s" % (table, field)
             full_used_fields.append(field)
-        fields_list = get_unqiue_constraints_fields(constraints)
+        fields_list = get_unique_constraints_fields(constraints)
         for fields in fields_list:
             if set(fields).issubset(set(full_used_fields)):
                 return True
         return False
 
     # case 1: no join
-    if not has_inner_join and check_predicate_return_one_tuple(where_clause, q['from']):
-        rewrite_q = q.copy()
-        rewrite_q['limit'] = 1
-        return True, rewrite_q
-    elif has_inner_join:
+    table = q['from']
+    if not has_inner_join:
+        # handle nested single query
+        if isinstance(table, dict) and isinstance(table['value'], dict):
+            rewritten, _ = self.rewrite_single_query(table['value'], constraints)
+            table['value'] = rewritten
+        # case 1: no join, only has one predicate
+        if check_predicate_return_one_tuple(where_clause, table):
+            rewrite_q = q.copy()
+            rewrite_q['limit'] = 1
+            return True, rewrite_q
+        # case 2: no join, predicates are connected by 'and'
+        elif key in ["and"]:
+            # as long as all predicates are connected by 'and'
+            # and there exists one predicate that returns only one tuple
+            predicates = where_clause['and']
+            return_one = False
+
+            for pred in predicates:
+                # TODO: does not handle exits for now
+                if 'exists' in pred:
+                    return False, None
+                return_one = return_one or check_predicate_return_one_tuple(
+                    where_clause, table)
+            if return_one:
+                rewrite_q = q.copy()
+                rewrite_q['limit'] = 1
+                return True, rewrite_q
+    # has inner join
+    else:
         join_tables = self.get_query_tables(q)
         predicates = q['where']
         ok, _ = check_connect_by_and_equal(predicates)
@@ -122,7 +147,7 @@ def add_limit_one(self, q, constraints):
                 return False
             # equal join on unique columns
             join_columns = join_predicate[key]
-            fields_list = get_unqiue_constraints_fields(constraints)
+            fields_list = get_unique_constraints_fields(constraints)
             for col in join_columns:
                 col_unique = False
                 # id column is unique by itself
@@ -142,6 +167,10 @@ def add_limit_one(self, q, constraints):
             # for each join table, only return one tuple from that table
             can_rewrite = False
             for table in join_tables:
+                # rewrite nested query
+                if isinstance(table, dict) and isinstance(table['value'], dict):
+                    rewritten, _ = self.rewrite_single_query(table['value'], constraints)
+                    table['value'] = rewritten
                 # get predicates on that relation
                 table_predicates = get_table_predicates(predicates, table)
                 for predicate in table_predicates:
@@ -157,6 +186,10 @@ def add_limit_one(self, q, constraints):
         # each of the relation returns no more than 1 tuple
         else:
             for table in join_tables:
+                # rewrite nested query
+                if isinstance(table, dict) and isinstance(table['value'], dict):
+                    rewritten, _ = self.rewrite_single_query(table['value'], constraints)
+                    table['value'] = rewritten
                 # get predicates on that relation
                 table_predicates = get_table_predicates(predicates, table)
                 for predicate in table_predicates:
