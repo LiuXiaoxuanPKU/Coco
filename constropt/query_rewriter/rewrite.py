@@ -1,17 +1,45 @@
 import json
 import functools
-from constropt.query_rewriter.constraint import LengthConstraint, UniqueConstraint, InclusionConstraint, FormatConstraint
+from enum import Enum
+from typing import ValuesView
+from constropt.query_rewriter.constraint import LengthConstraint, NumericalConstraint, PresenceConstraint, UniqueConstraint, InclusionConstraint, FormatConstraint
 # from constraint import LengthConstraint, UniqueConstraint, InclusionConstraint, FormatConstraint
 from mo_sql_parsing import parse, format
+import z3
+
+
+class RewriteType(Enum):
+    ADD_LIMIT_ONE = 1
+    REMOVE_DISTINCT = 2
+    LENGTH_PRECHECK = 3
+    FORMAT_PRECHECK = 4
+    REMOVE_PREDICATE = 5
+    STRING_TO_INT = 6
 
 
 def find_constraint(constraints, table, field, constraint_type):
+    # field name can be xx.xx or xx
     re = list(filter(lambda x: isinstance(x, constraint_type)
-              and x.table == table and x.field == field, constraints))
+              and x.table == table and x.field == field
+                     or (isinstance(field, str) and x.field == field.split(".")[-1]), constraints))
     return len(list(re)) > 0
 
 
+def get_unqiue_constraints_fields(constraints):
+    unique_constraints = list(
+        filter(lambda x: isinstance(x, UniqueConstraint), constraints))
+
+    def add_tablename_to_field(table, fields):
+        return list(map(lambda x: "%s.%s" % (table, x), fields))
+    fields = list(functools.reduce(lambda acc, x: acc + [add_tablename_to_field(x.table, [x.field] + x.scope)],
+                                   unique_constraints, []))
+    return fields
+
+
 def get_constraint_fields(constraints, constraint_type):
+    '''
+    return the full name of constraint, field name is in the format of xx.xx
+    '''
     selected_constraints = filter(
         lambda x: isinstance(x, constraint_type), constraints)
     return list(map(lambda x: x.table + "." + x.field, selected_constraints))
@@ -31,14 +59,22 @@ def find_field_in_predicate(field, predicate):
     return functools.reduce(lambda acc, item: acc or find_field_in_predicate(field, item), values, False)
 
 
-def get_query_tables(q):
+def get_join_tables(q):
     table = q['from']
-    return list(functools.reduce(
+    join_tables = list(functools.reduce(
         lambda acc, item: acc + [item['inner join']] if ('inner join' in item) else acc, table, []))
+    return join_tables
+
+
+def get_query_tables(q):
+    join_tables = get_join_tables(q)
+    table = q['from']
+    org_table = [t for t in table if isinstance(t, str)]
+    return join_tables + org_table
 
 
 def check_query_has_join(q):
-    return len(get_query_tables(q)) > 0
+    return len(get_join_tables(q)) > 0
 
 
 def check_connect_by_and_equal(predicates):
@@ -50,13 +86,21 @@ def check_connect_by_and_equal(predicates):
     key = keys[0]
     # TODO: handle exist
     if isinstance(predicates[key], list) and isinstance(predicates[key][0], str):
-        return key == "eq"
+        # key = in, predicates[key] = ['users.type', '$1'],
+        if key == "eq" or (key == "in" and isinstance(predicates[key][1], str)):
+            return True, [predicates[key][0]]
     res = True
     if not key == "and":
-        return False
+        return False, None
+    used_fields = []
     for predicate in predicates[key]:
-        res = res and check_connect_by_and_equal(predicate)
-    return res
+        ok, fields = check_connect_by_and_equal(predicate)
+        if ok:
+            used_fields += fields
+        res = res and ok
+        if not res:
+            return False, None
+    return res, used_fields
 
 
 def get_table_predicates(predicates, table):
@@ -95,14 +139,27 @@ def add_limit_one(q, constraints):
     assert(len(keys) == 1)
     key = keys[0]
 
-    def check_predicate_return_one_tuple(key, table, field):
+    def check_predicate_return_one_tuple(predicates, table):
         '''
         check if after applying the predicate, only one record is returned
         key : compare key
         table : table name
         field : column name, should not include table name
         '''
-        return key == 'eq' and find_constraint(constraints, table, field, UniqueConstraint)
+        connect_by_and_equal, used_fields = check_connect_by_and_equal(
+            predicates)
+        if not connect_by_and_equal:
+            return False
+        full_used_fields = []
+        for field in used_fields:
+            if "." not in field:
+                field = "%s.%s" % (table, field)
+            full_used_fields.append(field)
+        fields_list = get_unqiue_constraints_fields(constraints)
+        for fields in fields_list:
+            if set(fields).issubset(set(full_used_fields)):
+                return True
+        return False
 
     if not has_inner_join:
         # handle nested single query
@@ -111,7 +168,7 @@ def add_limit_one(q, constraints):
             rewritten, _ = rewrite_single_query(table['value'], constraints)
             table['value'] = rewritten
         # case 1: no join, only has one predicate
-        if check_predicate_return_one_tuple(key, table, values[0][0]):
+        if check_predicate_return_one_tuple(where_clause, table):
             rewrite_q = q.copy()
             rewrite_q['limit'] = 1
             return True, rewrite_q
@@ -127,7 +184,7 @@ def add_limit_one(q, constraints):
                 if 'exists' in pred:
                     return False, None
                 return_one = return_one or check_predicate_return_one_tuple(
-                    list(pred.keys())[0], table, list(pred.values())[0][0])
+                    where_clause, table)
             if return_one:
                 rewrite_q = q.copy()
                 rewrite_q['limit'] = 1
@@ -136,38 +193,68 @@ def add_limit_one(q, constraints):
     else:
         join_tables = get_query_tables(q)
         predicates = q['where']
-
-        if not check_connect_by_and_equal(predicates):
+        ok, _ = check_connect_by_and_equal(predicates)
+        if not ok:
             return False, None
 
-        # for each join table, only return one tuple from that table
-        for table in join_tables:
-            # rewrite nested query
-            if isinstance(table, dict) and isinstance(table['value'], dict):
-                rewritten, _ = rewrite_single_query(table['value'], constraints)
-                table['value'] = rewritten
-            # get predicates on that relation
-            table_predicates = get_table_predicates(predicates, table)
-            return_one = False
-            for predicate in table_predicates:
-                keys = list(predicate.keys())
-                assert(len(keys) == 1)
-                cmp_key, field = keys[0], predicate[keys[0]][0]
-                # field should contain table name
-                tokens = field.split('.')
-                if len(tokens) == 1:
-                    field = tokens[0]
-                else:
-                    field = tokens[1]
-                return_one = check_predicate_return_one_tuple(
-                    cmp_key, table, field)
-                if return_one:
-                    break
-            if not return_one:
+        join_predicates = [ele for ele in q['from'] if 'inner join' in ele]
+        join_predicate = [ele for ele in join_predicates if 'on' in ele][0]
+        join_predicate = join_predicate['on']
+
+        def check_join_predicate(join_predicate):
+            # only handle equal join
+            keys = list(join_predicate.keys())
+            assert(len(keys) == 1)
+            key = keys[0]
+            if key != 'eq':
+                return False
+            # equal join on unique columns
+            join_columns = join_predicate[key]
+            fields_list = get_unqiue_constraints_fields(constraints)
+            for col in join_columns:
+                col_unique = False
+                # id column is unique by itself
+                if col.split('.')[-1] == "id":
+                    col_unique = True
+                # uniqueness indicated by the unique constraint
+                for fields in fields_list:
+                    if len(fields) == 1 and fields[0] == col:
+                        col_unique = True
+                if not col_unique:
+                    return False
+            return True
+
+        # case 2: inner join, join on unique columns
+        # any of the relation returns no more than 1 tuple and join on unique columns
+        if check_join_predicate(join_predicate):
+            # for each join table, only return one tuple from that table
+            can_rewrite = False
+            for table in join_tables:
+                # get predicates on that relation
+                table_predicates = get_table_predicates(predicates, table)
+                for predicate in table_predicates:
+                    return_one = check_predicate_return_one_tuple(
+                        predicate, table)
+                    can_rewrite = can_rewrite or return_one
+            if not can_rewrite:
                 return False, None
-        rewrite_q = q.copy()
-        rewrite_q['limit'] = 1
-        return True, rewrite_q
+            rewrite_q = q.copy()
+            rewrite_q['limit'] = 1
+            return True, rewrite_q
+        # case 3: inner join, join on any columns
+        # each of the relation returns no more than 1 tuple
+        else:
+            for table in join_tables:
+                # get predicates on that relation
+                table_predicates = get_table_predicates(predicates, table)
+                for predicate in table_predicates:
+                    return_one = check_predicate_return_one_tuple(
+                        predicate, table)
+                    if not return_one:
+                        return False, None
+            rewrite_q = q.copy()
+            rewrite_q['limit'] = 1
+            return True, rewrite_q
 
     return False, None
 
@@ -269,7 +356,7 @@ def u_in_after_filter(q, u_in, col_to_table_dot_col):
         where_conditions = where["and"]
         for cond in where_conditions:
             # only take care field = constant
-            if "eq" in cond and "$" == cond["eq"][1][0]:
+            if "eq" in cond and "$" == str(cond["eq"][1])[0]:
                 cond_column = unalias(col_to_table_dot_col, cond["eq"][0]) # table_name.id, id
                 # remove cond_column from each subset in u_in
                 for subset in u_in:
@@ -415,10 +502,12 @@ def str2int(q, constraints):
     predicate = q['where']
     # if q does not have join, field does not need prefix (table name)
     has_join = check_query_has_join(q)
+    no_name_enum_fields = []
     if not has_join:
-        enum_fields = list(map(lambda x: x.split('.')[1], enum_fields))
+        no_name_enum_fields = list(map(lambda x: x.split('.')[1], enum_fields))
+    no_name_enum_fields += enum_fields
     str2_int_fields = functools.reduce(lambda acc, item: acc + [item] if find_field_in_predicate(
-        item, predicate) else acc, enum_fields, [])
+        item, predicate) else acc, no_name_enum_fields, [])
     can_rewrite = len(str2_int_fields) > 0
     return can_rewrite, str2_int_fields
 
@@ -451,29 +540,166 @@ def strformat_precheck(q, constraints):
     can_rewrite = len(format_precheck_fields) > 0
     return can_rewrite, format_precheck_fields
 
+# =================================================================================================================
+# helper functions for remove predicate null
+
+
+def find_exist_missing_fields(predicate):
+    if not isinstance(predicate, dict):
+        return [], []
+
+    key = list(predicate.keys())[0]
+    values = predicate[key]
+    if key == "missing":
+        return [], [values]
+    if key == "exists":
+        return [values], []
+
+    exist_fields = []
+    missing_fields = []
+    for value in values:
+        cur_exist_fields, cur_missing_fields = find_exist_missing_fields(value)
+        exist_fields += cur_exist_fields
+        missing_fields += cur_missing_fields
+    return exist_fields, missing_fields
+
+
+def replace_predicate(q, field, value):
+    def helper(predicate):
+        if not isinstance(predicate, dict):
+            return predicate
+        key = list(predicate.keys())[0]
+        children = predicate[key]
+        if (key == "exists" and children == field):
+            return value
+        elif (key == "missing" and children == field):
+            return value
+        else:
+            rewrite_predicates = []
+            for child in children:
+                rewrite_predicates.append(helper(child))
+            return {key: rewrite_predicates}
+    q['where'] = helper(q['where'])
+    return q
+
+
+def remove_preciate_null(q, constraints):
+    if 'where' not in q:
+        return False, None
+    exist_fields, missing_fields = find_exist_missing_fields(q['where'])
+    presence_fields = get_constraint_fields(constraints, PresenceConstraint)
+    q_rewritten = None
+    for field in presence_fields:
+        field_without_tablename = field.split('.')[-1]
+        if field in exist_fields:
+            q_rewritten = replace_predicate(q, field, True)
+        elif field_without_tablename in exist_fields:
+            q_rewritten = replace_predicate(q, field_without_tablename, True)
+        if field in missing_fields:
+            q_rewritten = replace_predicate(q, field, False)
+        elif field_without_tablename in missing_fields:
+            q_rewritten = replace_predicate(q, field_without_tablename, False)
+    return q_rewritten is not None, q_rewritten
+# =================================================================================================================
+# end remove predicate null
+
+
+# =================================================================================================================
+# helper functions for remove predicate numerical
+def remove_predicate_numerical(q, constraints):
+    predicate = q['where']
+
+    def get_field_constraint(field):
+        c = list(filter(lambda c: isinstance(c, NumericalConstraint)
+                        and c.field == field and c.table == q['from'], constraints))
+        if len(c) == 1:
+            return c[0]
+        elif len(c) == 0:
+            return None
+        else:
+            raise "multiple numerical constraints have the same field," + \
+                str(c)
+
+    def imply(predicate, c):
+        # create variables
+        keys = predicate.keys()
+        key = list(keys)[0]
+        field_name = predicate[key][0]
+        tmp = z3.Real('x')
+        predicate[key][0] = 'tmp'
+        s = z3.Solver()
+        if c.min is not None and c.max is not None:
+            precondition = z3.And(tmp >= c.min, tmp <= c.max)
+        elif c.min is not None:
+            precondition = tmp >= c.min
+        elif c.max is not None:
+            precondition = tmp <= c.max
+        # solve(ForAll(x, Implies(constraint, x>2))))
+        s.add(z3.ForAll(tmp, z3.Implies(precondition, eval(format(predicate)))))
+        predicate[key][0] = field_name
+        return s.check() == z3.sat
+
+    def dfs(predicate):
+        keys = predicate.keys()
+        assert(len(keys) == 1)
+        key = list(keys)[0]
+        if not (key == "and" or key == "or"):
+            # check if the variable is the constraint variable
+            c = get_field_constraint(predicate[key][0])
+            if c is None:
+                return predicate
+            if imply(predicate, c):
+                return True, True
+            else:
+                return False, predicate
+        new_children = []
+        can_rewrite = False
+        for child in predicate[key]:
+            can_rewrite_child, new_child = dfs(child)
+            can_rewrite = can_rewrite or can_rewrite_child
+            new_children.append(new_child)
+        predicate[key] = new_children
+        return can_rewrite_child, predicate 
+
+    can_rewrite, new_predicate = dfs(predicate)
+    q['where'] = new_predicate
+    return can_rewrite, q
+
+# =================================================================================================================
+# end remove predicate numerical
+
 
 def rewrite_single_query(q, constraints):
-    can_rewrite = False
     can_add_limit_one, rewrite_q = add_limit_one(q, constraints)
+    rewrite_type = []
     if can_add_limit_one:
         print("Add limit 1 ", format(rewrite_q))
         q = rewrite_q
+        rewrite_type.append(RewriteType.ADD_LIMIT_ONE)
     can_str2int, rewrite_fields = str2int(q, constraints)
     if can_str2int:
-        print("String to Int", format(q), rewrite_fields)
+        # print("String to Int", format(q), rewrite_fields)
+        rewrite_type.append(RewriteType.STRING_TO_INT)
     can_strlen_precheck, lencheck_fields = strlen_precheck(q, constraints)
     if can_strlen_precheck:
-        print("Length precheck", format(q), lencheck_fields)
+        # print("Length precheck", format(q), lencheck_fields)
+        rewrite_type.append(RewriteType.LENGTH_PRECHECK)
     can_strformat_precheck, formatcheck_fields = strformat_precheck(
         q, constraints)
     if can_strformat_precheck:
         print("String format precheck", format(q), formatcheck_fields)
+        rewrite_type.append(RewriteType.FORMAT_PRECHECK)
     can_remove_distinct, rewrite_q = remove_distinct(q, constraints)
     if can_remove_distinct:
         print("Remove Distinct", format(rewrite_q))
         q = rewrite_q
-    can_rewrite = can_add_limit_one or can_str2int or can_strlen_precheck or can_strformat_precheck or can_remove_distinct
-    return q, can_rewrite
+        rewrite_type.append(RewriteType.REMOVE_DISTINCT)
+    can_remove_predicate, rewrite_q = remove_preciate_null(q, constraints)
+    if can_remove_predicate:
+        print("Remove Predicate", format(rewrite_q))
+        q = rewrite_q
+        rewrite_type.append(RewriteType.REMOVE_PREDICATE)
+    return q, rewrite_type
 
 # handle nested query cases
 
@@ -495,3 +721,7 @@ if __name__ == "__main__":
         print(json.dumps(sql_obj, indent=4))
         # rewrite_single_query(sql_obj, constraints)
     # TODO : EXISTS, ANY
+    q = parse("select * from t where x > -1 and y > 1 or z < 10 or x > -5")
+    c = NumericalConstraint('t', 'x', 0, 100)
+    remove_predicate_numerical(q, [c])
+    print(q['where'])
