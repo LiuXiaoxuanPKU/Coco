@@ -1,4 +1,5 @@
-from constraint import UniqueConstraint
+from .constraint import *
+
 
 def check_join_conditions(table, u_in1, u_in2, col_to_table_dot_col):
     '''Check whether there is a join condition that implies joining on two unique columns.'''
@@ -79,7 +80,30 @@ def r_in_to_u_in(self, r_in, constraints, col_to_table_dot_col):
     return u_in
 
 
+def valid_filter_condition(cond) -> bool:
+    """
+    Take format from condition["eq"] or condition["in"].
+    Return True if condition contains only one constant. Example shown in the following:
+    "user.status = $3"  --> ["user.status", "$3"]
+    "user.id = 6"  -->  ["user.id", 6]
+    "users.type IN ($1, $2)"
+    "1 = 1" --> [1, 1]
+    """
+    if isinstance(cond[1], str):
+        return cond[1][0] == "$"
+    elif isinstance(cond[1], int):
+        return isinstance(cond[0], str)
+    elif isinstance(cond[1], list):
+        return len(cond[1]) == 1
+    return False
+
+
 def u_in_after_filter(q, u_in, col_to_table_dot_col):
+    """
+     Set u_in based on filter condition.
+     If after filter, there's only one row in table, add every column in table to unique constraint.
+     If u_in is {{A, B, C}, {D}} before filter, condition is A = 3, then after filter u_in is {{B, C}, {D}}
+     """
     # check if q has where clause
     if not 'where' in q:
         return
@@ -91,7 +115,7 @@ def u_in_after_filter(q, u_in, col_to_table_dot_col):
         where_conditions = where["and"]
         for cond in where_conditions:
             # only take care field = constant
-            if "eq" in cond and "$" == str(cond["eq"][1])[0]:
+            if "eq" in cond and valid_filter_condition(cond['eq']):
                 cond_column = unalias(col_to_table_dot_col, cond["eq"][0]) # table_name.id, id
                 # remove cond_column from each subset in u_in
                 for subset in u_in:
@@ -101,7 +125,7 @@ def u_in_after_filter(q, u_in, col_to_table_dot_col):
                     subset.discard(cond_column.split(".")[-1])
                     subset = frozenset(subset)
     # only one condition in where
-    elif "eq" in where and isinstance(where["eq"][1], str) and "$" == where["eq"][1][0]:
+    elif "eq" in where and valid_filter_condition(where["eq"]):
         cond_column = unalias(col_to_table_dot_col, where["eq"][0]) # table_name.id, id
         # remove cond_column from each subset in u_in
         for subset in u_in:
