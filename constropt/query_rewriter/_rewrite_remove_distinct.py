@@ -1,4 +1,4 @@
-from constraint import UniqueConstraint
+from .constraint import UniqueConstraint
 
 def check_join_conditions(table, u_in1, u_in2, col_to_table_dot_col):
     '''Check whether there is a join condition that implies joining on two unique columns.'''

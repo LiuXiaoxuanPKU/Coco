@@ -23,7 +23,7 @@ def check_connect_by_and_equal(predicates):
     # TODO: handle exist
     if isinstance(predicates[key], list) and isinstance(predicates[key][0], str):
         # key = in, predicates[key] = ['users.type', '$1'],
-        if key == "eq" or (key == "in" and isinstance(predicates[key][1], str)):
+        if key == "eq" or (key == "in" and len(predicates[key][1]) == 1):
             return True, [predicates[key][0]]
     res = True
     if not key == "and":
@@ -102,7 +102,8 @@ def add_limit_one(self, q, constraints):
     if not has_inner_join:
         # handle nested single query
         if isinstance(table, dict) and isinstance(table['value'], dict):
-            rewritten, _ = self.rewrite_single_query(table['value'], constraints)
+            rewritten, _ = self.rewrite_single_query(
+                table['value'], constraints)
             table['value'] = rewritten
         # case 1: no join, only has one predicate
         if check_predicate_return_one_tuple(where_clause, table):
@@ -169,7 +170,8 @@ def add_limit_one(self, q, constraints):
             for table in join_tables:
                 # rewrite nested query
                 if isinstance(table, dict) and isinstance(table['value'], dict):
-                    rewritten, _ = self.rewrite_single_query(table['value'], constraints)
+                    rewritten, _ = self.rewrite_single_query(
+                        table['value'], constraints)
                     table['value'] = rewritten
                 # get predicates on that relation
                 table_predicates = get_table_predicates(predicates, table)
@@ -188,7 +190,8 @@ def add_limit_one(self, q, constraints):
             for table in join_tables:
                 # rewrite nested query
                 if isinstance(table, dict) and isinstance(table['value'], dict):
-                    rewritten, _ = self.rewrite_single_query(table['value'], constraints)
+                    rewritten, _ = self.rewrite_single_query(
+                        table['value'], constraints)
                     table['value'] = rewritten
                 # get predicates on that relation
                 table_predicates = get_table_predicates(predicates, table)

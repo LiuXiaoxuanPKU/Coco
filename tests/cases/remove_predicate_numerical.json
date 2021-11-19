@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "constraint": {
+            "type": "numerical",
+            "args": {
+                "table": "user",
+                "field": "age",
+                "min": 0,
+                "max": 150
+            }
+        },
+        "before": "select * from user where age > -1",
+        "after": "select * from user where true",
+        "type": "remove_predicate_numerical",
+        "can_rewrite": true
+    },
+    {
+        "id": 2,
+        "constraint": {
+            "type": "numerical",
+            "args": {
+                "table": "user",
+                "field": "age",
+                "min": 0,
+                "max": 150
+            }
+        },
+        "before": "select * from user where age > 200",
+        "after": "select * from user where false",
+        "type": "remove_predicate_numerical",
+        "can_rewrite": true
+    },
+    {
+        "id": 3,
+        "constraint": {
+            "type": "numerical",
+            "args": {
+                "table": "user",
+                "field": "age",
+                "min": 0,
+                "max": 150
+            }
+        },
+        "before": "select * from user where age > 20",
+        "after": "select * from user where age > 20",
+        "type": "remove_predicate_numerical",
+        "can_rewrite": false
+    }
+]
