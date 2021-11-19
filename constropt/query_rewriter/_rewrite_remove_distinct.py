@@ -188,9 +188,20 @@ def remove_distinct(self, q, constraints):
 
     if not contain_distinct(q):
         return False, None
+
+    # if add limit 1 in query, we skip remove distinct check
+    if 'limit' in q and q['limit'] == 1:
+        rewrite_q = q.copy()
+        projections = q['select']['value']['distinct']
+        if isinstance(projections, dict):
+            val = projections['value']
+            rewrite_q['select'] = val
+        elif isinstance(projections, list):
+            rewrite_q['select'] = projections
+        return True, rewrite_q
+
     col_to_table_dot_col = {}
     u_out = query_to_u_out(self, q, constraints, col_to_table_dot_col)
-    # print("u_out", u_out)
     return remove_distinct_projection(q, u_out, col_to_table_dot_col)
 
 def check_single_column_in_u_in(u_in, val) -> bool:
