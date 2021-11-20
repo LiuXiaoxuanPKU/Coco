@@ -3,7 +3,7 @@ import json
 import pickle
 from mo_imports import expect
 from mo_sql_parsing import parse, format
-from constropt.query_rewriter.rewrite import rewrite_single_query
+from constropt.query_rewriter import Rewriter
 from constropt.query_rewriter import constraint
 
 
@@ -75,6 +75,7 @@ def load_queries(query_dir):
 
 
 def rewrite_queries(constraints, queries):
+    rewriter = Rewriter()
     tests = list(queries.keys())
     rewrite_stats = {}
     table_stats = {}
@@ -112,7 +113,7 @@ def rewrite_queries(constraints, queries):
             if "IS NULL" in queries[testname][i]:
                 # print(queries[testname][i])
                 pass
-            q, rewrite_types = rewrite_single_query(
+            q, rewrite_types = rewriter.rewrite_single_query(
                 org_q, constraints)
             if len(rewrite_types) > 0:
                 rewrite_cnt += 1
@@ -139,7 +140,6 @@ if __name__ == "__main__":
         os.getcwd(), app_name)
     constraints_json = extract_constraints(app_dir, constraint_output_dir)
     constraints = load_constraints(constraints_json)
-
     run_end2end_test = False
     if run_end2end_test:
         query_dir = "%s/queries/%s_end2end_withparam.pk" % (
@@ -147,6 +147,7 @@ if __name__ == "__main__":
         queries = load_queries(query_dir)
         rewrite_queries(constraints, queries)
     else:
+        r = Rewriter()
         query_dir = "queries/redmine.pk"
         queries = []
         parse_cnt = 0
@@ -157,7 +158,7 @@ if __name__ == "__main__":
         stats = {}
         for q in queries:
             try:
-                new_q, rewrite_types = rewrite_single_query(
+                new_q, rewrite_types = r.rewrite_single_query(
                     parse(q[1]), constraints)
                 if len(rewrite_types):
                     rewrite_cnt += 1
