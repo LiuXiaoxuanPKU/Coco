@@ -1,6 +1,6 @@
 # validate.rb in the old repo (formatchecker)
 # how to write validate function: https://guides.rubyonrails.org/active_record_validations.html#validates-each
-require "json"
+require 'json'
 
 class Constraint
   attr_accessor :class_name, :field_name
@@ -18,12 +18,12 @@ class InclusionConstraint < Constraint
 
   def to_s
     {
-      :constraint_type => "inclusion",
-      :class_name => @class_name,
-      :field_name => @field_name,
-      :values => @values,
-      :type => type,
-      :table => @class_name.tableize, # This is a temporary fix, TODO, map class name to table name
+      constraint_type: 'inclusion',
+      class_name: @class_name,
+      field_name: @field_name,
+      values: @values,
+      type: type,
+      table: @class_name.tableize # This is a temporary fix, TODO, map class name to table name
     }.to_json
   end
 end
@@ -41,13 +41,13 @@ class UniqueConstraint < Constraint
 
   def to_s
     {
-      :constraint_type => "unique",
-      :class_name => @class_name,
-      :field_name => @field_name,
-      :cond => @cond,
-      :case_sensitive => @case_sensitive,
-      :scope => @scope,
-      :table => @class_name.tableize, # This is a temporary fix, TODO, map class name to table name
+      constraint_type: 'unique',
+      class_name: @class_name,
+      field_name: @field_name,
+      cond: @cond,
+      case_sensitive: @case_sensitive,
+      scope: @scope,
+      table: @class_name.tableize # This is a temporary fix, TODO, map class name to table name
     }.to_json
   end
 end
@@ -63,10 +63,10 @@ class PresenceConstraint < Constraint
 
   def to_s
     {
-      :constraint_type => "presence",
-      :class_name => @class_name,
-      :field_name => @field_name,
-      :table => @class_name.tableize, # This is a temporary fix, TODO, map class name to table name
+      constraint_type: 'presence',
+      class_name: @class_name,
+      field_name: @field_name,
+      table: @class_name.tableize # This is a temporary fix, TODO, map class name to table name
     }.to_json
   end
 end
@@ -83,12 +83,12 @@ class LengthConstraint < Constraint
 
   def to_s
     {
-      :constraint_type => "length",
-      :class_name => @class_name,
-      :field_name => @field_name,
-      :min => @min,
-      :max => @max,
-      :table => @class_name.tableize, # This is a temporary fix, TODO, map class name to table name
+      constraint_type: 'length',
+      class_name: @class_name,
+      field_name: @field_name,
+      min: @min,
+      max: @max,
+      table: @class_name.tableize # This is a temporary fix, TODO, map class name to table name
     }.to_json
   end
 end
@@ -104,11 +104,11 @@ class FormatConstraint < Constraint
 
   def to_s
     {
-      :constraint_type => "format",
-      :class_name => @class_name,
-      :field_name => @field_name,
-      :format => @format,
-      :table => @class_name.tableize, # This is a temporary fix, TODO, map class name to table name
+      constraint_type: 'format',
+      class_name: @class_name,
+      field_name: @field_name,
+      format: @format,
+      table: @class_name.tableize # This is a temporary fix, TODO, map class name to table name
     }.to_json
   end
 end
