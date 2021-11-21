@@ -3,16 +3,16 @@ class Traversor
     @visitor = visitor
   end
 
-  def dfs(node)
-    @visitor.visit(node)
+  def dfs(node, params)
+    @visitor.visit(node, params)
     node.children.each do |child|
-      dfs(child)
+      cur_params = params.clone
+      dfs(child, cur_params)
     end
   end
 
-  def traverse(roots)
-    roots.each do |root|
-      dfs(root)
-    end
+  def traverse(root)
+    params = {}
+    dfs(root, params)
   end
 end

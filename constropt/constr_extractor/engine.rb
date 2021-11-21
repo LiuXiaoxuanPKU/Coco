@@ -46,8 +46,11 @@ class Engine
         full_class_nodes[node.parent].children.append(node)
       end
     end
-
-    roots
+    active_record_node = nil
+    roots.each do |root|
+      active_record_node = root if root.name == 'ActiveRecord::Base'
+    end
+    active_record_node
   end
 
   def get_classname_and_parents(ast)

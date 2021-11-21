@@ -5,9 +5,9 @@ require_relative '../traversor'
 require_relative '../builtin_extractor'
 
 class TestPrint
-  def visit(node)
+  def visit(node, _params)
     puts "#{node.name} => #{node.parent}"
-    puts "constraints #{node.constraints}"
+    puts "constraints #{node.constraints.length}"
   end
 end
 

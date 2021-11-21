@@ -11,7 +11,7 @@ def test_naive
   node = ClassNode.new('Test')
   node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
   builtin_extractor = BuiltinExtractor.new
-  builtin_extractor.visit(node)
+  builtin_extractor.visit(node, {})
   puts "# of extracted constraints: #{node.constraints.length}"
 end
 

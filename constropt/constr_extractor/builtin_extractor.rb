@@ -12,7 +12,7 @@ class BuiltinExtractor < Extractor
     @custom_validation_cnt = 0
   end
 
-  def visit(node)
+  def visit(node, _params)
     return if node.ast.nil?
 
     ast = node.ast
