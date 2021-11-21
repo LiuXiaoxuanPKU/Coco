@@ -19,9 +19,10 @@ class Engine
     # create nodes
     asts.each do |ast|
       classname_parents = get_classname_and_parents(ast)
-      classname_parents.each do |class_name, parent|
+      classname_parents.each do |class_name, parent_and_classast|
         class_node = ClassNode.new(class_name)
-        class_node.parent = parent
+        class_node.parent = parent_and_classast[0]
+        class_node.ast = parent_and_classast[1]
         class_nodes[class_name] = class_node
       end
     end
@@ -46,15 +47,6 @@ class Engine
       end
     end
 
-    # set table name
-    dfs = lambda { |root, tablename|
-      root.table = tablename
-      root.children.each { |child| dfs.call(child, tablename) }
-    }
-    roots.each do |root|
-      dfs.call(root, root.name)
-    end
-
     roots
   end
 
@@ -66,7 +58,7 @@ class Engine
       class_name = class_ast[0].source
       parent_name = class_ast[1]
       parent_name = class_ast[1].source unless parent_name.nil?
-      classname_parents[class_name] = parent_name
+      classname_parents[class_name] = [parent_name, class_ast]
     end
     classname_parents
   end

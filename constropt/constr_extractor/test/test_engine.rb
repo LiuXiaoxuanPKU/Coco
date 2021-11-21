@@ -7,7 +7,7 @@ require_relative '../builtin_extractor'
 class TestPrint
   def visit(node)
     puts "#{node.name} => #{node.parent}"
-    puts "constraints #{constraints}"
+    puts "constraints #{node.constraints}"
   end
 end
 
@@ -20,7 +20,7 @@ end
 
 def test_builtin
   t = Traversor.new(BuiltinExtractor.new)
-  engine = Engine.new('spec/test_data/redmine_models')
+  engine = Engine.new('test/data/redmine_models')
   roots = engine.run
   t.traverse(roots)
 

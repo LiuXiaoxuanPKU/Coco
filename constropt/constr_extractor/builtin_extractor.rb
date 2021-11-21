@@ -13,7 +13,9 @@ class BuiltinExtractor < Extractor
   end
 
   def visit(node)
-    ast = node.ast[0]
+    return if node.ast.nil?
+
+    ast = node.ast
     commands = ast[2].children.select { |c| c.type.to_s == 'command' }
     constraints = []
     commands.each { |c| constraints += extract_cmd(c, node.name) }
@@ -102,57 +104,50 @@ class BuiltinExtractor < Extractor
     constraints
   end
 
-  def extract_builtin_inclusion(ast, classname)
-    constraints = []
-    fields = []
-    content = ast[1].children
-    values = []
-    type = nil
-    content.each do |node|
-      field = handle_symbol_literal_node(node)
-      fields << field unless field.nil?
-      node.each do |n|
-        k, v = handle_assoc_node(n)
-        if !k.nil? && k == 'in'
-          type = v.type
+  def extract_builtin_inclusion(_ast, _classname)
+    []
+    #   constraints = []
+    #   fields = []
+    #   content = ast[1].children
+    #   values = []
+    #   type = nil
+    #   content.each do |node|
+    #     field = handle_symbol_literal_node(node)
+    #     fields << field unless field.nil?
+    #     node.each do |n|
+    #       k, v = handle_assoc_node(n)
+    #       if !k.nil? && k == 'in'
+    #         type = v.type
 
-          # #user code directly references a variable
-          # if v.type.to_s == "var_ref" and $vars.has_key?(v.source)
-          #   values += eval(to_extract.source)
-          #   #   #example of to_extract.children:
-          #   #   #[s(:tstring_content, "none"), s(:tstring_content, "descendants"), s(:tstring_content, "hierarchy"),
-          #   #   #s(:tstring_content, "tree"), s(:tstring_content, "system")]
-          # end
+    #         unless %w[proc Proc].include? v[0].source # just excluding two edge cases
+    #           to_eval = v.source.to_s
+    #           old_eval = ''
+    #           # replaces all instances of the variable name with a string
+    #           # of the corresponding value before eval
+    #           while old_eval != to_eval
+    #             old_eval = to_eval.dup
+    #             dupes = false
+    #             $vars.each do |key, value|
+    #               to_eval.gsub! key, value.source.to_s
+    #             end
+    #           end
+    #           values += Array(eval(to_eval))
+    #         end
+    #       end
 
-          # #user code performs a function call, use eval() to perform it here
-          # if v.type.to_s == "call"
-          #   to_eval = ""
-          #   i = 0
-          #   v.children.each { |elem|
-          #     if elem.type.to_s == "var_ref" and $vars.has_key?(elem.source)
-          #       to_eval << $vars[v.children[i].source].source
-          #     else
-          #       to_eval << elem.source
-          #     end
-          #     i = i + 1
-          #   }
-          #   #what it looks like before parsing:
-          #   #[\n    [\"all\", :label_user_mail_option_all],\n    [\"selected\", :label_user_mail_option_selected],\n
-          #   # [\"only_my_events\", :label_user_mail_option_only_my_events],\n    [\"only_assigned\", :label_user_mail_option_only_assigned],\n
-          #   # [\"only_owner\", :label_user_mail_option_only_owner],\n    [\"none\", :label_user_mail_option_none],\n  ].collect(&:first)
-          #   values += eval(to_eval)
-          # end
-        end
+    #       # allow_blank means the empty string is allowed
+    #       values << '' if !k.nil? && k == 'allow_blank'
 
-        # allow_blank means the empty string is allowed
-        values << '' if !k.nil? && k == 'allow_blank'
-      end
-    end
-    fields.each do |field|
-      c = InclusionConstraint.new(classname, field, values, type)
-      constraints << c
-    end
-    constraints
+    #       # allow_nil means nil is allowed
+    #       values << nil if !k.nil? && k == 'allow_nil'
+    #     end
+    #   end
+
+    #   fields.each do |field|
+    #     c = InclusionConstraint.new(classname, field, values, type)
+    #     constraints << c
+    #   end
+    #   constraints
   end
 
   def extract_builtin_format(ast, classname)

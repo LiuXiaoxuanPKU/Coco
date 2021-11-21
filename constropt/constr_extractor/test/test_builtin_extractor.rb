@@ -9,10 +9,19 @@ def test_naive
     end
   FOO
   node = ClassNode.new('Test')
-  node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root
+  node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
   builtin_extractor = BuiltinExtractor.new
   builtin_extractor.visit(node)
   puts "# of extracted constraints: #{node.constraints.length}"
 end
 
+def test_length; end
+
+def test_inclusion; end
+
+def test_format; end
+
 test_naive
+test_length
+test_inclusion
+test_format
