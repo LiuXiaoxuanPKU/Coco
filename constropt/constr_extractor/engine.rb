@@ -2,6 +2,8 @@ require 'yard'
 require 'pathname'
 
 require_relative 'class_node'
+require_relative 'traversor'
+require_relative 'populate_tablename'
 
 class Engine
   def initialize(dir)
@@ -10,7 +12,11 @@ class Engine
 
   def run
     files = read_dir(@appdir)
-    build(files)
+    root = build(files)
+    # populate table name
+    populate_tablename_traversor = Traversor.new(PopulateTableName.new)
+    populate_tablename_traversor.traverse(root)
+    root
   end
 
   def build(asts)
