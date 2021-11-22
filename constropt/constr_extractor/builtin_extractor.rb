@@ -130,7 +130,6 @@ class BuiltinExtractor < Extractor
             # of the corresponding value before eval
             while old_eval != to_eval
               old_eval = to_eval.dup
-              dupes = false
               $vars.each do |key, value|
                 to_eval.gsub! key, value.source.to_s
               end
