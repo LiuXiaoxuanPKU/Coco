@@ -7,6 +7,8 @@ class BuiltinExtractor < Extractor
                          validates_format_of validates_length_of
                          validates_inclusion_of]
 
+  $vars = {}
+
   def initialize
     @builtin_validation_cnt = 0
     @custom_validation_cnt = 0
@@ -16,9 +18,16 @@ class BuiltinExtractor < Extractor
     return if node.ast.nil?
 
     ast = node.ast
-    commands = ast[2].children.select { |c| c.type.to_s == 'command' }
     constraints = []
-    commands.each { |c| constraints += extract_cmd(c, node.name) }
+    ast[2].children.select.each { |c|
+      if c.type.to_s == "assign"
+        $vars[c[0].source] = c[1]
+      end
+
+      if c.type.to_s == "command"
+        constraints += extract_cmd(c, node.name)
+      end
+    }
     node.constraints += constraints
   end
 
@@ -104,50 +113,49 @@ class BuiltinExtractor < Extractor
     constraints
   end
 
-  def extract_builtin_inclusion(_ast, _classname)
-    []
-    #   constraints = []
-    #   fields = []
-    #   content = ast[1].children
-    #   values = []
-    #   type = nil
-    #   content.each do |node|
-    #     field = handle_symbol_literal_node(node)
-    #     fields << field unless field.nil?
-    #     node.each do |n|
-    #       k, v = handle_assoc_node(n)
-    #       if !k.nil? && k == 'in'
-    #         type = v.type
+  def extract_builtin_inclusion(ast, classname)
+    constraints = []
+    fields = []
+    content = ast[1].children
+    values = []
+    type = nil
+    content.each do |node|
+      field = handle_symbol_literal_node(node)
+      fields << field unless field.nil?
+      node.each do |n|
+        k, v = handle_assoc_node(n)
+        if !k.nil? && k == 'in'
+          type = v.type
 
-    #         unless %w[proc Proc].include? v[0].source # just excluding two edge cases
-    #           to_eval = v.source.to_s
-    #           old_eval = ''
-    #           # replaces all instances of the variable name with a string
-    #           # of the corresponding value before eval
-    #           while old_eval != to_eval
-    #             old_eval = to_eval.dup
-    #             dupes = false
-    #             $vars.each do |key, value|
-    #               to_eval.gsub! key, value.source.to_s
-    #             end
-    #           end
-    #           values += Array(eval(to_eval))
-    #         end
-    #       end
+          unless %w[proc Proc].include? v[0].source # just excluding two edge cases
+            to_eval = v.source.to_s
+            old_eval = ''
+            # replaces all instances of the variable name with a string
+            # of the corresponding value before eval
+            while old_eval != to_eval
+              old_eval = to_eval.dup
+              dupes = false
+              $vars.each do |key, value|
+                to_eval.gsub! key, value.source.to_s
+              end
+            end
+            values += Array(eval(to_eval))
+          end
+        end
 
-    #       # allow_blank means the empty string is allowed
-    #       values << '' if !k.nil? && k == 'allow_blank'
+        # allow_blank means the empty string is allowed
+        values << '' if !k.nil? && k == 'allow_blank'
 
-    #       # allow_nil means nil is allowed
-    #       values << nil if !k.nil? && k == 'allow_nil'
-    #     end
-    #   end
+        # allow_nil means nil is allowed
+        values << nil if !k.nil? && k == 'allow_nil'
+      end
+    end
 
-    #   fields.each do |field|
-    #     c = InclusionConstraint.new(classname, field, values, type)
-    #     constraints << c
-    #   end
-    #   constraints
+    fields.each do |field|
+      c = InclusionConstraint.new(classname, field, values, type)
+      constraints << c
+    end
+    constraints
   end
 
   def extract_builtin_format(ast, classname)
