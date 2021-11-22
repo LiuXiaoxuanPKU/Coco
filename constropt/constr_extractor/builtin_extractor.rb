@@ -19,15 +19,11 @@ class BuiltinExtractor < Extractor
 
     ast = node.ast
     constraints = []
-    ast[2].children.select.each { |c|
-      if c.type.to_s == "assign"
-        $vars[c[0].source] = c[1]
-      end
+    ast[2].children.select.each do |c|
+      $vars[c[0].source] = c[1] if c.type.to_s == 'assign'
 
-      if c.type.to_s == "command"
-        constraints += extract_cmd(c, node.name)
-      end
-    }
+      constraints += extract_cmd(c, node.name) if c.type.to_s == 'command'
+    end
     node.constraints += constraints
   end
 

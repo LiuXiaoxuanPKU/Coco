@@ -3,11 +3,16 @@
 require_relative '../engine'
 require_relative '../traversor'
 require_relative '../builtin_extractor'
+require_relative '../constraint'
 
 class TestPrint
   def visit(node, _params)
-    puts "#{node.name} => #{node.parent}"
+    puts "==================#{node.name} => #{node.parent}"
     puts "constraints #{node.constraints.length}"
+    inclusion_constraints = node.constraints.select { |c| c.is_a? InclusionConstraint }
+    inclusion_constraints.each do |c|
+      puts c.to_s
+    end
   end
 end
 

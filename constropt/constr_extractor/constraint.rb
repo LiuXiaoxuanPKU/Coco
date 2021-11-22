@@ -1,6 +1,7 @@
 # validate.rb in the old repo (formatchecker)
 # how to write validate function: https://guides.rubyonrails.org/active_record_validations.html#validates-each
 require 'json'
+require 'active_support/inflector'
 
 class Constraint
   attr_accessor :class_name, :field_name
