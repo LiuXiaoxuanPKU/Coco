@@ -11,13 +11,14 @@ class ClassNode
   attr_accessor :name, :parent, :constants, :ast, :table, :children, :constraints
 
   def initialize(name)
+    @table = nil
     @name = name
     @children = []
     @constraints = []
   end
 
   def to_s
-    "name: #{@name}" 
+    "name: #{@name}"
   end
 end
 

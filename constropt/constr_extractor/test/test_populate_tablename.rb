@@ -4,6 +4,8 @@ require_relative '../engine'
 require_relative '../traversor'
 require_relative '../populate_tablename'
 require_relative '../constraint'
+require_relative './serializer'
+require_relative './test_util'
 
 class TestPrint
   def visit(node, _params)
@@ -11,7 +13,16 @@ class TestPrint
   end
 end
 
-def test_builtin
+def test_naive
+  input_root = TreeSerializer.deserialize_tree('test/data/classnode/tablename.json')
+  expect_root = TreeSerializer.deserialize_tree('test/data/classnode/tablename.json')
+  input_root = TestUtil.reset(input_root, [:@table])
+  t = Traversor.new(PopulateTableName.new)
+  t.traverse(input_root)
+  TestUtil.check_equal(input_root, expect_root)
+end
+
+def test_redmine
   t = Traversor.new(PopulateTableName.new)
   engine = Engine.new('test/data/redmine_models')
   roots = engine.run
@@ -21,5 +32,5 @@ def test_builtin
   t.traverse(roots)
 end
 
-# test_naive
-test_builtin
+test_naive
+# test_redmine

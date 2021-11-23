@@ -3,6 +3,8 @@ require 'active_support/inflector'
 
 class PopulateTableName
   def get_tablename_from_ast(ast)
+    return nil if ast.nil?
+
     ast[2].children.select.each do |c|
       # self.table = "#{table_name_prefix}users#{table_name_suffix}"
       # self.table = "#{table_name_prefix}workflows#{table_name_suffix}"

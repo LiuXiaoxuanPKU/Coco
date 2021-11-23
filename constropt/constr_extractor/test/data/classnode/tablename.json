@@ -1,0 +1,47 @@
+[
+  {
+    "name": "A",
+    "parent": null,
+    "table": "as",
+    "children": ["B", "C"],
+    "constraints": [],
+    "ast": null,
+    "constants": []
+  },
+  {
+    "name": "B",
+    "parent": "A",
+    "table": "as",
+    "children": ["D"],
+    "constraints": [],
+    "ast": null,
+    "constants": []
+  },
+  {
+    "name": "C",
+    "parent": "A",
+    "table": "as",
+    "children": [],
+    "constraints": [],
+    "ast": null,
+    "constants": []
+  },
+  {
+    "name": "D",
+    "parent": "B",
+    "table": "as",
+    "children": [],
+    "constraints": [],
+    "ast": null,
+    "constants": []
+  },
+  {
+    "name": "E",
+    "parent": null,
+    "table": "es",
+    "children": [],
+    "constraints": [],
+    "ast": null,
+    "constants": []
+  }
+]
