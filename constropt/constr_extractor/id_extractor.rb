@@ -3,7 +3,7 @@ require_relative 'constraint'
 
 class IdExtractor < Extractor
   def visit(node, _params)
-    # UniqueConstraint(classname, field, cond, case_sensitive, scope)
-    node.constraints.append(UniqueConstraint.new(node.table, 'id', nil, false, []))
+    # UniqueConstraint(field, cond, case_sensitive, scope)
+    node.constraints.append(UniqueConstraint.new('id', nil, false, []))
   end
 end

@@ -4,7 +4,7 @@ require_relative '../engine'
 require_relative '../traversor'
 require_relative '../populate_tablename'
 require_relative '../constraint'
-require_relative './serializer'
+require_relative '../serializer'
 require_relative './test_util'
 
 class TestPrint
@@ -14,8 +14,8 @@ class TestPrint
 end
 
 def test_naive
-  input_root = TreeSerializer.deserialize_tree('test/data/classnode/tablename.json')
-  expect_root = TreeSerializer.deserialize_tree('test/data/classnode/tablename.json')
+  input_root = Serializer.deserialize_tree('test/data/classnode/tablename.json')
+  expect_root = Serializer.deserialize_tree('test/data/classnode/tablename.json')
   input_root = TestUtil.reset(input_root, [:@table])
   t = Traversor.new(PopulateTableName.new)
   t.traverse(input_root)

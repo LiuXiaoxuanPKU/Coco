@@ -7,49 +7,37 @@ from constropt.query_rewriter import Rewriter
 from constropt.query_rewriter import constraint
 
 
-def extract_constraints(app_dir, output_dir):
-    commit = 'master'
-    rules = "[:builtin, :inheritance]"
-    extract_script = '''
-    require_relative "./version.rb"
-    commit = "master"
-    v = Version.new('%s', '%s', %s)
-    constraints = v.getModelConstraints()
-    File.open('%s', "w") do |f|
-      JSON.dump(constraints, f)
-    end
-    puts "===========Extract #{constraints.length} constraints==========="
-    ''' % (app_dir, commit, rules, output_dir)
-    script_dir = "./constropt/constr_extractor/extract_script.rb"
-    with open(script_dir, 'w') as f:
-        f.write(extract_script)
-    os.system("cd ./constropt/constr_extractor; ruby ./extract_script.rb")
+def extract_constraints(filename):
     # load constraints
-    return list(map(lambda x: json.loads(x), json.load(open(output_dir, 'r'))))
+    return json.load(open(filename, 'r'))
 
 
-def load_constraints(constraints_json):
+def load_constraints(classnodes):
     constraints = []
-    for obj in constraints_json:
-        c = None
-        if obj["constraint_type"] == "length":
-            c = constraint.LengthConstraint(
-                obj['table'], obj['field_name'], obj['min'], obj['max'])
-        elif obj["constraint_type"] == "unique":
-            c = constraint.UniqueConstraint(
-                obj['table'], obj['field_name'], obj['scope'])
-        elif obj["constraint_type"] == "presence":
-            c = constraint.PresenceConstraint(obj['table'], obj['field_name'])
-        elif obj["constraint_type"] == "inclusion":
-            c = constraint.InclusionConstraint(
-                obj['table'], obj['field_name'], obj['values'])
-        elif obj["constraint_type"] == "format":
-            c = constraint.FormatConstraint(
-                obj['table'], obj['field_name'], obj['format'])
-        else:
-            print("[Error] Unsupport constraint type ", obj)
-            exit(1)
-        constraints.append(c)
+    for classnode in classnodes:
+        classnode = json.loads(classnode)
+        constraints_obj = classnode['constraints']
+        for obj in constraints_obj:
+            c = None
+            if obj["constraint_type"] == "length":
+                c = constraint.LengthConstraint(
+                    classnode['table'], obj['field_name'], obj['min'], obj['max'])
+            elif obj["constraint_type"] == "unique":
+                c = constraint.UniqueConstraint(
+                    classnode['table'], obj['field_name'], obj['scope'])
+            elif obj["constraint_type"] == "presence":
+                c = constraint.PresenceConstraint(classnode['table'], obj['field_name'])
+            elif obj["constraint_type"] == "inclusion":
+                c = constraint.InclusionConstraint(
+                    classnode['table'], obj['field_name'], obj['values'])
+            elif obj["constraint_type"] == "format":
+                c = constraint.FormatConstraint(
+                    classnode['table'], obj['field_name'], obj['format'])
+            else:
+                print("[Error] Unsupport constraint type ", obj)
+                exit(1)
+            constraints.append(c)
+    print("Load %d constraints" % len(constraints))
     return constraints
 
 
@@ -134,11 +122,10 @@ def rewrite_queries(constraints, queries):
 
 
 if __name__ == "__main__":
-    app_name = "redmine"
-    app_dir = "spec/test_data/"
+    app_name = "redmine_new"
     constraint_output_dir = "%s/constraints/%s" % (
         os.getcwd(), app_name)
-    constraints_json = extract_constraints(app_dir, constraint_output_dir)
+    constraints_json = extract_constraints(constraint_output_dir)
     constraints = load_constraints(constraints_json)
     run_end2end_test = False
     if run_end2end_test:

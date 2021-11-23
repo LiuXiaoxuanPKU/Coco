@@ -10,8 +10,7 @@ end
 class InclusionConstraint < Constraint
   attr_accessor :values, :type
 
-  def initialize(table, field, values, type)
-    @table = table
+  def initialize(field, values, type)
     @field_name = field
     @values = values
     @type = type
@@ -22,17 +21,15 @@ class InclusionConstraint < Constraint
       constraint_type: 'inclusion',
       field_name: @field_name,
       values: @values,
-      type: type,
-      table: @table # This is a temporary fix, TODO, map class name to table name
-    }.to_json
+      type: type
+    }
   end
 end
 
 class UniqueConstraint < Constraint
   attr_accessor :cond, :case_sensitive, :scope
 
-  def initialize(table, field, cond, case_sensitive, scope)
-    @table = table
+  def initialize(field, cond, case_sensitive, scope)
     @field_name = field
     @cond = cond
     @case_sensitive = case_sensitive
@@ -45,17 +42,15 @@ class UniqueConstraint < Constraint
       field_name: @field_name,
       cond: @cond,
       case_sensitive: @case_sensitive,
-      scope: @scope,
-      table: @table
-    }.to_json
+      scope: @scope
+    }
   end
 end
 
 class PresenceConstraint < Constraint
   attr_accessor :cond
 
-  def initialize(table, field_name, cond)
-    @table = table
+  def initialize(field_name, cond)
     @field_name = field_name
     @cond = cond
   end
@@ -63,17 +58,15 @@ class PresenceConstraint < Constraint
   def to_s
     {
       constraint_type: 'presence',
-      field_name: @field_name,
-      table: @class_name
-    }.to_json
+      field_name: @field_name
+    }
   end
 end
 
 class LengthConstraint < Constraint
   attr_accessor :min, :max
 
-  def initialize(table, field_name, min, max)
-    @table = table
+  def initialize(field_name, min, max)
     @field_name = field_name
     @min = min
     @max = max
@@ -84,17 +77,15 @@ class LengthConstraint < Constraint
       constraint_type: 'length',
       field_name: @field_name,
       min: @min,
-      max: @max,
-      table: @table
-    }.to_json
+      max: @max
+    }
   end
 end
 
 class FormatConstraint < Constraint
   attr_accessor :format
 
-  def initialize(table, field_name, format_regex)
-    @table = table
+  def initialize(field_name, format_regex)
     @field_name = field_name
     @format = format_regex
   end
@@ -103,8 +94,7 @@ class FormatConstraint < Constraint
     {
       constraint_type: 'format',
       field_name: @field_name,
-      format: @format,
-      table: @table
-    }.to_json
+      format: @format
+    }
   end
 end

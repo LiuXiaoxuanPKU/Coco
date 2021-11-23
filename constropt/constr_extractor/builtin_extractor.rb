@@ -22,44 +22,44 @@ class BuiltinExtractor < Extractor
     ast[2].children.select.each do |c|
       $vars[c[0].source] = c[1] if c.type.to_s == 'assign'
 
-      constraints += extract_cmd(c, node.table) if c.type.to_s == 'command'
+      constraints += extract_cmd(c) if c.type.to_s == 'command'
     end
     node.constraints += constraints
   end
 
-  def extract_cmd(c, table)
+  def extract_cmd(c)
     constraints = []
     ident = c[0].source
     if BUILTIN_VALIDATOR.include? ident
       @builtin_validation_cnt += 1
-      constraints += extract_bultin_validator(c, table)
+      constraints += extract_bultin_validator(c)
     elsif ident == 'validate'
       @custom_validation_cnt += 1
     end
     constraints
   end
 
-  def extract_bultin_validator(ast, table)
+  def extract_bultin_validator(ast)
     # puts ast.source
     validate_type = ast.children[0].source
     case validate_type
     when 'validates_presence_of'
-      constraints = extract_builtin_presence(ast, table)
+      constraints = extract_builtin_presence(ast)
     when 'validates_uniqueness_of'
-      constraints = extract_builtin_unique(ast, table)
+      constraints = extract_builtin_unique(ast)
     when 'validates_format_of'
-      constraints = extract_builtin_format(ast, table)
+      constraints = extract_builtin_format(ast)
     when 'validates_inclusion_of'
-      constraints = extract_builtin_inclusion(ast, table)
+      constraints = extract_builtin_inclusion(ast)
     when 'validates_length_of'
-      constraints = extract_builtin_length(ast, table)
+      constraints = extract_builtin_length(ast)
     when 'validates_numericality_of'
-      constraints = extract_builtin_numerical(ast, table)
+      constraints = extract_builtin_numerical(ast)
     end
     constraints
   end
 
-  def extract_builtin_unique(ast, table)
+  def extract_builtin_unique(ast)
     fields = []
     constraints = []
     scope = []
@@ -85,13 +85,13 @@ class BuiltinExtractor < Extractor
       end
     end
     fields.each do |field|
-      c = UniqueConstraint.new(table, field, cond, case_sensitive, scope)
+      c = UniqueConstraint.new(field, cond, case_sensitive, scope)
       constraints << c
     end
     constraints
   end
 
-  def extract_builtin_presence(ast, table)
+  def extract_builtin_presence(ast)
     fields = []
     constraints = []
     content = ast[1].children
@@ -103,13 +103,13 @@ class BuiltinExtractor < Extractor
       cond = v if !k.nil? && (k == 'if')
     end
     fields.each do |field|
-      c = PresenceConstraint.new(table, field, cond)
+      c = PresenceConstraint.new(field, cond)
       constraints << c
     end
     constraints
   end
 
-  def extract_builtin_inclusion(ast, table)
+  def extract_builtin_inclusion(ast)
     constraints = []
     fields = []
     content = ast[1].children
@@ -147,13 +147,13 @@ class BuiltinExtractor < Extractor
     end
 
     fields.each do |field|
-      c = InclusionConstraint.new(table, field, values, type)
+      c = InclusionConstraint.new(field, values, type)
       constraints << c
     end
     constraints
   end
 
-  def extract_builtin_format(ast, table)
+  def extract_builtin_format(ast)
     constraints = []
     fields = []
     format = nil
@@ -165,13 +165,13 @@ class BuiltinExtractor < Extractor
       format = v.source if k == 'with'
     end
     fields.each do |field|
-      c = FormatConstraint.new(table, field, format)
+      c = FormatConstraint.new(field, format)
       constraints << c
     end
     constraints
   end
 
-  def extract_builtin_length(ast, table)
+  def extract_builtin_length(ast)
     constraints = []
     min = nil
     max = nil
@@ -187,11 +187,11 @@ class BuiltinExtractor < Extractor
       end
     end
     fields.each do |field|
-      constraint = LengthConstraint.new(table, field, min, max)
+      constraint = LengthConstraint.new(field, min, max)
       constraints << constraint
     end
     constraints
   end
 
-  def extract_builtin_numerical(ast, _table); end
+  def extract_builtin_numerical(ast); end
 end
