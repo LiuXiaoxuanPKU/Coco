@@ -95,7 +95,7 @@ def add_limit_one(self, q, constraints):
     # case 1: no join
     from_clause = q['from']
     # handle nested single query
-    rewrite_type = []
+    rewrite_type_set = set()
 
     def rewrite_subquery(subquery):
         if isinstance(subquery, dict) and 'value' in subquery and isinstance(subquery['value'], dict):
@@ -103,17 +103,17 @@ def add_limit_one(self, q, constraints):
                 subquery['value'], constraints)
             subquery['value'] = sub_rewritten
             return sub_rewrite_type
-        return []
+        return set()
 
     if isinstance(from_clause, list):
         for subquery in from_clause:
-            rewrite_type += rewrite_subquery(subquery)
+            rewrite_type_set.update(rewrite_subquery(subquery))
     elif isinstance(from_clause, dict):
-        rewrite_type += rewrite_subquery(from_clause)
+        rewrite_type_set.update(rewrite_subquery(from_clause))
 
     if not has_inner_join:
         if 'where' not in q:
-            return len(rewrite_type) > 0, q
+            return rewrite_type_set, q
         table = q['from']
         where_clause = q['where']
         keys, values = list(where_clause.keys()), list(where_clause.values())
@@ -189,7 +189,7 @@ def add_limit_one(self, q, constraints):
                         predicate, table)
                     can_rewrite = can_rewrite or return_one
             if not can_rewrite:
-                return len(rewrite_type) > 0, q
+                return rewrite_type_set, q
             rewrite_q = q.copy()
             rewrite_q['limit'] = 1
             return True, rewrite_q
@@ -203,9 +203,9 @@ def add_limit_one(self, q, constraints):
                     return_one = check_predicate_return_one_tuple(
                         predicate, table)
                     if not return_one:
-                        return len(rewrite_type) > 0, q
+                        return rewrite_type_set, q
             rewrite_q = q.copy()
             rewrite_q['limit'] = 1
             return True, rewrite_q
 
-    return len(rewrite_type) > 0, q
+    return rewrite_type_set, q
