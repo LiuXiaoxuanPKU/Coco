@@ -1,20 +1,24 @@
 require_relative '../traversor'
 
-class ResetName
+class Reset
   def initialize(fields)
     @fields = fields
   end
 
   def visit(node, _params)
     @fields.each do |field|
-      node.instance_variable_set(field, nil)
+      if node.instance_variable_get(field).is_a?(Array)
+        node.instance_variable_set(field, [])
+      else
+        node.instance_variable_set(field, nil)
+      end
     end
   end
 end
 
 class TestUtil
   def self.reset(node, fields)
-    t = Traversor.new(ResetName.new(fields))
+    t = Traversor.new(Reset.new(fields))
     t.traverse(node)
     node
   end
@@ -22,7 +26,12 @@ class TestUtil
   def self.check_equal(t1, t2)
     # :name, :parent, :constants, :ast, :table, :children, :constraints
     raise "name: #{t1.name} != #{t2.name}" unless t1.name == t2.name
-    raise "parent: #{t1.parent} != #{t2.parent}" unless t1.parent == t2.parent
+
+    if t1.parent.nil?
+      raise "parent: #{t1.parent} != #{t2.parent}" unless t2.parent.nil?
+    else
+      raise "parent: #{t1.parent} != #{t2.parent}" unless t1.parent.name == t2.parent.name
+    end
     raise "ast: #{t1.ast} != #{t2.ast}" unless t1.ast == t2.ast
     raise "table: #{t1.table} != #{t2.table}" unless t1.table == t2.table
     # TODO: define equal for constraint

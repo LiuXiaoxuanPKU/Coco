@@ -1,4 +1,6 @@
 require 'json'
+require 'oj'
+require_relative 'constraint'
 require_relative 'class_node'
 
 class TreeVisitor
@@ -22,19 +24,18 @@ class Serializer
     node.ast = node_obj['ast']
     node.table = node_obj['table']
     node.children = node_obj['children']
-    node.constraints = node_obj['constraints']
+    node.constraints = Oj.load(node_obj['constraints'])
     node
   end
 
   def self.serialize_node(node)
-    constraint_objs = []
     node.constraints.each do |c|
-      constraint_objs << c.to_s
+      c.cond = c.cond.to_s if c.class.method_defined? :cond
     end
     {
       table: node.table,
       class: node.name,
-      constraints: constraint_objs
+      constraints: Oj.dump(node.constraints)
     }.to_json
   end
 

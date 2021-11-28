@@ -16,21 +16,21 @@ def load_constraints(classnodes):
     constraints = []
     for classnode in classnodes:
         classnode = json.loads(classnode)
-        constraints_obj = classnode['constraints']
+        constraints_obj = json.loads(classnode['constraints'])
         for obj in constraints_obj:
             c = None
-            if obj["constraint_type"] == "length":
+            if obj["^o"] == "LengthConstraint":
                 c = constraint.LengthConstraint(
                     classnode['table'], obj['field_name'], obj['min'], obj['max'])
-            elif obj["constraint_type"] == "unique":
+            elif obj["^o"] == "UniqueConstraint":
                 c = constraint.UniqueConstraint(
                     classnode['table'], obj['field_name'], obj['scope'])
-            elif obj["constraint_type"] == "presence":
+            elif obj["^o"] == "PresenceConstraint":
                 c = constraint.PresenceConstraint(classnode['table'], obj['field_name'])
-            elif obj["constraint_type"] == "inclusion":
+            elif obj["^o"] == "InclusionConstraint":
                 c = constraint.InclusionConstraint(
                     classnode['table'], obj['field_name'], obj['values'])
-            elif obj["constraint_type"] == "format":
+            elif obj["^o"] == "FormatConstraint":
                 c = constraint.FormatConstraint(
                     classnode['table'], obj['field_name'], obj['format'])
             else:
@@ -122,7 +122,7 @@ def rewrite_queries(constraints, queries):
 
 
 if __name__ == "__main__":
-    app_name = "redmine_new"
+    app_name = "redmine"
     constraint_output_dir = "%s/constraints/%s" % (
         os.getcwd(), app_name)
     constraints_json = extract_constraints(constraint_output_dir)
