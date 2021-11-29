@@ -127,6 +127,7 @@ if __name__ == "__main__":
         os.getcwd(), app_name)
     constraints_json = extract_constraints(constraint_output_dir)
     constraints = load_constraints(constraints_json)
+    exit(0)
     run_end2end_test = False
     if run_end2end_test:
         query_dir = "%s/queries/%s_end2end_withparam.pk" % (

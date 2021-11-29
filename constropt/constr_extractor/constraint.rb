@@ -4,97 +4,59 @@ require 'json'
 require 'active_support/inflector'
 
 class Constraint
-  attr_accessor :class_name, :field_name
+  attr_accessor :class_name, :field_name, :db
 end
 
 class InclusionConstraint < Constraint
   attr_accessor :values, :type
 
-  def initialize(field, values, type)
+  def initialize(field, values, type, db = false)
     @field_name = field
     @values = values
     @type = type
-  end
-
-  def to_s
-    {
-      constraint_type: 'inclusion',
-      field_name: @field_name,
-      values: @values,
-      type: type
-    }
+    @db = db
   end
 end
 
 class UniqueConstraint < Constraint
   attr_accessor :cond, :case_sensitive, :scope
 
-  def initialize(field, cond, case_sensitive, scope)
+  def initialize(field, cond, case_sensitive, scope, db = false)
     @field_name = field
     @cond = cond
     @case_sensitive = case_sensitive
     @scope = scope
-  end
-
-  def to_s
-    {
-      constraint_type: 'unique',
-      field_name: @field_name,
-      cond: @cond,
-      case_sensitive: @case_sensitive,
-      scope: @scope
-    }
+    @db = db
   end
 end
 
 class PresenceConstraint < Constraint
   attr_accessor :cond
 
-  def initialize(field_name, cond)
+  def initialize(field_name, cond, db = false)
     @field_name = field_name
     @cond = cond
-  end
-
-  def to_s
-    {
-      constraint_type: 'presence',
-      field_name: @field_name
-    }
+    @db = db
   end
 end
 
 class LengthConstraint < Constraint
   attr_accessor :min, :max
 
-  def initialize(field_name, min, max)
+  def initialize(field_name, min, max, db = false)
     @field_name = field_name
     @min = min
     @max = max
-  end
-
-  def to_s
-    {
-      constraint_type: 'length',
-      field_name: @field_name,
-      min: @min,
-      max: @max
-    }
+    @db = db
   end
 end
 
 class FormatConstraint < Constraint
   attr_accessor :format
 
-  def initialize(field_name, format_regex)
+  def initialize(field_name, format_regex, db=false)
     @field_name = field_name
     @format = format_regex
-  end
-
-  def to_s
-    {
-      constraint_type: 'format',
-      field_name: @field_name,
-      format: @format
-    }
+    @db = db
   end
 end
