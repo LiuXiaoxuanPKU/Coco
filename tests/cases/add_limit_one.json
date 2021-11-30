@@ -26,9 +26,57 @@
                 "cond": "null"
             }
         },
-        "before": "select * from user where name = 'jialun' limit 1",
-        "after": "select * from user where name = 'jialun' limit 1",
+        "before": "select * from user where name = 'jialun'",
+        "after": "select * from user where name = 'jialun'",
         "type": "add_limit_one",
         "can_rewrite": false
+    },
+    {
+        "id": 3,
+        "constraint": {
+            "type": "unique",
+            "args": {
+                "table": "user",
+                "field": "name",
+                "scope": [],
+                "cond": "null"
+            }
+        },
+        "before": "select * from user where name in ('jialun')",
+        "after": "select * from user where name in ('jialun') limit 1",
+        "type": "add_limit_one",
+        "can_rewrite": true
+    },
+    {
+        "id": 4,
+        "constraint": {
+            "type": "unique",
+            "args": {
+                "table": "user",
+                "field": "name",
+                "scope": [],
+                "cond": "null"
+            }
+        },
+        "before": "select * from (select name from user where name in ('jialun'))",
+        "after": "select * from (select name from user where name in ('jialun') limit 1)",
+        "type": "add_limit_one",
+        "can_rewrite": true
+    },
+    {
+        "id": 5,
+        "constraint": {
+            "type": "unique",
+            "args": {
+                "table": "user",
+                "field": "name",
+                "scope": [],
+                "cond": "null"
+            }
+        },
+        "before": "select * from (select name from user where name in ('jialun')) inner join projects on user.id=projects.id where projects.name='test'",
+        "after": "select * from (select name from user where name in ('jialun') limit 1) inner join projects on user.id=projects.id where projects.name='test'",
+        "type": "add_limit_one",
+        "can_rewrite": true
     }
 ]

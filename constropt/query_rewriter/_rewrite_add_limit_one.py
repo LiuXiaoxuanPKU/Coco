@@ -23,7 +23,7 @@ def check_connect_by_and_equal(predicates):
     # TODO: handle exist
     if isinstance(predicates[key], list) and isinstance(predicates[key][0], str):
         # key = in, predicates[key] = ['users.type', '$1'],
-        if key == "eq" or (key == "in" and isinstance(predicates[key][1], str)):
+        if key == "eq" or (key == "in" and len(predicates[key][1]) == 1):
             return True, [predicates[key][0]]
     res = True
     if not key == "and":
@@ -66,14 +66,8 @@ def get_table_predicates(predicates, table):
 
 
 def add_limit_one(self, q, constraints):
-    if 'limit' in q or 'where' not in q:
+    if 'limit' in q or ('where' not in q and isinstance(q['from'], str)):
         return False, q
-
-    where_clause = q['where']
-    keys, values = list(where_clause.keys()), list(where_clause.values())
-    has_inner_join = self.check_query_has_join(q)
-    assert(len(keys) == 1)
-    key = keys[0]
 
     def check_predicate_return_one_tuple(predicates, table):
         '''
@@ -97,13 +91,34 @@ def add_limit_one(self, q, constraints):
                 return True
         return False
 
+    has_inner_join = self.check_query_has_join(q)
     # case 1: no join
-    table = q['from']
+    from_clause = q['from']
+    # handle nested single query
+    rewrite_type = []
+
+    def rewrite_subquery(subquery):
+        if isinstance(subquery, dict) and 'value' in subquery and isinstance(subquery['value'], dict):
+            sub_rewritten, sub_rewrite_type = self.rewrite_single_query(
+                subquery['value'], constraints)
+            subquery['value'] = sub_rewritten
+            return sub_rewrite_type
+        return []
+
+    if isinstance(from_clause, list):
+        for subquery in from_clause:
+            rewrite_type += rewrite_subquery(subquery)
+    elif isinstance(from_clause, dict):
+        rewrite_type += rewrite_subquery(from_clause)
+
     if not has_inner_join:
-        # handle nested single query
-        if isinstance(table, dict) and isinstance(table['value'], dict):
-            rewritten, _ = self.rewrite_single_query(table['value'], constraints)
-            table['value'] = rewritten
+        if 'where' not in q:
+            return len(rewrite_type) > 0, q
+        table = q['from']
+        where_clause = q['where']
+        keys, values = list(where_clause.keys()), list(where_clause.values())
+        assert(len(keys) == 1)
+        key = keys[0]
         # case 1: no join, only has one predicate
         if check_predicate_return_one_tuple(where_clause, table):
             rewrite_q = q.copy()
@@ -167,10 +182,6 @@ def add_limit_one(self, q, constraints):
             # for each join table, only return one tuple from that table
             can_rewrite = False
             for table in join_tables:
-                # rewrite nested query
-                if isinstance(table, dict) and isinstance(table['value'], dict):
-                    rewritten, _ = self.rewrite_single_query(table['value'], constraints)
-                    table['value'] = rewritten
                 # get predicates on that relation
                 table_predicates = get_table_predicates(predicates, table)
                 for predicate in table_predicates:
@@ -178,7 +189,7 @@ def add_limit_one(self, q, constraints):
                         predicate, table)
                     can_rewrite = can_rewrite or return_one
             if not can_rewrite:
-                return False, q
+                return len(rewrite_type) > 0, q
             rewrite_q = q.copy()
             rewrite_q['limit'] = 1
             return True, rewrite_q
@@ -186,19 +197,15 @@ def add_limit_one(self, q, constraints):
         # each of the relation returns no more than 1 tuple
         else:
             for table in join_tables:
-                # rewrite nested query
-                if isinstance(table, dict) and isinstance(table['value'], dict):
-                    rewritten, _ = self.rewrite_single_query(table['value'], constraints)
-                    table['value'] = rewritten
                 # get predicates on that relation
                 table_predicates = get_table_predicates(predicates, table)
                 for predicate in table_predicates:
                     return_one = check_predicate_return_one_tuple(
                         predicate, table)
                     if not return_one:
-                        return False, q
+                        return len(rewrite_type) > 0, q
             rewrite_q = q.copy()
             rewrite_q['limit'] = 1
             return True, rewrite_q
 
-    return False, q
+    return len(rewrite_type) > 0, q

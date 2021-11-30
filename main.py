@@ -3,53 +3,41 @@ import json
 import pickle
 from mo_imports import expect
 from mo_sql_parsing import parse, format
-from constropt.query_rewriter.rewrite import rewrite_single_query
+from constropt.query_rewriter import Rewriter
 from constropt.query_rewriter import constraint
 
 
-def extract_constraints(app_dir, output_dir):
-    commit = 'master'
-    rules = "[:builtin, :inheritance]"
-    extract_script = '''
-    require_relative "./version.rb"
-    commit = "master"
-    v = Version.new('%s', '%s', %s)
-    constraints = v.getModelConstraints()
-    File.open('%s', "w") do |f|
-      JSON.dump(constraints, f)
-    end
-    puts "===========Extract #{constraints.length} constraints==========="
-    ''' % (app_dir, commit, rules, output_dir)
-    script_dir = "./constropt/constr_extractor/extract_script.rb"
-    with open(script_dir, 'w') as f:
-        f.write(extract_script)
-    os.system("cd ./constropt/constr_extractor; ruby ./extract_script.rb")
+def extract_constraints(filename):
     # load constraints
-    return list(map(lambda x: json.loads(x), json.load(open(output_dir, 'r'))))
+    return json.load(open(filename, 'r'))
 
 
-def load_constraints(constraints_json):
+def load_constraints(classnodes):
     constraints = []
-    for obj in constraints_json:
-        c = None
-        if obj["constraint_type"] == "length":
-            c = constraint.LengthConstraint(
-                obj['table'], obj['field_name'], obj['min'], obj['max'])
-        elif obj["constraint_type"] == "unique":
-            c = constraint.UniqueConstraint(
-                obj['table'], obj['field_name'], obj['scope'])
-        elif obj["constraint_type"] == "presence":
-            c = constraint.PresenceConstraint(obj['table'], obj['field_name'])
-        elif obj["constraint_type"] == "inclusion":
-            c = constraint.InclusionConstraint(
-                obj['table'], obj['field_name'], obj['values'])
-        elif obj["constraint_type"] == "format":
-            c = constraint.FormatConstraint(
-                obj['table'], obj['field_name'], obj['format'])
-        else:
-            print("[Error] Unsupport constraint type ", obj)
-            exit(1)
-        constraints.append(c)
+    for classnode in classnodes:
+        classnode = json.loads(classnode)
+        constraints_obj = json.loads(classnode['constraints'])
+        for obj in constraints_obj:
+            c = None
+            if obj["^o"] == "LengthConstraint":
+                c = constraint.LengthConstraint(
+                    classnode['table'], obj['field_name'], obj['min'], obj['max'])
+            elif obj["^o"] == "UniqueConstraint":
+                c = constraint.UniqueConstraint(
+                    classnode['table'], obj['field_name'], obj['scope'])
+            elif obj["^o"] == "PresenceConstraint":
+                c = constraint.PresenceConstraint(classnode['table'], obj['field_name'])
+            elif obj["^o"] == "InclusionConstraint":
+                c = constraint.InclusionConstraint(
+                    classnode['table'], obj['field_name'], obj['values'])
+            elif obj["^o"] == "FormatConstraint":
+                c = constraint.FormatConstraint(
+                    classnode['table'], obj['field_name'], obj['format'])
+            else:
+                print("[Error] Unsupport constraint type ", obj)
+                exit(1)
+            constraints.append(c)
+    print("Load %d constraints" % len(constraints))
     return constraints
 
 
@@ -75,6 +63,7 @@ def load_queries(query_dir):
 
 
 def rewrite_queries(constraints, queries):
+    rewriter = Rewriter()
     tests = list(queries.keys())
     rewrite_stats = {}
     table_stats = {}
@@ -112,7 +101,7 @@ def rewrite_queries(constraints, queries):
             if "IS NULL" in queries[testname][i]:
                 # print(queries[testname][i])
                 pass
-            q, rewrite_types = rewrite_single_query(
+            q, rewrite_types = rewriter.rewrite_single_query(
                 org_q, constraints)
             if len(rewrite_types) > 0:
                 rewrite_cnt += 1
@@ -134,12 +123,11 @@ def rewrite_queries(constraints, queries):
 
 if __name__ == "__main__":
     app_name = "redmine"
-    app_dir = "spec/test_data/"
     constraint_output_dir = "%s/constraints/%s" % (
         os.getcwd(), app_name)
-    constraints_json = extract_constraints(app_dir, constraint_output_dir)
+    constraints_json = extract_constraints(constraint_output_dir)
     constraints = load_constraints(constraints_json)
-
+    exit(0)
     run_end2end_test = False
     if run_end2end_test:
         query_dir = "%s/queries/%s_end2end_withparam.pk" % (
@@ -147,6 +135,7 @@ if __name__ == "__main__":
         queries = load_queries(query_dir)
         rewrite_queries(constraints, queries)
     else:
+        r = Rewriter()
         query_dir = "queries/redmine.pk"
         queries = []
         parse_cnt = 0
@@ -157,7 +146,7 @@ if __name__ == "__main__":
         stats = {}
         for q in queries:
             try:
-                new_q, rewrite_types = rewrite_single_query(
+                new_q, rewrite_types = r.rewrite_single_query(
                     parse(q[1]), constraints)
                 if len(rewrite_types):
                     rewrite_cnt += 1

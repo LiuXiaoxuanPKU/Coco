@@ -1,0 +1,38 @@
+[
+  {
+    "name": "A",
+    "parent": null,
+    "table": "as",
+    "children": ["B", "C"],
+    "constraints": "[{\"^o\":\"InclusionConstraint\",\"field_name\":\"type\",\"values\":[\"A\",\"B\",\"C\",\"D\"],\"type\":\"class_inheritance\"}]",
+    "ast": null,
+    "constants": []
+  },
+  {
+    "name": "B",
+    "parent": "A",
+    "table": "as",
+    "children": ["D"],
+    "constraints": "[]",
+    "ast": null,
+    "constants": []
+  },
+  {
+    "name": "C",
+    "parent": "A",
+    "table": "as",
+    "children": [],
+    "constraints": "[]",
+    "ast": null,
+    "constants": []
+  },
+  {
+    "name": "D",
+    "parent": "B",
+    "table": "as",
+    "children": [],
+    "constraints": "[]",
+    "ast": null,
+    "constants": []
+  }
+]

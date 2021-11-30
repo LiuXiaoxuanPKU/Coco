@@ -67,7 +67,7 @@ class RewriteTestor:
 
 if __name__ == "__main__":
     testor = RewriteTestor("./tests/cases/add_limit_one.json")
-    testor.run_all()
+    testor.run_by_ids([3])
 
     # testor = RewriteTestor("./tests/cases/remove_predicate_numerical.json")
     # testor.run_all()
