@@ -66,8 +66,9 @@ def get_table_predicates(predicates, table):
 
 
 def add_limit_one(self, q, constraints):
+    rewrite_type_set = set()
     if 'limit' in q or ('where' not in q and isinstance(q['from'], str)):
-        return False, q
+        return rewrite_type_set, q
 
     def check_predicate_return_one_tuple(predicates, table):
         '''
@@ -95,7 +96,6 @@ def add_limit_one(self, q, constraints):
     # case 1: no join
     from_clause = q['from']
     # handle nested single query
-    rewrite_type_set = set()
 
     def rewrite_subquery(subquery):
         if isinstance(subquery, dict) and 'value' in subquery and isinstance(subquery['value'], dict):
@@ -123,7 +123,7 @@ def add_limit_one(self, q, constraints):
         if check_predicate_return_one_tuple(where_clause, table):
             rewrite_q = q.copy()
             rewrite_q['limit'] = 1
-            return True, rewrite_q
+            rewrite_type_set.add(self.RewriteType.ADD_LIMIT_ONE)
         # case 2: no join, predicates are connected by 'and'
         elif key in ["and"]:
             # as long as all predicates are connected by 'and'
@@ -134,20 +134,20 @@ def add_limit_one(self, q, constraints):
             for pred in predicates:
                 # TODO: does not handle exits for now
                 if 'exists' in pred:
-                    return False, None
+                    return rewrite_type_set, None
                 return_one = return_one or check_predicate_return_one_tuple(
                     where_clause, table)
             if return_one:
                 rewrite_q = q.copy()
                 rewrite_q['limit'] = 1
-                return True, rewrite_q
+                rewrite_type_set.add(self.RewriteType.ADD_LIMIT_ONE)
     # has inner join
     else:
         join_tables = self.get_query_tables(q)
         predicates = q['where']
         ok, _ = check_connect_by_and_equal(predicates)
         if not ok:
-            return False, q
+            return rewrite_type_set, q
 
         join_predicates = [ele for ele in q['from'] if 'inner join' in ele]
         join_predicate = [ele for ele in join_predicates if 'on' in ele][0]
@@ -192,7 +192,7 @@ def add_limit_one(self, q, constraints):
                 return rewrite_type_set, q
             rewrite_q = q.copy()
             rewrite_q['limit'] = 1
-            return True, rewrite_q
+            rewrite_type_set.add(self.RewriteType.ADD_LIMIT_ONE)
         # case 3: inner join, join on any columns
         # each of the relation returns no more than 1 tuple
         else:
@@ -206,6 +206,6 @@ def add_limit_one(self, q, constraints):
                         return rewrite_type_set, q
             rewrite_q = q.copy()
             rewrite_q['limit'] = 1
-            return True, rewrite_q
+            rewrite_type_set.add(self.RewriteType.ADD_LIMIT_ONE)
 
     return rewrite_type_set, q
