@@ -77,8 +77,6 @@ def r_in_to_u_in(self, r_in, constraints, col_to_table_dot_col):
                 table_unique_lst.append(col_to_table_dot_col[col])
             u_in.add(frozenset(table_unique_lst))
     return u_in, set()
-<<<<<<< HEAD
-
 
 def valid_filter_condition(cond) -> bool:
     """
@@ -96,8 +94,6 @@ def valid_filter_condition(cond) -> bool:
     elif isinstance(cond[1], list):
         return len(cond[1]) == 1
     return False
-=======
->>>>>>> a249069c2ffa7456e378cd3049351b77c99450cb
 
 
 def u_in_after_filter(q, u_in, col_to_table_dot_col):
