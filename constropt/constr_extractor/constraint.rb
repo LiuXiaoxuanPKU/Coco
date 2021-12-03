@@ -60,3 +60,15 @@ class FormatConstraint < Constraint
     @db = db
   end
 end
+
+class NumericalConstraint < Constraint
+  attr_accessor :min, :max, :allow_nil
+
+  def initialize(field, min, max, allow_nil, db = false)
+    @field_name = field
+    @min = min
+    @max = max
+    @allow_nil = allow_nil
+    @db = db
+  end
+end
