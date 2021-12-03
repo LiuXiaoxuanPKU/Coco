@@ -104,11 +104,12 @@ def u_in_after_filter(q, u_in, col_to_table_dot_col):
      """
     # check if q has where clause
     if not 'where' in q:
-        return
+        return u_in
     # check only AND in where clause
     where = q["where"]
     if not ("and" in where or "eq" in where):
-        return
+        return u_in
+    u_out = set()
     if "and" in where:
         where_conditions = where["and"]
         for cond in where_conditions:
@@ -121,7 +122,7 @@ def u_in_after_filter(q, u_in, col_to_table_dot_col):
                     subset = set(subset)
                     subset.discard(cond_column)
                     subset.discard(cond_column.split(".")[-1])
-                    subset = frozenset(subset)
+                    u_out.add(frozenset(subset))
     # only one condition in where
     elif "eq" in where and valid_filter_condition(where["eq"]):
         cond_column = unalias(col_to_table_dot_col, where["eq"][0]) # table_name.id, id
@@ -131,7 +132,8 @@ def u_in_after_filter(q, u_in, col_to_table_dot_col):
             subset = set(subset)
             subset.discard(cond_column)
             subset.discard(cond_column.split(".")[-1])
-            subset = frozenset(subset)
+            u_out.add(frozenset(subset))
+    return u_out
 
 
 def query_to_u_out(self, q, constraints, col_to_table_dot_col):
@@ -145,7 +147,7 @@ def query_to_u_out(self, q, constraints, col_to_table_dot_col):
     u_in1, rw = r_in_to_u_in(self, r_in1, constraints, col_to_table_dot_col)
     rewrite_type_set.update(rw)
     # single table case filter
-    u_in_after_filter(q, u_in1, col_to_table_dot_col)
+    u_in1 = u_in_after_filter(q, u_in1, col_to_table_dot_col)
     for t in tables[1:]:
         if 'inner join' in t or 'join' in t:
             # get table 2 and its unique set
@@ -155,7 +157,7 @@ def query_to_u_out(self, q, constraints, col_to_table_dot_col):
                 r_in2 = t['join']
             u_in2, rw = r_in_to_u_in(self, r_in2, constraints, col_to_table_dot_col)
             rewrite_type_set.update(rw)
-            u_in_after_filter(q, u_in2, col_to_table_dot_col)
+            u_in2 = u_in_after_filter(q, u_in2, col_to_table_dot_col)
             # check fail: u_out is empty set. else, u_out is union of u_in1 and u_in2.
             if check_join_conditions(t, u_in1, u_in2, col_to_table_dot_col):
                 u_in1 = u_in1.union(u_in2)
@@ -169,12 +171,12 @@ def query_to_u_out(self, q, constraints, col_to_table_dot_col):
                 r_in2 = t['left join']
             u_in2, rw = r_in_to_u_in(self, r_in2, constraints, col_to_table_dot_col)
             rewrite_type_set.update(rw)
-            u_in_after_filter(q, u_in2, col_to_table_dot_col)
+            u_in2 = u_in_after_filter(q, u_in2, col_to_table_dot_col)
             # check fail: u_out is empty set. else, u_out is u_in1.
             if not check_join_conditions(t, u_in1, u_in2, col_to_table_dot_col):
                 u_in1 = set()
         # deal with filter after join
-        u_in_after_filter(q, u_in1, col_to_table_dot_col)
+        u_in1 = u_in_after_filter(q, u_in1, col_to_table_dot_col)
     return u_in1, rewrite_type_set
 
 
