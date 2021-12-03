@@ -60,10 +60,11 @@ class PresenceConstraint(Constraint):
 
 
 class NumericalConstraint(Constraint):
-    def __init__(self, table, field, min, max) -> None:
+    def __init__(self, table, field, min, max, allow_nil) -> None:
         super().__init__(table, field)
         self.min = min
         self.max = max
+        self.allow_nil = allow_nil
         if self.min is None and self.max is None:
             raise Exception("[Error] Numerical Constraint, Min and Max cannot be None at the same time")
 
@@ -76,4 +77,4 @@ class NumericalConstraint(Constraint):
             return v <= self.max
 
     def __str__(self) -> str:
-        return "Numerical, table: %s, field: %s, min: %d, max %d" % (self.table, self.field, self.min, self.max)
+        return "Numerical, table: %s, field: %s, min: %d, max: %d, allow_nil: %d" % (self.table, self.field, self.min, self.max, self.allow_nil)

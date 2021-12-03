@@ -7,11 +7,12 @@ class BuiltinExtractor < Extractor
                          validates_format_of validates_length_of
                          validates_inclusion_of]
 
-  $vars = {}
+  
 
   def initialize
     @builtin_validation_cnt = 0
     @custom_validation_cnt = 0
+    @vars = {}
   end
 
   def visit(node, _params)
@@ -20,7 +21,7 @@ class BuiltinExtractor < Extractor
     ast = node.ast
     constraints = []
     ast[2].children.select.each do |c|
-      $vars[c[0].source] = c[1] if c.type.to_s == 'assign'
+      @vars[c[0].source] = c[1] if c.type.to_s == 'assign'
 
       constraints += extract_cmd(c) if c.type.to_s == 'command'
     end
@@ -121,7 +122,11 @@ class BuiltinExtractor < Extractor
       node.each do |n|
         k, v = handle_assoc_node(n)
         if !k.nil? && k == 'in'
-          type = v.type
+          if v.type.to_s == "dot2"
+            return extract_builtin_numerical(ast)
+          end
+
+          type = 'builtin'
 
           unless %w[proc Proc].include? v[0].source # just excluding two edge cases
             to_eval = v.source.to_s
@@ -130,7 +135,7 @@ class BuiltinExtractor < Extractor
             # of the corresponding value before eval
             while old_eval != to_eval
               old_eval = to_eval.dup
-              $vars.each do |key, value|
+              @vars.each do |key, value|
                 to_eval.gsub! key, value.source.to_s
               end
             end
@@ -140,9 +145,6 @@ class BuiltinExtractor < Extractor
 
         # allow_blank means the empty string is allowed
         values << '' if !k.nil? && k == 'allow_blank'
-
-        # allow_nil means nil is allowed
-        values << nil if !k.nil? && k == 'allow_nil'
       end
     end
 
@@ -193,5 +195,31 @@ class BuiltinExtractor < Extractor
     constraints
   end
 
-  def extract_builtin_numerical(ast); end
+  def extract_builtin_numerical(ast)
+    constraints = []
+    fields = []
+    content = ast[1].children
+    min = nil
+    max = nil
+    allow_nil = false
+    content.each do |node|
+      field = handle_symbol_literal_node(node)
+      fields << field unless field.nil?
+      node.each do |n|
+        k, v = handle_assoc_node(n)
+        if !k.nil? && k == 'in'
+          min = v[0].source.to_i
+          max = v[1].source.to_i
+        end
+
+        allow_nil = true if !k.nil? && k == 'allow_nil'
+      end
+    end
+
+    fields.each do |field|
+      c = NumericalConstraint.new(field, min, max, allow_nil)
+      constraints << c
+    end
+    constraints
+  end
 end
