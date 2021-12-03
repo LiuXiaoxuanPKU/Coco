@@ -1,0 +1,75 @@
+[
+    {
+        "id": 1,
+        "constraint": {
+            "type": "unique",
+            "args": {
+                "table": "users",
+                "field": "name",
+                "scope": [],
+                "cond": "null"
+            }
+        },
+        "before": "SELECT distinct(name) from users where name = $1",
+        "after": "SELECT name from users where name = $1",
+        "type": "remove_distinct",
+        "can_rewrite": true
+    },
+    {
+        "id": 2,
+        "constraint": {
+            "type": "unique",
+            "args": {
+                "table": "roles",
+                "field": "id",
+                "scope": [],
+                "cond": "null"
+            }
+        },
+        "before": "SELECT DISTINCT roles.* FROM roles WHERE roles.id IN ($1, $2)",
+        "after": "SELECT roles.* FROM roles WHERE roles.id IN ($1, $2)",
+        "type": "remove_distinct",
+        "can_rewrite": true
+    },
+    {
+        "id": 3,
+        "constraint": {
+            "type": "unique",
+            "args": {
+                "table": "members",
+                "field": "user_id",
+                "scope": ["project_id"],
+                "cond": "null"
+            }
+        },
+        "constraint": {
+            "type": "unique",
+            "args": {
+                "table": "users",
+                "field": "id",
+                "scope": [],
+                "cond": "null"
+            }
+        },
+        "before": "SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = $1 AND (members.project_id = 1) AND users.status = $2 AND users.status = $3 AND users.type IN ($4, $5) LIMIT 1",
+        "after": "SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = $1 AND (members.project_id = 1) AND users.status = $2 AND users.status = $3 AND users.type IN ($4, $5) LIMIT 1",
+        "type": "remove_distinct",
+        "can_rewrite": true
+    },
+    {
+        "id": 4,
+        "constraint": {
+            "type": "unique",
+            "args": {
+                "table": "changesets",
+                "field": "revision",
+                "scope": ["repository_id"],
+                "cond": "null"
+            }
+        },
+        "before": "SELECT DISTINCT changesets.committer, changesets.user_id FROM changesets WHERE changesets.repository_id = $1 LIMIT 1",
+        "after": "SELECT changesets.committer, changesets.user_id FROM changesets WHERE changesets.repository_id = $1 LIMIT 1",
+        "type": "remove_distinct",
+        "can_rewrite": true
+    }
+]
