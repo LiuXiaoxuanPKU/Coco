@@ -21,8 +21,13 @@ class RewriteTestor:
         }
 
     def create_constraint(self, constraint_obj):
-        args = tuple(constraint_obj["args"].values())
-        return self.constraint_dic[constraint_obj["type"]](*args)
+        if not isinstance(constraint_obj, list):
+            constraint_obj = [constraint_obj]
+        constraints = []
+        for obj in constraint_obj:
+            args = tuple(obj["args"].values())
+            constraints.append(self.constraint_dic[obj["type"]](*args))
+        return constraints
 
     def run_by_ids(self, ids):
         for record in self.data:
@@ -47,8 +52,8 @@ class RewriteTestor:
         after_q = parse(record['after'])
         ok = True
         try:
-            can_rewrite, rewrite_q = self.rewrite_dic[record["type"]](before_q, [
-                c])
+            can_rewrite, rewrite_q = self.rewrite_dic[record["type"]](before_q,
+                c)
             if can_rewrite != record["can_rewrite"]:
                 print("[Test Fail] Can rewrite: expect %s, get %s, id %d" %
                       (record["can_rewrite"], can_rewrite, record["id"]))
@@ -66,7 +71,7 @@ class RewriteTestor:
 
 if __name__ == "__main__":
     testor = RewriteTestor("./tests/cases/add_limit_one.json")
-    testor.run_by_ids([3])
+    testor.run_by_ids([6])
 
     # testor = RewriteTestor("./tests/cases/remove_predicate_numerical.json")
     # testor.run_all()
