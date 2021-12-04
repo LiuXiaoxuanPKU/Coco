@@ -3,7 +3,7 @@ from .constraint import *
 
 
 def str2int(self, q, constraints):
-    rewrite_type_set = set()
+    rewrite_type_set = self.rewrite_all_subqueries(q['from'], constraints, set())
     if 'where' not in q:
         return False, None
     enum_fields = self.get_constraint_fields(constraints, InclusionConstraint)

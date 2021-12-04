@@ -38,7 +38,9 @@
             "args": {
                 "table": "members",
                 "field": "user_id",
-                "scope": ["project_id"],
+                "scope": [
+                    "project_id"
+                ],
                 "cond": "null"
             }
         },
@@ -63,7 +65,9 @@
             "args": {
                 "table": "changesets",
                 "field": "revision",
-                "scope": ["repository_id"],
+                "scope": [
+                    "repository_id"
+                ],
                 "cond": "null"
             }
         },

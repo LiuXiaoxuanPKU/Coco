@@ -43,7 +43,7 @@ def replace_predicate(q, field, value):
 
 
 def remove_preciate_null(self, q, constraints):
-    rewrite_type_set = set()
+    rewrite_type_set = self.rewrite_all_subqueries(q['from'], constraints, set())
     if 'where' not in q:
         return rewrite_type_set, None
     exist_fields, missing_fields = find_exist_missing_fields(q['where'])
@@ -66,6 +66,7 @@ def remove_preciate_null(self, q, constraints):
 
 
 def remove_predicate_numerical(self, q, constraints):
+    rewrite_type_set = self.rewrite_all_subqueries(q['from'], constraints, set())
     predicate = q['where']
 
     def get_field_constraint(field):
@@ -132,4 +133,6 @@ def remove_predicate_numerical(self, q, constraints):
 
     can_rewrite, new_predicate = dfs(predicate)
     q['where'] = new_predicate
-    return can_rewrite, q
+    if can_rewrite:
+        rewrite_type_set.add(self.RewriteType.REMOVE_PREDICATE_NUMERICAL)
+    return rewrite_type_set, q

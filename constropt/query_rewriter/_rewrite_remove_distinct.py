@@ -195,6 +195,7 @@ def remove_distinct(self, q, constraints):
 
     # if add limit 1 in query, we skip remove distinct check
     if 'limit' in q and q['limit'] == 1:
+        rewrite_type_set = self.rewrite_all_subqueries(q['from'], constraints, set())
         rewrite_q = q.copy()
         projections = q['select']['value']['distinct']
         if isinstance(projections, dict):
@@ -202,7 +203,8 @@ def remove_distinct(self, q, constraints):
             rewrite_q['select'] = val
         elif isinstance(projections, list):
             rewrite_q['select'] = projections
-        return {self.RewriteType.REMOVE_DISTINCT}, rewrite_q
+        rewrite_type_set.add(self.RewriteType.REMOVE_DISTINCT)
+        return rewrite_type_set, rewrite_q
 
     col_to_table_dot_col = {}
     u_out, rewrite_type_set = query_to_u_out(self, q, constraints, col_to_table_dot_col)

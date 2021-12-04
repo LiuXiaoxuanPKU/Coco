@@ -66,8 +66,9 @@ def get_table_predicates(predicates, table):
 
 
 def add_limit_one(self, q, constraints):
-    rewrite_type_set = set()
-    if 'limit' in q or ('where' not in q and isinstance(q['from'], str)):
+    from_clause = q['from']
+    rewrite_type_set = self.rewrite_all_subqueries(from_clause, constraints, set())
+    if 'limit' in q or ('where' not in q and isinstance(from_clause, str)):
         return rewrite_type_set, q
 
     def check_predicate_return_one_tuple(predicates, table):
@@ -94,22 +95,6 @@ def add_limit_one(self, q, constraints):
 
     has_inner_join = self.check_query_has_join(q)
     # case 1: no join
-    from_clause = q['from']
-    # handle nested single query
-
-    def rewrite_subquery(subquery):
-        if isinstance(subquery, dict) and 'value' in subquery and isinstance(subquery['value'], dict):
-            sub_rewritten, sub_rewrite_type = self.rewrite_single_query(
-                subquery['value'], constraints)
-            subquery['value'] = sub_rewritten
-            return sub_rewrite_type
-        return set()
-
-    if isinstance(from_clause, list):
-        for subquery in from_clause:
-            rewrite_type_set.update(rewrite_subquery(subquery))
-    elif isinstance(from_clause, dict):
-        rewrite_type_set.update(rewrite_subquery(from_clause))
 
     if not has_inner_join:
         if 'where' not in q:

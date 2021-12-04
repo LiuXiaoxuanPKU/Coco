@@ -13,7 +13,7 @@ class Rewriter:
         STRING_TO_INT = 7
 
     def __init__(self) -> None:
-        pass
+        self.queryset = set()
 
     def get_constraint_fields(self, constraints, constraint_type):
         '''
@@ -58,12 +58,28 @@ class Rewriter:
     from ._rewrite_strlen_precheck import strlen_precheck
     from ._rewrite_format_precheck import strformat_precheck
 
+    def rewrite_all_subqueries(self, from_clause, constraints, rewrite_type_set):
+        def rewrite_subquery(subquery):
+            if isinstance(subquery, dict) and 'value' in subquery and isinstance(subquery['value'], dict):
+                sub_rewritten, sub_rewrite_type = self.rewrite_single_query(
+                    subquery['value'], constraints)
+                subquery['value'] = sub_rewritten
+                return sub_rewrite_type
+            return set()
+        
+        if isinstance(from_clause, list):
+            for subquery in from_clause:
+                rewrite_type_set.update(rewrite_subquery(subquery))
+        elif isinstance(from_clause, dict):
+            rewrite_type_set.update(rewrite_subquery(from_clause))
+        return rewrite_type_set
+
     def rewrite_single_query(self, q, constraints):
         rewrite_type = set()
         rewrite_set_add_limit_one, rewrite_q = self.add_limit_one(q, constraints)
         rewrite_type.update(rewrite_set_add_limit_one)
         if rewrite_set_add_limit_one:
-            print("Add limit 1 ", format(rewrite_q))
+            # print("Add limit 1 ", format(rewrite_q))
             q = rewrite_q
         rewrite_set_str2int, _ = self.str2int(q, constraints)
         rewrite_type.update(rewrite_set_str2int)
@@ -80,11 +96,12 @@ class Rewriter:
         rewrite_set_remove_distinct, rewrite_q = self.remove_distinct(q, constraints)
         rewrite_type.update(rewrite_set_remove_distinct)
         if rewrite_set_remove_distinct:
-            print("Remove Distinct", format(rewrite_q))
+            self.queryset.add(format(rewrite_q))
+            # print("Remove Distinct", format(rewrite_q))
             q = rewrite_q
         rewrite_set_remove_predicate, rewrite_q = self.remove_preciate_null(q, constraints)
         rewrite_type.update(rewrite_set_remove_predicate)
         if rewrite_set_remove_predicate:
-            print("Remove Predicate", format(rewrite_q))
+            # print("Remove Predicate", format(rewrite_q))
             q = rewrite_q
         return q, rewrite_type

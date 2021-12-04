@@ -160,3 +160,7 @@ if __name__ == "__main__":
         print("=====Total number of queries %d" % len(queries))
         print("===== Rewrite %d queries" % rewrite_cnt)
         print("===== Rewrite stats", stats)
+        print("===== Remove distinct query types")
+        for q in r.queryset:
+            print(q)
+            print('===============')
