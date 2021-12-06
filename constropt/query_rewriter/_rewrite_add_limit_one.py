@@ -66,8 +66,10 @@ def get_table_predicates(predicates, table):
 
 
 def add_limit_one(self, q, constraints):
-    if 'limit' in q or ('where' not in q and isinstance(q['from'], str)):
-        return False, q
+    from_clause = q['from']
+    rewrite_type_set = self.rewrite_all_subqueries(from_clause, constraints, set())
+    if 'limit' in q or ('where' not in q and isinstance(from_clause, str)):
+        return rewrite_type_set, q
 
     def check_predicate_return_one_tuple(predicates, table):
         '''
@@ -93,27 +95,10 @@ def add_limit_one(self, q, constraints):
 
     has_inner_join = self.check_query_has_join(q)
     # case 1: no join
-    from_clause = q['from']
-    # handle nested single query
-    rewrite_type = []
-
-    def rewrite_subquery(subquery):
-        if isinstance(subquery, dict) and 'value' in subquery and isinstance(subquery['value'], dict):
-            sub_rewritten, sub_rewrite_type = self.rewrite_single_query(
-                subquery['value'], constraints)
-            subquery['value'] = sub_rewritten
-            return sub_rewrite_type
-        return []
-
-    if isinstance(from_clause, list):
-        for subquery in from_clause:
-            rewrite_type += rewrite_subquery(subquery)
-    elif isinstance(from_clause, dict):
-        rewrite_type += rewrite_subquery(from_clause)
 
     if not has_inner_join:
         if 'where' not in q:
-            return len(rewrite_type) > 0, q
+            return rewrite_type_set, q
         table = q['from']
         where_clause = q['where']
         keys, values = list(where_clause.keys()), list(where_clause.values())
@@ -123,7 +108,7 @@ def add_limit_one(self, q, constraints):
         if check_predicate_return_one_tuple(where_clause, table):
             rewrite_q = q.copy()
             rewrite_q['limit'] = 1
-            return True, rewrite_q
+            rewrite_type_set.add(self.RewriteType.ADD_LIMIT_ONE)
         # case 2: no join, predicates are connected by 'and'
         elif key in ["and"]:
             # as long as all predicates are connected by 'and'
@@ -134,20 +119,20 @@ def add_limit_one(self, q, constraints):
             for pred in predicates:
                 # TODO: does not handle exits for now
                 if 'exists' in pred:
-                    return False, None
+                    return rewrite_type_set, None
                 return_one = return_one or check_predicate_return_one_tuple(
                     where_clause, table)
             if return_one:
                 rewrite_q = q.copy()
                 rewrite_q['limit'] = 1
-                return True, rewrite_q
+                rewrite_type_set.add(self.RewriteType.ADD_LIMIT_ONE)
     # has inner join
     else:
         join_tables = self.get_query_tables(q)
         predicates = q['where']
         ok, _ = check_connect_by_and_equal(predicates)
         if not ok:
-            return False, q
+            return rewrite_type_set, q
 
         join_predicates = [ele for ele in q['from'] if 'inner join' in ele]
         join_predicate = [ele for ele in join_predicates if 'on' in ele][0]
@@ -189,10 +174,10 @@ def add_limit_one(self, q, constraints):
                         predicate, table)
                     can_rewrite = can_rewrite or return_one
             if not can_rewrite:
-                return len(rewrite_type) > 0, q
+                return rewrite_type_set, q
             rewrite_q = q.copy()
             rewrite_q['limit'] = 1
-            return True, rewrite_q
+            rewrite_type_set.add(self.RewriteType.ADD_LIMIT_ONE)
         # case 3: inner join, join on any columns
         # each of the relation returns no more than 1 tuple
         else:
@@ -203,9 +188,9 @@ def add_limit_one(self, q, constraints):
                     return_one = check_predicate_return_one_tuple(
                         predicate, table)
                     if not return_one:
-                        return len(rewrite_type) > 0, q
+                        return rewrite_type_set, q
             rewrite_q = q.copy()
             rewrite_q['limit'] = 1
-            return True, rewrite_q
+            rewrite_type_set.add(self.RewriteType.ADD_LIMIT_ONE)
 
-    return len(rewrite_type) > 0, q
+    return rewrite_type_set, q

@@ -3,6 +3,7 @@ from .constraint import *
 
 
 def strformat_precheck(self, q, constraints):
+    rewrite_type_set = self.rewrite_all_subqueries(q['from'], constraints, set())
     if 'where' not in q:
         return False, None
     strformat_fields = self.get_constraint_fields(
@@ -14,5 +15,6 @@ def strformat_precheck(self, q, constraints):
             map(lambda x: x.split('.')[1], strformat_fields))
     format_precheck_fields = functools.reduce(lambda acc, item: acc + [item] if self.find_field_in_predicate(
         item, predicate) else acc, strformat_fields, [])
-    can_rewrite = len(format_precheck_fields) > 0
-    return can_rewrite, format_precheck_fields
+    if len(format_precheck_fields) > 0:
+        rewrite_type_set.add(self.RewriteType.FORMAT_PRECHECK)
+    return rewrite_type_set, format_precheck_fields

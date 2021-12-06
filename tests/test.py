@@ -17,7 +17,8 @@ class RewriteTestor:
         }
         self.rewrite_dic = {
             "add_limit_one": self.r.add_limit_one,
-            "remove_predicate_numerical": self.r.remove_predicate_numerical
+            "remove_predicate_numerical": self.r.remove_predicate_numerical,
+            "remove_distinct": self.r.remove_distinct
         }
 
     def create_constraint(self, constraint_obj):
@@ -75,3 +76,6 @@ if __name__ == "__main__":
 
     # testor = RewriteTestor("./tests/cases/remove_predicate_numerical.json")
     # testor.run_all()
+
+    testor = RewriteTestor("./tests/cases/remove_distinct.json")
+    testor.run_all()

@@ -48,7 +48,7 @@ def r_in_to_u_in(self, r_in, constraints, col_to_table_dot_col):
         # case for handing nested query
         if isinstance(r_in['value'], dict):
             # rewrite the nested query
-            rewritten, _ = self.rewrite_single_query(r_in['value'], constraints)
+            rewritten, rewrite_type_set = self.rewrite_single_query(r_in['value'], constraints)
             r_in['value'] = rewritten
             # u_out from the nested query will be u_in
             u_out = query_to_u_out(self, rewritten, constraints, {})
@@ -59,7 +59,7 @@ def r_in_to_u_in(self, r_in, constraints, col_to_table_dot_col):
                     for col in fset:
                         alias_dot_col = alias + '.' + col.split('.')[-1]
                         col_to_table_dot_col[alias_dot_col] = col
-            return u_out
+            return u_out, rewrite_type_set
         # case for handling AS
         elif 'name' in r_in:
             r_in, alias = r_in['value'], r_in['name']
@@ -76,22 +76,45 @@ def r_in_to_u_in(self, r_in, constraints, col_to_table_dot_col):
                     col_to_table_dot_col[alias + '.' + col] = r_in + '.' + col
                 table_unique_lst.append(col_to_table_dot_col[col])
             u_in.add(frozenset(table_unique_lst))
-    return u_in
+    return u_in, set()
+
+def valid_filter_condition(cond) -> bool:
+    """
+    Take format from condition["eq"] or condition["in"].
+    Return True if condition contains only one constant. Example shown in the following:
+    "user.status = $3"  --> ["user.status", "$3"]
+    "user.id = 6"  -->  ["user.id", 6]
+    "users.type IN ($1, $2)"
+    "1 = 1" --> [1, 1]
+    """
+    if isinstance(cond[1], str):
+        return cond[1][0] == "$"
+    elif isinstance(cond[1], int):
+        return isinstance(cond[0], str)
+    elif isinstance(cond[1], list):
+        return len(cond[1]) == 1
+    return False
 
 
 def u_in_after_filter(q, u_in, col_to_table_dot_col):
+    """
+     Set u_in based on filter condition.
+     If after filter, there's only one row in table, add every column in table to unique constraint.
+     If u_in is {{A, B, C}, {D}} before filter, condition is A = 3, then after filter u_in is {{B, C}, {D}}
+     """
     # check if q has where clause
     if not 'where' in q:
-        return
+        return u_in
     # check only AND in where clause
     where = q["where"]
     if not ("and" in where or "eq" in where):
-        return
+        return u_in
+    u_out = set()
     if "and" in where:
         where_conditions = where["and"]
         for cond in where_conditions:
             # only take care field = constant
-            if "eq" in cond and "$" == str(cond["eq"][1])[0]:
+            if "eq" in cond and valid_filter_condition(cond['eq']):
                 cond_column = unalias(col_to_table_dot_col, cond["eq"][0]) # table_name.id, id
                 # remove cond_column from each subset in u_in
                 for subset in u_in:
@@ -99,9 +122,9 @@ def u_in_after_filter(q, u_in, col_to_table_dot_col):
                     subset = set(subset)
                     subset.discard(cond_column)
                     subset.discard(cond_column.split(".")[-1])
-                    subset = frozenset(subset)
+                    u_out.add(frozenset(subset))
     # only one condition in where
-    elif "eq" in where and isinstance(where["eq"][1], str) and "$" == where["eq"][1][0]:
+    elif "eq" in where and valid_filter_condition(where["eq"]):
         cond_column = unalias(col_to_table_dot_col, where["eq"][0]) # table_name.id, id
         # remove cond_column from each subset in u_in
         for subset in u_in:
@@ -109,19 +132,22 @@ def u_in_after_filter(q, u_in, col_to_table_dot_col):
             subset = set(subset)
             subset.discard(cond_column)
             subset.discard(cond_column.split(".")[-1])
-            subset = frozenset(subset)
+            u_out.add(frozenset(subset))
+    return u_out
 
 
 def query_to_u_out(self, q, constraints, col_to_table_dot_col):
     '''Gets the set of unique columns U_out after going through the entire query, save for projections.'''
     tables = q['from']
+    rewrite_type_set = set()
     # no joins case
     if not isinstance(tables, list):
         tables = [tables]
     r_in1 = tables[0]
-    u_in1 = r_in_to_u_in(self, r_in1, constraints, col_to_table_dot_col)
+    u_in1, rw = r_in_to_u_in(self, r_in1, constraints, col_to_table_dot_col)
+    rewrite_type_set.update(rw)
     # single table case filter
-    u_in_after_filter(q, u_in1, col_to_table_dot_col)
+    u_in1 = u_in_after_filter(q, u_in1, col_to_table_dot_col)
     for t in tables[1:]:
         if 'inner join' in t or 'join' in t:
             # get table 2 and its unique set
@@ -129,8 +155,9 @@ def query_to_u_out(self, q, constraints, col_to_table_dot_col):
                 r_in2 = t['inner join']
             else:
                 r_in2 = t['join']
-            u_in2 = r_in_to_u_in(self, r_in2, constraints, col_to_table_dot_col)
-            u_in_after_filter(q, u_in2, col_to_table_dot_col)
+            u_in2, rw = r_in_to_u_in(self, r_in2, constraints, col_to_table_dot_col)
+            rewrite_type_set.update(rw)
+            u_in2 = u_in_after_filter(q, u_in2, col_to_table_dot_col)
             # check fail: u_out is empty set. else, u_out is union of u_in1 and u_in2.
             if check_join_conditions(t, u_in1, u_in2, col_to_table_dot_col):
                 u_in1 = u_in1.union(u_in2)
@@ -142,14 +169,15 @@ def query_to_u_out(self, q, constraints, col_to_table_dot_col):
                 r_in2 = t['left outer join']
             else:
                 r_in2 = t['left join']
-            u_in2 = r_in_to_u_in(self, r_in2, constraints, col_to_table_dot_col)
-            u_in_after_filter(q, u_in2, col_to_table_dot_col)
+            u_in2, rw = r_in_to_u_in(self, r_in2, constraints, col_to_table_dot_col)
+            rewrite_type_set.update(rw)
+            u_in2 = u_in_after_filter(q, u_in2, col_to_table_dot_col)
             # check fail: u_out is empty set. else, u_out is u_in1.
             if not check_join_conditions(t, u_in1, u_in2, col_to_table_dot_col):
                 u_in1 = set()
         # deal with filter after join
-        u_in_after_filter(q, u_in1, col_to_table_dot_col)
-    return u_in1
+        u_in1 = u_in_after_filter(q, u_in1, col_to_table_dot_col)
+    return u_in1, rewrite_type_set
 
 
 def remove_distinct(self, q, constraints):
@@ -163,11 +191,24 @@ def remove_distinct(self, q, constraints):
         return True
 
     if not contain_distinct(q):
-        return False, None
+        return set(), None
+
+    # if add limit 1 in query, we skip remove distinct check
+    if 'limit' in q and q['limit'] == 1:
+        rewrite_type_set = self.rewrite_all_subqueries(q['from'], constraints, set())
+        rewrite_q = q.copy()
+        projections = q['select']['value']['distinct']
+        if isinstance(projections, dict):
+            val = projections['value']
+            rewrite_q['select'] = val
+        elif isinstance(projections, list):
+            rewrite_q['select'] = projections
+        rewrite_type_set.add(self.RewriteType.REMOVE_DISTINCT)
+        return rewrite_type_set, rewrite_q
+
     col_to_table_dot_col = {}
-    u_out = query_to_u_out(self, q, constraints, col_to_table_dot_col)
-    # print("u_out", u_out)
-    return remove_distinct_projection(q, u_out, col_to_table_dot_col)
+    u_out, rewrite_type_set = query_to_u_out(self, q, constraints, col_to_table_dot_col)
+    return remove_distinct_projection(self, q, u_out, col_to_table_dot_col, rewrite_type_set)
 
 def check_single_column_in_u_in(u_in, val) -> bool:
     val = val.split(".")[-1]
@@ -180,7 +221,7 @@ def check_single_column_in_u_in(u_in, val) -> bool:
     return False
 
 
-def remove_distinct_projection(q, u_in, col_to_table_dot_col):
+def remove_distinct_projection(self, q, u_in, col_to_table_dot_col, rewrite_type_set):
     '''Only the "Project" step of the remove distinct algorithm.
     Projections possible formats:
     {'value': 'name'}
@@ -203,18 +244,21 @@ def remove_distinct_projection(q, u_in, col_to_table_dot_col):
                 if s <= proj_set:
                     rewrite_q = q.copy()
                     rewrite_q['select'] = val
-                    return True, rewrite_q
+                    rewrite_type_set.add(self.RewriteType.REMOVE_DISTINCT)
+                    return rewrite_type_set, rewrite_q
         elif '.*' in val:
             table_dot = unalias(col_to_table_dot_col, val)[:-1]
             for subset in u_in:
                 if table_dot in ([s.split(".")[0] + "." for s in list(subset)]):
                     rewrite_q = q.copy()
                     rewrite_q['select'] = val
-                    return True, rewrite_q
+                    rewrite_type_set.add(self.RewriteType.REMOVE_DISTINCT)
+                    return rewrite_type_set, rewrite_q
         elif val == '*' and u_in or check_single_column_in_u_in(u_in, unalias(col_to_table_dot_col, val)):
             rewrite_q = q.copy()
             rewrite_q['select'] = val
-            return True, rewrite_q
+            rewrite_type_set.add(self.RewriteType.REMOVE_DISTINCT)
+            return rewrite_type_set, rewrite_q
         # {'value': 'name'} case: check if {name} in u_in
     elif isinstance(projections, list):
     # [{'value': 'users.name'}, {'value': 'projects.id'}]
@@ -223,5 +267,7 @@ def remove_distinct_projection(q, u_in, col_to_table_dot_col):
             if subset <= proj_set:
                 rewrite_q = q.copy()
                 rewrite_q['select'] = projections
-                return True, rewrite_q
-    return False, None
+                rewrite_type_set.add(self.RewriteType.REMOVE_DISTINCT)
+                return rewrite_type_set, rewrite_q
+    return rewrite_type_set, None
+    
