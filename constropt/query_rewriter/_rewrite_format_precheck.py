@@ -3,9 +3,12 @@ from .constraint import *
 
 
 def strformat_precheck(self, q, constraints):
-    rewrite_type_set = self.rewrite_all_subqueries(q['from'], constraints, set())
+    rewrite_type_set = set()
+    if 'from' in q:
+        rewrite_type_set = self.rewrite_all_subqueries(
+            q['from'], constraints, set())
     if 'where' not in q:
-        return False, None
+        return rewrite_type_set, q
     strformat_fields = self.get_constraint_fields(
         constraints, FormatConstraint)
     predicate = q['where']

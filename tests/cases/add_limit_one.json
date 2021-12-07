@@ -65,7 +65,7 @@
     },
     {
         "id": 5,
-        "constraint": {
+        "constraint": [{
             "type": "unique",
             "args": {
                 "table": "user",
@@ -73,9 +73,50 @@
                 "scope": [],
                 "cond": "null"
             }
-        },
+        }],
         "before": "select * from (select name from user where name in ('jialun')) inner join projects on user.id=projects.id where projects.name='test'",
         "after": "select * from (select name from user where name in ('jialun') limit 1) inner join projects on user.id=projects.id where projects.name='test'",
+        "type": "add_limit_one",
+        "can_rewrite": true
+    },
+    {
+        "id": 6,
+        "constraint": {
+            "type": "unique",
+            "args": {
+                "table": "changesets",
+                "field": "revision",
+                "scope": ["repository_id"],
+                "cond": "null"
+            }
+        },
+        "before": "SELECT DISTINCT changesets.committer, changesets.user_id FROM changesets WHERE changesets.repository_id = $1",
+        "after": "SELECT DISTINCT changesets.committer, changesets.user_id FROM changesets WHERE changesets.repository_id = $1",
+        "type": "add_limit_one",
+        "can_rewrite": false
+    },
+    {
+        "id": 7,
+        "constraint": [{
+            "type": "unique",
+            "args": {
+                "table": "users",
+                "field": "id",
+                "scope": [],
+                "cond": "null"
+            }
+        },{
+            "type": "unique",
+            "args": {
+                "table": "email_addresses",
+                "field": "address",
+                "scope": [],
+                "cond": "null"
+            }
+        }
+        ],
+        "before": "SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ($1, $2) AND (LOWER(email_addresses.address) IN ('dlopper@somenet.foo'))",
+        "after": "SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ($1, $2) AND (LOWER(email_addresses.address) IN ('dlopper@somenet.foo')) LIMIT 1",
         "type": "add_limit_one",
         "can_rewrite": true
     }

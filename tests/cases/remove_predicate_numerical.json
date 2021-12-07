@@ -46,5 +46,21 @@
         "after": "select * from user where age > 20",
         "type": "remove_predicate_numerical",
         "can_rewrite": false
+    },
+    {
+        "id": 4,
+        "constraint": {
+            "type": "numerical",
+            "args": {
+                "table": "issue_statuses",
+                "field": "default_done_ratio",
+                "min": 0,
+                "max": 100
+            }
+        },
+        "before": "SELECT issue_statuses.* FROM issue_statuses WHERE default_done_ratio >= 0",
+        "after": "SELECT issue_statuses.* FROM issue_statuses WHERE True",
+        "type": "remove_predicate_numerical",
+        "can_rewrite": true
     }
 ]

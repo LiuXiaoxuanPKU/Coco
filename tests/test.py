@@ -53,8 +53,9 @@ class RewriteTestor:
         after_q = parse(record['after'])
         ok = True
         try:
-            can_rewrite, rewrite_q = self.rewrite_dic[record["type"]](before_q,
-                c)
+            rewrite_type, rewrite_q = self.rewrite_dic[record["type"]](before_q,
+                                                                       c)
+            can_rewrite = len(rewrite_type) > 0
             if can_rewrite != record["can_rewrite"]:
                 print("[Test Fail] Can rewrite: expect %s, get %s, id %d" %
                       (record["can_rewrite"], can_rewrite, record["id"]))
@@ -72,10 +73,10 @@ class RewriteTestor:
 
 if __name__ == "__main__":
     testor = RewriteTestor("./tests/cases/add_limit_one.json")
-    testor.run_by_ids([6])
+    testor.run_all()
 
-    # testor = RewriteTestor("./tests/cases/remove_predicate_numerical.json")
-    # testor.run_all()
+    testor = RewriteTestor("./tests/cases/remove_predicate_numerical.json")
+    testor.run_all()
 
     testor = RewriteTestor("./tests/cases/remove_distinct.json")
     testor.run_all()

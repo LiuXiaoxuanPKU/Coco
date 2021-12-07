@@ -42,10 +42,13 @@ def replace_predicate(q, field, value):
     return q
 
 
-def remove_preciate_null(self, q, constraints):
-    rewrite_type_set = self.rewrite_all_subqueries(q['from'], constraints, set())
+def remove_predicate_null(self, q, constraints):
+    rewrite_type_set = set()
+    if 'from' in q:
+        rewrite_type_set = self.rewrite_all_subqueries(
+            q['from'], constraints, set())
     if 'where' not in q:
-        return rewrite_type_set, None
+        return rewrite_type_set, q
     exist_fields, missing_fields = find_exist_missing_fields(q['where'])
     presence_fields = self.get_constraint_fields(
         constraints, PresenceConstraint)
@@ -66,10 +69,18 @@ def remove_preciate_null(self, q, constraints):
 
 
 def remove_predicate_numerical(self, q, constraints):
-    rewrite_type_set = self.rewrite_all_subqueries(q['from'], constraints, set())
-    predicate = q['where']
+    rewrite_type_set = set()
+    if 'from' in q:
+        rewrite_type_set = self.rewrite_all_subqueries(
+            q['from'], constraints, set())
+    if 'where' not in q:
+        return rewrite_type_set, None
 
     def get_field_constraint(field):
+        if not isinstance(field, str):
+            return None
+
+        field = field.split('.')[-1]
         c = list(filter(lambda c: isinstance(c, NumericalConstraint)
                         and c.field == field and c.table == q['from'], constraints))
         if len(c) == 1:
@@ -87,6 +98,8 @@ def remove_predicate_numerical(self, q, constraints):
         field_name = predicate[key][0]
         tmp = z3.Real('x')
         predicate[key][0] = 'tmp'
+        if not isinstance(predicate[key][1], int):
+            return False, False
 
         s_true = z3.Solver()
         if c.min is not None and c.max is not None:
@@ -107,14 +120,18 @@ def remove_predicate_numerical(self, q, constraints):
         return s_true.check() == z3.sat, s_false.check() == z3.sat
 
     def dfs(predicate):
+        if not isinstance(predicate, dict):
+            return False, predicate
         keys = predicate.keys()
         assert(len(keys) == 1)
         key = list(keys)[0]
+        if key == "exists" or key == "not":  # does not handle exists for now
+            return False, predicate
         if not (key == "and" or key == "or"):
             # check if the variable is the constraint variable
             c = get_field_constraint(predicate[key][0])
             if c is None:
-                return predicate
+                return False, predicate
             imply_true, imply_false = imply(predicate, c)
             if imply_true:
                 return True, True
@@ -131,7 +148,7 @@ def remove_predicate_numerical(self, q, constraints):
         predicate[key] = new_children
         return can_rewrite, predicate
 
-    can_rewrite, new_predicate = dfs(predicate)
+    can_rewrite, new_predicate = dfs(q['where'])
     q['where'] = new_predicate
     if can_rewrite:
         rewrite_type_set.add(self.RewriteType.REMOVE_PREDICATE_NUMERICAL)

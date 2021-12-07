@@ -5,6 +5,8 @@ from mo_imports import expect
 from mo_sql_parsing import parse, format
 from constropt.query_rewriter import Rewriter
 from constropt.query_rewriter import constraint
+from tqdm import tqdm
+import traceback
 
 
 def extract_constraints(filename):
@@ -26,7 +28,8 @@ def load_constraints(classnodes):
                 c = constraint.UniqueConstraint(
                     classnode['table'], obj['field_name'], obj['scope'])
             elif obj["^o"] == "PresenceConstraint":
-                c = constraint.PresenceConstraint(classnode['table'], obj['field_name'])
+                c = constraint.PresenceConstraint(
+                    classnode['table'], obj['field_name'])
             elif obj["^o"] == "InclusionConstraint":
                 c = constraint.InclusionConstraint(
                     classnode['table'], obj['field_name'], obj['values'])
@@ -34,7 +37,8 @@ def load_constraints(classnodes):
                 c = constraint.FormatConstraint(
                     classnode['table'], obj['field_name'], obj['format'])
             elif obj["^o"] == "NumericalConstraint":
-                continue
+                c = constraint.NumericalConstraint(
+                    classnode['table'], obj['field_name'], obj['min'], obj['max'], obj['allow_nil'])
             else:
                 print("[Error] Unsupport constraint type ", obj)
                 exit(1)
@@ -75,7 +79,7 @@ def rewrite_queries(constraints, queries):
     test_cnt = 0
     distinct_cnt = 0
     limit_cnt = 0
-    for i in range(len(tests)):
+    for i in tqdm(range(len(tests))):
         rewrite_cnt = 0
         testname = tests[i]
         # if not testname.startswith('UsersControllerTest-test_create'):
@@ -145,22 +149,22 @@ if __name__ == "__main__":
 
         rewrite_cnt = 0
         stats = {}
-        for q in queries:
+        for q in tqdm(list(queries)):
             try:
-                new_q, rewrite_types = r.rewrite_single_query(
-                    parse(q[1]), constraints)
-                if len(rewrite_types):
-                    rewrite_cnt += 1
-                    for t in rewrite_types:
-                        if t not in stats:
-                            stats[t] = 0
-                        stats[t] += 1
-            except:
+                q = parse(q[1])
+            except Exception as e:
                 continue
+            new_q, rewrite_types = r.rewrite_single_query(q, constraints)
+            if len(rewrite_types):
+                rewrite_cnt += 1
+                for t in rewrite_types:
+                    if t not in stats:
+                        stats[t] = 0
+                    stats[t] += 1
         print("=====Total number of queries %d" % len(queries))
         print("===== Rewrite %d queries" % rewrite_cnt)
         print("===== Rewrite stats", stats)
-        print("===== Remove distinct query types")
-        for q in r.queryset:
-            print(q)
-            print('===============')
+        # print("===== Remove distinct query types")
+        # for q in r.queryset:
+        #     print(q)
+        #     print('===============')

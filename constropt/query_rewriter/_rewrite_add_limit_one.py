@@ -23,7 +23,11 @@ def check_connect_by_and_equal(predicates):
     # TODO: handle exist
     if isinstance(predicates[key], list) and isinstance(predicates[key][0], str):
         # key = in, predicates[key] = ['users.type', '$1'],
-        if key == "eq" or (key == "in" and len(predicates[key][1]) == 1):
+        if key == "eq" or \
+           (key == "in" and
+                (isinstance(predicates[key][1], int)
+                 or isinstance(predicates[key][1], str)
+                 or len(predicates[key][1]) == 1)):
             return True, [predicates[key][0]]
     res = True
     if not key == "and":
@@ -66,9 +70,11 @@ def get_table_predicates(predicates, table):
 
 
 def add_limit_one(self, q, constraints):
-    from_clause = q['from']
-    rewrite_type_set = self.rewrite_all_subqueries(from_clause, constraints, set())
-    if 'limit' in q or ('where' not in q and isinstance(from_clause, str)):
+    rewrite_type_set = set()
+    if 'from' in q:
+        rewrite_type_set = self.rewrite_all_subqueries(
+            q['from'], constraints, set())
+    if 'limit' in q or 'from' not in q or ('where' not in q and isinstance(q['from'], str)):
         return rewrite_type_set, q
 
     def check_predicate_return_one_tuple(predicates, table):
@@ -193,4 +199,6 @@ def add_limit_one(self, q, constraints):
             rewrite_q['limit'] = 1
             rewrite_type_set.add(self.RewriteType.ADD_LIMIT_ONE)
 
-    return rewrite_type_set, q
+    if len(rewrite_type_set) == 0:
+        rewrite_q = q
+    return rewrite_type_set, rewrite_q
