@@ -1,4 +1,5 @@
 from collections import deque
+from rule import Rule
 
 class Rewriter:
     def __init__(self) -> None:
@@ -16,12 +17,6 @@ class Rewriter:
         rewritten_queries = self.bfs(rules, q, h)
 
         return rewritten_queries
-
-    
-    def generate(self, q, rules):
-        for rule in rules:
-            q = rule.apply(q)
-        return q
 
     
     # select * from R where a = 1
