@@ -17,7 +17,7 @@ class Rule:
         if keyword == 'from' and 'from' in q and isinstance(q['from'], dict):
             return q['from']
 
-        return None
+        return []
     
     @staticmethod
     def replace_keyword_nested(org_q, keyword, sub_q):
@@ -110,7 +110,7 @@ class RemoveDistinct(Rule):
             rewritten_q['select'] = rewritten_q['select_distinct']
             del rewritten_q['select_distinct']
             return [rewritten_q]
-        return None
+        return []
 
 
 class AddLimitOne(Rule):
@@ -121,7 +121,7 @@ class AddLimitOne(Rule):
             rewritten_q['limit'] = 1
             return [rewritten_q]
 
-        return None
+        return []
 
 class RemoveJoin(Rule):
     pass
@@ -129,12 +129,12 @@ class RemoveJoin(Rule):
 class UnionToUnionAll(Rule):
     @staticmethod
     def apply_single(q):
-        return None
+        return []
 
 class RemovePredicate(Rule):
     @staticmethod
     def apply_single(q):
-        return None
+        return []
 
 class AddPredicate(Rule):
     @staticmethod
@@ -149,4 +149,4 @@ class AddPredicate(Rule):
         candidate_predicates = deduct(z3_ops)
 
         # add candidate predicates to q
-        return None
+        return []
