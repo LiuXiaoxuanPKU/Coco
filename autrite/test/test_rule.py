@@ -1,3 +1,4 @@
+from urllib.parse import quote_from_bytes
 from rule import AddLimitOne, RemoveDistinct
 from mo_sql_parsing import parse, format
 
@@ -8,7 +9,7 @@ def test_q_obj(q_obj, q_str):
         print("Get ", format(q_obj))
     assert(format(q_obj) == q_str)
 
-def test_add_limit_one():
+def test_add_limit_one_select_from():
     print("===============Add Limit One=================")
     q_before_str = "select * from R"
     q_after_str = "select * from R limit 1"
@@ -27,16 +28,85 @@ def test_add_limit_one():
     for q in q_afters:
         print(format(q))
 
+    print("--------------")
+    q_before_str = "select (select * from R where id = 2) from R where a = 1"
+    q_before = parse(q_before_str)
+    q_afters = AddLimitOne.apply(q_before)
+    assert(len(q_afters) == 3)
+    print("Before: ", format(q_before))
+    print("After: ")
+    for q in q_afters:
+        print(format(q))
+    
+    print("--------------")
+    q_before_str = "select (select * from R where id = 2) from (select * from R where id = 3) where a = 1"
+    q_before = parse(q_before_str)
+    q_afters = AddLimitOne.apply(q_before)
+    assert(len(q_afters) == 7)
+    print("Before: ", format(q_before))
+    print("After: ")
+    for q in q_afters:
+        print(format(q))
 
-def test_remove_distinct():
+def test_add_limit_one_where_having():
+    q_before_str = "select * from R1 where a in (select a from R2) and a > 1"
+    q_before = parse(q_before_str)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = AddLimitOne.apply(q_before)
+    assert(len(q_afters) == 3)
+    for q in q_afters:
+        print(format(q))
+    
+    print("--------------")
+    q_before_str = "select * from R1 where a in (select a from R2) and b in (select b from R3)"
+    q_before = parse(q_before_str)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = AddLimitOne.apply(q_before)
+    assert(len(q_afters) == 7)
+    for q in q_afters:
+        print(format(q))
+
+    print("---------------")
+    q_before_str = "select * from R1 group by b having c > (select c from R2)"
+    q_before = parse(q_before_str)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = AddLimitOne.apply(q_before)
+    assert(len(q_afters) == 3)
+    for q in q_afters:
+        print(format(q))
+
+
+def test_remove_distinct_select_from():
     print("===============Remove Distinct=================")
     q_before_str = "select distinct(*) from (select distinct(*) from R) where a = 1"
     q_before = parse(q_before_str)
+    print("Before: ", format(q_before))
+    print("After: ")
     q_afters = RemoveDistinct.apply(q_before)
     assert(len(q_afters) == 3)
     for q in q_afters:
         print(format(q))
 
+    print("--------------")
+    q_before_str = "select distinct(select distinct * from R1) from (select distinct(*) from R2) where a = 1"
+    q_before = parse(q_before_str)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemoveDistinct.apply(q_before)
+    assert(len(q_afters) == 7)
+    for q in q_afters:
+        print(format(q))
+
+def test_remove_distinct_where_having():
+    pass
+
+
 if __name__ == "__main__":
-    test_add_limit_one()
-    test_remove_distinct()
+    test_add_limit_one_select_from()
+    test_remove_distinct_select_from()
+
+    test_add_limit_one_where_having()
+    # test_remove_distinct_where_having()
