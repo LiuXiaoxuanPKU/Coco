@@ -42,8 +42,8 @@ class Rule:
         # subquery happens in WHERE, FROM, SELECT, HAVING
         rewritten_qs = [q]
         outer_rewritten_q =  cls.apply_single(q)
-        if outer_rewritten_q:
-            rewritten_qs.append(outer_rewritten_q)
+        if len(outer_rewritten_q):
+            rewritten_qs += outer_rewritten_q
 
         # SELECT, FROM
         for k in ["select", "select_distinct", "from"]:
@@ -109,7 +109,7 @@ class RemoveDistinct(Rule):
             rewritten_q =  copy.deepcopy(q)
             rewritten_q['select'] = rewritten_q['select_distinct']
             del rewritten_q['select_distinct']
-            return rewritten_q
+            return [rewritten_q]
         return None
 
 
@@ -119,7 +119,7 @@ class AddLimitOne(Rule):
         if 'limit' not in q:
             rewritten_q =  copy.deepcopy(q)
             rewritten_q['limit'] = 1
-            return rewritten_q
+            return [rewritten_q]
 
         return None
 
@@ -139,4 +139,14 @@ class RemovePredicate(Rule):
 class AddPredicate(Rule):
     @staticmethod
     def apply_single(q):
+        # extract binary operations from q
+        binops = extract_binops(q)
+
+        # translate binary operations into z3 format
+        z3_ops = translate_z3(binops)
+
+        # generate candidate predicates
+        candidate_predicates = deduct(z3_ops)
+
+        # add candidate predicates to q
         return None
