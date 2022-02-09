@@ -1,3 +1,4 @@
+import pickle
 class Loader:
     @staticmethod
     def load_constraints(filename):
@@ -5,4 +6,6 @@ class Loader:
 
     @staticmethod
     def load_queries(filename):
-        pass
+        with open(filename, 'rb') as f:
+            queries = pickle.load(f)
+        return queries

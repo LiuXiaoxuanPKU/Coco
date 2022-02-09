@@ -1,5 +1,4 @@
 import copy
-from traceback import format_tb
 from mo_sql_parsing import parse, format
 
 class Rule:
@@ -27,6 +26,11 @@ class Rule:
         elif  keyword in ['from', 'where', 'having']:
             org_q[keyword] = sub_q
         return org_q
+
+
+    @classmethod
+    def get_name(cls):
+        return str(cls)
 
     # rewrite the entire query, call apply_single
     # handle nested queries
@@ -100,10 +104,6 @@ class Rule:
 
 class RemoveDistinct(Rule):
     @staticmethod
-    def get_name():
-        return str(RemoveDistinct)
-
-    @staticmethod
     def apply_single(q):
         if 'select_distinct' in q:
             rewritten_q =  copy.deepcopy(q)
@@ -114,10 +114,6 @@ class RemoveDistinct(Rule):
 
 
 class AddLimitOne(Rule):
-    @staticmethod
-    def get_name():
-        return str(AddLimitOne)
-
     @staticmethod
     def apply_single(q):
         if 'limit' not in q:
@@ -131,10 +127,16 @@ class RemoveJoin(Rule):
     pass
 
 class UnionToUnionAll(Rule):
-    pass
+    @staticmethod
+    def apply_single(q):
+        return None
 
 class RemovePredicate(Rule):
-    pass
+    @staticmethod
+    def apply_single(q):
+        return None
 
 class AddPredicate(Rule):
-    pass
+    @staticmethod
+    def apply_single(q):
+        return None
