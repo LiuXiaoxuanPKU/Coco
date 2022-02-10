@@ -18,22 +18,22 @@ def filter(line) -> str:
     start_idx = line.find("SELECT")
     line = line[start_idx:]
     line = line.replace('"', '')
-    end_idx = line.find("[[")
-    line = line[:end_idx]
+    line = line.split("\x1b")[0]
     return line 
 
 # dump sql query
 def write_sql(dump_filename, sql):
     with open(dump_filename, 'a') as f:
-        f.write(sql + '\n')
+        f.write(sql+'\n')
 
 # Go through file line by line
 def scan(filename, dump_filename):
+    # clear all content in file-to-dump before writing into it
+    open(dump_filename, "w").close()
     f = open(filename, 'r', errors="replace")
     for line in f.readlines():
         if is_query(line):
             extracted_sql = filter(line)
-            print(extracted_sql)
             write_sql(dump_filename, extracted_sql)
 
 
