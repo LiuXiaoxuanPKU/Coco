@@ -143,7 +143,7 @@ def test_add_predicate_simple():
         print(format(q))
 
 if __name__ == "__main__":
-    # test_add_limit_one_select_from()
-    # test_remove_distinct_select_from()
-    # test_add_limit_one_where_having()
+    test_add_limit_one_select_from()
+    test_remove_distinct_select_from()
+    test_add_limit_one_where_having()
     test_add_predicate_simple()
