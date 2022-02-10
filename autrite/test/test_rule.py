@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from constraint import NumericalConstraint
 from rule import AddLimitOne, RemoveDistinct, AddPredicate
 from mo_sql_parsing import parse, format
@@ -111,22 +114,36 @@ def test_add_predicate_simple():
     print("Before: ", format(q_before))
     print("After: ")
     q_afters = AddPredicate([c]).apply(q_before)
-    assert(len(q_afters) == 1)
+    # assert(len(q_afters) == 1)
     for q in q_afters:
         print(format(q))
 
-    # print("--------------")
-    # q_before_str = "select distinct(select distinct * from R1) from (select distinct(*) from R2) where a = 1"
-    # q_before = parse(q_before_str)
-    # print("Before: ", format(q_before))
-    # print("After: ")
-    # q_afters = RemoveDistinct([]).apply(q_before)
-    # assert(len(q_afters) == 7)
-    # for q in q_afters:
-    #     print(format(q))
+    print("--------------")
+    q_before_str = "select * from R where a > b and a > c"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = AddPredicate([c]).apply(q_before)
+    # assert(len(q_afters) == 1)
+    for q in q_afters:
+        print(format(q))
+
+    print("--------------")
+    q_before_str = "select * from R where a > b or a < c"
+    # select * from R where (a > b and b < 100) or a < c
+    # select * from R where a > b or (a < c and c > 0)
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = AddPredicate([c]).apply(q_before)
+    # assert(len(q_afters) == 1)
+    for q in q_afters:
+        print(format(q))
 
 if __name__ == "__main__":
-    test_add_limit_one_select_from()
-    test_remove_distinct_select_from()
-    test_add_limit_one_where_having()
-    # test_add_predicate_simple()
+    # test_add_limit_one_select_from()
+    # test_remove_distinct_select_from()
+    # test_add_limit_one_where_having()
+    test_add_predicate_simple()

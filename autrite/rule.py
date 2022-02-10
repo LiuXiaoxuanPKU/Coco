@@ -1,4 +1,7 @@
 import copy
+from http.client import UnimplementedFileMode
+from lib2to3.pgen2 import token
+from lib2to3.pgen2.tokenize import TokenError
 from multiprocessing import Condition
 import z3
 from constraint import NumericalConstraint
@@ -133,19 +136,39 @@ class RemovePredicate(Rule):
         return []
 
 class AddPredicate(Rule):
-
     def apply_single(self, q):
+        tokens = []
+
+        def translate_token(t):
+            if isinstance(t, int) or isinstance(t, float):
+                tokens.append(t)
+                return t
+            elif isinstance(t, str):
+                t = z3.Real(t)
+                tokens.append(t)
+                return t
+            else:
+                raise NotImplementedError("translate token does not support type %s of %s" % (type(t), t))
+
         def extract_binops(q):
             def extract_cond(cond):
                 key = list(cond.keys())
                 assert(len(key) == 1)
                 key = key[0]
+                # TODO: does not handle exist for now
+                lhs, rhs = cond[key][0], cond[key][1]
                 if key == "and" :
-                    pass
+                    return z3.And(extract_cond(lhs), extract_cond(rhs))
                 elif key == "or":
-                    pass
+                    return z3.Or(extract_cond(lhs), extract_cond(rhs))
                 elif key in ["gt", "eq", "lt"]:
-                    pass 
+                    lhs, rhs = translate_token(lhs), translate_token(rhs)
+                    if key == "gt":
+                        return lhs > rhs
+                    elif key == "eq":
+                        return lhs == rhs
+                    elif key == "lt":
+                        return lhs < rhs
 
             def extract_join():
                 pass
@@ -162,14 +185,46 @@ class AddPredicate(Rule):
             for c in self.constraints:
                 if isinstance(c, NumericalConstraint):
                     tmp = z3.Real(c.field)
+                    tokens.append(tmp)
                     if c.min is not None and c.max is not None:
                         conditions.append(z3.And(tmp >= c.min, tmp <= c.max))
+                        tokens.append(c.min)
+                        tokens.append(c.max)
                     elif c.min is not None:
                         conditions.append(tmp >= c.min)
+                        tokens.append(c.min)
                     elif c.max is not None:
                         conditions.append(tmp <= c.max)
+                        tokens.append(c.max)
             return conditions
 
+
+        def deduct(binops):
+            candidates = []
+            for lhs in set(tokens):
+                for rhs in set(tokens):
+                    if not (isinstance(lhs, z3.z3.ArithRef) or isinstance(rhs, z3.z3.ArithRef)):
+                        continue
+                    if lhs is not rhs:
+                        candidates.append(lhs > rhs)
+                        candidates.append(lhs == rhs)
+            print(candidates)
+            cond = None
+            for binop in binops:
+                if cond is None:
+                    cond = binop
+                else:
+                    cond = z3.And(cond, binop)
+
+            variables = [x for x in set(tokens) if isinstance(x, z3.z3.ArithRef)]
+            
+            validate_candidates = []
+            for candidate in candidates:
+                s = z3.Solver()
+                s.add(z3.ForAll(variables, z3.Implies(cond, candidate)))
+                if s.check() == z3.sat:
+                    validate_candidates.append(candidate)
+            return validate_candidates
 
         # extract binary operations from where and join conditions
         # the output of binary operations is in z3 format
@@ -179,9 +234,22 @@ class AddPredicate(Rule):
         # and translate into z3 format
         binops += extract_constraints()
 
+        candidate_predicates = deduct(binops)
 
-        # TODO: generate candidate predicates
-        # candidate_predicates = deduct(z3_ops)
+        rewritten_qs = []
+        def z3op_to_json(binop):
+            op_map = {
+                '>' : 'gt',
+                '==' : 'eq',
+                '<' : 'lt'
+            }
+            return {op_map[str(binop.decl())]: binop.children()}
 
+        print(candidate_predicates)
         # add candidate predicates to q
-        return []
+        for candidate in candidate_predicates:
+            rq = copy.deepcopy(q)
+            org_pred = rq['where']
+            rq['where'] = {'and': [org_pred, z3op_to_json(candidate)]}
+            rewritten_qs.append(rq)
+        return rewritten_qs
