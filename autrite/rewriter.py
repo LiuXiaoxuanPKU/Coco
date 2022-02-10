@@ -52,7 +52,7 @@ class Rewriter:
             }
         rules = []
         for c in constraints:
-            rules += constraint_rule_map[type(c)]
+            rules += [r([c]) for r in constraint_rule_map[type(c)]]
         return list(set(rules))
 
     def bfs(self, rules, q):

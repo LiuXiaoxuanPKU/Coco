@@ -1,9 +1,12 @@
 import copy
+from multiprocessing import Condition
+import z3
+from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
 
 class Rule:
-    def __init__(self, name) -> None:
-        self.name = name
+    def __init__(self, cs) -> None:
+        self.constraints = cs
 
     def __str__(self) -> str:
         return self.name
@@ -18,7 +21,7 @@ class Rule:
             return q['from']
 
         return []
-    
+
     @staticmethod
     def replace_keyword_nested(org_q, keyword, sub_q):
         if keyword == "select" or keyword == 'select_distinct':
@@ -28,20 +31,18 @@ class Rule:
         return org_q
 
 
-    @classmethod
-    def get_name(cls):
-        return str(cls)
+    def get_name(self):
+        return str(self)
 
     # rewrite the entire query, call apply_single
     # handle nested queries
-    @classmethod
-    def apply(cls, q):
+    def apply(self, q):
         if not isinstance(q, dict):
             return []
 
         # subquery happens in WHERE, FROM, SELECT, HAVING
         rewritten_qs = [q]
-        outer_rewritten_q =  cls.apply_single(q)
+        outer_rewritten_q =  self.apply_single(q)
         if len(outer_rewritten_q):
             rewritten_qs += outer_rewritten_q
 
@@ -51,7 +52,7 @@ class Rule:
             for rq in rewritten_qs:
                 keyword_sub = Rule.keyword_nested(k, rq)
                 if keyword_sub:
-                    rewritten_keyword_subs = cls.apply(keyword_sub)
+                    rewritten_keyword_subs = self.apply(keyword_sub)
                     for sub in rewritten_keyword_subs:
                         rewritten_q = Rule.replace_keyword_nested(copy.deepcopy(rq), k, sub)
                         tmp_rewritten_qs.append(rewritten_q)
@@ -73,7 +74,7 @@ class Rule:
                 lhs, rhs = cond[op][0], cond[op][1]
                 # nested query
                 if isinstance(rhs, dict):
-                    rewritten_rhs = cls.apply(rhs)
+                    rewritten_rhs = self.apply(rhs)
                     for r1 in rewritten_rhs:
                         rewritten_cond.append({op:[copy.deepcopy(lhs), r1]})
             return rewritten_cond
@@ -97,14 +98,12 @@ class Rule:
 
 
     # rewrite subquery, different rules behavior differently
-    @staticmethod
-    def apply_single(q):
+    def apply_single(self, q):
         raise NotImplementedError("Sub class must override apply_single")
 
 
 class RemoveDistinct(Rule):
-    @staticmethod
-    def apply_single(q):
+    def apply_single(self, q):
         if 'select_distinct' in q:
             rewritten_q =  copy.deepcopy(q)
             rewritten_q['select'] = rewritten_q['select_distinct']
@@ -114,8 +113,7 @@ class RemoveDistinct(Rule):
 
 
 class AddLimitOne(Rule):
-    @staticmethod
-    def apply_single(q):
+    def apply_single(self, q):
         if 'limit' not in q:
             rewritten_q =  copy.deepcopy(q)
             rewritten_q['limit'] = 1
@@ -127,26 +125,63 @@ class RemoveJoin(Rule):
     pass
 
 class UnionToUnionAll(Rule):
-    @staticmethod
-    def apply_single(q):
+    def apply_single(self, q):
         return []
 
 class RemovePredicate(Rule):
-    @staticmethod
-    def apply_single(q):
+    def apply_single(self, q):
         return []
 
 class AddPredicate(Rule):
-    @staticmethod
-    def apply_single(q):
-        # extract binary operations from q
+
+    def apply_single(self, q):
+        def extract_binops(q):
+            def extract_cond(cond):
+                key = list(cond.keys())
+                assert(len(key) == 1)
+                key = key[0]
+                if key == "and" :
+                    pass
+                elif key == "or":
+                    pass
+                elif key in ["gt", "eq", "lt"]:
+                    pass 
+
+            def extract_join():
+                pass
+
+            conditions = []
+            if 'where' in q:
+                conditions.append(extract_cond(q['where']))
+            if 'join' in q:
+                conditions += extract_join(q['join'])
+            return conditions
+
+        def extract_constraints():
+            conditions = []
+            for c in self.constraints:
+                if isinstance(c, NumericalConstraint):
+                    tmp = z3.Real(c.field)
+                    if c.min is not None and c.max is not None:
+                        conditions.append(z3.And(tmp >= c.min, tmp <= c.max))
+                    elif c.min is not None:
+                        conditions.append(tmp >= c.min)
+                    elif c.max is not None:
+                        conditions.append(tmp <= c.max)
+            return conditions
+
+
+        # extract binary operations from where and join conditions
+        # the output of binary operations is in z3 format
         binops = extract_binops(q)
 
-        # translate binary operations into z3 format
-        z3_ops = translate_z3(binops)
+        # extarct constraints
+        # and translate into z3 format
+        binops += extract_constraints()
 
-        # generate candidate predicates
-        candidate_predicates = deduct(z3_ops)
+
+        # TODO: generate candidate predicates
+        # candidate_predicates = deduct(z3_ops)
 
         # add candidate predicates to q
         return []
