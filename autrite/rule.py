@@ -80,7 +80,7 @@ class Rule:
             elif op == "exists":
                 v = cond[op]
                 # nested query
-                if isinstance(v, dict) and ('select' in rhs or 'select_distinct' in rhs):
+                if isinstance(v, dict) and ('select' in v):
                     rewritten_vs = self.apply(v)
                     for r1 in rewritten_vs:
                         rewritten_cond.append({op:r1})
