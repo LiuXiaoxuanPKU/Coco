@@ -1,8 +1,4 @@
 import copy
-from http.client import UnimplementedFileMode
-from lib2to3.pgen2 import token
-from lib2to3.pgen2.tokenize import TokenError
-from multiprocessing import Condition
 import z3
 from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
@@ -17,8 +13,16 @@ class Rule:
     @staticmethod
     def keyword_nested(keyword, q):
         if keyword in ["select", "select_distinct"]:
-            if keyword in q and isinstance(q[keyword], dict):
-                return q[keyword]['value']
+            # TODO: handle multiple select items
+            if keyword in q and isinstance(q[keyword], dict) \
+                            and isinstance(q[keyword]['value'], dict) :
+                nested_dict =  q[keyword]['value']
+                keys = list(nested_dict.keys())
+                # only handle select (select )
+                # rule out select aggregate()
+                if len(keys) >= 1 and keys[0] == 'select' or keys[0] == 'select_distinct':
+                    return q[keyword]['value']
+                return []
         
         if keyword == 'from' and 'from' in q and isinstance(q['from'], dict):
             return q['from']
@@ -73,10 +77,18 @@ class Rule:
                     for r2 in rewritten_rhs:
                         if not (r1 == lhs and r2 == rhs):
                             rewritten_cond.append({op:[copy.deepcopy(r1), copy.deepcopy(r2)]})
+            elif op == "exists":
+                v = cond[op]
+                # nested query
+                if isinstance(v, dict) and ('select' in rhs or 'select_distinct' in rhs):
+                    rewritten_vs = self.apply(v)
+                    for r1 in rewritten_vs:
+                        rewritten_cond.append({op:r1})
+                return rewritten_cond
             else:
                 lhs, rhs = cond[op][0], cond[op][1]
                 # nested query
-                if isinstance(rhs, dict):
+                if isinstance(rhs, dict) and ('select' in rhs or 'select_distinct' in rhs):
                     rewritten_rhs = self.apply(rhs)
                     for r1 in rewritten_rhs:
                         rewritten_cond.append({op:[copy.deepcopy(lhs), r1]})

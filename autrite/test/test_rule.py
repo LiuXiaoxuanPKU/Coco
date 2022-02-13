@@ -52,6 +52,7 @@ def test_add_limit_one_select_from():
         print(format(q))
 
 def test_add_limit_one_where_having():
+    print("--------------")
     q_before_str = "select * from R1 where a in (select a from R2) and a > 1"
     q_before = parse(q_before_str)
     print("Before: ", format(q_before))

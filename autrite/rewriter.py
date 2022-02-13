@@ -1,5 +1,5 @@
 from collections import deque
-from constraint import NumericalConstraint, UniqueConstraint
+from constraint import *
 from rule import AddPredicate, RemoveDistinct, AddLimitOne, RemoveJoin, RemovePredicate, UnionToUnionAll
 from mo_sql_parsing import format
 
@@ -49,6 +49,10 @@ class Rewriter:
         constraint_rule_map = {
             UniqueConstraint : [RemoveDistinct, AddLimitOne],
             NumericalConstraint : [AddPredicate, RemovePredicate],
+            PresenceConstraint : [],
+            InclusionConstraint : [],
+            LengthConstraint : [],
+            FormatConstraint : []
             }
         rules = []
         for c in constraints:
