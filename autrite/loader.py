@@ -9,8 +9,7 @@ class Loader:
         constraints = []
         classnodes = json.load(open(filename, 'r'))
         for classnode in classnodes:
-            classnode = json.loads(classnode)
-            constraints_obj = json.loads(classnode['constraints'])
+            constraints_obj = classnode['constraints']
             for obj in constraints_obj:
                 c = None
                 if obj["^o"] == "LengthConstraint":
@@ -64,7 +63,7 @@ class Loader:
         for line in lines:
             try:
                 q_obj = parse(line)
-                format(q_obj)
+                print(format(q_obj))
                 q_objs.append(q_obj)
             except:
                 fail_raw_queries.append(line)
