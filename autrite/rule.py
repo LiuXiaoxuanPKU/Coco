@@ -4,6 +4,7 @@ import z3
 from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
 from itertools import combinations
+import json
 
 class Rule:
     def __init__(self, cs) -> None:
@@ -290,7 +291,6 @@ class RemovePredicate(Rule):
             else: # base case, does not contain and/or
                   # None means drop this clause
                 return  [None, clause]
-                  
 
         rq = copy.deepcopy(q)
         where_clause = rq.pop('where', None)
