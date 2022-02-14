@@ -30,7 +30,6 @@ def test_rewrite_helper(constraints, q_str):
     print("Before:\n", format(parse(q_str)))
     print("After:")
     for q in rewritten_queries:
-        print(q)
         print(format(q))
     print("------------------------Finish Rewrite------------------------")
 
@@ -70,7 +69,32 @@ def test_redmine_enumerate():
     constraints = [UniqueConstraint("projects", "parent_id")]
     q_before_str = "SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'YY'"
     test_rewrite_helper(constraints, q_before_str)
+
+    constraints = [UniqueConstraint("projects", "id")]
+    q_before_str = "SELECT * \
+                    FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id \
+                        WHERE id IS NOT NULL \
+                            AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) \
+                                    AND (projects.id = 16 OR projects.lft > 16 AND projects.rgt < 17)"
+    test_rewrite_helper(constraints, q_before_str)
+
+    constraints = [UniqueConstraint("issues", "id")]
+    q_before_str = 'SELECT issues.* FROM issues WHERE issues.id IN ("$1", "$2", "$3", "$4", "$5", "$6")'
+    test_rewrite_helper(constraints, q_before_str)
+
+    constraints = [UniqueConstraint("issues", "root_id")]
+    q_before_str = 'SELECT issues.* FROM issues WHERE issues.root_id = "$1" AND issues.lft <= 34 AND issues.rgt >= 39 ORDER BY issues.lft ASC'
+    test_rewrite_helper(constraints, q_before_str)
+
+    constraints = [UniqueConstraint("projects", "id")]
+    q_before_str = 'SELECT COUNT(*) FROM issues INNER JOIN projects ON projects.id = issues.project_id \
+        WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE \
+            em.project_id = projects.id AND em.name = "issue_tracking") IS NOT NULL AND \
+                projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members\
+                     WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.author_id = "$1"'
+    test_rewrite_helper(constraints, q_before_str)
     
+
 if __name__ == "__main__":
     test_get_constraints()
     test_get_rules()

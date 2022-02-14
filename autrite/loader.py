@@ -63,11 +63,11 @@ class Loader:
         fail_raw_queries = []
         for line in lines:
             try:
-                q_objs.append(parse(line))
+                q_obj = parse(line)
+                format(q_obj)
+                q_objs.append(q_obj)
             except:
                 fail_raw_queries.append(line)
         print("======================[Success] Parse unique queries %d" % len(q_objs))
         print("======================[Fail] Parse %d queries" % len(fail_raw_queries))
-        for i, q in enumerate(q_objs):
-            print(i, format(q))
         return q_objs
