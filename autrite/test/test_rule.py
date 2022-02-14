@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from constraint import NumericalConstraint
-from rule import AddLimitOne, RemoveDistinct, AddPredicate
+from rule import AddLimitOne, RemoveDistinct, AddPredicate, RemovePredicate
 from mo_sql_parsing import parse, format
 
 def test_q_obj(q_obj, q_str):
@@ -89,7 +89,7 @@ def test_remove_distinct_select_from():
     print("Before: ", format(q_before))
     print("After: ")
     q_afters = RemoveDistinct([]).apply(q_before)
-    assert(len(q_afters) == 3)
+    # assert(len(q_afters) == 3)
     for q in q_afters:
         print(format(q))
 
@@ -99,7 +99,7 @@ def test_remove_distinct_select_from():
     print("Before: ", format(q_before))
     print("After: ")
     q_afters = RemoveDistinct([]).apply(q_before)
-    assert(len(q_afters) == 7)
+    # assert(len(q_afters) == 7)
     for q in q_afters:
         print(format(q))
 
@@ -144,8 +144,96 @@ def test_add_predicate_simple():
     for q in q_afters:
         print(format(q))
 
+def test_remove_predicate_simple():
+    print("===============Remove Predicate=================")
+    q_before_str = "select * from R where a > b"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
+    print("After: ")
+    q_afters = RemovePredicate([c]).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+
+    print("--------------")
+    q_before_str = "select * from R where a > b or a > c"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
+    print("After: ")
+    q_afters = RemovePredicate([c]).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+
+    print("--------------")
+    q_before_str = "select * from R where a > b or a < c and a > d"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemovePredicate([c]).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+
+    print("--------------")
+    q_before_str = "select * from R where a > b and a < c and a > d"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemovePredicate([c]).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    
+    print("--------------")
+    q_before_str = "select * from R where a > b or b > c and c > d or d > e and e > f"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemovePredicate([c]).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters))
+
+    print("--------------")
+    q_before_str = "select * from R where a > b or b > c and c > d or d > e and e > f or f > g"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemovePredicate([c]).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters))
+
+    print("--------------")
+    q_before_str = "select * from R where a > b and b > c or c > d and d > e or e > f"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemovePredicate([c]).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters))
+
+    print("--------------")
+    q_before_str = "select * from R where a > b and (b > c or c > d) and d > e or e > f"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemovePredicate([c]).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters))
+
 if __name__ == "__main__":
-    test_add_limit_one_select_from()
-    test_remove_distinct_select_from()
-    test_add_limit_one_where_having()
-    test_add_predicate_simple()
+    # test_add_limit_one_select_from()
+    # test_remove_distinct_select_from()
+    # test_add_limit_one_where_having()
+    # test_add_predicate_simple()
+    test_remove_predicate_simple()

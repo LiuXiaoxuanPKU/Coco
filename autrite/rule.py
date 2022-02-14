@@ -1,4 +1,5 @@
 import copy
+from email.utils import collapse_rfc2231_value
 from http.client import UnimplementedFileMode
 from lib2to3.pgen2 import token
 from lib2to3.pgen2.tokenize import TokenError
@@ -6,6 +7,7 @@ from multiprocessing import Condition
 import z3
 from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
+from itertools import combinations
 
 class Rule:
     def __init__(self, cs) -> None:
@@ -133,7 +135,46 @@ class UnionToUnionAll(Rule):
 
 class RemovePredicate(Rule):
     def apply_single(self, q):
-        return []
+        if 'where' not in q:
+            return []
+        
+        def rewrite_where(clause):
+            return_wheres = []
+            op = list(clause.keys())[0]
+            if op == "and" or op == "or":
+                clause_list = clause[op]
+                predicates_combo = []
+                for n in range(1, len(clause_list)):
+                    predicates_combo += list(combinations(clause_list, n))
+                for p in predicates_combo:
+                    if len(p) == 1:
+                        pred = p[0]
+                        nested_preds = rewrite_where(pred)
+                        for np in nested_preds:
+                            # ????
+                            for p2 in predicates_combo:
+                                if len(p2) > 1 or "and" not in p2[0] and "or" not in p2[0]:
+                                    p2list = list(p2)
+                                    p2list.append(np)
+                                    return_wheres.append({op: p2list})
+                            return_wheres.append(np)
+                            # ????
+                        return_wheres.append(pred)
+                    else:
+                        return_wheres.append({op: list(p)})
+            # print(return_wheres)
+            return return_wheres
+        # print(q['where'])
+
+        rq = copy.deepcopy(q)
+        where_clause = rq.pop('where', None)
+        rewritten_qs = [rq]
+        for where in rewrite_where(where_clause):
+            rq = copy.deepcopy(q)
+            rq['where'] = where
+            rewritten_qs.append(rq)
+        # print(rewritten_qs)
+        return rewritten_qs
 
 class AddPredicate(Rule):
     def apply_single(self, q):
