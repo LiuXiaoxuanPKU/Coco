@@ -145,8 +145,7 @@ class RemoveDistinct(Rule):
     def apply_single(self, q):
         if 'select_distinct' in q:
             rewritten_q =  copy.deepcopy(q)
-            rewritten_q['select'] = rewritten_q['select_distinct']
-            del rewritten_q['select_distinct']
+            rewritten_q['select'] = rewritten_q.pop('select_distinct')
             return [rewritten_q]
         return []
 
@@ -165,8 +164,10 @@ class RemoveJoin(Rule):
 class UnionToUnionAll(Rule):
     def apply_single(self, q):
         if 'union' in q:
-            q['union all'] = q.pop('union')
-        return [q]
+            rewritten_q =  copy.deepcopy(q)
+            rewritten_q['union all'] = rewritten_q.pop('union')
+            return [rewritten_q]
+        return []
 
 class RemovePredicate(Rule):
     def apply_single(self, q):
