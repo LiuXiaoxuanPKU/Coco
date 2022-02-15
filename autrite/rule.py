@@ -1,7 +1,4 @@
 import copy
-import errno
-from gettext import install
-from lib2to3.pgen2 import token
 import z3
 from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
@@ -306,11 +303,11 @@ class AddPredicate(Rule):
         binops += extract_constraints()
 
         binops = [op for op in binops if op is not None]  
-        print("Before", binops)    
+        # print("Before", binops)    
         candidate_predicates = deduct(binops)
 
         candidate_predicates = set(candidate_predicates) - set(binops)
-        print("After", candidate_predicates)
+        # print("After", candidate_predicates)
 
         rewritten_qs = []
         def z3op_to_json(binop):

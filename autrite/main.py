@@ -4,21 +4,17 @@ from rewriter import Rewriter
 from evaluator import Evaluator
 from verifier import Verifier
 from mo_sql_parsing import parse, format
+from tqdm import tqdm
 
 if __name__ == '__main__':
     appname = "redmine"
     constraint_filename = "../constraints/%s" % appname
-    query_filename = "../queries/%s.pk" % appname 
+    query_filename = "../queries/%s_rewrite.sql" % appname 
     constraints = Loader.load_constraints(constraint_filename)
     queries = Loader.load_queries(query_filename)
 
-    for q in queries:
-        print("org")
-        print(format(q))
-
+    for q in tqdm(queries):
         rewritten_queries = Rewriter().rewrite(constraints, q)
-
-        print("rewritten", len(rewritten_queries))
         if len(rewritten_queries) == 0:
             continue
         

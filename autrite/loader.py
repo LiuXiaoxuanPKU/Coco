@@ -63,7 +63,7 @@ class Loader:
         for line in lines:
             try:
                 q_obj = parse(line)
-                print(format(q_obj))
+                format(q_obj)
                 q_objs.append(q_obj)
             except:
                 fail_raw_queries.append(line)
