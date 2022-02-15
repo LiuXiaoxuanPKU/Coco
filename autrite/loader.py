@@ -38,7 +38,7 @@ class Loader:
         return constraints
 
     @staticmethod
-    def load_queries(filename, cnt = 5):
+    def load_queries(filename, cnt = 500):
         if filename.endswith("pk"):
             with open(filename, 'rb') as f:
                 lines = pickle.load(f)

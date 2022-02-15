@@ -16,9 +16,9 @@ class Verifier:
             create_lines = f.readlines()
         
         qs = create_lines + ["-- Original Query;\n"]
-        qs += [format(org_q)]
+        qs += [format(org_q) + ";"]
         qs += ["\n-- Rewritten Queries;\n"]
-        qs += [format(q) + "\n" for q in rewritten_queries]
+        qs += [format(q) + ";\n" for q in rewritten_queries]
 
         q_path = "%s/%s_%d.sql" % (app_create_path, appname+"_parser_input", rewrite_cnt)
         with open (q_path, "w") as f:

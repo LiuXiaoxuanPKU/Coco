@@ -12,7 +12,7 @@ if __name__ == '__main__':
     constraints = Loader.load_constraints(constraint_filename)
     queries = Loader.load_queries(query_filename)
 
-    for q in queries[:10]:
+    for q in queries:
         print("org")
         print(format(q))
 
