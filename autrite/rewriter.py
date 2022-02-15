@@ -1,5 +1,5 @@
 from collections import deque
-from constraint import NumericalConstraint, UniqueConstraint
+from constraint import *
 from rule import AddPredicate, RemoveDistinct, AddLimitOne, RemoveJoin, RemovePredicate, UnionToUnionAll
 from mo_sql_parsing import format
 
@@ -15,6 +15,8 @@ class Rewriter:
         
         # use constraints to generate potential rules
         rules = self.get_rules(constraints)
+        # for c in set(constraints):
+        #     print(str(c), hash(c))
 
         rewritten_queries = self.bfs(rules, q)
 
@@ -43,16 +45,21 @@ class Rewriter:
         for field in fields:
             cs = get_field_constraint(field, constraints)
             q_constraints += cs
-        return q_constraints 
+        
+        return list(set(q_constraints))
 
     def get_rules(self, constraints):
         constraint_rule_map = {
             UniqueConstraint : [RemoveDistinct, AddLimitOne],
             NumericalConstraint : [AddPredicate, RemovePredicate],
+            PresenceConstraint : [],
+            InclusionConstraint : [],
+            LengthConstraint : [],
+            FormatConstraint : []
             }
         rules = []
         for c in constraints:
-            rules += [r([c]) for r in constraint_rule_map[type(c)]]
+            rules += [r(c) for r in constraint_rule_map[type(c)]]
         return list(set(rules))
 
     def bfs(self, rules, q):

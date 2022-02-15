@@ -6,7 +6,7 @@ def test_load_queries():
     filename = "../../queries/redmine.pk"
     queries = list(Loader.load_queries(filename))
     print(len(queries))
-    print(queries[0])
+    # print(queries[0])
 
 def test_load_constraints():
     filename = "../../constraints/redmine"

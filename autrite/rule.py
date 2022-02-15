@@ -1,9 +1,5 @@
 import copy
-from email.utils import collapse_rfc2231_value
-from http.client import UnimplementedFileMode
-from lib2to3.pgen2 import token
-from lib2to3.pgen2.tokenize import TokenError
-from multiprocessing import Condition
+import errno
 import z3
 from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
@@ -11,16 +7,35 @@ from itertools import combinations
 
 class Rule:
     def __init__(self, cs) -> None:
-        self.constraints = cs
+        self.constraint = cs
 
     def __str__(self) -> str:
         return self.name
 
+    def __eq__(self, __o: object) -> bool:
+        return self.__hash__() == __o.__hash__()
+
+    def __hash__(self) -> int:
+        # only keep rule type
+        if not isinstance(self, AddPredicate):
+            hash_v = str(type(self))
+        else:
+            hash_v = str(type(self)) + str(hash(self.constraint))
+        return hash(hash_v)
+
     @staticmethod
     def keyword_nested(keyword, q):
         if keyword in ["select", "select_distinct"]:
-            if keyword in q and isinstance(q[keyword], dict):
-                return q[keyword]['value']
+            # TODO: handle multiple select items
+            if keyword in q and isinstance(q[keyword], dict) \
+                            and isinstance(q[keyword]['value'], dict) :
+                nested_dict =  q[keyword]['value']
+                keys = list(nested_dict.keys())
+                # only handle select (select )
+                # rule out select aggregate()
+                if len(keys) >= 1 and keys[0] == 'select' or keys[0] == 'select_distinct':
+                    return q[keyword]['value']
+                return []
         
         if keyword == 'from' and 'from' in q and isinstance(q['from'], dict):
             return q['from']
@@ -68,17 +83,36 @@ class Rule:
             assert(len(cond) == 1)
             op = list(cond.keys())[0]
             if op == "and" or op == "or":
-                lhs, rhs = cond[op][0], cond[op][1]
-                rewritten_lhs = [lhs] + rewrite_cond(lhs)
-                rewritten_rhs = [rhs] + rewrite_cond(rhs)
-                for r1 in rewritten_lhs:
-                    for r2 in rewritten_rhs:
-                        if not (r1 == lhs and r2 == rhs):
-                            rewritten_cond.append({op:[copy.deepcopy(r1), copy.deepcopy(r2)]})
+                rewritten_items = []
+                for item in cond[op]:
+                    rewritten_items.append([item] + rewrite_cond(item))
+
+                def comb(rewritten_items):
+                    if len(rewritten_items) == 0:
+                        return [[]]
+                    ret = []
+                    partial_results = comb(rewritten_items[:len(rewritten_items) - 1])
+                    for e in rewritten_items[-1]:
+                        for r in partial_results:
+                            ret.append(r + [e])
+                    return ret
+                    
+                re = comb(rewritten_items)[1:]
+                for r in re:
+                    rewritten_cond.append({op:copy.deepcopy(r)})
+
+            elif op in ["exists"]:
+                v = cond[op]
+                # nested query
+                if isinstance(v, dict) and ('select' in v):
+                    rewritten_vs = self.apply(v)
+                    for r1 in rewritten_vs:
+                        rewritten_cond.append({op:r1})
+                return rewritten_cond
             else:
                 lhs, rhs = cond[op][0], cond[op][1]
                 # nested query
-                if isinstance(rhs, dict):
+                if isinstance(rhs, dict) and ('select' in rhs or 'select_distinct' in rhs):
                     rewritten_rhs = self.apply(rhs)
                     for r1 in rewritten_rhs:
                         rewritten_cond.append({op:[copy.deepcopy(lhs), r1]})
@@ -198,11 +232,19 @@ class AddPredicate(Rule):
                 assert(len(key) == 1)
                 key = key[0]
                 # TODO: does not handle exist for now
+                if key == "exists":
+                    return None
                 lhs, rhs = cond[key][0], cond[key][1]
                 if key == "and" :
-                    return z3.And(extract_cond(lhs), extract_cond(rhs))
+                    elhs, erhs = extract_cond(lhs), extract_cond(rhs)
+                    if elhs is None or erhs is None:
+                        return None
+                    return z3.And(elhs, erhs)
                 elif key == "or":
-                    return z3.Or(extract_cond(lhs), extract_cond(rhs))
+                    elhs, erhs = extract_cond(lhs), extract_cond(rhs)
+                    if elhs is None or erhs is None:
+                        return None
+                    return z3.Or(elhs, erhs)
                 elif key in ["gt", "eq", "lt"]:
                     lhs, rhs = translate_token(lhs), translate_token(rhs)
                     if key == "gt":
@@ -224,20 +266,20 @@ class AddPredicate(Rule):
 
         def extract_constraints():
             conditions = []
-            for c in self.constraints:
-                if isinstance(c, NumericalConstraint):
-                    tmp = z3.Real(c.field)
-                    tokens.append(tmp)
-                    if c.min is not None and c.max is not None:
-                        conditions.append(z3.And(tmp >= c.min, tmp <= c.max))
-                        tokens.append(c.min)
-                        tokens.append(c.max)
-                    elif c.min is not None:
-                        conditions.append(tmp >= c.min)
-                        tokens.append(c.min)
-                    elif c.max is not None:
-                        conditions.append(tmp <= c.max)
-                        tokens.append(c.max)
+            c = self.constraint
+            if isinstance(c, NumericalConstraint):
+                tmp = z3.Real(c.field)
+                tokens.append(tmp)
+                if c.min is not None and c.max is not None:
+                    conditions.append(z3.And(tmp >= c.min, tmp <= c.max))
+                    tokens.append(c.min)
+                    tokens.append(c.max)
+                elif c.min is not None:
+                    conditions.append(tmp >= c.min)
+                    tokens.append(c.min)
+                elif c.max is not None:
+                    conditions.append(tmp <= c.max)
+                    tokens.append(c.max)
             return conditions
 
 

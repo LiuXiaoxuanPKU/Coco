@@ -24,7 +24,7 @@ class Serializer
     node.ast = node_obj['ast']
     node.table = node_obj['table']
     node.children = node_obj['children']
-    node.constraints = Oj.load(node_obj['constraints'])
+    node.constraints = Oj.load(node_obj['constraints'].to_json)
     node
   end
 
@@ -32,11 +32,12 @@ class Serializer
     node.constraints.each do |c|
       c.cond = c.cond.to_s if c.class.method_defined? :cond
     end
-    {
+    obj = {
       table: node.table,
       class: node.name,
-      constraints: Oj.dump(node.constraints)
-    }.to_json
+      constraints: (JSON.parse Oj.dump(node.constraints))
+    }
+    return obj
   end
 
   def self.deserialize_tree(filename)

@@ -22,4 +22,4 @@ db_t.traverse(root)
 id_t = Traversor.new(IdExtractor.new)
 id_t.traverse(root)
 
-Serializer.serialize_tree(root, 'constraints/redmine')
+Serializer.serialize_tree(root, 'constraints/redmine_dump')

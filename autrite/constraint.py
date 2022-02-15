@@ -3,6 +3,11 @@ class Constraint:
         self.table = table
         self.field = field
 
+    def __eq__(self, __o: object) -> bool:
+        return self.__hash__() == __o.__hash__()
+
+    def __hash__(self) -> int:
+        return hash(str(self))
 
 class UniqueConstraint(Constraint):
     def __init__(self, table, field, scope=[], cond=None) -> None:

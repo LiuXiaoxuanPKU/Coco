@@ -52,14 +52,15 @@ def test_add_limit_one_select_from():
         print(format(q))
 
 def test_add_limit_one_where_having():
+    print("--------------")
     q_before_str = "select * from R1 where a in (select a from R2) and a > 1"
     q_before = parse(q_before_str)
     print("Before: ", format(q_before))
     print("After: ")
     q_afters = AddLimitOne([]).apply(q_before)
-    assert(len(q_afters) == 3)
     for q in q_afters:
         print(format(q))
+    assert(len(q_afters) == 3)
     
     print("--------------")
     q_before_str = "select * from R1 where a in (select a from R2) and b in (select b from R3)"
