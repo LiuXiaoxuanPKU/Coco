@@ -1,5 +1,7 @@
 import copy
 import errno
+from gettext import install
+from lib2to3.pgen2 import token
 import z3
 from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
@@ -174,16 +176,34 @@ class AddPredicate(Rule):
     def apply_single(self, q):
         tokens = []
 
-        def translate_token(t):
-            if isinstance(t, int) or isinstance(t, float):
+        def translate_rhs(t):
+            if isinstance(t, int) or isinstance(t, float) or isinstance(t, bool):
                 tokens.append(t)
-                return t
+                return t, type(t)
             elif isinstance(t, str):
                 t = z3.Real(t)
                 tokens.append(t)
-                return t
+                return t, float # TODO: assume float for variables
+            return None, None
+
+        def translate_lhs(t, _type):
+            if _type is None or t is None:
+                return None
+            if _type == int:
+                ret = z3.Int(t)
+                tokens.append(ret)
+                return ret
+            elif _type == float:
+                ret = z3.Real(t)
+                tokens.append(ret)
+                return ret
+            elif _type == bool:
+                ret = z3.Bool(t)
+                tokens.append(ret)
+                return ret
             else:
-                raise NotImplementedError("translate token does not support type %s of %s" % (type(t), t))
+                print("[Warning] translate token does not support type %s of %s" % (type(t), t))
+                return None
 
         def extract_binops(q):
             def extract_cond(cond):
@@ -205,7 +225,10 @@ class AddPredicate(Rule):
                         return None
                     return z3.Or(elhs, erhs)
                 elif key in ["gt", "eq", "lt"]:
-                    lhs, rhs = translate_token(lhs), translate_token(rhs)
+                    rhs, _type = translate_rhs(rhs)
+                    lhs = translate_lhs(lhs, _type)
+                    if lhs is None or rhs is None:
+                        return None
                     if key == "gt":
                         return lhs > rhs
                     elif key == "eq":
@@ -246,12 +269,17 @@ class AddPredicate(Rule):
             candidates = []
             for lhs in set(tokens):
                 for rhs in set(tokens):
-                    if not (isinstance(lhs, z3.z3.ArithRef) or isinstance(rhs, z3.z3.ArithRef)):
-                        continue
-                    if lhs is not rhs:
+                    if isinstance(lhs, z3.z3.BoolRef) and isinstance(rhs, bool):
+                        candidates.append(lhs == rhs)
+                        candidates.append(lhs != rhs)
+                    elif (isinstance(lhs, z3.z3.ArithRef) and isinstance(rhs, z3.z3.ArithRef) and (lhs is not rhs)) \
+                        or (isinstance(lhs, z3.z3.ArithRef) and (type(rhs) in [int, float])) \
+                        or ((type(lhs) in [int, float]) and isinstance(rhs, z3.z3.ArithRef)):
                         candidates.append(lhs > rhs)
                         candidates.append(lhs == rhs)
-            print(candidates)
+                    else:
+                        continue
+
             cond = None
             for binop in binops:
                 if cond is None:
@@ -259,7 +287,7 @@ class AddPredicate(Rule):
                 else:
                     cond = z3.And(cond, binop)
 
-            variables = [x for x in set(tokens) if isinstance(x, z3.z3.ArithRef)]
+            variables = [x for x in set(tokens) if isinstance(x, z3.z3.ArithRef) or isinstance(x, z3.z3.BoolRef)]
             
             validate_candidates = []
             for candidate in candidates:
@@ -277,18 +305,23 @@ class AddPredicate(Rule):
         # and translate into z3 format
         binops += extract_constraints()
 
+        binops = [op for op in binops if op is not None]  
+        print("Before", binops)    
         candidate_predicates = deduct(binops)
+
+        candidate_predicates = set(candidate_predicates) - set(binops)
+        print("After", candidate_predicates)
 
         rewritten_qs = []
         def z3op_to_json(binop):
             op_map = {
                 '>' : 'gt',
                 '==' : 'eq',
-                '<' : 'lt'
+                '<' : 'lt',
+                'Distinct' : 'neq'
             }
             return {op_map[str(binop.decl())]: binop.children()}
 
-        print(candidate_predicates)
         # add candidate predicates to q
         for candidate in candidate_predicates:
             rq = copy.deepcopy(q)
