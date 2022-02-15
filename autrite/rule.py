@@ -123,7 +123,6 @@ class AddLimitOne(Rule):
             rewritten_q =  copy.deepcopy(q)
             rewritten_q['limit'] = 1
             return [rewritten_q]
-
         return []
 
 class RemoveJoin(Rule):
@@ -131,7 +130,9 @@ class RemoveJoin(Rule):
 
 class UnionToUnionAll(Rule):
     def apply_single(self, q):
-        return []
+        if 'union' in q:
+            q['union all'] = q.pop('union')
+        return [q]
 
 class RemovePredicate(Rule):
     def apply_single(self, q):
