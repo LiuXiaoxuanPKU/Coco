@@ -180,20 +180,31 @@ class RemovePredicate(Rule):
                 rewritten_items = []
                 for item in clause_list:
                     rewritten_items.append(rewrite_where(item))
+                # enumerate all possible combinations
+                # example:
+                # input: rewritten_items([[None, a>0], [None, b>0]])
+                # output: [[None, None], [None, b>0], [a>0, None], [a>0, b>0]]
                 combs = Rule.comb(rewritten_items)
                 def remove_none(l):
                     return [i for i in l if i is not None]
+                # removing None
+                # input: [[None, None], [None, b>0], [a>0, None], [a>0, b>0]]
+                # output: [[], [b>0], [a>0], [a>0, b>0]]
                 items = [remove_none(i) for i in combs]
                 return_wheres = []
                 for i in items:
+                    # [] --> the clause is dropped completely
                     if len(i) == 0:
                         return_wheres.append(None)
+                    # only one element is left, so we do not need and/or any more
                     elif len(i) == 1:
                         return_wheres.append(i[0])
+                    # otherwise, we create a new dic with old op and existing rewrites
                     else:
                         return_wheres.append({op:i})
                 return return_wheres
-            else:
+            else: # base case, does not contain and/or
+                  # None means drop this clause
                 return  [None, clause]
                   
 
@@ -207,7 +218,6 @@ class RemovePredicate(Rule):
             else:
                 rq['where'] = where
             rewritten_qs.append(rq)
-        # print(rewritten_qs)
         return rewritten_qs
 
 class AddPredicate(Rule):
