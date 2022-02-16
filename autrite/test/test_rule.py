@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from constraint import NumericalConstraint
-from rule import AddLimitOne, RemoveDistinct, AddPredicate
+from rule import AddLimitOne, RemoveDistinct, AddPredicate, RemovePredicate, UnionToUnionAll
 from mo_sql_parsing import parse, format
 
 def test_q_obj(q_obj, q_str):
@@ -145,8 +145,117 @@ def test_add_predicate_simple():
     for q in q_afters:
         print(format(q))
 
+def test_remove_predicate_simple():
+    print("===============Remove Predicate=================")
+    q_before_str = "select * from R where a > b"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
+    print("After: ")
+    q_afters = RemovePredicate(c).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+
+    print("--------------")
+    q_before_str = "select * from R where a > b or a > c"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
+    print("After: ")
+    q_afters = RemovePredicate(c).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+
+    print("--------------")
+    q_before_str = "select * from R where a > b or a < c and a > d"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemovePredicate(c).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+
+    print("--------------")
+    q_before_str = "select * from R where a > b and a < c and a > d"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemovePredicate(c).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    
+    print("--------------")
+    q_before_str = "select * from R where a > b or b > c and c > d or d > e and e > f"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemovePredicate(c).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters))
+
+    print("--------------")
+    q_before_str = "select * from R where a > b or b > c and c > d or d > e and e > f or f > g"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemovePredicate(c).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters))
+
+    print("--------------")
+    q_before_str = "select * from R where a > b and b > c or c > d and d > e or e > f"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemovePredicate(c).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters))
+
+    print("--------------")
+    q_before_str = "select * from R where a > b and (b > c or c > d) and d > e or e > f"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemovePredicate(c).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters))
+
+def test_union_all_simple():
+    q_before_str = "SELECT City FROM Customers UNION SELECT City FROM Suppliers ORDER BY City;"
+    q_before = parse(q_before_str)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = UnionToUnionAll(None).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters))
+
+    print("--------------")
+    q_before_str = "SELECT City FROM Customers UNION SELECT City FROM Suppliers UNION SELECT City FROM Shipments ORDER BY City;"
+    q_before = parse(q_before_str)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = UnionToUnionAll(None).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters))
+
 if __name__ == "__main__":
-    test_add_limit_one_select_from()
-    test_remove_distinct_select_from()
-    test_add_limit_one_where_having()
-    test_add_predicate_simple()
+    # test_add_limit_one_select_from()
+    # test_remove_distinct_select_from()
+    # test_add_limit_one_where_having()
+    # test_add_predicate_simple()
+    test_remove_predicate_simple()
+    # test_union_all_simple()

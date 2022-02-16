@@ -2,6 +2,7 @@ import copy
 import z3
 from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
+from itertools import combinations
 
 class Rule:
     def __init__(self, cs) -> None:
@@ -48,6 +49,16 @@ class Rule:
             org_q[keyword] = sub_q
         return org_q
 
+    @staticmethod
+    def comb(rewritten_items):
+        if len(rewritten_items) == 0:
+            return [[]]
+        ret = []
+        partial_results = Rule.comb(rewritten_items[:len(rewritten_items) - 1])
+        for e in rewritten_items[-1]:
+            for r in partial_results:
+                ret.append(r + [e])
+        return ret
 
     def get_name(self):
         return str(self)
@@ -84,18 +95,8 @@ class Rule:
                 rewritten_items = []
                 for item in cond[op]:
                     rewritten_items.append([item] + rewrite_cond(item))
-
-                def comb(rewritten_items):
-                    if len(rewritten_items) == 0:
-                        return [[]]
-                    ret = []
-                    partial_results = comb(rewritten_items[:len(rewritten_items) - 1])
-                    for e in rewritten_items[-1]:
-                        for r in partial_results:
-                            ret.append(r + [e])
-                    return ret
                     
-                re = comb(rewritten_items)[1:]
+                re = Rule.comb(rewritten_items)[1:]
                 for r in re:
                     rewritten_cond.append({op:copy.deepcopy(r)})
 
@@ -143,8 +144,7 @@ class RemoveDistinct(Rule):
     def apply_single(self, q):
         if 'select_distinct' in q:
             rewritten_q =  copy.deepcopy(q)
-            rewritten_q['select'] = rewritten_q['select_distinct']
-            del rewritten_q['select_distinct']
+            rewritten_q['select'] = rewritten_q.pop('select_distinct')
             return [rewritten_q]
         return []
 
@@ -155,7 +155,6 @@ class AddLimitOne(Rule):
             rewritten_q =  copy.deepcopy(q)
             rewritten_q['limit'] = 1
             return [rewritten_q]
-
         return []
 
 class RemoveJoin(Rule):
@@ -163,11 +162,53 @@ class RemoveJoin(Rule):
 
 class UnionToUnionAll(Rule):
     def apply_single(self, q):
+        if 'union' in q:
+            rewritten_q =  copy.deepcopy(q)
+            rewritten_q['union all'] = rewritten_q.pop('union')
+            return [rewritten_q]
         return []
 
 class RemovePredicate(Rule):
     def apply_single(self, q):
-        return []
+        if 'where' not in q:
+            return []
+        
+        def rewrite_where(clause):
+            op = list(clause.keys())[0]
+            if op == "and" or op == "or":
+                clause_list = clause[op]
+                rewritten_items = []
+                for item in clause_list:
+                    rewritten_items.append(rewrite_where(item))
+                combs = Rule.comb(rewritten_items)
+                def remove_none(l):
+                    return [i for i in l if i is not None]
+                items = [remove_none(i) for i in combs]
+                return_wheres = []
+                for i in items:
+                    if len(i) == 0:
+                        return_wheres.append(None)
+                    elif len(i) == 1:
+                        return_wheres.append(i[0])
+                    else:
+                        return_wheres.append({op:i})
+                return return_wheres
+            else:
+                return  [None, clause]
+                  
+
+        rq = copy.deepcopy(q)
+        where_clause = rq.pop('where', None)
+        rewritten_qs = []
+        for where in rewrite_where(where_clause)[:-1]:
+            rq = copy.deepcopy(q)
+            if where is None:
+                del rq['where']
+            else:
+                rq['where'] = where
+            rewritten_qs.append(rq)
+        # print(rewritten_qs)
+        return rewritten_qs
 
 class AddPredicate(Rule):
     def apply_single(self, q):
