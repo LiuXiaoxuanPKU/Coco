@@ -2,9 +2,12 @@
 import re
 # for input argument
 import sys
+# for dump into pickle format
+import pickle
 
 
-# Usage Example: python3 parser.py log_filename.log dumpfile_name
+# Usage: under log_extractor/ directory, execute: python3 parser.py log_filename.log app_name
+# Example: python3 parser.py logs/redmine_test.log redmine
 
 # Judge if line contains SELECT, return boolean value
 def is_query(line) -> bool:
@@ -27,14 +30,20 @@ def write_sql(dump_filename, sql):
         f.write(sql+'\n')
 
 # Go through file line by line
-def scan(filename, dump_filename):
+def scan(filename, app_name):
     # clear all content in file-to-dump before writing into it
-    open(dump_filename, "w").close()
+    dump_file = "./../queries/" + app_name + ".pk"
+    open(dump_file, "w").close()
+
+    queries = []
     f = open(filename, 'r', errors="replace")
     for line in f.readlines():
         if is_query(line):
             extracted_sql = filter(line)
-            write_sql(dump_filename, extracted_sql)
+            queries.append(extracted_sql)
+
+    with open(dump_file, 'wb') as _f:
+        pickle.dump(queries, _f)
 
 
 if __name__ == "__main__": 
