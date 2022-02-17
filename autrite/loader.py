@@ -38,26 +38,32 @@ class Loader:
         return constraints
 
     @staticmethod
-    def load_queries(filename, cnt = 500):
+    def load_queries_raw(filename, cnt):
         if filename.endswith("pk"):
             with open(filename, 'rb') as f:
                 lines = pickle.load(f)
-                lines = [l[1] for l in lines]
+                if isinstance(lines[0], str):
+                    lines = lines
+                else:
+                    lines = [l[1] for l in lines]
         elif filename.endswith("sql"):
             with open(filename, 'r') as f:
                 lines = f.readlines()
         else:
             raise NotImplementedError("Does not support file %s as query input" % (filename))
-        
         total_raw_queries = len(lines)
         lines = list(set(lines))
         unique_raw_queries = len(lines)
         print("Total # of raw queries: ", total_raw_queries)
         print("Total # of unique raw queries: ", unique_raw_queries)
 
+        lines.sort()
         lines = lines[:cnt]
-        # for i, l in enumerate(lines):
-        #     print(i, l)
+        return lines
+
+    @staticmethod
+    def load_queries(filename, cnt = 500):
+        lines = Loader.load_queries_raw(filename, cnt)
         q_objs = []
         fail_raw_queries = []
         for line in lines:

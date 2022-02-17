@@ -2,6 +2,19 @@ import psycopg2
 
 class Evaluator:
     @staticmethod
+    def evaluate_query(q, connect_string):
+        # Connect to an existing database
+        with psycopg2.connect(connect_string) as conn:
+            # Open a cursor to perform database operations
+            with conn.cursor() as cur:
+                # Execute a command: explain query
+                cur.execute(q)
+                # Fetch result
+                explain_fetched = cur.fetchall()
+                cur.close()
+                return explain_fetched
+
+    @staticmethod
     def evaluate_actual_time(q, connect_string):
         # Connect to an existing database
         with psycopg2.connect(connect_string) as conn:

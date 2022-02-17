@@ -1,11 +1,13 @@
-from collections import deque
 from constraint import *
 from rule import AddPredicate, RemoveDistinct, AddLimitOne, RemoveJoin, RemovePredicate, UnionToUnionAll
 from mo_sql_parsing import format
 
 class Rewriter:
     def __init__(self) -> None:
-        pass
+        self.rules = []
+
+    def set_rules(self, rules):
+        self.rules = rules
 
     def rewrite(self, constraints, q):
         # identify constraints in q
@@ -60,7 +62,11 @@ class Rewriter:
         rules = []
         for c in constraints:
             rules += [r(c) for r in constraint_rule_map[type(c)]]
-        return list(set(rules))
+        rules = set(rules)
+        if self.rules != []:
+            return [r for r in rules if type(r) in self.rules]
+        else:
+            return list(rules) 
 
     def bfs(self, rules, q):
         rewritten_queries = [q]
