@@ -13,7 +13,7 @@ class Rewriter:
         # identify constraints in q
         constraints = self.get_q_constraints(constraints, q)
         if not len(constraints):
-            return [q]
+            return []
         
         # use constraints to generate potential rules
         rules = self.get_rules(constraints)

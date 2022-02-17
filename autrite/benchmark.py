@@ -94,4 +94,4 @@ if __name__ == "__main__":
     for q,t in zip(slow_queries, slow_ts):
         exp_recorder.record("time(ms)", t)
         exp_recorder.record("queries", q)
-        exp_recorder.dump("log/slow_queries")
+        exp_recorder.dump("logs/slow_queries")
