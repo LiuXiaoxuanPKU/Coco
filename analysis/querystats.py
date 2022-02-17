@@ -35,33 +35,27 @@ with open("redmine_unique.txt") as openfileobject:
         DESC[words['DESC']] += 1
         presence[words['WHERE']] += 1
         FROM[words['FROM']] += 1
-        DESCLIMIT[words['DESC LIMIT']] += 1
-        ASCLIMIT[words['ASC LIMIT']] += 1
-        ORDERBY[words['ORDER BY']] += 1
+        ORDERBY[words['ORDER']] += 1
         equalities[words['=']] += 1
         notequals[words['<>']] += 1
         joins[words['JOIN']] += 1
-        innerjoin[words['INNER JOIN']] += 1
-        outerjoin[words['OUTER JOIN']] += 1
+        innerjoin[words['INNER']] += 1
+        outerjoin[words['OUTER']] += 1
         inclusion[words['IN']] += 1
-        NOTIN[words['NOT IN']] += 1
         when[words['WHEN']] += 1
         then[words['THEN']] += 1
 
-print("presence = {3: 2} says that there exactly 3 occurances of the presence constraint in exactly 2 of the queries" )
+print("presence = {3: 2} says that there exactly 3 occurences of the presence constraint in exactly 2 of the queries" )
 print("Presence Constraints = ", dict(OrderedDict(sorted(presence.items()))))
 print("Inclusion Constraints = ", dict(OrderedDict(sorted(inclusion.items()))))
 
 print("ASC = ", dict(OrderedDict(sorted(ASC.items()))))
 print("DESC = ", dict(OrderedDict(sorted(DESC.items()))))
-print("ASC LIMIT = ", dict(OrderedDict(sorted(ASCLIMIT.items()))))
-print("DESC LIMIT = ", dict(OrderedDict(sorted(DESCLIMIT.items()))))
 print("ORDER BY = ", dict(OrderedDict(sorted(ORDERBY.items()))))
 print("equalities = ", dict(OrderedDict(sorted(equalities.items()))))
 print("NOT EQUALS = ", dict(OrderedDict(sorted(notequals.items()))))
 print("Total Joins = ", dict(OrderedDict(sorted(joins.items()))))
 print("Inner Joins = ", dict(OrderedDict(sorted(innerjoin.items()))))
 print("Outer Joins = ", dict(OrderedDict(sorted(outerjoin.items()))))
-print("NOT IN = ", dict(OrderedDict(sorted(NOTIN.items()))))
 print("WHEN = ", dict(OrderedDict(sorted(when.items()))))
 print("THEN = ", dict(OrderedDict(sorted(then.items()))))
