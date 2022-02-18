@@ -238,18 +238,6 @@ def test_remove_predicate_simple():
         print(format(q))
     print(len(q_afters))
 
-    print("--------------")
-    q_before_str = "select * from R where exists (select a from R)"
-    q_before = parse(q_before_str)
-    c = NumericalConstraint("R", "a", 0, 100)
-    print("Before: ", format(q_before))
-    print("Constraint: ", str(c))
-    print("After: ")
-    q_afters = RemovePredicate(c).apply(q_before)
-    for q in q_afters:
-        print(format(q))
-    print(len(q_afters))
-
 def test_union_all_simple():
     q_before_str = "SELECT City FROM Customers UNION SELECT City FROM Suppliers ORDER BY City;"
     q_before = parse(q_before_str)
