@@ -272,6 +272,7 @@ class RemovePredicate(Rule):
                 combs = Rule.comb(rewritten_items)
                 def remove_none(l):
                     return [i for i in l if i is not None]
+                
                 # removing None
                 # input: [[None, None], [None, b>0], [a>0, None], [a>0, b>0]]
                 # output: [[], [b>0], [a>0], [a>0, b>0]]
@@ -288,10 +289,12 @@ class RemovePredicate(Rule):
                     else:
                         return_wheres.append({op:i})
                 return return_wheres
-            else: # base case, does not contain and/or
+            elif self.constraint.field in clause[op]: # base case, does not contain and/or and has constraint
                   # None means drop this clause
                 return  [None, clause]
-
+            else: # base case, does not contain and/or and does not have constraint
+                return [clause]
+                  
         rq = copy.deepcopy(q)
         where_clause = rq.pop('where', None)
         rewritten_qs = []

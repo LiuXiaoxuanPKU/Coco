@@ -173,6 +173,7 @@ def test_remove_predicate_simple():
     q_before = parse(q_before_str)
     c = NumericalConstraint("R", "a", 0, 100)
     print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
     print("After: ")
     q_afters = RemovePredicate(c).apply(q_before)
     for q in q_afters:
@@ -183,6 +184,7 @@ def test_remove_predicate_simple():
     q_before = parse(q_before_str)
     c = NumericalConstraint("R", "a", 0, 100)
     print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
     print("After: ")
     q_afters = RemovePredicate(c).apply(q_before)
     for q in q_afters:
@@ -191,8 +193,9 @@ def test_remove_predicate_simple():
     print("--------------")
     q_before_str = "select * from R where a > b or b > c and c > d or d > e and e > f"
     q_before = parse(q_before_str)
-    c = NumericalConstraint("R", "a", 0, 100)
+    c = NumericalConstraint("R", "b", 0, 100)
     print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
     print("After: ")
     q_afters = RemovePredicate(c).apply(q_before)
     for q in q_afters:
@@ -202,8 +205,9 @@ def test_remove_predicate_simple():
     print("--------------")
     q_before_str = "select * from R where a > b or b > c and c > d or d > e and e > f or f > g"
     q_before = parse(q_before_str)
-    c = NumericalConstraint("R", "a", 0, 100)
+    c = NumericalConstraint("R", "f", 0, 100)
     print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
     print("After: ")
     q_afters = RemovePredicate(c).apply(q_before)
     for q in q_afters:
@@ -213,8 +217,9 @@ def test_remove_predicate_simple():
     print("--------------")
     q_before_str = "select * from R where a > b and b > c or c > d and d > e or e > f"
     q_before = parse(q_before_str)
-    c = NumericalConstraint("R", "a", 0, 100)
+    c = NumericalConstraint("R", "d", 0, 100)
     print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
     print("After: ")
     q_afters = RemovePredicate(c).apply(q_before)
     for q in q_afters:
@@ -222,10 +227,23 @@ def test_remove_predicate_simple():
     print(len(q_afters))
 
     print("--------------")
-    q_before_str = "select * from R where a > b and (b > c or c > d) and d > e or e > f"
+    q_before_str = "select * from R where a > c and (b > c or c > d) and c > e or e > f"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "c", 0, 100)
+    print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
+    print("After: ")
+    q_afters = RemovePredicate(c).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters))
+
+    print("--------------")
+    q_before_str = "select * from R where exists (select a from R)"
     q_before = parse(q_before_str)
     c = NumericalConstraint("R", "a", 0, 100)
     print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
     print("After: ")
     q_afters = RemovePredicate(c).apply(q_before)
     for q in q_afters:
