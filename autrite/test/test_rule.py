@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from constraint import NumericalConstraint
-from rule import AddLimitOne, RemoveDistinct, AddPredicate, RemovePredicate, UnionToUnionAll
+from rule import AddLimitOne, RemoveDistinct, AddPredicate, RemovePredicate, UnionToUnionAll, RemoveJoin
 from mo_sql_parsing import parse, format
 
 def test_q_obj(q_obj, q_str):
@@ -252,10 +252,33 @@ def test_union_all_simple():
         print(format(q))
     print(len(q_afters))
 
+
+def test_remove_join():
+    q_before_str = "SELECT roles.* FROM roles INNER JOIN queries_roles ON roles.id = queries_roles.role_id WHERE queries_roles.query_id = 1"
+    q_before = parse(q_before_str)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemoveJoin(None).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters))
+
+    print("--------------")
+    q_before_str = "select * from R1 INNER JOIN R2 ON R1.id = R2.r1_id INNER JOIN R3 ON R1.id = R3.ri_id WHERE R1.id = 1 and R2.id = 2 and R3.id = 3"
+    q_before = parse(q_before_str)
+    print("Before: ", format(q_before))
+    print("After: ")
+    q_afters = RemoveJoin(None).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters))
+
+
 if __name__ == "__main__":
     # test_add_limit_one_select_from()
     # test_remove_distinct_select_from()
     # test_add_limit_one_where_having()
     # test_add_predicate_simple()
-    test_remove_predicate_simple()
+    # test_remove_predicate_simple()
     # test_union_all_simple()
+    test_remove_join()

@@ -1,4 +1,5 @@
 import copy
+from termios import TIOCPKT_DOSTOP
 import z3
 from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
@@ -158,7 +159,90 @@ class AddLimitOne(Rule):
         return []
 
 class RemoveJoin(Rule):
-    pass
+    def apply_single(self, q):
+        if not 'from' in q:
+            return []
+        
+        # TODO: handle outer join
+        from_clause = q['from']
+        inner_joins = []
+        for token in from_clause:
+            if isinstance(token, dict) and 'inner join' in token.keys():
+                inner_joins.append(token['inner join'])
+            elif isinstance(token, str):
+                pass
+            else:
+                # Does not handle left outer join for now
+                print('[Error] unsupport data type in from clause %s' % token)
+                return []
+
+        if len(inner_joins) == 0:
+            return []
+
+        def drop(tables):
+            if len(tables) == 0:
+                return [[]]
+
+            last = tables[-1]
+            combs = drop(tables[:-1])
+            combs_with_last = []
+            for c in combs:
+                combs_with_last.append(c + [last])
+            combs += combs_with_last
+            return combs
+
+        def rewrite_from(drop_tables, from_clause):
+            rewritten_from_clause = []
+            for token in from_clause:
+                if isinstance(token, dict) and "inner join" in token:
+                    table = token["inner join"]
+                    if not table in drop_tables:
+                        rewritten_from_clause.append(token)
+                else:
+                    rewritten_from_clause.append(token)
+            return rewritten_from_clause
+
+        def flatten(ll):
+            return [item for sublist in ll for item in sublist]
+
+        def remove_table_predicate(drop_tables, clause):
+            op = list(clause.keys())[0]
+            if op == "and" or op == "or":
+                clause_list = clause[op]
+                items = [remove_table_predicate(drop_tables, i) for i in clause_list]
+                items = [i for i in items if i is not None]
+                if len(items) == 0:
+                    return None
+                    # only one element is left, so we do not need and/or any more
+                elif len(items) == 1:
+                    items[0]
+                    # otherwise, we create a new dic with old op and existing rewrites
+                else:
+                    return {op: items}
+            else:
+                values = [s for s in flatten(clause.values()) if isinstance(s, str)]
+                for v in values:
+                    table = v.split('.')[0]
+                    if table in drop_tables:
+                        return None
+                return clause
+
+        # TODO: optmization: only drop joins with foreign key constraints
+        drop_tables_candidates = drop(inner_joins)[1:]
+    
+        rewritten_qs = []
+        for drop_tables in drop_tables_candidates:
+            rq = copy.deepcopy(q)
+            rewritten_from = rewrite_from(drop_tables, rq['from'])
+            rq["from"] = rewritten_from
+            if 'where' in rq:
+                rewritten_pred = remove_table_predicate(drop_tables, rq['where'])
+                if rewritten_pred is None:
+                    del rq['where']
+                else:
+                    rq["where"] = rewritten_pred
+            rewritten_qs.append(rq)
+        return rewritten_qs
 
 class UnionToUnionAll(Rule):
     def apply_single(self, q):
