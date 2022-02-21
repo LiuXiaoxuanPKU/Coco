@@ -67,11 +67,12 @@ if __name__ == '__main__':
                 min_cost, best_q = cost, vq
 
         if min_cost < org_cost:
+            exp_recorder.record("id", rewrite_cnt)
             exp_recorder.record("org_cost", org_cost)
             exp_recorder.record("min_cost", min_cost)
-            exp_recorder.record("org_q", format(param_q))
-            exp_recorder.record("rewrite_q", format(best_q))
-            exp_recorder.dump("log/test_prove_rewrite")
+            exp_recorder.record("org_q", param_q)
+            exp_recorder.record("rewrite_q", best_q)
+            exp_recorder.dump("log/%s_test_rewrite" % appname)
     
         print("Org q %s, org cost %d" % (format(q), org_cost))
         print("Best q %s, best cost %d" % (format(best_q), min_cost))
