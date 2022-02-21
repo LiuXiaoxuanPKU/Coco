@@ -81,3 +81,6 @@ class NumericalConstraint(Constraint):
 
     def __str__(self) -> str:
         return "Numerical, table: %s, field: %s, min: %d, max: %d, allow_nil: %d" % (self.table, self.field, self.min, self.max, self.allow_nil)
+
+class ForeignKeyConstraint(Constraint):
+    pass

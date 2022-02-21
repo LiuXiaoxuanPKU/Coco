@@ -6,8 +6,8 @@ app_create_path = "./app_create_sql"
 cosette_parser_path = ""
 rewrite_cnt = 0
 
-class Verifier:
-    def verify(self, appname, org_q, constraints, rewritten_queries):
+class ProveVerifier:
+    def verify(self, appname, org_q, constraints, rewritten_queries, out_dir):
         global rewrite_cnt
         rewrite_cnt += 1
         # generate parser input1: create_sql + query_sql
@@ -32,7 +32,7 @@ class Verifier:
         qs += ["\n-- Rewritten Queries\n"]   
         qs += [format_param(format(q)) + ";\n" for q in rewritten_queries]
 
-        q_path = "%s/%s_%d.sql" % (app_create_path, appname+"_parser_input", rewrite_cnt)
+        q_path = "%s/%s_%d.sql" % (out_dir, appname+"_parser_input", rewrite_cnt)
         print("write to %s, length %d" % (q_path, len(qs)))
         with open (q_path, "w") as f:
             f.writelines(qs)

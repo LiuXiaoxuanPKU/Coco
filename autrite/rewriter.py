@@ -57,7 +57,8 @@ class Rewriter:
             PresenceConstraint : [],
             InclusionConstraint : [],
             LengthConstraint : [],
-            FormatConstraint : []
+            FormatConstraint : [],
+            ForeignKeyConstraint : []
             }
         rules = []
         for c in constraints:

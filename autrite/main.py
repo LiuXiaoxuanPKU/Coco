@@ -3,7 +3,8 @@ from loader import Loader
 from rewriter import Rewriter
 import rule
 from evaluator import Evaluator
-from verifier import Verifier
+from ProveVerifier import ProveVerifier
+from TestVerifier import TestVerifier
 from mo_sql_parsing import parse, format
 from tqdm import tqdm
 import time
@@ -12,9 +13,10 @@ from utils import exp_recorder
 if __name__ == '__main__':
     appname = "redmine"
     constraint_filename = "../constraints/%s" % appname
-    query_filename = "../queries/%s.sql" % appname 
+    query_filename = "../queries/%s/%s_remove_predicate.sql" % (appname, appname)
+    out_dir = "app_create_sql/provable/remove_predicate"
     query_cnt = 1000
-    rules = [rule.AddPredicate]
+    rules = [rule.RemovePredicate]
 
     constraints = Loader.load_constraints(constraint_filename)
     queries = Loader.load_queries(query_filename, query_cnt)
@@ -31,20 +33,23 @@ if __name__ == '__main__':
         if len(rewritten_queries) == 0:
             continue
         
+        # use tests to check equivalence
+        verified_queries = TestVerifier().verify(appname, q, constraints, rewritten_queries, out_dir)
+        
         # TODO: verify rewritten queries
-        verified_queries = Verifier().verify(appname, q, constraints, rewritten_queries)
+        # verified_queries = ProveVerifier().verify(appname, q, constraints, rewritten_queries, out_dir)
 
-        # # evaluate query performance
-        # org_cost = Evaluator.evaluate(q)
-        # min_cost = org_cost
-        # best_q = q
-        # for vq in verified_queries:
-        #     cost = Evaluator.evaluate(vq)
-        #     if cost < min_cost:
-        #         min_cost, best_q = cost, vq
+        # evaluate query performance
+        org_cost = Evaluator.evaluate_cost(q)
+        min_cost = org_cost
+        best_q = q
+        for vq in verified_queries:
+            cost = Evaluator.evaluate_cost(vq)
+            if cost < min_cost:
+                min_cost, best_q = cost, vq
 
-        # print("Org q %s, org cost %d" % (format(q), org_cost))
-        # print("Best q %s, best cost %d" % (format(best_q), min_cost))
+        print("Org q %s, org cost %d" % (format(q), org_cost))
+        print("Best q %s, best cost %d" % (format(best_q), min_cost))
 
     exp_recorder.record("rules", [str(r.__name__) for r in rules])
     exp_recorder.record("rewrite_time", rewrite_time)

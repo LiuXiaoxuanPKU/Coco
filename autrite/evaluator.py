@@ -10,7 +10,10 @@ class Evaluator:
                 # Execute a command: explain query
                 cur.execute(q)
                 # Fetch result
-                explain_fetched = cur.fetchall()
+                if cur.description is not None:
+                    explain_fetched = cur.fetchall()
+                else: # no results to fetch
+                    explain_fetched  = []
                 cur.close()
                 return explain_fetched
 

@@ -1,9 +1,17 @@
-import os, sys
+import os, sys, random
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from evaluator import Evaluator
 import psycopg2
 
-CONNECT_STRING = "user=postgres password=lxx3707166"
+CONNECT_STRING = "user=postgres password=xx"
+
+def test_evaluate_query():
+    eva = Evaluator()
+    q = "INSERT into a VALUES(%d, %d, 'test')" % \
+                (random.randint(0, 1000), random.randint(0, 1000))
+    print("Exec result: ", eva.evaluate_query(q, CONNECT_STRING))
+    q = "SELECT * from a"
+    print("Exec result: ", eva.evaluate_query(q, CONNECT_STRING)) 
 
 def test_evaluate_actual():
     eva = Evaluator()
@@ -33,6 +41,7 @@ if __name__ == "__main__":
             )""")
             conn.commit()
             cur.close()
+    test_evaluate_query()
     test_evaluate_actual()
     test_evaluate_cost()
     test_evaluate_cost_batch()
