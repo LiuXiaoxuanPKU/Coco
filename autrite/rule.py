@@ -438,7 +438,11 @@ class AddPredicate(Rule):
 
         # extarct constraints
         # and translate into z3 format
-        binops += extract_constraints()
+        constraint_ops = extract_constraints()
+        if len(constraint_ops) == 0:
+            return []
+
+        binops += constraint_ops
 
         binops = [op for op in binops if op is not None]  
         # print("Before", binops)    

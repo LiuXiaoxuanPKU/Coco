@@ -17,8 +17,6 @@ class Rewriter:
         
         # use constraints to generate potential rules
         rules = self.get_rules(constraints)
-        # for c in set(constraints):
-        #     print(str(c), hash(c))
 
         rewritten_queries = self.bfs(rules, q)
 

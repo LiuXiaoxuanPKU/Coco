@@ -16,8 +16,8 @@ if __name__ == '__main__':
     constraint_filename = "../constraints/%s" % appname
     query_filename = "../queries/%s/%s.pk" % (appname, appname)
     out_dir = "app_create_sql/provable/remove_predicate"
-    query_cnt = 1000
-    rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.AddLimitOne, rule.RemoveJoin]
+    query_cnt = 10000
+    rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.AddLimitOne, rule.RemoveJoin, rule.AddPredicate]
 
     constraints = Loader.load_constraints(constraint_filename)
     queries = Loader.load_queries(query_filename, query_cnt)
@@ -29,6 +29,7 @@ if __name__ == '__main__':
     rewrite_cnt = 0
     total_candidate_cnt = 0
     total_verified_cnt = 0
+    only_rewrite = False
     for q in tqdm(queries):
         start = time.time()
         rewritten_queries = rewriter.rewrite(constraints, q)
@@ -43,6 +44,8 @@ if __name__ == '__main__':
         if len(param_verified_queries) == 0:
             continue
         
+        if only_rewrite:
+            continue
         rewrite_cnt += 1
         total_candidate_cnt += len(rewritten_queries)
         total_verified_cnt += len(param_verified_queries)
