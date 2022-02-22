@@ -15,24 +15,32 @@ sys.path.append('./../autrite')
 import benchmark
 import loader
 import constraint
+from config import CONNECT_MAP
 
 
 # return queries in example_app.pk file 
-def scan_queries() -> list:
-    filename = "../queries/redmine/redmine.pk"
-    queries = loader.Loader.load_queries_raw(filename, cnt=1)
-    queries = benchmark.generate_query_params(queries)
+def scan_queries(app_name) -> list:
+    filename = "../queries/{}/{}.pk".format(app_name, app_name)
+    queries = loader.Loader.load_queries_raw(filename, cnt=10)
+    queries = benchmark.generate_query_params(queries, CONNECT_MAP[app_name])
     # make sure that all qeries are unique
     queries = list(set(queries))
     return queries
+
 
 # return a list of dumped query plan from postgreSQL EXPLAIN
 def view_query_plan(queries, conn) -> list:
     cur = conn.cursor()
     plans = []
     for q in queries:
-        cur.execute("explain {};".format(q))
-        plans.append(cur.fetchall()[0])
+        try: 
+            sql = "explain {};".format(q)
+            cur.execute(sql)
+            plans.append(cur.fetchall()[0])
+        except Exception as e:
+            print("error sql is {}". format(sql))
+            print("error is {}".format(e))
+            exit(0)
     return plans
 
 # read in constraints
@@ -41,47 +49,51 @@ def load_constraints(constraint_file) -> list:
     return constraints
 
 # add constraints to database 
-def add_constraint(constraints) -> list:
+def add_constraint(constraints):
     cur = conn.cursor()
-    # For roll back purpose, elch element in format (table, constraint_name)
-    roll_back_info = [] 
     for c in constraints:
-        if isinstance(c, constraint.UniqueConstraint):
+        if c.table is None:
+            continue
+        elif isinstance(c, constraint.UniqueConstraint):
             constraint_name = "unique_%s_%s" % (c.table, c.field) 
-            roll_back_info.append(constraint_name)
             fields = [c.field] + c.scope
-            fields = str(fields)[1:-1]
-            sql = "ALTER TABLE {} ADD CONSTRAINT {} UNIQUE ({});".format(
+            fields = ', '.join(fields)
+            sql1 = "ALTER TABLE {} ADD COLUMN IF NOT EXISTS {} INTEGER; ALTER TABLE {} DROP CONSTRAINT IF EXISTS {};".format(
+                c.table, c.field, c.table, constraint_name) 
+            sql2 = "ALTER TABLE %s ADD CONSTRAINT %s UNIQUE (%s);" % (
                 c.table, constraint_name, fields)
         elif isinstance(c, constraint.PresenceConstraint):
             constraint_name = "present_%s_%s" % (c.table, c.field)
-            roll_back_info.append(constraint_name)
-            sql = "ALTER TABLE {} ADD CONSTRAINT {} UNIQUE ({});".format(c.table, constraint_name, c.field)
+            sql1 = "ALTER TABLE {} ADD COLUMN IF NOT EXISTS {} INTEGER;".format(c.table, c.field)
+            sql2 = "ALTER TABLE %s ALTER COLUMN %s SET NOT NULL;" % (c.table, c.field)
         elif isinstance(c, constraint.NumericalConstraint):
             constraint_name = "numerical_%s_%s" % (c.table, c.field)
-            roll_back_info.append(constraint_name)
+            sql1 = "ALTER TABLE {} ADD COLUMN IF NOT EXISTS {} INTEGER; ALTER TABLE {} DROP CONSTRAINT IF EXISTS {};".format(
+                c.table, c.field, c.table, constraint_name)
             if c.min is not None and c.max is None:
-                sql = "ALTER TABLE {} ADD CONSTRAINT {} CHECK ({} > {});".format(
+                sql2 = "ALTER TABLE {} ADD CONSTRAINT {} CHECK ({} > {});".format(
                     c.table, constraint_name, c.field, c.min)
             elif c.min is None and c.max is not None:
-                sql = "ALTER TABLE {} ADD CONSTRAINT {} CHECK ({} < {});".format(
+                sql2 = "ALTER TABLE {} ADD CONSTRAINT {} CHECK ({} < {});".format(
                     c.table, constraint_name, c.field, c.max)
             else:
-                sql = "ALTER TABLE {} ADD CONSTRAINT {} CHECK ({} > {} AND {} < {});".format(
-                    c.table, constraint_name, c.field, c,min, c.field, c.max)
-        print(sql)
-        cur.execute(sql)
-    return roll_back_info
+                sql2 = "ALTER TABLE {} ADD CONSTRAINT {} CHECK ({} > {} AND {} < {});".format(
+                    c.table, constraint_name, c.field, c.min, c.field, c.max)
+        try:
+            cur.execute(sql1)
+            cur.execute(sql2)
+        except Exception as e:
+            print(sql1)
+            print(sql2)
+            print(e)
+            exit(0)
+            
     
 
 
 
-def roll_back(conn, roll_back_info):
+def roll_back(conn):
     conn.rollback()
-    # for table, constraint_name in roll_back_info:
-    #     sql = "ALTER TABLE {} DROP CONSTRAINT IF EXISTS {};".format(table, constraint_name)
-    #     print(sql)
-    #     cur.execute(sql)
 
 def count_diff(old_plans, new_plans):
     assert(len(old_plans) == len(new_plans))
@@ -96,7 +108,7 @@ def count_diff(old_plans, new_plans):
 
 if __name__ == "__main__": 
     app_name = sys.argv[1]
-    queries = scan_queries()
+    queries = scan_queries(app_name)
     # Connect to Database
     try:
         conn = psycopg2.connect(database="redmine", user=app_name, password="my_password")
@@ -105,13 +117,13 @@ if __name__ == "__main__":
     # get postgreSQL query plan before adding constraints 
     old_plans = view_query_plan(queries, conn)
     # read in constraints, "./../constraints/redmine"
-    constraints = load_constraints("test.json")
+    constraints = load_constraints("./../constraints/%s" % app_name)
     # add constraints to database
-    roll_back_info = add_constraint(constraints)
+    add_constraint(constraints)
     # get postgreSQL query plan after adding constraints
     new_plans = view_query_plan(queries, conn)
     # roll back database constraints
-    roll_back(conn, roll_back_info)
+    roll_back(conn)
     # count different query plans 
     count_diff(old_plans, new_plans)
     conn.commit()
