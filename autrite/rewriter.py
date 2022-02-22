@@ -17,6 +17,11 @@ class Rewriter:
         
         # use constraints to generate potential rules
         rules = self.get_rules(constraints)
+        
+        # order rules, apply slow rules (add predicate, remove predicate) first
+        rules.sort()
+        print(rules)
+        
 
         rewritten_queries = self.bfs(rules, q)
 
@@ -70,6 +75,7 @@ class Rewriter:
     def bfs(self, rules, q):
         rewritten_queries = [q]
         for rule in rules:
+            print("Apply rule ", type(rule))
             rule_rewritten_qs = []
             for rq in rewritten_queries:
                 rule_rewritten_qs += rule.apply(rq)

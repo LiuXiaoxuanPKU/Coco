@@ -4,6 +4,15 @@ import z3
 from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
 
+PRIORITY_MAP = {
+    "AddPredicate" : 5,
+    "RemovePredicate" : 4,
+    "RemoveJoin" : 3,
+    "RemoveDistinct" : 2,
+    "AddLimitOne" : 1,
+    "UnionToUnionAll" : 0
+}
+
 class Rule:
     def __init__(self, cs) -> None:
         self.constraint = cs
@@ -13,7 +22,10 @@ class Rule:
 
     def __eq__(self, __o: object) -> bool:
         return self.__hash__() == __o.__hash__()
-
+    
+    def __gt__(self, other):
+        return PRIORITY_MAP[self.name] < PRIORITY_MAP[other.name]
+        
     def __hash__(self) -> int:
         # only keep rule type
         if not isinstance(self, AddPredicate):
@@ -141,6 +153,10 @@ class Rule:
 
 
 class RemoveDistinct(Rule):
+    def __init__(self, cs) -> None:
+        super().__init__(cs)
+        self.name = "RemoveDistinct"
+        
     def apply_single(self, q):
         if 'select_distinct' in q:
             rewritten_q =  copy.deepcopy(q)
@@ -148,8 +164,11 @@ class RemoveDistinct(Rule):
             return [rewritten_q]
         return []
 
-
 class AddLimitOne(Rule):
+    def __init__(self, cs) -> None:
+        super().__init__(cs)
+        self.name = "AddLimitOne"
+        
     def apply_single(self, q):
         if 'limit' not in q:
             rewritten_q =  copy.deepcopy(q)
@@ -158,6 +177,10 @@ class AddLimitOne(Rule):
         return []
 
 class RemoveJoin(Rule):
+    def __init__(self, cs) -> None:
+        super().__init__(cs)
+        self.name = "RemoveJoin"
+        
     def apply_single(self, q):
         if not 'from' in q:
             return []
@@ -244,6 +267,10 @@ class RemoveJoin(Rule):
         return rewritten_qs
 
 class UnionToUnionAll(Rule):
+    def __init__(self, cs) -> None:
+        super().__init__(cs)
+        self.name = "UnionToUnionAll"
+        
     def apply_single(self, q):
         if 'union' in q:
             rewritten_q =  copy.deepcopy(q)
@@ -252,6 +279,10 @@ class UnionToUnionAll(Rule):
         return []
 
 class RemovePredicate(Rule):
+    def __init__(self, cs) -> None:
+        super().__init__(cs)
+        self.name = "RemovePredicate"
+        
     def apply_single(self, q):
         if 'where' not in q:
             return []
@@ -308,6 +339,10 @@ class RemovePredicate(Rule):
         return rewritten_qs
 
 class AddPredicate(Rule):
+    def __init__(self, cs) -> None:
+        super().__init__(cs)
+        self.name = "AddPredicate"
+        
     def apply_single(self, q):
         tokens = []
 
@@ -340,6 +375,7 @@ class AddPredicate(Rule):
                 print("[Warning] translate token does not support type %s of %s" % (type(t), t))
                 return None
 
+        all_ops = []
         def extract_binops(q):
             def extract_cond(cond):
                 key = list(cond.keys())
@@ -365,10 +401,16 @@ class AddPredicate(Rule):
                     if lhs is None or rhs is None:
                         return None
                     if key == "gt":
+                        all_ops.append(lhs > rhs)
+                        all_ops.append(rhs < lhs)
                         return lhs > rhs
                     elif key == "eq":
+                        all_ops.append(lhs == rhs)
+                        all_ops.append(rhs == lhs)
                         return lhs == rhs
                     elif key == "lt":
+                        all_ops.append(lhs < rhs)
+                        all_ops.append(rhs > lhs)
                         return lhs < rhs
 
             def extract_join():
@@ -444,12 +486,15 @@ class AddPredicate(Rule):
 
         binops += constraint_ops
 
-        binops = [op for op in binops if op is not None]  
-        # print("Before", binops)    
+        binops = [op for op in binops if op is not None]   
         candidate_predicates = deduct(binops)
 
-        candidate_predicates = set(candidate_predicates) - set(binops)
-        # print("After", candidate_predicates)
+        candidate_predicates = set(candidate_predicates) - set(binops) - set(all_ops)
+        
+        # if len(candidate_predicates) > 0:
+        #     print("Before", binops)
+        #     print("After", candidate_predicates)
+        #     print()
 
         rewritten_qs = []
         def z3op_to_json(binop):
@@ -459,7 +504,8 @@ class AddPredicate(Rule):
                 '<' : 'lt',
                 'Distinct' : 'neq'
             }
-            return {op_map[str(binop.decl())]: binop.children()}
+            ret = {op_map[str(binop.decl())]: [str(c) for c in binop.children()]}
+            return ret
 
         # add candidate predicates to q
         for candidate in candidate_predicates:

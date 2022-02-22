@@ -4,6 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from constraint import *
 from rewriter import Rewriter
 from mo_sql_parsing import parse, format
+from loader import Loader
 
 
 def test_get_constraints():
@@ -29,8 +30,8 @@ def test_rewrite_helper(constraints, q_str):
     print("------------------------Start Rewrite------------------------")
     print("Before:\n", format(parse(q_str)))
     print("After:", len(rewritten_queries))
-    for q in rewritten_queries:
-        print(format(q))
+    # for q in rewritten_queries:
+    #     print(format(q))
     print("------------------------Finish Rewrite------------------------")
 
 
@@ -94,7 +95,8 @@ def test_redmine_enumerate():
     #                  WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.author_id = "$1"'
     # test_rewrite_helper(constraints, q_before_str)
 
-    constraints = [NumericalConstraint("issue_statuses", "default_done_ratio", 0, 100)]
+    # constraints = [NumericalConstraint("issue_statuses", "default_done_ratio", 0, 100)]
+    constraints = Loader.load_constraints("../constraints/redmine")
     q_before_str = 'SELECT issues.id AS t0_r0, issues.tracker_id AS t0_r1, issues.project_id AS t0_r2, \
                     issues.subject AS t0_r3, issues.description AS t0_r4, issues.due_date AS t0_r5, \
                     issues.category_id AS t0_r6, issues.status_id AS t0_r7, issues.assigned_to_id AS t0_r8, \
@@ -129,7 +131,7 @@ def test_redmine_enumerate():
     test_rewrite_helper(constraints, q_before_str)
 
 if __name__ == "__main__":
-    test_get_constraints()
-    test_get_rules()
+    # test_get_constraints()
+    # test_get_rules()
     # test_simple_enumerate()
     test_redmine_enumerate()
