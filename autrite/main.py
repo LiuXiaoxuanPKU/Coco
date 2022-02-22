@@ -32,7 +32,11 @@ if __name__ == '__main__':
     only_rewrite = False
     for q in tqdm(queries):
         start = time.time()
-        rewritten_queries = rewriter.rewrite(constraints, q)
+        try:
+            rewritten_queries = rewriter.rewrite(constraints, q)
+        except:
+            print("[Error rewrite]", format(q))
+            continue
         rewrite_time.append(time.time() - start)
         candidate_cnt.append(len(rewritten_queries))
         if len(rewritten_queries) == 0:
@@ -77,8 +81,8 @@ if __name__ == '__main__':
             exp_recorder.record("rewrite_q", best_q)
             exp_recorder.dump("log/%s_test_rewrite" % appname)
     
-        print("Org q %s, org cost %d" % (format(q), org_cost))
-        print("Best q %s, best cost %d" % (format(best_q), min_cost))
+        print("Org q %s, org cost %f" % (q, org_cost))
+        print("Best q %s, best cost %f" % (best_q, min_cost))
         
 
     print("Rewrite Number %d" % rewrite_cnt)
