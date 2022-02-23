@@ -2,13 +2,19 @@ import json, random
 from collections import OrderedDict
 from evaluator import Evaluator
 
-def generate_query_params(queries, connect_str):
-    def get_field_value(table_field):
+def generate_query_params(queries, connect_str, cache):
+    def get_field_value(table_field, cache):
         if table_field.startswith("LOWER"):
             table_field = table_field[6:-1]
-        table, field = table_field.split('.')
-        SQL = "SELECT %s FROM %s ORDER BY RANDOM() LIMIT 1" % (table_field, table)
-        ret =  Evaluator.evaluate_query(SQL, connect_str)
+        if table_field in cache:
+            return cache[table_field]
+        try:
+            table, field = table_field.split('.')
+            SQL = "SELECT %s FROM %s ORDER BY RANDOM() LIMIT 1" % (table_field, table)
+            ret =  Evaluator.evaluate_query(SQL, connect_str)
+        except:
+            return []
+        cache[table_field] = ret
         return ret
 
     def generate_single(q):
@@ -22,7 +28,7 @@ def generate_query_params(queries, connect_str):
                 elif tokens[i-1] == "OFFSET":
                     tokens[i] = "1"
                 elif tokens[i-1] in ["=", '!=', '>', '<']:
-                    re = get_field_value(tokens[i-2])
+                    re = get_field_value(tokens[i-2], cache)
                     if len(re) == 0 or re[0][0] is None:
                         return None
                     tokens[i] = re[0][0]
@@ -35,7 +41,7 @@ def generate_query_params(queries, connect_str):
                     while ")" not in tokens[end_idx]:
                         end_idx += 1
                     for j in range(i, end_idx + 1):
-                        re = get_field_value(tokens[i-2])
+                        re = get_field_value(tokens[i-2], cache)
                         if len(re) == 0 or re[0][0] is None:
                             return None
                         tokens[j] = re[0][0]

@@ -13,6 +13,8 @@ PRIORITY_MAP = {
     "UnionToUnionAll" : 0
 }
 
+REWRITE_LIMIT = 10000
+
 class Rule:
     def __init__(self, cs) -> None:
         self.constraint = cs
@@ -74,7 +76,7 @@ class Rule:
 
     def get_name(self):
         return str(self)
-
+        
     # rewrite the entire query, call apply_single
     # handle nested queries
     def apply(self, q):
@@ -87,6 +89,9 @@ class Rule:
         if len(outer_rewritten_q):
             rewritten_qs += outer_rewritten_q
 
+        if len(rewritten_qs) > REWRITE_LIMIT:
+            return rewritten_qs[1:]
+        
         # SELECT, FROM
         for k in ["select", "select_distinct", "from"]:
             tmp_rewritten_qs = []
@@ -97,7 +102,13 @@ class Rule:
                     for sub in rewritten_keyword_subs:
                         rewritten_q = Rule.replace_keyword_nested(copy.deepcopy(rq), k, sub)
                         tmp_rewritten_qs.append(rewritten_q)
+                        if len(rewritten_qs) + len(tmp_rewritten_qs) > REWRITE_LIMIT:
+                            rewritten_qs += tmp_rewritten_qs
+                            return rewritten_qs[1:]
+                        
             rewritten_qs += tmp_rewritten_qs
+            if len(rewritten_qs) > REWRITE_LIMIT:
+                return rewritten_qs [1:]
         
         def rewrite_cond(cond):
             rewritten_cond = []
@@ -141,8 +152,13 @@ class Rule:
                     rq =  copy.deepcopy(rq)
                     rewritten_q = Rule.replace_keyword_nested(rq, k, c)
                     tmp_rewritten_qs.append(rewritten_q)
+                    if len(rewritten_qs) + len(tmp_rewritten_qs) > REWRITE_LIMIT:
+                            rewritten_qs += tmp_rewritten_qs
+                            return rewritten_qs[1:]
 
             rewritten_qs += tmp_rewritten_qs
+            if len(rewritten_qs) > REWRITE_LIMIT:
+                return rewritten_qs[1:]
         
         return rewritten_qs[1:]
 
@@ -344,35 +360,33 @@ class AddPredicate(Rule):
         self.name = "AddPredicate"
         
     def apply_single(self, q):
-        tokens = []
+        tokens = set([])
+        skip_tokens = set([])
 
         def translate_rhs(t):
             if isinstance(t, int) or isinstance(t, float) or isinstance(t, bool):
-                tokens.append(t)
                 return t, type(t)
             elif isinstance(t, str):
                 t = z3.Real(t)
-                tokens.append(t)
                 return t, float # TODO: assume float for variables
-            return None, None
+            else:
+                print("[Warning] Unknow rhs %s of type %s" % (t, type(t)))
+                return None, None
 
         def translate_lhs(t, _type):
             if _type is None or t is None:
                 return None
             if _type == int:
                 ret = z3.Int(t)
-                tokens.append(ret)
                 return ret
             elif _type == float:
                 ret = z3.Real(t)
-                tokens.append(ret)
                 return ret
             elif _type == bool:
                 ret = z3.Bool(t)
-                tokens.append(ret)
                 return ret
             else:
-                print("[Warning] translate token does not support type %s of %s" % (type(t), t))
+                print("[Warning] Unknow lhs %s of type %s" % (t, type(t)))
                 return None
 
         all_ops = []
@@ -395,16 +409,29 @@ class AddPredicate(Rule):
                     if elhs is None or erhs is None:
                         return None
                     return z3.Or(elhs, erhs)
-                elif key in ["gt", "eq", "lt"]:
+                elif key in ["gt", "eq", "lt", "gte", "lte"]:
                     rhs, _type = translate_rhs(rhs)
                     lhs = translate_lhs(lhs, _type)
+                    
                     if lhs is None or rhs is None:
                         return None
+                    
+                    tokens.add(lhs)
+                    tokens.add(rhs)
                     if key == "gt":
                         all_ops.append(lhs > rhs)
                         all_ops.append(rhs < lhs)
                         return lhs > rhs
+                    elif key == "gte":
+                        all_ops.append(lhs >= rhs)
+                        all_ops.append(rhs <= lhs)
+                        return lhs >= rhs
                     elif key == "eq":
+                        # only enumerate eq when there both lhs and rhs are variables
+                        if type(lhs) in [z3.z3.ArithRef, z3.z3.BoolRef] and type(rhs) in [z3.z3.ArithRef, z3.z3.BoolRef]:
+                            pass
+                        else:
+                            skip_tokens.add(lhs)
                         all_ops.append(lhs == rhs)
                         all_ops.append(rhs == lhs)
                         return lhs == rhs
@@ -412,8 +439,16 @@ class AddPredicate(Rule):
                         all_ops.append(lhs < rhs)
                         all_ops.append(rhs > lhs)
                         return lhs < rhs
+                    elif key == "lte":
+                        all_ops.append(lhs <= rhs)
+                        all_ops.append(rhs >= lhs)
+                        return lhs <= rhs
+                    else:
+                        print("[Error] Unknown key %s" % key)
+                        exit(0)
 
-            def extract_join():
+            def extract_join(join):
+                print(join)
                 pass
 
             conditions = []
@@ -428,31 +463,37 @@ class AddPredicate(Rule):
             c = self.constraint
             if isinstance(c, NumericalConstraint):
                 tmp = z3.Real(c.field)
-                tokens.append(tmp)
+                tokens.add(tmp)
                 if c.min is not None and c.max is not None:
                     conditions.append(z3.And(tmp >= c.min, tmp <= c.max))
-                    tokens.append(c.min)
-                    tokens.append(c.max)
+                    tokens.add(c.min)
+                    tokens.add(c.max)
+                    all_ops.append(tmp >= c.min)
+                    all_ops.append(tmp <= c.max)
                 elif c.min is not None:
                     conditions.append(tmp >= c.min)
-                    tokens.append(c.min)
+                    tokens.add(c.min)
+                    all_ops.append(tmp >= c.min)
                 elif c.max is not None:
                     conditions.append(tmp <= c.max)
-                    tokens.append(c.max)
+                    tokens.add(c.max)
+                    all_ops.append(tmp <= c.max)
             return conditions
-
 
         def deduct(binops):
             candidates = []
             for lhs in set(tokens):
                 for rhs in set(tokens):
-                    if isinstance(lhs, z3.z3.BoolRef) and isinstance(rhs, bool):
+                    if lhs in skip_tokens or rhs in skip_tokens:
+                        continue
+                    elif isinstance(lhs, z3.z3.BoolRef) and isinstance(rhs, bool):
                         candidates.append(lhs == rhs)
                         candidates.append(lhs != rhs)
                     elif (isinstance(lhs, z3.z3.ArithRef) and isinstance(rhs, z3.z3.ArithRef) and (lhs is not rhs)) \
                         or (isinstance(lhs, z3.z3.ArithRef) and (type(rhs) in [int, float])) \
                         or ((type(lhs) in [int, float]) and isinstance(rhs, z3.z3.ArithRef)):
                         candidates.append(lhs > rhs)
+                        # candidates.append(lhs >= rhs) # does not enumerate >= for now
                         candidates.append(lhs == rhs)
                     else:
                         continue
@@ -471,6 +512,12 @@ class AddPredicate(Rule):
                 s = z3.Solver()
                 s.add(z3.ForAll(variables, z3.Implies(cond, candidate)))
                 if s.check() == z3.sat:
+                    # print("====Imply====")
+                    # print("skip tokens", skip_tokens)
+                    # print("enumerate tokens", tokens)
+                    # print("variables: ", variables)
+                    # print("cond:", cond)
+                    # print("result:", candidate)
                     validate_candidates.append(candidate)
             return validate_candidates
 
@@ -489,22 +536,61 @@ class AddPredicate(Rule):
         binops = [op for op in binops if op is not None]   
         candidate_predicates = deduct(binops)
 
+        # if we already know a < 100, candidate a < 200 is redundant and should be removed
+        def validate_predicates(candidates, all_ops):
+            def is_redundant(can, all_ops):
+                # assume candidate is in the form : variable op variable/value
+                lhs, rhs = can.children()[0], can.children()[1]
+                relate_ops = set([o for o in all_ops if str(o.children()[0]) == str(lhs)])
+                if str(can.decl()) in ["<", "<="]:
+                    relate_ops = [o for o in relate_ops if str(o.decl()) in ["<", "<="] and \
+                                    type(o.children()[1]) in [z3.z3.RatNumRef, z3.z3.IntNumRef]]
+                    for o in relate_ops:
+                        if float(str(rhs)) >= float(str(o.children()[1])):
+                            return True
+                elif str(can.decl()) in [">", ">="]:
+                    relate_ops = [o for o in relate_ops if str(o.decl()) in [">", ">="] and \
+                                    type(o.children()[1]) in [z3.z3.RatNumRef, z3.z3.IntNumRef]]
+                    for o in relate_ops:
+                        if float(str(rhs)) <= float(str(o.children()[1])):
+                            return True
+                    
+                return False
+            
+            redundant_can = set([])
+            for can in candidates:
+                if is_redundant(can, all_ops):
+                    redundant_can.add(can)
+            return candidates - redundant_can
+        
+        candidate_predicates = validate_predicates(set(candidate_predicates) - set(binops) - set(all_ops), all_ops)
         candidate_predicates = set(candidate_predicates) - set(binops) - set(all_ops)
         
-        # if len(candidate_predicates) > 0:
-        #     print("Before", binops)
-        #     print("After", candidate_predicates)
-        #     print()
+        if len(candidate_predicates) > 0:
+            print("Cond", binops)
+            print("Candidate", candidate_predicates)
+            print()
 
         rewritten_qs = []
         def z3op_to_json(binop):
+            def z3_to_type(token):
+                if isinstance(token, z3.z3.RatNumRef) or isinstance(token, z3.z3.IntNumRef):
+                    if token.is_int():
+                        return int(token.as_long())
+                    elif token.is_real():
+                        return float(token.as_decimal(3))
+                else:
+                    return str(token)
+                
             op_map = {
                 '>' : 'gt',
                 '==' : 'eq',
                 '<' : 'lt',
+                '>=' : 'gte',
+                '<=' : 'lte',
                 'Distinct' : 'neq'
             }
-            ret = {op_map[str(binop.decl())]: [str(c) for c in binop.children()]}
+            ret = {op_map[str(binop.decl())]: [z3_to_type(c) for c in binop.children()]}
             return ret
 
         # add candidate predicates to q

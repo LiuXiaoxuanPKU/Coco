@@ -1,3 +1,4 @@
+from tqdm import tqdm
 from evaluator import Evaluator
 from utils import generate_query_params
 from mo_sql_parsing import format
@@ -23,7 +24,8 @@ class TestVerifier:
             return True
 
         connect_str = self.get_connect_str(appname)
-        q = generate_query_params([format(q)], connect_str)
+        cache = {}
+        q = generate_query_params([format(q)], connect_str, cache)
         if len(q) == 0:
             return None, []
         q = q[0]
@@ -37,8 +39,8 @@ class TestVerifier:
         
         eq_qs = []
         rewritten_sql = [format(q) for q in rewritten_queries]
-        rewritten_sql = generate_query_params(rewritten_sql, connect_str)
-        for rq in rewritten_sql:
+        rewritten_sql = generate_query_params(rewritten_sql, connect_str, cache)
+        for rq in tqdm(rewritten_sql):
             rq_result = Evaluator.evaluate_query(rq, connect_str)
             if test_equivalence(org_result, rq_result):
                 eq_qs.append(rq)

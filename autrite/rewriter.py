@@ -80,6 +80,7 @@ class Rewriter:
             for rq in rewritten_queries:
                 rule_rewritten_qs += rule.apply(rq)
             rewritten_queries += rule_rewritten_qs
+            print("# of rewrites ", len(rewritten_queries))
     
         return rewritten_queries[1:]
 

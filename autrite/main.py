@@ -9,6 +9,8 @@ from mo_sql_parsing import parse, format
 from tqdm import tqdm
 import time
 from utils import exp_recorder, generate_query_params
+from multiprocessing import Pool
+
 from config import CONNECT_MAP
 
 if __name__ == '__main__':
@@ -16,11 +18,12 @@ if __name__ == '__main__':
     constraint_filename = "../constraints/%s" % appname
     query_filename = "../queries/%s/%s.pk" % (appname, appname)
     out_dir = "app_create_sql/provable/remove_predicate"
+    offset = 3692 + 450
     query_cnt = 10000
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.AddLimitOne, rule.RemoveJoin, rule.AddPredicate]
 
     constraints = Loader.load_constraints(constraint_filename)
-    queries = Loader.load_queries(query_filename, query_cnt)
+    queries = Loader.load_queries(query_filename, offset, query_cnt)
     rewriter = Rewriter()
     rewriter.set_rules(rules)
 
@@ -42,6 +45,7 @@ if __name__ == '__main__':
         if len(rewritten_queries) == 0:
             continue
         
+        print("============Start Verify==================")
         # use tests to check equivalence
         param_q, param_verified_queries = TestVerifier().verify(appname, q, constraints, rewritten_queries, out_dir)
         
@@ -64,6 +68,7 @@ if __name__ == '__main__':
         # TODO: verify rewritten queries
         # verified_queries = ProveVerifier().verify(appname, q, constraints, rewritten_queries, out_dir)
 
+        print("===========Start Evaluate Cost==============")
         # evaluate query performance
         org_cost = Evaluator.evaluate_cost(param_q, CONNECT_MAP[appname])
         min_cost = org_cost
@@ -81,7 +86,7 @@ if __name__ == '__main__':
             exp_recorder.record("rewrite_q", best_q)
             exp_recorder.dump("log/%s_test_rewrite" % appname)
     
-        print("Org q %s, org cost %f" % (q, org_cost))
+        print("Org q %s, org cost %f" % (param_q, org_cost))
         print("Best q %s, best cost %f" % (best_q, min_cost))
         
 

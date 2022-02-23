@@ -38,7 +38,7 @@ class Loader:
         return constraints
 
     @staticmethod
-    def load_queries_raw(filename, cnt):
+    def load_queries_raw(filename, offset, cnt):
         if filename.endswith("pk"):
             with open(filename, 'rb') as f:
                 lines = pickle.load(f)
@@ -58,12 +58,12 @@ class Loader:
         print("Total # of unique raw queries: ", unique_raw_queries)
 
         lines.sort()
-        lines = lines[:cnt]
+        lines = lines[offset:offset+cnt]
         return lines
 
     @staticmethod
-    def load_queries(filename, cnt = 500):
-        lines = Loader.load_queries_raw(filename, cnt)
+    def load_queries(filename, offset=0, cnt=500):
+        lines = Loader.load_queries_raw(filename, offset, cnt)
         q_objs = []
         fail_raw_queries = []
         for line in lines:
