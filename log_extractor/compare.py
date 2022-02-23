@@ -21,7 +21,7 @@ from config import CONNECT_MAP
 # return queries in example_app.pk file 
 def scan_queries(app_name) -> list:
     filename = "../queries/{}/{}.pk".format(app_name, app_name)
-    queries = loader.Loader.load_queries_raw(filename, cnt=10)
+    queries = loader.Loader.load_queries_raw(filename, cnt=1000)
     queries = benchmark.generate_query_params(queries, CONNECT_MAP[app_name])
     # make sure that all qeries are unique
     queries = list(set(queries))
@@ -51,11 +51,15 @@ def load_constraints(constraint_file) -> list:
 # add constraints to database 
 def add_constraint(constraints):
     cur = conn.cursor()
+    # elch tuple in roll_back_info is (0, table_name, constraint_name) or 
+    # (1, table_name_for_not_null, column_name for not_null)
+    roll_back_info = []
     for c in constraints:
         if c.table is None:
             continue
         elif isinstance(c, constraint.UniqueConstraint):
             constraint_name = "unique_%s_%s" % (c.table, c.field) 
+            roll_back_info.append((0, c.table, constraint_name))
             fields = [c.field] + c.scope
             fields = ', '.join(fields)
             sql1 = "ALTER TABLE {} ADD COLUMN IF NOT EXISTS {} INTEGER; ALTER TABLE {} DROP CONSTRAINT IF EXISTS {};".format(
@@ -63,11 +67,12 @@ def add_constraint(constraints):
             sql2 = "ALTER TABLE %s ADD CONSTRAINT %s UNIQUE (%s);" % (
                 c.table, constraint_name, fields)
         elif isinstance(c, constraint.PresenceConstraint):
-            constraint_name = "present_%s_%s" % (c.table, c.field)
+            roll_back_info.append((1, c.table, c.field))
             sql1 = "ALTER TABLE {} ADD COLUMN IF NOT EXISTS {} INTEGER;".format(c.table, c.field)
             sql2 = "ALTER TABLE %s ALTER COLUMN %s SET NOT NULL;" % (c.table, c.field)
         elif isinstance(c, constraint.NumericalConstraint):
             constraint_name = "numerical_%s_%s" % (c.table, c.field)
+            roll_back_info.append((0, c.table, constraint_name))
             sql1 = "ALTER TABLE {} ADD COLUMN IF NOT EXISTS {} INTEGER; ALTER TABLE {} DROP CONSTRAINT IF EXISTS {};".format(
                 c.table, c.field, c.table, constraint_name)
             if c.min is not None and c.max is None:
@@ -82,18 +87,41 @@ def add_constraint(constraints):
         try:
             cur.execute(sql1)
             cur.execute(sql2)
-        except Exception as e:
+            conn.commit()
+        except (psycopg2.errors.NotNullViolation, 
+        psycopg2.errors.UniqueViolation, 
+        psycopg2.errors.SyntaxError) as e:
             print(sql1)
             print(sql2)
-            print(e)
-            exit(0)
+            print(type(e))
+            conn.rollback()
+    return roll_back_info
             
     
 
-
-
-def roll_back(conn):
-    conn.rollback()
+def roll_back(conn, roll_back_info):
+    cur = conn.cursor()
+    for tuple in roll_back_info:
+        # drop constraint sql case
+        if tuple[0] == 0:
+            table_name = tuple[1]
+            constraint_name = tuple[2]
+            sql = "ALTER TABLE {} DROP CONSTRAINT IF EXISTS {};".format(table_name, constraint_name)
+        # drop not null constraint case 
+        else:
+            table_name = tuple[1]
+            column_name = tuple[2]
+            sql = "ALTER TABLE {} ADD COLUMN IF NOT EXISTS {} INTEGER; ALTER TABLE {} ALTER COLUMN {} DROP NOT NULL;".format(
+                table_name, column_name, table_name, column_name)
+        try:
+            cur.execute(sql)
+            conn.commit()
+        except (psycopg2.errors.NotNullViolation, 
+        psycopg2.errors.UniqueViolation, 
+        psycopg2.errors.SyntaxError, psycopg2.errors.InFailedSqlTransaction) as e:
+            print(sql)
+            print(type(e))
+            conn.rollback()
 
 def count_diff(old_plans, new_plans):
     assert(len(old_plans) == len(new_plans))
@@ -119,11 +147,11 @@ if __name__ == "__main__":
     # read in constraints, "./../constraints/redmine"
     constraints = load_constraints("./../constraints/%s" % app_name)
     # add constraints to database
-    add_constraint(constraints)
+    roll_back_info = add_constraint(constraints)
     # get postgreSQL query plan after adding constraints
     new_plans = view_query_plan(queries, conn)
     # roll back database constraints
-    roll_back(conn)
+    roll_back(conn, roll_back_info)
     # count different query plans 
     count_diff(old_plans, new_plans)
     conn.commit()
