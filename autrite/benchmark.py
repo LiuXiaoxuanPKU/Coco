@@ -14,7 +14,7 @@ def get_rewrite_pg(appname):
         results = []
         for q in queries:
             try:
-                plan = Evaluator.evaluate_query(q, CONNECT_MAP[appname])
+                plan = Evaluator.evaluate_query("EXPLAIN " + q, CONNECT_MAP[appname])
                 cost = Evaluator.evaluate_cost(q, CONNECT_MAP[appname])
                 time = Evaluator.evaluate_actual_time(q, CONNECT_MAP[appname])
                 results.append((cost, time, plan))
@@ -23,27 +23,46 @@ def get_rewrite_pg(appname):
                 results.append(None)
         return results
     
+    def clean_constraints():
+        constraint_file = "../constraints/%s" % (appname.split("_")[0])
+        constraints = Loader.load_constraints(constraint_file)
+        # constraints = constraints[0:5]
+        for c in constraints:
+            if c.table is None:
+                continue
+            if type(c) in [constraint.UniqueConstraint, constraint.NumericalConstraint]:
+                constraint_name = str(c)
+                drop_sql = "ALTER TABLE %s DROP CONSTRAINT IF EXISTS %s;" %(c.table, constraint_name)
+                Evaluator.evaluate_query(drop_sql, CONNECT_MAP[appname])
+            elif type(c) in [constraint.PresenceConstraint]:
+                constraint_name = str(c)
+                drop_sql = "ALTER TABLE %s ALTER COLUMN %s DROP NOT NULL;" %(c.table, c.field)
+                try:
+                    Evaluator.evaluate_query(drop_sql, CONNECT_MAP[appname])
+                except: # column might not exist
+                    pass
+                       
     def install_constraints():
         constraint_file = "../constraints/%s" % (appname.split("_")[0])
         constraints = Loader.load_constraints(constraint_file)
-        constraints = []
+        # constraints = constraints[0:5]
         installed_constraints = []
         for c in constraints:
             if c.table is None:
                 continue
             elif isinstance(c, constraint.UniqueConstraint):
                 constraint_name = str(c)
-                roll_back_info = (c.table, constraint_name)
+                roll_back_info = (c, constraint_name)
                 fields = [c.field] + c.scope
                 fields = ', '.join(fields)
                 install_sql = "ALTER TABLE %s ADD CONSTRAINT %s UNIQUE (%s);" % (c.table, constraint_name, fields)
             elif isinstance(c, constraint.PresenceConstraint):
                 constraint_name = str(c)
-                roll_back_info = (c.table, constraint_name)
+                roll_back_info = (c, constraint_name)
                 install_sql = "ALTER TABLE %s ALTER COLUMN %s SET NOT NULL;" % (c.table, c.field)
             elif isinstance(c, constraint.NumericalConstraint):
                 constraint_name = str(c)
-                roll_back_info = (c.table, constraint_name)
+                roll_back_info = (c, constraint_name)
                 if c.min is not None and c.max is None:
                     install_sql = "ALTER TABLE {} ADD CONSTRAINT {} CHECK ({} > {});".format(
                         c.table, constraint_name, c.field, c.min)
@@ -57,15 +76,19 @@ def get_rewrite_pg(appname):
             try:
                 Evaluator.evaluate_query(install_sql, CONNECT_MAP[appname])
                 installed_constraints.append(roll_back_info)
-            except:
-                pass
+            except Exception as e:
+                print(traceback.format_exc())
         print("Install constraints success/all: %d/%d" % (len(installed_constraints), len(constraints)))
         return installed_constraints            
 
+    # does not catch exception here, roll back shoud succeed
     def roll_back(installed_constraints):
         for roll_back_info in installed_constraints:
-            table_name, constraint_name = roll_back_info
-            drop_sql = "ALTER TABLE {} DROP CONSTRAINT IF EXISTS {};".format(table_name, constraint_name)
+            c, constraint_name = roll_back_info
+            if type(c) in [constraint.NumericalConstraint, constraint.UniqueConstraint]:
+                drop_sql = "ALTER TABLE %s DROP CONSTRAINT IF EXISTS %s;" % (c.table, constraint_name)
+            elif type(c) in [constraint.PresenceConstraint]:
+                drop_sql = "ALTER TABLE %s ALTER COLUMN %s DROP NOT NULL;" %(c.table, c.field)
             Evaluator.evaluate_query(drop_sql, CONNECT_MAP[appname])
     
     def dump_rewrite(queries, old_plans, new_plans):
@@ -93,6 +116,7 @@ def get_rewrite_pg(appname):
     queries = Loader.load_queries_raw(query_file, offset=0, cnt=100)
     queries = generate_query_params(queries, CONNECT_MAP[appname], {})
     
+    clean_constraints()
     org_plans = get_query_plans(queries)
     installed_constraints = install_constraints()
     new_plans = get_query_plans(queries)
