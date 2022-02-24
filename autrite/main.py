@@ -18,7 +18,7 @@ if __name__ == '__main__':
     constraint_filename = "../constraints/%s" % appname
     query_filename = "../queries/%s/%s.pk" % (appname, appname)
     out_dir = "app_create_sql/provable/remove_predicate"
-    offset = 3692 + 450
+    offset = 0
     query_cnt = 10000
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.AddLimitOne, rule.RemoveJoin, rule.AddPredicate]
 
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     total_candidate_cnt = 0
     total_verified_cnt = 0
     only_rewrite = False
-    for q in tqdm(queries):
+    for i,q in tqdm(enumerate(queries)):
         start = time.time()
         try:
             rewritten_queries = rewriter.rewrite(constraints, q)
@@ -79,7 +79,7 @@ if __name__ == '__main__':
                 min_cost, best_q = cost, vq
 
         if min_cost < org_cost:
-            exp_recorder.record("id", rewrite_cnt)
+            exp_recorder.record("id", i)
             exp_recorder.record("org_cost", org_cost)
             exp_recorder.record("min_cost", min_cost)
             exp_recorder.record("org_q", param_q)

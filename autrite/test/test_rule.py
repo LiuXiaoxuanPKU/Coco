@@ -85,7 +85,7 @@ def test_add_limit_one_where_having():
 
 def test_remove_distinct_select_from():
     print("===============Remove Distinct=================")
-    q_before_str = "select distinct(*) from (select distinct(*) from R) where a = 1"
+    q_before_str = "select distinct c from (select distinct(*) from R) where a = 1"
     q_before = parse(q_before_str)
     print("Before: ", format(q_before))
     print("After: ")
@@ -316,12 +316,12 @@ def test_remove_join():
 
 
 if __name__ == "__main__":
-    # test_add_limit_one_select_from()
-    # test_remove_distinct_select_from()
-    # test_add_limit_one_where_having()
+    test_add_limit_one_select_from()
+    test_remove_distinct_select_from()
+    test_add_limit_one_where_having()
     test_add_predicate_simple()
     test_add_predicate_validate()
-    # test_add_predicate_join()
-    # test_remove_predicate_simple()
-    # test_union_all_simple()
-    # test_remove_join()
+    test_add_predicate_join()
+    test_remove_predicate_simple()
+    test_union_all_simple()
+    test_remove_join()

@@ -1,12 +1,105 @@
 import os.path
 import json
+import traceback
 
-from fileinput import filename
 from loader import Loader
 from evaluator import Evaluator
 import numpy as np
-from utils import exp_recorder, generate_query_params
+from utils import exp_recorder, generate_query_params, test_query_result_equivalence
 from config import CONNECT_MAP
+import constraint
+
+def get_rewrite_pg(appname):
+    def get_query_plans(queries):
+        results = []
+        for q in queries:
+            try:
+                plan = Evaluator.evaluate_query(q, CONNECT_MAP[appname])
+                cost = Evaluator.evaluate_cost(q, CONNECT_MAP[appname])
+                time = Evaluator.evaluate_actual_time(q, CONNECT_MAP[appname])
+                results.append((cost, time, plan))
+            except Exception as e:
+                print(traceback.format_exc())
+                results.append(None)
+        return results
+    
+    def install_constraints():
+        constraint_file = "../constraints/%s" % (appname.split("_")[0])
+        constraints = Loader.load_constraints(constraint_file)
+        constraints = []
+        installed_constraints = []
+        for c in constraints:
+            if c.table is None:
+                continue
+            elif isinstance(c, constraint.UniqueConstraint):
+                constraint_name = str(c)
+                roll_back_info = (c.table, constraint_name)
+                fields = [c.field] + c.scope
+                fields = ', '.join(fields)
+                install_sql = "ALTER TABLE %s ADD CONSTRAINT %s UNIQUE (%s);" % (c.table, constraint_name, fields)
+            elif isinstance(c, constraint.PresenceConstraint):
+                constraint_name = str(c)
+                roll_back_info = (c.table, constraint_name)
+                install_sql = "ALTER TABLE %s ALTER COLUMN %s SET NOT NULL;" % (c.table, c.field)
+            elif isinstance(c, constraint.NumericalConstraint):
+                constraint_name = str(c)
+                roll_back_info = (c.table, constraint_name)
+                if c.min is not None and c.max is None:
+                    install_sql = "ALTER TABLE {} ADD CONSTRAINT {} CHECK ({} > {});".format(
+                        c.table, constraint_name, c.field, c.min)
+                elif c.min is None and c.max is not None:
+                    install_sql = "ALTER TABLE {} ADD CONSTRAINT {} CHECK ({} < {});".format(
+                        c.table, constraint_name, c.field, c.max)
+                else:
+                    install_sql = "ALTER TABLE {} ADD CONSTRAINT {} CHECK ({} > {} AND {} < {});".format(
+                        c.table, constraint_name, c.field, c.min, c.field, c.max)
+            
+            try:
+                Evaluator.evaluate_query(install_sql, CONNECT_MAP[appname])
+                installed_constraints.append(roll_back_info)
+            except:
+                pass
+        print("Install constraints success/all: %d/%d" % (len(installed_constraints), len(constraints)))
+        return installed_constraints            
+
+    def roll_back(installed_constraints):
+        for roll_back_info in installed_constraints:
+            table_name, constraint_name = roll_back_info
+            drop_sql = "ALTER TABLE {} DROP CONSTRAINT IF EXISTS {};".format(table_name, constraint_name)
+            Evaluator.evaluate_query(drop_sql, CONNECT_MAP[appname])
+    
+    def dump_rewrite(queries, old_plans, new_plans):
+        rewrite_cnt = 0
+        for i, (old, new) in enumerate(zip(old_plans, new_plans)):
+            if old is None or new is None:
+                continue
+            old_cost, old_time, old_plan = old
+            new_cost, new_time, new_plan = new
+            eq = test_query_result_equivalence(old_plan, new_plan)
+            if not eq:
+                rewrite_cnt += 1
+                exp_recorder.record("id", hash(queries[i]))
+                exp_recorder.record("before_t", old_time)
+                exp_recorder.record("before_cost", old_cost)
+                exp_recorder.record("after_t", new_time)
+                exp_recorder.record("after_cost", new_cost)
+                exp_recorder.record("query", queries[i])
+                exp_recorder.record("before_plan", old_plan)
+                exp_recorder.record("after_plan", new_plan)
+                exp_recorder.dump("log/%s_pg_rewrite_info" % (appname))
+                
+
+    query_file = "../queries/%s/%s.pk" % (appname.split("_")[0], appname.split("_")[0])
+    queries = Loader.load_queries_raw(query_file, offset=0, cnt=100)
+    queries = generate_query_params(queries, CONNECT_MAP[appname], {})
+    
+    org_plans = get_query_plans(queries)
+    installed_constraints = install_constraints()
+    new_plans = get_query_plans(queries)
+    roll_back(installed_constraints)
+    dump_rewrite(queries, org_plans, new_plans)
+    
+    
 
 def get_rewrite_perf(appname):
     rewrite_file = "log/%s_test_rewrite" % appname
@@ -55,13 +148,17 @@ def get_slow_queries(appname, queries, ratio):
 
 if __name__ == "__main__":
     appname = "redmine"
+    bench_pg = True
     bench_slow_queries = False
-    bench_rewrite_perf = True
+    bench_rewrite_perf = False
     
+    if bench_pg:
+        get_rewrite_pg(appname + "_test")
+        
     if bench_slow_queries:
         filename = "../queries/redmine.pk"
         queries = Loader.load_queries_raw(filename, cnt=1000)
-        queries = generate_query_params(queries, CONNECT_STRING)
+        queries = generate_query_params(queries, CONNECT_MAP[appname])
         slow_queries, slow_ts = get_slow_queries(queries, 0.1)
         
         for q,t in zip(slow_queries, slow_ts):

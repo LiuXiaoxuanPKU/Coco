@@ -1,6 +1,6 @@
 from tqdm import tqdm
 from evaluator import Evaluator
-from utils import generate_query_params
+from utils import generate_query_params, test_query_result_equivalence
 from mo_sql_parsing import format
 from config import CONNECT_MAP
 
@@ -12,17 +12,6 @@ class TestVerifier:
         return CONNECT_MAP[appname]
 
     def verify(self, appname, q, constraints, rewritten_queries, out_dir):
-        def test_equivalence(r1, r2):
-            if len(r1) != len(r2):
-                return False
-
-            r1_sort = sorted(r1, key=lambda x: x[0])
-            r2_sort = sorted(r2, key=lambda x: x[0])
-            for e1, e2 in zip(r1_sort, r2_sort):
-                if e1 != e2:
-                    return False
-            return True
-
         connect_str = self.get_connect_str(appname)
         cache = {}
         q = generate_query_params([format(q)], connect_str, cache)
@@ -42,7 +31,7 @@ class TestVerifier:
         rewritten_sql = generate_query_params(rewritten_sql, connect_str, cache)
         for rq in tqdm(rewritten_sql):
             rq_result = Evaluator.evaluate_query(rq, connect_str)
-            if test_equivalence(org_result, rq_result):
+            if test_query_result_equivalence(org_result, rq_result):
                 eq_qs.append(rq)
         return param_q, eq_qs
 
