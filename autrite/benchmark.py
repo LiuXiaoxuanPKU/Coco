@@ -1,6 +1,7 @@
 import os.path
 import json
 import traceback
+from rewriter import Rewriter
 
 from loader import Loader
 from evaluator import Evaluator
@@ -8,8 +9,37 @@ import numpy as np
 from utils import exp_recorder, generate_query_params, test_query_result_equivalence
 from config import CONNECT_MAP
 import constraint
+from mo_sql_parsing import parse
 
 def get_rewrite_pg(appname):
+    def filter_queries(queries, constraints):
+        q_with_constraints = []
+        def extract_q_field(q):
+            # TODO: extract all the fields insteaf of all the tokens
+            tokens = [t.lower().split('.')[-1] for t in q.split(' ')]
+            return tokens
+
+        def get_field_constraint(field, constraints):
+            field_constraints = []
+            for c in constraints:
+                if c.field == field:
+                    field_constraints.append(c)
+            return field_constraints
+
+        for q in queries:
+            # extract fields in q
+            fields = extract_q_field(q)
+            has_c = False
+            for field in fields:
+                cs = get_field_constraint(field, constraints)
+                if len(cs) > 0:
+                    has_c = True
+                    break
+            if has_c:
+                q_with_constraints.append(q)
+                
+        return q_with_constraints
+        
     def get_query_plans(queries):
         results = []
         for q in queries:
@@ -23,9 +53,7 @@ def get_rewrite_pg(appname):
                 results.append(None)
         return results
     
-    def clean_constraints():
-        constraint_file = "../constraints/%s" % (appname.split("_")[0])
-        constraints = Loader.load_constraints(constraint_file)
+    def clean_constraints(constraints):
         # constraints = constraints[0:5]
         for c in constraints:
             if c.table is None:
@@ -42,10 +70,7 @@ def get_rewrite_pg(appname):
                 except: # column might not exist
                     pass
                        
-    def install_constraints():
-        constraint_file = "../constraints/%s" % (appname.split("_")[0])
-        constraints = Loader.load_constraints(constraint_file)
-        # constraints = constraints[0:5]
+    def install_constraints(constraints):
         installed_constraints = []
         for c in constraints:
             if c.table is None:
@@ -113,12 +138,15 @@ def get_rewrite_pg(appname):
                 
 
     query_file = "../queries/%s/%s.pk" % (appname.split("_")[0], appname.split("_")[0])
-    queries = Loader.load_queries_raw(query_file, offset=0, cnt=100)
+    queries = Loader.load_queries_raw(query_file, offset=1000, cnt=2000)
+    constraint_file = "../constraints/%s" % (appname.split("_")[0])
+    constraints = Loader.load_constraints(constraint_file)
+    queries = filter_queries(queries, constraints)
     queries = generate_query_params(queries, CONNECT_MAP[appname], {})
     
-    clean_constraints()
+    clean_constraints(constraints)
     org_plans = get_query_plans(queries)
-    installed_constraints = install_constraints()
+    installed_constraints = install_constraints(constraints)
     new_plans = get_query_plans(queries)
     roll_back(installed_constraints)
     dump_rewrite(queries, org_plans, new_plans)
@@ -177,7 +205,8 @@ if __name__ == "__main__":
     bench_rewrite_perf = False
     
     if bench_pg:
-        get_rewrite_pg(appname + "_test")
+        # get_rewrite_pg(appname + "_test")
+        get_rewrite_pg(appname)
         
     if bench_slow_queries:
         filename = "../queries/redmine.pk"

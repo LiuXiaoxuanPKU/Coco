@@ -11,7 +11,7 @@ class Rewriter:
 
     def rewrite(self, constraints, q):
         # identify constraints in q
-        constraints = self.get_q_constraints(constraints, q)
+        constraints = Rewriter.get_q_constraints(constraints, q)
         if not len(constraints):
             return []
         
@@ -30,7 +30,8 @@ class Rewriter:
     
     # select * from R where a = 1
     # UniqueConstraint(a)
-    def get_q_constraints(self, constraints, q):
+    @staticmethod
+    def get_q_constraints(constraints, q):
         def extract_q_field(q):
             # TODO: extract all the fields insteaf of all the tokens
             q_str = format(q)
