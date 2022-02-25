@@ -273,6 +273,54 @@ def test_remove_predicate_simple():
         print(format(q))
     print(len(q_afters))
 
+    print("--------------")
+    q_before_str = "SELECT 1 AS one FROM members WHERE members.user_id IS NULL AND members.project_id = $1 LIMIT $2"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("members", "user_id", 0, 100)
+    print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
+    print("After: ")
+    q_afters = RemovePredicate(c).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters)) #1
+
+    print("--------------")
+    q_before_str = "SELECT 1 AS one FROM members WHERE members.user_id IS NULL AND members.project_id = $1 LIMIT $2"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("members", "project_id", 0, 100)
+    print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
+    print("After: ")
+    q_afters = RemovePredicate(c).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters)) #1
+
+    print("--------------")
+    q_before_str = "SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = $1 AND projects.status != $2 AND members.project_id IS NULL ORDER BY members.id ASC LIMIT $3"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("members", "project_id", 0, 100)
+    print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
+    print("After: ")
+    q_afters = RemovePredicate(c).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters)) #1
+
+    print("--------------")
+    q_before_str = "SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.project_id = $1 AND members.project_id != $2 AND members.project_id IS NULL ORDER BY members.id ASC LIMIT $3"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("members", "project_id", 0, 100)
+    print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
+    print("After: ")
+    q_afters = RemovePredicate(c).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+    print(len(q_afters)) #7
+
 def test_union_all_simple():
     q_before_str = "SELECT City FROM Customers UNION SELECT City FROM Suppliers ORDER BY City;"
     q_before = parse(q_before_str)
@@ -313,7 +361,6 @@ def test_remove_join():
     for q in q_afters:
         print(format(q))
     print(len(q_afters))
-
 
 if __name__ == "__main__":
     test_add_limit_one_select_from()
