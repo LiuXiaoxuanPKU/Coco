@@ -2,7 +2,7 @@ from lib2to3.pgen2 import token
 import subprocess
 from mo_sql_parsing import parse, format
 
-app_create_path = "./app_create_sql"
+app_create_path = "./app_create_sql/all"
 cosette_parser_path = ""
 rewrite_cnt = 0
 
@@ -28,9 +28,9 @@ class ProveVerifier:
             return q 
 
         qs = create_lines + ["\n-- Original Query\n"]
-        qs += [format_param(format(org_q)) + ";"]
+        qs += [format_param(org_q) + ";"]
         qs += ["\n-- Rewritten Queries\n"]   
-        qs += [format_param(format(q)) + ";\n" for q in rewritten_queries]
+        qs += [format_param(q) + ";\n" for q in rewritten_queries]
 
         q_path = "%s/%s_%d.sql" % (out_dir, appname+"_parser_input", rewrite_cnt)
         print("write to %s, length %d" % (q_path, len(qs)))

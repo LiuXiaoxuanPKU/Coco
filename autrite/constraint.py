@@ -38,7 +38,8 @@ class InclusionConstraint(Constraint):
         if len(self.value_list) == 0:
             value_list_str = 'None'
         else:
-            value_list_str = '|'.join(self.value_list)
+            value_str_list = [str(e) for e in self.value_list]
+            value_list_str = '|'.join(value_str_list)
         return "Inclusion_table_%s_field_%s_valuelist_%s" % (self.table, self.field, value_list_str)
 
 

@@ -1,11 +1,11 @@
-import json, random
+import json, random, hashlib
 from collections import OrderedDict
 from evaluator import Evaluator
 
-def test_query_result_equivalence(r1, r2):
-    if len(r1) == 0:
-        return False
-    
+def get_str_hash(str):
+    return hashlib.sha256(str.encode('utf-8')).hexdigest()
+
+def test_query_result_equivalence(r1, r2):    
     if len(r1) != len(r2):
         return False
 
@@ -16,74 +16,74 @@ def test_query_result_equivalence(r1, r2):
             return False
     return True
         
-def generate_query_params(queries, connect_str, cache):
-    def get_field_value(table_field, cache, field_idx = -1):
-        if table_field.startswith("LOWER"):
-            table_field = table_field[6:-1]
+def get_field_value(table_field, cache, connect_str, field_idx = -1):
+    if table_field.startswith("LOWER"):
+        table_field = table_field[6:-1]
+    
+    if field_idx != -1:
+        cache_name = table_field + "_%d" % field_idx
+    else:
+        cache_name = table_field
         
-        if field_idx != -1:
-            cache_name = table_field + "_%d" % field_idx
-        else:
-            cache_name = table_field
-            
-        if cache_name in cache:
-            return cache[cache_name]
-        try:
-            table, field = table_field.split('.')
-            SQL = "SELECT %s FROM %s ORDER BY RANDOM() LIMIT 1" % (table_field, table)
-            ret =  Evaluator.evaluate_query(SQL, connect_str)
-        except:
-            return []
-        cache[cache_name] = ret
-        return ret
+    if cache_name in cache:
+        return cache[cache_name]
+    try:
+        table, field = table_field.split('.')
+        SQL = "SELECT %s FROM %s ORDER BY RANDOM() LIMIT 1" % (table_field, table)
+        ret =  Evaluator.evaluate_query(SQL, connect_str)
+    except:
+        return []
+    cache[cache_name] = ret
+    return ret
 
-    def generate_single(q):
-        if '$' not in q:
-            return q
-        tokens = q.split(" ")
-        for i, token in enumerate(tokens):
-            if '$' in token:
-                if tokens[i-1] == "LIMIT":
-                    if 'limit' in cache:
-                        v = cache['limit']
-                    else:
-                        v = str(random.randint(1, 10))
-                        cache['limit'] = v
-                    tokens[i] = v
-                    
-                elif tokens[i-1] == "OFFSET":
-                    tokens[i] = "1"
-                elif tokens[i-1] in ["=", '!=', '>', '<']:
-                    re = get_field_value(tokens[i-2], cache)
+def generate_query_param_single(q, connect_str, cache):
+    if '$' not in q:
+        return q
+    tokens = q.split(" ")
+    for i, token in enumerate(tokens):
+        if '$' in token:
+            if tokens[i-1] == "LIMIT":
+                if 'limit' in cache:
+                    v = cache['limit']
+                else:
+                    v = str(random.randint(1, 10))
+                    cache['limit'] = v
+                tokens[i] = v
+                
+            elif tokens[i-1] == "OFFSET":
+                tokens[i] = "1"
+            elif tokens[i-1] in ["=", '!=', '>', '<']:
+                re = get_field_value(tokens[i-2], cache, connect_str)
+                if len(re) == 0 or re[0][0] is None:
+                    return None
+                tokens[i] = re[0][0]
+                if isinstance(tokens[i], str):
+                    tokens[i] = "'" + tokens[i] + "'"
+                else:
+                    tokens[i] = str(tokens[i])
+            elif tokens[i-1] == "IN":
+                end_idx = i
+                while ")" not in tokens[end_idx]:
+                    end_idx += 1
+                for j in range(i, end_idx + 1):
+                    re = get_field_value(tokens[i-2], cache, connect_str, j)
                     if len(re) == 0 or re[0][0] is None:
                         return None
-                    tokens[i] = re[0][0]
-                    if isinstance(tokens[i], str):
-                        tokens[i] = "'" + tokens[i] + "'"
+                    tokens[j] = re[0][0]
+                    if isinstance(tokens[j], str):
+                        tokens[j] = "'" + tokens[j] + "'"
                     else:
-                        tokens[i] = str(tokens[i])
-                elif tokens[i-1] == "IN":
-                    end_idx = i
-                    while ")" not in tokens[end_idx]:
-                        end_idx += 1
-                    for j in range(i, end_idx + 1):
-                        re = get_field_value(tokens[i-2], cache, j)
-                        if len(re) == 0 or re[0][0] is None:
-                            return None
-                        tokens[j] = re[0][0]
-                        if isinstance(tokens[j], str):
-                            tokens[j] = "'" + tokens[j] + "'"
-                        else:
-                            tokens[j] = str(tokens[j])
-                        tokens[j] += ","
-                    tokens[i] = "(" + tokens[i]
-                    tokens[end_idx] =  tokens[end_idx][:-1] + ")"
-        q = " ".join(tokens)
-        return q
+                        tokens[j] = str(tokens[j])
+                    tokens[j] += ","
+                tokens[i] = "(" + tokens[i]
+                tokens[end_idx] =  tokens[end_idx][:-1] + ")"
+    q = " ".join(tokens)
+    return q
 
+def generate_query_params(queries, connect_str, cache):
     param_qs = []
     for q in queries:
-        q_param = generate_single(q)
+        q_param = generate_query_param_single(q, cache, connect_str)
         if q_param is not None:
             param_qs.append(q_param)
     return param_qs
