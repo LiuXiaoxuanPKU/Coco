@@ -2,17 +2,26 @@ require_relative 'ast_handler'
 require_relative 'base_extractor'
 require_relative 'constraint'
 
+def trim_string(s)
+  s.delete_prefix("'").delete_suffix("'").delete_prefix('"').delete_suffix('"').downcase
+end
+
 class BuiltinExtractor < Extractor
   BUILTIN_VALIDATOR = %w[validates_presence_of validates_uniqueness_of
                          validates_format_of validates_length_of
-                         validates_inclusion_of has_many has_one has_and_belongs_to_many belongs_to]
+                         validates_inclusion_of has_many has_one belongs_to]
 
-
+  attr_accessor :has_ones, :has_manys, :belongs_tos
 
   def initialize
     @builtin_validation_cnt = 0
     @custom_validation_cnt = 0
+    @class_name = nil
     @vars = {}
+    @has_ones = []
+    @has_manys = []
+    @belongs_tos = []
+    @relationships = []
   end
 
   def visit(node, _params)
@@ -20,11 +29,13 @@ class BuiltinExtractor < Extractor
 
     ast = node.ast
     constraints = []
+    @class_name = trim_string(ast[0].source.to_s)
     ast[2].children.select.each do |c|
       @vars[c[0].source] = c[1] if c.type.to_s == 'assign'
 
       constraints += extract_cmd(c) if c.type.to_s == 'command'
     end
+
     node.constraints += constraints
   end
 
@@ -42,6 +53,7 @@ class BuiltinExtractor < Extractor
 
   def extract_bultin_validator(ast)
     validate_type = ast.children[0].source
+    constraints = []
     case validate_type
     when 'validates_presence_of'
       constraints = extract_builtin_presence(ast)
@@ -55,14 +67,12 @@ class BuiltinExtractor < Extractor
       constraints = extract_builtin_length(ast)
     when 'validates_numericality_of'
       constraints = extract_builtin_numerical(ast)
-    when 'has_many'
-      constraints = extract_builtin_has_many(ast)
     when 'has_one'
-      constraints = extract_builtin_has_one(ast)
+      extract_builtin_has_one(ast)
+    when 'has_many'
+      extract_builtin_has_many(ast)
     when 'belongs_to'
-      constraints = extract_builtin_belongs_to(ast)
-    when 'has_and_belongs_to_many'
-      constraints = extract_builtin_has_and_belongs_to_many(ast)
+      extract_builtin_belongs_to(ast)
     when 'state_machine'
       constraints = extract_builtin_state_machine(ast)
     end
@@ -233,17 +243,11 @@ class BuiltinExtractor < Extractor
   end
 
   def extract_builtin_has_one(ast)
-    constraints = []
     fields = []
     content = ast[1].children
-    class_name = nil
     foreign_key = nil
-    callable = nil
-    dependent = nil
     content.each do |node|
-      #check type
       if node.type.to_s == "fcall"
-        callable = node.source.to_s
         next
       end
       field = handle_symbol_literal_node(node)
@@ -251,40 +255,24 @@ class BuiltinExtractor < Extractor
       node.each do |n|
         k, v = handle_assoc_node(n)
         if !k.nil? && k == 'class_name'
-          class_name = v
+          fields[0] = trim_string(v.source.to_s)
         end
         if !k.nil? && k == 'foreign_key'
-          foreign_key = v
-        end
-        if !k.nil? && k == 'dependent'
-          dependent = v
+          foreign_key = trim_string(v.source.to_s)
         end
       end
     end
 
-    fields.each do |field|
-      c = HasOneConstraint.new(field, class_name, foreign_key, callable, dependent)
-      constraints << c
-    end
-    constraints
+    e = {"from_class" => @class_name, "class_name" => fields[0], "foreign_key" => foreign_key}
+    @has_ones.append(e)
   end
 
   def extract_builtin_has_many(ast)
-    constraints = []
     fields = []
     content = ast[1].children
-    class_name = nil
     foreign_key = nil
-    callable = nil
-    dependent = nil
-    inverse_of = nil
-    through = nil
-    as = nil
-    extend = nil
     content.each do |node|
-      #check type
       if node.type.to_s == "fcall"
-        callable = node.source.to_s
         next
       end
       field = handle_symbol_literal_node(node)
@@ -292,82 +280,25 @@ class BuiltinExtractor < Extractor
       node.each do |n|
         k, v = handle_assoc_node(n)
         if !k.nil? && k == 'class_name'
-          class_name = v
+          fields[0] = trim_string(v.source.to_s)
         end
         if !k.nil? && k == 'foreign_key'
-          foreign_key = v
-        end
-        if !k.nil? && k == 'dependent'
-          dependent = v
-        end
-        if !k.nil? && k == 'inverse_of'
-          inverse_of = v
-        end
-        if !k.nil? && k == 'through'
-          through = v
-        end
-        if !k.nil? && k == 'as'
-          as = v
-        end
-        if !k.nil? && k == 'extend'
-          extend = v
+          foreign_key = trim_string(v.source.to_s)
         end
       end
     end
 
-    fields.each do |field|
-      c = HasManyConstraint.new(field, class_name, foreign_key, callable, dependent, inverse_of, through, as, extend)
-      constraints << c
-    end
-    constraints
+    e = {"from_class" => @class_name, "class_name" => fields[0].singularize, "foreign_key" => foreign_key}
+    @has_manys.append(e)
   end
 
   def extract_builtin_belongs_to(ast)
-    constraints = []
     fields = []
     content = ast[1].children
-    class_name = nil
-    polymorphic = nil
-    counter_cache = nil
-    content.each do |node|
-      #check type
-      field = handle_symbol_literal_node(node)
-      fields << field unless field.nil?
-      node.each do |n|
-        k, v = handle_assoc_node(n)
-        if !k.nil? && k == 'class_name'
-          class_name = v
-        end
-        if !k.nil? && k == 'polymorphic'
-          polymorphic = v
-        end
-        if !k.nil? && k == 'counter_cache'
-          counter_cache = v
-        end
-      end
-    end
-
-    fields.each do |field|
-      c = BelongsToConstraint.new(field, class_name, polymorphic, counter_cache)
-      constraints << c
-      c = PresenceConstraint.new(field, nil)
-      constraints << c
-    end
-    constraints
-  end
-
-  def extract_builtin_has_and_belongs_to_many(ast)
-    constraints = []
-    fields = []
-    content = ast[1].children
-    class_name = nil
-    join_table = nil
     foreign_key = nil
-    callable = nil
+    polymorphic = false
     content.each do |node|
-      #check type
       if node.type.to_s == "fcall"
-        callable = node.source.to_s
         next
       end
       field = handle_symbol_literal_node(node)
@@ -375,26 +306,57 @@ class BuiltinExtractor < Extractor
       node.each do |n|
         k, v = handle_assoc_node(n)
         if !k.nil? && k == 'class_name'
-          class_name = v
+          fields[0] = trim_string(v.source.to_s)
         end
         if !k.nil? && k == 'foreign_key'
-          foreign_key = v
+          foreign_key = trim_string(v.source.to_s)
         end
-        if !k.nil? && k == 'join_table'
-          join_table = v
+        if !k.nil? && k == 'polymorphic'
+          polymorphic = true
+        end
+
+      end
+    end
+
+    if foreign_key.nil?
+      foreign_key = fields[0] + "_id"
+    end
+
+    e = {"from_class" => @class_name, "class_name" => fields[0], "foreign_key" => foreign_key, "polymorphic" => polymorphic}
+    @belongs_tos.append(e)
+  end
+
+  def convert_relationships(node)
+    @has_ones.each do |x|
+      @belongs_tos.each do |y|
+        if x["class_name"] == y["from_class"] and y["class_name"] == x["from_class"]
+          if y["polymorphic"]
+
+          end
+          c = ForeignKeyConstraint.new(x["class_name"], "one-to-one", y["class_name"], y["foreign_key"])
+          node.constraints += [c]
+          next
         end
       end
     end
 
-    fields.each do |field|
-      c = HasAndBelongsToManyConstraint.new(field, class_name, join_table, foreign_key, callable)
-      constraints << c
+    @has_manys.each do |x|
+      @belongs_tos.each do |y|
+        if x["class_name"] == y["from_class"] and y["class_name"] == x["from_class"]
+          if y["polymorphic"] == true
+
+          end
+          c = ForeignKeyConstraint.new(x["class_name"], "one-to-many", y["class_name"], y["foreign_key"])
+          node.constraints += [c]
+          next
+        end
+      end
     end
-    constraints
   end
 
   def extract_builtin_state_machine(ast)
     []
-  end 
+  end
+
 
 end
