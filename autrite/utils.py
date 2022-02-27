@@ -52,7 +52,7 @@ def generate_query_param_single(q, connect_str, cache):
                 
             elif tokens[i-1] == "OFFSET":
                 tokens[i] = "1"
-            elif tokens[i-1] in ["=", '!=', '>', '<']:
+            elif tokens[i-1] in ["=", "!=", ">", "<", "<>"]:
                 re = get_field_value(tokens[i-2], cache, connect_str)
                 if len(re) == 0 or re[0][0] is None:
                     return None

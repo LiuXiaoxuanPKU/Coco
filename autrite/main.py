@@ -1,4 +1,4 @@
-from curses import qiflush
+import traceback
 import rule
 from loader import Loader
 from rewriter import Rewriter
@@ -16,9 +16,12 @@ if __name__ == '__main__':
     appname = "redmine"
     constraint_filename = get_filename(FileType.CONSTRAINT, appname)
     query_filename = get_filename(FileType.RAW_QUERY, appname)
+    # query_filename = "../queries/redmine/redmine_remove_predicate.sql"
     offset = 0
     query_cnt = 10000
-    rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.AddLimitOne, rule.RemoveJoin, rule.AddPredicate]
+    # rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
+    #          rule.AddLimitOne, rule.RemoveJoin, rule.AddPredicate]
+    rules = [rule.RemovePredicate, rule.RewriteNullPredicate, rule.AddPredicate]
 
     constraints = Loader.load_constraints(constraint_filename)
     queries = Loader.load_queries(query_filename, offset, query_cnt)
@@ -38,6 +41,7 @@ if __name__ == '__main__':
             rewritten_queries = rewriter.rewrite(constraints, q)
         except:
             print("[Error rewrite]", format(q.q))
+            print(traceback.format_exc())
             continue
         rewrite_time.append(time.time() - start)
         candidate_cnt.append(len(rewritten_queries))
@@ -69,6 +73,7 @@ if __name__ == '__main__':
         # evaluate query performance
         org_cost = Evaluator.evaluate_cost(q.sql_param, CONNECT_MAP[appname])
         min_cost = org_cost
+        best_q = None
         for vq in param_verified_queries:
             cost = Evaluator.evaluate_cost(vq.sql_param, CONNECT_MAP[appname])
             if cost < min_cost:
@@ -78,14 +83,15 @@ if __name__ == '__main__':
             exp_recorder.record("id",  get_str_hash(format(q.q)))
             exp_recorder.record("org_cost", org_cost)
             exp_recorder.record("min_cost", min_cost)
-            exp_recorder.record("rules", [r.get_name() for r in best_q.rewrites])
+            exp_recorder.record("rules", list(set([r.get_name() for r in best_q.rewrites])))
             exp_recorder.record("org_q", q.sql_param)
             exp_recorder.record("rewrite_q", best_q.sql_param)
             exp_recorder.record("template",  format(q.q))
             exp_recorder.dump(get_filename(FileType.REWRITE, appname))
     
-        print("Org q %s, org cost %f" % (q.sql_param, org_cost))
-        print("Best q %s, best cost %f" % (best_q.sql_param, min_cost))
+        if best_q is not None:
+            print("Org q %s, org cost %f" % (q.sql_param, org_cost))
+            print("Best q %s, best cost %f" % (best_q.sql_param, min_cost))
         
 
     print("Rewrite Number %d" % rewrite_cnt)
