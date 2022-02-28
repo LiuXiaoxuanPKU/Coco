@@ -1,4 +1,5 @@
 class Traversor
+  attr_accessor :visitor
   def initialize(visitor)
     @visitor = visitor
   end
