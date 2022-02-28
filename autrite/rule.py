@@ -321,11 +321,15 @@ class RewriteNullPredicate(Rule):
                 return {op : rewritten_items}, can_rewrite
             elif op == "missing":
                 field = clause[op]
+                if not isinstance(field, str):
+                    return clause, False
                 if self.constraint.field == field or self.constraint.field == field.split(".")[-1]:
                     return False, True
                 return clause, False
             elif op == "exists":
                 field = clause[op]
+                if not isinstance(field, str):
+                    return clause, False
                 if self.constraint.field == field or self.constraint.field == field.split(".")[-1]:
                     return True, True  
                 return clause, False
