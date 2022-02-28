@@ -8,6 +8,7 @@ class FileType(Enum):
     REWRITE_PERF = 5
     DB_PERF = 6
     REWRITE_DB_PERF = 7
+    VERIFIER_INPUT = 8
     
 def get_filename(_type, appname):
     m = {
@@ -17,7 +18,8 @@ def get_filename(_type, appname):
             FileType.PARAM_QUERY : "log/%s/all_queries" % appname,
             FileType.REWRITE_PERF : "log/%s/rewrite_perf" % appname,
             FileType.DB_PERF : "log/%s/db_perf" % appname,
-            FileType.REWRITE_DB_PERF : "log/%s/db_rewrite_perf" % appname          
+            FileType.REWRITE_DB_PERF : "log/%s/db_rewrite_perf" % appname,
+            FileType.VERIFIER_INPUT : "app_create_sql/all/%s/" % appname       
     }
     return m[_type]
 

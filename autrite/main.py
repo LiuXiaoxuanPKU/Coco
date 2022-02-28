@@ -1,4 +1,7 @@
 import traceback
+import random
+random.seed(0)
+
 import rule
 from loader import Loader
 from rewriter import Rewriter
@@ -19,9 +22,9 @@ if __name__ == '__main__':
     # query_filename = "../queries/redmine/redmine_remove_predicate.sql"
     offset = 0
     query_cnt = 10000
-    # rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
-    #          rule.AddLimitOne, rule.RemoveJoin, rule.AddPredicate]
-    rules = [rule.RemovePredicate, rule.RewriteNullPredicate, rule.AddPredicate]
+    rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
+             rule.AddLimitOne, rule.RemoveJoin, rule.AddPredicate]
+    # rules = [rule.AddPredicate]
 
     constraints = Loader.load_constraints(constraint_filename)
     queries = Loader.load_queries(query_filename, offset, query_cnt)
@@ -65,9 +68,9 @@ if __name__ == '__main__':
                 (rewrite_cnt, len(rewritten_queries), len(param_verified_queries)))
         
         
-        # print("============Start Prove==================")
-        # # TODO: verify rewritten queries
-        # verified_queries = ProveVerifier().verify(appname, param_q, constraints, param_verified_queries)
+        print("============Start Prove==================")
+        # TODO: verify rewritten queries
+        verified_queries = ProveVerifier().verify(appname, q, constraints, rewritten_queries)
 
         print("===========Start Evaluate Cost==============")
         # evaluate query performance

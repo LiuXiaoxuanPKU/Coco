@@ -59,10 +59,10 @@ class Rewriter:
             UniqueConstraint : [RemoveDistinct, AddLimitOne],
             NumericalConstraint : [AddPredicate, RemovePredicate],
             PresenceConstraint : [RewriteNullPredicate],
-            InclusionConstraint : [],
+            InclusionConstraint : [], 
             LengthConstraint : [],
             FormatConstraint : [],
-            ForeignKeyConstraint : []
+            ForeignKeyConstraint : [RemoveJoin]
             }
         rules = []
         for c in constraints:
