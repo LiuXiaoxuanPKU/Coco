@@ -73,14 +73,57 @@ class NumericalConstraint < Constraint
   end
 end
 
-class ForeignKeyConstraint < Constraint
-  attr_accessor :relationship, :child, :foreign_key
+class HasOneConstraint < Constraint
+  attr_accessor :class_name, :foreign_key, :callable, :dependent
 
-  def initialize(field, relationship, child, foreign_key, db=false)
+  def initialize(field, class_name, foreign_key, callable, dependent, db = false)
     @field_name = field
-    @relationship = relationship
-    @child = child
+    @class_name = class_name
     @foreign_key = foreign_key
+    @callable = callable
+    @dependent = dependent
+    @db = db
+  end
+end
+
+class HasManyConstraint < Constraint
+  attr_accessor :class_name, :foreign_key, :callable, :dependent, :inverse_of, :through, :as, :extend
+
+  def initialize(field, class_name, foreign_key, callable, dependent, inverse_of, through, as, extend, db = false)
+    @field_name = field
+    @class_name = class_name
+    @foreign_key = foreign_key
+    @callable = callable
+    @dependent = dependent
+    @inverse_of = inverse_of
+    @through = through
+    @as = as
+    @extend = extend
+    @db = db
+  end
+end
+
+class BelongsToConstraint < Constraint
+  attr_accessor :class_name, :polymorphic, :counter_cache
+
+  def initialize(field, class_name, polymorphic, counter_cache, db = false)
+    @field_name = field
+    @class_name = class_name
+    @polymorphic = polymorphic
+    @counter_cache = counter_cache
+    @db = db
+  end
+end
+
+class HasAndBelongsToManyConstraint < Constraint
+  attr_accessor :class_name, :join_table, :foreign_key, :callable
+
+  def initialize(field, class_name, join_table, foreign_key, callable, db = false)
+    @field_name = field
+    @class_name = class_name
+    @join_table = join_table
+    @foreign_key = foreign_key
+    @callable = callable
     @db = db
   end
 end
