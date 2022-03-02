@@ -83,7 +83,7 @@ def generate_query_param_single(q, connect_str, cache):
 def generate_query_params(queries, connect_str, cache):
     param_qs = []
     for q in queries:
-        q_param = generate_query_param_single(q, cache, connect_str)
+        q_param = generate_query_param_single(q, connect_str, cache)
         if q_param is not None:
             param_qs.append(q_param)
     return param_qs

@@ -1,14 +1,15 @@
-from faulthandler import dump_traceback_later
 import os.path, json, traceback
 
 from loader import Loader
 from evaluator import Evaluator
 import numpy as np
-from utils import exp_recorder, generate_query_params, get_str_hash, test_query_result_equivalence
+from utils import exp_recorder, generate_query_param_single, generate_query_params, get_str_hash, test_query_result_equivalence
 from config import CONNECT_MAP, FileType, get_filename
 import constraint
 from mo_sql_parsing import format
 from tqdm import tqdm
+
+import matplotlib.pyplot as plt
 
 class Query:
     def __init__(self, template) -> None:
@@ -150,12 +151,12 @@ def get_all_queries(appname):
         if key in rewrite_map:
             q.before = rewrite_map[key]['org_q']
             q.after = rewrite_map[key]['rewrite_q']
-            q.rewrites.append('constropt')
+            q.rewrites += rewrite_map[key]['rules']
         else:
-            param_q = generate_query_params([q.template], CONNECT_MAP[appname], {})
-            if len(param_q) > 0:
-                q.before = param_q[0]
-                q.after = param_q[0]
+            param_q = generate_query_param_single([q.template], CONNECT_MAP[appname], {})
+            if param_q is not None:
+                q.before = param_q
+                q.after = param_q
             else:
                 q.before = None
                 q.after = None
@@ -175,6 +176,7 @@ def get_all_perf(appname):
     for obj in q_objs:
         q = Query(obj['template'])
         q.before, q.after = obj['before'], obj['after']
+        q.rewrites = obj["rewrites"]
         queries.append(q)
 
     constraint_file = get_filename(FileType.CONSTRAINT, appname)
@@ -220,18 +222,19 @@ def get_all_perf(appname):
     
     roll_back(roll_back_info)
     for q in queries:
-        exp_recorder.record("template", q.template)
+        # exp_recorder.record("template", q.template)
+        exp_recorder.record("org_cost", q.raw_cost)
+        exp_recorder.record("org_t", q.raw_t)
+        exp_recorder.record("db_cost", q.constraint_cost)
+        exp_recorder.record("db_t", q.constraint_t)
+        exp_recorder.record("db_rewrite_cost", q.constraint_rewrite_cost)
+        exp_recorder.record("db_rewrite_t", q.constraint_rewrite_t)
+        
         exp_recorder.record("before", q.before)
         exp_recorder.record("after", q.after)
         exp_recorder.record("rewrites", q.rewrites)
-        exp_recorder.record("org_cost", q.raw_cost)
-        exp_recorder.record("org_t", q.raw_t)
         exp_recorder.record("org_plan", q.raw_plan)
-        exp_recorder.record("db_cost", q.constraint_cost)
-        exp_recorder.record("db_t", q.constraint_t)
         exp_recorder.record("db_plan", q.constraint_plan)
-        exp_recorder.record("db_rewrite_cost", q.constraint_rewrite_cost)
-        exp_recorder.record("db_rewrite_t", q.constraint_rewrite_t)
         exp_recorder.record("db_rewrite_plan", q.constraint_rewrite_plan)
           
         exp_recorder.dump(get_filename(FileType.REWRITE_DB_PERF, appname))
@@ -265,6 +268,7 @@ def count_rewrite(appname):
     db_rewrite_cnt = 0
     db_speedup = 0
     db_rewrite_speedup = 0
+    db_rewrite_speedup_by_groups = {}
     for obj in objs:
         if obj['org_plan'] is None or obj['db_plan'] is None:
             continue
@@ -274,8 +278,22 @@ def count_rewrite(appname):
         db_rewrite_eq = test_query_result_equivalence(obj['org_plan'], obj['db_rewrite_plan'])
         if not db_rewrite_eq:
             db_rewrite_cnt += 1
-            db_speedup += (obj['org_cost'] * 1.0 / obj['db_cost'])
-            db_rewrite_speedup += (obj['org_cost'] * 1.0 / obj['db_rewrite_cost'])
+            # db_speedup += (obj['org_cost'] * 1.0 / obj['db_cost'])
+            db_speedup += (obj['org_t'] * 1.0 / obj['db_t'])
+            # db_rewrite_speedup += (obj['org_cost'] * 1.0 / obj['db_rewrite_cost'])
+            db_rewrite_speedup += (obj['org_t'] * 1.0 / obj['db_rewrite_t'])
+            for rt in obj['rewrites']:
+                if rt not in db_rewrite_speedup_by_groups:
+                    db_rewrite_speedup_by_groups[rt] = []
+                db_rewrite_speedup_by_groups[rt].append(obj['org_t'] * 1.0 / obj['db_rewrite_t'])
+               
+    for rt in db_rewrite_speedup_by_groups.keys():
+        fig, ax = plt.subplots()
+        
+        ax.hist(db_rewrite_speedup_by_groups[rt])
+        plt.savefig(rt)
+        plt.close()
+         
     print("DB count %d" % db_cnt)
     print("DB Rewrite count %d" % db_rewrite_cnt)
     print("DB speed up %f" % (db_speedup / db_rewrite_cnt))
