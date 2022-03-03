@@ -12,6 +12,7 @@ class Engine
 
   def run
     files = read_dir(@appdir)
+    files = files.select{ |item|  !item.nil? }
     root = build(files)
     # populate table name
     populate_tablename_traversor = Traversor.new(PopulateTableName.new)
