@@ -13,6 +13,7 @@ root = engine.run
 builtin_t = Traversor.new(BuiltinExtractor.new)
 builtin_t.traverse(root)
 builtin_t.visitor.convert_relationships(root)
+builtin_t.traverse(root) #puts relationships in correct node
 
 class_inheritance_t = Traversor.new(ClassInheritanceExtractor.new)
 class_inheritance_t.traverse(root)

@@ -26,6 +26,20 @@ class BuiltinExtractor < Extractor
 
   def visit(node, _params)
     return if node.ast.nil?
+    if !@relationships.empty?
+      #second pass: create constraints if parent is the current class
+      ast = node.ast
+      constraints = []
+      @class_name = trim_string(ast[0].source.to_s)
+
+      @relationships.each do |r|
+        if trim_string(@class_name) == r["parent"]
+          c = ForeignKeyConstraint.new(r["parent"], r["type"], r["child"], r["foreign_key"])
+          node.constraints += [c]
+        end
+      end
+      return
+    end
 
     ast = node.ast
     constraints = []
@@ -333,8 +347,9 @@ class BuiltinExtractor < Extractor
           if y["polymorphic"]
 
           end
-          c = ForeignKeyConstraint.new(x["class_name"], "one-to-one", y["class_name"], y["foreign_key"])
-          node.constraints += [c]
+          r = {"parent" => x["class_name"], "type" => "one-to-one", "child" => y["class_name"], "foreign_key" => y["foreign_key"]}
+          @relationships += [r]
+
           next
         end
       end
@@ -346,8 +361,8 @@ class BuiltinExtractor < Extractor
           if y["polymorphic"] == true
 
           end
-          c = ForeignKeyConstraint.new(x["class_name"], "one-to-many", y["class_name"], y["foreign_key"])
-          node.constraints += [c]
+          r = {"parent" => x["class_name"], "type" => "one-to-many", "child" => y["class_name"], "foreign_key" => y["foreign_key"]}
+          @relationships += [r]
           next
         end
       end

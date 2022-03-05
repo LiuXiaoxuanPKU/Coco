@@ -31,7 +31,8 @@ def test_builtin
   engine = Engine.new('data/redmine_models')
   root = engine.run
   t.traverse(root)
-  t.visitor.convert_relationships(root)\
+  t.visitor.convert_relationships(root)
+  t.traverse(root) #puts relationships in correct node
 
   t = Traversor.new(IdExtractor.new)
   t.traverse(root)
