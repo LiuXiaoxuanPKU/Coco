@@ -12,7 +12,7 @@ class Engine
 
   def run
     files = read_dir(@appdir)
-    files = files.select{ |item|  !item.nil? }
+    files = files.reject(&:nil?)
     root = build(files)
     # populate table name
     populate_tablename_traversor = Traversor.new(PopulateTableName.new)
@@ -55,7 +55,11 @@ class Engine
     end
     active_record_node = nil
     roots.each do |root|
+      # up to rails 4.2, use activatereocrd::base
       active_record_node = root if root.name == 'ActiveRecord::Base'
+      # if ApplicationRecord < ActiveRecord::Base, use ApplicationRecord, requires rails > 4.2
+      application_record_node = root.children.select { |c| c.name == 'ApplicationRecord' }
+      active_record_node = application_record_node if application_record_node.nil?
     end
     active_record_node
   end
