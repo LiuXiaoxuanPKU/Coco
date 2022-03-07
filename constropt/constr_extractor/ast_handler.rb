@@ -31,18 +31,29 @@ def handle_label_node(label)
   label[0]
 end
 
+def handle_qsymbols_literal(node)
+  scope = []
+  node.children.each do |child|
+    if child.type.to_s == "tstring_content"
+      column = handle_tstring_content_node(child)
+      scope << column
+    end
+  end
+  scope
+end
+
 # def handle_array_node(ast)
 #   scope = []
 #   if ast.type.to_s == "array" || ast.type.to_s == "var_ref"
 #     options = nil
-
+# 
 #     if ast.type.to_s == "array"
 #       options = ast[0]
 #     end
 #     if ast.type.to_s == "var_ref" && $cur_class.constants.has_key?(ast[0].source) && $cur_class.constants.has_key?(ast[0].source)
 #       options = $cur_class.constants[ast[0].source][0]
 #     end
-
+# 
 #     if options.type.to_s == "list"
 #       options.each do |child|
 #         if child.type.to_s == "symbol_literal"
@@ -68,7 +79,7 @@ end
 #   end
 #   return nil
 # end
-
+# 
 # def handle_constant_node(ast)
 #   if $cur_class.constants.has_key?(ast.source)
 #     const_value = $cur_class.constants[ast.source]

@@ -5,9 +5,7 @@ require_relative 'constraint'
 class BuiltinExtractor < Extractor
   BUILTIN_VALIDATOR = %w[validates_presence_of validates_uniqueness_of
                          validates_format_of validates_length_of
-                         ]
-
-  
+                         validates].freeze
 
   def initialize
     @builtin_validation_cnt = 0
@@ -17,6 +15,7 @@ class BuiltinExtractor < Extractor
 
   def visit(node, _params)
     return if node.ast.nil?
+
     ast = node.ast
     constraints = []
     ast[2].children.select.each do |c|
@@ -43,6 +42,8 @@ class BuiltinExtractor < Extractor
     # puts ast.source
     validate_type = ast.children[0].source
     case validate_type
+    when 'validates'
+      constraints = extract_validates(ast)
     when 'validates_presence_of'
       constraints = extract_builtin_presence(ast)
     when 'validates_uniqueness_of'
@@ -59,6 +60,69 @@ class BuiltinExtractor < Extractor
     constraints
   end
 
+  def extract_validates(ast)
+    content = ast[1].children
+    constraints = []
+    field = handle_symbol_literal_node(content[0])
+    content[1].each do |node|
+      label = handle_label_node(node.children[0])
+      other = node.children[1]
+      if label == 'presence'
+        if other.source == 'true'
+          cond = nil
+        elsif other.type.to_s == 'hash'
+        end
+        constraints << PresenceConstraint.new(field, cond)
+      elsif label == 'uniqueness'
+        cond = nil
+        case_sensitive = false
+        scope = []
+        if other.source == 'true'
+          cond = nil
+        elsif other.type.to_s == 'hash'
+          scope, cond, case_sensitive = extract_unique_scope_cond_sense(other.children)
+        end
+        constraints << UniqueConstraint.new(field, cond, case_sensitive, scope)
+      elsif label == 'inclusion'
+        values = []
+        type = 'builtin'
+        constraints << InclusionConstraint.new(field, values, type)
+      elsif label == 'length'
+        min = -1
+        max = -1
+        constraints << LengthConstraint.new(field, min, max)
+      end
+    end
+    constraints
+  end
+
+  def extract_unique_scope_cond_sense(nodes)
+    scope = []
+    cond = nil
+    case_sensitive = nil
+    nodes.each do |n|
+      k, v = handle_assoc_node(n)
+      cond = v if !k.nil? && (k == 'if')
+      case_sensitive = (v.source.downcase == 'true') if !k.nil? && (k == 'case_sensitive')
+      next if k.nil? || (k != 'scope')
+
+      v.children.each do |s|
+        if s.type.to_s == "list"
+          s.children.each do |c|
+            scope << handle_symbol_literal_node(c)
+          end
+        elsif s.type.to_s == "symbol"
+          scope << s[0].source
+        elsif s.type.to_s == "qsymbols_literal"
+          scope = handle_qsymbols_literal(s)
+        else
+          puts "[Warning] Unsupport scope #{s.source} of type #{s.type}"
+        end
+      end  
+    end
+    [scope, cond, case_sensitive]
+  end
+
   def extract_builtin_unique(ast)
     fields = []
     constraints = []
@@ -69,20 +133,7 @@ class BuiltinExtractor < Extractor
     content.each do |node|
       field = handle_symbol_literal_node(node)
       fields << field unless field.nil?
-      node.children.each do |n|
-        k, v = handle_assoc_node(n)
-        cond = v if !k.nil? && (k == 'if')
-        case_sensitive = (v.source.downcase == 'true') if !k.nil? && (k == 'case_sensitive')
-        next unless !k.nil? && (k == 'scope')
-
-        v.children.each do |s|
-          scope << if s.type.to_s == 'symbol'
-                     s[0].source
-                   else
-                     handle_symbol_literal_node(s[0])
-                   end
-        end
-      end
+      scope, cond, case_sensitive = extract_unique_scope_cond_sense(node.children)
     end
     fields.each do |field|
       c = UniqueConstraint.new(field, cond, case_sensitive, scope)
@@ -121,9 +172,7 @@ class BuiltinExtractor < Extractor
       node.each do |n|
         k, v = handle_assoc_node(n)
         if !k.nil? && k == 'in'
-          if v.type.to_s == "dot2"
-            return extract_builtin_numerical(ast)
-          end
+          return extract_builtin_numerical(ast) if v.type.to_s == 'dot2'
 
           type = 'builtin'
 
