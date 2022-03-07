@@ -4,6 +4,7 @@ require 'pathname'
 require_relative 'class_node'
 require_relative 'traversor'
 require_relative 'populate_tablename'
+require_relative 'serializer'
 
 class Engine
   def initialize(dir)
@@ -20,6 +21,14 @@ class Engine
     root
   end
 
+  def get_constraints(root)
+    visitor = TreeVisitor.new
+    t = Traversor.new(visitor)
+    t.traverse(root)
+    visitor.constraints
+  end
+
+  ############################## Helper Functions #########################
   def build(asts)
     class_nodes = {}
     roots = []

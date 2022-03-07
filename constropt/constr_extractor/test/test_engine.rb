@@ -23,13 +23,6 @@ def test_naive
   engine = Engine.new('spec/test_data/redmine_models')
   roots = engine.run
   t.traverse(roots)
-end
-
-def test_builtin
-  t = Traversor.new(BuiltinExtractor.new)
-  engine = Engine.new('test/data/redmine_models')
-  root = engine.run
-  t.traverse(root)
 
   t = Traversor.new(IdExtractor.new)
   t.traverse(root)
@@ -38,5 +31,18 @@ def test_builtin
   t.traverse(root)
 end
 
+def test_app_builtin(appdir)
+  t = Traversor.new(BuiltinExtractor.new)
+  engine = Engine.new(appdir)
+  root = engine.run
+  t.traverse(root)
+  constraints = engine.get_constraints(root)
+  puts "#{appdir}"
+  puts "extract #{constraints.length} builtin constraints"
+end
+
+
 # test_naive
-test_builtin
+test_app_builtin("test/data/redmine_models")
+test_app_builtin("test/data/openproject_models")
+test_app_builtin("test/data/forem_models")
