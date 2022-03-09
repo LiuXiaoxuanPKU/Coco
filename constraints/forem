@@ -1,0 +1,1752 @@
+[
+  {
+    "table": null,
+    "class": "ActiveRecord::Base",
+    "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "type",
+        "values": [
+          "ActiveRecord::Base",
+          "ApplicationRecord"
+        ],
+        "type": "class_inheritance",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": null,
+    "class": "ApplicationRecord",
+    "constraints": []
+  },
+  {
+    "table": "announcements",
+    "class": "Announcement",
+    "constraints": []
+  },
+  {
+    "table": "api_secrets",
+    "class": "ApiSecret",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "description",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "description",
+        "min": -1,
+        "max": -1,
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "audit_logs",
+    "class": "AuditLog",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "data",
+        "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "badges",
+    "class": "Badge",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "badge_image",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "description",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "title",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "badge_achievements",
+    "class": "BadgeAchievement",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "badge_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "user_id"
+        ],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "banished_users",
+    "class": "BanishedUser",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "username",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "broadcasts",
+    "class": "Broadcast",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "title",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "type_of"
+        ],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "type_of",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "banner_style",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "collections",
+    "class": "Collection",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "slug",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "user_id"
+        ],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "comments",
+    "class": "Comment",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "body_markdown",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "body_markdown",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "body_markdown",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "user_id",
+          "ancestry",
+          "commentable_id",
+          "commentable_type"
+        ],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "commentable_id",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "commentable_type",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "positive_reactions_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "public_reactions_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reactions_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "commentable",
+        "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "configs",
+    "class": "Config",
+    "constraints": []
+  },
+  {
+    "table": "consumer_apps",
+    "class": "ConsumerApp",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "app_bundle",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "app_bundle",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "platform"
+        ],
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "platform",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "creator_settings",
+    "class": "CreatorSetting",
+    "constraints": []
+  },
+  {
+    "table": "credits",
+    "class": "Credit",
+    "constraints": []
+  },
+  {
+    "table": "data_update_scripts",
+    "class": "DataUpdateScript",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "file_name",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "file_name",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status",
+        "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "devices",
+    "class": "Device",
+    "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "platform",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "token",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "token",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "user_id",
+          "platform",
+          "consumer_app_id"
+        ],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "discussion_locks",
+    "class": "DiscussionLock",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "article_id",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "display_ads",
+    "class": "DisplayAd",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "placement_area",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "placement_area",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "body_markdown",
+        "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "display_ad_events",
+    "class": "DisplayAdEvent",
+    "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "category",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "context_type",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "email_authorizations",
+    "class": "EmailAuthorization",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "type_of",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "type_of",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "feedback_messages",
+    "class": "FeedbackMessage",
+    "constraints": [
+      {
+        "^o": "LengthConstraint",
+        "field_name": "message",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "category",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "status",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "reporter_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "follows",
+    "class": "Follow",
+    "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "blocked",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "followable_type",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "follower_type",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "subscription_status",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "subscription_status",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "github_issues",
+    "class": "GithubIssue",
+    "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "category",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "url",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "url",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "html_variants",
+    "class": "HtmlVariant",
+    "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "group",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "html",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "name",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "success_rate",
+        "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "html_variant_successes",
+    "class": "HtmlVariantSuccess",
+    "constraints": []
+  },
+  {
+    "table": "html_variant_trials",
+    "class": "HtmlVariantTrial",
+    "constraints": []
+  },
+  {
+    "table": "identities",
+    "class": "Identity",
+    "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "provider",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "uid",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "provider"
+        ],
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "provider"
+        ],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "invitations",
+    "class": "Invitation",
+    "constraints": []
+  },
+  {
+    "table": "classified_listings",
+    "class": "Listing",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "organization_id",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "title",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "body_markdown",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "body_markdown",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "location",
+        "min": -1,
+        "max": -1,
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "classified_listing_categories",
+    "class": "ListingCategory",
+    "constraints": []
+  },
+  {
+    "table": "mentions",
+    "class": "Mention",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "mentionable_id",
+          "mentionable_type"
+        ],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mentionable_type",
+        "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "mods",
+    "class": "Mod",
+    "constraints": []
+  },
+  {
+    "table": "moderator_actions",
+    "class": "ModeratorAction",
+    "constraints": []
+  },
+  {
+    "table": "navigation_links",
+    "class": "NavigationLink",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "url",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "name"
+        ],
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "display_only_when_signed_in",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "notes",
+    "class": "Note",
+    "constraints": []
+  },
+  {
+    "table": "notifications",
+    "class": "Notification",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "organization_id",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "organization_id",
+          "notifiable_id",
+          "notifiable_type",
+          "action"
+        ],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "notification_subscriptions",
+    "class": "NotificationSubscription",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "config",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "config",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "notifiable_type",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "notifiable_type",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "notifiable_type",
+          "notifiable_id"
+        ],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "organizations",
+    "class": "Organization",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "articles_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "company_size",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "credits_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "cta_body_markdown",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "cta_button_text",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "cta_button_url",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "github_username",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "proof",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "secret",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "secret",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "slug",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "slug",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "spent_credits_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "summary",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "tag_line",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "twitter_username",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "unspent_credits_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "url",
+        "min": -1,
+        "max": -1,
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "organization_memberships",
+    "class": "OrganizationMembership",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "type_of_user",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "organization_id"
+        ],
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "type_of_user",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "overviews",
+    "class": "Overview",
+    "constraints": []
+  },
+  {
+    "table": "pages",
+    "class": "Page",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "description",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "template",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "page_views",
+    "class": "PageView",
+    "constraints": []
+  },
+  {
+    "table": "permissions",
+    "class": "Permission",
+    "constraints": []
+  },
+  {
+    "table": "podcasts",
+    "class": "Podcast",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "feed_url",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "slug",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "podcast_episodes",
+    "class": "PodcastEpisode",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "comments_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "guid",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "guid",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "media_url",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "media_url",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reactions_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "podcast_episode_appearances",
+    "class": "PodcastEpisodeAppearance",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "podcast_episode_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "user_id"
+        ],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "role",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "role",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "podcast_ownerships",
+    "class": "PodcastOwnership",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "podcast_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "user_id"
+        ],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "polls",
+    "class": "Poll",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "poll_options_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "poll_options_input_array",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "poll_options_input_array",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "poll_skips_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "poll_votes_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "prompt_markdown",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "prompt_markdown",
+        "min": -1,
+        "max": -1,
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "poll_options",
+    "class": "PollOption",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "markdown",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "markdown",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "poll_votes_count",
+        "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "poll_skips",
+    "class": "PollSkip",
+    "constraints": []
+  },
+  {
+    "table": "poll_votes",
+    "class": "PollVote",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "poll_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "user_id"
+        ],
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "poll_option_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "user_id"
+        ],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "privileged_reactions",
+    "class": "PrivilegedReaction",
+    "constraints": []
+  },
+  {
+    "table": "profiles",
+    "class": "Profile",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "profile_fields",
+    "class": "ProfileField",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "attribute_name",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "display_area",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "input_type",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "label",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "label",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "show_in_onboarding",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "profile_field_groups",
+    "class": "ProfileFieldGroup",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "name",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "profile_pins",
+    "class": "ProfilePin",
+    "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "profile_type",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "pinnable_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "profile_id",
+          "profile_type",
+          "pinnable_type"
+        ],
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "pinnable_type",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "rating_votes",
+    "class": "RatingVote",
+    "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "context",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "group",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "article_id",
+          "context"
+        ],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "reactions",
+    "class": "Reaction",
+    "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "category",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "reactable_type",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "status",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "reactable_id",
+          "reactable_type",
+          "category"
+        ],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "response_templates",
+    "class": "ResponseTemplate",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "content",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "user_id",
+          "type_of",
+          "content_type"
+        ],
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "type_of",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "content_type",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "content_type",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "content_type",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "roles",
+    "class": "Role",
+    "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "resource_type",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "name",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "secrets",
+    "class": "Secret",
+    "constraints": []
+  },
+  {
+    "table": "sponsorships",
+    "class": "Sponsorship",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "level",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "level",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "status",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "featured_number",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "sponsorable_type",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "tag_adjustments",
+    "class": "TagAdjustment",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "tag_name",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "tag_name",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "article_id"
+        ],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reason_for_adjustment",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "adjustment_type",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "adjustment_type",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "status",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status",
+        "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "tools",
+    "class": "Tool",
+    "constraints": []
+  },
+  {
+    "table": "tweets",
+    "class": "Tweet",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "full_fetched_object_serialized",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "twitter_id_code",
+        "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "user_blocks",
+    "class": "UserBlock",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "config",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "blocked_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "blocker_id"
+        ],
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "config",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "users_roles",
+    "class": "UserRole",
+    "constraints": []
+  },
+  {
+    "table": "user_subscriptions",
+    "class": "UserSubscription",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "subscriber_email",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "subscriber_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "subscriber_email",
+          "user_subscription_sourceable_type",
+          "user_subscription_sourceable_id"
+        ],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_subscription_sourceable_id",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_subscription_sourceable_id",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_subscription_sourceable_type",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_subscription_sourceable_type",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "user_subscription_sourceable_type",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "user_subscription_sourceable_type",
+        "values": [],
+        "type": "builtin",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "welcomes",
+    "class": "Welcome",
+    "constraints": []
+  },
+  {
+    "table": "welcome_notifications",
+    "class": "WelcomeNotification",
+    "constraints": []
+  }
+]
