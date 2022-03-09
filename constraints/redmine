@@ -2,7 +2,9 @@
   {
     "table": null,
     "class": "ActiveRecord::Base",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "attachments",
@@ -58,7 +60,9 @@
         "field_name": "name",
         "cond": "",
         "case_sensitive": null,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -361,52 +365,72 @@
   {
     "table": "custom_fields",
     "class": "DocumentCategoryCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_fields",
     "class": "DocumentCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_fields",
     "class": "GroupCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_fields",
     "class": "IssueCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_fields",
     "class": "IssuePriorityCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_fields",
     "class": "ProjectCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_fields",
     "class": "TimeEntryActivityCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_fields",
     "class": "TimeEntryCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_fields",
     "class": "UserCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_fields",
     "class": "VersionCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_field_enumerations",
@@ -442,7 +466,9 @@
   {
     "table": "custom_values",
     "class": "CustomValue",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "documents",
@@ -503,7 +529,9 @@
         "field_name": "address",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       }
     ]
@@ -575,17 +603,23 @@
   {
     "table": "enumerations",
     "class": "DocumentCategory",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "enumerations",
     "class": "IssuePriority",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "enumerations",
     "class": "TimeEntryActivity",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "imports",
@@ -627,17 +661,23 @@
   {
     "table": "imports",
     "class": "IssueImport",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "imports",
     "class": "TimeEntryImport",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "imports",
     "class": "UserImport",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "import_items",
@@ -784,7 +824,9 @@
         "field_name": "name",
         "cond": "",
         "case_sensitive": null,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -799,12 +841,16 @@
   {
     "table": "journals",
     "class": "Journal",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "journal_details",
     "class": "JournalDetail",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "members",
@@ -945,7 +991,9 @@
         "field_name": "lastname",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -960,17 +1008,23 @@
   {
     "table": "users",
     "class": "GroupBuiltin",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "users",
     "class": "GroupAnonymous",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "users",
     "class": "GroupNonMember",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "users",
@@ -999,7 +1053,9 @@
         "field_name": "login",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -1041,7 +1097,9 @@
   {
     "table": "users",
     "class": "AnonymousUser",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "projects",
@@ -1064,7 +1122,9 @@
         "field_name": "identifier",
         "cond": "",
         "case_sensitive": null,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -1130,17 +1190,23 @@
   {
     "table": "queries",
     "class": "IssueQuery",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "queries",
     "class": "ProjectQuery",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "queries",
     "class": "TimeEntryQuery",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "repositories",
@@ -1325,7 +1391,9 @@
         "field_name": "name",
         "cond": "",
         "case_sensitive": null,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -1340,7 +1408,9 @@
   {
     "table": "settings",
     "class": "Setting",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "time_entries",
@@ -1412,7 +1482,9 @@
         "field_name": "value",
         "cond": "",
         "case_sensitive": null,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       }
     ]
@@ -1438,7 +1510,9 @@
         "field_name": "name",
         "cond": "",
         "case_sensitive": null,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -1460,7 +1534,9 @@
   {
     "table": "user_preferences",
     "class": "UserPreference",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "versions",
@@ -1575,7 +1651,9 @@
   {
     "table": "wiki_content_versions",
     "class": "WikiContentVersion",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "wiki_pages",

@@ -18,12 +18,16 @@
   {
     "table": null,
     "class": "ApplicationRecord",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "actions",
     "class": "Action",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "announcements",
@@ -104,7 +108,9 @@
   {
     "table": "attribute_help_texts",
     "class": "AttributeHelpText::Project",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "attribute_help_texts",
@@ -113,7 +119,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "attribute_name",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -128,7 +136,9 @@
         "field_name": "name",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -154,7 +164,9 @@
   {
     "table": "auth_sources",
     "class": "DummyAuthSource",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "auth_sources",
@@ -163,7 +175,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "tls_mode",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -260,7 +274,9 @@
   {
     "table": "capabilities",
     "class": "Capability",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "categories",
@@ -393,7 +409,9 @@
   {
     "table": "comments",
     "class": "Comment",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_actions",
@@ -456,27 +474,37 @@
   {
     "table": "custom_fields",
     "class": "GroupCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_fields",
     "class": "ProjectCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_fields",
     "class": "UserCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_fields",
     "class": "VersionCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_fields",
     "class": "WorkPackageCustomField",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_options",
@@ -500,12 +528,16 @@
   {
     "table": "custom_styles",
     "class": "CustomStyle",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "custom_values",
     "class": "CustomValue",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "design_colors",
@@ -516,7 +548,9 @@
         "field_name": "variable",
         "cond": "",
         "case_sensitive": null,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -617,12 +651,16 @@
   {
     "table": "enumerations",
     "class": "IssuePriority",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "enumerations",
     "class": "Priority::InexistentPriority",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "exports",
@@ -645,17 +683,23 @@
   {
     "table": "exports",
     "class": "Backup",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "exports",
     "class": "Projects::Export",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "exports",
     "class": "WorkPackages::Export",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "forums",
@@ -710,52 +754,72 @@
   {
     "table": "journal/associated_journals",
     "class": "Journal::AssociatedJournal",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "'attachable_journals'",
     "class": "Journal::AttachableJournal",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "'customizable_journals'",
     "class": "Journal::CustomizableJournal",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "journal/base_journals",
     "class": "Journal::BaseJournal",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "'attachment_journals'",
     "class": "Journal::AttachmentJournal",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "'changeset_journals'",
     "class": "Journal::ChangesetJournal",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "'message_journals'",
     "class": "Journal::MessageJournal",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "'news_journals'",
     "class": "Journal::NewsJournal",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "'wiki_content_journals'",
     "class": "Journal::WikiContentJournal",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "'work_package_journals'",
     "class": "Journal::WorkPackageJournal",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "'journals'",
@@ -861,7 +925,9 @@
   {
     "table": "menu_items",
     "class": "MenuItems::WikiMenuItem",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "messages",
@@ -923,17 +989,23 @@
   {
     "table": "notifications",
     "class": "Notification",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "notification_settings",
     "class": "NotificationSetting",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "ordered_work_packages",
     "class": "OrderedWorkPackage",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "users",
@@ -998,7 +1070,9 @@
         "field_name": "login",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -1006,7 +1080,9 @@
         "field_name": "mail",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -1028,22 +1104,30 @@
   {
     "table": "users",
     "class": "AnonymousUser",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "users",
     "class": "DeletedUser",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "users",
     "class": "SystemUser",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "users",
     "class": "Users::InexistentUser",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "projects",
@@ -1073,7 +1157,9 @@
         "field_name": "identifier",
         "cond": "",
         "case_sensitive": true,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -1107,7 +1193,9 @@
   {
     "table": "relations",
     "class": "Relation",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "repositories",
@@ -1185,7 +1273,9 @@
         "field_name": "name",
         "cond": "",
         "case_sensitive": true,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -1203,7 +1293,9 @@
   {
     "table": "roles",
     "class": "GlobalRole",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "role_permissions",
@@ -1226,7 +1318,9 @@
         "field_name": "name",
         "cond": "",
         "case_sensitive": null,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       }
     ]
@@ -1246,7 +1340,9 @@
         "field_name": "name",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -1271,7 +1367,9 @@
   {
     "table": "statuses",
     "class": "Status::InexistentStatus",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "/types",
@@ -1288,7 +1386,9 @@
         "field_name": "name",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -1320,12 +1420,28 @@
   {
     "table": "user_passwords",
     "class": "UserPassword::Bcrypt",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "user_passwords",
     "class": "UserPassword::SHA1",
-    "constraints": []
+    "constraints": [
+
+    ]
+  },
+  {
+    "table": "user_preferences",
+    "class": "UserPreference",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user",
+        "cond": "",
+        "db": false
+      }
+    ]
   },
   {
     "table": "versions",
@@ -1364,7 +1480,9 @@
   {
     "table": "views",
     "class": "View",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "watchers",
@@ -1410,7 +1528,9 @@
   {
     "table": "wiki_contents",
     "class": "WikiContent",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "wiki_pages",
@@ -1481,7 +1601,9 @@
   {
     "table": "work_packages",
     "class": "WorkPackage::InexistentWorkPackage",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "workflows",
@@ -1522,7 +1644,9 @@
         "field_name": "project",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       }
     ]

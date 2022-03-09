@@ -21,11 +21,11 @@ class Engine
     root
   end
 
-  def get_constraints(root)
+  def get_constraints_cnt(root)
     visitor = TreeVisitor.new
     t = Traversor.new(visitor)
     t.traverse(root)
-    visitor.constraints
+    visitor.constraints_cnt
   end
 
   ############################## Helper Functions #########################

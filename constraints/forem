@@ -18,12 +18,16 @@
   {
     "table": null,
     "class": "ApplicationRecord",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "announcements",
     "class": "Announcement",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "api_secrets",
@@ -40,6 +44,137 @@
         "field_name": "description",
         "min": -1,
         "max": -1,
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "articles",
+    "class": "Article",
+    "constraints": [
+      {
+        "^o": "LengthConstraint",
+        "field_name": "body_markdown",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "body_markdown",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "user_id",
+          "title"
+        ],
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "cached_tag_list",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "canonical_url",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "published"
+        ],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "comments_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "feed_source_url",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "published"
+        ],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "positive_reactions_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "previous_public_reactions_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "public_reactions_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "rating_votes_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reactions_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "slug",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "user_id"
+        ],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "title",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_subscriptions_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "video_state",
+        "values": [
+
+        ],
+        "type": "builtin",
         "db": false
       }
     ]
@@ -89,7 +224,9 @@
         "field_name": "title",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       }
     ]
@@ -119,7 +256,9 @@
         "field_name": "username",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       }
     ]
@@ -147,14 +286,18 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "type_of",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "banner_style",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -221,7 +364,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "commentable_type",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -254,7 +399,9 @@
   {
     "table": "configs",
     "class": "Config",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "consumer_apps",
@@ -279,7 +426,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "platform",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -288,12 +437,16 @@
   {
     "table": "creator_settings",
     "class": "CreatorSetting",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "credits",
     "class": "Credit",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "data_update_scripts",
@@ -310,7 +463,9 @@
         "field_name": "file_name",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -328,7 +483,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "platform",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -361,7 +518,9 @@
         "field_name": "article_id",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       }
     ]
@@ -379,7 +538,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "placement_area",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -398,14 +559,18 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "category",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "context_type",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -424,7 +589,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "type_of",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -444,14 +611,18 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "category",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "status",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -460,7 +631,9 @@
         "field_name": "reporter_id",
         "cond": "",
         "case_sensitive": null,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       }
     ]
@@ -472,7 +645,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "blocked",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -497,7 +672,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "subscription_status",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -510,7 +687,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "category",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -532,7 +711,35 @@
         "field_name": "url",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "github_repos",
+    "class": "GithubRepo",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "url",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ],
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "github_id_code",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ],
         "db": false
       }
     ]
@@ -544,7 +751,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "group",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -559,7 +768,9 @@
         "field_name": "name",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -573,12 +784,16 @@
   {
     "table": "html_variant_successes",
     "class": "HtmlVariantSuccess",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "html_variant_trials",
     "class": "HtmlVariantTrial",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "identities",
@@ -587,7 +802,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "provider",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -616,7 +833,9 @@
   {
     "table": "invitations",
     "class": "Invitation",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "classified_listings",
@@ -666,7 +885,9 @@
   {
     "table": "classified_listing_categories",
     "class": "ListingCategory",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "mentions",
@@ -694,12 +915,16 @@
   {
     "table": "mods",
     "class": "Mod",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "moderator_actions",
     "class": "ModeratorAction",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "navigation_links",
@@ -718,7 +943,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "display_only_when_signed_in",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -727,7 +954,9 @@
   {
     "table": "notes",
     "class": "Note",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "notifications",
@@ -773,7 +1002,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "config",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -786,7 +1017,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "notifiable_type",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -880,7 +1113,9 @@
         "field_name": "secret",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -901,7 +1136,9 @@
         "field_name": "slug",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -969,7 +1206,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "type_of_user",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -978,7 +1217,9 @@
   {
     "table": "overviews",
     "class": "Overview",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "pages",
@@ -1005,7 +1246,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "template",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -1014,12 +1257,16 @@
   {
     "table": "page_views",
     "class": "PageView",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "permissions",
     "class": "Permission",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "podcasts",
@@ -1030,7 +1277,9 @@
         "field_name": "feed_url",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -1044,7 +1293,9 @@
         "field_name": "slug",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       }
     ]
@@ -1070,7 +1321,9 @@
         "field_name": "guid",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -1084,7 +1337,9 @@
         "field_name": "media_url",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
@@ -1130,7 +1385,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "role",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -1230,7 +1487,9 @@
   {
     "table": "poll_skips",
     "class": "PollSkip",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "poll_votes",
@@ -1261,7 +1520,9 @@
   {
     "table": "privileged_reactions",
     "class": "PrivilegedReaction",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "profiles",
@@ -1272,7 +1533,9 @@
         "field_name": "user_id",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       }
     ]
@@ -1310,13 +1573,17 @@
         "field_name": "label",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "show_in_onboarding",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -1337,7 +1604,9 @@
         "field_name": "name",
         "cond": "",
         "case_sensitive": false,
-        "scope": [],
+        "scope": [
+
+        ],
         "db": false
       }
     ]
@@ -1349,7 +1618,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "profile_type",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -1368,7 +1639,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "pinnable_type",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -1381,14 +1654,18 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "context",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "group",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -1418,21 +1695,27 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "category",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "reactable_type",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "status",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -1469,28 +1752,36 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "type_of",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "content_type",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "content_type",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "content_type",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -1503,14 +1794,18 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "resource_type",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "name",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -1519,7 +1814,9 @@
   {
     "table": "secrets",
     "class": "Secret",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "sponsorships",
@@ -1534,7 +1831,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "level",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -1547,7 +1846,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "status",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -1560,7 +1861,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "sponsorable_type",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -1595,7 +1898,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "adjustment_type",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -1608,7 +1913,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "status",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
@@ -1623,7 +1930,9 @@
   {
     "table": "tools",
     "class": "Tool",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "tweets",
@@ -1639,6 +1948,156 @@
         "^o": "PresenceConstraint",
         "field_name": "twitter_id_code",
         "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "users",
+    "class": "User",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "articles_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "badge_achievements_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "blocked_by_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "blocking_others_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "comments_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "credits_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "email",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "email",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "following_orgs_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "following_tags_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "following_users_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "password",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "rating_votes_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reactions_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "sign_in_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "spent_credits_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "subscribed_to_user_subscriptions_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "unspent_credits_count",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "username",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "username",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "username",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ],
         "db": false
       }
     ]
@@ -1666,7 +2125,9 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "config",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -1675,7 +2136,9 @@
   {
     "table": "users_roles",
     "class": "UserRole",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "user_subscriptions",
@@ -1726,14 +2189,18 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "user_subscription_sourceable_type",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "user_subscription_sourceable_type",
-        "values": [],
+        "values": [
+
+        ],
         "type": "builtin",
         "db": false
       }
@@ -1742,11 +2209,15 @@
   {
     "table": "welcomes",
     "class": "Welcome",
-    "constraints": []
+    "constraints": [
+
+    ]
   },
   {
     "table": "welcome_notifications",
     "class": "WelcomeNotification",
-    "constraints": []
+    "constraints": [
+
+    ]
   }
 ]

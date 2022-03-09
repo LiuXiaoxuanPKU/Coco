@@ -4,15 +4,17 @@ require_relative 'constraint'
 require_relative 'class_node'
 
 class TreeVisitor
-  attr_accessor :constraints
+  attr_accessor :constraints, :constraints_cnt
 
   def initialize
     @constraints = []
+    @constraints_cnt = 0
   end
 
   def visit(node, _params)
     c = Serializer.serialize_node(node)
     @constraints << c
+    @constraints_cnt += node.constraints.length
   end
 end
 
@@ -72,7 +74,7 @@ class Serializer
     t = Traversor.new(visitor)
     t.traverse(root)
     File.open(output_filename, 'w') do |f|
-      JSON.dump(visitor.constraints, f)
+      f.write(JSON.pretty_generate(visitor.constraints))
     end
   end
 end

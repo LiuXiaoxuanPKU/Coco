@@ -36,9 +36,9 @@ def test_app_builtin(appdir)
   engine = Engine.new(appdir)
   root = engine.run
   t.traverse(root)
-  constraints = engine.get_constraints(root)
+  constraints_cnt = engine.get_constraints_cnt(root)
   puts "#{appdir}"
-  puts "extract #{constraints.length} builtin constraints"
+  puts "extract #{constraints_cnt} builtin constraints"
 end
 
 
