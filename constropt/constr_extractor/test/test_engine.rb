@@ -5,6 +5,7 @@ require_relative '../traversor'
 require_relative '../builtin_extractor'
 require_relative '../id_extractor'
 require_relative '../constraint'
+require_relative '../state_machine_extractor'
 
 class TestPrint
   def visit(node, _params)
@@ -41,8 +42,19 @@ def test_app_builtin(appdir)
   puts "extract #{constraints.length} builtin constraints"
 end
 
+def test_app_state_machine(appdir)
+  t = Traversor.new(StateMachineExtractor.new)
+  engine = Engine.new(appdir)
+  root = engine.run
+  t.traverse(root)
+  constraints = engine.get_constraints(root)
+  state_machine_c = constraints.select { |c| c.is_a? InclusionConstraint and c.type == 'state_machine' }
+  puts appdir.to_s
+  puts "extract #{state_machine_c.length} state machine inclusion constraints"
+end
 
-# test_naive
-test_app_builtin("test/data/redmine_models")
-test_app_builtin("test/data/openproject_models")
-test_app_builtin("test/data/forem_models")
+
+# test_buildin
+# test_app_builtin('./data/redmine_models')
+# test_app_builtin('./data/openproject_models')
+test_app_state_machine('./data/gitlab_models')
