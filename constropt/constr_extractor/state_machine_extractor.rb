@@ -9,17 +9,15 @@ class StateMachineExtractor < Extractor
     return if node.ast.nil?
 
     ast = node.ast
-    constraints = []
     ast[2].children.select.each do |c|
       if c.type.to_s == 'command' && c[0].source == 'state_machine'
-        constraints << extract_state_machine_inclusion(c)
+        node.constraints.append(extract_state_machine_inclusion(c))
       end
     end
-    node.constraints += constraints
-    puts constraints.length
   end
 
   # begin parsing state machine inclusion constraint
+  # return one inclusion constraint extracted by key word "state machine"
   def extract_state_machine_inclusion(ast)
     # get column name
     column = handle_symbol_literal_node(ast[1][0])
@@ -78,5 +76,4 @@ class StateMachineExtractor < Extractor
     end
     possible_fields
   end
-
 end
