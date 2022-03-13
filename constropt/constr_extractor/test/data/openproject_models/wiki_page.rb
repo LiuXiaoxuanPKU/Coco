@@ -25,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class WikiPage < ApplicationRecord
@@ -40,7 +40,6 @@ class WikiPage < ApplicationRecord
               url_attribute: :slug,
               scope: :wiki_id, # Unique slugs per WIKI
               sync_url: true, # Keep slug updated on #rename
-              locale: :en,
               adapter: OpenProject::ActsAsUrl::Adapter::OpActiveRecord # use a custom adapter able to handle edge cases
 
   acts_as_watchable

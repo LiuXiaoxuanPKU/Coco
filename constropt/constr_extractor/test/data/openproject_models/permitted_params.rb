@@ -25,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 require 'permitted_params/allowed_settings'
@@ -490,7 +490,11 @@ class PermittedParams
           { membership: [
             :project_id,
             { role_ids: [] }
-          ] }
+          ],
+            new_membership: [
+              :project_id,
+              { role_ids: [] }
+            ] }
         ],
         member: [
           role_ids: []
@@ -542,7 +546,7 @@ class PermittedParams
         query: %i(
           name
           display_sums
-          public
+          is_public
           group_by
         ),
         role: [
@@ -597,9 +601,9 @@ class PermittedParams
           redirect_existing_links
         ),
         wiki_content: %i(
+          comments
           text
           lock_version
-          journal_notes
         ),
         move_to: [:move_to]
       }

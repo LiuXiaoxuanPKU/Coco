@@ -25,88 +25,63 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class UserPreference < ApplicationRecord
   belongs_to :user
+  serialize :others
+
   delegate :notification_settings, to: :user
-  serialize :settings, ::Serializers::IndifferentHashSerializer
 
-  validates :user,
-            presence: true
-  ##
-  # Retrieve keys from settings, and allow accessing
-  # as boolean with ? suffix
-  def method_missing(method_name, *args)
-    key = method_name.to_s
-    return super unless supported_settings_method?(key)
+  validates_presence_of :user
+  validate :time_zone_correctness, if: -> { time_zone.present? }
 
-    action = key[-1]
-
-    case action
-    when '?'
-      to_boolean send(key[..-2])
-    when '='
-      settings[key[..-2]] = args.first
-    else
-      settings[key]
-    end
-  end
-
-  ##
-  # We respond to all methods as we retrieve
-  # the key from settings
-  def respond_to_missing?(method_name, include_private = false)
-    supported_settings_method?(method_name) || super
-  end
+  after_initialize :init_other_preferences
 
   def [](attr_name)
-    if attribute?(attr_name)
-      super
-    else
-      send attr_name
-    end
+    attribute?(attr_name) ? super : others[attr_name]
   end
 
   def []=(attr_name, value)
-    if attribute?(attr_name)
-      super
-    else
-      send :"#{attr_name}=", value
-    end
+    attribute?(attr_name) ? super : others[attr_name] = value
   end
 
   def comments_sorting
-    settings.fetch(:comments_sorting, OpenProject::Configuration.default_comment_sort_order)
+    others.fetch(:comments_sorting, OpenProject::Configuration.default_comment_sort_order)
+  end
+
+  def comments_sorting=(order)
+    others[:comments_sorting] = order
   end
 
   def comments_in_reverse_order?
     comments_sorting == 'desc'
   end
 
-  def diff_type
-    settings.fetch(:diff_type, 'inline')
+  def self_notified?
+    !others[:no_self_notified]
   end
 
-  def hide_mail
-    settings.fetch(:hide_mail, true)
+  def self_notified=(value)
+    others[:no_self_notified] = !value
   end
 
   def auto_hide_popups=(value)
-    settings[:auto_hide_popups] = to_boolean(value)
+    others[:auto_hide_popups] = to_boolean(value)
   end
 
   def auto_hide_popups?
-    settings.fetch(:auto_hide_popups) { Setting.default_auto_hide_popups? }
+    others.fetch(:auto_hide_popups) { Setting.default_auto_hide_popups? }
   end
 
   def warn_on_leaving_unsaved?
-    settings.fetch(:warn_on_leaving_unsaved, true)
+    # Need to cast here as previous values were '0' / '1'
+    to_boolean(others.fetch(:warn_on_leaving_unsaved) { true })
   end
 
   def warn_on_leaving_unsaved=(value)
-    settings[:warn_on_leaving_unsaved] = to_boolean(value)
+    others[:warn_on_leaving_unsaved] = to_boolean(value)
   end
 
   # Provide an alias to form builders
@@ -115,40 +90,36 @@ class UserPreference < ApplicationRecord
   alias :auto_hide_popups :auto_hide_popups?
 
   def comments_in_reverse_order=(value)
-    settings[:comments_sorting] = to_boolean(value) ? 'desc' : 'asc'
+    others[:comments_sorting] = to_boolean(value) ? 'desc' : 'asc'
   end
 
   def time_zone
-    super.presence || Setting.user_default_timezone.presence
+    self[:time_zone].presence || Setting.user_default_timezone.presence
   end
 
-  def daily_reminders
-    super.presence || { enabled: true, times: ["08:00:00+00:00"] }.with_indifferent_access
-  end
+  def canonical_time_zone
+    return if time_zone.nil?
 
-  def immediate_reminders
-    super.presence || { mentioned: false }.with_indifferent_access
-  end
-
-  def pause_reminders
-    super.presence || { enabled: false }.with_indifferent_access
-  end
-
-  def workdays
-    super.presence || [1, 2, 3, 4, 5]
-  end
-
-  def supported_settings_method?(method_name)
-    UserPreferences::Schema.properties.include?(method_name.to_s.gsub(/\?|=\z/, ''))
+    zone = ActiveSupport::TimeZone.new(time_zone)
+    zone&.tzinfo&.canonical_identifier
   end
 
   private
+
+  def attribute?(name)
+    attr = name.to_sym
+    has_attribute?(attr) || attr == :user || attr == :user_id
+  end
 
   def to_boolean(value)
     ActiveRecord::Type::Boolean.new.cast(value)
   end
 
-  def attribute?(name)
-    %i[user user_id].include?(name.to_sym)
+  def init_other_preferences
+    self.others ||= { no_self_notified: true }
+  end
+
+  def time_zone_correctness
+    errors.add(:time_zone, :inclusion) if time_zone.present? && canonical_time_zone.nil?
   end
 end

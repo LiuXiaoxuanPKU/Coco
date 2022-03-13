@@ -25,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class CustomActions::Actions::Serializer
@@ -33,7 +33,7 @@ class CustomActions::Actions::Serializer
     return [] unless value
 
     YAML
-      .safe_load(value, permitted_classes: [Symbol])
+      .safe_load(value, [Symbol])
       .map do |key, values|
       klass = nil
 

@@ -25,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 module Principals::Scopes
@@ -59,7 +59,7 @@ module Principals::Scopes
           "concat_ws(' ', users.firstname, users.lastname)"
         when :firstname
           'users.firstname'
-        when :lastname_firstname, :lastname_coma_firstname, :lastname_n_firstname
+        when :lastname_firstname, :lastname_coma_firstname
           "concat_ws(' ', users.lastname, users.firstname)"
         when :username
           "users.login"

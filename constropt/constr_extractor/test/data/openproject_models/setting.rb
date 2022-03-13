@@ -25,13 +25,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class Setting < ApplicationRecord
-  extend CallbacksHelper
-  extend Aliases
-
   DATE_FORMATS = [
     '%Y-%m-%d',
     '%d/%m/%Y',
@@ -152,7 +149,7 @@ class Setting < ApplicationRecord
   end
 
   def formatted_value(value)
-    return value if value.blank?
+    return value unless value.present?
 
     default = @@available_settings[name]
 
@@ -288,19 +285,9 @@ class Setting < ApplicationRecord
   end
 
   def self.cache_key
-    most_recent_settings_change = (settings_updated_at || Time.now.utc).to_i
-
+    RequestStore.store[:settings_updated_at] ||= Setting.column_names.include?(:updated_at) && Setting.maximum(:updated_at)
+    most_recent_settings_change = (RequestStore.store[:settings_updated_at] || Time.now.utc).to_i
     "/openproject/settings/all/#{most_recent_settings_change}"
-  end
-
-  def self.settings_updated_at
-    RequestStore.store[:settings_updated_at] ||= has_updated_at_column? && Setting.maximum(:updated_at)
-  end
-
-  def self.has_updated_at_column?
-    return @has_updated_at_column unless @has_updated_at_column.nil?
-
-    @has_updated_at_column = Setting.column_names.map(&:to_sym).include?(:updated_at)
   end
 
   def self.settings_table_exists_yet?
@@ -317,7 +304,7 @@ class Setting < ApplicationRecord
     default = @@available_settings[name]
 
     if default['serialized'] && v.is_a?(String)
-      YAML::safe_load(v, permitted_classes: [Symbol, ActiveSupport::HashWithIndifferentAccess, Date, Time])
+      YAML::load(v)
     elsif v.present?
       read_formatted_setting v, default["format"]
     else
@@ -341,4 +328,10 @@ class Setting < ApplicationRecord
       value
     end
   end
+
+  require_dependency 'setting/callbacks'
+  extend Callbacks
+
+  require_dependency 'setting/aliases'
+  extend Aliases
 end

@@ -25,14 +25,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 module Queries::Notifications
   [Queries::Notifications::Filters::ReadIanFilter,
    Queries::Notifications::Filters::IdFilter,
-   Queries::Notifications::Filters::ProjectFilter,
-   Queries::Notifications::Filters::ReasonFilter,
    Queries::Notifications::Filters::ResourceIdFilter,
    Queries::Notifications::Filters::ResourceTypeFilter].each do |filter|
     Queries::Register.filter Queries::Notifications::NotificationQuery,
@@ -41,15 +39,8 @@ module Queries::Notifications
 
   [Queries::Notifications::Orders::DefaultOrder,
    Queries::Notifications::Orders::ReasonOrder,
-   Queries::Notifications::Orders::ProjectOrder,
    Queries::Notifications::Orders::ReadIanOrder].each do |order|
     Queries::Register.order Queries::Notifications::NotificationQuery,
                             order
-  end
-
-  [Queries::Notifications::GroupBys::GroupByReason,
-   Queries::Notifications::GroupBys::GroupByProject].each do |group|
-    Queries::Register.group_by Queries::Notifications::NotificationQuery,
-                               group
   end
 end

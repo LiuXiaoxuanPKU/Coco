@@ -3,8 +3,6 @@
 class AdminMenu
   # On second level navigation with more children, we reference the default tabs controller. i.e look at developer_tools
   # rubocop:disable Metrics/BlockLength
-  FEATURE_FLAGS = %i[profile_admin data_update_scripts].freeze
-
   ITEMS = Menu.define do
     scope :people, "group-2-line", [
       item(name: "people", controller: "users"),
@@ -35,11 +33,12 @@ class AdminMenu
       item(name: "admin team", controller: "permissions"),
     ]
 
-    scope :moderation, "mod", [
+    scope :moderation, "shield-flash-line", [
       item(name: "reports"),
       item(name: "mods"),
       item(name: "moderator actions ads", controller: "moderator_actions"),
       item(name: "privileged reactions"),
+      # item(name: "interaction limits")
     ]
 
     scope :advanced, "flashlight-line", [
@@ -49,12 +48,15 @@ class AdminMenu
       item(name: "developer tools", controller: "tools", children: [
              item(name: "tools"),
              item(name: "vault secrets", controller: "secrets"),
+             item(name: "webhooks", controller: "webhook_endpoints"),
              item(name: "data update scripts", visible: false),
            ]),
     ]
 
     scope :apps, "palette-line", [
+      item(name: "chat channels"),
       item(name: "consumer apps", controller: "consumer_apps"),
+      item(name: "events"),
       item(name: "listings"),
       item(name: "welcome"),
     ]
@@ -62,7 +64,7 @@ class AdminMenu
   # rubocop:enable Metrics/BlockLength
 
   def self.navigation_items
-    return ITEMS unless FEATURE_FLAGS.any? { |flag| FeatureFlag.enabled?(flag) }
+    return ITEMS unless FeatureFlag.enabled?(:profile_admin) || FeatureFlag.enabled?(:data_update_scripts)
 
     feature_flagged_menu_items
   end

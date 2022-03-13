@@ -25,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class Journal < ApplicationRecord
@@ -110,14 +110,10 @@ class Journal < ApplicationRecord
   private
 
   def predecessor
-    @predecessor ||= if initial?
-                       nil
-                     else
-                       self.class
-                         .where(journable_type: journable_type, journable_id: journable_id)
-                         .where("#{self.class.table_name}.version < ?", version)
-                         .order(version: :desc)
-                         .first
-                     end
+    @predecessor ||= self.class
+                     .where(journable_type: journable_type, journable_id: journable_id)
+                     .where("#{self.class.table_name}.version < ?", version)
+                     .order("#{self.class.table_name}.version DESC")
+                     .first
   end
 end

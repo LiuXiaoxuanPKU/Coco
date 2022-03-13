@@ -5,9 +5,12 @@ class Comment < ApplicationRecord
   include PgSearch::Model
   include Reactable
 
-  BODY_MARKDOWN_SIZE_RANGE = (1..25_000)
+  BODY_MARKDOWN_SIZE_RANGE = (1..25_000).freeze
 
   COMMENTABLE_TYPES = %w[Article PodcastEpisode].freeze
+
+  TITLE_DELETED = "[deleted]".freeze
+  TITLE_HIDDEN = "[hidden by post author]".freeze
 
   URI_REGEXP = %r{
     \A
@@ -15,7 +18,7 @@ class Comment < ApplicationRecord
     .+?             # host
     (?::\d+)?       # optional port
     \z
-  }x
+  }x.freeze
 
   # The date that we began limiting the number of user mentions in a comment.
   MAX_USER_MENTION_LIVE_AT = Time.utc(2021, 3, 12).freeze
@@ -54,10 +57,10 @@ class Comment < ApplicationRecord
   validates :positive_reactions_count, presence: true
   validates :public_reactions_count, presence: true
   validates :reactions_count, presence: true
+  validates :user_id, presence: true
   validates :commentable, on: :create, presence: {
     message: lambda do |object, _data|
-      I18n.t("models.comment.has_been_deleted",
-             type: I18n.t("models.comment.type.#{object.commentable_type.presence || 'item'}"))
+      "#{object.commentable_type.presence || 'item'} has been deleted."
     end
   }
 
@@ -88,19 +91,7 @@ class Comment < ApplicationRecord
   alias touch_by_reaction save
 
   def self.tree_for(commentable, limit = 0)
-    commentable.comments
-      .includes(user: %i[setting profile])
-      .arrange(order: "score DESC")
-      .to_a[0..limit - 1]
-      .to_h
-  end
-
-  def self.title_deleted
-    I18n.t("models.comment.deleted")
-  end
-
-  def self.title_hidden
-    I18n.t("models.comment.hidden")
+    commentable.comments.includes(:user).arrange(order: "score DESC").to_a[0..limit - 1].to_h
   end
 
   def search_id
@@ -140,12 +131,12 @@ class Comment < ApplicationRecord
   end
 
   def title(length = 80)
-    return self.class.title_deleted if deleted
-    return self.class.title_hidden if hidden_by_commentable_user
+    return TITLE_DELETED if deleted
+    return TITLE_HIDDEN if hidden_by_commentable_user
 
     text = ActionController::Base.helpers.strip_tags(processed_html).strip
     truncated_text = ActionController::Base.helpers.truncate(text, length: length).gsub("&#39;", "'").gsub("&amp;", "&")
-    Nokogiri::HTML.fragment(truncated_text).text # unescapes all HTML entities
+    HTMLEntities.new.decode(truncated_text)
   end
 
   def video
@@ -154,9 +145,9 @@ class Comment < ApplicationRecord
 
   def readable_publish_date
     if created_at.year == Time.current.year
-      I18n.l(created_at, format: :short)
+      created_at.strftime("%b %-e")
     else
-      I18n.l(created_at, format: :short_with_yy)
+      created_at.strftime("%b %-e '%y")
     end
   end
 
@@ -287,13 +278,34 @@ class Comment < ApplicationRecord
   end
 
   def synchronous_spam_score_check
-    return unless Settings::RateLimit.trigger_spam_for?(text: [title, body_markdown].join("\n"))
+    return unless
+      Settings::RateLimit.spam_trigger_terms.any? { |term| Regexp.new(term.downcase).match?(title.downcase) }
 
     self.score = -1 # ensure notification is not sent if possibly spammy
   end
 
   def create_conditional_autovomits
-    Spam::Handler.handle_comment!(comment: self)
+    return unless
+      Settings::RateLimit.spam_trigger_terms.any? { |term| Regexp.new(term.downcase).match?(title.downcase) } &&
+        user.registered_at > 5.days.ago
+
+    Reaction.create(
+      user_id: Settings::General.mascot_user_id,
+      reactable_id: id,
+      reactable_type: "Comment",
+      category: "vomit",
+    )
+
+    return unless Reaction.comment_vomits.where(reactable_id: user.comments.pluck(:id)).size > 2
+
+    user.add_role(:suspended)
+    Note.create(
+      author_id: Settings::General.mascot_user_id,
+      noteable_id: user_id,
+      noteable_type: "User",
+      reason: "automatic_suspend",
+      content: "User suspended for too many spammy articles, triggered by autovomit.",
+    )
   end
 
   def should_send_email_notification?
@@ -321,13 +333,11 @@ class Comment < ApplicationRecord
   def discussion_not_locked
     return unless commentable_type == "Article" && commentable.discussion_lock
 
-    errors.add(:commentable_id, I18n.t("models.comment.locked"))
+    errors.add(:commentable_id, "the discussion is locked on this Post")
   end
 
   def published_article
-    return unless commentable_type == "Article" && !commentable.published
-
-    errors.add(:commentable_id, I18n.t("models.comment.is_not_valid"))
+    errors.add(:commentable_id, "is not valid.") if commentable_type == "Article" && !commentable.published
   end
 
   def user_mentions_in_markdown
@@ -337,9 +347,7 @@ class Comment < ApplicationRecord
     mentions_count = Nokogiri::HTML(processed_html).css(".mentioned-user").size
     return if mentions_count <= Settings::RateLimit.mention_creation
 
-    errors.add(:base,
-               I18n.t("models.comment.mention_too_many",
-                      count: Settings::RateLimit.mention_creation))
+    errors.add(:base, "You cannot mention more than #{Settings::RateLimit.mention_creation} users in a comment!")
   end
 
   def record_field_test_event

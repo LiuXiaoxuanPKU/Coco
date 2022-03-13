@@ -1,11 +1,8 @@
 module Users
-  #  @note When we destroy the related user, it's using dependent:
-  #        :delete for the relationship.  That means no before/after
-  #        destroy callbacks will be called on this object.
   class Setting < ApplicationRecord
     self.table_name_prefix = "users_"
 
-    HEX_COLOR_REGEXP = /\A#?(?:\h{6}|\h{3})\z/
+    HEX_COLOR_REGEXP = /\A#?(?:\h{6}|\h{3})\z/.freeze
 
     belongs_to :user, touch: true
     scope :with_feed, -> { where.not(feed_url: [nil, ""]) }
@@ -15,16 +12,14 @@ module Users
          _suffix: :font
     enum inbox_type: { private: 0, open: 1 }, _suffix: :inbox
     enum config_navbar: { default: 0, static: 1 }, _suffix: :navbar
-    # NOTE: We previously had a set of 5 themes with values from 0 to 4.
-    enum config_theme: { light_theme: 0, dark_theme: 2 }
-    enum config_homepage_feed: { default: 0, latest: 1, top_week: 2, top_month: 3, top_year: 4, top_infinity: 5 },
-         _suffix: :feed
+    enum config_theme: { default: 0, minimal_light_theme: 1, night_theme: 2, pink_theme: 3,
+                         ten_x_hacker_theme: 4 }
 
     validates :brand_color1,
               :brand_color2,
-              format: { with: HEX_COLOR_REGEXP,
-                        message: I18n.t("models.users.setting.invalid_hex") },
+              format: { with: HEX_COLOR_REGEXP, message: "is not a valid hex color" },
               allow_nil: true
+    validates :user_id, presence: true
     validates :experience_level, numericality: { less_than_or_equal_to: 10 }, allow_blank: true
     validates :feed_referential_link, inclusion: { in: [true, false] }
     validates :feed_url, length: { maximum: 500 }, allow_nil: true
@@ -43,7 +38,7 @@ module Users
 
       valid = Feeds::ValidateUrl.call(feed_url)
 
-      errors.add(:feed_url, I18n.t("models.users.setting.invalid_rss")) unless valid
+      errors.add(:feed_url, "is not a valid RSS/Atom feed") unless valid
     rescue StandardError => e
       errors.add(:feed_url, e.message)
     end

@@ -25,18 +25,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class Queries::Principals::Filters::IdFilter < Queries::Principals::Filters::PrincipalFilter
-  include Queries::WorkPackages::Filter::MeValueFilterMixin
-
   def allowed_values
-    raise NotImplementedError, 'There would be too many candidates'
-  end
-
-  def where
-    operator_strategy.sql_for_field(values_replaced, self.class.model.table_name, self.class.key)
+    [["me", "me"]] # Not the whole truth but performs better than checking all IDs
   end
 
   def type
@@ -47,17 +41,21 @@ class Queries::Principals::Filters::IdFilter < Queries::Principals::Filters::Pri
     :id
   end
 
-  def allowed_values_subset
-    Principal.visible.pluck(:id).map(&:to_s) + [me_value_key]
+  def where
+    operator_strategy.sql_for_field(values_replaced, self.class.model.table_name, self.class.key)
   end
 
-  private
+  def values_replaced
+    vals = values.clone
 
-  def type_strategy
-    @type_strategy ||= Queries::Filters::Strategies::HugeList.new(self)
-  end
+    if vals.delete('me')
+      if User.current.logged?
+        vals.push(User.current.id.to_s)
+      else
+        vals.push('0')
+      end
+    end
 
-  def ar_object_filter?
-    true
+    vals
   end
 end

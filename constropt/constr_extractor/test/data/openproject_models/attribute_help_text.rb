@@ -23,7 +23,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class AttributeHelpText < ApplicationRecord
@@ -54,11 +54,11 @@ class AttributeHelpText < ApplicationRecord
     scope
   end
 
-  validates :help_text, presence: true
-  validates :attribute_name, uniqueness: { scope: :type }
+  validates_presence_of :help_text
+  validates_uniqueness_of :attribute_name, scope: :type
 
   def attribute_caption
-    @attribute_caption ||= self.class.available_attributes[attribute_name]
+    @caption ||= self.class.available_attributes[attribute_name]
   end
 
   def attribute_scope
@@ -78,5 +78,5 @@ class AttributeHelpText < ApplicationRecord
   end
 end
 
-require 'attribute_help_text/work_package'
-require 'attribute_help_text/project'
+require_dependency 'attribute_help_text/work_package'
+require_dependency 'attribute_help_text/project'

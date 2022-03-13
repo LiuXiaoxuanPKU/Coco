@@ -25,10 +25,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
-class Queries::Users::Orders::DefaultOrder < Queries::Orders::Base
+class Queries::Users::Orders::DefaultOrder < Queries::BaseOrder
   self.model = User
 
   def self.key

@@ -25,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class Queries::Notifications::NotificationQuery < Queries::BaseQuery
@@ -34,6 +34,6 @@ class Queries::Notifications::NotificationQuery < Queries::BaseQuery
   end
 
   def default_scope
-    Notification.visible(User.current).recipient(user)
+    Notification.recipient(user)
   end
 end

@@ -1,6 +1,3 @@
-#  @note When we destroy the related user, it's using dependent:
-#        :delete for the relationship.  That means no before/after
-#        destroy callbacks will be called on this object.
 class Notification < ApplicationRecord
   belongs_to :notifiable, polymorphic: true
   belongs_to :user, optional: true
@@ -31,7 +28,7 @@ class Notification < ApplicationRecord
       return unless follow && Follow.need_new_follower_notification_for?(follow.followable_type)
       return if follow.followable_type == "User" && UserBlock.blocking?(follow.followable_id, follow.follower_id)
 
-      follow_data = Notifications::NewFollower::FollowData.coerce(follow).to_h
+      follow_data = follow.attributes.slice("follower_id", "followable_id", "followable_type").symbolize_keys
       Notifications::NewFollowerWorker.perform_async(follow_data, is_read)
     end
 
@@ -39,7 +36,7 @@ class Notification < ApplicationRecord
       return unless follow && Follow.need_new_follower_notification_for?(follow.followable_type)
       return if follow.followable_type == "User" && UserBlock.blocking?(follow.followable_id, follow.follower_id)
 
-      follow_data = Notifications::NewFollower::FollowData.coerce(follow).to_h
+      follow_data = follow.attributes.slice("follower_id", "followable_id", "followable_type").symbolize_keys
       Notifications::NewFollowerWorker.new.perform(follow_data, is_read)
     end
 
@@ -157,8 +154,12 @@ class Notification < ApplicationRecord
     private
 
     def reaction_notification_attributes(reaction, receiver)
-      reactable_data = Notifications::Reactions::ReactionData.coerce(reaction).to_h
-      receiver_data = { "klass" => receiver.class.name, "id" => receiver.id }
+      reactable_data = {
+        reactable_id: reaction.reactable_id,
+        reactable_type: reaction.reactable_type,
+        reactable_user_id: reaction.reactable.user_id
+      }
+      receiver_data = { klass: receiver.class.name, id: receiver.id }
       [reactable_data, receiver_data]
     end
   end

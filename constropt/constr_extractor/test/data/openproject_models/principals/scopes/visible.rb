@@ -25,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 # Only return Principals that are visible to the current user.
@@ -38,7 +38,7 @@ module Principals::Scopes
 
     class_methods do
       def visible(user = ::User.current)
-        if user.allowed_to_globally?(:manage_members) || user.allowed_to_globally?(:manage_user)
+        if user.allowed_to_globally?(:manage_members)
           all
         else
           in_visible_project_or_me(user)

@@ -25,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class Projects::Status < ActiveRecord::Base
@@ -37,12 +37,5 @@ class Projects::Status < ActiveRecord::Base
             presence: true,
             uniqueness: true
 
-  enum code: {
-    on_track: 0,
-    at_risk: 1,
-    off_track: 2,
-    not_started: 3,
-    finished: 4,
-    discontinued: 5
-  }
+  enum code: %i[on_track at_risk off_track]
 end

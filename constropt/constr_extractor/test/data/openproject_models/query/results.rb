@@ -25,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class ::Query::Results
@@ -62,8 +62,19 @@ class ::Query::Results
       .order(sort_criteria_array)
   end
 
+  def versions
+    scope = Version
+            .visible
+
+    if query.project && (limiting_filter = query.project_limiting_filter)
+      scope.where(limiting_filter.where)
+    end
+
+    scope
+  end
+
   def order_option
-    order_option = [group_by_sort].compact_blank.join(', ')
+    order_option = [group_by_sort].reject(&:blank?).join(', ')
 
     if order_option.blank?
       nil

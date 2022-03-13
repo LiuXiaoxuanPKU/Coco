@@ -8,8 +8,6 @@ class HtmlVariant < ApplicationRecord
   has_many :html_variant_successes, dependent: :destroy
   has_many :html_variant_trials, dependent: :destroy
 
-  before_validation :strip_whitespace
-
   validates :group, inclusion: { in: GROUP_NAMES }
   validates :html, presence: true
   validates :name, uniqueness: true
@@ -56,7 +54,7 @@ class HtmlVariant < ApplicationRecord
     return if group == "campaign"
 
     published_and_approved = (approved && (html_changed? || name_changed? || group_changed?)) && persisted?
-    errors.add(:base, I18n.t("models.html_variant.no_edits")) if published_and_approved
+    errors.add(:base, "cannot change once published and approved") if published_and_approved
   end
 
   def prefix_all_images
@@ -78,9 +76,5 @@ class HtmlVariant < ApplicationRecord
 
   def allowed_image_host?(src)
     src.start_with?("https://res.cloudinary.com/") || src.start_with?(Images::Optimizer.get_imgproxy_endpoint)
-  end
-
-  def strip_whitespace
-    name.strip!
   end
 end

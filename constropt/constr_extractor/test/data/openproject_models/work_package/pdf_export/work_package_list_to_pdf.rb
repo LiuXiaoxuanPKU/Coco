@@ -25,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 # Exporter for work package table.
@@ -42,7 +42,7 @@
 require 'mini_magick'
 require 'open3'
 
-class WorkPackage::PDFExport::WorkPackageListToPdf < WorkPackage::Exports::QueryExporter
+class WorkPackage::PDFExport::WorkPackageListToPdf < WorkPackage::Exporter::Base
   include WorkPackage::PDFExport::Common
   include WorkPackage::PDFExport::Formattable
   include WorkPackage::PDFExport::Attachments
@@ -52,10 +52,6 @@ class WorkPackage::PDFExport::WorkPackageListToPdf < WorkPackage::Exports::Query
 
   WORK_PACKAGES_PER_BATCH = 100
 
-  def self.key
-    :pdf
-  end
-
   def initialize(object, options = {})
     super
 
@@ -64,7 +60,7 @@ class WorkPackage::PDFExport::WorkPackageListToPdf < WorkPackage::Exports::Query
     setup_page!
   end
 
-  def export!
+  def render!
     return render_batched! if batch_supported?
 
     file = render_work_packages query.results.work_packages
@@ -202,7 +198,7 @@ class WorkPackage::PDFExport::WorkPackageListToPdf < WorkPackage::Exports::Query
   end
 
   def column_widths
-    widths = column_objects.map do |col|
+    widths = valid_export_columns.map do |col|
       if col.name == :subject || text_column?(col)
         4.0
       else
@@ -215,7 +211,7 @@ class WorkPackage::PDFExport::WorkPackageListToPdf < WorkPackage::Exports::Query
   end
 
   def formattable_colspan
-    column_objects.size
+    valid_export_columns.size
   end
 
   def text_column?(column)
@@ -229,7 +225,7 @@ class WorkPackage::PDFExport::WorkPackageListToPdf < WorkPackage::Exports::Query
   end
 
   def data_headers
-    column_objects.map(&:caption).map do |caption|
+    valid_export_columns.map(&:caption).map do |caption|
       pdf.make_cell caption, font_style: :bold, background_color: 'CCCCCC'
     end
   end
@@ -264,8 +260,8 @@ class WorkPackage::PDFExport::WorkPackageListToPdf < WorkPackage::Exports::Query
   end
 
   def write_attributes!(work_package)
-    values = columns.map do |column|
-      make_column_value work_package, column[:name]
+    values = valid_export_columns.map do |column|
+      make_column_value work_package, column
     end
 
     pdf.table([values], column_widths: column_widths)
@@ -282,7 +278,7 @@ class WorkPackage::PDFExport::WorkPackageListToPdf < WorkPackage::Exports::Query
       label = make_group_label(group)
       group_cell = pdf.make_cell(label,
                                  font_style: :bold,
-                                 colspan: column_objects.size,
+                                 colspan: valid_export_columns.size,
                                  background_color: 'DDDDDD')
 
       pdf.table([[group_cell]], column_widths: column_widths)
@@ -294,9 +290,9 @@ class WorkPackage::PDFExport::WorkPackageListToPdf < WorkPackage::Exports::Query
   end
 
   def make_column_value(work_package, column)
-    formatter = formatter_for(column)
+    formatter = ::WorkPackage::Exporter::Formatters.for_column(column)
 
-    pdf.make_cell formatter.format(work_package),
+    pdf.make_cell formatter.format(work_package, column),
                   padding: cell_padding
   end
 

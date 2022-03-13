@@ -25,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class CustomField < ApplicationRecord
@@ -72,7 +72,6 @@ class CustomField < ApplicationRecord
                          unless: Proc.new { |cf| cf.max_length.blank? }
 
   before_validation :check_searchability
-  after_destroy :destroy_help_text
 
   # make sure int, float, date, and bool are not searchable
   def check_searchability
@@ -225,8 +224,9 @@ class CustomField < ApplicationRecord
   end
 
   # to move in project_custom_field
-  def self.for_all
+  def self.for_all(options = {})
     where(is_for_all: true)
+      .includes(options[:include])
       .order("#{table_name}.position")
   end
 
@@ -323,11 +323,5 @@ class CustomField < ApplicationRecord
     result
       .sort
       .map { |u| [u.name, u.id.to_s] }
-  end
-
-  def destroy_help_text
-    AttributeHelpText
-      .where(attribute_name: "custom_field_#{id}")
-      .destroy_all
   end
 end

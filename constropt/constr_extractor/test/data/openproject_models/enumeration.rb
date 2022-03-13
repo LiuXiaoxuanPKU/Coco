@@ -25,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class Enumeration < ApplicationRecord
@@ -34,6 +34,7 @@ class Enumeration < ApplicationRecord
   belongs_to :project
 
   acts_as_list scope: 'type = \'#{type}\''
+  acts_as_customizable
   acts_as_tree order: 'position ASC'
 
   before_destroy :check_integrity
@@ -182,5 +183,5 @@ end
 
 # Force load the subclasses in development mode
 %w(time_entry_activity issue_priority).each do |enum_subclass|
-  require enum_subclass
+  require_dependency enum_subclass
 end

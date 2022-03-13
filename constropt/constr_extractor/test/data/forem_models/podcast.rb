@@ -1,8 +1,6 @@
 class Podcast < ApplicationRecord
   resourcify
 
-  include Images::Profile.for(:profile_image_url)
-
   belongs_to :creator, class_name: "User", inverse_of: :created_podcasts, optional: true
 
   has_many :podcast_episodes, dependent: :destroy
@@ -21,14 +19,12 @@ class Podcast < ApplicationRecord
             presence: true,
             uniqueness: true,
             format: { with: /\A[a-zA-Z0-9\-_]+\Z/ },
-            exclusion: { in: ReservedWords.all, message: I18n.t("models.podcast.slug_is_reserved") }
-
-  validates :slug, unique_cross_model_slug: true, if: :slug_changed?
+            exclusion: { in: ReservedWords.all, message: "slug is reserved" }
+  validate :unique_slug_including_users_and_orgs, if: :slug_changed?
 
   after_save :bust_cache
 
   scope :reachable, -> { where(id: PodcastEpisode.reachable.select(:podcast_id)) }
-  scope :featured, -> { where(featured: true) }
   scope :published, -> { where(published: true) }
   scope :available, -> { reachable.published }
   scope :eager_load_serialized_data, -> { includes(:user, :podcast, :tags) }
@@ -52,10 +48,15 @@ class Podcast < ApplicationRecord
   end
 
   def image_90
-    profile_image_url_for(length: 90)
+    Images::Profile.call(profile_image_url, length: 90)
   end
 
   private
+
+  def unique_slug_including_users_and_orgs
+    slug_exists = User.exists?(username: slug) || Organization.exists?(slug: slug) || Page.exists?(slug: slug)
+    errors.add(:slug, "is taken.") if slug_exists
+  end
 
   def bust_cache
     return unless path

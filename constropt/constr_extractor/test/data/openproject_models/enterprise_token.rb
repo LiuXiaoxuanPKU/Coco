@@ -23,7 +23,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 class EnterpriseToken < ApplicationRecord
   class << self
@@ -69,8 +69,6 @@ class EnterpriseToken < ApplicationRecord
            :issued_at,
            :starts_at,
            :expires_at,
-           :reprieve_days,
-           :reprieve_days_left,
            :restrictions,
            to: :token_object
 
@@ -88,8 +86,8 @@ class EnterpriseToken < ApplicationRecord
     RequestStore.delete :current_ee_token
   end
 
-  def expired?(reprieve: true)
-    token_object.expired?(reprieve: reprieve) || invalid_domain?
+  def expired?
+    token_object.expired? || invalid_domain?
   end
 
   ##

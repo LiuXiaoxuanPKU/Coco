@@ -25,17 +25,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
-class Queries::Notifications::Orders::ReasonOrder < Queries::Orders::Base
+class Queries::Notifications::Orders::ReasonOrder < Queries::BaseOrder
   self.model = Notification
 
   def self.key
-    :reason
-  end
-
-  def name
     :reason
   end
 end

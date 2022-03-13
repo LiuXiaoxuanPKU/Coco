@@ -35,16 +35,6 @@ class ApplicationRecord < ActiveRecord::Base
     false
   end
 
-  # In our view objects, we often ask "What's this object's class's name?"
-  #
-  # We can either first check "Are you decorated?"  If so, ask for the decorated object's class
-  # name.  Or we can add a helper method for that very thing.
-  #
-  # @return [String]
-  def class_name
-    self.class.name
-  end
-
   # Decorate collection with appropriate decorator
   def self.decorate
     decorator_class.decorate_collection(all)
@@ -60,25 +50,7 @@ class ApplicationRecord < ActiveRecord::Base
 
     return superclass.decorator_class(called_on) if superclass.respond_to?(:decorator_class)
 
-    raise UninferrableDecoratorError,
-          I18n.t("models.application_record.uninferrable", class: called_on.class.name)
-  end
-
-  def self.statement_timeout
-    connection.execute("SELECT setting FROM pg_settings WHERE name = 'statement_timeout'")
-      .first["setting"]
-      .to_i
-      .seconds / 1000
-  end
-
-  def self.with_statement_timeout(duration, connection: self.connection)
-    original_timeout = statement_timeout
-    milliseconds = (duration.to_f * 1000).to_i
-    connection.execute "SET statement_timeout = #{milliseconds}"
-    yield
-  ensure
-    milliseconds = original_timeout.to_i * 1000
-    connection.execute "SET statement_timeout = #{milliseconds}"
+    raise UninferrableDecoratorError, "Could not infer a decorator for #{called_on.class.name}."
   end
 
   def errors_as_sentence

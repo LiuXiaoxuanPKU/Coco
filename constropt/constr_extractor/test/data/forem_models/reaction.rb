@@ -5,19 +5,10 @@ class Reaction < ApplicationRecord
     "thumbsdown" => -10.0
   }.freeze
 
-  # The union of public and privileged categories
   CATEGORIES = %w[like readinglist unicorn thinking hands thumbsup thumbsdown vomit].freeze
-
-  # These are the general category of reactions that anyone can choose
   PUBLIC_CATEGORIES = %w[like readinglist unicorn thinking hands].freeze
-
-  # These are categories of reactions that administrators can select
-  PRIVILEGED_CATEGORIES = %w[thumbsup thumbsdown vomit].freeze
   REACTABLE_TYPES = %w[Comment Article User].freeze
   STATUSES = %w[valid invalid confirmed archived].freeze
-
-  # Days to ramp up new user points weight
-  NEW_USER_RAMPUP_DAYS_COUNT = 10
 
   belongs_to :reactable, polymorphic: true
   belongs_to :user
@@ -29,23 +20,11 @@ class Reaction < ApplicationRecord
   counter_culture :user
 
   scope :public_category, -> { where(category: PUBLIC_CATEGORIES) }
-
-  # Be wary, this is all things on the reading list, but for an end
-  # user they might only see readinglist items that are published.
-  # See https://github.com/forem/forem/issues/14796
   scope :readinglist, -> { where(category: "readinglist") }
   scope :for_articles, ->(ids) { where(reactable_type: "Article", reactable_id: ids) }
   scope :eager_load_serialized_data, -> { includes(:reactable, :user) }
   scope :article_vomits, -> { where(category: "vomit", reactable_type: "Article") }
   scope :comment_vomits, -> { where(category: "vomit", reactable_type: "Comment") }
-  scope :user_vomits, -> { where(category: "vomit", reactable_type: "User") }
-  scope :related_negative_reactions_for_user, lambda { |user|
-    article_vomits.where(reactable_id: user.article_ids)
-      .or(comment_vomits.where(reactable_id: user.comment_ids))
-      .or(user_vomits.where(user_id: user.id))
-  }
-  scope :privileged_category, -> { where(category: PRIVILEGED_CATEGORIES) }
-  scope :for_user, ->(user) { where(reactable: user) }
 
   validates :category, inclusion: { in: CATEGORIES }
   validates :reactable_type, inclusion: { in: REACTABLE_TYPES }
@@ -80,22 +59,6 @@ class Reaction < ApplicationRecord
         Reaction.where(reactable_id: reactable.id, reactable_type: class_name, user: user, category: category).any?
       end
     end
-
-    # @param user [User] the user who might be spamming the system
-    #
-    # @return [TrueClass] yup, they're spamming the system.
-    # @return [FalseClass] they're not (yet) spamming the system
-    def user_has_been_given_too_many_spammy_article_reactions?(user:, threshold: 2)
-      article_vomits.where(reactable_id: user.articles.ids).size > threshold
-    end
-
-    # @param user [User] the user who might be spamming the system
-    #
-    # @return [TrueClass] yup, they're spamming the system.
-    # @return [FalseClass] they're not (yet) spamming the system
-    def user_has_been_given_too_many_spammy_comment_reactions?(user:, threshold: 2)
-      comment_vomits.where(reactable_id: user.comments.ids).size > threshold
-    end
   end
 
   # no need to send notification if:
@@ -103,14 +66,7 @@ class Reaction < ApplicationRecord
   # - receiver is the same user as the one who reacted
   # - receive_notification is disabled
   def skip_notification_for?(_receiver)
-    reactor_id = case reactable
-                 when User
-                   reactable.id
-                 else
-                   reactable.user_id
-                 end
-
-    points.negative? || (user_id == reactor_id)
+    points.negative? || (user_id == reactable.user_id)
   end
 
   def vomit_on_user?
@@ -161,50 +117,25 @@ class Reaction < ApplicationRecord
 
   def assign_points
     base_points = BASE_POINTS.fetch(category, 1.0)
-
-    # Ajust for certain states
     base_points = 0 if status == "invalid"
     base_points /= 2 if reactable_type == "User"
     base_points *= 2 if status == "confirmed"
-
-    unless persisted? # Actions we only want to apply upon initial creation
-      # Author's comment reaction counts for more weight on to their own posts. (5.0 vs 1.0)
-      base_points *= 5 if positive_reaction_to_comment_on_own_article?
-
-      # New users will have their reaction weight gradually ramp by 0.1 from 0 to 1.0.
-      base_points *= new_user_adjusted_points if new_untrusted_user # New users get minimal reaction weight
-    end
     self.points = user ? (base_points * user.reputation_modifier) : -5
   end
 
   def permissions
-    errors.add(:category, I18n.t("models.reaction.is_not_valid")) if negative_reaction_from_untrusted_user?
-    return unless reactable_type == "Article" && !reactable&.published
+    errors.add(:category, "is not valid.") if negative_reaction_from_untrusted_user?
 
-    errors.add(:reactable_id, I18n.t("models.reaction.is_not_valid"))
+    errors.add(:reactable_id, "is not valid.") if reactable_type == "Article" && !reactable&.published
   end
 
   def negative_reaction_from_untrusted_user?
     return if user&.any_admin? || user&.id == Settings::General.mascot_user_id
 
-    negative? && !user.trusted?
+    negative? && !user.trusted
   end
 
   def notify_slack_channel_about_vomit_reaction
     Slack::Messengers::ReactionVomit.call(reaction: self)
-  end
-
-  def positive_reaction_to_comment_on_own_article?
-    BASE_POINTS.fetch(category, 1.0).positive? &&
-      reactable_type == "Comment" &&
-      reactable&.commentable&.user_id == user_id
-  end
-
-  def new_user_adjusted_points
-    ((Time.current - user.registered_at).seconds.in_days / NEW_USER_RAMPUP_DAYS_COUNT)
-  end
-
-  def new_untrusted_user
-    user.registered_at > NEW_USER_RAMPUP_DAYS_COUNT.days.ago && !user.trusted? && !user.any_admin?
   end
 end

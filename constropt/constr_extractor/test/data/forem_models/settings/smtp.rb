@@ -1,40 +1,31 @@
 module Settings
-  class SMTP < Base
+  class SMTP < RailsSettings::Base
     self.table_name = :settings_smtp
-    AUTHENTICATION_METHODS = %w[plain login cram_md5].freeze
 
-    setting :address, type: :string, default: ApplicationConfig["SMTP_ADDRESS"].presence
-    setting :authentication, type: :string, default: ApplicationConfig["SMTP_AUTHENTICATION"].presence,
-                             validates: { inclusion: AUTHENTICATION_METHODS }
-    setting :domain, type: :string, default: ApplicationConfig["SMTP_DOMAIN"].presence
-    setting :password, type: :string, default: ApplicationConfig["SMTP_PASSWORD"].presence
-    setting :port, type: :integer, default: ApplicationConfig["SMTP_PORT"].presence || 25
-    setting :user_name, type: :string, default: ApplicationConfig["SMTP_USER_NAME"].presence
-    setting :from_email_address, type: :string, default: ApplicationConfig["DEFAULT_EMAIL"].presence,
-                                 validates: { email: true, allow_blank: true }
-    setting :reply_to_email_address, type: :string, default: ApplicationConfig["DEFAULT_EMAIL"].presence,
-                                     validates: { email: true, allow_blank: true }
+    OPTIONS = %i[address port authentication user_name password domain].freeze
+
+    # The configuration is cached, change this if you want to force update
+    # the cache, or call Settings::Smtp.clear_cache
+    cache_prefix { "v1" }
+
+    field :address, type: :string, default: ApplicationConfig["SMTP_ADDRESS"].presence
+    field :authentication, type: :string, default: ApplicationConfig["SMTP_AUTHENTICATION"].presence,
+                           validates: { inclusion: %w[plain login cram_md5] }
+    field :domain, type: :string, default: ApplicationConfig["SMTP_DOMAIN"].presence
+    field :password, type: :string, default: ApplicationConfig["SMTP_PASSWORD"].presence
+    field :port, type: :integer, default: ApplicationConfig["SMTP_PORT"].presence || 25
+    field :user_name, type: :string, default: ApplicationConfig["SMTP_USER_NAME"].presence
 
     class << self
       def settings
-        if provided_minimum_settings?
-          custom_provider_settings
-        else
-          fallback_sendgrid_settings
-        end
-      end
+        return sendgrid_settings if ENV["SENDGRID_API_KEY"].present?
 
-      def provided_minimum_settings?
-        address.present? && user_name.present? && password.present?
+        keys.index_with { |k| public_send(k) }.symbolize_keys
       end
 
       private
 
-      def custom_provider_settings
-        to_h
-      end
-
-      def fallback_sendgrid_settings
+      def sendgrid_settings
         {
           address: "smtp.sendgrid.net",
           port: 587,

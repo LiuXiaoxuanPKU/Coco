@@ -1,35 +1,30 @@
 module Settings
-  # Basic UX settings that can be overridden by individual user preferences.
-  class UserExperience < Base
+  # Basic UX settings that can be overriden by individual user preferences.
+  class UserExperience < RailsSettings::Base
     self.table_name = :settings_user_experiences
 
-    HEX_COLOR_REGEX = /\A#(\h{6}|\h{3})\z/
-    FEED_STRATEGIES = %w[basic large_forem_experimental].freeze
-    FEED_STYLES = %w[basic rich compact].freeze
+    HEX_COLOR_REGEX = /\A#(\h{6}|\h{3})\z/.freeze
+
+    # The configuration is cached, change this if you want to force update
+    # the cache, or call Settings::UserExperience.clear_cache
+    cache_prefix { "v1" }
 
     # The default font for all users that have not chosen a custom font yet
-    setting :default_font, type: :string, default: "sans_serif"
-    setting :feed_strategy, type: :string, default: "basic", validates: {
-      inclusion: { in: FEED_STRATEGIES }
-    }
+    field :default_font, type: :string, default: "sans_serif"
+    field :feed_strategy, type: :string, default: "basic"
     # basic (current default), rich (cover image on all posts), compact (more minimal)
-    setting :feed_style, type: :string, default: "basic", validates: {
-      inclusion: { in: FEED_STYLES }
-    }
-    setting :home_feed_minimum_score, type: :integer, default: 0
-    setting :index_minimum_score, type: :integer, default: 0
-    setting :primary_brand_color_hex, type: :string, default: "#3b49df", validates: {
+    field :feed_style, type: :string, default: "basic"
+    field :home_feed_minimum_score, type: :integer, default: 0
+    field :primary_brand_color_hex, type: :string, default: "#3b49df", validates: {
       format: {
         with: HEX_COLOR_REGEX,
-        message: proc { I18n.t("models.settings.user_experience.message") }
+        message: "must be be a 3 or 6 character hex (starting with #)"
       },
       color_contrast: true
     }
     # a non-public forem will redirect all unauthenticated pages to the registration page.
     # a public forem could have more fine-grained authentication (listings ar private etc.) in future
-    setting :public, type: :boolean, default: true
-    setting :tag_feed_minimum_score, type: :integer, default: 0
-    setting :default_locale, type: :string, default: "en"
-    setting :display_in_directory, type: :boolean, default: true
+    field :public, type: :boolean, default: 0
+    field :tag_feed_minimum_score, type: :integer, default: 0
   end
 end

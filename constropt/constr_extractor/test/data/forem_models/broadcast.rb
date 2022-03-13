@@ -32,7 +32,7 @@ class Broadcast < ApplicationRecord
       type_of == "Announcement" &&
       [nil, id].exclude?(first_broadcast.pick(:id))
 
-    errors.add(:base, I18n.t("models.broadcast.single_active"))
+    errors.add(:base, "You can only have one active announcement broadcast")
   end
 
   def update_active_status_updated_at

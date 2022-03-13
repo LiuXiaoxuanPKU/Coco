@@ -25,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class Queries::Projects::Filters::NameAndIdentifierFilter < Queries::Projects::Filters::ProjectFilter
@@ -39,7 +39,7 @@ class Queries::Projects::Filters::NameAndIdentifierFilter < Queries::Projects::F
       where_equal
     when '!'
       where_not_equal
-    when '~', '**'
+    when '~'
       where_contains
     when '!~'
       where_not_contains

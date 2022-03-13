@@ -25,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class Member < ApplicationRecord
@@ -34,7 +34,7 @@ class Member < ApplicationRecord
   extend DeprecatedAlias
   belongs_to :principal, foreign_key: 'user_id'
   has_many :member_roles, dependent: :destroy, autosave: true, validate: false
-  has_many :roles, -> { distinct }, through: :member_roles
+  has_many :roles, through: :member_roles
   belongs_to :project
 
   validates_presence_of :principal
@@ -68,13 +68,6 @@ class Member < ApplicationRecord
 
   def deletable?
     member_roles.detect(&:inherited_from).nil?
-  end
-
-  def deletable_role?(role)
-    member_roles
-      .only_inherited
-      .where(role: role)
-      .none?
   end
 
   def include?(principal)

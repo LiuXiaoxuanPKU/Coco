@@ -2,7 +2,6 @@ class Sponsorship < ApplicationRecord
   LEVELS = %w[gold silver bronze tag media devrel].freeze
   METAL_LEVELS = %w[gold silver bronze].freeze
   STATUSES = %w[none pending live].freeze
-  SPONSORABLE_TYPES = %w[Tag ActsAsTaggableOn::Tag].freeze
   # media has no fixed amount of credits
   CREDITS = {
     gold: 6_000,
@@ -19,12 +18,7 @@ class Sponsorship < ApplicationRecord
   validates :level, presence: true, inclusion: { in: LEVELS }
   validates :status, presence: true, inclusion: { in: STATUSES }
   validates :url, url: { allow_blank: true, no_local: true, schemes: %w[http https] }
-  validates :featured_number, presence: true
-  validates :sponsorable_type, inclusion: {
-    in: SPONSORABLE_TYPES,
-    allow_blank: true,
-    message: I18n.t("models.sponsorship.invalid_type")
-  }
+  validates :user, :organization, :featured_number, presence: true
 
   validate :validate_tag_uniqueness, if: proc { level.to_s == "tag" }
   validate :validate_level_uniqueness, if: proc { METAL_LEVELS.include?(level) }
@@ -44,14 +38,13 @@ class Sponsorship < ApplicationRecord
     return unless self.class.where(sponsorable: sponsorable, level: :tag)
       .exists?(["expires_at > ? AND id != ?", Time.current, id.to_i])
 
-    errors.add(:level, I18n.t("models.sponsorship.already_sponsored"))
+    errors.add(:level, "The tag is already sponsored")
   end
 
   def validate_level_uniqueness
     return unless self.class.where(organization: organization)
       .exists?(["level IN (?) AND expires_at > ? AND id != ?", METAL_LEVELS, Time.current, id.to_i])
 
-    levels = METAL_LEVELS.map { |l| I18n.t("models.sponsorship.level.#{l}") }.to_sentence(locale: I18n.locale)
-    errors.add(:level, I18n.t("models.sponsorship.only_one_level", levels: levels))
+    errors.add(:level, "You can have only one sponsorship of #{METAL_LEVELS.join(', ')}")
   end
 end

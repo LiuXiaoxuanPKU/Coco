@@ -21,7 +21,6 @@ class Follow < ApplicationRecord
   scope :followable_user, ->(id) { where(followable_id: id, followable_type: "User") }
   scope :followable_tag, ->(id) { where(followable_id: id, followable_type: "ActsAsTaggableOn::Tag") }
 
-  # NOTE: These assume that we have one follower_type (as defined by acts_as_follower).
   scope :follower_user, ->(id) { where(follower_id: id, followable_type: "User") }
   scope :follower_organization, ->(id) { where(follower_id: id, followable_type: "Organization") }
   scope :follower_podcast, ->(id) { where(follower_id: id, followable_type: "Podcast") }
@@ -31,10 +30,14 @@ class Follow < ApplicationRecord
                              column_names: COUNTER_CULTURE_COLUMNS_NAMES
   before_save :calculate_points
   after_create :send_email_notification
+  before_destroy :modify_chat_channel_status
   after_save :touch_follower
+  after_create_commit :create_chat_channel
 
   validates :blocked, inclusion: { in: [true, false] }
+  validates :followable_id, presence: true
   validates :followable_type, presence: true
+  validates :follower_id, presence: true
   validates :follower_type, presence: true
   validates :subscription_status, presence: true, inclusion: { in: %w[all_articles none] }
 
@@ -52,9 +55,23 @@ class Follow < ApplicationRecord
     follower.touch(:updated_at, :last_followed_at)
   end
 
+  def create_chat_channel
+    return unless followable_type == "User"
+
+    Follows::CreateChatChannelWorker.perform_async(id)
+  end
+
   def send_email_notification
     return unless followable.instance_of?(User) && followable.email?
 
     Follows::SendEmailNotificationWorker.perform_async(id)
+  end
+
+  def modify_chat_channel_status
+    return unless followable_type == "User" && followable.following?(follower)
+
+    channel = follower.chat_channels
+      .find_by("slug LIKE ? OR slug like ?", "%/#{followable.username}%", "%#{followable.username}/%")
+    channel&.update(status: "inactive")
   end
 end

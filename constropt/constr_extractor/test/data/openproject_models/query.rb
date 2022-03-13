@@ -25,27 +25,26 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See COPYRIGHT and LICENSE files for more details.
+# See docs/COPYRIGHT.rdoc for more details.
 #++
 
 class Query < ApplicationRecord
   include Timelines
   include Highlighting
   include ManualSorting
-  include Queries::Filters::AvailableFilters
+  include Queries::AvailableFilters
 
   belongs_to :project
   belongs_to :user
-  has_many :views,
-           dependent: :destroy
-
+  has_one :query_menu_item, -> { order('name') },
+          class_name: 'MenuItems::QueryMenuItem',
+          dependent: :delete, foreign_key: 'navigatable_id'
   serialize :filters, Queries::WorkPackages::FilterSerializer
   serialize :column_names, Array
   serialize :sort_criteria, Array
 
-  validates :name,
-            presence: true,
-            length: { maximum: 255 }
+  validates :name, presence: true
+  validates_length_of :name, maximum: 255
 
   validate :validate_work_package_filters
   validate :validate_columns
@@ -53,11 +52,22 @@ class Query < ApplicationRecord
   validate :validate_group_by
   validate :validate_show_hierarchies
 
-  include Scopes::Scoped
-  scopes :visible,
-         :having_views
+  scope(:visible, ->(to:) do
+    # User can see public queries and his own queries
+    scope = where(is_public: true)
+
+    if to.logged?
+      scope.or(where(user_id: to.id))
+    else
+      scope
+    end
+  end)
 
   scope(:global, -> { where(project_id: nil) })
+
+  scope(:hidden, -> { where(hidden: true) })
+
+  scope(:non_hidden, -> { where(hidden: false) })
 
   def self.new_default(attributes = nil)
     new(attributes).tap do |query|
@@ -94,7 +104,7 @@ class Query < ApplicationRecord
   end
 
   def add_default_filter
-    return if filters.present?
+    return unless filters.blank?
 
     add_filter('status_id', 'o', [''])
   end
@@ -137,10 +147,6 @@ class Query < ApplicationRecord
     if show_hierarchies && group_by.present?
       errors.add :show_hierarchies, :group_by_hierarchies_exclusive, group_by: group_by
     end
-  end
-
-  def hidden
-    views.empty?
   end
 
   # Try to fix an invalid query
@@ -252,7 +258,7 @@ class Query < ApplicationRecord
 
   def column_names=(names)
     col_names = Array(names)
-                .compact_blank
+                .reject(&:blank?)
                 .map(&:to_sym)
 
     # Set column_names to blank/nil if it is equal to the default columns
@@ -336,7 +342,7 @@ class Query < ApplicationRecord
 
     statement_filters
       .map { |filter| "(#{filter.where})" }
-      .compact_blank
+      .reject(&:empty?)
       .join(' AND ')
   end
 
@@ -364,8 +370,14 @@ class Query < ApplicationRecord
     raise ::Query::StatementInvalid.new(e.message)
   end
 
+  # Note: Convenience method to allow the angular front end to deal with query
+  # menu items in a non implementation-specific way
+  def starred
+    !!query_menu_item
+  end
+
   def project_limiting_filter
-    return if project_filter_set?
+    return if subproject_filters_involved?
 
     subproject_filter = Queries::WorkPackages::Filter::SubprojectFilter.create!
     subproject_filter.context = self
@@ -382,14 +394,10 @@ class Query < ApplicationRecord
 
   ##
   # Determine whether there are explicit filters
-  # on whether work packages from
-  # * subprojects
-  # * other projects
-  # are used.
-  def project_filter_set?
+  # on whether work packages from subprojects are used
+  def subproject_filters_involved?
     filters.any? do |filter|
-      filter.is_a?(::Queries::WorkPackages::Filter::SubprojectFilter) ||
-        filter.is_a?(::Queries::WorkPackages::Filter::ProjectFilter)
+      filter.is_a?(::Queries::WorkPackages::Filter::SubprojectFilter)
     end
   end
 
