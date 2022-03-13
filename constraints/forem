@@ -1,22 +1,6 @@
 [
   {
     "table": null,
-    "class": "ActiveRecord::Base",
-    "constraints": [
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "type",
-        "values": [
-          "ActiveRecord::Base",
-          "ApplicationRecord"
-        ],
-        "type": "class_inheritance",
-        "db": false
-      }
-    ]
-  },
-  {
-    "table": null,
     "class": "ApplicationRecord",
     "constraints": [
 
@@ -68,6 +52,12 @@
           "user_id",
           "title"
         ],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "boost_states",
+        "cond": "",
         "db": false
       },
       {
@@ -160,6 +150,12 @@
         "field_name": "title",
         "min": -1,
         "max": -1,
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "cond": "",
         "db": false
       },
       {
@@ -304,9 +300,126 @@
     ]
   },
   {
+    "table": "chat_channels",
+    "class": "ChatChannel",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "channel_type",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "channel_type",
+        "values": [
+
+        ],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "status",
+        "values": [
+
+        ],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "slug",
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "description",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "channel_name",
+        "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "chat_channel_memberships",
+    "class": "ChatChannelMembership",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "chat_channel_id",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "chat_channel_id",
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+          "user_id"
+        ],
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "role",
+        "values": [
+
+        ],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "status",
+        "values": [
+
+        ],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
     "table": "collections",
     "class": "Collection",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "db": false
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "slug",
@@ -390,6 +503,12 @@
       },
       {
         "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
         "field_name": "commentable",
         "cond": "",
         "db": false
@@ -432,13 +551,6 @@
         "type": "builtin",
         "db": false
       }
-    ]
-  },
-  {
-    "table": "creator_settings",
-    "class": "CreatorSetting",
-    "constraints": [
-
     ]
   },
   {
@@ -514,6 +626,12 @@
     "class": "DiscussionLock",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "article_id",
+        "cond": "",
+        "db": false
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "article_id",
         "cond": "",
@@ -522,6 +640,12 @@
 
         ],
         "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "locking_user_id",
+        "cond": "",
+        "db": false
       }
     ]
   },
@@ -529,6 +653,12 @@
     "table": "display_ads",
     "class": "DisplayAd",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "organization_id",
+        "cond": "",
+        "db": false
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "placement_area",
@@ -598,6 +728,25 @@
     ]
   },
   {
+    "table": "events",
+    "class": "Event",
+    "constraints": [
+      {
+        "^o": "LengthConstraint",
+        "field_name": "title",
+        "min": -1,
+        "max": -1,
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
     "table": "feedback_messages",
     "class": "FeedbackMessage",
     "constraints": [
@@ -653,7 +802,19 @@
       },
       {
         "^o": "PresenceConstraint",
+        "field_name": "followable_id",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
         "field_name": "followable_type",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "follower_id",
         "cond": "",
         "db": false
       },
@@ -785,14 +946,24 @@
     "table": "html_variant_successes",
     "class": "HtmlVariantSuccess",
     "constraints": [
-
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "html_variant_id",
+        "cond": "",
+        "db": false
+      }
     ]
   },
   {
     "table": "html_variant_trials",
     "class": "HtmlVariantTrial",
     "constraints": [
-
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "html_variant_id",
+        "cond": "",
+        "db": false
+      }
     ]
   },
   {
@@ -819,6 +990,12 @@
         "db": false
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "db": false
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "user_id",
         "cond": "",
@@ -841,6 +1018,12 @@
     "table": "classified_listings",
     "class": "Listing",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "db": false
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "organization_id",
@@ -894,6 +1077,12 @@
     "class": "Mention",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "db": false
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "user_id",
         "cond": "",
@@ -906,8 +1095,39 @@
       },
       {
         "^o": "PresenceConstraint",
+        "field_name": "mentionable_id",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
         "field_name": "mentionable_type",
         "cond": "",
+        "db": false
+      }
+    ]
+  },
+  {
+    "table": "messages",
+    "class": "Message",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "message_html",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "message_markdown",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "message_markdown",
+        "min": -1,
+        "max": -1,
         "db": false
       }
     ]
@@ -1006,6 +1226,12 @@
 
         ],
         "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "notifiable_id",
+        "cond": "",
         "db": false
       },
       {
@@ -1187,12 +1413,6 @@
     "table": "organization_memberships",
     "class": "OrganizationMembership",
     "constraints": [
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "type_of_user",
-        "cond": "",
-        "db": false
-      },
       {
         "^o": "UniqueConstraint",
         "field_name": "user_id",
@@ -1377,12 +1597,6 @@
         "db": false
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "role",
-        "cond": "",
-        "db": false
-      },
-      {
         "^o": "InclusionConstraint",
         "field_name": "role",
         "values": [
@@ -1496,6 +1710,12 @@
     "class": "PollVote",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "poll_id",
+        "cond": "",
+        "db": false
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "poll_id",
         "cond": "",
@@ -1503,6 +1723,12 @@
         "scope": [
           "user_id"
         ],
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "poll_option_id",
+        "cond": "",
         "db": false
       },
       {
@@ -1616,12 +1842,24 @@
     "class": "ProfilePin",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "profile_id",
+        "cond": "",
+        "db": false
+      },
+      {
         "^o": "InclusionConstraint",
         "field_name": "profile_type",
         "values": [
 
         ],
         "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "pinnable_id",
+        "cond": "",
         "db": false
       },
       {
@@ -1851,21 +2089,6 @@
         ],
         "type": "builtin",
         "db": false
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "featured_number",
-        "cond": "",
-        "db": false
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "sponsorable_type",
-        "values": [
-
-        ],
-        "type": "builtin",
-        "db": false
       }
     ]
   },
@@ -1873,6 +2096,24 @@
     "table": "tag_adjustments",
     "class": "TagAdjustment",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "article_id",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "tag_id",
+        "cond": "",
+        "db": false
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "tag_name",
@@ -2107,12 +2348,6 @@
     "class": "UserBlock",
     "constraints": [
       {
-        "^o": "PresenceConstraint",
-        "field_name": "config",
-        "cond": "",
-        "db": false
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": "blocked_id",
         "cond": "",
@@ -2146,7 +2381,19 @@
     "constraints": [
       {
         "^o": "PresenceConstraint",
+        "field_name": "author_id",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
         "field_name": "subscriber_email",
+        "cond": "",
+        "db": false
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "subscriber_id",
         "cond": "",
         "db": false
       },
@@ -2204,6 +2451,13 @@
         "type": "builtin",
         "db": false
       }
+    ]
+  },
+  {
+    "table": "webhook_endpoints",
+    "class": "WebhookEndpoint",
+    "constraints": [
+
     ]
   },
   {

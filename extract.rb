@@ -7,7 +7,7 @@ require_relative 'constropt/constr_extractor/class_inheritance_extractor'
 require_relative 'constropt/constr_extractor/constraint'
 require_relative 'constropt/constr_extractor/serializer'
 
-appname = "openproject"
+appname = "redmine"
 engine = Engine.new("constropt/constr_extractor/test/data/#{appname}_models")
 root = engine.run
 
