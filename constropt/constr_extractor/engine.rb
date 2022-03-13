@@ -68,7 +68,10 @@ class Engine
       active_record_node = root if root.name == 'ActiveRecord::Base'
       # if ApplicationRecord < ActiveRecord::Base, use ApplicationRecord, requires rails > 4.2
       application_record_node = root.children.select { |c| c.name == 'ApplicationRecord' }
-      active_record_node = application_record_node if application_record_node.nil?
+      if !application_record_node.empty?
+        active_record_node = application_record_node[0]
+        break
+      end
     end
     active_record_node
   end
