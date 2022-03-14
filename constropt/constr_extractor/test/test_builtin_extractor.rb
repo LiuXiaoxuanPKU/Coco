@@ -47,6 +47,8 @@ def test_numerical
       validates :estimated_hours, :numericality => {:greater_than_or_equal_to => 0, :allow_nil => true, :message => :invalid}
       validates_numericality_of :port, :only_integer => true, :allow_nil => true
       validates :min_length, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+      validates :experience_level, numericality: { less_than_or_equal_to: 10 }, allow_blank: true
+      validates_numericality_of :timeout, :only_integer => true, :allow_blank => true
     end
   FOO
   node = ClassNode.new('Test')

@@ -14,34 +14,39 @@
         "^o": "PresenceConstraint",
         "field_name": "filename",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "author",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "filename",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "disk_filename",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "description",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -53,7 +58,8 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -63,14 +69,16 @@
         "scope": [
 
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
         "min": null,
         "max": 60,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "InclusionConstraint",
@@ -80,7 +88,8 @@
           "AuthSourceLdap"
         ],
         "type": "class_inheritance",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -92,98 +101,110 @@
         "^o": "PresenceConstraint",
         "field_name": "host",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "port",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "attr_login",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
         "min": null,
         "max": 60,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "host",
         "min": null,
         "max": 60,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "account",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "account_password",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "base_dn",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "attr_login",
         "min": null,
         "max": 30,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "attr_firstname",
         "min": null,
         "max": 30,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "attr_lastname",
         "min": null,
         "max": 30,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "attr_mail",
         "min": null,
         "max": 30,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "NumericalConstraint",
         "field_name": "port",
         "min": null,
         "max": null,
-        "allow_nil": false,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "NumericalConstraint",
         "field_name": "timeout",
         "min": null,
         "max": null,
-        "allow_nil": false,
-        "db": false
+        "db": false,
+        "allow_nil": true
       }
     ]
   },
@@ -195,27 +216,31 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "description",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
         "min": null,
         "max": 30,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "description",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -227,19 +252,22 @@
         "^o": "PresenceConstraint",
         "field_name": "changeset_id",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "action",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "path",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -251,25 +279,29 @@
         "^o": "PresenceConstraint",
         "field_name": "repository_id",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "revision",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "committed_on",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "commit_date",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -279,7 +311,8 @@
         "scope": [
           "repository_id"
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -289,7 +322,8 @@
         "scope": [
           "repository_id"
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -301,19 +335,22 @@
         "^o": "PresenceConstraint",
         "field_name": "commented",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "author",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "content",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -325,13 +362,15 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "field_format",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -341,21 +380,24 @@
         "scope": [
           "type"
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
         "min": null,
         "max": 30,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "regexp",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "InclusionConstraint",
@@ -364,7 +406,8 @@
 
         ],
         "type": "builtin",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "InclusionConstraint",
@@ -383,7 +426,8 @@
           "VersionCustomField"
         ],
         "type": "class_inheritance",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -465,34 +509,38 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "position",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "custom_field_id",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
         "min": null,
         "max": 60,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "NumericalConstraint",
         "field_name": "position",
         "min": null,
         "max": null,
-        "allow_nil": false,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -511,26 +559,30 @@
         "^o": "PresenceConstraint",
         "field_name": "project",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "title",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "category",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "title",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -542,20 +594,23 @@
         "^o": "PresenceConstraint",
         "field_name": "address",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "FormatConstraint",
         "field_name": "address",
         "format": "EMAIL_REGEXP",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "address",
         "min": null,
         "max": null,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -565,7 +620,8 @@
         "scope": [
 
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -577,7 +633,8 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -587,7 +644,8 @@
         "scope": [
           "project_id"
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -599,7 +657,8 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -610,14 +669,16 @@
           "type",
           "project_id"
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
         "min": null,
         "max": 30,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "InclusionConstraint",
@@ -629,7 +690,8 @@
           "TimeEntryActivity"
         ],
         "type": "class_inheritance",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -662,20 +724,23 @@
         "^o": "PresenceConstraint",
         "field_name": "filename",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "filename",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "InclusionConstraint",
@@ -687,7 +752,8 @@
           "UserImport"
         ],
         "type": "class_inheritance",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -720,13 +786,15 @@
         "^o": "PresenceConstraint",
         "field_name": "import_id",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "position",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -738,52 +806,59 @@
         "^o": "PresenceConstraint",
         "field_name": "subject",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "project",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "tracker",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "priority",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "status",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "author",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "subject",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "NumericalConstraint",
         "field_name": "done_ratio",
         "min": 0,
         "max": 100,
-        "allow_nil": false,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -795,7 +870,8 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -805,14 +881,16 @@
         "scope": [
           "project_id"
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
         "min": null,
         "max": 60,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -824,19 +902,22 @@
         "^o": "PresenceConstraint",
         "field_name": "issue_from",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "issue_to",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "relation_type",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "InclusionConstraint",
@@ -853,15 +934,16 @@
           "copied_from"
         ],
         "type": "builtin",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "NumericalConstraint",
         "field_name": "delay",
         "min": null,
         "max": null,
-        "allow_nil": false,
-        "db": false
+        "db": false,
+        "allow_nil": true
       },
       {
         "^o": "UniqueConstraint",
@@ -871,7 +953,8 @@
         "scope": [
           "issue_from_id"
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -883,7 +966,8 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -893,22 +977,24 @@
         "scope": [
 
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
         "min": null,
         "max": 30,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "NumericalConstraint",
         "field_name": "default_done_ratio",
         "min": 0,
         "max": 100,
-        "allow_nil": false,
-        "db": false
+        "db": false,
+        "allow_nil": true
       }
     ]
   },
@@ -934,13 +1020,15 @@
         "^o": "PresenceConstraint",
         "field_name": "principal",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "project",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -950,7 +1038,8 @@
         "scope": [
           "project_id"
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -962,7 +1051,8 @@
         "^o": "PresenceConstraint",
         "field_name": "role",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -974,26 +1064,30 @@
         "^o": "PresenceConstraint",
         "field_name": "board",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "subject",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "content",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "subject",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1005,27 +1099,31 @@
         "^o": "PresenceConstraint",
         "field_name": "title",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "description",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "title",
         "min": null,
         "max": 60,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "summary",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1046,7 +1144,8 @@
           "AnonymousUser"
         ],
         "type": "class_inheritance",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1058,7 +1157,8 @@
         "^o": "PresenceConstraint",
         "field_name": "lastname",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -1068,14 +1168,16 @@
         "scope": [
 
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "lastname",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1108,19 +1210,22 @@
         "^o": "PresenceConstraint",
         "field_name": "login",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "firstname",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "lastname",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -1130,41 +1235,47 @@
         "scope": [
 
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "FormatConstraint",
         "field_name": "login",
         "format": "/\\A[a-z0-9_\\-@\\.]*\\z/i",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "login",
         "min": null,
         "max": null,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "firstname",
         "min": null,
         "max": 30,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "lastname",
         "min": null,
         "max": 30,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "identity_url",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "InclusionConstraint",
@@ -1179,7 +1290,8 @@
           ""
         ],
         "type": "builtin",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1198,13 +1310,15 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "identifier",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -1214,34 +1328,39 @@
         "scope": [
 
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "homepage",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "identifier",
         "min": null,
         "max": null,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "FormatConstraint",
         "field_name": "identifier",
         "format": "/\\A(?!\\d+$)[a-z0-9\\-_]*\\z/",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1253,14 +1372,16 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "InclusionConstraint",
@@ -1272,7 +1393,8 @@
           "TimeEntryQuery"
         ],
         "type": "class_inheritance",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1306,35 +1428,40 @@
         "field_name": "login",
         "min": null,
         "max": 60,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "password",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "root_url",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "url",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "identifier",
         "min": null,
         "max": null,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -1344,13 +1471,15 @@
         "scope": [
           "project_id"
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "FormatConstraint",
         "field_name": "identifier",
         "format": "/\\A(?!\\d+$)[a-z0-9\\-_]*\\z/",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "InclusionConstraint",
@@ -1365,7 +1494,8 @@
           "Repository::Subversion"
         ],
         "type": "class_inheritance",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1377,13 +1507,15 @@
         "^o": "PresenceConstraint",
         "field_name": "url",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "log_encoding",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1395,19 +1527,22 @@
         "^o": "PresenceConstraint",
         "field_name": "url",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "root_url",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "log_encoding",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1419,7 +1554,8 @@
         "^o": "PresenceConstraint",
         "field_name": "url",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1431,7 +1567,8 @@
         "^o": "PresenceConstraint",
         "field_name": "url",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1443,7 +1580,8 @@
         "^o": "PresenceConstraint",
         "field_name": "url",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1455,13 +1593,15 @@
         "^o": "PresenceConstraint",
         "field_name": "url",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "FormatConstraint",
         "field_name": "url",
         "format": "%r{\\A(http|https|svn(\\+[^\\s:\\/\\\\]+)?|file):\\/\\/.+}i",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1473,7 +1613,8 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -1483,14 +1624,16 @@
         "scope": [
 
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1505,7 +1648,8 @@
 
         ],
         "type": "builtin",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1517,64 +1661,73 @@
         "^o": "PresenceConstraint",
         "field_name": "author_id",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "activity_id",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "project_id",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "hours",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "spent_on",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "issue_id",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "comments",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "NumericalConstraint",
         "field_name": "hours",
         "min": null,
         "max": null,
-        "allow_nil": false,
-        "db": false
+        "db": false,
+        "allow_nil": true
       },
       {
         "^o": "LengthConstraint",
         "field_name": "comments",
         "min": null,
         "max": 1024,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1590,7 +1743,8 @@
         "scope": [
 
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1602,13 +1756,15 @@
         "^o": "PresenceConstraint",
         "field_name": "default_status",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -1618,21 +1774,24 @@
         "scope": [
 
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
         "min": null,
         "max": 30,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "description",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1651,7 +1810,8 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -1661,28 +1821,32 @@
         "scope": [
           "project_id"
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
         "min": null,
         "max": 60,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "description",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "wiki_page_title",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "InclusionConstraint",
@@ -1693,7 +1857,8 @@
           "closed"
         ],
         "type": "builtin",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "InclusionConstraint",
@@ -1706,7 +1871,8 @@
           "system"
         ],
         "type": "builtin",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1718,7 +1884,8 @@
         "^o": "PresenceConstraint",
         "field_name": "user",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -1729,7 +1896,8 @@
           "watchable_type",
           "watchable_id"
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1741,20 +1909,23 @@
         "^o": "PresenceConstraint",
         "field_name": "start_page",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "FormatConstraint",
         "field_name": "start_page",
         "format": "/\\A[^,\\.\\/\\?\\;\\|\\:]*\\z/",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "start_page",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1766,14 +1937,16 @@
         "^o": "PresenceConstraint",
         "field_name": "text",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "comments",
         "min": null,
         "max": 1024,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1792,13 +1965,15 @@
         "^o": "PresenceConstraint",
         "field_name": "title",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "FormatConstraint",
         "field_name": "title",
         "format": "/\\A[^,\\.\\/\\?\\;\\|\\s]*\\z/",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "UniqueConstraint",
@@ -1808,14 +1983,16 @@
         "scope": [
           "wiki_id"
         ],
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "title",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1827,33 +2004,38 @@
         "^o": "PresenceConstraint",
         "field_name": "wiki_id",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "title",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "redirects_to",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "title",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "LengthConstraint",
         "field_name": "redirects_to",
         "min": null,
         "max": 255,
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1865,13 +2047,15 @@
         "^o": "PresenceConstraint",
         "field_name": "role",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "tracker",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "InclusionConstraint",
@@ -1882,7 +2066,8 @@
           "WorkflowTransition"
         ],
         "type": "class_inheritance",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1898,13 +2083,15 @@
           "required"
         ],
         "type": "builtin",
-        "db": false
+        "db": false,
+        "allow_nil": false
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "old_status",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   },
@@ -1916,7 +2103,8 @@
         "^o": "PresenceConstraint",
         "field_name": "new_status",
         "cond": "",
-        "db": false
+        "db": false,
+        "allow_nil": false
       }
     ]
   }

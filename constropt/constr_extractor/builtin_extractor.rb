@@ -94,10 +94,12 @@ class BuiltinExtractor < Extractor
         constraints << LengthConstraint.new(field, min, max)
       elsif label == 'numericality'
         min, max, allow_nil = extract_numerical_hash(other.children)
-        constraints << NumericalConstraint.new(field, min, max, allow_nil)
+        constraints << NumericalConstraint.new(field, min, max, allow_nil: allow_nil)
+      elsif label == 'allow_blank'
+        constraints.each { |c| c.allow_nil = true }
       else
         begin
-          puts "==field #{field}, #{label.type} #{label.source}"
+          puts "[Warning] Does not handle #{field}, #{label.type} #{label.source}"
         rescue StandardError
         end
       end
@@ -175,6 +177,7 @@ class BuiltinExtractor < Extractor
     content = ast[1].children
     values = []
     type = nil
+    allow_nil = false
     content.each do |node|
       field = handle_symbol_literal_node(node)
       fields << field unless field.nil?
@@ -205,12 +208,12 @@ class BuiltinExtractor < Extractor
         end
 
         # allow_blank means the empty string is allowed
-        values << '' if !k.nil? && k == 'allow_blank'
+        allow_nil = true if !k.nil? && k == 'allow_blank'
       end
     end
 
     fields.each do |field|
-      c = InclusionConstraint.new(field, values, type)
+      c = InclusionConstraint.new(field, values, type, allow_nil: allow_nil)
       constraints << c
     end
     constraints
@@ -272,7 +275,7 @@ class BuiltinExtractor < Extractor
       rescue StandardError
         puts "[Error] Fail to parse min, max value k: #{k}, v: #{v.source}"
       end
-      allow_nil = true if !k.nil? && k == 'allow_nil'
+      allow_nil = true if !k.nil? && %w[allow_nil allow_blank].include?(k)
     end
     [min, max, allow_nil]
   end
@@ -290,11 +293,10 @@ class BuiltinExtractor < Extractor
       tmp_min, tmp_max, tmp_allow_nil = extract_numerical_hash(node)
       min = tmp_min unless tmp_min.nil?
       max = tmp_max unless tmp_max.nil?
-      allow_nil = allow_nil or tmp_allow_nil
+      allow_nil ||= tmp_allow_nil
     end
-
     fields.each do |field|
-      c = NumericalConstraint.new(field, min, max, allow_nil)
+      c = NumericalConstraint.new(field, min, max, allow_nil: allow_nil)
       constraints << c
     end
     constraints
