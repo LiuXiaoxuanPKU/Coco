@@ -168,6 +168,22 @@
         "min": null,
         "max": 30,
         "db": false
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "port",
+        "min": null,
+        "max": null,
+        "allow_nil": false,
+        "db": false
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "timeout",
+        "min": null,
+        "max": null,
+        "allow_nil": false,
+        "db": false
       }
     ]
   },
@@ -468,6 +484,14 @@
         "field_name": "name",
         "min": null,
         "max": 60,
+        "db": false
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "position",
+        "min": null,
+        "max": null,
+        "allow_nil": false,
         "db": false
       }
     ]
@@ -832,6 +856,14 @@
         "db": false
       },
       {
+        "^o": "NumericalConstraint",
+        "field_name": "delay",
+        "min": null,
+        "max": null,
+        "allow_nil": false,
+        "db": false
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "issue_to_id",
         "cond": "",
@@ -875,7 +907,7 @@
         "field_name": "default_done_ratio",
         "min": 0,
         "max": 100,
-        "allow_nil": true,
+        "allow_nil": false,
         "db": false
       }
     ]
@@ -1527,6 +1559,14 @@
         "^o": "PresenceConstraint",
         "field_name": "comments",
         "cond": "",
+        "db": false
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "hours",
+        "min": null,
+        "max": null,
+        "allow_nil": false,
         "db": false
       },
       {

@@ -264,6 +264,14 @@
         "min": null,
         "max": 30,
         "db": false
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "port",
+        "min": null,
+        "max": null,
+        "allow_nil": false,
+        "db": false
       }
     ]
   },
@@ -458,6 +466,30 @@
 
         ],
         "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "min_length",
+        "min": 0,
+        "max": null,
+        "allow_nil": false,
+        "db": false
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "max_length",
+        "min": 0,
+        "max": null,
+        "allow_nil": false,
+        "db": false
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "min_length",
+        "min": null,
+        "max": null,
+        "allow_nil": false,
         "db": false
       },
       {
@@ -1250,7 +1282,14 @@
     "table": "relations",
     "class": "Relation",
     "constraints": [
-
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "delay",
+        "min": null,
+        "max": null,
+        "allow_nil": false,
+        "db": false
+      }
     ]
   },
   {
@@ -1389,6 +1428,14 @@
         ],
         "type": "builtin",
         "db": false
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "value",
+        "min": null,
+        "max": null,
+        "allow_nil": false,
+        "db": false
       }
     ]
   },
@@ -1424,7 +1471,7 @@
         "field_name": "default_done_ratio",
         "min": 0,
         "max": 100,
-        "allow_nil": true,
+        "allow_nil": false,
         "db": false
       },
       {

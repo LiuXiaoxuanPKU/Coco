@@ -1908,6 +1908,14 @@
         "db": false
       },
       {
+        "^o": "NumericalConstraint",
+        "field_name": "rating",
+        "min": 0,
+        "max": 10,
+        "allow_nil": false,
+        "db": false
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
         "cond": "",

@@ -45,7 +45,7 @@ def test_numerical
     class Test
       validates_inclusion_of :default_done_ratio, in: 0..100, allow_nil: true
       validates :estimated_hours, :numericality => {:greater_than_or_equal_to => 0, :allow_nil => true, :message => :invalid}
-      validates_numericality_of :port, :only_integer => true
+      validates_numericality_of :port, :only_integer => true, :allow_nil => true
       validates :min_length, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     end
   FOO

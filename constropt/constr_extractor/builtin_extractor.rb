@@ -5,7 +5,8 @@ require_relative 'constraint'
 class BuiltinExtractor < Extractor
   BUILTIN_VALIDATOR = %w[validates_presence_of validates_uniqueness_of
                          validates_format_of validates_length_of
-                         validates_inclusion_of validates].freeze
+                         validates_inclusion_of validates_numericality_of
+                         validates].freeze
 
   def initialize
     @builtin_validation_cnt = 0
@@ -91,6 +92,14 @@ class BuiltinExtractor < Extractor
         min = -1
         max = -1
         constraints << LengthConstraint.new(field, min, max)
+      elsif label == 'numericality'
+        min, max, allow_nil = extract_numerical_hash(other.children)
+        constraints << NumericalConstraint.new(field, min, max, allow_nil)
+      else
+        begin
+          puts "==field #{field}, #{label.type} #{label.source}"
+        rescue StandardError
+        end
       end
     end
     constraints
@@ -107,18 +116,18 @@ class BuiltinExtractor < Extractor
       next if k.nil? || (k != 'scope')
 
       v.children.each do |s|
-        if s.type.to_s == "list"
+        if s.type.to_s == 'list'
           s.children.each do |c|
             scope << handle_symbol_literal_node(c)
           end
-        elsif s.type.to_s == "symbol"
+        elsif s.type.to_s == 'symbol'
           scope << s[0].source
-        elsif s.type.to_s == "qsymbols_literal"
+        elsif s.type.to_s == 'qsymbols_literal'
           scope = handle_qsymbols_literal(s)
         else
           puts "[Warning] Unsupport scope #{s.source} of type #{s.type}"
         end
-      end  
+      end
     end
     [scope, cond, case_sensitive]
   end
@@ -189,7 +198,7 @@ class BuiltinExtractor < Extractor
             end
             begin
               values += Array(eval(to_eval))
-            rescue
+            rescue StandardError
               puts "[Error] Fail to eval inclusion value #{to_eval}"
             end
           end
@@ -247,6 +256,27 @@ class BuiltinExtractor < Extractor
     constraints
   end
 
+  def extract_numerical_hash(node)
+    min = nil
+    max = nil
+    allow_nil = false
+    node.each do |n|
+      k, v = handle_assoc_node(n)
+      if !k.nil? && k == 'in'
+        min = v[0].source.to_i
+        max = v[1].source.to_i
+      end
+      begin
+        min = v[0].to_i if !k.nil? && %w[greater_than_or_equal_to greater_than].include?(k)
+        max = v[0].to_i if !k.nil? && %w[less_than_or_equal_to less_than].include?(k)
+      rescue StandardError
+        puts "[Error] Fail to parse min, max value k: #{k}, v: #{v.source}"
+      end
+      allow_nil = true if !k.nil? && k == 'allow_nil'
+    end
+    [min, max, allow_nil]
+  end
+
   def extract_builtin_numerical(ast)
     constraints = []
     fields = []
@@ -257,15 +287,10 @@ class BuiltinExtractor < Extractor
     content.each do |node|
       field = handle_symbol_literal_node(node)
       fields << field unless field.nil?
-      node.each do |n|
-        k, v = handle_assoc_node(n)
-        if !k.nil? && k == 'in'
-          min = v[0].source.to_i
-          max = v[1].source.to_i
-        end
-
-        allow_nil = true if !k.nil? && k == 'allow_nil'
-      end
+      tmp_min, tmp_max, tmp_allow_nil = extract_numerical_hash(node)
+      min = tmp_min unless tmp_min.nil?
+      max = tmp_max unless tmp_max.nil?
+      allow_nil = allow_nil or tmp_allow_nil
     end
 
     fields.each do |field|
