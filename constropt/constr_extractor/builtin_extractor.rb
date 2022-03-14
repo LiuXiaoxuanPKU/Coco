@@ -5,7 +5,7 @@ require_relative 'constraint'
 class BuiltinExtractor < Extractor
   BUILTIN_VALIDATOR = %w[validates_presence_of validates_uniqueness_of
                          validates_format_of validates_length_of
-                         validates].freeze
+                         validates_inclusion_of validates].freeze
 
   def initialize
     @builtin_validation_cnt = 0
@@ -187,7 +187,11 @@ class BuiltinExtractor < Extractor
                 to_eval.gsub! key, value.source.to_s
               end
             end
-            values += Array(eval(to_eval))
+            begin
+              values += Array(eval(to_eval))
+            rescue
+              puts "[Error] Fail to eval inclusion value #{to_eval}"
+            end
           end
         end
 

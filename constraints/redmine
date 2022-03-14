@@ -343,6 +343,15 @@
       },
       {
         "^o": "InclusionConstraint",
+        "field_name": "field_format",
+        "values": [
+
+        ],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
         "field_name": "type",
         "values": [
           "CustomField",
@@ -743,6 +752,14 @@
         "min": null,
         "max": 255,
         "db": false
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "done_ratio",
+        "min": 0,
+        "max": 100,
+        "allow_nil": false,
+        "db": false
       }
     ]
   },
@@ -798,6 +815,23 @@
         "db": false
       },
       {
+        "^o": "InclusionConstraint",
+        "field_name": "relation_type",
+        "values": [
+          "relates",
+          "duplicates",
+          "duplicated",
+          "blocks",
+          "blocked",
+          "precedes",
+          "follows",
+          "copied_to",
+          "copied_from"
+        ],
+        "type": "builtin",
+        "db": false
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "issue_to_id",
         "cond": "",
@@ -834,6 +868,14 @@
         "field_name": "name",
         "min": null,
         "max": 30,
+        "db": false
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "default_done_ratio",
+        "min": 0,
+        "max": 100,
+        "allow_nil": true,
         "db": false
       }
     ]
@@ -1090,6 +1132,21 @@
         "field_name": "identity_url",
         "min": null,
         "max": 255,
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "mail_notification",
+        "values": [
+          "all",
+          "selected",
+          "only_my_events",
+          "only_assigned",
+          "only_owner",
+          "none",
+          ""
+        ],
+        "type": "builtin",
         "db": false
       }
     ]
@@ -1409,7 +1466,15 @@
     "table": "settings",
     "class": "Setting",
     "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "name",
+        "values": [
 
+        ],
+        "type": "builtin",
+        "db": false
+      }
     ]
   },
   {
@@ -1577,6 +1642,30 @@
         "field_name": "wiki_page_title",
         "min": null,
         "max": 255,
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "status",
+        "values": [
+          "open",
+          "locked",
+          "closed"
+        ],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "sharing",
+        "values": [
+          "none",
+          "descendants",
+          "hierarchy",
+          "tree",
+          "system"
+        ],
+        "type": "builtin",
         "db": false
       }
     ]
@@ -1761,6 +1850,16 @@
     "table": "workflows",
     "class": "WorkflowPermission",
     "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "rule",
+        "values": [
+          "readonly",
+          "required"
+        ],
+        "type": "builtin",
+        "db": false
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "old_status",

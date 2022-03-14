@@ -93,14 +93,34 @@
     "table": "attribute_help_texts",
     "class": "AttributeHelpText::Project",
     "constraints": [
-
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "attribute_name",
+        "values": [
+          {
+            "^o": "Proc"
+          }
+        ],
+        "type": "builtin",
+        "db": false
+      }
     ]
   },
   {
     "table": "attribute_help_texts",
     "class": "AttributeHelpText::WorkPackage",
     "constraints": [
-
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "attribute_name",
+        "values": [
+          {
+            "^o": "Proc"
+          }
+        ],
+        "type": "builtin",
+        "db": false
+      }
     ]
   },
   {
@@ -429,6 +449,15 @@
         "field_name": "name",
         "min": -1,
         "max": -1,
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "field_format",
+        "values": [
+
+        ],
+        "type": "builtin",
         "db": false
       },
       {
@@ -1349,6 +1378,17 @@
 
         ],
         "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "name",
+        "values": [
+          {
+            "^o": "Proc"
+          }
+        ],
+        "type": "builtin",
+        "db": false
       }
     ]
   },
@@ -1377,6 +1417,14 @@
         "field_name": "name",
         "min": -1,
         "max": -1,
+        "db": false
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "default_done_ratio",
+        "min": 0,
+        "max": 100,
+        "allow_nil": true,
         "db": false
       },
       {
@@ -1423,6 +1471,26 @@
         "field_name": "name",
         "min": -1,
         "max": -1,
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "is_default",
+        "values": [
+          true,
+          false
+        ],
+        "type": "builtin",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "is_milestone",
+        "values": [
+          true,
+          false
+        ],
+        "type": "builtin",
         "db": false
       }
     ]
@@ -1500,6 +1568,17 @@
         "^o": "FormatConstraint",
         "field_name": "start_date",
         "format": "/\\A\\d{4}-\\d{2}-\\d{2}\\z/",
+        "db": false
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "status",
+        "values": [
+          "open",
+          "locked",
+          "closed"
+        ],
+        "type": "builtin",
         "db": false
       }
     ]
