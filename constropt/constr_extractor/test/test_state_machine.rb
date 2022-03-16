@@ -45,4 +45,47 @@ def test_naive
   puts "extracted constraints: #{node.constraints}"
 end
 
+def test_naive2
+  class_def = <<-FOO
+    class Test
+        state_machine :status, initial: :created do
+            event :run do
+            transition created: :running
+            end
+
+            event :block do
+            transition created: :blocked
+            end
+
+            event :unblock do
+            transition blocked: :created
+            end
+
+            event :succeed do
+            transition any - [:success] => :success
+            end
+
+            event :drop do
+            transition any - [:failed] => :failed
+            end
+
+            event :cancel do
+            transition any - [:canceled] => :canceled
+            end
+
+            event :skip do
+            transition any - [:skipped] => :skipped
+            end
+        end
+    end
+  FOO
+  node = ClassNode .new('Test')
+  node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
+  state_machine_extractor = StateMachineExtractor.new
+  state_machine_extractor.visit(node, {})
+  puts "# of extracted constraints: #{node.constraints.length}"
+  puts "extracted constraints: #{node.constraints}"
+end
+
 test_naive
+test_naive2
