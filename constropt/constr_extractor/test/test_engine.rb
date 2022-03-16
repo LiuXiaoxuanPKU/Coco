@@ -5,6 +5,7 @@ require_relative '../traversor'
 require_relative '../builtin_extractor'
 require_relative '../id_extractor'
 require_relative '../constraint'
+require_relative '../relationship_extractor'
 
 class TestPrint
   def visit(node, _params)
@@ -31,8 +32,9 @@ def test_builtin
   engine = Engine.new('data/redmine_models')
   root = engine.run
   t.traverse(root)
-  t.visitor.convert_relationships(root)
-  t.traverse(root) #puts relationships in correct node
+
+  t = Traversor.new(RelationshipExtractor.new)
+  t.traverse(root)
 
   t = Traversor.new(IdExtractor.new)
   t.traverse(root)

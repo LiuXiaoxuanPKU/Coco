@@ -11,35 +11,23 @@ class BuiltinExtractor < Extractor
                          validates_format_of validates_length_of
                          validates_inclusion_of has_many has_one belongs_to]
 
-  attr_accessor :has_ones, :has_manys, :belongs_tos
 
   def initialize
     @builtin_validation_cnt = 0
     @custom_validation_cnt = 0
     @class_name = nil
     @vars = {}
+    @root = nil
     @has_ones = []
     @has_manys = []
     @belongs_tos = []
-    @relationships = []
   end
 
   def visit(node, _params)
-    return if node.ast.nil?
-    if !@relationships.empty?
-      #second pass: create constraints if parent is the current class
-      ast = node.ast
-      constraints = []
-      @class_name = trim_string(ast[0].source.to_s)
-
-      @relationships.each do |r|
-        if trim_string(@class_name) == r["parent"]
-          c = ForeignKeyConstraint.new(r["parent"], r["type"], r["child"], r["foreign_key"])
-          node.constraints += [c]
-        end
-      end
-      return
+    if node.parent.nil? and @root.nil?
+      @root = node
     end
+    return if node.ast.nil?
 
     ast = node.ast
     constraints = []
@@ -51,6 +39,11 @@ class BuiltinExtractor < Extractor
     end
 
     node.constraints += constraints
+
+    #update root node's relationships
+    @root.misc["has_ones"] = @has_ones
+    @root.misc["has_manys"] = @has_manys
+    @root.misc["belongs_tos"] = @belongs_tos
   end
 
   def extract_cmd(c)
@@ -338,35 +331,6 @@ class BuiltinExtractor < Extractor
 
     e = {"from_class" => @class_name, "class_name" => fields[0], "foreign_key" => foreign_key, "polymorphic" => polymorphic}
     @belongs_tos.append(e)
-  end
-
-  def convert_relationships(node)
-    @has_ones.each do |x|
-      @belongs_tos.each do |y|
-        if x["class_name"] == y["from_class"] and y["class_name"] == x["from_class"]
-          if y["polymorphic"]
-
-          end
-          r = {"parent" => x["class_name"], "type" => "one-to-one", "child" => y["class_name"], "foreign_key" => y["foreign_key"]}
-          @relationships += [r]
-
-          next
-        end
-      end
-    end
-
-    @has_manys.each do |x|
-      @belongs_tos.each do |y|
-        if x["class_name"] == y["from_class"] and y["class_name"] == x["from_class"]
-          if y["polymorphic"] == true
-
-          end
-          r = {"parent" => x["class_name"], "type" => "one-to-many", "child" => y["class_name"], "foreign_key" => y["foreign_key"]}
-          @relationships += [r]
-          next
-        end
-      end
-    end
   end
 
   def extract_builtin_state_machine(ast)

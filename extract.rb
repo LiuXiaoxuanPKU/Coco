@@ -6,14 +6,16 @@ require_relative 'constropt/constr_extractor/id_extractor'
 require_relative 'constropt/constr_extractor/class_inheritance_extractor'
 require_relative 'constropt/constr_extractor/constraint'
 require_relative 'constropt/constr_extractor/serializer'
+require_relative 'constropt/constr_extractor/relationship_extractor'
 
 engine = Engine.new('constropt/constr_extractor/test/data/redmine_models')
 root = engine.run
 
 builtin_t = Traversor.new(BuiltinExtractor.new)
 builtin_t.traverse(root)
-builtin_t.visitor.convert_relationships(root)
-builtin_t.traverse(root) #puts relationships in correct node
+
+rs_t = Traversor.new(RelationshipExtractor.new)
+rs_t.traverse(root) 
 
 class_inheritance_t = Traversor.new(ClassInheritanceExtractor.new)
 class_inheritance_t.traverse(root)
