@@ -11,7 +11,8 @@ class StateMachineExtractor < Extractor
     ast = node.ast
     ast[2].children.select.each do |c|
       if c.type.to_s == 'command' && c[0].source == 'state_machine'
-        node.constraints.append(extract_state_machine_inclusion(c))
+        constraint = extract_state_machine_inclusion(c)
+        node.constraints.append(constraint)
       end
     end
   end
@@ -26,6 +27,9 @@ class StateMachineExtractor < Extractor
     possible_values = []
     ast[2].children[0].each do |c|
       possible_values += parse_state_values(c)
+      # get ird of nil
+      possible_values = possible_values.compact
+      possible_values = possible_values.uniq
     end
     constraint = InclusionConstraint.new(column, possible_values, 'state_machine')
     constraint
