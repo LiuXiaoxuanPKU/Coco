@@ -49,6 +49,12 @@ class StateMachineExtractor < Extractor
         end
       end
     end
+
+    if cmd.children[0].source == "after_transition" or cmd.children[0].source == "before_transition" # analogy to "transition"
+      # [:created, :manual, :waiting_for_resource] => :pending 
+      ast = cmd[1].jump(":assoc")[0]
+      possible_fields += parse_transition_cmd(cmd) unless ast.nil?
+    end
     possible_fields
   end
 
@@ -62,22 +68,80 @@ class StateMachineExtractor < Extractor
     ast = ast.children[0][0]
     if ast[0].source == "transition"
       # transition available: :stopped
-      ast = ast[1].jump(":assoc")[0]
-      ast.each do |assoc|
-        field1 = assoc[0].source if assoc[0].type.to_s == "vcall" # any
-        field1 ||= handle_label_node(assoc[0]) if assoc[0].type.to_s == "label"
-        next if field1 == "if"
-        if field1 != "from" && field1 != "to" && field1 != "any" && field1 != "all"
-          possible_fields << field1
-        end
-        if assoc[1].type.to_s == "array"
-          fields = handle_array_node(assoc[1])
-          possible_fields += fields if !fields.nil?
-        elsif assoc[1].type.to_s == "symbol_literal"
-          possible_fields << handle_symbol_literal_node(assoc[1])
-        end
+      possible_fields += parse_transition_cmd(ast)
+    end
+    possible_fields
+  end
+
+  # parse transition
+  def parse_transition_cmd(ast) 
+    possible_fields = []
+    ast = ast[1].jump(":assoc")[0]
+    ast.each do |assoc|
+      field1 = assoc[0].source if assoc[0].type.to_s == "vcall" # any
+      field1 ||= handle_label_node(assoc[0]) if assoc[0].type.to_s == "label"
+      next if field1 == "if"
+      if field1 != "from" && field1 != "to" && field1 != "any" && field1 != "all"
+        possible_fields << field1
+      end
+      if assoc[1].type.to_s == "array"
+        fields = handle_array_node(assoc[1])
+        possible_fields += fields if !fields.nil?
+      elsif assoc[1].type.to_s == "symbol_literal"
+        possible_fields << handle_symbol_literal_node(assoc[1])
       end
     end
     possible_fields
+  end
+
+
+
+  def handle_array_node(ast)
+    scope = []
+    if ast.type.to_s == "array" || ast.type.to_s == "var_ref"
+      options = nil
+  
+      if ast.type.to_s == "array"
+        options = ast[0]
+      end
+      if ast.type.to_s == "var_ref" && $cur_class.constants.has_key?(ast[0].source) && $cur_class.constants.has_key?(ast[0].source)
+        options = $cur_class.constants[ast[0].source][0]
+      end
+  
+      if options.type.to_s == "list"
+        options.each do |child|
+          if child.type.to_s == "symbol_literal"
+            column = handle_symbol_literal_node(child)
+            scope << column
+          elsif child.type.to_s == "string_literal"
+            column = handle_string_literal_node(child)
+            scope << column
+          elsif child.type.to_s == "var_ref"
+            column = handle_constant_node(child)
+            scope << column
+          end
+        end
+      elsif options.type.to_s == "qsymbols_literal" || options.type.to_s == "qwords_literal"
+        options.children.each do |child|
+          if child.type.to_s == "tstring_content"
+            column = handle_tstring_content_node(child)
+            scope << column
+          end
+        end
+      end
+      return scope # return a list of all possible values
+    end
+    return nil
+  end
+  
+  def handle_constant_node(ast)
+    if $cur_class.constants.has_key?(ast.source)
+      const_value = $cur_class.constants[ast.source]
+      if const_value.type.to_s == "int"
+        return const_value.source.to_i
+      end
+      return const_value.source
+    end
+    return nil
   end
 end

@@ -38,7 +38,7 @@ def test_naive
       end
     end
   FOO
-  node = ClassNode .new('Test')
+  node = ClassNode.new('Test')
   node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
   state_machine_extractor = StateMachineExtractor.new
   state_machine_extractor.visit(node, {})
@@ -84,7 +84,7 @@ def test_naive2
         end
     end
   FOO
-  node = ClassNode .new('Test')
+  node = ClassNode.new('Test')
   node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
   state_machine_extractor = StateMachineExtractor.new
   state_machine_extractor.visit(node, {})
@@ -124,7 +124,7 @@ def test_key_word_all
       end
     end
   FOO
-  node = ClassNode .new('Test')
+  node = ClassNode.new('Test')
   node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
   state_machine_extractor = StateMachineExtractor.new
   state_machine_extractor.visit(node, {})
@@ -134,11 +134,53 @@ def test_key_word_all
   if node.constraints[0].values != %w[scheduled ready failed obsolete none]
     raise "values should be ['scheduled', 'ready', 'failed', 'obsolete', 'none'], but get #{node.constraints[0].values}"
   end
+end
 
-  puts "values are #{node.constraints[0].values}"
+
+def test_after_transition
+  class_def = <<-FOO
+    class Test
+      state_machine :status do
+        after_transition [:created, :manual, :waiting_for_resource] => :pending do |bridge|
+          next unless bridge.triggers_downstream_pipeline?
+
+          bridge.run_after_commit do
+            ::Ci::CreateDownstreamPipelineWorker.perform_async(bridge.id)
+          end
+        end
+
+        event :pending do
+          transition all => :pending
+        end
+
+        event :manual do
+          transition all => :manual
+        end
+
+        event :scheduled do
+          transition all => :scheduled
+        end
+
+        event :actionize do
+          transition created: :manual
+        end
+      end
+    end
+  FOO
+  node = ClassNode.new('Test')
+  node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
+  state_machine_extractor = StateMachineExtractor.new
+  state_machine_extractor.visit(node, {})
+  # check for possible errors
+  raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
+
+  if node.constraints[0].values != %w[pending manual scheduled created]
+    raise "values should be ['pending', 'manual', 'scheduled', 'created'], but get #{node.constraints[0].values}"
+  end
 end
 
 
 test_naive
 test_naive2
 test_key_word_all
+test_after_transition
