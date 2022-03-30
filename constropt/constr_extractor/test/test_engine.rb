@@ -14,7 +14,9 @@ class TestPrint
     inclusion_constraints = node.constraints.select { |c| c.is_a? InclusionConstraint }
     unique_constraints = node.constraints.select { |c| c.is_a? UniqueConstraint }
     foreign_key_constraints = node.constraints.select { |c| c.is_a? ForeignKeyConstraint }
-    (inclusion_constraints + unique_constraints + foreign_key_constraints).each do |c|
+    presence_constraints = node.constraints.select { |c| c.is_a? PresenceConstraint }
+    length_constraints = node.constraints.select { |c| c.is_a? LengthConstraint }
+    (inclusion_constraints + unique_constraints + foreign_key_constraints + presence_constraints + length_constraints).each do |c|
       puts c.to_s
     end
   end

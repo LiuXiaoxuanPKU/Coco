@@ -14,8 +14,8 @@ root = engine.run
 builtin_t = Traversor.new(BuiltinExtractor.new)
 builtin_t.traverse(root)
 
-rs_t = Traversor.new(RelationshipExtractor.new)
-rs_t.traverse(root) 
+# rs_t = Traversor.new(RelationshipExtractor.new)
+# rs_t.traverse(root)
 
 class_inheritance_t = Traversor.new(ClassInheritanceExtractor.new)
 class_inheritance_t.traverse(root)

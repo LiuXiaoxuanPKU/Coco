@@ -17,16 +17,16 @@ class BuiltinExtractor < Extractor
     @custom_validation_cnt = 0
     @class_name = nil
     @vars = {}
-    @root = nil
-    @has_ones = []
-    @has_manys = []
-    @belongs_tos = []
+    # @root = nil
+    # @has_ones = []
+    # @has_manys = []
+    # @belongs_tos = []
   end
 
   def visit(node, _params)
-    if node.parent.nil? and @root.nil?
-      @root = node
-    end
+    # if node.parent.nil? and @root.nil?
+    #   @root = node
+    # end
     return if node.ast.nil?
 
     ast = node.ast
@@ -41,9 +41,9 @@ class BuiltinExtractor < Extractor
     node.constraints += constraints
 
     #update root node's relationships
-    @root.misc["has_ones"] = @has_ones
-    @root.misc["has_manys"] = @has_manys
-    @root.misc["belongs_tos"] = @belongs_tos
+    # @root.misc["has_ones"] = @has_ones
+    # @root.misc["has_manys"] = @has_manys
+    # @root.misc["belongs_tos"] = @belongs_tos
   end
 
   def extract_cmd(c)
@@ -74,12 +74,13 @@ class BuiltinExtractor < Extractor
       constraints = extract_builtin_length(ast)
     when 'validates_numericality_of'
       constraints = extract_builtin_numerical(ast)
-    when 'has_one'
-      extract_builtin_has_one(ast)
-    when 'has_many'
-      extract_builtin_has_many(ast)
+    # when 'has_one'
+    #   extract_builtin_has_one(ast)
+    # when 'has_many'
+    #   extract_builtin_has_many(ast)
     when 'belongs_to'
-      extract_builtin_belongs_to(ast)
+      # extract_builtin_belongs_to(ast)
+      extract_builtin_foreign(ast)
     when 'state_machine'
       constraints = extract_builtin_state_machine(ast)
     end
@@ -200,6 +201,10 @@ class BuiltinExtractor < Extractor
   end
 
   def extract_builtin_length(ast)
+    # puts @class_name
+    # p ast
+    # p ast.source
+
     constraints = []
     min = nil
     max = nil
@@ -249,89 +254,120 @@ class BuiltinExtractor < Extractor
     constraints
   end
 
-  def extract_builtin_has_one(ast)
+  def extract_builtin_foreign(ast)
+    constraints = []
     fields = []
     content = ast[1].children
-    foreign_key = nil
+    class_name = nil
+    fk_column_name = nil
     content.each do |node|
-      if node.type.to_s == "fcall"
-        next
-      end
       field = handle_symbol_literal_node(node)
       fields << field unless field.nil?
-      node.each do |n|
+      node.children.each do |n|
         k, v = handle_assoc_node(n)
-        if !k.nil? && k == 'class_name'
-          fields[0] = trim_string(v.source.to_s)
-        end
-        if !k.nil? && k == 'foreign_key'
-          foreign_key = trim_string(v.source.to_s)
-        end
+        fk_column_name = v if !k.nil? && (k == 'foreign_key')
+        class_name = v if !k.nil? && (k == 'class_name')
       end
     end
 
-    e = {"from_class" => @class_name, "class_name" => fields[0], "foreign_key" => foreign_key}
-    @has_ones.append(e)
+    if class_name.nil?
+      class_name = fields[0].capitalize
+    end
+    if fk_column_name.nil?
+      fk_column_name = fields[0].downcase
+      fk_column_name << "_id"
+    end
+
+    fields.each do |field|
+      c = ForeignKeyConstraint.new(field, class_name, fk_column_name)
+      constraints << c
+    end
+    constraints
   end
 
-  def extract_builtin_has_many(ast)
-    fields = []
-    content = ast[1].children
-    foreign_key = nil
-    content.each do |node|
-      if node.type.to_s == "fcall"
-        next
-      end
-      field = handle_symbol_literal_node(node)
-      fields << field unless field.nil?
-      node.each do |n|
-        k, v = handle_assoc_node(n)
-        if !k.nil? && k == 'class_name'
-          fields[0] = trim_string(v.source.to_s)
-        end
-        if !k.nil? && k == 'foreign_key'
-          foreign_key = trim_string(v.source.to_s)
-        end
-      end
-    end
-
-    e = {"from_class" => @class_name, "class_name" => fields[0].singularize, "foreign_key" => foreign_key}
-    @has_manys.append(e)
-  end
-
-  def extract_builtin_belongs_to(ast)
-    fields = []
-    content = ast[1].children
-    foreign_key = nil
-    polymorphic = false
-    content.each do |node|
-      if node.type.to_s == "fcall"
-        next
-      end
-      field = handle_symbol_literal_node(node)
-      fields << field unless field.nil?
-      node.each do |n|
-        k, v = handle_assoc_node(n)
-        if !k.nil? && k == 'class_name'
-          fields[0] = trim_string(v.source.to_s)
-        end
-        if !k.nil? && k == 'foreign_key'
-          foreign_key = trim_string(v.source.to_s)
-        end
-        if !k.nil? && k == 'polymorphic'
-          polymorphic = true
-        end
-
-      end
-    end
-
-    if foreign_key.nil?
-      foreign_key = fields[0] + "_id"
-    end
-
-    e = {"from_class" => @class_name, "class_name" => fields[0], "foreign_key" => foreign_key, "polymorphic" => polymorphic}
-    @belongs_tos.append(e)
-  end
+  # def extract_builtin_has_one(ast)
+  #   fields = []
+  #   content = ast[1].children
+  #   foreign_key = nil
+  #   content.each do |node|
+  #     if node.type.to_s == "fcall"
+  #       next
+  #     end
+  #     field = handle_symbol_literal_node(node)
+  #     fields << field unless field.nil?
+  #     node.each do |n|
+  #       k, v = handle_assoc_node(n)
+  #       if !k.nil? && k == 'class_name'
+  #         fields[0] = trim_string(v.source.to_s)
+  #       end
+  #       if !k.nil? && k == 'foreign_key'
+  #         foreign_key = trim_string(v.source.to_s)
+  #       end
+  #     end
+  #   end
+  #
+  #   e = {"from_class" => @class_name, "class_name" => fields[0], "foreign_key" => foreign_key}
+  #   @has_ones.append(e)
+  # end
+  #
+  # def extract_builtin_has_many(ast)
+  #   fields = []
+  #   content = ast[1].children
+  #   foreign_key = nil
+  #   content.each do |node|
+  #     if node.type.to_s == "fcall"
+  #       next
+  #     end
+  #     field = handle_symbol_literal_node(node)
+  #     fields << field unless field.nil?
+  #     node.each do |n|
+  #       k, v = handle_assoc_node(n)
+  #       if !k.nil? && k == 'class_name'
+  #         fields[0] = trim_string(v.source.to_s)
+  #       end
+  #       if !k.nil? && k == 'foreign_key'
+  #         foreign_key = trim_string(v.source.to_s)
+  #       end
+  #     end
+  #   end
+  #
+  #   e = {"from_class" => @class_name, "class_name" => fields[0].singularize, "foreign_key" => foreign_key}
+  #   @has_manys.append(e)
+  # end
+  #
+  # def extract_builtin_belongs_to(ast)
+  #   fields = []
+  #   content = ast[1].children
+  #   foreign_key = nil
+  #   polymorphic = false
+  #   content.each do |node|
+  #     if node.type.to_s == "fcall"
+  #       next
+  #     end
+  #     field = handle_symbol_literal_node(node)
+  #     fields << field unless field.nil?
+  #     node.each do |n|
+  #       k, v = handle_assoc_node(n)
+  #       if !k.nil? && k == 'class_name'
+  #         fields[0] = trim_string(v.source.to_s)
+  #       end
+  #       if !k.nil? && k == 'foreign_key'
+  #         foreign_key = trim_string(v.source.to_s)
+  #       end
+  #       if !k.nil? && k == 'polymorphic'
+  #         polymorphic = true
+  #       end
+  #
+  #     end
+  #   end
+  #
+  #   if foreign_key.nil?
+  #     foreign_key = fields[0] + "_id"
+  #   end
+  #
+  #   e = {"from_class" => @class_name, "class_name" => fields[0], "foreign_key" => foreign_key, "polymorphic" => polymorphic}
+  #   @belongs_tos.append(e)
+  # end
 
   def extract_builtin_state_machine(ast)
     []

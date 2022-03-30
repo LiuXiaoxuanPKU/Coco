@@ -74,13 +74,12 @@ class NumericalConstraint < Constraint
 end
 
 class ForeignKeyConstraint < Constraint
-  attr_accessor :relationship, :child, :foreign_key
+  attr_accessor :class_name, :fk_column_name
 
-  def initialize(field, relationship, child, foreign_key, db=false)
+  def initialize(field, class_name, fk_column_name, db=false)
     @field_name = field
-    @relationship = relationship
-    @child = child
-    @foreign_key = foreign_key
+    @class_name = class_name
+    @fk_column_name = fk_column_name
     @db = db
   end
 end
