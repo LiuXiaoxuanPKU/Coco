@@ -27,7 +27,7 @@ class StateMachineExtractor < Extractor
     possible_values = []
     ast[2].children[0].each do |c|
       possible_values += parse_state_values(c)
-      # get ird of nil
+      # get rid of nil
       possible_values = possible_values.compact
       possible_values = possible_values.uniq
     end
@@ -41,7 +41,7 @@ class StateMachineExtractor < Extractor
     if cmd.children[0].source == 'event'
       possible_fields += parse_event_cmd(cmd)
     end
-  
+
     if cmd.children[0].source == "state"
       cmd.children[1].each do |child|
         if child && child.type.to_s == "symbol_literal"
@@ -52,7 +52,7 @@ class StateMachineExtractor < Extractor
     possible_fields
   end
 
-  # parse event 
+  # parse event
   def parse_event_cmd(ast)
     possible_fields = []
     ast = ast.jump(:do_block)
@@ -67,7 +67,7 @@ class StateMachineExtractor < Extractor
         field1 = assoc[0].source if assoc[0].type.to_s == "vcall" # any
         field1 ||= handle_label_node(assoc[0]) if assoc[0].type.to_s == "label"
         next if field1 == "if"
-        if field1 != "from" && field1 != "to" && field1 != "any"
+        if field1 != "from" && field1 != "to" && field1 != "any" && field1 != "all"
           possible_fields << field1
         end
         if assoc[1].type.to_s == "array"

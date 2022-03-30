@@ -5,7 +5,6 @@ require_relative '../state_machine_extractor'
 require_relative '../class_node'
 require 'yard'
 
-
 class TestPrint
   def visit(node, _params)
     puts "#{node.name} => #{node.constraints.length}, table #{node.table}"
@@ -25,7 +24,6 @@ end
 
 # uncomment the following if want to run through an application
 # test_gitlab
-
 
 ############################## unit tests #################################
 def test_naive 
@@ -98,5 +96,49 @@ def test_naive2
   end
 end
 
+# Note in the following case, keyword "all" should not be parsed as a state
+def test_key_word_all
+  class_def = <<-FOO
+    class Test
+      state_machine :state, initial: :none do
+        state :scheduled
+        state :ready
+        state :failed
+        state :obsolete
+
+        event :schedule do
+          transition none: :scheduled
+        end
+
+        event :mark_ready do
+          transition [:scheduled, :failed] => :ready
+        end
+
+        event :mark_failed do
+          transition all => :failed
+        end
+
+        event :mark_obsolete do
+          transition all => :obsolete
+        end
+      end
+    end
+  FOO
+  node = ClassNode .new('Test')
+  node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
+  state_machine_extractor = StateMachineExtractor.new
+  state_machine_extractor.visit(node, {})
+  # check for possible errors
+  raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
+
+  if node.constraints[0].values != %w[scheduled ready failed obsolete none]
+    raise "values should be ['scheduled', 'ready', 'failed', 'obsolete', 'none'], but get #{node.constraints[0].values}"
+  end
+
+  puts "values are #{node.constraints[0].values}"
+end
+
+
 test_naive
 test_naive2
+test_key_word_all
