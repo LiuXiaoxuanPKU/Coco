@@ -23,7 +23,7 @@ def test_gitlab
 end
 
 # uncomment the following if want to run through an application
-# test_gitlab
+test_gitlab
 
 ############################## unit tests #################################
 def test_naive 
