@@ -8,22 +8,25 @@ require_relative 'constropt/constr_extractor/constraint'
 require_relative 'constropt/constr_extractor/serializer'
 require_relative 'constropt/constr_extractor/relationship_extractor'
 
-engine = Engine.new('constropt/constr_extractor/test/data/redmine_models')
+appname = "redmine"
+engine = Engine.new("constropt/constr_extractor/test/data/#{appname}_models")
 root = engine.run
 
 builtin_t = Traversor.new(BuiltinExtractor.new)
 builtin_t.traverse(root)
 
-# rs_t = Traversor.new(RelationshipExtractor.new)
-# rs_t.traverse(root)
+constraints_cnt = engine.get_constraints_cnt(root)
+puts "After extracting builtin, # of constraints #{constraints_cnt}"
 
 class_inheritance_t = Traversor.new(ClassInheritanceExtractor.new)
 class_inheritance_t.traverse(root)
+constraints_cnt = engine.get_constraints_cnt(root)
+puts "After extracting class inheritance, # of constraints #{constraints_cnt}"
 
-db_t = Traversor.new(DBExtractor.new('constropt/constr_extractor/test/data/redmine_db/schema.rb'))
-db_t.traverse(root)
+# db_t = Traversor.new(DBExtractor.new('constropt/constr_extractor/test/data/redmine_db/schema.rb'))
+# db_t.traverse(root)
 
-id_t = Traversor.new(IdExtractor.new)
-id_t.traverse(root)
+# id_t = Traversor.new(IdExtractor.new)
+# id_t.traverse(root)
 
-Serializer.serialize_tree(root, 'constraints/redmine_dump')
+Serializer.serialize_tree(root, "constraints/#{appname}")

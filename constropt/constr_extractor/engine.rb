@@ -4,6 +4,7 @@ require 'pathname'
 require_relative 'class_node'
 require_relative 'traversor'
 require_relative 'populate_tablename'
+require_relative 'serializer'
 
 class Engine
   def initialize(dir)
@@ -12,6 +13,7 @@ class Engine
 
   def run
     files = read_dir(@appdir)
+    files = files.reject(&:nil?)
     root = build(files)
     # populate table name
     populate_tablename_traversor = Traversor.new(PopulateTableName.new)
@@ -19,6 +21,14 @@ class Engine
     root
   end
 
+  def get_constraints_cnt(root)
+    visitor = TreeVisitor.new
+    t = Traversor.new(visitor)
+    t.traverse(root)
+    visitor.constraints_cnt
+  end
+
+  ############################## Helper Functions #########################
   def build(asts)
     class_nodes = {}
     roots = []
@@ -54,7 +64,14 @@ class Engine
     end
     active_record_node = nil
     roots.each do |root|
+      # up to rails 4.2, use activatereocrd::base
       active_record_node = root if root.name == 'ActiveRecord::Base'
+      # if ApplicationRecord < ActiveRecord::Base, use ApplicationRecord, requires rails > 4.2
+      application_record_node = root.children.select { |c| c.name == 'ApplicationRecord' }
+      if !application_record_node.empty?
+        active_record_node = application_record_node[0]
+        break
+      end
     end
     active_record_node
   end

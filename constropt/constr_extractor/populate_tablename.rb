@@ -22,19 +22,21 @@ class PopulateTableName
   end
 
   def visit(node, params)
-    return if node.name == 'ActiveRecord::Base'
+    return if ['ActiveRecord::Base', 'ApplicationRecord'].include? node.name
+
+    custom_tablename = get_tablename_from_ast(node.ast)
+    if custom_tablename
+      node.table = custom_tablename
+      params['table_name'] = node.table
+      return
+    end
 
     if params.key? 'table_name'
       node.table = params['table_name']
-    else
-      custom_tablename = get_tablename_from_ast(node.ast)
-      node.table = if custom_tablename.nil?
-                     # if the developer does not set the table name, just use the default
-                     node.name.tableize
-                   else
-                     custom_tablename
-                   end
-      params['table_name'] = node.table
+      return
     end
+
+    node.table = node.name.tableize
+    params['table_name'] = node.table
   end
 end

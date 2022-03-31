@@ -34,5 +34,17 @@ def test_redmine
   t.traverse(roots)
 end
 
+def test_openproject
+  t = Traversor.new(PopulateTableName.new)
+  engine = Engine.new('test/data/openproject_models')
+  roots = engine.run
+  t.traverse(roots)
+
+  t = Traversor.new(TestPrint.new)
+  t.traverse(roots)
+end
+
+
 test_naive
 # test_redmine
+test_openproject
