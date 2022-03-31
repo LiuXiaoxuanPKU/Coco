@@ -27,7 +27,7 @@ class StateMachineExtractor < Extractor
     possible_values = []
     ast[2].children[0].each do |c|
       possible_values += parse_state_values(c)
-      # get rid of nil
+      # get rid of nil and duplicated values
       possible_values = possible_values.compact
       possible_values = possible_values.uniq
     end
@@ -80,9 +80,15 @@ class StateMachineExtractor < Extractor
     ast.each do |assoc|
       field1 = assoc[0].source if assoc[0].type.to_s == "vcall" # any
       field1 ||= handle_label_node(assoc[0]) if assoc[0].type.to_s == "label"
+      field1 = handle_array_node(assoc[0]) if assoc[0].type.to_s == "array"
+      # skip this iteration, jump to next iteration
       next if field1 == "if"
       if field1 != "from" && field1 != "to" && field1 != "any" && field1 != "all"
-        possible_fields << field1
+        if field1.instance_of? Array
+          possible_fields += field1
+        else
+          possible_fields << field1
+        end
       end
       if assoc[1].type.to_s == "array"
         fields = handle_array_node(assoc[1])
@@ -93,6 +99,4 @@ class StateMachineExtractor < Extractor
     end
     possible_fields
   end
-
-  
 end

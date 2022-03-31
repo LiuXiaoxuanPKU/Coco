@@ -23,7 +23,7 @@ def test_gitlab
 end
 
 # uncomment the following if want to run through an application
-test_gitlab
+# test_gitlab
 
 ############################## unit tests #################################
 def test_naive 
@@ -45,7 +45,7 @@ def test_naive
   # check for possible errors
   raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
 
-  if node.constraints[0].values != %w[done pending]
+  if node.constraints[0].values.to_set != %w[done pending].to_set
     raise "values should be ['done', 'pending'], but get #{node.constraints[0].values}"
   end
 end
@@ -91,13 +91,13 @@ def test_naive2
   # check for possible errors
   raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
 
-  if node.constraints[0].values != %w[created running blocked success failed canceled skipped]
+  if node.constraints[0].values.to_set != %w[created running blocked success failed canceled skipped].to_set
     raise "values should be ['created', 'running', 'blocked', 'success', 'failed', 'canceled', 'skipped'], but get #{node.constraints[0].values}"
   end
 end
 
 # Note in the following case, keyword "all" should not be parsed as a state
-def test_key_word_all
+def test_keyword_all
   class_def = <<-FOO
     class Test
       state_machine :state, initial: :none do
@@ -131,7 +131,7 @@ def test_key_word_all
   # check for possible errors
   raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
 
-  if node.constraints[0].values != %w[scheduled ready failed obsolete none]
+  if node.constraints[0].values.to_set != %w[scheduled ready failed obsolete none].to_set
     raise "values should be ['scheduled', 'ready', 'failed', 'obsolete', 'none'], but get #{node.constraints[0].values}"
   end
 end
@@ -148,22 +148,6 @@ def test_after_transition
             ::Ci::CreateDownstreamPipelineWorker.perform_async(bridge.id)
           end
         end
-
-        event :pending do
-          transition all => :pending
-        end
-
-        event :manual do
-          transition all => :manual
-        end
-
-        event :scheduled do
-          transition all => :scheduled
-        end
-
-        event :actionize do
-          transition created: :manual
-        end
       end
     end
   FOO
@@ -174,13 +158,13 @@ def test_after_transition
   # check for possible errors
   raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
 
-  if node.constraints[0].values != %w[pending manual scheduled created]
-    raise "values should be ['pending', 'manual', 'scheduled', 'created'], but get #{node.constraints[0].values}"
+  if node.constraints[0].values.to_set != %w[pending manual created waiting_for_resource].to_set
+    raise "values should be ['pending', 'manual', 'scheduled', 'created', 'waiting_for_resource'], but get #{node.constraints[0].values}"
   end
 end
 
 
 test_naive
 test_naive2
-test_key_word_all
+test_keyword_all
 test_after_transition
