@@ -13,10 +13,7 @@ class TestPrint
     puts "constraints #{node.constraints.length}"
     inclusion_constraints = node.constraints.select { |c| c.is_a? InclusionConstraint }
     unique_constraints = node.constraints.select { |c| c.is_a? UniqueConstraint }
-    foreign_key_constraints = node.constraints.select { |c| c.is_a? ForeignKeyConstraint }
-    presence_constraints = node.constraints.select { |c| c.is_a? PresenceConstraint }
-    length_constraints = node.constraints.select { |c| c.is_a? LengthConstraint }
-    (inclusion_constraints + unique_constraints + foreign_key_constraints + presence_constraints + length_constraints).each do |c|
+    (inclusion_constraints + unique_constraints).each do |c|
       puts c.to_s
     end
   end
@@ -33,9 +30,6 @@ def test_builtin
   t = Traversor.new(BuiltinExtractor.new)
   engine = Engine.new('data/redmine_models')
   root = engine.run
-  t.traverse(root)
-
-  t = Traversor.new(RelationshipExtractor.new)
   t.traverse(root)
 
   t = Traversor.new(IdExtractor.new)

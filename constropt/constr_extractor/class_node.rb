@@ -8,14 +8,14 @@ class ClassNode
   # children, [ClassNode]
 
   # constraints, [Constraint]
-  attr_accessor :name, :parent, :constants, :ast, :table, :children, :constraints, :misc
+  attr_accessor :name, :parent, :constants, :ast, :table, :children, :constraints, :relationship_data
 
   def initialize(name)
     @table = nil
     @name = name
     @children = []
     @constraints = []
-    @misc = {}
+    @relationship_data = {}
   end
 
   def to_s

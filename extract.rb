@@ -6,7 +6,7 @@ require_relative 'constropt/constr_extractor/id_extractor'
 require_relative 'constropt/constr_extractor/class_inheritance_extractor'
 require_relative 'constropt/constr_extractor/constraint'
 require_relative 'constropt/constr_extractor/serializer'
-require_relative 'constropt/constr_extractor/relationship_extractor'
+#require_relative 'constropt/constr_extractor/relationship_extractor'
 
 engine = Engine.new('constropt/constr_extractor/test/data/redmine_models')
 root = engine.run

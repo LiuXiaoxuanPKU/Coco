@@ -3,7 +3,7 @@ require_relative 'base_extractor'
 require_relative 'constraint'
 
 def trim_string(s)
-  s.delete_prefix("'").delete_suffix("'").delete_prefix('"').delete_suffix('"').downcase
+  s.delete_prefix("'").delete_suffix("'").delete_prefix('"').delete_suffix('"')
 end
 
 class BuiltinExtractor < Extractor
@@ -80,7 +80,7 @@ class BuiltinExtractor < Extractor
     #   extract_builtin_has_many(ast)
     when 'belongs_to'
       # extract_builtin_belongs_to(ast)
-      extract_builtin_foreign(ast)
+      constraints = extract_builtin_foreign(ast)
     when 'state_machine'
       constraints = extract_builtin_state_machine(ast)
     end
@@ -201,10 +201,6 @@ class BuiltinExtractor < Extractor
   end
 
   def extract_builtin_length(ast)
-    # puts @class_name
-    # p ast
-    # p ast.source
-
     constraints = []
     min = nil
     max = nil
@@ -265,8 +261,8 @@ class BuiltinExtractor < Extractor
       fields << field unless field.nil?
       node.children.each do |n|
         k, v = handle_assoc_node(n)
-        fk_column_name = v if !k.nil? && (k == 'foreign_key')
-        class_name = v if !k.nil? && (k == 'class_name')
+        fk_column_name = trim_string(v.source) if !k.nil? && (k == 'foreign_key')
+        class_name = trim_string(v.source) if !k.nil? && (k == 'class_name')
       end
     end
 
