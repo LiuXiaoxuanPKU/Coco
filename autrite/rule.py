@@ -194,6 +194,27 @@ class AddLimitOne(Rule):
             return [rewritten_q]
         return []
 
+class ReplaceOuterJoin(Rule):
+    def __init__(self, cs) -> None:
+        super().__init__(cs)
+        self.name = "ReplaceOuterJoin"
+    
+    def apply_single(self, q):
+        if not 'from' in q:
+            return []
+
+        from_clause = q['from']
+        rewritten_queries = []
+        for i, token in enumerate(from_clause):
+            if isinstance(token, dict):
+                key = list(token.keys())[0]
+                if key == 'outer join' or key == 'left outer join' or key == 'left join':
+                    rq = copy.deepcopy(q)
+                    join = rq['from'][i].pop(key)
+                    rq['from'][i]['inner join'] = join
+                    rewritten_queries.append(rq)
+        return rewritten_queries
+
 class RemoveJoin(Rule):
     def __init__(self, cs) -> None:
         super().__init__(cs)
@@ -255,7 +276,7 @@ class RemoveJoin(Rule):
                     return None
                     # only one element is left, so we do not need and/or any more
                 elif len(items) == 1:
-                    items[0]
+                    return items[0]
                     # otherwise, we create a new dic with old op and existing rewrites
                 else:
                     return {op: items}
@@ -420,13 +441,17 @@ class AddPredicate(Rule):
             elif isinstance(t, str):
                 t = z3.Real(t)
                 return t, float # TODO: assume float for variables
+            # elif isinstance(t, dict):
+            #     return t['literal'], type(t['literal'])
             else:
-                print("[Warning] Unknow rhs %s of type %s" % (t, type(t)))
+                print("[Warning] Unknown rhs %s of type %s" % (t, type(t)))
                 return None, None
 
         def translate_lhs(t, _type):
             if _type is None or t is None:
                 return None
+            if '.' in t:
+                t = t.split('.')[-1]
             if _type == int:
                 ret = z3.Int(t)
                 return ret
@@ -436,8 +461,10 @@ class AddPredicate(Rule):
             elif _type == bool:
                 ret = z3.Bool(t)
                 return ret
+            # elif _type == str:
+            #     return t
             else:
-                print("[Warning] Unknow lhs %s of type %s" % (t, type(t)))
+                print("[Warning] Unknown lhs %s of type %s" % (t, type(t)))
                 return None
 
         all_ops = []
@@ -576,7 +603,7 @@ class AddPredicate(Rule):
         # the output of binary operations is in z3 format
         binops = extract_binops(q)
 
-        # extarct constraints
+        # extract constraints
         # and translate into z3 format
         constraint_ops = extract_constraints()
         if len(constraint_ops) == 0:
