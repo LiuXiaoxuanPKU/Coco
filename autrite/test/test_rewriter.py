@@ -5,6 +5,7 @@ from constraint import *
 from rewriter import Rewriter
 from mo_sql_parsing import parse, format
 from loader import Loader
+from config import RewriteQuery
 
 
 def test_get_constraints():
@@ -14,7 +15,8 @@ def test_get_constraints():
     q_before_str = "select distinct (*) from users where id \
                         in (select distinct user_id from projects)"
     rewriter = Rewriter()
-    constraints = rewriter.get_q_constraints(constraints, parse(q_before_str))
+    q = RewriteQuery(parse(q_before_str))
+    constraints = rewriter.get_q_constraints(constraints,q.q)
     assert(len(constraints) == 3)
 
 def test_get_rules():
@@ -26,7 +28,8 @@ def test_get_rules():
 
 def test_rewrite_helper(constraints, q_str):
     rewriter = Rewriter()
-    rewritten_queries = rewriter.rewrite(constraints, parse(q_str))
+    q = RewriteQuery(parse(q_str))
+    rewritten_queries = rewriter.rewrite(constraints, q)
     print("------------------------Start Rewrite------------------------")
     print("Before:\n", format(parse(q_str)))
     print("After:", len(rewritten_queries))
@@ -39,6 +42,7 @@ def test_simple_enumerate():
     constraints = [UniqueConstraint("users", "id")]
     q_before_str = "select distinct (*) from users where id in (select distinct user_id from projects)"
     test_rewrite_helper(constraints, q_before_str)
+
 
 def test_redmine_enumerate():
     # constraints = [UniqueConstraint("issue_relations", "issue_from_id")]
@@ -131,7 +135,7 @@ def test_redmine_enumerate():
     test_rewrite_helper(constraints, q_before_str)
 
 if __name__ == "__main__":
-    # test_get_constraints()
-    # test_get_rules()
-    # test_simple_enumerate()
+    test_get_constraints()
+    test_get_rules()
+    test_simple_enumerate()
     test_redmine_enumerate()

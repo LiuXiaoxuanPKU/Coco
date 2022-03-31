@@ -5,7 +5,8 @@ from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
 
 PRIORITY_MAP = {
-    "AddPredicate" : 5,
+    "AddPredicate" : 6,
+    "RewriteNullPredicate" : 5,
     "RemovePredicate" : 4,
     "RemoveJoin" : 3,
     "RemoveDistinct" : 2,
@@ -29,11 +30,10 @@ class Rule:
         return PRIORITY_MAP[self.name] < PRIORITY_MAP[other.name]
         
     def __hash__(self) -> int:
-        # only keep rule type
-        if not isinstance(self, AddPredicate):
-            hash_v = str(type(self))
-        else:
+        if type(self) in [AddPredicate, RewriteNullPredicate]:
             hash_v = str(type(self)) + str(hash(self.constraint))
+        else: # only keep rule type
+            hash_v = str(type(self))
         return hash(hash_v)
 
     @staticmethod
@@ -112,6 +112,8 @@ class Rule:
         
         def rewrite_cond(cond):
             rewritten_cond = []
+            if not isinstance(cond, dict):
+                return []
             assert(len(cond) == 1)
             op = list(cond.keys())[0]
             if op == "and" or op == "or":
@@ -123,7 +125,7 @@ class Rule:
                 for r in re:
                     rewritten_cond.append({op:copy.deepcopy(r)})
 
-            elif op in ["exists"]:
+            elif op in ["exists", "missing"]:
                 v = cond[op]
                 # nested query
                 if isinstance(v, dict) and ('select' in v):
@@ -292,6 +294,55 @@ class UnionToUnionAll(Rule):
             rewritten_q =  copy.deepcopy(q)
             rewritten_q['union all'] = rewritten_q.pop('union')
             return [rewritten_q]
+        return []
+
+class RewriteNullPredicate(Rule):
+    def __init__(self, cs) -> None:
+        super().__init__(cs)
+        self.name = "RewriteNullPredicate"
+    
+    def apply_single(self, q):
+        if 'where' not in q:
+            return []
+              
+        # return: rewrite_result, can_rewrite
+        def rewrite_where(clause):
+            if not isinstance(clause, dict):
+                return clause, False
+            op = list(clause.keys())[0]
+            if op == "and" or op == "or":
+                clause_list = clause[op]
+                rewritten_items = []
+                can_rewrite = False
+                for item in clause_list:
+                    r_item, r_can_rewrite = rewrite_where(item)
+                    can_rewrite = r_can_rewrite or can_rewrite
+                    rewritten_items.append(r_item)
+                return {op : rewritten_items}, can_rewrite
+            elif op == "missing":
+                field = clause[op]
+                if not isinstance(field, str):
+                    return clause, False
+                if self.constraint.field == field or self.constraint.field == field.split(".")[-1]:
+                    return False, True
+                return clause, False
+            elif op == "exists":
+                field = clause[op]
+                if not isinstance(field, str):
+                    return clause, False
+                if self.constraint.field == field or self.constraint.field == field.split(".")[-1]:
+                    return True, True  
+                return clause, False
+            else: # base case, does not contain and/or and does not have constraint
+                return clause, False
+         
+
+        rq = copy.deepcopy(q)
+        where_clause = rq.pop('where', None)
+        rewrite_where_clause, can_rewrite = rewrite_where(where_clause)
+        if can_rewrite:
+            rq['where'] = rewrite_where_clause
+            return [rq]
         return []
 
 class RemovePredicate(Rule):

@@ -20,7 +20,11 @@ class UniqueConstraint(Constraint):
         self.cond = cond
 
     def __str__(self) -> str:
-        return "Unique, table: %s, field: %s, scope: %s, cond: %s" % (self.table, self.field, self.scope, self.cond)
+        if len(self.scope) == 0:
+            scope_str = 'None'
+        else:
+            scope_str = '|'.join(self.scope)
+        return "Unique_table_%s_field_%s_scope_%s_cond_%s" % (self.table, self.field, scope_str, self.cond)
 
 
 class InclusionConstraint(Constraint):
@@ -31,7 +35,12 @@ class InclusionConstraint(Constraint):
         self.value_list = values
 
     def __str__(self) -> str:
-        return "Inclusion, table: %s, field: %s, value_list: %s" % (self.table, self.field, self.value_list)
+        if len(self.value_list) == 0:
+            value_list_str = 'None'
+        else:
+            value_str_list = [str(e) for e in self.value_list]
+            value_list_str = '|'.join(value_str_list)
+        return "Inclusion_table_%s_field_%s_valuelist_%s" % (self.table, self.field, value_list_str)
 
 
 class LengthConstraint(Constraint):
@@ -41,7 +50,7 @@ class LengthConstraint(Constraint):
         self.max = max
 
     def __str__(self) -> str:
-        return "Length, table: %s, field: %s, min: %s, max: %s" % (self.table, self.field, self.min, self.max)
+        return "Length_table_%s_field_%s_min_%s_max_%s" % (self.table, self.field, self.min, self.max)
 
 
 class FormatConstraint(Constraint):
@@ -50,7 +59,7 @@ class FormatConstraint(Constraint):
         self.format = format
 
     def __str__(self) -> str:
-        return "Format, table: %s, field: %s, format: %s" % (self.table, self.field, self.format)
+        return "Format_table_%s_field_%s_format_%s" % (self.table, self.field, self.format)
 
 
 class PresenceConstraint(Constraint):
@@ -58,7 +67,7 @@ class PresenceConstraint(Constraint):
         super().__init__(table, field)
 
     def __str__(self) -> str:
-        return "Presence, table: %s, field: %s" % (self.table, self.field)
+        return "Presence_table_%s_field_%s" % (self.table, self.field)
 
 
 class NumericalConstraint(Constraint):
@@ -80,7 +89,7 @@ class NumericalConstraint(Constraint):
             return v <= self.max
 
     def __str__(self) -> str:
-        return "Numerical, table: %s, field: %s, min: %d, max: %d, allow_nil: %d" % (self.table, self.field, self.min, self.max, self.allow_nil)
+        return "Numerical_table_%s_field_%s_min_%d_max_%d_allownil_%d" % (self.table, self.field, self.min, self.max, self.allow_nil)
 
 class ForeignKeyConstraint(Constraint):
     pass

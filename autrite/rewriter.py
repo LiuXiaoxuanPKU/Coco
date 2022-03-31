@@ -1,5 +1,6 @@
+from config import RewriteQuery
 from constraint import *
-from rule import AddPredicate, RemoveDistinct, AddLimitOne, RemoveJoin, RemovePredicate, UnionToUnionAll
+from rule import AddPredicate, RemoveDistinct, AddLimitOne, RemoveJoin, RemovePredicate, RewriteNullPredicate, UnionToUnionAll
 from mo_sql_parsing import format
 
 class Rewriter:
@@ -11,17 +12,16 @@ class Rewriter:
 
     def rewrite(self, constraints, q):
         # identify constraints in q
-        constraints = self.get_q_constraints(constraints, q)
+        constraints = Rewriter.get_q_constraints(constraints, q.q)
         if not len(constraints):
             return []
         
         # use constraints to generate potential rules
         rules = self.get_rules(constraints)
+        print("Apply rule", rules)
         
         # order rules, apply slow rules (add predicate, remove predicate) first
         rules.sort()
-        print(rules)
-        
 
         rewritten_queries = self.bfs(rules, q)
 
@@ -30,7 +30,8 @@ class Rewriter:
     
     # select * from R where a = 1
     # UniqueConstraint(a)
-    def get_q_constraints(self, constraints, q):
+    @staticmethod
+    def get_q_constraints(constraints, q):
         def extract_q_field(q):
             # TODO: extract all the fields insteaf of all the tokens
             q_str = format(q)
@@ -57,11 +58,11 @@ class Rewriter:
         constraint_rule_map = {
             UniqueConstraint : [RemoveDistinct, AddLimitOne],
             NumericalConstraint : [AddPredicate, RemovePredicate],
-            PresenceConstraint : [],
-            InclusionConstraint : [],
+            PresenceConstraint : [RewriteNullPredicate],
+            InclusionConstraint : [], 
             LengthConstraint : [],
             FormatConstraint : [],
-            ForeignKeyConstraint : []
+            ForeignKeyConstraint : [RemoveJoin]
             }
         rules = []
         for c in constraints:
@@ -74,13 +75,22 @@ class Rewriter:
 
     def bfs(self, rules, q):
         rewritten_queries = [q]
+        applied_rules = []
         for rule in rules:
-            print("Apply rule ", type(rule))
+            applied_rules.append(rule)
             rule_rewritten_qs = []
             for rq in rewritten_queries:
-                rule_rewritten_qs += rule.apply(rq)
-            rewritten_queries += rule_rewritten_qs
-            print("# of rewrites ", len(rewritten_queries))
+                rule_rewritten_qs += rule.apply(rq.q)
+            
+            rule_rewritten_q_objs = []
+            for q in rule_rewritten_qs:
+                rq = RewriteQuery(q)
+                rq.rewrites = applied_rules
+                rule_rewritten_q_objs.append(rq)
+            
+            if len(rule_rewritten_q_objs) == 0:
+                applied_rules.pop()
+            rewritten_queries += rule_rewritten_q_objs
     
         return rewritten_queries[1:]
 
