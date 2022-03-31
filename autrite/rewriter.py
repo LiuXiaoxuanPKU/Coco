@@ -1,6 +1,6 @@
 from config import RewriteQuery
 from constraint import *
-from rule import AddPredicate, RemoveDistinct, AddLimitOne, RemoveJoin, RemovePredicate, RewriteNullPredicate, UnionToUnionAll
+from rule import AddPredicate, RemoveDistinct, AddLimitOne, RemoveJoin, RemovePredicate, RewriteNullPredicate, UnionToUnionAll, ReplaceOuterJoin
 from mo_sql_parsing import format
 
 class Rewriter:
@@ -58,7 +58,7 @@ class Rewriter:
         constraint_rule_map = {
             UniqueConstraint : [RemoveDistinct, AddLimitOne],
             NumericalConstraint : [AddPredicate, RemovePredicate],
-            PresenceConstraint : [RewriteNullPredicate],
+            PresenceConstraint : [RewriteNullPredicate, ReplaceOuterJoin, RemoveJoin],
             InclusionConstraint : [], 
             LengthConstraint : [],
             FormatConstraint : [],

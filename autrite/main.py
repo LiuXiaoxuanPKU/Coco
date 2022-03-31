@@ -23,7 +23,7 @@ if __name__ == '__main__':
     offset = 0
     query_cnt = 10000
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
-             rule.AddLimitOne, rule.RemoveJoin, rule.AddPredicate]
+             rule.AddLimitOne, rule.RemoveJoin, rule.AddPredicate, rule.ReplaceOuterJoin]
     # rules = [rule.AddPredicate]
 
     constraints = Loader.load_constraints(constraint_filename)
