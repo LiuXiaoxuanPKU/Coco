@@ -94,7 +94,7 @@ class BuiltinExtractor < Extractor
         constraints << LengthConstraint.new(field, min, max)
       elsif label == 'numericality'
         min, max, allow_nil = extract_numerical_hash(other.children)
-        constraints << NumericalConstraint.new(field, min, max, allow_nil: allow_nil)
+        constraints << NumericalConstraint.new(field, min, max, false, allow_nil)
       elsif label == 'allow_blank'
         constraints.each { |c| c.allow_nil = true }
       else
@@ -213,7 +213,7 @@ class BuiltinExtractor < Extractor
     end
 
     fields.each do |field|
-      c = InclusionConstraint.new(field, values, type, allow_nil: allow_nil)
+      c = InclusionConstraint.new(field, values, type, false, allow_nil)
       constraints << c
     end
     constraints
@@ -296,7 +296,7 @@ class BuiltinExtractor < Extractor
       allow_nil ||= tmp_allow_nil
     end
     fields.each do |field|
-      c = NumericalConstraint.new(field, min, max, allow_nil: allow_nil)
+      c = NumericalConstraint.new(field, min, max, false, allow_nil)
       constraints << c
     end
     constraints
