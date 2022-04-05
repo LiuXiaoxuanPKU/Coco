@@ -21,10 +21,12 @@ class_inheritance_t.traverse(root)
 constraints_cnt = engine.get_constraints_cnt(root)
 puts "After extracting class inheritance, # of constraints #{constraints_cnt}"
 
-# db_t = Traversor.new(DBExtractor.new('constropt/constr_extractor/test/data/redmine_db/schema.rb'))
-# db_t.traverse(root)
+db_t = Traversor.new(DBExtractor.new("constropt/constr_extractor/test/data/#{appname}_db/schema.rb"))
+db_t.traverse(root)
+constraints_cnt = engine.get_constraints_cnt(root)
+puts "After extracting db constraints, # of constraints #{constraints_cnt}"
 
-# id_t = Traversor.new(IdExtractor.new)
-# id_t.traverse(root)
+id_t = Traversor.new(IdExtractor.new)
+id_t.traverse(root)
 
 Serializer.serialize_tree(root, "constraints/#{appname}")
