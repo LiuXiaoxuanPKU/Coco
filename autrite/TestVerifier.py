@@ -31,9 +31,14 @@ class TestVerifier:
         for rq in tqdm(rewritten_queries):
             if rq.sql_param is None:
                 continue
-            rq_result = Evaluator.evaluate_query(rq.sql_param, connect_str)
-            if test_query_result_equivalence(org_result, rq_result):
-                eq_qs.append(rq)
+            try:
+                # rewrite might be wrong, so we need try except error here
+                rq_result = Evaluator.evaluate_query(rq.sql_param, connect_str)
+                if test_query_result_equivalence(org_result, rq_result):
+                    eq_qs.append(rq)
+            except:
+                # print("Fail to execute %s" % format(rq))
+                pass
         return eq_qs
 
 

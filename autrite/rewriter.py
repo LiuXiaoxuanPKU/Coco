@@ -18,7 +18,7 @@ class Rewriter:
         
         # use constraints to generate potential rules
         rules = self.get_rules(constraints)
-        print("Apply rule", rules)
+        # print("Apply rule", rules)
         
         # order rules, apply slow rules (add predicate, remove predicate) first
         rules.sort()

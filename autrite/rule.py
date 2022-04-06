@@ -3,18 +3,7 @@ from termios import TIOCPKT_DOSTOP
 import z3
 from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
-
-PRIORITY_MAP = {
-    "AddPredicate" : 6,
-    "RewriteNullPredicate" : 5,
-    "RemovePredicate" : 4,
-    "RemoveJoin" : 3,
-    "RemoveDistinct" : 2,
-    "AddLimitOne" : 1,
-    "UnionToUnionAll" : 0
-}
-
-REWRITE_LIMIT = 10000
+from config import PRIORITY_MAP, REWRITE_LIMIT
 
 class Rule:
     def __init__(self, cs) -> None:
@@ -267,6 +256,10 @@ class RemoveJoin(Rule):
             return [item for sublist in ll for item in sublist]
 
         def remove_table_predicate(drop_tables, clause):
+            # handle where False clause
+            if not isinstance(clause, dict):
+                return clause
+            
             op = list(clause.keys())[0]
             if op == "and" or op == "or":
                 clause_list = clause[op]

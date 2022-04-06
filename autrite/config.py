@@ -26,8 +26,8 @@ def get_filename(_type, appname):
 CONNECT_MAP = {
     "redmine" : "user=redmine password=my_password dbname=redmine_develop",
     "redmine_test" : "user=redmine password=my_password dbname=redmine_test",
-    "devto" : "",
-    "openproject" : ""
+    "forem" : "user=ubuntu password=my_password dbname=Forem_development",
+    "openproject" : "user=openproject password=my_password dbname=openproject_dev"
 }
 
 class RewriteQuery:
@@ -35,3 +35,16 @@ class RewriteQuery:
         self.q = q
         self.rewrites = []
         self.sql_param = None
+        
+PRIORITY_MAP = {
+    "AddPredicate" : 6,
+    "RewriteNullPredicate" : 5,
+    "RemovePredicate" : 4,
+    "RemoveJoin" : 3,
+    "RemoveDistinct" : 2,
+    "AddLimitOne" : 1,
+    "ReplaceOuterJoin": 0,
+    "UnionToUnionAll" : -1
+}
+
+REWRITE_LIMIT = 10000
