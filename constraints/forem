@@ -3,14 +3,48 @@
     "table": null,
     "class": "ApplicationRecord",
     "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
     "table": "announcements",
     "class": "Announcement",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
@@ -20,17 +54,49 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "description",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "description",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "description",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -41,158 +107,239 @@
       {
         "^o": "LengthConstraint",
         "field_name": "body_markdown",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "body_markdown",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "user_id",
           "title"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "boost_states",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "cached_tag_list",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "canonical_url",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "published"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "comments_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "feed_source_url",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "published"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "positive_reactions_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "previous_public_reactions_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "public_reactions_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "rating_votes_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "reactions_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "slug",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "slug",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "user_id"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "title",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "title",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_subscriptions_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "video_state",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "boost_states",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "comments_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "positive_reactions_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "previous_public_reactions_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "public_reactions_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "rating_votes_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reactions_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_subscriptions_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -203,9 +350,41 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "data",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "data",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -216,41 +395,94 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "badge_image",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "description",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "slug",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "title",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "title",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "credits_awarded",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "description",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -261,13 +493,52 @@
       {
         "^o": "UniqueConstraint",
         "field_name": "badge_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "user_id"
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "badge_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -278,13 +549,38 @@
       {
         "^o": "UniqueConstraint",
         "field_name": "username",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -295,40 +591,51 @@
       {
         "^o": "UniqueConstraint",
         "field_name": "title",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "type_of"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "title",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "type_of",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "banner_style",
+        "db": false,
+        "allow_nil": true,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": true
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -339,69 +646,101 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "channel_type",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "channel_type",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "status",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "status",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "slug",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "slug",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "description",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": true
+        "allow_nil": true,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "channel_name",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "channel_type",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -412,47 +751,86 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "chat_channel_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "chat_channel_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "user_id"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "role",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "status",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "chat_channel_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -463,27 +841,52 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "slug",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "slug",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "user_id"
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -494,21 +897,23 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "body_markdown",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "body_markdown",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "body_markdown",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
@@ -516,61 +921,105 @@
           "ancestry",
           "commentable_id",
           "commentable_type"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "commentable_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "commentable_type",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "positive_reactions_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "public_reactions_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "reactions_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "commentable",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "positive_reactions_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "public_reactions_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reactions_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -578,7 +1027,17 @@
     "table": "configs",
     "class": "Config",
     "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
@@ -588,30 +1047,76 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "app_bundle",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "app_bundle",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "platform"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "platform",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "active",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "app_bundle",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "platform",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -619,7 +1124,31 @@
     "table": "credits",
     "class": "Credit",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
@@ -629,27 +1158,59 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "file_name",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "file_name",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "status",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -660,32 +1221,78 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "platform",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "token",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "token",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "user_id",
           "platform",
           "consumer_app_id"
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "platform",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "token",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -696,27 +1303,66 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "article_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "article_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "locking_user_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "article_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "locking_user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -727,33 +1373,58 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "organization_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "placement_area",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "placement_area",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "body_markdown",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -764,22 +1435,47 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "category",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "context_type",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -790,19 +1486,58 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "type_of",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "type_of",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "json_data",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "type_of",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -813,17 +1548,42 @@
       {
         "^o": "LengthConstraint",
         "field_name": "title",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "slug",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -834,41 +1594,52 @@
       {
         "^o": "LengthConstraint",
         "field_name": "message",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "category",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "status",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "reporter_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
 
-        ],
+        ]
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -879,57 +1650,110 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "blocked",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "followable_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "followable_type",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "follower_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "follower_type",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "subscription_status",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "subscription_status",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "blocked",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "followable_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "followable_type",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "follower_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "follower_type",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "subscription_status",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -940,38 +1764,63 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "category",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "url",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "url",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "url",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -982,24 +1831,49 @@
       {
         "^o": "UniqueConstraint",
         "field_name": "url",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "github_id_code",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1010,37 +1884,62 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "group",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "html",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "name",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "success_rate",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1051,9 +1950,34 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "html_variant_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1064,9 +1988,34 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "html_variant_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1077,41 +2026,66 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "provider",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "uid",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "provider"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "user_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "provider"
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1119,7 +2093,17 @@
     "table": "invitations",
     "class": "Invitation",
     "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
@@ -1129,54 +2113,79 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "organization_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "title",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "title",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "body_markdown",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "body_markdown",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "LengthConstraint",
         "field_name": "location",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1184,7 +2193,59 @@
     "table": "classified_listing_categories",
     "class": "ListingCategory",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "cost",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "rules",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
@@ -1194,35 +2255,60 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "user_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "mentionable_id",
           "mentionable_type"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "mentionable_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "mentionable_type",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1233,24 +2319,77 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "message_html",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "message_markdown",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "message_markdown",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "chat_channel_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "message_html",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "message_markdown",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1258,14 +2397,34 @@
     "table": "mods",
     "class": "Mod",
     "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
     "table": "moderator_actions",
     "class": "ModeratorAction",
     "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
@@ -1275,23 +2434,76 @@
       {
         "^o": "UniqueConstraint",
         "field_name": "url",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "name"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "display_only_when_signed_in",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "icon",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "section",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1299,7 +2511,31 @@
     "table": "notes",
     "class": "Note",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
@@ -1309,20 +2545,22 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "organization_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "user_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
@@ -1330,9 +2568,32 @@
           "notifiable_id",
           "notifiable_type",
           "action"
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1343,55 +2604,108 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "config",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "config",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "notifiable_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "notifiable_type",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "notifiable_type",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "user_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "notifiable_type",
           "notifiable_id"
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "config",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "notifiable_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "notifiable_type",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1402,163 +2716,216 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "articles_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "company_size",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "credits_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "cta_body_markdown",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "LengthConstraint",
         "field_name": "cta_button_text",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "LengthConstraint",
         "field_name": "cta_button_url",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "LengthConstraint",
         "field_name": "github_username",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "LengthConstraint",
         "field_name": "proof",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "LengthConstraint",
         "field_name": "secret",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "secret",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "LengthConstraint",
         "field_name": "slug",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "slug",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "slug",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "spent_credits_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "summary",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "LengthConstraint",
         "field_name": "tag_line",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "LengthConstraint",
         "field_name": "twitter_username",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "unspent_credits_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "url",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "articles_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "credits_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "spent_credits_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "unspent_credits_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1569,23 +2936,69 @@
       {
         "^o": "UniqueConstraint",
         "field_name": "user_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "organization_id"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "type_of_user",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "organization_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "type_of_user",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1593,7 +3006,17 @@
     "table": "overviews",
     "class": "Overview",
     "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
@@ -1603,33 +3026,65 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "title",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "description",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "slug",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "template",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "landing_page",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1637,14 +3092,48 @@
     "table": "page_views",
     "class": "PageView",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
     "table": "permissions",
     "class": "Permission",
     "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
@@ -1654,31 +3143,91 @@
       {
         "^o": "UniqueConstraint",
         "field_name": "feed_url",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "slug",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "slug",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "feed_url",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "image",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "main_color_hex",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1689,66 +3238,133 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "comments_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "guid",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "guid",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "media_url",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "media_url",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "reactions_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "slug",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "title",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "comments_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "guid",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "media_url",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reactions_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1759,23 +3375,83 @@
       {
         "^o": "UniqueConstraint",
         "field_name": "podcast_episode_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "user_id"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "role",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "approved",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "featured_on_user_profile",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "podcast_episode_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "role",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1786,13 +3462,52 @@
       {
         "^o": "UniqueConstraint",
         "field_name": "podcast_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "user_id"
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "podcast_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1803,53 +3518,99 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "poll_options_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "poll_options_input_array",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "poll_options_input_array",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "poll_skips_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "poll_votes_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "prompt_markdown",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "prompt_markdown",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "poll_options_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "poll_skips_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "poll_votes_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1860,24 +3621,56 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "markdown",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "markdown",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "poll_votes_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "poll_votes_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1885,7 +3678,31 @@
     "table": "poll_skips",
     "class": "PollSkip",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
@@ -1895,38 +3712,84 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "poll_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "poll_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "user_id"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "poll_option_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "poll_option_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "user_id"
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "poll_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "poll_option_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1934,7 +3797,17 @@
     "table": "privileged_reactions",
     "class": "PrivilegedReaction",
     "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
@@ -1944,13 +3817,52 @@
       {
         "^o": "UniqueConstraint",
         "field_name": "user_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "data",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -1961,51 +3873,111 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "attribute_name",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "display_area",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "input_type",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "label",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "label",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "show_in_onboarding",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "attribute_name",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "display_area",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "input_type",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "label",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "show_in_onboarding",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -2016,20 +3988,52 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "name",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -2040,49 +4044,74 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "profile_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "profile_type",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "pinnable_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "pinnable_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "profile_id",
           "profile_type",
           "pinnable_type"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "pinnable_type",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -2093,49 +4122,74 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "context",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "group",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "NumericalConstraint",
         "field_name": "rating",
-        "min": 0,
-        "max": 10,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": 0,
+        "max": 10
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "user_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "article_id",
           "context"
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -2146,45 +4200,70 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "category",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "reactable_type",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "status",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "user_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "reactable_id",
           "reactable_type",
           "category"
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -2195,55 +4274,108 @@
       {
         "^o": "UniqueConstraint",
         "field_name": "content",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "user_id",
           "type_of",
           "content_type"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "type_of",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "content_type",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "content_type",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "content_type",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "content",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "content_type",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "type_of",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -2254,22 +4386,33 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "resource_type",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "name",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -2277,7 +4420,17 @@
     "table": "secrets",
     "class": "Secret",
     "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
@@ -2287,36 +4440,82 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "level",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "level",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "status",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "status",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "featured_number",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "level",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -2327,82 +4526,107 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "article_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "tag_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "tag_name",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "tag_name",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "article_id"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "reason_for_adjustment",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "adjustment_type",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "adjustment_type",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "status",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "status",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -2410,7 +4634,17 @@
     "table": "tools",
     "class": "Tool",
     "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
@@ -2420,16 +4654,41 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "full_fetched_object_serialized",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "twitter_id_code",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -2440,168 +4699,313 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "articles_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "badge_achievements_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "blocked_by_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "blocking_others_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "comments_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "credits_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "email",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "email",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "following_orgs_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "following_tags_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "following_users_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "LengthConstraint",
         "field_name": "password",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "rating_votes_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "reactions_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "sign_in_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "spent_credits_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "subscribed_to_user_subscriptions_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "unspent_credits_count",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "username",
-        "min": -1,
-        "max": -1,
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "username",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "username",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": false,
         "scope": [
 
-        ],
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "articles_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "badge_achievements_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "blocked_by_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "blocking_others_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "comments_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "credits_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "encrypted_password",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "following_orgs_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "following_tags_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "following_users_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "invitation_limit",
+        "db": true,
+        "allow_nil": true,
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "rating_votes_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reactions_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "sign_in_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "spent_credits_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "subscribed_to_user_subscriptions_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "unspent_credits_count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -2612,23 +5016,69 @@
       {
         "^o": "UniqueConstraint",
         "field_name": "blocked_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "blocker_id"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "config",
+        "db": false,
+        "allow_nil": false,
         "values": [
 
         ],
-        "type": "builtin",
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "blocked_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "blocker_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "config",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
       }
     ]
   },
@@ -2636,7 +5086,17 @@
     "table": "users_roles",
     "class": "UserRole",
     "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
@@ -2646,84 +5106,130 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "author_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "subscriber_email",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "subscriber_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": "subscriber_id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
         "case_sensitive": null,
         "scope": [
           "subscriber_email",
           "user_subscription_sourceable_type",
           "user_subscription_sourceable_id"
-        ],
-        "db": false,
-        "allow_nil": false
+        ]
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_subscription_sourceable_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_subscription_sourceable_id",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_subscription_sourceable_type",
-        "cond": "",
         "db": false,
-        "allow_nil": false
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_subscription_sourceable_type",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "user_subscription_sourceable_type",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "user_subscription_sourceable_type",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "author_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "subscriber_email",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "subscriber_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
         "cond": "",
-        "db": false,
-        "allow_nil": false
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "user_subscription_sourceable_type",
-        "values": [
+        "case_sensitive": false,
+        "scope": [
 
-        ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "user_subscription_sourceable_type",
-        "values": [
-
-        ],
-        "type": "builtin",
-        "db": false,
-        "allow_nil": false
+        ]
       }
     ]
   },
@@ -2731,21 +5237,100 @@
     "table": "webhook_endpoints",
     "class": "WebhookEndpoint",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "events",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "target_url",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
     "table": "welcomes",
     "class": "Welcome",
     "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   },
   {
     "table": "welcome_notifications",
     "class": "WelcomeNotification",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
 
+        ]
+      }
     ]
   }
 ]
