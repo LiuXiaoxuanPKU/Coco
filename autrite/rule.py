@@ -527,8 +527,8 @@ class AddPredicate(Rule):
             conditions = []
             if 'where' in q:
                 conditions.append(extract_cond(q['where']))
-            if 'join' in q:
-                conditions += extract_join(q['join'])
+            if isinstance(q['from'], list) and 'inner join' in q['from'][1]:
+                conditions.append(extract_cond(q['from'][1]['on']))
             return conditions
 
         def extract_constraints():
@@ -566,11 +566,10 @@ class AddPredicate(Rule):
                         or (isinstance(lhs, z3.z3.ArithRef) and (type(rhs) in [int, float])) \
                         or ((type(lhs) in [int, float]) and isinstance(rhs, z3.z3.ArithRef)):
                         candidates.append(lhs > rhs)
-                        # candidates.append(lhs >= rhs) # does not enumerate >= for now
+                        candidates.append(lhs >= rhs) # does not enumerate >= for now
                         candidates.append(lhs == rhs)
                     else:
                         continue
-
             cond = None
             for binop in binops:
                 if cond is None:
@@ -614,6 +613,8 @@ class AddPredicate(Rule):
             def is_redundant(can, all_ops):
                 # assume candidate is in the form : variable op variable/value
                 lhs, rhs = can.children()[0], can.children()[1]
+                if type(rhs) not in [z3.z3.RatNumRef, z3.z3.IntNumRef]:
+                    return False
                 relate_ops = set([o for o in all_ops if str(o.children()[0]) == str(lhs)])
                 if str(can.decl()) in ["<", "<="]:
                     relate_ops = [o for o in relate_ops if str(o.decl()) in ["<", "<="] and \
