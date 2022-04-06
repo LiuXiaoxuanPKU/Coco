@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 import matplotlib.pyplot as plt
 
-class Query:
+class EvalQuery:
     def __init__(self, template) -> None:
         self.template = template
         self.before = None
@@ -135,7 +135,11 @@ def load_json_queries(filename):
     with open(rewrite_file, "r") as f:
         lines = f.readlines()  
     return [json.loads(line) for line in lines]
-      
+
+# get all the queries, incluing queries that cannot be rewritten
+# for each raw query, there will be an entry, and use rewrites to fill out raw queries
+# we also generate parameters for raw queries in the step
+# the step prepare the inputs for evaluation
 def get_all_queries(appname):
     rewrite_filename = get_filename(FileType.REWRITE, appname)
     rewrite_objs = load_json_queries(rewrite_filename)
@@ -145,7 +149,7 @@ def get_all_queries(appname):
     
     query_file =  get_filename(FileType.RAW_QUERY, appname)
     queries = Loader.load_queries(query_file, offset=0, cnt=10000)
-    queries = [Query(format(q)) for q in queries]
+    queries = [EvalQuery(format(q)) for q in queries]
     for q in queries:
         key = get_str_hash(q.template)
         if key in rewrite_map:
@@ -168,13 +172,18 @@ def get_all_queries(appname):
             exp_recorder.record("after", q.after)
             exp_recorder.record("rewrites", q.rewrites)
             exp_recorder.dump(get_filename(FileType.PARAM_QUERY, appname))
-    
+
+# Get query performance
+# pg performance with db constraints
+# constropt performance with db constraints --> missing
+# pg performance with db + model constraints
+# constropt performance with db + model constraints  
 def get_all_perf(appname):
     all_filename = get_filename(FileType.PARAM_QUERY, appname)
     q_objs = load_json_queries(all_filename)
     queries = []
     for obj in q_objs:
-        q = Query(obj['template'])
+        q = EvalQuery(obj['template'])
         q.before, q.after = obj['before'], obj['after']
         q.rewrites = obj["rewrites"]
         queries.append(q)

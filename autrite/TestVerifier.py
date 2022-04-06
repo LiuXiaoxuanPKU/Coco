@@ -25,10 +25,8 @@ class TestVerifier:
             return []
         
         eq_qs = []
-        for rq in rewritten_queries:        
-            rq.sql_param = generate_query_param_single(format(rq.q), connect_str, cache)
-            
         for rq in tqdm(rewritten_queries):
+            rq.sql_param = generate_query_param_single(format(rq.q), connect_str, cache)
             if rq.sql_param is None:
                 continue
             try:

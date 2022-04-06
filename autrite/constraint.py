@@ -90,7 +90,7 @@ class NumericalConstraint(Constraint):
             return v <= self.max
 
     def __str__(self) -> str:
-        return "Numerical_table_%s_field_%s_min_%d_max_%d_allownil_%d" % (self.table, self.field, self.min, self.max, self.allow_nil)
+        return "Numerical_table_%s_field_%s_min_%s_max_%s_allownil_%d" % (self.table, self.field, self.min, self.max, self.allow_nil)
 
 class ForeignKeyConstraint(Constraint):
     pass

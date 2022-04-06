@@ -1,4 +1,4 @@
-from config import RewriteQuery
+from config import REWRITE_LIMIT, RewriteQuery
 from constraint import *
 from rule import AddPredicate, RemoveDistinct, AddLimitOne, RemoveJoin, RemovePredicate, RewriteNullPredicate, UnionToUnionAll, ReplaceOuterJoin
 from mo_sql_parsing import format
@@ -77,6 +77,8 @@ class Rewriter:
         rewritten_queries = [q]
         applied_rules = []
         for rule in rules:
+            if len(rewritten_queries) > REWRITE_LIMIT:
+                break
             applied_rules.append(rule)
             rule_rewritten_qs = []
             for rq in rewritten_queries:

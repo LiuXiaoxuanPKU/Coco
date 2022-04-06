@@ -113,7 +113,7 @@ class Rule:
                 re = Rule.comb(rewritten_items)[1:]
                 for r in re:
                     rewritten_cond.append({op:copy.deepcopy(r)})
-
+                return rewritten_cond
             elif op in ["exists", "missing"]:
                 v = cond[op]
                 # nested query
@@ -123,13 +123,15 @@ class Rule:
                         rewritten_cond.append({op:r1})
                 return rewritten_cond
             else:
+                if isinstance(cond[op], dict):
+                    return rewritten_cond
                 lhs, rhs = cond[op][0], cond[op][1]
                 # nested query
                 if isinstance(rhs, dict) and ('select' in rhs or 'select_distinct' in rhs):
                     rewritten_rhs = self.apply(rhs)
                     for r1 in rewritten_rhs:
                         rewritten_cond.append({op:[copy.deepcopy(lhs), r1]})
-            return rewritten_cond
+                return rewritten_cond
 
 
         # WHERE, HAVING
@@ -443,7 +445,7 @@ class AddPredicate(Rule):
         def translate_lhs(t, _type):
             if _type is None or t is None:
                 return None
-            if '.' in t:
+            if isinstance(t, str) and '.' in t:
                 t = t.split('.')[-1]
             if _type == int:
                 ret = z3.Int(t)
