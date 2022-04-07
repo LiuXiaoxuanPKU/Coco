@@ -13,7 +13,7 @@ class DBExtractor < Extractor
       field = tokens[0].split(' ')[1][1..-2]
       token_with_limit = tokens.select { |t| t.include? 'limit' }[0]
       limit = token_with_limit['limit'.length..-1].to_i
-      return LengthConstraint.new(field, 0, limit, true)
+      return LengthConstraint.new(field, 0, limit, true, true)
     end
     # presence constraint
     if line.include? 'null: false'

@@ -74,5 +74,5 @@ class Loader:
             except:
                 fail_raw_queries.append(line)
         print("======================[Success] Parse unique queries %d" % len(q_objs))
-        print("======================[Fail] Parse %d queries" % len(fail_raw_queries))
+        print("======================[Fail]    Parse %d queries" % len(fail_raw_queries))
         return q_objs

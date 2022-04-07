@@ -3,18 +3,7 @@ from termios import TIOCPKT_DOSTOP
 import z3
 from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
-
-PRIORITY_MAP = {
-    "AddPredicate" : 6,
-    "RewriteNullPredicate" : 5,
-    "RemovePredicate" : 4,
-    "RemoveJoin" : 3,
-    "RemoveDistinct" : 2,
-    "AddLimitOne" : 1,
-    "UnionToUnionAll" : 0
-}
-
-REWRITE_LIMIT = 10000
+from config import PRIORITY_MAP, REWRITE_LIMIT
 
 class Rule:
     def __init__(self, cs) -> None:
@@ -124,7 +113,7 @@ class Rule:
                 re = Rule.comb(rewritten_items)[1:]
                 for r in re:
                     rewritten_cond.append({op:copy.deepcopy(r)})
-
+                return rewritten_cond
             elif op in ["exists", "missing"]:
                 v = cond[op]
                 # nested query
@@ -134,13 +123,15 @@ class Rule:
                         rewritten_cond.append({op:r1})
                 return rewritten_cond
             else:
+                if isinstance(cond[op], dict):
+                    return rewritten_cond
                 lhs, rhs = cond[op][0], cond[op][1]
                 # nested query
                 if isinstance(rhs, dict) and ('select' in rhs or 'select_distinct' in rhs):
                     rewritten_rhs = self.apply(rhs)
                     for r1 in rewritten_rhs:
                         rewritten_cond.append({op:[copy.deepcopy(lhs), r1]})
-            return rewritten_cond
+                return rewritten_cond
 
 
         # WHERE, HAVING
@@ -194,6 +185,27 @@ class AddLimitOne(Rule):
             return [rewritten_q]
         return []
 
+class ReplaceOuterJoin(Rule):
+    def __init__(self, cs) -> None:
+        super().__init__(cs)
+        self.name = "ReplaceOuterJoin"
+    
+    def apply_single(self, q):
+        if not 'from' in q:
+            return []
+
+        from_clause = q['from']
+        rewritten_queries = []
+        for i, token in enumerate(from_clause):
+            if isinstance(token, dict):
+                key = list(token.keys())[0]
+                if key == 'outer join' or key == 'left outer join' or key == 'left join':
+                    rq = copy.deepcopy(q)
+                    join = rq['from'][i].pop(key)
+                    rq['from'][i]['inner join'] = join
+                    rewritten_queries.append(rq)
+        return rewritten_queries
+
 class RemoveJoin(Rule):
     def __init__(self, cs) -> None:
         super().__init__(cs)
@@ -246,6 +258,10 @@ class RemoveJoin(Rule):
             return [item for sublist in ll for item in sublist]
 
         def remove_table_predicate(drop_tables, clause):
+            # handle where False clause
+            if not isinstance(clause, dict):
+                return clause
+            
             op = list(clause.keys())[0]
             if op == "and" or op == "or":
                 clause_list = clause[op]
@@ -255,7 +271,7 @@ class RemoveJoin(Rule):
                     return None
                     # only one element is left, so we do not need and/or any more
                 elif len(items) == 1:
-                    items[0]
+                    return items[0]
                     # otherwise, we create a new dic with old op and existing rewrites
                 else:
                     return {op: items}
@@ -420,13 +436,17 @@ class AddPredicate(Rule):
             elif isinstance(t, str):
                 t = z3.Real(t)
                 return t, float # TODO: assume float for variables
+            # elif isinstance(t, dict):
+            #     return t['literal'], type(t['literal'])
             else:
-                print("[Warning] Unknow rhs %s of type %s" % (t, type(t)))
+                print("[Warning] Unknown rhs %s of type %s" % (t, type(t)))
                 return None, None
 
         def translate_lhs(t, _type):
             if _type is None or t is None:
                 return None
+            if isinstance(t, str) and '.' in t:
+                t = t.split('.')[-1]
             if _type == int:
                 ret = z3.Int(t)
                 return ret
@@ -436,8 +456,10 @@ class AddPredicate(Rule):
             elif _type == bool:
                 ret = z3.Bool(t)
                 return ret
+            # elif _type == str:
+            #     return t
             else:
-                print("[Warning] Unknow lhs %s of type %s" % (t, type(t)))
+                print("[Warning] Unknown lhs %s of type %s" % (t, type(t)))
                 return None
 
         all_ops = []
@@ -505,8 +527,8 @@ class AddPredicate(Rule):
             conditions = []
             if 'where' in q:
                 conditions.append(extract_cond(q['where']))
-            if 'join' in q:
-                conditions += extract_join(q['join'])
+            if isinstance(q['from'], list) and 'inner join' in q['from'][1]:
+                conditions.append(extract_cond(q['from'][1]['on']))
             return conditions
 
         def extract_constraints():
@@ -544,11 +566,10 @@ class AddPredicate(Rule):
                         or (isinstance(lhs, z3.z3.ArithRef) and (type(rhs) in [int, float])) \
                         or ((type(lhs) in [int, float]) and isinstance(rhs, z3.z3.ArithRef)):
                         candidates.append(lhs > rhs)
-                        # candidates.append(lhs >= rhs) # does not enumerate >= for now
+                        candidates.append(lhs >= rhs) # does not enumerate >= for now
                         candidates.append(lhs == rhs)
                     else:
                         continue
-
             cond = None
             for binop in binops:
                 if cond is None:
@@ -576,7 +597,7 @@ class AddPredicate(Rule):
         # the output of binary operations is in z3 format
         binops = extract_binops(q)
 
-        # extarct constraints
+        # extract constraints
         # and translate into z3 format
         constraint_ops = extract_constraints()
         if len(constraint_ops) == 0:
@@ -592,6 +613,8 @@ class AddPredicate(Rule):
             def is_redundant(can, all_ops):
                 # assume candidate is in the form : variable op variable/value
                 lhs, rhs = can.children()[0], can.children()[1]
+                if type(rhs) not in [z3.z3.RatNumRef, z3.z3.IntNumRef]:
+                    return False
                 relate_ops = set([o for o in all_ops if str(o.children()[0]) == str(lhs)])
                 if str(can.decl()) in ["<", "<="]:
                     relate_ops = [o for o in relate_ops if str(o.decl()) in ["<", "<="] and \

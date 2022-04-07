@@ -1,6 +1,6 @@
-from config import RewriteQuery
+from config import REWRITE_LIMIT, RewriteQuery
 from constraint import *
-from rule import AddPredicate, RemoveDistinct, AddLimitOne, RemoveJoin, RemovePredicate, RewriteNullPredicate, UnionToUnionAll
+from rule import AddPredicate, RemoveDistinct, AddLimitOne, RemoveJoin, RemovePredicate, RewriteNullPredicate, UnionToUnionAll, ReplaceOuterJoin
 from mo_sql_parsing import format
 
 class Rewriter:
@@ -18,7 +18,7 @@ class Rewriter:
         
         # use constraints to generate potential rules
         rules = self.get_rules(constraints)
-        print("Apply rule", rules)
+        # print("Apply rule", rules)
         
         # order rules, apply slow rules (add predicate, remove predicate) first
         rules.sort()
@@ -58,7 +58,7 @@ class Rewriter:
         constraint_rule_map = {
             UniqueConstraint : [RemoveDistinct, AddLimitOne],
             NumericalConstraint : [AddPredicate, RemovePredicate],
-            PresenceConstraint : [RewriteNullPredicate],
+            PresenceConstraint : [RewriteNullPredicate, ReplaceOuterJoin, RemoveJoin],
             InclusionConstraint : [], 
             LengthConstraint : [],
             FormatConstraint : [],
@@ -77,6 +77,8 @@ class Rewriter:
         rewritten_queries = [q]
         applied_rules = []
         for rule in rules:
+            if len(rewritten_queries) > REWRITE_LIMIT:
+                break
             applied_rules.append(rule)
             rule_rewritten_qs = []
             for rq in rewritten_queries:
