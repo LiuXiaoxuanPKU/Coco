@@ -23,21 +23,29 @@ class TestInclusionConstraintQuery(unittest.TestCase):
         self.assertTrue(len(extracted) == 1)
 
     def test_select_distinct(self):
-        cs = [InclusionConstraint("attachments", "filename")]
+        cs = [InclusionConstraint("attachments", "filename", [])]
         q = "SELECT DISTINCT attachments.filename AS alias_0, projects.id FROM projects LEFT OUTER JOIN attachments ON attachments.container_id = projects.id AND attachments.container_type = 1 WHERE projects.id = 2 ORDER BY attachments.filename ASC LIMIT 3"
         q = parse(q)
         extracted = ExtractInclusionRule(cs).apply(q)
         self.assertTrue(len(extracted) == 1)
 
     def test_join(self):
-        cs = [InclusionConstraint("attachments", "container_id")]
+        cs = [InclusionConstraint("projects", "id", [])]
         q = "SELECT DISTINCT attachments.filename AS alias_0, projects.id FROM projects LEFT OUTER JOIN attachments ON attachments.container_id = projects.id AND attachments.container_type = 1 WHERE projects.id = 2 ORDER BY attachments.filename ASC LIMIT 3"
         q = parse(q)
         extracted = ExtractInclusionRule(cs).apply(q)
         self.assertTrue(len(extracted) == 1)
 
+    def test_on(self):
+        cs = [InclusionConstraint("attachments", "container_id", [])]
+        q = "SELECT DISTINCT attachments.filename AS alias_0, projects.id FROM projects LEFT OUTER JOIN attachments ON attachments.container_id = projects.id AND attachments.container_type = 1 WHERE projects.id = 2 ORDER BY attachments.filename ASC LIMIT 3"
+        q = parse(q)
+        print(q)
+        extracted = ExtractInclusionRule(cs).apply(q)
+        self.assertTrue(len(extracted) == 1)
+
     def test_order_by(self):
-        cs = [InclusionConstraint("attachments", "butterfly")]
+        cs = [InclusionConstraint("attachments", "butterfly", [])]
         q = "SELECT DISTINCT attachments.filename AS alias_0, projects.id FROM projects LEFT OUTER JOIN attachments ON attachments.container_id = projects.id AND attachments.container_type = 1 WHERE projects.id = 2 ORDER BY attachments.butterfly ASC LIMIT 3"
         q = parse(q)
         extracted = ExtractInclusionRule(cs).apply(q)
