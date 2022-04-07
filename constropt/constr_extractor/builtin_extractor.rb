@@ -9,7 +9,7 @@ end
 class BuiltinExtractor < Extractor
   BUILTIN_VALIDATOR = %w[validates_presence_of validates_uniqueness_of
                          validates_format_of validates_length_of
-                         belongs_to validates_inclusion_of 
+                         belongs_to validates_inclusion_of
                          validates_numericality_of validates].freeze
 
   def initialize
@@ -62,7 +62,6 @@ class BuiltinExtractor < Extractor
     when 'validates_numericality_of'
       constraints = extract_builtin_numerical(ast)
     when 'belongs_to'
-      # extract_builtin_belongs_to(ast)
       constraints = extract_builtin_foreign(ast)
     constraints
   end
