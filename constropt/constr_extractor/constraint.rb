@@ -111,14 +111,13 @@ class BelongsToConstraint < Constraint
   end
 end
 
-class HasAndBelongsToManyConstraint < Constraint
-  attr_accessor :class_name, :join_table, :foreign_key, :callable
+class ForeignKeyConstraint < Constraint
+  attr_accessor :class_name, :fk_column_name
 
-  def initialize(field, class_name, join_table, foreign_key, callable, db = false, allow_nil = false)
+  def initialize(field, class_name, fk_column_name, db = false, allow_nil = true)
     super(field, db, allow_nil)
+    @field_name = field
     @class_name = class_name
-    @join_table = join_table
-    @foreign_key = foreign_key
-    @callable = callable
+    @fk_column_name = fk_column_name
   end
 end
