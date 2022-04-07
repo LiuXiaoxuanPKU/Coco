@@ -40,7 +40,6 @@ class TestInclusionConstraintQuery(unittest.TestCase):
         cs = [InclusionConstraint("attachments", "container_id", [])]
         q = "SELECT DISTINCT attachments.filename AS alias_0, projects.id FROM projects LEFT OUTER JOIN attachments ON attachments.container_id = projects.id AND attachments.container_type = 1 WHERE projects.id = 2 ORDER BY attachments.filename ASC LIMIT 3"
         q = parse(q)
-        print(q)
         extracted = ExtractInclusionRule(cs).apply(q)
         self.assertTrue(len(extracted) == 1)
 
