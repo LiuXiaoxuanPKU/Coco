@@ -134,5 +134,8 @@ class ExtractInclusionRule(rule.Rule):
         # base case: does not contain and/or
         else:
             t, f = clause[op][0].split(".")
-            return t in self.cs_tables and f in self.table_to_field[t]
+            if isinstance(f, str):
+                return t in self.cs_tables and f in self.table_to_field[t]
+            else: 
+                return False
         
