@@ -9,9 +9,8 @@ end
 class BuiltinExtractor < Extractor
   BUILTIN_VALIDATOR = %w[validates_presence_of validates_uniqueness_of
                          validates_format_of validates_length_of
-                         validates_inclusion_of belongs_to
-                         validates_inclusion_of validates_numericality_of
-                         validates].freeze
+                         belongs_to validates_inclusion_of 
+                         validates_numericality_of validates].freeze
 
   def initialize
     @builtin_validation_cnt = 0
@@ -65,9 +64,6 @@ class BuiltinExtractor < Extractor
     when 'belongs_to'
       # extract_builtin_belongs_to(ast)
       constraints = extract_builtin_foreign(ast)
-    when 'state_machine'
-      constraints = extract_builtin_state_machine(ast)
-    end
     constraints
   end
 
@@ -284,7 +280,7 @@ class BuiltinExtractor < Extractor
         max = v[0].to_i if !k.nil? && %w[less_than_or_equal_to less_than].include?(k)
       rescue StandardError
         puts "[Error] Fail to parse min, max value k: #{k}, v: #{v.source}"
-        end
+      end
       allow_nil = true if !k.nil? && %w[allow_nil allow_blank].include?(k)
     end
     [min, max, allow_nil]
@@ -341,10 +337,6 @@ class BuiltinExtractor < Extractor
       constraints << c
     end
     constraints
-  end
-
-  def extract_builtin_state_machine(ast)
-    []
   end
 
 end
