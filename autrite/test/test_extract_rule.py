@@ -23,21 +23,25 @@ class TestInclusionConstraintQuery(unittest.TestCase):
         self.assertTrue(len(extracted) == 1)
 
     def test_select_distinct(self):
-        cs = []
+        cs = [InclusionConstraint("attachments", "filename")]
         q = "SELECT DISTINCT attachments.filename AS alias_0, projects.id FROM projects LEFT OUTER JOIN attachments ON attachments.container_id = projects.id AND attachments.container_type = 1 WHERE projects.id = 2 ORDER BY attachments.filename ASC LIMIT 3"
         q = parse(q)
         extracted = ExtractInclusionRule(cs).apply(q)
-        self.assertTrue(len(extracted) > 1)
+        self.assertTrue(len(extracted) == 1)
 
     def test_join(self):
-        cs = []
-        q = "SELECT boards.* FROM boards INNER JOIN projects ON projects.id = boards.project_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND boards.id = 1 LIMIT 2"
+        cs = [InclusionConstraint("attachments", "container_id")]
+        q = "SELECT DISTINCT attachments.filename AS alias_0, projects.id FROM projects LEFT OUTER JOIN attachments ON attachments.container_id = projects.id AND attachments.container_type = 1 WHERE projects.id = 2 ORDER BY attachments.filename ASC LIMIT 3"
         q = parse(q)
         extracted = ExtractInclusionRule(cs).apply(q)
-        self.assertTrue(len(extracted) > 1)
+        self.assertTrue(len(extracted) == 1)
 
-    def test_subquery(self):
-        pass
+    def test_order_by(self):
+        cs = [InclusionConstraint("attachments", "butterfly")]
+        q = "SELECT DISTINCT attachments.filename AS alias_0, projects.id FROM projects LEFT OUTER JOIN attachments ON attachments.container_id = projects.id AND attachments.container_type = 1 WHERE projects.id = 2 ORDER BY attachments.butterfly ASC LIMIT 3"
+        q = parse(q)
+        extracted = ExtractInclusionRule(cs).apply(q)
+        self.assertTrue(len(extracted) == 1)
 
 if __name__ == "__main__":
     unittest.main()
