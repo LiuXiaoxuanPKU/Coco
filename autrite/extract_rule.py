@@ -136,10 +136,3 @@ class ExtractInclusionRule(rule.Rule):
             t, f = clause[op][0].split(".")
             return t in self.cs_tables and f in self.table_to_field[t]
         
-    
-    # assume if there is join there is table.column 
-
-    # example:
-    # {'select': {'value': 1, 'name': 'one'}, 'from': 'attachments', 
-    # 'where': {'and': [{'eq': ['disk_filename', {'literal': '060719210727_archive.zip'}]}, 
-    # {'neq': ['id', 21]}]}, 'limit': '$1'}
