@@ -2,11 +2,15 @@ require_relative 'ast_handler'
 require_relative 'base_extractor'
 require_relative 'constraint'
 
+def trim_string(s)
+  s.delete_prefix("'").delete_suffix("'").delete_prefix('"').delete_suffix('"')
+end
+
 class BuiltinExtractor < Extractor
   BUILTIN_VALIDATOR = %w[validates_presence_of validates_uniqueness_of
                          validates_format_of validates_length_of
-                         validates_inclusion_of validates_numericality_of
-                         validates].freeze
+                         belongs_to validates_inclusion_of
+                         validates_numericality_of validates].freeze
 
   def initialize
     @builtin_validation_cnt = 0
@@ -57,7 +61,8 @@ class BuiltinExtractor < Extractor
       constraints = extract_builtin_length(ast)
     when 'validates_numericality_of'
       constraints = extract_builtin_numerical(ast)
-    end
+    when 'belongs_to'
+      constraints = extract_builtin_foreign(ast)
     constraints
   end
 
@@ -301,4 +306,36 @@ class BuiltinExtractor < Extractor
     end
     constraints
   end
+
+  def extract_builtin_foreign(ast)
+    constraints = []
+    fields = []
+    content = ast[1].children
+    class_name = nil
+    fk_column_name = nil
+    content.each do |node|
+      field = handle_symbol_literal_node(node)
+      fields << field unless field.nil?
+      node.children.each do |n|
+        k, v = handle_assoc_node(n)
+        fk_column_name = trim_string(v.source) if !k.nil? && (k == 'foreign_key')
+        class_name = trim_string(v.source) if !k.nil? && (k == 'class_name')
+      end
+    end
+
+    if class_name.nil?
+      class_name = fields[0].capitalize
+    end
+    if fk_column_name.nil?
+      fk_column_name = fields[0].downcase
+      fk_column_name << "_id"
+    end
+
+    fields.each do |field|
+      c = ForeignKeyConstraint.new(field, class_name, fk_column_name)
+      constraints << c
+    end
+    constraints
+  end
+
 end

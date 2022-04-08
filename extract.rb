@@ -8,19 +8,16 @@ require_relative 'constropt/constr_extractor/state_machine_extractor'
 require_relative 'constropt/constr_extractor/constraint'
 require_relative 'constropt/constr_extractor/serializer'
 
+
 appname = "openproject"
 engine = Engine.new("constropt/constr_extractor/test/data/#{appname}_models")
 root = engine.run
 
 builtin_t = Traversor.new(BuiltinExtractor.new)
 builtin_t.traverse(root)
-constraints_cnt = engine.get_constraints_cnt(root)
-puts "After extracting builtin, # of constraints #{constraints_cnt}"
 
 class_inheritance_t = Traversor.new(ClassInheritanceExtractor.new)
 class_inheritance_t.traverse(root)
-constraints_cnt = engine.get_constraints_cnt(root)
-puts "After extracting class inheritance, # of constraints #{constraints_cnt}"
 
 state_machine = Traversor.new(StateMachineExtractor.new)
 state_machine.traverse(root)
