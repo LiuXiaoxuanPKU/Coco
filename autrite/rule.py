@@ -527,7 +527,7 @@ class AddPredicate(Rule):
             conditions = []
             if 'where' in q:
                 conditions.append(extract_cond(q['where']))
-            if isinstance(q['from'], list) and 'inner join' in q['from'][1]:
+            if 'from' in q and isinstance(q['from'], list) and 'inner join' in q['from'][1]:
                 conditions.append(extract_cond(q['from'][1]['on']))
             return conditions
 

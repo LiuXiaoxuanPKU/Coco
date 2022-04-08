@@ -1,6 +1,15 @@
+import os
 import json, random, hashlib
 from collections import OrderedDict
 from evaluator import Evaluator
+
+def load_json_queries(filename):
+    rewrite_file =  filename
+    if not os.path.isfile(rewrite_file):
+        print("[Error] Please first generate rewrite")
+    with open(rewrite_file, "r") as f:
+        lines = f.readlines()  
+    return [json.loads(line) for line in lines]
 
 def get_str_hash(str):
     return hashlib.sha256(str.encode('utf-8')).hexdigest()
@@ -98,7 +107,7 @@ class GlobalExpRecorder:
     def dump(self, filename):
         with open(filename, "a") as fout:
             fout.write(json.dumps(self.val_dict) + '\n')
-        print("Save exp results to %s" % filename)
+        # print("Save exp results to %s" % filename)
 
     def clear(self):
         pass

@@ -19,12 +19,10 @@ if __name__ == '__main__':
     appname = "redmine"
     constraint_filename = get_filename(FileType.CONSTRAINT, appname)
     query_filename = get_filename(FileType.RAW_QUERY, appname)
-    # query_filename = "../queries/redmine/redmine_remove_predicate.sql"
     offset = 0
     query_cnt = 10000
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
              rule.AddLimitOne, rule.RemoveJoin, rule.AddPredicate, rule.ReplaceOuterJoin]
-    # rules = [rule.AddPredicate]
 
     constraints = Loader.load_constraints(constraint_filename)
     queries = Loader.load_queries(query_filename, offset, query_cnt)
@@ -38,7 +36,9 @@ if __name__ == '__main__':
     total_candidate_cnt = 0
     total_verified_cnt = 0
     only_rewrite = False
-    for i,q in tqdm(enumerate(queries)):
+    rewrite_faster_cnt = 0
+    rewrite_slower_cnt = 0
+    for q in tqdm(queries):
         start = time.time()
         try:
             rewritten_queries = rewriter.rewrite(constraints, q)
@@ -50,7 +50,7 @@ if __name__ == '__main__':
         candidate_cnt.append(len(rewritten_queries))
         if len(rewritten_queries) == 0:
             continue
-        
+        print(format(q.q)) 
         print("============Start Test ==================")
         # use tests to check equivalence
         param_verified_queries = TestVerifier().verify(appname, q, constraints, rewritten_queries)
@@ -70,27 +70,34 @@ if __name__ == '__main__':
         
         print("============Start Prove==================")
         # TODO: verify rewritten queries
-        verified_queries = ProveVerifier().verify(appname, q, constraints, rewritten_queries)
-
+        # verified_queries = ProveVerifier().verify(appname, q, constraints, rewritten_queries)
+        verified_queries = rewritten_queries
+        
         print("===========Start Evaluate Cost==============")
         # evaluate query performance
         org_cost = Evaluator.evaluate_cost(q.sql_param, CONNECT_MAP[appname])
+        # print("org", q.sql_param, org_cost)
         min_cost = org_cost
         best_q = None
         for vq in param_verified_queries:
             cost = Evaluator.evaluate_cost(vq.sql_param, CONNECT_MAP[appname])
+            print(vq.sql_param, cost)
             if cost < min_cost:
                 min_cost, best_q = cost, vq
 
         if min_cost < org_cost:
+            rewrite_faster_cnt += 1
             exp_recorder.record("id",  get_str_hash(format(q.q)))
             exp_recorder.record("org_cost", org_cost)
             exp_recorder.record("min_cost", min_cost)
             exp_recorder.record("rules", list(set([r.get_name() for r in best_q.rewrites])))
+            exp_recorder.record("candidate_cnt", len(param_verified_queries))
             exp_recorder.record("org_q", q.sql_param)
             exp_recorder.record("rewrite_q", best_q.sql_param)
             exp_recorder.record("template",  format(q.q))
             exp_recorder.dump(get_filename(FileType.REWRITE, appname))
+        else:
+            rewrite_slower_cnt += 1
     
         if best_q is not None:
             print("Org q %s, org cost %f" % (q.sql_param, org_cost))
@@ -98,6 +105,8 @@ if __name__ == '__main__':
         
 
     print("Rewrite Number %d" % rewrite_cnt)
+    print("Rewrite Faster Number %d" % rewrite_faster_cnt)
+    print("Rewrite Slower Number %d" % rewrite_slower_cnt)
     print("Total candidate cnt %d" % total_candidate_cnt)
     print("Total verified cnt %d" % total_verified_cnt)
     # exp_recorder.record("rules", [str(r.__name__) for r in rules])

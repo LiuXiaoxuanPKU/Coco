@@ -11,7 +11,7 @@ class TestVerifier:
     def get_connect_str(self, appname):
         return CONNECT_MAP[appname]
 
-    def verify(self, appname, q, constraints, rewritten_queries):
+    def verify(self, appname, q, constraints, rewritten_queries, show_progress=False):
         connect_str = self.get_connect_str(appname)
         cache = {}
         q.sql_param = generate_query_param_single(format(q.q), connect_str, cache)
@@ -25,7 +25,11 @@ class TestVerifier:
             return []
         
         eq_qs = []
-        for rq in tqdm(rewritten_queries):
+        if show_progress:
+            iter = tqdm(rewritten_queries)
+        else:
+            iter = rewritten_queries
+        for rq in iter:
             rq.sql_param = generate_query_param_single(format(rq.q), connect_str, cache)
             if rq.sql_param is None:
                 continue

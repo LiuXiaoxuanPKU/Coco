@@ -3,7 +3,9 @@ import os.path, json, traceback
 from loader import Loader
 from evaluator import Evaluator
 import numpy as np
-from utils import exp_recorder, generate_query_param_single, generate_query_params, get_str_hash, test_query_result_equivalence
+from utils import exp_recorder, generate_query_param_single,\
+    generate_query_params, get_str_hash, test_query_result_equivalence,\
+    load_json_queries
 from config import CONNECT_MAP, FileType, get_filename
 import constraint
 from mo_sql_parsing import format
@@ -127,14 +129,6 @@ def filter_queries(queries, constraints):
             
     return q_with_constraints
         
-             
-def load_json_queries(filename):
-    rewrite_file =  filename
-    if not os.path.isfile(rewrite_file):
-        print("[Error] Please first generate rewrite")
-    with open(rewrite_file, "r") as f:
-        lines = f.readlines()  
-    return [json.loads(line) for line in lines]
 
 # get all the queries, incluing queries that cannot be rewritten
 # for each raw query, there will be an entry, and use rewrites to fill out raw queries
