@@ -339,14 +339,27 @@ class RewriteNullPredicate(Rule):
                 field = clause[op]
                 if not isinstance(field, str):
                     return clause, False
-                if self.constraint.field == field or self.constraint.field == field.split(".")[-1]:
+                tokens = field.split(".") 
+                if len(tokens) > 1:
+                    table, field = tokens[0], tokens[1]
+                else:
+                    table, field = None, tokens[0]
+                if (table is None and self.constraint.field == field) or \
+                        (self.constraint.field == field and self.constraint.table == table):
                     return False, True
                 return clause, False
             elif op == "exists":
                 field = clause[op]
                 if not isinstance(field, str):
                     return clause, False
-                if self.constraint.field == field or self.constraint.field == field.split(".")[-1]:
+                tokens = field.split(".") 
+                if len(tokens) > 1:
+                    table, field = tokens[0], tokens[1]
+                else:
+                    table, field = None, tokens[0] 
+ 
+                if (table is None and self.constraint.field == field) or \
+                        (self.constraint.field == field and self.constraint.table == table): 
                     return True, True  
                 return clause, False
             else: # base case, does not contain and/or and does not have constraint
