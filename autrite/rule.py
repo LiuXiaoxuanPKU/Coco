@@ -339,11 +339,11 @@ class RewriteNullPredicate(Rule):
                 field = clause[op]
                 if not isinstance(field, str):
                     return clause, False
-                tokens = field.split(".") 
-                if len(tokens) > 1:
-                    table, field = tokens[0], tokens[1]
+                field_tokens = field.split(".") 
+                if len(field_tokens) > 1:
+                    table, field = field_tokens[0], field_tokens[1]
                 else:
-                    table, field = None, tokens[0]
+                    table, field = None, field_tokens[0]
                 if (table is None and self.constraint.field == field) or \
                         (self.constraint.field == field and self.constraint.table == table):
                     return False, True
@@ -352,11 +352,11 @@ class RewriteNullPredicate(Rule):
                 field = clause[op]
                 if not isinstance(field, str):
                     return clause, False
-                tokens = field.split(".") 
-                if len(tokens) > 1:
-                    table, field = tokens[0], tokens[1]
+                field_tokens = field.split(".") 
+                if len(field_tokens) > 1:
+                    table, field = field_tokens[0], field_tokens[1]
                 else:
-                    table, field = None, tokens[0] 
+                    table, field = None, field_tokens[0] 
  
                 if (table is None and self.constraint.field == field) or \
                         (self.constraint.field == field and self.constraint.table == table): 
@@ -440,7 +440,7 @@ class AddPredicate(Rule):
         self.name = "AddPredicate"
         
     def apply_single(self, q):
-        tokens = set([])
+        constraint_tokens = set([])
         skip_tokens = set([])
 
         def translate_rhs(t):
@@ -477,6 +477,7 @@ class AddPredicate(Rule):
 
         all_ops = []
         def extract_binops(q):
+            predicate_tokens_map = {}
             def extract_cond(cond):
                 key = list(cond.keys())
                 assert(len(key) == 1)
@@ -502,8 +503,12 @@ class AddPredicate(Rule):
                     if lhs is None or rhs is None:
                         return None
                     
-                    tokens.add(lhs)
-                    tokens.add(rhs)
+                    if lhs not in predicate_tokens_map:
+                        predicate_tokens_map[lhs] = []
+                    if rhs not in predicate_tokens_map:
+                        predicate_tokens_map[rhs] = []
+                    predicate_tokens_map[lhs].append(rhs)
+                    predicate_tokens_map[rhs].append(lhs)
                     if key == "gt":
                         all_ops.append(lhs > rhs)
                         all_ops.append(rhs < lhs)
@@ -542,31 +547,32 @@ class AddPredicate(Rule):
                 conditions.append(extract_cond(q['where']))
             if 'from' in q and isinstance(q['from'], list) and 'inner join' in q['from'][1]:
                 conditions.append(extract_cond(q['from'][1]['on']))
-            return conditions
+            return conditions, predicate_tokens_map 
 
         def extract_constraints():
+            constraint_tokens = set([])
             conditions = []
             c = self.constraint
             if isinstance(c, NumericalConstraint):
                 tmp = z3.Real(c.field)
-                tokens.add(tmp)
+                constraint_tokens.add(tmp)
                 if c.min is not None and c.max is not None:
                     conditions.append(z3.And(tmp >= c.min, tmp <= c.max))
-                    tokens.add(c.min)
-                    tokens.add(c.max)
+                    constraint_tokens.add(c.min)
+                    constraint_tokens.add(c.max)
                     all_ops.append(tmp >= c.min)
                     all_ops.append(tmp <= c.max)
                 elif c.min is not None:
                     conditions.append(tmp >= c.min)
-                    tokens.add(c.min)
+                    constraint_tokens.add(c.min)
                     all_ops.append(tmp >= c.min)
                 elif c.max is not None:
                     conditions.append(tmp <= c.max)
-                    tokens.add(c.max)
+                    constraint_tokens.add(c.max)
                     all_ops.append(tmp <= c.max)
-            return conditions
+            return conditions, list(constraint_tokens)
 
-        def deduct(binops):
+        def deduct(binops, tokens):
             candidates = []
             for lhs in set(tokens):
                 for rhs in set(tokens):
@@ -606,20 +612,30 @@ class AddPredicate(Rule):
                     validate_candidates.append(candidate)
             return validate_candidates
 
-        # extract binary operations from where and join conditions
-        # the output of binary operations is in z3 format
-        binops = extract_binops(q)
-
         # extract constraints
         # and translate into z3 format
-        constraint_ops = extract_constraints()
+        constraint_ops, constraint_tokens = extract_constraints()
         if len(constraint_ops) == 0:
             return []
+        # print("Constraint tokens", constraint_tokens)
+        # extract binary operations from where and join conditions
+        # the output of binary operations is in z3 format
+        binops, predicate_tokens_map = extract_binops(q)
 
         binops += constraint_ops
 
-        binops = [op for op in binops if op is not None]   
-        candidate_predicates = deduct(binops)
+        binops = [op for op in binops if op is not None]
+        
+        # only deduct tokens that might have constraints
+        candidate_tokens = []
+        for t in constraint_tokens:
+            if t in predicate_tokens_map:
+                candidate_tokens += predicate_tokens_map[t]
+        if len(candidate_tokens) == 0:
+            return []
+        
+        candidate_tokens += list(constraint_tokens)
+        candidate_predicates = deduct(binops, candidate_tokens)
 
         # if we already know a < 100, candidate a < 200 is redundant and should be removed
         def validate_predicates(candidates, all_ops):
