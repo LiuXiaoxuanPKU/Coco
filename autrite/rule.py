@@ -1,5 +1,4 @@
 import copy
-from termios import TIOCPKT_DOSTOP
 import z3
 from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
@@ -633,7 +632,7 @@ class AddPredicate(Rule):
                 candidate_tokens += predicate_tokens_map[t]
         if len(candidate_tokens) == 0:
             return []
-        
+       
         candidate_tokens += list(constraint_tokens)
         candidate_predicates = deduct(binops, candidate_tokens)
 

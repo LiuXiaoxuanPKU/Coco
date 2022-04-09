@@ -33,10 +33,11 @@ CONNECT_MAP = {
 }
 
 class RewriteQuery:
-    def __init__(self, q) -> None:
-        self.q = q
+    def __init__(self, q_raw, q_obj) -> None:
+        self.q_raw = q_raw
+        self.q_obj = q_obj # json representation of the query
         self.rewrites = []
-        self.sql_param = None
+        self.q_raw_param = None
         
 PRIORITY_MAP = {
     "AddPredicate" : 6,

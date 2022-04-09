@@ -38,7 +38,7 @@ def get_field_value(table_field, cache, connect_str, field_idx = -1):
         return cache[cache_name]
     try:
         table, field = table_field.split('.')
-        SQL = "SELECT %s FROM %s ORDER BY RANDOM() LIMIT 1" % (table_field, table)
+        SQL = "SELECT %s FROM %s ORDER BY RANDOM() LIMIT 1" % (field, table)
         ret =  Evaluator.evaluate_query(SQL, connect_str)
     except:
         return []

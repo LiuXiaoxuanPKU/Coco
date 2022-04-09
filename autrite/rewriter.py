@@ -2,6 +2,7 @@ from config import REWRITE_LIMIT, RewriteQuery
 from constraint import *
 from rule import AddPredicate, RemoveDistinct, AddLimitOne, RemoveJoin, RemovePredicate, RewriteNullPredicate, UnionToUnionAll, ReplaceOuterJoin
 from mo_sql_parsing import format
+import copy
 
 class Rewriter:
     def __init__(self) -> None:
@@ -12,7 +13,7 @@ class Rewriter:
 
     def rewrite(self, constraints, q):
         # identify constraints in q
-        constraints = Rewriter.get_q_constraints(constraints, q.q)
+        constraints = Rewriter.get_q_constraints(constraints, q.q_obj)
         if not len(constraints):
             return []
         
@@ -82,11 +83,11 @@ class Rewriter:
             applied_rules.append(rule)
             rule_rewritten_qs = []
             for rq in rewritten_queries:
-                rule_rewritten_qs += rule.apply(rq.q)
+                rule_rewritten_qs += rule.apply(rq.q_obj)
             
             rule_rewritten_q_objs = []
             for q in rule_rewritten_qs:
-                rq = RewriteQuery(q)
+                rq = RewriteQuery(format(q), q) 
                 rq.rewrites = applied_rules
                 rule_rewritten_q_objs.append(rq)
             
