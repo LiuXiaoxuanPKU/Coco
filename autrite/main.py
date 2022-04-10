@@ -11,7 +11,7 @@ from TestVerifier import TestVerifier
 from mo_sql_parsing import format
 from tqdm import tqdm
 import time
-from utils import exp_recorder, get_str_hash
+from utils import exp_recorder, get_str_hash, generate_query_param_rewrites
 
 from config import CONNECT_MAP, FileType, get_filename
 
@@ -55,6 +55,12 @@ if __name__ == '__main__':
 
         print("============Start Test ==================")
         # use tests to check equivalence
+        connect_str = CONNECT_MAP[appname]
+        succ = generate_query_param_rewrites(q, rewritten_queries, connect_str)
+        if not succ:
+            continue
+        # remove rewrites that fail to generate parameters
+        rewritten_queries = [rq for rq in rewritten_queries if rq.q_raw_param is not None]
         param_verified_queries = TestVerifier().verify(appname, q, constraints, rewritten_queries)
         # for rq in param_verified_queries:
         #     print("[Param Rewrite]", rq.q_raw)

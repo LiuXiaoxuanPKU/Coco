@@ -10,18 +10,23 @@ class FileType(Enum):
     REWRITE_DB_PERF = 7
     VERIFIER_INPUT = 8
     EMPTY_RESULT_QUERY = 9
+    VERIFIER_OUTPUT = 10
     
 def get_filename(_type, appname):
     m = {
+            # input query, constraint, create table sql
             FileType.RAW_QUERY : "../queries/%s/%s.pk" % (appname, appname),
-            FileType.REWRITE : "log/%s/%s_test_rewrite"  % (appname, appname),
             FileType.CONSTRAINT : "../constraints/%s"  % (appname),
+            FileType.VERIFIER_INPUT : "log/%s/cosette/create.sql" % appname,
+            # output sqls for cosette
+            FileType.VERIFIER_OUTPUT : "log/%s/cosette/" % appname,   
+            # output performance files
             FileType.PARAM_QUERY : "log/%s/all_queries" % appname,
             FileType.REWRITE_PERF : "log/%s/rewrite_perf" % appname,
             FileType.DB_PERF : "log/%s/db_perf" % appname,
-            FileType.REWRITE_DB_PERF : "log/%s/db_rewrite_perf" % appname,
-            FileType.VERIFIER_INPUT : "app_create_sql/all/%s/" % appname,      
-            FileType.EMPTY_RESULT_QUERY: "log/%s/empty_query" % appname 
+            FileType.REWRITE_DB_PERF : "log/%s/db_rewrite_perf" % appname,    
+            FileType.EMPTY_RESULT_QUERY: "log/%s/empty_query" % appname,
+            FileType.REWRITE : "log/%s/%s_test_rewrite"  % (appname, appname),
     }
     return m[_type]
 
@@ -38,6 +43,7 @@ class RewriteQuery:
         self.q_obj = q_obj # json representation of the query
         self.rewrites = []
         self.q_raw_param = None
+        self.estimate_cost = None # cost estimated by the verifier
         
 PRIORITY_MAP = {
     "AddPredicate" : 6,

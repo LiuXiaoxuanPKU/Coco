@@ -89,6 +89,17 @@ def generate_query_param_single(q, connect_str, cache):
     q = " ".join(tokens)
     return q
 
+# the rewrites and q should have the sample parameters
+# return False if fails to generate parameters for the original query, otherwise True
+def generate_query_param_rewrites(q, rewrites, connect_str):
+    cache = {}
+    q.q_raw_param = generate_query_param_single(q.q_raw, connect_str, cache)
+    if q.q_raw_param is None:
+        return False
+    for rq in rewrites:
+        rq.q_raw_param = generate_query_param_single(rq.q_raw, connect_str, cache)
+    return True
+        
 def generate_query_params(queries, connect_str, cache):
     param_qs = []
     for q in queries:
