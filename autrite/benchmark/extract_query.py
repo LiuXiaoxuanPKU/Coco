@@ -13,23 +13,25 @@ from utils import GlobalExpRecorder
 # dump the results into logs
 # ------------------------------------------------------------------------------
 def main(verbal) -> None:
-    # make sure log file is clear
+    # make sure log file is clean
     recorder = GlobalExpRecorder()
-    recorder.clear()
+    recorder.clear(get_filename(FileType.QUERY_NUM))
 
     appnames = ['openproject', 'forem', 'redmine']
+    name_to_type = {'inclusion': constraint.InclusionConstraint, 
+               'length': constraint.LengthConstraint, 
+               'format': constraint.FormatConstraint}
+
     for appname in appnames:
         # load query once for each app
         queries = load_queries(appname)
-        for cs_type in [constraint.InclusionConstraint, 
-                        constraint.LengthConstraint, 
-                        constraint.FormatConstraint]:
+        recorder.record("app_name", appname)
+        for type_name in name_to_type.keys():
+            cs_type = name_to_type[type_name]
             filtered_cs = load_cs(appname, cs_type)
             cnt = count(filtered_cs, queries, verbal)
-            # -----------dump results-----------------
-            recorder.record("app_name", appname)
-            recorder.record(cs_type, cnt)
-            recorder.dump(get_filename(FileType.QUERY_NUM))
+            recorder.record(type_name, cnt)
+        recorder.dump(get_filename(FileType.QUERY_NUM))
         
 #################################
 #        helper functions       #
@@ -68,14 +70,14 @@ def extracted(q) -> bool:
     return len(q) == 1
 
 # print info about errored query
-def print_error(q) -> None:
+def print_error(q, verbal) -> None:
     if verbal:
         print(format(q))
         print("----------------")
         print(q)
         print("================")
     else:
-        print("")
+        pass
 
 if __name__=="__main__":
     # run under autrite directory: python3 benchmark/extract_query.py

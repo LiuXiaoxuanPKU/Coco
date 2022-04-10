@@ -13,7 +13,7 @@ class FileType(Enum):
     VERIFIER_OUTPUT = 10
     QUERY_NUM = 11
 
-def get_filename(_type, appname):
+def get_filename(_type, appname=""):
     m = {
             # input query, constraint, create table sql
             FileType.RAW_QUERY : "../queries/%s/%s.pk" % (appname, appname),
