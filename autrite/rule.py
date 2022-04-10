@@ -36,12 +36,17 @@ class Rule:
                 # rule out select aggregate()
                 if len(keys) >= 1 and keys[0] == 'select' or keys[0] == 'select_distinct':
                     return q[keyword]['value']
-                return []
+                return None
         
+        # rule out select abs as a case
+        if keyword == 'from' and 'from' in q and isinstance(q['from'], dict) and len(q['from']) == 2 and \
+            'value' in q['from'] and 'name' in q['from']:
+                return None
+            
         if keyword == 'from' and 'from' in q and isinstance(q['from'], dict):
             return q['from']
 
-        return []
+        return None
 
     @staticmethod
     def replace_keyword_nested(org_q, keyword, sub_q):
@@ -571,11 +576,14 @@ class AddPredicate(Rule):
                     all_ops.append(tmp <= c.max)
             return conditions, list(constraint_tokens)
 
-        def deduct(binops, tokens):
+        def deduct(binops, constraint_tokens, candidate_tokens):
             candidates = []
+            tokens = list(set(constraint_tokens + candidate_tokens))
             for lhs in set(tokens):
                 for rhs in set(tokens):
                     if lhs in skip_tokens or rhs in skip_tokens:
+                        continue
+                    if lhs in constraint_tokens and rhs in constraint_tokens:
                         continue
                     elif isinstance(lhs, z3.z3.BoolRef) and isinstance(rhs, bool):
                         candidates.append(lhs == rhs)
@@ -620,21 +628,30 @@ class AddPredicate(Rule):
         # extract binary operations from where and join conditions
         # the output of binary operations is in z3 format
         binops, predicate_tokens_map = extract_binops(q)
-
+        if len(predicate_tokens_map) == 0:
+            return []
+        # print("predicate_tokens_map tokens", predicate_tokens_map)
         binops += constraint_ops
 
         binops = [op for op in binops if op is not None]
         
         # only deduct tokens that might have constraints
-        candidate_tokens = []
-        for t in constraint_tokens:
-            if t in predicate_tokens_map:
-                candidate_tokens += predicate_tokens_map[t]
+        candidate_tokens = constraint_tokens
+        before_size = -1 
+        while len(candidate_tokens) != before_size:
+            before_size = len(candidate_tokens)
+            new_candidate_tokens = []
+            for t in candidate_tokens:
+                if t in predicate_tokens_map:
+                    new_candidate_tokens += predicate_tokens_map[t] 
+            candidate_tokens = list(set(new_candidate_tokens + candidate_tokens))
+        # print("candidate tokens", candidate_tokens)
+
         if len(candidate_tokens) == 0:
             return []
        
-        candidate_tokens += list(constraint_tokens)
-        candidate_predicates = deduct(binops, candidate_tokens)
+        # candidate_tokens += list(constraint_tokens)
+        candidate_predicates = deduct(binops, constraint_tokens, candidate_tokens)
 
         # if we already know a < 100, candidate a < 200 is redundant and should be removed
         def validate_predicates(candidates, all_ops):
