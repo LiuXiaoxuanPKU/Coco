@@ -100,8 +100,8 @@ class GlobalExpRecorder:
             fout.write(json.dumps(self.val_dict) + '\n')
         print("Save exp results to %s" % filename)
 
-    def clear(self):
-        pass
-
+    def clear(self, filename):
+        open(filename, 'w').close()
+        
 
 exp_recorder = GlobalExpRecorder()

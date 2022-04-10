@@ -1,13 +1,13 @@
 import rule
 
 
-class ExtractInclusionRule(rule.Rule):
+class ExtractQueryRule(rule.Rule):
     def __init__(self, cs) -> None:
-        # cs is a list of all inclusion constraints 
+        # cs is a list of all certain type constraints (e.g. a list of Inclusion constraints) 
         # pre-filter constriants to use this function 
         super().__init__(cs)
-        self.name = "ExtractInclusionQuery"
-        self.table_to_field = self.get_inclusion_cs_map(cs)
+        self.name = "ExtractQuery"
+        self.table_to_field = self.get_cs_map(cs)
         self.cs_tables = self.table_to_field.keys()
 
     def apply_single(self, q) -> list:
@@ -58,7 +58,7 @@ class ExtractInclusionRule(rule.Rule):
     #=================== helper function ====================
 
     # return a map: table(str) -> fields(set) 
-    def get_inclusion_cs_map(self, cs) -> dict:
+    def get_cs_map(self, cs) -> dict:
         table_to_field = {}
         for c in cs:
             if not c.table in table_to_field.keys():

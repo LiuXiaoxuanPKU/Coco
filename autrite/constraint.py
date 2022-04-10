@@ -76,9 +76,9 @@ class NumericalConstraint(Constraint):
         self.min = min
         self.max = max
         self.allow_nil = allow_nil
-        if self.min is None and self.max is None:
-            raise Exception(
-                "[Error] Numerical Constraint, Min and Max cannot be None at the same time")
+        # if self.min is None and self.max is None:
+        #     raise Exception(
+        #         "[Error] Numerical Constraint, Min and Max cannot be None at the same time")
 
     def in_range(self, v):
         if self.min and self.max:
@@ -90,6 +90,7 @@ class NumericalConstraint(Constraint):
 
     def __str__(self) -> str:
         return "Numerical_table_%s_field_%s_min_%d_max_%d_allownil_%d" % (self.table, self.field, self.min, self.max, self.allow_nil)
+
 
 class ForeignKeyConstraint(Constraint):
     pass
