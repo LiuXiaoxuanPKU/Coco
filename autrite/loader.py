@@ -32,6 +32,10 @@ class Loader:
                 elif obj["^o"] == "NumericalConstraint":
                     c = constraint.NumericalConstraint(
                         classnode['table'], obj['field_name'], obj['min'], obj['max'], obj['allow_nil'])
+                elif obj["^o"] == "ForeignKeyConstraint":
+                    c = constraint.ForeignKeyConstraint(
+                        classnode['table'], obj['fk_column_name'], obj['class_name'], obj['allow_nil']
+                    )
                 else:
                     print("[Error] Unsupport constraint type ", obj)
                     exit(1)

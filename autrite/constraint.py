@@ -93,4 +93,11 @@ class NumericalConstraint(Constraint):
         return "Numerical_table_%s_field_%s_min_%s_max_%s_allownil_%d" % (self.table, self.field, self.min, self.max, self.allow_nil)
 
 class ForeignKeyConstraint(Constraint):
-    pass
+    def __init__(self, table, field, ref_class, allow_nil) -> None:
+        super().__init__(table, field)
+        self.ref_class = ref_class
+        self.allow_nil = allow_nil
+    
+    def __str__(self) -> str:
+        return "ForeignKey_table_%s_field_%s_refclass_%s_allownil_%d" % (self.table, self.field, self.ref_class, self.allow_nil) 
+    
