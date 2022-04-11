@@ -52,6 +52,14 @@
     "class": "ApiSecret",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "description",
         "db": false,
@@ -104,6 +112,30 @@
     "table": "articles",
     "class": "Article",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "collection",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Collection",
+        "fk_column_name": "collection_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "organization",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Organization",
+        "fk_column_name": "organization_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
       {
         "^o": "LengthConstraint",
         "field_name": "body_markdown",
@@ -348,6 +380,14 @@
     "class": "AuditLog",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "data",
         "db": false,
@@ -491,6 +531,30 @@
     "class": "BadgeAchievement",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "badge",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Badge",
+        "fk_column_name": "badge_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "rewarder",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "rewarder_id"
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "badge_id",
         "db": false,
@@ -546,6 +610,14 @@
     "table": "banished_users",
     "class": "BanishedUser",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "banished_by",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "banished_by_id"
+      },
       {
         "^o": "UniqueConstraint",
         "field_name": "username",
@@ -749,6 +821,22 @@
     "class": "ChatChannelMembership",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "chat_channel",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Chat_channel",
+        "fk_column_name": "chat_channel_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "chat_channel_id",
         "db": false,
@@ -839,6 +927,22 @@
     "class": "Collection",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "organization",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Organization",
+        "fk_column_name": "organization_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
         "db": false,
@@ -894,6 +998,22 @@
     "table": "comments",
     "class": "Comment",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "commentable",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Commentable",
+        "fk_column_name": "commentable_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "body_markdown",
@@ -1125,6 +1245,30 @@
     "class": "Credit",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "organization",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Organization",
+        "fk_column_name": "organization_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "purchase",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Purchase",
+        "fk_column_name": "purchase_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
         "db": true,
@@ -1219,6 +1363,22 @@
     "class": "Device",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "consumer_app",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Consumer_app",
+        "fk_column_name": "consumer_app_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
         "^o": "InclusionConstraint",
         "field_name": "platform",
         "db": false,
@@ -1301,6 +1461,22 @@
     "class": "DiscussionLock",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "article",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Article",
+        "fk_column_name": "article_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "locking_user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "locking_user_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "article_id",
         "db": false,
@@ -1371,6 +1547,14 @@
     "class": "DisplayAd",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "organization",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Organization",
+        "fk_column_name": "organization_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "organization_id",
         "db": false,
@@ -1433,6 +1617,22 @@
     "class": "DisplayAdEvent",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "display_ad",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Display_ad",
+        "fk_column_name": "display_ad_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
         "^o": "InclusionConstraint",
         "field_name": "category",
         "db": false,
@@ -1483,6 +1683,14 @@
     "table": "email_authorizations",
     "class": "EmailAuthorization",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "type_of",
@@ -1592,6 +1800,30 @@
     "class": "FeedbackMessage",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "offender",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "offender_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "reporter",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "reporter_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "affected",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "affected_id"
+      },
+      {
         "^o": "LengthConstraint",
         "field_name": "message",
         "db": false,
@@ -1647,6 +1879,22 @@
     "table": "follows",
     "class": "Follow",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "followable",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Followable",
+        "fk_column_name": "followable_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "follower",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Follower",
+        "fk_column_name": "follower_id"
+      },
       {
         "^o": "InclusionConstraint",
         "field_name": "blocked",
@@ -1829,6 +2077,14 @@
     "class": "GithubRepo",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "url",
         "db": false,
@@ -1881,6 +2137,14 @@
     "table": "html_variants",
     "class": "HtmlVariant",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
       {
         "^o": "InclusionConstraint",
         "field_name": "group",
@@ -1948,6 +2212,22 @@
     "class": "HtmlVariantSuccess",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "html_variant",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Html_variant",
+        "fk_column_name": "html_variant_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "article",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Article",
+        "fk_column_name": "article_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "html_variant_id",
         "db": false,
@@ -1986,6 +2266,22 @@
     "class": "HtmlVariantTrial",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "html_variant",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Html_variant",
+        "fk_column_name": "html_variant_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "article",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Article",
+        "fk_column_name": "article_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "html_variant_id",
         "db": false,
@@ -2023,6 +2319,14 @@
     "table": "identities",
     "class": "Identity",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
       {
         "^o": "InclusionConstraint",
         "field_name": "provider",
@@ -2110,6 +2414,30 @@
     "table": "classified_listings",
     "class": "Listing",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "listing_category",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Listing_category",
+        "fk_column_name": ":classified_listing_category_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "organization",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Organization",
+        "fk_column_name": "organization_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
@@ -2253,6 +2581,22 @@
     "class": "Mention",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "mentionable",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Mentionable",
+        "fk_column_name": "mentionable_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
         "db": false,
@@ -2316,6 +2660,22 @@
     "table": "messages",
     "class": "Message",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "chat_channel",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Chat_channel",
+        "fk_column_name": "chat_channel_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "message_html",
@@ -2512,6 +2872,22 @@
     "class": "Note",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "author_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "noteable",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Noteable",
+        "fk_column_name": "noteable_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
         "db": true,
@@ -2542,6 +2918,30 @@
     "table": "notifications",
     "class": "Notification",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "notifiable",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Notifiable",
+        "fk_column_name": "notifiable_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "organization",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Organization",
+        "fk_column_name": "organization_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
@@ -2601,6 +3001,22 @@
     "table": "notification_subscriptions",
     "class": "NotificationSubscription",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "notifiable",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Notifiable",
+        "fk_column_name": "notifiable_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "config",
@@ -2934,6 +3350,22 @@
     "class": "OrganizationMembership",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "organization",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Organization",
+        "fk_column_name": "organization_id"
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "user_id",
         "db": false,
@@ -3093,6 +3525,22 @@
     "class": "PageView",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "article",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Article",
+        "fk_column_name": "article_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
         "db": true,
@@ -3140,6 +3588,14 @@
     "table": "podcasts",
     "class": "Podcast",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "creator",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "creator_id"
+      },
       {
         "^o": "UniqueConstraint",
         "field_name": "feed_url",
@@ -3235,6 +3691,14 @@
     "table": "podcast_episodes",
     "class": "PodcastEpisode",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "podcast",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Podcast",
+        "fk_column_name": "podcast_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "comments_count",
@@ -3373,6 +3837,22 @@
     "class": "PodcastEpisodeAppearance",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "podcast_episode",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Podcast_episode",
+        "fk_column_name": "podcast_episode_id"
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "podcast_episode_id",
         "db": false,
@@ -3460,6 +3940,22 @@
     "class": "PodcastOwnership",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "owner",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": ":user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "podcast",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Podcast",
+        "fk_column_name": "podcast_id"
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "podcast_id",
         "db": false,
@@ -3515,6 +4011,14 @@
     "table": "polls",
     "class": "Poll",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "article",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Article",
+        "fk_column_name": "article_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "poll_options_count",
@@ -3619,6 +4123,14 @@
     "class": "PollOption",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "poll",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Poll",
+        "fk_column_name": "poll_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "markdown",
         "db": false,
@@ -3679,6 +4191,22 @@
     "class": "PollSkip",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "poll",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Poll",
+        "fk_column_name": "poll_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
         "db": true,
@@ -3709,6 +4237,30 @@
     "table": "poll_votes",
     "class": "PollVote",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "poll_option",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Poll_option",
+        "fk_column_name": "poll_option_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "poll",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Poll",
+        "fk_column_name": "poll_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "poll_id",
@@ -3815,6 +4367,14 @@
     "class": "Profile",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "user_id",
         "db": false,
@@ -3870,6 +4430,14 @@
     "table": "profile_fields",
     "class": "ProfileField",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "profile_field_group",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Profile_field_group",
+        "fk_column_name": "profile_field_group_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "attribute_name",
@@ -4042,6 +4610,22 @@
     "class": "ProfilePin",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "pinnable",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Pinnable",
+        "fk_column_name": "pinnable_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "profile",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Profile",
+        "fk_column_name": "profile_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "profile_id",
         "db": false,
@@ -4119,6 +4703,22 @@
     "table": "rating_votes",
     "class": "RatingVote",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "article",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Article",
+        "fk_column_name": "article_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
       {
         "^o": "InclusionConstraint",
         "field_name": "context",
@@ -4198,6 +4798,22 @@
     "class": "Reaction",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "reactable",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Reactable",
+        "fk_column_name": "reactable_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
         "^o": "InclusionConstraint",
         "field_name": "category",
         "db": false,
@@ -4271,6 +4887,14 @@
     "table": "response_templates",
     "class": "ResponseTemplate",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
       {
         "^o": "UniqueConstraint",
         "field_name": "content",
@@ -4384,6 +5008,14 @@
     "class": "Role",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "resource",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Resource",
+        "fk_column_name": "resource_id"
+      },
+      {
         "^o": "InclusionConstraint",
         "field_name": "resource_type",
         "db": false,
@@ -4437,6 +5069,30 @@
     "table": "sponsorships",
     "class": "Sponsorship",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "organization",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Organization",
+        "fk_column_name": "organization_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "sponsorable",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Sponsorable",
+        "fk_column_name": "sponsorable_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "level",
@@ -4604,6 +5260,30 @@
         "cond": ""
       },
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "tag",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Tag",
+        "fk_column_name": "tag_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "article",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Article",
+        "fk_column_name": "article_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
         "db": true,
@@ -4651,6 +5331,14 @@
     "table": "tweets",
     "class": "Tweet",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "full_fetched_object_serialized",
@@ -5014,6 +5702,22 @@
     "class": "UserBlock",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "blocker",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "blocker_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "blocked",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "blocked_id"
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "blocked_id",
         "db": false,
@@ -5087,6 +5791,22 @@
     "class": "UserRole",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "role",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Role",
+        "fk_column_name": "role_id"
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "id",
         "db": false,
@@ -5103,6 +5823,30 @@
     "table": "user_subscriptions",
     "class": "UserSubscription",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "author_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "subscriber",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "subscriber_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user_subscription_sourceable",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User_subscription_sourceable",
+        "fk_column_name": "user_subscription_sourceable_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "author_id",

@@ -63,6 +63,7 @@ class BuiltinExtractor < Extractor
       constraints = extract_builtin_numerical(ast)
     when 'belongs_to'
       constraints = extract_builtin_foreign(ast)
+    end
     constraints
   end
 

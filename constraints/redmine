@@ -21,6 +21,22 @@
     "class": "Attachment",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "container",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Container",
+        "fk_column_name": "container_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "author_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "filename",
         "db": false,
@@ -392,6 +408,22 @@
     "class": "Board",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Project",
+        "fk_column_name": "project_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "last_message",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Message",
+        "fk_column_name": "last_message_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "name",
         "db": false,
@@ -467,6 +499,14 @@
     "class": "Change",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "changeset",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Changeset",
+        "fk_column_name": "changeset_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "changeset_id",
         "db": false,
@@ -526,6 +566,22 @@
     "table": "changesets",
     "class": "Changeset",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "repository",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Repository",
+        "fk_column_name": "repository_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "repository_id",
@@ -614,6 +670,22 @@
     "table": "comments",
     "class": "Comment",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "commented",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Commented",
+        "fk_column_name": "commented_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "author_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "commented",
@@ -999,6 +1071,14 @@
     "class": "CustomFieldEnumeration",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "custom_field",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Custom_field",
+        "fk_column_name": "custom_field_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "name",
         "db": false,
@@ -1081,6 +1161,22 @@
     "class": "CustomValue",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "custom_field",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Custom_field",
+        "fk_column_name": "custom_field_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "customized",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Customized",
+        "fk_column_name": "customized_id"
+      },
+      {
         "^o": "LengthConstraint",
         "field_name": "customized_type",
         "db": true,
@@ -1119,6 +1215,22 @@
     "table": "documents",
     "class": "Document",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Project",
+        "fk_column_name": "project_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "category",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "DocumentCategory",
+        "fk_column_name": "category_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "project",
@@ -1186,6 +1298,14 @@
     "table": "email_addresses",
     "class": "EmailAddress",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "address",
@@ -1279,6 +1399,14 @@
     "class": "EnabledModule",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Project",
+        "fk_column_name": "project_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "name",
         "db": false,
@@ -1320,6 +1448,14 @@
     "table": "enumerations",
     "class": "Enumeration",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Project",
+        "fk_column_name": "project_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
@@ -1459,6 +1595,14 @@
     "class": "Import",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "filename",
         "db": false,
@@ -1590,6 +1734,14 @@
     "class": "ImportItem",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "import",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Import",
+        "fk_column_name": "import_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "import_id",
         "db": false,
@@ -1634,6 +1786,70 @@
     "table": "issues",
     "class": "Issue",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Project",
+        "fk_column_name": "project_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "tracker",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Tracker",
+        "fk_column_name": "tracker_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "status",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "IssueStatus",
+        "fk_column_name": "status_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "author_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "assigned_to",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Principal",
+        "fk_column_name": "assigned_to_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "fixed_version",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Version",
+        "fk_column_name": "fixed_version_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "priority",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "IssuePriority",
+        "fk_column_name": "priority_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "category",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "IssueCategory",
+        "fk_column_name": "category_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "subject",
@@ -1773,6 +1989,22 @@
     "class": "IssueCategory",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Project",
+        "fk_column_name": "project_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "assigned_to",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Principal",
+        "fk_column_name": "assigned_to_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "name",
         "db": false,
@@ -1830,6 +2062,22 @@
     "table": "issue_relations",
     "class": "IssueRelation",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "issue_from",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Issue",
+        "fk_column_name": "issue_from_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "issue_to",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Issue",
+        "fk_column_name": "issue_to_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "issue_from",
@@ -1993,6 +2241,30 @@
     "class": "Journal",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "journalized",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Journalized",
+        "fk_column_name": "journalized_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "issue",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Issue",
+        "fk_column_name": ":journalized_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "journalized_id",
         "db": true,
@@ -2046,6 +2318,14 @@
     "class": "JournalDetail",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "journal",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Journal",
+        "fk_column_name": "journal_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "journal_id",
         "db": true,
@@ -2085,6 +2365,30 @@
     "table": "members",
     "class": "Member",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "principal",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Principal",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Project",
+        "fk_column_name": "project_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "principal",
@@ -2149,6 +2453,22 @@
     "class": "MemberRole",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "member",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Member",
+        "fk_column_name": "member_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "role",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Role",
+        "fk_column_name": "role_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "role",
         "db": false,
@@ -2186,6 +2506,30 @@
     "table": "messages",
     "class": "Message",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "board",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Board",
+        "fk_column_name": "board_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "author_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "last_reply",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Message",
+        "fk_column_name": "last_reply_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "board",
@@ -2267,6 +2611,22 @@
     "table": "news",
     "class": "News",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Project",
+        "fk_column_name": "project_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "author_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "title",
@@ -2547,6 +2907,14 @@
     "class": "User",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "auth_source",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Auth_source",
+        "fk_column_name": "auth_source_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "login",
         "db": false,
@@ -2667,6 +3035,22 @@
     "class": "Project",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "default_version",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Version",
+        "fk_column_name": "default_version_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "default_assigned_to",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Principal",
+        "fk_column_name": "default_assigned_to_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "name",
         "db": false,
@@ -2767,6 +3151,22 @@
     "table": "queries",
     "class": "Query",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Project",
+        "fk_column_name": "project_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
@@ -2877,6 +3277,14 @@
     "table": "repositories",
     "class": "Repository",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Project",
+        "fk_column_name": "project_id"
+      },
       {
         "^o": "LengthConstraint",
         "field_name": "login",
@@ -3311,6 +3719,46 @@
     "class": "TimeEntry",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Project",
+        "fk_column_name": "project_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "issue",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Issue",
+        "fk_column_name": "issue_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "author_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "activity",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "TimeEntryActivity",
+        "fk_column_name": "activity_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "author_id",
         "db": false,
@@ -3478,6 +3926,14 @@
     "class": "Token",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "value",
         "db": false,
@@ -3535,6 +3991,14 @@
     "table": "trackers",
     "class": "Tracker",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "default_status",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "IssueStatus",
+        "fk_column_name": "default_status_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "default_status",
@@ -3616,6 +4080,14 @@
     "class": "UserPreference",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
         "db": true,
@@ -3639,6 +4111,14 @@
     "table": "versions",
     "class": "Version",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Project",
+        "fk_column_name": "project_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
@@ -3746,6 +4226,22 @@
     "class": "Watcher",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "watchable",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Watchable",
+        "fk_column_name": "watchable_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Principal",
+        "fk_column_name": "user_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "user",
         "db": false,
@@ -3795,6 +4291,14 @@
     "table": "wikis",
     "class": "Wiki",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Project",
+        "fk_column_name": "project_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "start_page",
@@ -3857,6 +4361,22 @@
     "class": "WikiContent",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "page",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "WikiPage",
+        "fk_column_name": "page_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "author_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "text",
         "db": false,
@@ -3918,6 +4438,22 @@
     "class": "WikiContentVersion",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "page",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "WikiPage",
+        "fk_column_name": "page_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "author_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "wiki_content_id",
         "db": true,
@@ -3978,6 +4514,14 @@
     "table": "wiki_pages",
     "class": "WikiPage",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "wiki",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Wiki",
+        "fk_column_name": "wiki_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "title",
@@ -4058,6 +4602,14 @@
     "class": "WikiRedirect",
     "constraints": [
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "wiki",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Wiki",
+        "fk_column_name": "wiki_id"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "wiki_id",
         "db": false,
@@ -4132,6 +4684,38 @@
     "table": "workflows",
     "class": "WorkflowRule",
     "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "role",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Role",
+        "fk_column_name": "role_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "tracker",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Tracker",
+        "fk_column_name": "tracker_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "old_status",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "IssueStatus",
+        "fk_column_name": "old_status_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "new_status",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "IssueStatus",
+        "fk_column_name": "new_status_id"
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "role",
