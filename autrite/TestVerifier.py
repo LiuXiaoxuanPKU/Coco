@@ -21,9 +21,10 @@ class TestVerifier:
             org_result = Evaluator.evaluate_query(q.q_raw_param, connect_str)
         except:
             # print("Fail to execute %s" % format(q))
-            return []
+            return [], []
         
         eq_qs = []
+        not_eq_qs = []
         if show_progress:
             iter = tqdm(rewritten_queries)
         else:
@@ -37,10 +38,12 @@ class TestVerifier:
                 rq_result = Evaluator.evaluate_query(rq.q_raw_param, connect_str)
                 if test_query_result_equivalence(org_result, rq_result):
                     eq_qs.append(rq)
+                else:
+                    not_eq_qs.append(rq)
             except:
                 # print("Fail to execute %s" % format(rq))
                 pass
-        return eq_qs
+        return eq_qs, not_eq_qs
 
 
 

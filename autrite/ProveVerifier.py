@@ -12,7 +12,9 @@ class ProveVerifier:
         q = ' '.join(tokens)
         return q 
         
-    def verify(self, appname, org_q, constraints, rewritten_queries, id):
+    def verify(self, appname, org_q, constraints, rewritten_queries, id, counter = False):
+        if len(rewritten_queries) == 0:
+            return []
         # Dump SQLs
         sql_create_path = get_filename(FileType.VERIFIER_INPUT, appname)
         with open(sql_create_path, "r") as f:
@@ -23,7 +25,10 @@ class ProveVerifier:
         qs += ["\n-- Rewritten Queries\n"]   
         qs += [ProveVerifier.format_param(q.q_raw_param) + ";\n" for q in rewritten_queries]
 
-        q_path = "%s/%d.sql" % (get_filename(FileType.VERIFIER_OUTPUT, appname), id)
+        path = get_filename(FileType.VERIFIER_OUTPUT, appname) 
+        if counter:
+            path += '/counter/'
+        q_path = "%s/%d.sql" % (path, id)
         print("write to %s, length %d" % (q_path, len(qs)))
         with open (q_path, "w") as f:
             f.writelines(qs)
