@@ -2,11 +2,15 @@ require_relative 'ast_handler'
 require_relative 'base_extractor'
 require_relative 'constraint'
 
+def trim_string(s)
+  s.delete_prefix("'").delete_suffix("'").delete_prefix('"').delete_suffix('"')
+end
+
 class BuiltinExtractor < Extractor
   BUILTIN_VALIDATOR = %w[validates_presence_of validates_uniqueness_of
                          validates_format_of validates_length_of
-                         validates_inclusion_of validates_numericality_of
-                         validates].freeze
+                         belongs_to validates_inclusion_of
+                         validates_numericality_of validates].freeze
 
   def initialize
     @builtin_validation_cnt = 0
@@ -57,6 +61,8 @@ class BuiltinExtractor < Extractor
       constraints = extract_builtin_length(ast)
     when 'validates_numericality_of'
       constraints = extract_builtin_numerical(ast)
+    when 'belongs_to'
+      constraints = extract_builtin_foreign(ast)
     end
     constraints
   end
@@ -64,16 +70,35 @@ class BuiltinExtractor < Extractor
   def extract_validates(ast)
     content = ast[1].children
     constraints = []
-    field = handle_symbol_literal_node(content[0])
-    content[1].each do |node|
-      label = handle_label_node(node.children[0])
+    fields = []
+    validate_node = nil
+    content.each do |c|
+      if c.type.to_s == "symbol_literal"
+        fields << handle_symbol_literal_node(c)
+      else
+        validate_node = c
+        break
+      end
+    end
+
+    validate_node.each do |node|
+      node_type = node.children[0].type.to_s 
+      if node_type == 'label' 
+        label = handle_label_node(node.children[0])
+      elsif node_type == 'symbol_literal'
+        label = handle_symbol_literal_node(node.children[0])
+      else
+        puts "[Warning] Does not handle node #{node.source} of type #{node_type}, #{ast.source}"
+      end
       other = node.children[1]
       if label == 'presence'
         if other.source == 'true'
           cond = nil
         elsif other.type.to_s == 'hash'
         end
-        constraints << PresenceConstraint.new(field, cond)
+        fields.each do |field|
+          constraints << PresenceConstraint.new(field, cond)
+        end
       elsif label == 'uniqueness'
         cond = nil
         case_sensitive = false
@@ -83,23 +108,32 @@ class BuiltinExtractor < Extractor
         elsif other.type.to_s == 'hash'
           scope, cond, case_sensitive = extract_unique_scope_cond_sense(other.children)
         end
-        constraints << UniqueConstraint.new(field, cond, case_sensitive, scope)
+        fields.each do |field|
+          constraints << UniqueConstraint.new(field, cond, case_sensitive, scope)
+        end
       elsif label == 'inclusion'
         values = []
         type = 'builtin'
-        constraints << InclusionConstraint.new(field, values, type)
+        fields.each do |field|
+          constraints << InclusionConstraint.new(field, values, type)
+        end
       elsif label == 'length'
         min = -1
         max = -1
-        constraints << LengthConstraint.new(field, min, max)
+        fields.each do |field|
+          constraints << LengthConstraint.new(field, min, max)
+        end
       elsif label == 'numericality'
         min, max, allow_nil = extract_numerical_hash(other.children)
-        constraints << NumericalConstraint.new(field, min, max, allow_nil: allow_nil)
+        fields.each do |field|
+          constraints << NumericalConstraint.new(field, min, max, false, allow_nil)
+        end
       elsif label == 'allow_blank'
         constraints.each { |c| c.allow_nil = true }
       else
         begin
-          puts "[Warning] Does not handle #{field}, #{label.type} #{label.source}"
+          puts "[Warning] Does not handle #{field}, #{label.type} #{label.type.to_s}"
+          puts "#{other.children}"
         rescue StandardError
         end
       end
@@ -213,7 +247,7 @@ class BuiltinExtractor < Extractor
     end
 
     fields.each do |field|
-      c = InclusionConstraint.new(field, values, type, allow_nil: allow_nil)
+      c = InclusionConstraint.new(field, values, type, false, allow_nil)
       constraints << c
     end
     constraints
@@ -296,9 +330,41 @@ class BuiltinExtractor < Extractor
       allow_nil ||= tmp_allow_nil
     end
     fields.each do |field|
-      c = NumericalConstraint.new(field, min, max, allow_nil: allow_nil)
+      c = NumericalConstraint.new(field, min, max, false, allow_nil)
       constraints << c
     end
     constraints
   end
+
+  def extract_builtin_foreign(ast)
+    constraints = []
+    fields = []
+    content = ast[1].children
+    class_name = nil
+    fk_column_name = nil
+    content.each do |node|
+      field = handle_symbol_literal_node(node)
+      fields << field unless field.nil?
+      node.children.each do |n|
+        k, v = handle_assoc_node(n)
+        fk_column_name = trim_string(v.source) if !k.nil? && (k == 'foreign_key')
+        class_name = trim_string(v.source) if !k.nil? && (k == 'class_name')
+      end
+    end
+
+    if class_name.nil?
+      class_name = fields[0].capitalize
+    end
+    if fk_column_name.nil?
+      fk_column_name = fields[0].downcase
+      fk_column_name << "_id"
+    end
+
+    fields.each do |field|
+      c = ForeignKeyConstraint.new(field, class_name, fk_column_name)
+      constraints << c
+    end
+    constraints
+  end
+
 end

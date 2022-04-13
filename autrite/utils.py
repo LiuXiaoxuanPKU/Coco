@@ -1,6 +1,15 @@
+import os
 import json, random, hashlib
 from collections import OrderedDict
 from evaluator import Evaluator
+
+def load_json_queries(filename):
+    rewrite_file =  filename
+    if not os.path.isfile(rewrite_file):
+        print("[Error] Please first generate rewrite")
+    with open(rewrite_file, "r") as f:
+        lines = f.readlines()  
+    return [json.loads(line) for line in lines]
 
 def get_str_hash(str):
     return hashlib.sha256(str.encode('utf-8')).hexdigest()
@@ -29,7 +38,7 @@ def get_field_value(table_field, cache, connect_str, field_idx = -1):
         return cache[cache_name]
     try:
         table, field = table_field.split('.')
-        SQL = "SELECT %s FROM %s ORDER BY RANDOM() LIMIT 1" % (table_field, table)
+        SQL = "SELECT %s FROM %s ORDER BY RANDOM() LIMIT 1" % (field, table)
         ret =  Evaluator.evaluate_query(SQL, connect_str)
     except:
         return []
@@ -80,6 +89,17 @@ def generate_query_param_single(q, connect_str, cache):
     q = " ".join(tokens)
     return q
 
+# the rewrites and q should have the sample parameters
+# return False if fails to generate parameters for the original query, otherwise True
+def generate_query_param_rewrites(q, rewrites, connect_str):
+    cache = {}
+    q.q_raw_param = generate_query_param_single(q.q_raw, connect_str, cache)
+    if q.q_raw_param is None:
+        return False
+    for rq in rewrites:
+        rq.q_raw_param = generate_query_param_single(rq.q_raw, connect_str, cache)
+    return True
+        
 def generate_query_params(queries, connect_str, cache):
     param_qs = []
     for q in queries:
@@ -98,7 +118,7 @@ class GlobalExpRecorder:
     def dump(self, filename):
         with open(filename, "a") as fout:
             fout.write(json.dumps(self.val_dict) + '\n')
-        print("Save exp results to %s" % filename)
+        # print("Save exp results to %s" % filename)
 
     def clear(self, filename):
         open(filename, 'w').close()

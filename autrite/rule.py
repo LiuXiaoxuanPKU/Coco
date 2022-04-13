@@ -1,20 +1,8 @@
 import copy
-from termios import TIOCPKT_DOSTOP
 import z3
 from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
-
-PRIORITY_MAP = {
-    "AddPredicate" : 6,
-    "RewriteNullPredicate" : 5,
-    "RemovePredicate" : 4,
-    "RemoveJoin" : 3,
-    "RemoveDistinct" : 2,
-    "AddLimitOne" : 1,
-    "UnionToUnionAll" : 0
-}
-
-REWRITE_LIMIT = 10000
+from config import PRIORITY_MAP, REWRITE_LIMIT
 
 class Rule:
     def __init__(self, cs) -> None:
@@ -48,12 +36,17 @@ class Rule:
                 # rule out select aggregate()
                 if len(keys) >= 1 and keys[0] == 'select' or keys[0] == 'select_distinct':
                     return q[keyword]['value']
-                return []
+                return None
         
+        # rule out select abs as a case
+        if keyword == 'from' and 'from' in q and isinstance(q['from'], dict) and len(q['from']) == 2 and \
+            'value' in q['from'] and 'name' in q['from']:
+                return None
+            
         if keyword == 'from' and 'from' in q and isinstance(q['from'], dict):
             return q['from']
 
-        return []
+        return None
 
     @staticmethod
     def replace_keyword_nested(org_q, keyword, sub_q):
@@ -124,7 +117,7 @@ class Rule:
                 re = Rule.comb(rewritten_items)[1:]
                 for r in re:
                     rewritten_cond.append({op:copy.deepcopy(r)})
-
+                return rewritten_cond
             elif op in ["exists", "missing"]:
                 v = cond[op]
                 # nested query
@@ -134,13 +127,15 @@ class Rule:
                         rewritten_cond.append({op:r1})
                 return rewritten_cond
             else:
+                if isinstance(cond[op], dict):
+                    return rewritten_cond
                 lhs, rhs = cond[op][0], cond[op][1]
                 # nested query
                 if isinstance(rhs, dict) and ('select' in rhs or 'select_distinct' in rhs):
                     rewritten_rhs = self.apply(rhs)
                     for r1 in rewritten_rhs:
                         rewritten_cond.append({op:[copy.deepcopy(lhs), r1]})
-            return rewritten_cond
+                return rewritten_cond
 
 
         # WHERE, HAVING
@@ -194,6 +189,27 @@ class AddLimitOne(Rule):
             return [rewritten_q]
         return []
 
+class ReplaceOuterJoin(Rule):
+    def __init__(self, cs) -> None:
+        super().__init__(cs)
+        self.name = "ReplaceOuterJoin"
+    
+    def apply_single(self, q):
+        if not 'from' in q:
+            return []
+
+        from_clause = q['from']
+        rewritten_queries = []
+        for i, token in enumerate(from_clause):
+            if isinstance(token, dict):
+                key = list(token.keys())[0]
+                if key == 'outer join' or key == 'left outer join' or key == 'left join':
+                    rq = copy.deepcopy(q)
+                    join = rq['from'][i].pop(key)
+                    rq['from'][i]['inner join'] = join
+                    rewritten_queries.append(rq)
+        return rewritten_queries
+
 class RemoveJoin(Rule):
     def __init__(self, cs) -> None:
         super().__init__(cs)
@@ -246,6 +262,10 @@ class RemoveJoin(Rule):
             return [item for sublist in ll for item in sublist]
 
         def remove_table_predicate(drop_tables, clause):
+            # handle where False clause
+            if not isinstance(clause, dict):
+                return clause
+            
             op = list(clause.keys())[0]
             if op == "and" or op == "or":
                 clause_list = clause[op]
@@ -255,7 +275,7 @@ class RemoveJoin(Rule):
                     return None
                     # only one element is left, so we do not need and/or any more
                 elif len(items) == 1:
-                    items[0]
+                    return items[0]
                     # otherwise, we create a new dic with old op and existing rewrites
                 else:
                     return {op: items}
@@ -323,14 +343,27 @@ class RewriteNullPredicate(Rule):
                 field = clause[op]
                 if not isinstance(field, str):
                     return clause, False
-                if self.constraint.field == field or self.constraint.field == field.split(".")[-1]:
+                field_tokens = field.split(".") 
+                if len(field_tokens) > 1:
+                    table, field = field_tokens[0], field_tokens[1]
+                else:
+                    table, field = None, field_tokens[0]
+                if (table is None and self.constraint.field == field) or \
+                        (self.constraint.field == field and self.constraint.table == table):
                     return False, True
                 return clause, False
             elif op == "exists":
                 field = clause[op]
                 if not isinstance(field, str):
                     return clause, False
-                if self.constraint.field == field or self.constraint.field == field.split(".")[-1]:
+                field_tokens = field.split(".") 
+                if len(field_tokens) > 1:
+                    table, field = field_tokens[0], field_tokens[1]
+                else:
+                    table, field = None, field_tokens[0] 
+ 
+                if (table is None and self.constraint.field == field) or \
+                        (self.constraint.field == field and self.constraint.table == table): 
                     return True, True  
                 return clause, False
             else: # base case, does not contain and/or and does not have constraint
@@ -411,7 +444,7 @@ class AddPredicate(Rule):
         self.name = "AddPredicate"
         
     def apply_single(self, q):
-        tokens = set([])
+        constraint_tokens = set([])
         skip_tokens = set([])
 
         def translate_rhs(t):
@@ -420,13 +453,17 @@ class AddPredicate(Rule):
             elif isinstance(t, str):
                 t = z3.Real(t)
                 return t, float # TODO: assume float for variables
+            # elif isinstance(t, dict):
+            #     return t['literal'], type(t['literal'])
             else:
-                print("[Warning] Unknow rhs %s of type %s" % (t, type(t)))
+                print("[Warning] Unknown rhs %s of type %s" % (t, type(t)))
                 return None, None
 
         def translate_lhs(t, _type):
             if _type is None or t is None:
                 return None
+            if isinstance(t, str) and '.' in t:
+                t = t.split('.')[-1]
             if _type == int:
                 ret = z3.Int(t)
                 return ret
@@ -436,12 +473,15 @@ class AddPredicate(Rule):
             elif _type == bool:
                 ret = z3.Bool(t)
                 return ret
+            # elif _type == str:
+            #     return t
             else:
-                print("[Warning] Unknow lhs %s of type %s" % (t, type(t)))
+                print("[Warning] Unknown lhs %s of type %s" % (t, type(t)))
                 return None
 
         all_ops = []
         def extract_binops(q):
+            predicate_tokens_map = {}
             def extract_cond(cond):
                 key = list(cond.keys())
                 assert(len(key) == 1)
@@ -467,8 +507,12 @@ class AddPredicate(Rule):
                     if lhs is None or rhs is None:
                         return None
                     
-                    tokens.add(lhs)
-                    tokens.add(rhs)
+                    if lhs not in predicate_tokens_map:
+                        predicate_tokens_map[lhs] = []
+                    if rhs not in predicate_tokens_map:
+                        predicate_tokens_map[rhs] = []
+                    predicate_tokens_map[lhs].append(rhs)
+                    predicate_tokens_map[rhs].append(lhs)
                     if key == "gt":
                         all_ops.append(lhs > rhs)
                         all_ops.append(rhs < lhs)
@@ -505,37 +549,41 @@ class AddPredicate(Rule):
             conditions = []
             if 'where' in q:
                 conditions.append(extract_cond(q['where']))
-            if 'join' in q:
-                conditions += extract_join(q['join'])
-            return conditions
+            if 'from' in q and isinstance(q['from'], list) and 'inner join' in q['from'][1]:
+                conditions.append(extract_cond(q['from'][1]['on']))
+            return conditions, predicate_tokens_map 
 
         def extract_constraints():
+            constraint_tokens = set([])
             conditions = []
             c = self.constraint
             if isinstance(c, NumericalConstraint):
                 tmp = z3.Real(c.field)
-                tokens.add(tmp)
+                constraint_tokens.add(tmp)
                 if c.min is not None and c.max is not None:
                     conditions.append(z3.And(tmp >= c.min, tmp <= c.max))
-                    tokens.add(c.min)
-                    tokens.add(c.max)
+                    constraint_tokens.add(c.min)
+                    constraint_tokens.add(c.max)
                     all_ops.append(tmp >= c.min)
                     all_ops.append(tmp <= c.max)
                 elif c.min is not None:
                     conditions.append(tmp >= c.min)
-                    tokens.add(c.min)
+                    constraint_tokens.add(c.min)
                     all_ops.append(tmp >= c.min)
                 elif c.max is not None:
                     conditions.append(tmp <= c.max)
-                    tokens.add(c.max)
+                    constraint_tokens.add(c.max)
                     all_ops.append(tmp <= c.max)
-            return conditions
+            return conditions, list(constraint_tokens)
 
-        def deduct(binops):
+        def deduct(binops, constraint_tokens, candidate_tokens):
             candidates = []
+            tokens = list(set(constraint_tokens + candidate_tokens))
             for lhs in set(tokens):
                 for rhs in set(tokens):
                     if lhs in skip_tokens or rhs in skip_tokens:
+                        continue
+                    if lhs in constraint_tokens and rhs in constraint_tokens:
                         continue
                     elif isinstance(lhs, z3.z3.BoolRef) and isinstance(rhs, bool):
                         candidates.append(lhs == rhs)
@@ -544,11 +592,10 @@ class AddPredicate(Rule):
                         or (isinstance(lhs, z3.z3.ArithRef) and (type(rhs) in [int, float])) \
                         or ((type(lhs) in [int, float]) and isinstance(rhs, z3.z3.ArithRef)):
                         candidates.append(lhs > rhs)
-                        # candidates.append(lhs >= rhs) # does not enumerate >= for now
+                        candidates.append(lhs >= rhs) # does not enumerate >= for now
                         candidates.append(lhs == rhs)
                     else:
                         continue
-
             cond = None
             for binop in binops:
                 if cond is None:
@@ -572,26 +619,47 @@ class AddPredicate(Rule):
                     validate_candidates.append(candidate)
             return validate_candidates
 
-        # extract binary operations from where and join conditions
-        # the output of binary operations is in z3 format
-        binops = extract_binops(q)
-
-        # extarct constraints
+        # extract constraints
         # and translate into z3 format
-        constraint_ops = extract_constraints()
+        constraint_ops, constraint_tokens = extract_constraints()
         if len(constraint_ops) == 0:
             return []
-
+        # print("Constraint tokens", constraint_tokens)
+        # extract binary operations from where and join conditions
+        # the output of binary operations is in z3 format
+        binops, predicate_tokens_map = extract_binops(q)
+        if len(predicate_tokens_map) == 0:
+            return []
+        # print("predicate_tokens_map tokens", predicate_tokens_map)
         binops += constraint_ops
 
-        binops = [op for op in binops if op is not None]   
-        candidate_predicates = deduct(binops)
+        binops = [op for op in binops if op is not None]
+        
+        # only deduct tokens that might have constraints
+        candidate_tokens = constraint_tokens
+        before_size = -1 
+        while len(candidate_tokens) != before_size:
+            before_size = len(candidate_tokens)
+            new_candidate_tokens = []
+            for t in candidate_tokens:
+                if t in predicate_tokens_map:
+                    new_candidate_tokens += predicate_tokens_map[t] 
+            candidate_tokens = list(set(new_candidate_tokens + candidate_tokens))
+        # print("candidate tokens", candidate_tokens)
+
+        if len(candidate_tokens) == 0:
+            return []
+       
+        # candidate_tokens += list(constraint_tokens)
+        candidate_predicates = deduct(binops, constraint_tokens, candidate_tokens)
 
         # if we already know a < 100, candidate a < 200 is redundant and should be removed
         def validate_predicates(candidates, all_ops):
             def is_redundant(can, all_ops):
                 # assume candidate is in the form : variable op variable/value
                 lhs, rhs = can.children()[0], can.children()[1]
+                if type(rhs) not in [z3.z3.RatNumRef, z3.z3.IntNumRef]:
+                    return False
                 relate_ops = set([o for o in all_ops if str(o.children()[0]) == str(lhs)])
                 if str(can.decl()) in ["<", "<="]:
                     relate_ops = [o for o in relate_ops if str(o.decl()) in ["<", "<="] and \

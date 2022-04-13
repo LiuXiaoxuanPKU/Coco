@@ -2,7 +2,7 @@ require 'active_support/core_ext/string'
 require 'active_support/inflector'
 
 class PopulateTableName
-  def get_tablename_from_ast(ast)
+  def get_tablename_from_ast(ast, default_table_name)
     return nil if ast.nil?
 
     ast[2].children.select.each do |c|
@@ -16,6 +16,10 @@ class PopulateTableName
       tablename.slice! '"' # remove end "
       tablename.slice! "\#{table_name_prefix}"
       tablename.slice! "\#{table_name_suffix}"
+
+      if c[0].source == "self.table_name_prefix"
+        tablename = tablename + default_table_name
+      end
       return tablename
     end
     nil
@@ -24,7 +28,7 @@ class PopulateTableName
   def visit(node, params)
     return if ['ActiveRecord::Base', 'ApplicationRecord'].include? node.name
 
-    custom_tablename = get_tablename_from_ast(node.ast)
+    custom_tablename = get_tablename_from_ast(node.ast, node.name.tableize)
     if custom_tablename
       node.table = custom_tablename
       params['table_name'] = node.table
