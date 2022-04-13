@@ -27,7 +27,9 @@ class ProveVerifier:
 
         path = get_filename(FileType.VERIFIER_OUTPUT, appname) 
         if counter:
-            path += '/counter/'
+            path += '/not_eq/'
+        else:
+            path += '/eq/'
         q_path = "%s/%d.sql" % (path, id)
         print("write to %s, length %d" % (q_path, len(qs)))
         with open (q_path, "w") as f:
