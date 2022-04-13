@@ -11,7 +11,7 @@ class FileType(Enum):
     VERIFIER_INPUT = 8
     EMPTY_RESULT_QUERY = 9
     VERIFIER_OUTPUT = 10
-    QUERY_NUM = 11
+    PRECHECK_STR2INT_NUM = 11
 
 def get_filename(_type, appname=""):
     m = {
@@ -28,7 +28,7 @@ def get_filename(_type, appname=""):
             FileType.REWRITE_DB_PERF : "log/%s/db_rewrite_perf" % appname,    
             FileType.EMPTY_RESULT_QUERY: "log/%s/empty_query" % appname,
             FileType.REWRITE : "log/%s/%s_test_rewrite"  % (appname, appname),
-            FileType.QUERY_NUM : "log/precheck_strtoint_num",
+            FileType.PRECHECK_STR2INT_NUM : "log/precheck_strtoint_num",
     }
     return m[_type]
 

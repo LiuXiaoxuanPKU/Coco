@@ -76,7 +76,8 @@ class NumericalConstraint(Constraint):
         self.min = min
         self.max = max
         self.allow_nil = allow_nil
-        # if self.min is None and self.max is None:
+        if self.min is None and self.max is None:
+            print("[Error] Numerical Constraint, Min and Max cannot be None at the same time")
         #     raise Exception(
         #         "[Error] Numerical Constraint, Min and Max cannot be None at the same time")
 
