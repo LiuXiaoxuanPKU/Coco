@@ -16,7 +16,7 @@ class BuiltinExtractor < Extractor
     @builtin_validation_cnt = 0
     @custom_validation_cnt = 0
     @vars = {}
-    @class_name = nil
+    @node_class = nil
   end
 
   def visit(node, _params)
@@ -24,7 +24,7 @@ class BuiltinExtractor < Extractor
 
     ast = node.ast
     constraints = []
-    @class_name = trim_string(ast[0].source.to_s)
+    @node_class = node.name 
     ast[2].children.select.each do |c|
       @vars[c[0].source] = c[1] if c.type.to_s == 'assign'
 
@@ -367,7 +367,7 @@ class BuiltinExtractor < Extractor
       class_name = fields[0].capitalize
     end
     if foreign_key.nil?
-      foreign_key = @class_name.downcase
+      foreign_key = @node_class.downcase
       foreign_key << "_id"
     end
 
