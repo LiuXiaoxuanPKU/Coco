@@ -3,7 +3,7 @@ require_relative '../builtin_extractor'
 require_relative '../class_node'
 
 #test defaults
-def test_defaults
+def test_fk_defaults
   class_def = <<-FOO
     class Test
       belongs_to :user
@@ -26,7 +26,7 @@ def test_defaults
 end
 
 #test when explicitly stated
-def test_explicit
+def test_fk_explicit
   class_def = <<-FOO
     class Test
       belongs_to :page, :class_name => 'WikiPage', :foreign_key => 'wp_id'
@@ -48,5 +48,53 @@ def test_explicit
   raise "expect fk_column_name = 'wp_id', get #{fk_column_name} instead" unless fk_column_name == 'wp_id'
 end
 
-test_defaults
-test_explicit
+#test defaults
+def test_ho_defaults
+  class_def = <<-FOO
+    class Test
+      has_one :user
+    end
+  FOO
+
+  node = ClassNode.new('Test')
+  node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
+
+  e = BuiltinExtractor.new
+  e.visit(node, {})
+
+  raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
+
+  class_name = node.constraints[0].class_name
+  foreign_key = node.constraints[0].foreign_key
+
+  raise "expect class_name = 'User', get #{class_name} instead" unless class_name == 'User'
+  raise "expect fk_column_name = 'test_id', get #{foreign_key} instead" unless foreign_key == 'test_id'
+end
+
+#test when explicitly stated
+def test_ho_explicit
+  class_def = <<-FOO
+    class Test
+      has_one :page, :class_name => 'WikiPage', :foreign_key => 't_id'
+    end
+  FOO
+
+  node = ClassNode.new('Test')
+  node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
+
+  e = BuiltinExtractor.new
+  e.visit(node, {})
+
+  raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
+
+  class_name = node.constraints[0].class_name
+  foreign_key = node.constraints[0].foreign_key
+
+  raise "expect class_name = 'WikiPage', get #{class_name} instead" unless class_name == 'WikiPage'
+  raise "expect fk_column_name = 't_id', get #{foreign_key} instead" unless foreign_key == 't_id'
+end
+
+test_fk_defaults
+test_fk_explicit
+test_ho_defaults
+test_ho_explicit

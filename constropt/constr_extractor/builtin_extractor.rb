@@ -9,13 +9,14 @@ end
 class BuiltinExtractor < Extractor
   BUILTIN_VALIDATOR = %w[validates_presence_of validates_uniqueness_of
                          validates_format_of validates_length_of
-                         belongs_to validates_inclusion_of
+                         belongs_to has_one validates_inclusion_of
                          validates_numericality_of validates].freeze
 
   def initialize
     @builtin_validation_cnt = 0
     @custom_validation_cnt = 0
     @vars = {}
+    @node_class = nil
   end
 
   def visit(node, _params)
@@ -23,6 +24,7 @@ class BuiltinExtractor < Extractor
 
     ast = node.ast
     constraints = []
+    @node_class = node.name 
     ast[2].children.select.each do |c|
       @vars[c[0].source] = c[1] if c.type.to_s == 'assign'
 
@@ -63,6 +65,8 @@ class BuiltinExtractor < Extractor
       constraints = extract_builtin_numerical(ast)
     when 'belongs_to'
       constraints = extract_builtin_foreign(ast)
+    when 'has_one'
+      constraints = extract_builtin_has_one(ast)
     end
     constraints
   end
@@ -362,6 +366,41 @@ class BuiltinExtractor < Extractor
 
     fields.each do |field|
       c = ForeignKeyConstraint.new(field, class_name, fk_column_name)
+      constraints << c
+    end
+    constraints
+  end
+
+  def extract_builtin_has_one(ast)
+    constraints = []
+    fields = []
+    content = ast[1].children
+    class_name = nil
+    foreign_key = nil
+    content.each do |node|
+      field = handle_symbol_literal_node(node)
+      fields << field unless field.nil?
+      node.children.each do |n|
+        if n[0].class == String or n[0] == nil
+          next
+        else
+          k, v = handle_assoc_node(n)
+        end
+        foreign_key = trim_string(v.source) if !k.nil? && (k == 'foreign_key')
+        class_name = trim_string(v.source) if !k.nil? && (k == 'class_name')
+      end
+    end
+
+    if class_name.nil?
+      class_name = fields[0].capitalize
+    end
+    if foreign_key.nil?
+      foreign_key = @node_class.downcase
+      foreign_key << "_id"
+    end
+
+    fields.each do |field|
+      c = HasOneConstraint.new(field, class_name, foreign_key)
       constraints << c
     end
     constraints

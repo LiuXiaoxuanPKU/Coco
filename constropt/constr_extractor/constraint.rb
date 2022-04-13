@@ -121,3 +121,14 @@ class ForeignKeyConstraint < Constraint
     @fk_column_name = fk_column_name
   end
 end
+
+class HasOneConstraint < Constraint
+  attr_accessor :class_name, :foreign_key
+
+  def initialize(field, class_name, foreign_key, db=false)
+    @field_name = field
+    @class_name = class_name
+    @foreign_key = foreign_key
+    @db = db
+  end
+end

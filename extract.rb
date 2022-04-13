@@ -6,7 +6,7 @@ require_relative 'constropt/constr_extractor/id_extractor'
 require_relative 'constropt/constr_extractor/class_inheritance_extractor'
 require_relative 'constropt/constr_extractor/state_machine_extractor'
 require_relative 'constropt/constr_extractor/constraint'
-require_relative 'constropt/constr_extractor/serializer'
+require_relative 'constropt/constr_extractor/serializer' 
 
 
 appname = "openproject"
