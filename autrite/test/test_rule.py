@@ -109,7 +109,7 @@ def test_add_limit_one_exist():
 
 def test_add_predicate_simple():
     print("===============Add Predicate=================")
-    q_before_str = "select * from R where a > b"
+    q_before_str = "select * from R where a >= b"
     q_before = parse(q_before_str)
     c = NumericalConstraint("R", "a", 0, 100)
     print("Before: ", format(q_before))
@@ -168,11 +168,23 @@ def test_add_predicate_validate():
     for q in q_afters:
         print(format(q))
 
+def test_add_predicate_transitivity():
+    print("===============Add Predicate Transitivity, only enumerate tokens that might have constraints =================")
+    q_before_str = "select * from R where a = b and b = c and d < 100"
+    q_before = parse(q_before_str)
+    c = NumericalConstraint("R", "a", 0, 100)
+    print("Before: ", format(q_before))
+    print("Constraint: ", str(c))
+    print("After: ")
+    q_afters = AddPredicate(c).apply(q_before)
+    for q in q_afters:
+        print(format(q))
+        
 def test_add_predicate_join():
     print("===============Add Predicate Join =================")
     q_before_str = "select * from R1 INNER JOIN R2 on R1.a = R2.b where R1.a > 1"
     q_before = parse(q_before_str)
-    c = NumericalConstraint("R", "a", 0, 100)
+    c = NumericalConstraint("R1", "a", 0, 100)
     print("Before: ", format(q_before))
     print("Constraint: ", str(c))
     print("After: ")
@@ -385,10 +397,11 @@ if __name__ == "__main__":
     # test_add_limit_one_select_from()
     # test_remove_distinct_select_from()
     # test_add_limit_one_where_having()
-    # test_add_predicate_simple()
-    # test_add_predicate_validate()
-    # test_add_predicate_join()
+    test_add_predicate_simple()
+    test_add_predicate_validate()
+    test_add_predicate_join()
+    test_add_predicate_transitivity()
     # test_remove_predicate_simple()
     # test_union_all_simple()
     # test_remove_join()
-    test_removenull_predicate()
+    # test_removenull_predicate()

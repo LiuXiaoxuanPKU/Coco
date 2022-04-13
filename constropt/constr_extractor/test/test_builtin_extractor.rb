@@ -35,8 +35,25 @@ def test_validates
   node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
   builtin_extractor = BuiltinExtractor.new
   builtin_extractor.visit(node, {})
-  puts "# of extracted constraints: #{node.constraints.length}"
+  raise "Get #{node.constraints.length} extracted constraints, expect 9" unless node.constraints.length == 9 
   puts "extracted constraints: #{node.constraints}"
+end
+
+def test_multiple_validate
+  puts "=============Test Multiple Validate======="
+  class_def = <<-FOO
+    class Test
+      validates :estimated_hours, :numericality => {:greater_than_or_equal_to => 2, :allow_nil => true, :message => :invalid}
+      validates :example1, :example2, :example3, :numericality => {:greater_than_or_equal_to => 2, :allow_nil => true, :message => :invalid}
+    end
+  FOO
+  node = ClassNode.new('Test')
+  node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
+  builtin_extractor = BuiltinExtractor.new
+  builtin_extractor.visit(node, {})
+  raise "Get #{node.constraints.length} extracted constraints, expect 4" unless node.constraints.length == 4
+
+  puts "extracted constraints: #{node.constraints}" 
 end
 
 def test_numerical
@@ -44,7 +61,7 @@ def test_numerical
   class_def = <<-FOO
     class Test
       validates_inclusion_of :default_done_ratio, in: 0..100, allow_nil: true
-      validates :estimated_hours, :numericality => {:greater_than_or_equal_to => 0, :allow_nil => true, :message => :invalid}
+      validates :estimated_hours, :numericality => {:greater_than_or_equal_to => 2, :allow_nil => true, :message => :invalid}
       validates_numericality_of :port, :only_integer => true, :allow_nil => true
       validates :min_length, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
       validates :experience_level, numericality: { less_than_or_equal_to: 10 }, allow_blank: true
@@ -55,11 +72,13 @@ def test_numerical
   node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
   builtin_extractor = BuiltinExtractor.new
   builtin_extractor.visit(node, {})
-  puts "# of extracted constraints: #{node.constraints.length}"
+  raise "Get #{node.constraints.length} extracted constraints, expect 6" unless node.constraints.length == 6 
+
   puts "extracted constraints: #{node.constraints}" 
 end
 
 
 test_naive
 test_validates
+test_multiple_validate
 test_numerical

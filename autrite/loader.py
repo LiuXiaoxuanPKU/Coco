@@ -1,7 +1,9 @@
 import pickle
+import queue
 from mo_sql_parsing import parse, format
 import json
 import constraint
+from config import RewriteQuery
 
 class Loader:
     @staticmethod
@@ -30,6 +32,10 @@ class Loader:
                 elif obj["^o"] == "NumericalConstraint":
                     c = constraint.NumericalConstraint(
                         classnode['table'], obj['field_name'], obj['min'], obj['max'], obj['allow_nil'])
+                elif obj["^o"] == "ForeignKeyConstraint":
+                    c = constraint.ForeignKeyConstraint(
+                        classnode['table'], obj['fk_column_name'], obj['class_name'], obj['allow_nil']
+                    )
                 else:
                     print("[Error] Unsupport constraint type ", obj)
                     exit(1)
@@ -64,15 +70,16 @@ class Loader:
     @staticmethod
     def load_queries(filename, offset=0, cnt=500):
         lines = Loader.load_queries_raw(filename, offset, cnt)
-        q_objs = []
+        rewrite_qs = []
         fail_raw_queries = []
         for line in lines:
             try:
                 q_obj = parse(line)
                 format(q_obj)
-                q_objs.append(q_obj)
+                q = RewriteQuery(line, q_obj)
+                rewrite_qs.append(q)
             except:
                 fail_raw_queries.append(line)
-        print("======================[Success] Parse unique queries %d" % len(q_objs))
-        print("======================[Fail] Parse %d queries" % len(fail_raw_queries))
-        return q_objs
+        print("======================[Success] Parse unique queries %d" % len(rewrite_qs))
+        print("======================[Fail]    Parse %d queries" % len(fail_raw_queries))
+        return rewrite_qs
