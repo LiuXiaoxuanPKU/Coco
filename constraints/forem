@@ -679,6 +679,20 @@
         "cond": ""
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "type_of",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "processed_html",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
         "^o": "InclusionConstraint",
         "field_name": "type_of",
         "db": false,
@@ -1824,6 +1838,50 @@
         "fk_column_name": "affected_id"
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "feedback_type",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "message",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reported_url",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "category",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "reported_url",
+        "db": false,
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "category",
+        "db": false,
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
+      },
+      {
         "^o": "LengthConstraint",
         "field_name": "message",
         "db": false,
@@ -2085,6 +2143,27 @@
         "fk_column_name": "user_id"
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "github_id_code",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "url",
         "db": false,
@@ -2338,6 +2417,20 @@
         "type": "builtin"
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "uid",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "provider",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "uid",
         "db": false,
@@ -2521,6 +2614,56 @@
     "table": "classified_listing_categories",
     "class": "ListingCategory",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "cost",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "rules",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "name",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "slug",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "cost",
@@ -2792,6 +2935,27 @@
     "class": "NavigationLink",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "icon",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "url",
         "db": false,
@@ -2886,6 +3050,20 @@
         "allow_nil": true,
         "class_name": "Noteable",
         "fk_column_name": "noteable_id"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "content",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reason",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -3185,6 +3363,50 @@
       },
       {
         "^o": "LengthConstraint",
+        "field_name": "location",
+        "db": false,
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "email",
+        "db": false,
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "summary",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "profile_image",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
         "field_name": "name",
         "db": false,
         "allow_nil": false,
@@ -3262,6 +3484,22 @@
       {
         "^o": "LengthConstraint",
         "field_name": "tag_line",
+        "db": false,
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "tech_stack",
+        "db": false,
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "story",
         "db": false,
         "allow_nil": false,
         "min": -1,
@@ -3364,6 +3602,27 @@
         "allow_nil": true,
         "class_name": "Organization",
         "fk_column_name": "organization_id"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "organization_id",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "type_of_user",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
@@ -3595,6 +3854,34 @@
         "allow_nil": true,
         "class_name": "User",
         "fk_column_name": "creator_id"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "main_color_hex",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "feed_url",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "image",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
@@ -3864,6 +4151,27 @@
         ]
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "podcast_episode_id",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "role",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
         "^o": "InclusionConstraint",
         "field_name": "role",
         "db": false,
@@ -3965,6 +4273,20 @@
         "scope": [
           "user_id"
         ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "podcast_id",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -4384,6 +4706,22 @@
         "scope": [
 
         ]
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "location",
+        "db": false,
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "website_url",
+        "db": false,
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "PresenceConstraint",
@@ -4896,6 +5234,34 @@
         "fk_column_name": "user_id"
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "type_of",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "content_type",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "content",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": "content",
         "db": false,
@@ -5126,6 +5492,27 @@
 
         ],
         "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "organization",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "featured_number",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -5716,6 +6103,27 @@
         "allow_nil": true,
         "class_name": "User",
         "fk_column_name": "blocked_id"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "blocked_id",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "blocker_id",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "config",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",

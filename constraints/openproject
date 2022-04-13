@@ -948,6 +948,27 @@
         "fk_column_name": "author_id"
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "commented",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "author",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "comments",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
         "^o": "LengthConstraint",
         "field_name": "commented_type",
         "db": true,

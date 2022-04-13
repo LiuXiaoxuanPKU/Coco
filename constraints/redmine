@@ -1909,6 +1909,14 @@
         "max": 100
       },
       {
+        "^o": "NumericalConstraint",
+        "field_name": "estimated_hours",
+        "db": false,
+        "allow_nil": true,
+        "min": 0,
+        "max": null
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "tracker_id",
         "db": true,
@@ -3181,6 +3189,16 @@
         "allow_nil": false,
         "min": null,
         "max": 255
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "visibility",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+
+        ],
+        "type": "builtin"
       },
       {
         "^o": "InclusionConstraint",
