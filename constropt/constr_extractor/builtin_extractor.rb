@@ -346,6 +346,7 @@ class BuiltinExtractor < Extractor
     content = ast[1].children
     class_name = nil
     fk_column_name = nil
+    polymorphic = nil
     content.each do |node|
       field = handle_symbol_literal_node(node)
       fields << field unless field.nil?
@@ -353,6 +354,7 @@ class BuiltinExtractor < Extractor
         k, v = handle_assoc_node(n)
         fk_column_name = trim_string(v.source) if !k.nil? && (k == 'foreign_key')
         class_name = trim_string(v.source) if !k.nil? && (k == 'class_name')
+        polymorphic = eval(trim_string(v.source)) if !k.nil? && (k == 'polymorphic')
       end
     end
 
@@ -365,7 +367,7 @@ class BuiltinExtractor < Extractor
     end
 
     fields.each do |field|
-      c = ForeignKeyConstraint.new(field, class_name, fk_column_name)
+      c = ForeignKeyConstraint.new(field, class_name, fk_column_name, polymorphic)
       constraints << c
     end
     constraints
@@ -377,6 +379,7 @@ class BuiltinExtractor < Extractor
     content = ast[1].children
     class_name = nil
     foreign_key = nil
+    as_field = nil
     content.each do |node|
       field = handle_symbol_literal_node(node)
       fields << field unless field.nil?
@@ -388,6 +391,7 @@ class BuiltinExtractor < Extractor
         end
         foreign_key = trim_string(v.source) if !k.nil? && (k == 'foreign_key')
         class_name = trim_string(v.source) if !k.nil? && (k == 'class_name')
+        as_field = trim_string(v.source) if !k.nil? && (k == 'as')
       end
     end
 
@@ -400,7 +404,7 @@ class BuiltinExtractor < Extractor
     end
 
     fields.each do |field|
-      c = HasOneConstraint.new(field, class_name, foreign_key)
+      c = HasOneConstraint.new(field, class_name, foreign_key, as_field)
       constraints << c
     end
     constraints

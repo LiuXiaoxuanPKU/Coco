@@ -112,23 +112,25 @@ class BelongsToConstraint < Constraint
 end
 
 class ForeignKeyConstraint < Constraint
-  attr_accessor :class_name, :fk_column_name
+  attr_accessor :class_name, :fk_column_name, :polymorphic
 
-  def initialize(field, class_name, fk_column_name, db = false, allow_nil = true)
+  def initialize(field, class_name, fk_column_name, polymorphic, db = false, allow_nil = true)
     super(field, db, allow_nil)
     @field_name = field
     @class_name = class_name
     @fk_column_name = fk_column_name
+    @polymorphic = polymorphic
   end
 end
 
 class HasOneConstraint < Constraint
-  attr_accessor :class_name, :foreign_key
+  attr_accessor :class_name, :foreign_key, :as_field
 
-  def initialize(field, class_name, foreign_key, db=false)
+  def initialize(field, class_name, foreign_key, as_field, db=false)
     @field_name = field
     @class_name = class_name
     @foreign_key = foreign_key
+    @as_field = as_field
     @db = db
   end
 end
