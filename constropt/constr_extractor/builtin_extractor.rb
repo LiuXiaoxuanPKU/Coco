@@ -351,7 +351,6 @@ class BuiltinExtractor < Extractor
       field = handle_symbol_literal_node(node)
       fields << field unless field.nil?
       node.children.each do |n|
-        p n
         if n[0].class == String or n[0] == nil
           next
         else
