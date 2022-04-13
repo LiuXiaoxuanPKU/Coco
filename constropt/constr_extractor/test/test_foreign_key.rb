@@ -68,14 +68,14 @@ def test_ho_defaults
   foreign_key = node.constraints[0].foreign_key
 
   raise "expect class_name = 'User', get #{class_name} instead" unless class_name == 'User'
-  raise "expect fk_column_name = 'User', get #{foreign_key} instead" unless foreign_key == 'user_id'
+  raise "expect fk_column_name = 'test_id', get #{foreign_key} instead" unless foreign_key == 'test_id'
 end
 
 #test when explicitly stated
 def test_ho_explicit
   class_def = <<-FOO
     class Test
-      has_one :page, :class_name => 'WikiPage', :foreign_key => 'wp_id'
+      has_one :page, :class_name => 'WikiPage', :foreign_key => 't_id'
     end
   FOO
 
@@ -91,7 +91,7 @@ def test_ho_explicit
   foreign_key = node.constraints[0].foreign_key
 
   raise "expect class_name = 'WikiPage', get #{class_name} instead" unless class_name == 'WikiPage'
-  raise "expect fk_column_name = 'wp_id', get #{foreign_key} instead" unless foreign_key == 'wp_id'
+  raise "expect fk_column_name = 't_id', get #{foreign_key} instead" unless foreign_key == 't_id'
 end
 
 test_fk_defaults
