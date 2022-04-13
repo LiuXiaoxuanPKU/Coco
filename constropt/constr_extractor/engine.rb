@@ -14,6 +14,7 @@ class Engine
   def run
     files = read_dir(@appdir)
     files = files.reject(&:nil?)
+    puts "read #{files.length} files"
     root = build(files)
     # populate table name
     populate_tablename_traversor = Traversor.new(PopulateTableName.new)
@@ -36,6 +37,7 @@ class Engine
     asts.each do |ast|
       classname_parents = get_classname_and_parents(ast)
       classname_parents.each do |class_name, parent_and_classast|
+        # puts "create node #{class_name}"
         class_node = ClassNode.new(class_name)
         class_node.parent = parent_and_classast[0]
         class_node.ast = parent_and_classast[1]
@@ -79,12 +81,28 @@ class Engine
   def get_classname_and_parents(ast)
     classname_parents = {}
     ast.children.each do |class_ast|
-      next unless class_ast.type.to_s == 'class'
-
-      class_name = class_ast[0].source
-      parent_name = class_ast[1]
-      parent_name = class_ast[1].source unless parent_name.nil?
-      classname_parents[class_name] = [parent_name, class_ast]
+      next unless ['class', 'module'].include? class_ast.type.to_s
+      if class_ast.type.to_s == 'class'
+        class_name = class_ast[0].source
+        parent_name = nil
+        parent_name = class_ast[1].source unless class_ast[1].nil?
+        if classname_parents.include? class_name
+          puts "[Error] Class name #{class_name} already exist!!"
+        end
+        classname_parents[class_name] = [parent_name, class_ast]
+      elsif class_ast.type.to_s == 'module'
+        module_name = class_ast[0].source
+        class_ast[1].each do |c|
+          next unless c.type.to_s == 'class'
+          class_name = c[0].source
+          parent_name = nil
+          parent_name = c[1].source unless c[1].nil?
+          if classname_parents.include? class_name
+            puts "[Error] Class name #{class_name} already exist!!"
+          end
+          classname_parents[class_name] = [parent_name, c]
+        end
+      end
     end
     classname_parents
   end

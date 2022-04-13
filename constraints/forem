@@ -17,6 +17,31 @@
     ]
   },
   {
+    "table": "ahoy_visits",
+    "class": "Visit",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
     "table": "announcements",
     "class": "Announcement",
     "constraints": [
@@ -1764,52 +1789,6 @@
     ]
   },
   {
-    "table": "events",
-    "class": "Event",
-    "constraints": [
-      {
-        "^o": "LengthConstraint",
-        "field_name": "title",
-        "db": false,
-        "allow_nil": false,
-        "min": -1,
-        "max": -1
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "slug",
-        "db": false,
-        "allow_nil": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "allow_nil": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "allow_nil": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": "id",
-        "db": false,
-        "allow_nil": false,
-        "cond": "",
-        "case_sensitive": false,
-        "scope": [
-
-        ]
-      }
-    ]
-  },
-  {
     "table": "feedback_messages",
     "class": "FeedbackMessage",
     "constraints": [
@@ -2489,6 +2468,23 @@
   {
     "table": "invitations",
     "class": "Invitation",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "user_subscription_tags",
+    "class": "UserSubscriptionTag",
     "constraints": [
       {
         "^o": "UniqueConstraint",
@@ -6369,6 +6365,476 @@
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
         "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "gdpr_delete_requests",
+    "class": "GdprDeleteRequest",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "email",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "users_notification_settings",
+    "class": "NotificationSetting",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "email_digest_periodic",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "email_badge_notifications",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "email_comment_notifications",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "email_community_mod_newsletter",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "email_connect_messages",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "email_digest_periodic",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "email_follower_notifications",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "email_membership_newsletter",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "email_mention_notifications",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "email_newsletter",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "email_tag_mod_newsletter",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "email_unread_notifications",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mobile_comment_notifications",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mod_roundrobin_notifications",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reaction_notifications",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "welcome_notifications",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "users_settings",
+    "class": "Setting",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "experience_level",
+        "db": false,
+        "allow_nil": true,
+        "min": null,
+        "max": 10
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "feed_referential_link",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "feed_url",
+        "db": false,
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "inbox_guidelines",
+        "db": false,
+        "allow_nil": false,
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "config_font",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "config_navbar",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "config_theme",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "display_announcements",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "display_email_on_profile",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "display_sponsors",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "editor_version",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "feed_mark_canonical",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "feed_referential_link",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "inbox_type",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "users_suspended_usernames",
+    "class": "SuspendedUsername",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "username_hash",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "username_hash",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "endpoints",
+    "class": "Endpoint",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "oauth_application",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Doorkeeper::Application",
+        "fk_column_name": "oauth_application_id"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "events",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "source",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "target_url",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "target_url",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": false,
         "allow_nil": false,
         "cond": ""
       },

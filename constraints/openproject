@@ -1728,7 +1728,6 @@
         "allow_nil": false,
         "values": [
           "Export",
-          "Backup",
           "WorkPackages::Export"
         ],
         "type": "class_inheritance"
@@ -1747,23 +1746,6 @@
         "allow_nil": false,
         "cond": ""
       },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": "id",
-        "db": false,
-        "allow_nil": false,
-        "cond": "",
-        "case_sensitive": false,
-        "scope": [
-
-        ]
-      }
-    ]
-  },
-  {
-    "table": "exports",
-    "class": "Backup",
-    "constraints": [
       {
         "^o": "UniqueConstraint",
         "field_name": "id",
@@ -3317,82 +3299,6 @@
     ]
   },
   {
-    "table": "queries",
-    "class": "Query",
-    "constraints": [
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
-        "allow_nil": true,
-        "class_name": "Project",
-        "fk_column_name": "project_id"
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
-        "allow_nil": true,
-        "class_name": "User",
-        "fk_column_name": "user_id"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "allow_nil": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "name",
-        "db": false,
-        "allow_nil": false,
-        "min": null,
-        "max": 255
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": true,
-        "allow_nil": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "user_id",
-        "db": true,
-        "allow_nil": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "is_public",
-        "db": true,
-        "allow_nil": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "display_sums",
-        "db": true,
-        "allow_nil": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": "id",
-        "db": false,
-        "allow_nil": false,
-        "cond": "",
-        "case_sensitive": false,
-        "scope": [
-
-        ]
-      }
-    ]
-  },
-  {
     "table": "relations",
     "class": "Relation",
     "constraints": [
@@ -3470,6 +3376,1071 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "count",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Base",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "value",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "value",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": null,
+        "scope": [
+
+        ]
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "type",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+          "Base",
+          "Ago",
+          "All",
+          "AllAndNonBlank",
+          "BetweenDate",
+          "BetweenDateTime",
+          "Blocked",
+          "Blocks",
+          "BooleanEquals",
+          "BooleanEqualsStrict",
+          "BooleanNotEquals",
+          "CastedGreaterOrEqual",
+          "CastedLessOrEqual",
+          "Children",
+          "ClosedWorkPackages",
+          "Contains",
+          "Duplicated",
+          "Duplicates",
+          "Equals",
+          "Everywhere",
+          "Follows",
+          "GreaterOrEqual",
+          "In",
+          "InLessThan",
+          "InMoreThan",
+          "Includes",
+          "LessOrEqual",
+          "LessThanAgo",
+          "MoreThanAgo",
+          "None",
+          "NoneOrBlank",
+          "NotContains",
+          "NotEquals",
+          "OnDate",
+          "OnDateTime",
+          "OpenWorkPackages",
+          "OrderedWorkPackages",
+          "Parent",
+          "PartOf",
+          "Precedes",
+          "Relates",
+          "Required",
+          "Requires",
+          "ThisWeek",
+          "Today",
+          "EnterpriseTrialKey",
+          "HashedToken",
+          "Backup",
+          "API",
+          "AutoLogin",
+          "Invitation",
+          "Recovery",
+          "RSS"
+        ],
+        "type": "class_inheritance"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Ago",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "All",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "AllAndNonBlank",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "BetweenDate",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "BetweenDateTime",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Blocked",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Blocks",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "BooleanEquals",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "BooleanEqualsStrict",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "BooleanNotEquals",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "CastedGreaterOrEqual",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "CastedLessOrEqual",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Children",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "ClosedWorkPackages",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Contains",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Duplicated",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Duplicates",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Equals",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Everywhere",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Follows",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "GreaterOrEqual",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "In",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "InLessThan",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "InMoreThan",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Includes",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "LessOrEqual",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "LessThanAgo",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "MoreThanAgo",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "None",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "NoneOrBlank",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "NotContains",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "NotEquals",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "OnDate",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "OnDateTime",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "OpenWorkPackages",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "OrderedWorkPackages",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Parent",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "PartOf",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Precedes",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Relates",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Required",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Requires",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "ThisWeek",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Today",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "EnterpriseTrialKey",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "HashedToken",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Backup",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "API",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "AutoLogin",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Invitation",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "Recovery",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "'tokens'",
+    "class": "RSS",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "id",
+        "db": false,
+        "allow_nil": false,
+        "cond": "",
+        "case_sensitive": false,
+        "scope": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "table": "queries",
+    "class": "Query",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "Project",
+        "fk_column_name": "project_id"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "allow_nil": true,
+        "class_name": "User",
+        "fk_column_name": "user_id"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "db": false,
+        "allow_nil": false,
+        "min": null,
+        "max": 255
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_public",
+        "db": true,
+        "allow_nil": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "display_sums",
         "db": true,
         "allow_nil": false,
         "cond": ""
