@@ -34,6 +34,7 @@ if __name__ == '__main__':
     total_candidate_cnt = []
     total_verified_cnt = 0
     only_rewrite = False
+    dump_counter = False # only dump counter example
     for q in tqdm(queries):
         start = time.time()
         # =================Enumerate Candidates================
@@ -80,8 +81,16 @@ if __name__ == '__main__':
         
         # ======== Run test and retain those that pass =========
         rewritten_queries_lower_cost_after_test = []
+        not_eq_qs = []
         # use tests to check equivalence
-        rewritten_queries_lower_cost_after_test = TestVerifier().verify(appname, q, constraints, rewritten_queries_lower_cost)
+        rewritten_queries_lower_cost_after_test, not_eq_qs = TestVerifier().verify(appname, q, constraints, rewritten_queries_lower_cost)
+        if dump_counter:
+            if len(not_eq_qs) == 0:
+                continue
+            # dump counter examples
+            ProveVerifier().verify(appname, q, constraints, not_eq_qs, rewrite_cnt, counter=True)
+            rewrite_cnt += 1
+            continue
          
         if len(rewritten_queries_lower_cost_after_test) == 0:
             continue
