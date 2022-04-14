@@ -398,11 +398,8 @@ class BuiltinExtractor < Extractor
       end
     end
 
-    # does not handle through for now
-    return constraints unless through.nil?
-
     if class_name.nil?
-      class_name = fields[0].capitalize
+      class_name = fields[0].classify
     end
     if foreign_key.nil?
       foreign_key = @node_class.downcase
@@ -410,7 +407,7 @@ class BuiltinExtractor < Extractor
     end
 
     fields.each do |field|
-      c = HasOneManyConstraint.new(field, class_name, foreign_key, as_field, validate_type)
+      c = HasOneManyConstraint.new(field, class_name, foreign_key, as_field, validate_type, through)
       constraints << c
     end
     constraints

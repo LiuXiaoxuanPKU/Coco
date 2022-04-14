@@ -104,7 +104,7 @@ end
 class HasOneManyConstraint < Constraint
   attr_accessor :class_name, :foreign_key, :as_field, :type
 
-  def initialize(field, class_name, foreign_key, as_field, type, db=false)
+  def initialize(field, class_name, foreign_key, as_field, type, through, db=false)
     @field_name = field
     @class_name = class_name
     @foreign_key = foreign_key
