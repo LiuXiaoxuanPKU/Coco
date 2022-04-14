@@ -980,6 +980,16 @@
         "cond": ""
       },
       {
+        "^o": "InclusionConstraint",
+        "field_name": "commented_type",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+          "News"
+        ],
+        "type": "polymorphic"
+      },
+      {
         "^o": "LengthConstraint",
         "field_name": "commented_type",
         "db": true,
@@ -2237,6 +2247,16 @@
         "class_name": "Data",
         "fk_column_name": "data_id",
         "polymorphic": true
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "data_type",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+          "Journal::BaseJournal"
+        ],
+        "type": "polymorphic"
       },
       {
         "^o": "UniqueConstraint",

@@ -1151,6 +1151,18 @@
         "cond": ""
       },
       {
+        "^o": "InclusionConstraint",
+        "field_name": "commentable_type",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+          "Article",
+          "Article",
+          "PodcastEpisode"
+        ],
+        "type": "polymorphic"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
         "db": true,
@@ -1325,6 +1337,16 @@
         "class_name": "Purchase",
         "fk_column_name": "purchase_id",
         "polymorphic": true
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "purchase_type",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+          "Listing"
+        ],
+        "type": "polymorphic"
       },
       {
         "^o": "PresenceConstraint",
@@ -2822,6 +2844,17 @@
         "cond": ""
       },
       {
+        "^o": "InclusionConstraint",
+        "field_name": "mentionable_type",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+          "Article",
+          "Comment"
+        ],
+        "type": "polymorphic"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
         "db": true,
@@ -3119,6 +3152,17 @@
         "cond": ""
       },
       {
+        "^o": "InclusionConstraint",
+        "field_name": "noteable_type",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+          "FeedbackMessage",
+          "User"
+        ],
+        "type": "polymorphic"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
         "db": true,
@@ -3305,6 +3349,21 @@
           "notifiable_type",
           "notifiable_id"
         ]
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "notifiable_type",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+          "Article",
+          "Article",
+          "Broadcast",
+          "Comment",
+          "Comment",
+          "TagAdjustment"
+        ],
+        "type": "polymorphic"
       },
       {
         "^o": "PresenceConstraint",
@@ -5097,6 +5156,27 @@
 
         ],
         "type": "builtin"
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "pinnable_type",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+          "Article"
+        ],
+        "type": "polymorphic"
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "profile_type",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+          "Organization",
+          "User"
+        ],
+        "type": "polymorphic"
       },
       {
         "^o": "PresenceConstraint",

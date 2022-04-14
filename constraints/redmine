@@ -717,6 +717,16 @@
         "cond": ""
       },
       {
+        "^o": "InclusionConstraint",
+        "field_name": "commented_type",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+          "News"
+        ],
+        "type": "polymorphic"
+      },
+      {
         "^o": "LengthConstraint",
         "field_name": "commented_type",
         "db": true,
@@ -2314,6 +2324,16 @@
         "class_name": "User",
         "fk_column_name": "user_id",
         "polymorphic": null
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "journalized_type",
+        "db": false,
+        "allow_nil": false,
+        "values": [
+          "Issue"
+        ],
+        "type": "polymorphic"
       },
       {
         "^o": "PresenceConstraint",
