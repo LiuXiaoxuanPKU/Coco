@@ -36,10 +36,10 @@ class Serializer
     end
     # only serialize constraints of specific types
     skip_types = [
-      HasOneConstraint, HasManyConstraint
+      HasOneManyConstraint
     ]
     dump_constrains = node.constraints.reject { |c| skip_types.include? c.class }
-    {
+    obj = {
       table: node.table,
       class: node.name,
       constraints: (JSON.parse Oj.dump(dump_constrains))

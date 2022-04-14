@@ -108,7 +108,7 @@ def test_ho_as
 
   as_field = node.constraints[0].as_field
 
-  raise "expect as_field = ':imageable', get #{as_field} instead" unless as_field == ':imageable'
+  raise "expect as_field = ':imageable', get #{as_field} instead" unless as_field == 'imageable'
 end
 
 def test_fk_polymorphic

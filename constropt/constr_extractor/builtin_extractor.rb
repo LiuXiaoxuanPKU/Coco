@@ -9,7 +9,8 @@ end
 class BuiltinExtractor < Extractor
   BUILTIN_VALIDATOR = %w[validates_presence_of validates_uniqueness_of
                          validates_format_of validates_length_of
-                         belongs_to has_one validates_inclusion_of
+                         belongs_to has_one has_many
+                         validates_inclusion_of 
                          validates_numericality_of validates].freeze
 
   def initialize
@@ -65,8 +66,8 @@ class BuiltinExtractor < Extractor
       constraints = extract_builtin_numerical(ast)
     when 'belongs_to'
       constraints = extract_builtin_foreign(ast)
-    when 'has_one'
-      constraints = extract_builtin_has_one(ast)
+    when 'has_one', 'has_many'
+      constraints = extract_builtin_has_one_many(ast, validate_type)
     end
     constraints
   end
@@ -373,13 +374,14 @@ class BuiltinExtractor < Extractor
     constraints
   end
 
-  def extract_builtin_has_one(ast)
+  def extract_builtin_has_one_many(ast, validate_type)
     constraints = []
     fields = []
     content = ast[1].children
     class_name = nil
     foreign_key = nil
     as_field = nil
+    through = nil
     content.each do |node|
       field = handle_symbol_literal_node(node)
       fields << field unless field.nil?
@@ -391,9 +393,13 @@ class BuiltinExtractor < Extractor
         end
         foreign_key = trim_string(v.source) if !k.nil? && (k == 'foreign_key')
         class_name = trim_string(v.source) if !k.nil? && (k == 'class_name')
-        as_field = trim_string(v.source) if !k.nil? && (k == 'as')
+        as_field = handle_symbol_literal_node(v) if !k.nil? && (k == 'as')
+        through = handle_symbol_literal_node(v) if !k.nil? && (k == 'through')
       end
     end
+
+    # does not handle through for now
+    return constraints unless through.nil?
 
     if class_name.nil?
       class_name = fields[0].capitalize
@@ -404,7 +410,7 @@ class BuiltinExtractor < Extractor
     end
 
     fields.each do |field|
-      c = HasOneConstraint.new(field, class_name, foreign_key, as_field)
+      c = HasOneManyConstraint.new(field, class_name, foreign_key, as_field, validate_type)
       constraints << c
     end
     constraints
