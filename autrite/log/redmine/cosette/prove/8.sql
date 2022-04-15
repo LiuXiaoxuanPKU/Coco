@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM wiki_pages WHERE wiki_pages.title IS NULL AND wiki_pages.wiki_id = 5205 LIMIT 7;
+SELECT users.* FROM users WHERE users.type IN ('User', 'User') AND users.login = 'zkurfytyftpasmawchqpceiovnpvchgopenavdeleocn';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM wiki_pages WHERE False AND wiki_pages.wiki_id = 5205 LIMIT 7;
+SELECT users.* FROM users WHERE users.type IN ('User', 'User') AND users.login = 'zkurfytyftpasmawchqpceiovnpvchgopenavdeleocn' LIMIT 1;

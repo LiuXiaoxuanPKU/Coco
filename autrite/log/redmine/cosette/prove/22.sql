@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'User') AND LOWER(email_addresses.address) IN ('jsmith@somenet.foo') ORDER BY users.id ASC LIMIT 2;
+SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'User') AND LOWER(email_addresses.address) IN ('foo@bar.net') ORDER BY users.id ASC LIMIT 10;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'User') AND LOWER(email_addresses.address) IN ('jsmith@somenet.foo') ORDER BY users.id ASC LIMIT 2;
+SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'User') AND LOWER(email_addresses.address) IN ('foo@bar.net') ORDER BY users.id ASC LIMIT 10;

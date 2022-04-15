@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'User') AND users.status = 1 AND LOWER(email_addresses.address) IN ('redmine@somenet.foo', 'dlopper@somenet.foo');
+SELECT 1 AS "one" FROM members WHERE members.user_id IS NULL AND members.project_id = 2032 LIMIT 9;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'User') AND users.status = 1 AND LOWER(email_addresses.address) IN ('redmine@somenet.foo', 'dlopper@somenet.foo');
-SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'User') AND users.status = 1 AND LOWER(email_addresses.address) IN ('redmine@somenet.foo', 'dlopper@somenet.foo') LIMIT 1;
+SELECT 1 AS "one" FROM members WHERE False AND members.project_id = 2032 LIMIT 9;

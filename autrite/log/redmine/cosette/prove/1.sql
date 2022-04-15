@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issue_statuses.* FROM issue_statuses WHERE default_done_ratio >= 0;
+SELECT email_addresses.* FROM email_addresses WHERE email_addresses.address = 'wqlezyzlxdvckeholqffzyqligobkso@yahoo.com';
 -- Rewritten Queries
-SELECT issue_statuses.* FROM issue_statuses;
+SELECT email_addresses.* FROM email_addresses WHERE email_addresses.address = 'wqlezyzlxdvckeholqffzyqligobkso@yahoo.com' LIMIT 1;

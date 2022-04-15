@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'User') AND LOWER(email_addresses.address) IN ('dlopper@somenet.foo') ORDER BY users.id ASC LIMIT 6;
+SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Ogbotpcvptbkujhtxknvpiujmdxqctvvvuzgcqzyyeidqdzosoikhzbcpafxawxkmrwtqkxomtayfbvqehxkvfjoggxdbmlrtdv' AND wiki_pages.wiki_id IS NULL LIMIT 5;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'User') AND LOWER(email_addresses.address) IN ('dlopper@somenet.foo') ORDER BY users.id ASC LIMIT 6;
+SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Ogbotpcvptbkujhtxknvpiujmdxqctvvvuzgcqzyyeidqdzosoikhzbcpafxawxkmrwtqkxomtayfbvqehxkvfjoggxdbmlrtdv' AND False LIMIT 5;

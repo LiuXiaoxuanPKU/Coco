@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM watchers WHERE watchers.user_id = 2099 AND watchers.watchable_type = 'News' AND watchers.watchable_id IS NULL LIMIT 8;
+SELECT time_entries.* FROM time_entries WHERE time_entries.issue_id IS NULL ORDER BY time_entries.id ASC LIMIT 7;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM watchers WHERE watchers.user_id = 2099 AND watchers.watchable_type = 'News' AND False LIMIT 8;
+SELECT time_entries.* FROM time_entries WHERE False ORDER BY time_entries.id ASC LIMIT 7;

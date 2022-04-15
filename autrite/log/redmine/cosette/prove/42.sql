@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 8338 AND issue_relations.issue_to_id = 8253 AND issue_relations.relation_type IN ('copied_to', 'blocks');
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'User') AND users.status = 2 AND members.project_id = 6;
 -- Rewritten Queries
-SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 8338 AND issue_relations.issue_to_id = 8253 AND issue_relations.relation_type IN ('copied_to', 'blocks') LIMIT 1;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'User') AND users.status = 2 AND members.project_id = 6;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'User') AND users.status = 2 AND members.project_id = 6 LIMIT 1;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'User') AND users.status = 2 AND members.project_id = 6 LIMIT 1;

@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT time_entries.* FROM time_entries WHERE time_entries.issue_id IS NULL ORDER BY time_entries.id ASC LIMIT 7;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 1349 AND issue_relations.issue_to_id = 7990 AND issue_relations.delay = 0 AND issue_relations.relation_type = 'copied_to';
 -- Rewritten Queries
-SELECT time_entries.* FROM time_entries WHERE False ORDER BY time_entries.id ASC LIMIT 7;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 1349 AND issue_relations.issue_to_id = 7990 AND issue_relations.relation_type = 'copied_to';
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 1349 AND issue_relations.issue_to_id = 7990 AND issue_relations.delay = 0 AND issue_relations.relation_type = 'copied_to' LIMIT 1;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 1349 AND issue_relations.issue_to_id = 7990 AND issue_relations.relation_type = 'copied_to' LIMIT 1;
