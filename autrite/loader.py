@@ -75,8 +75,7 @@ class Loader:
         for line in lines:
             try:
                 q_obj = parse(line)
-                format(q_obj)
-                q = RewriteQuery(line, q_obj)
+                q = RewriteQuery(format(q_obj), q_obj)
                 rewrite_qs.append(q)
             except:
                 fail_raw_queries.append(line)

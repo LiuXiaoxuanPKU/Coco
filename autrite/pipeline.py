@@ -1,6 +1,7 @@
 import traceback
 import random
 random.seed(0)
+import argparse
 
 import rule
 from loader import Loader
@@ -16,9 +17,17 @@ from utils import generate_query_param_rewrites, exp_recorder
 from config import CONNECT_MAP, FileType, get_filename
 
 if __name__ == '__main__':
-    appname = "redmine"
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--app', default='redmine')
+    parser.add_argument('--prove', action='store_true')
+    args = parser.parse_args()
+    
+    appname =  args.app
+    if args.prove:
+        query_filename = get_filename(FileType.TEST_PROVE_Q, appname)
+    else:
+        query_filename = get_filename(FileType.RAW_QUERY, appname) 
     constraint_filename = get_filename(FileType.CONSTRAINT, appname)
-    query_filename = get_filename(FileType.RAW_QUERY, appname)
     offset = 0
     query_cnt = 10000
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,

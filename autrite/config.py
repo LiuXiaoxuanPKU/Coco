@@ -12,11 +12,14 @@ class FileType(Enum):
     EMPTY_RESULT_QUERY = 9
     VERIFIER_OUTPUT = 10
     PRECHECK_STR2INT_NUM = 11
+    
+    TEST_PROVE_Q =12
   
 def get_filename(_type, appname):
 
     m = {
             # input query, constraint, create table sql
+            FileType.TEST_PROVE_Q : "log/%s/prove.sql" % appname,
             FileType.RAW_QUERY : "/home/ubuntu/ConstrOpt/queries/%s/%s.pk" % (appname, appname),
             FileType.CONSTRAINT : "/home/ubuntu/ConstrOpt/constraints/%s"  % (appname),
             FileType.VERIFIER_INPUT : "log/%s/cosette/create.sql" % appname,
