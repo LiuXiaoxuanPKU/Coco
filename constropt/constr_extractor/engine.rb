@@ -70,7 +70,7 @@ class Engine
     saved_nodes = []
     roots.each do |root|
       # up to rails 4.2, use activatereocrd::base
-      active_record_node = root if root.name == 'ActiveRecord::Base'
+      active_record_node = root if root.name == 'ActiveRecord::Base' && active_record_node.nil?
       # if ApplicationRecord < ActiveRecord::Base, use ApplicationRecord, requires rails > 4.2
       application_record_node = root.children.select { |c| c.name == 'ApplicationRecord' }
       if !application_record_node.empty?

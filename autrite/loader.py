@@ -16,25 +16,25 @@ class Loader:
                 c = None
                 if obj["^o"] == "LengthConstraint":
                     c = constraint.LengthConstraint(
-                        classnode['table'], obj['field_name'], obj['min'], obj['max'])
+                        classnode['table'], obj['field_name'], obj['db'], obj['min'], obj['max'])
                 elif obj["^o"] == "UniqueConstraint":
                     c = constraint.UniqueConstraint(
-                        classnode['table'], obj['field_name'], obj['scope'])
+                        classnode['table'], obj['field_name'], obj['db'], obj['scope'])
                 elif obj["^o"] == "PresenceConstraint":
                     c = constraint.PresenceConstraint(
-                        classnode['table'], obj['field_name'])
+                        classnode['table'], obj['field_name'], obj['db'])
                 elif obj["^o"] == "InclusionConstraint":
                     c = constraint.InclusionConstraint(
-                        classnode['table'], obj['field_name'], obj['values'])
+                        classnode['table'], obj['field_name'], obj['db'], obj['values'])
                 elif obj["^o"] == "FormatConstraint":
                     c = constraint.FormatConstraint(
-                        classnode['table'], obj['field_name'], obj['format'])
+                        classnode['table'], obj['field_name'], obj['db'], obj['format'])
                 elif obj["^o"] == "NumericalConstraint":
                     c = constraint.NumericalConstraint(
-                        classnode['table'], obj['field_name'], obj['min'], obj['max'], obj['allow_nil'])
+                        classnode['table'], obj['field_name'], obj['db'], obj['min'], obj['max'], obj['allow_nil'])
                 elif obj["^o"] == "ForeignKeyConstraint":
                     c = constraint.ForeignKeyConstraint(
-                        classnode['table'], obj['fk_column_name'], obj['class_name'], obj['allow_nil']
+                        classnode['table'], obj['fk_column_name'], obj['db'], obj['class_name'], obj['allow_nil']
                     )
                 else:
                     print("[Error] Unsupport constraint type ", obj)

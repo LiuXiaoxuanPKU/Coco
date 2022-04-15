@@ -17,8 +17,8 @@ def get_filename(_type, appname):
 
     m = {
             # input query, constraint, create table sql
-            FileType.RAW_QUERY : "../queries/%s/%s.pk" % (appname, appname),
-            FileType.CONSTRAINT : "../constraints/%s"  % (appname),
+            FileType.RAW_QUERY : "/home/ubuntu/ConstrOpt/queries/%s/%s.pk" % (appname, appname),
+            FileType.CONSTRAINT : "/home/ubuntu/ConstrOpt/constraints/%s"  % (appname),
             FileType.VERIFIER_INPUT : "log/%s/cosette/create.sql" % appname,
             # output sqls for cosette
             FileType.VERIFIER_OUTPUT : "log/%s/cosette/" % appname,   

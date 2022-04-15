@@ -21,7 +21,8 @@ class PopulateTableName
         default_table_name = default_table_name.split('/')[-1]
         tablename = tablename + default_table_name
       end
-      puts "#{tablename}"
+      tablename.slice! '\'' # remove leading '
+      tablename.slice! '\'' # remove end '
       return tablename
     end
     nil

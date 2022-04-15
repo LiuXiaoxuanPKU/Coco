@@ -1,7 +1,8 @@
 class Constraint:
-    def __init__(self, table, field) -> None:
+    def __init__(self, table, field, db) -> None:
         self.table = table
         self.field = field
+        self.db = db
 
     def __eq__(self, __o: object) -> bool:
         return self.__hash__() == __o.__hash__()
@@ -10,12 +11,11 @@ class Constraint:
         return hash(str(self))
 
 class UniqueConstraint(Constraint):
-    def __init__(self, table, field, scope=[], cond=None) -> None:
+    def __init__(self, table, field, db, scope=[], cond=None) -> None:
         if table == "principals":
             table = "users"
 
-        self.table = table
-        self.field = field
+        super().__init__(table, field, db)
         self.scope = scope
         self.cond = cond
 
@@ -28,10 +28,10 @@ class UniqueConstraint(Constraint):
 
 
 class InclusionConstraint(Constraint):
-    def __init__(self, table, field, values) -> None:
+    def __init__(self, table, field, db, values) -> None:
         if table == "principals":
             table = "users"
-        super().__init__(table, field)
+        super().__init__(table, field, db)
         self.value_list = values
 
     def __str__(self) -> str:
@@ -44,8 +44,8 @@ class InclusionConstraint(Constraint):
 
 
 class LengthConstraint(Constraint):
-    def __init__(self, table, field, min, max) -> None:
-        super().__init__(table, field)
+    def __init__(self, table, field, db, min, max) -> None:
+        super().__init__(table, field, db)
         self.min = min
         self.max = max
 
@@ -54,8 +54,8 @@ class LengthConstraint(Constraint):
 
 
 class FormatConstraint(Constraint):
-    def __init__(self, table, field, format) -> None:
-        super().__init__(table, field)
+    def __init__(self, table, field, db, format) -> None:
+        super().__init__(table, field, db)
         self.format = format
 
     def __str__(self) -> str:
@@ -63,16 +63,16 @@ class FormatConstraint(Constraint):
 
 
 class PresenceConstraint(Constraint):
-    def __init__(self, table, field) -> None:
-        super().__init__(table, field)
+    def __init__(self, table, field, db) -> None:
+        super().__init__(table, field, db)
 
     def __str__(self) -> str:
         return "Presence_table_%s_field_%s" % (self.table, self.field)
 
 
 class NumericalConstraint(Constraint):
-    def __init__(self, table, field, min, max, allow_nil=True) -> None:
-        super().__init__(table, field)
+    def __init__(self, table, field, db, min, max, allow_nil=True) -> None:
+        super().__init__(table, field, db)
         self.min = min
         self.max = max
         self.allow_nil = allow_nil
@@ -94,8 +94,8 @@ class NumericalConstraint(Constraint):
 
 
 class ForeignKeyConstraint(Constraint):
-    def __init__(self, table, field, ref_class, allow_nil) -> None:
-        super().__init__(table, field)
+    def __init__(self, table, field, db, ref_class, allow_nil) -> None:
+        super().__init__(table, field, db)
         self.ref_class = ref_class
         self.allow_nil = allow_nil
     

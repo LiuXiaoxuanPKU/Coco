@@ -18,12 +18,12 @@ class DBExtractor < Extractor
       field = tokens[0].split(' ')[1][1..-2]
       token_with_limit = tokens.select { |t| t.include? 'limit' }[0]
       limit = token_with_limit['limit'.length..-1].to_i
-      return LengthConstraint.new(field, 0, limit, true, true), nil
+      return LengthConstraint.new(field, 0, limit, db=true, allow_nil=true), nil
     end
     # presence constraint
     if line.include? 'null: false'
       field = tokens[0].split(' ')[1][1..-2]
-      return PresenceConstraint.new(field, nil, allow_nil:true), nil
+      return PresenceConstraint.new(field, nil, db=true, allow_nil=false), nil
     end
 
     # 3 "user_subscriptions", "users", column: "subscriber_id"
@@ -36,7 +36,7 @@ class DBExtractor < Extractor
       primary_table = handle_string_literal_node(node.children[1])
       if node.children.length == 2
         fk_column = primary_table.singularize + "_id"
-        return ForeignKeyConstraint.new(primary_table.singularize, primary_table.classify, fk_column, false), fk_table
+        return ForeignKeyConstraint.new(primary_table.singularize, primary_table.classify, fk_column, false, db=true), fk_table
       end
 
       node.children[2].each do |assoc|
@@ -49,7 +49,7 @@ class DBExtractor < Extractor
         end
       end
 
-      return ForeignKeyConstraint.new(primary_table.singularize, primary_table.classify, fk_column, false), fk_table
+      return ForeignKeyConstraint.new(primary_table.singularize, primary_table.classify, fk_column, false, db=true), fk_table
     end
 
     if line.include? 'unique'
@@ -63,7 +63,7 @@ class DBExtractor < Extractor
         assoc = handle_assoc_node(t)
         cond = assoc[1].source if assoc[0] == 'where'
       end
-      return UniqueConstraint.new(idx_columns, cond, true, nil), nil
+      return UniqueConstraint.new(idx_columns, cond, true, nil, db=true), nil
     end
     nil
   end
