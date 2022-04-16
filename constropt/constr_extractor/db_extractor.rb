@@ -63,7 +63,7 @@ class DBExtractor < Extractor
         assoc = handle_assoc_node(t)
         cond = assoc[1].source if assoc[0] == 'where'
       end
-      return UniqueConstraint.new(idx_columns, cond, true, nil, db=true), nil
+      return UniqueConstraint.new(idx_columns, cond, true, [], "db-index", true), nil
     end
     nil
   end

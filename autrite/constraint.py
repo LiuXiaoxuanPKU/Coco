@@ -11,13 +11,15 @@ class Constraint:
         return hash(str(self))
 
 class UniqueConstraint(Constraint):
-    def __init__(self, table, field, db, scope=[], cond=None) -> None:
+    def __init__(self, table, field, db, type, scope, cond) -> None:
         if table == "principals":
             table = "users"
 
         super().__init__(table, field, db)
         self.scope = scope
         self.cond = cond
+        assert(type in ["pk", "has_one", "builtin", "db-index"])
+        self.type = type
 
     def __str__(self) -> str:
         if len(self.scope) == 0:

@@ -44,6 +44,7 @@ if __name__ == '__main__':
     total_verified_cnt = 0
     only_rewrite = False
     dump_counter = False # only dump counter example
+    slow_cnt = 0
     for q in tqdm(queries):
         start = time.time()
         # =================Enumerate Candidates================
@@ -78,9 +79,13 @@ if __name__ == '__main__':
         for rq in rewritten_queries:
             try:
                 estimate_cost = Evaluator.evaluate_cost(rq.q_raw_param, connect_str) 
-                if estimate_cost < org_cost:
+                if estimate_cost < 2 * org_cost:
                     rq.estimate_cost = estimate_cost 
                     rewritten_queries_lower_cost.append(rq)
+                else:
+                    print("[Error] rewrite get slower")
+                    print("[Org] %f %s" % (org_cost, q.q_raw_param))
+                    print("[Rewrite] %f %s" % (estimate_cost, rq.q_raw_param))
             except:
                 # rewrite might have wrong syntax
                 continue

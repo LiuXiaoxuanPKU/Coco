@@ -26,11 +26,12 @@ end
 class UniqueConstraint < Constraint
   attr_accessor :cond, :case_sensitive, :scope
 
-  def initialize(field, cond, case_sensitive, scope, db = false, allow_nil = false)
+  def initialize(field, cond, case_sensitive, scope, type, db = false, allow_nil = false)
     super(field, db, allow_nil)
     @cond = cond
     @case_sensitive = case_sensitive
     @scope = scope
+    @type = type
   end
 end
 

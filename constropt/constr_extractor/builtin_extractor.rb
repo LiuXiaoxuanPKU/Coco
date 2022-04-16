@@ -114,7 +114,8 @@ class BuiltinExtractor < Extractor
           scope, cond, case_sensitive = extract_unique_scope_cond_sense(other.children)
         end
         fields.each do |field|
-          constraints << UniqueConstraint.new(field, cond, case_sensitive, scope)
+          type = "builtin"
+          constraints << UniqueConstraint.new(field, cond, case_sensitive, scope, type)
         end
       elsif label == 'inclusion'
         values = []
@@ -186,7 +187,8 @@ class BuiltinExtractor < Extractor
       scope, cond, case_sensitive = extract_unique_scope_cond_sense(node.children)
     end
     fields.each do |field|
-      c = UniqueConstraint.new(field, cond, case_sensitive, scope)
+      type = "builtin"
+      c = UniqueConstraint.new(field, cond, case_sensitive, scope, type)
       constraints << c
     end
     constraints

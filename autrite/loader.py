@@ -19,7 +19,7 @@ class Loader:
                         classnode['table'], obj['field_name'], obj['db'], obj['min'], obj['max'])
                 elif obj["^o"] == "UniqueConstraint":
                     c = constraint.UniqueConstraint(
-                        classnode['table'], obj['field_name'], obj['db'], obj['scope'])
+                        classnode['table'], obj['field_name'], obj['db'], obj["type"], obj['scope'], cond=None)
                 elif obj["^o"] == "PresenceConstraint":
                     c = constraint.PresenceConstraint(
                         classnode['table'], obj['field_name'], obj['db'])
