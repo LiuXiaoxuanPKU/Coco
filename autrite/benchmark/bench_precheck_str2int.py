@@ -15,7 +15,7 @@ from utils import GlobalExpRecorder
 def main(verbal) -> None:
     # make sure log file is clean
     recorder = GlobalExpRecorder()
-    recorder.clear(get_filename(FileType.PRECHECK_STR2INT_NUM))
+    recorder.clear(get_filename(FileType.PRECHECK_STR2INT_NUM, None))
 
     appnames = ['openproject', 'forem', 'redmine']
     name_to_type = {'inclusion': constraint.InclusionConstraint, 
@@ -31,7 +31,7 @@ def main(verbal) -> None:
             filtered_cs = load_cs(appname, cs_type)
             cnt = count(filtered_cs, queries, verbal)
             recorder.record(type_name, cnt)
-        recorder.dump(get_filename(FileType.PRECHECK_STR2INT_NUM))
+        recorder.dump(get_filename(FileType.PRECHECK_STR2INT_NUM, None))
         
 #################################
 #        helper functions       #
@@ -39,7 +39,7 @@ def main(verbal) -> None:
 # load queries
 def load_queries(appname) -> list:
     # app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021}
-    app_to_cnt = {"redmine": 10, "forem": 10, "openproject": 10}
+    app_to_cnt = {"redmine": 100, "forem": 10, "openproject": 10}
     query_filename = get_filename(FileType.RAW_QUERY, appname)
     offset = 0
     query_cnt = app_to_cnt[appname]
