@@ -23,13 +23,12 @@ class InclusionConstraint < Constraint
 end
 
 class UniqueConstraint < Constraint
-  attr_accessor :cond, :case_sensitive, :scope
+  attr_accessor :cond, :case_sensitive
 
-  def initialize(field, cond, case_sensitive, scope, type, db)
+  def initialize(field, cond, case_sensitive, type, db)
     super(field, db)
     @cond = cond
     @case_sensitive = case_sensitive
-    @scope = scope
     @type = type
   end
 end

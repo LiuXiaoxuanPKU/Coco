@@ -15,13 +15,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -32,13 +31,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -160,13 +158,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -183,13 +180,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": [
+          "name"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-
-        ],
         "type": "builtin"
       },
       {
@@ -297,13 +293,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -415,13 +410,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -510,13 +504,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -572,13 +565,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -629,13 +621,13 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "revision",
+        "field_name": [
+          "revision",
+          "repository_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-          "repository_id"
-        ],
         "type": "builtin"
       },
       {
@@ -646,13 +638,13 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "scmid",
+        "field_name": [
+          "scmid",
+          "repository_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-          "repository_id"
-        ],
         "type": "builtin"
       },
       {
@@ -682,20 +674,16 @@
         "db": true,
         "cond": "",
         "case_sensitive": true,
-        "scope": [
-
-        ],
         "type": "db-index"
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -780,13 +768,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -809,13 +796,13 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": [
+          "name",
+          "type"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-          "type"
-        ],
         "type": "builtin"
       },
       {
@@ -931,13 +918,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -948,13 +934,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -965,13 +950,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -982,13 +966,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -999,13 +982,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1016,13 +998,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1033,13 +1014,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1050,13 +1030,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1067,13 +1046,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1084,13 +1062,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1101,13 +1078,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1194,13 +1170,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1246,13 +1221,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1328,13 +1302,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1378,13 +1351,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "address",
+        "field_name": [
+          "address"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "builtin"
       },
       {
@@ -1395,13 +1367,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "user_id",
+        "field_name": [
+          "user_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": true,
-        "scope": [
-
-        ],
         "type": "has_one"
       },
       {
@@ -1442,13 +1413,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1473,13 +1443,13 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": [
+          "name",
+          "project_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-          "project_id"
-        ],
         "type": "builtin"
       },
       {
@@ -1496,13 +1466,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1527,14 +1496,14 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": "",
-        "case_sensitive": null,
-        "scope": [
+        "field_name": [
+          "name",
           "type",
           "project_id"
         ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": null,
         "type": "builtin"
       },
       {
@@ -1596,13 +1565,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1613,13 +1581,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1630,13 +1597,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1647,13 +1613,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1733,13 +1698,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1750,13 +1714,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1767,13 +1730,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1784,13 +1746,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -1840,20 +1801,16 @@
         "db": true,
         "cond": "",
         "case_sensitive": true,
-        "scope": [
-
-        ],
         "type": "db-index"
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -2063,13 +2020,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -2102,13 +2058,13 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": [
+          "name",
+          "project_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-          "project_id"
-        ],
         "type": "builtin"
       },
       {
@@ -2145,13 +2101,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -2226,13 +2181,13 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "issue_to_id",
+        "field_name": [
+          "issue_to_id",
+          "issue_from_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-          "issue_from_id"
-        ],
         "type": "builtin"
       },
       {
@@ -2268,20 +2223,16 @@
         "db": true,
         "cond": "",
         "case_sensitive": true,
-        "scope": [
-
-        ],
         "type": "db-index"
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -2298,13 +2249,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": [
+          "name"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-
-        ],
         "type": "builtin"
       },
       {
@@ -2348,13 +2298,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -2429,13 +2378,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -2474,13 +2422,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -2527,13 +2474,13 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "user_id",
+        "field_name": [
+          "user_id",
+          "project_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-          "project_id"
-        ],
         "type": "builtin"
       },
       {
@@ -2569,20 +2516,16 @@
         "db": true,
         "cond": "",
         "case_sensitive": true,
-        "scope": [
-
-        ],
         "type": "db-index"
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -2627,13 +2570,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -2729,13 +2671,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -2826,13 +2767,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -2923,13 +2863,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -2946,13 +2885,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "lastname",
+        "field_name": [
+          "lastname"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "builtin"
       },
       {
@@ -2976,13 +2914,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -2993,13 +2930,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3010,13 +2946,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3027,13 +2962,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3070,13 +3004,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "login",
+        "field_name": [
+          "login"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "builtin"
       },
       {
@@ -3165,13 +3098,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3182,13 +3114,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3227,13 +3158,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "identifier",
+        "field_name": [
+          "identifier"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-
-        ],
         "type": "builtin"
       },
       {
@@ -3319,13 +3249,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3410,13 +3339,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3427,13 +3355,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3444,13 +3371,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3461,13 +3387,12 @@
     "constraints": [
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3533,13 +3458,13 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "identifier",
+        "field_name": [
+          "identifier",
+          "project_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-          "project_id"
-        ],
         "type": "builtin"
       },
       {
@@ -3577,13 +3502,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "project_id",
+        "field_name": [
+          "project_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": true,
-        "scope": [
-
-        ],
         "type": "has_one"
       },
       {
@@ -3628,13 +3552,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3657,13 +3580,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3692,13 +3614,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3715,13 +3636,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3738,13 +3658,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3761,13 +3680,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3796,13 +3714,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3819,13 +3736,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": [
+          "name"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-
-        ],
         "type": "builtin"
       },
       {
@@ -3889,13 +3805,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -3928,13 +3843,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -4120,13 +4034,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -4145,13 +4058,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "value",
+        "field_name": [
+          "value"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-
-        ],
         "type": "builtin"
       },
       {
@@ -4162,13 +4074,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "user_id",
+        "field_name": [
+          "user_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": true,
-        "scope": [
-
-        ],
         "type": "has_one"
       },
       {
@@ -4205,20 +4116,16 @@
         "db": true,
         "cond": "",
         "case_sensitive": true,
-        "scope": [
-
-        ],
         "type": "db-index"
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -4249,13 +4156,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": [
+          "name"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-
-        ],
         "type": "builtin"
       },
       {
@@ -4311,13 +4217,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -4336,13 +4241,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "user_id",
+        "field_name": [
+          "user_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": true,
-        "scope": [
-
-        ],
         "type": "has_one"
       },
       {
@@ -4353,13 +4257,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -4384,13 +4287,13 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": [
+          "name",
+          "project_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": null,
-        "scope": [
-          "project_id"
-        ],
         "type": "builtin"
       },
       {
@@ -4500,13 +4403,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -4539,14 +4441,14 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "user_id",
-        "db": false,
-        "cond": "",
-        "case_sensitive": null,
-        "scope": [
+        "field_name": [
+          "user_id",
           "watchable_type",
           "watchable_id"
         ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": null,
         "type": "builtin"
       },
       {
@@ -4569,13 +4471,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -4625,13 +4526,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "project_id",
+        "field_name": [
+          "project_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": true,
-        "scope": [
-
-        ],
         "type": "has_one"
       },
       {
@@ -4655,13 +4555,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -4701,13 +4600,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "page_id",
+        "field_name": [
+          "page_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": true,
-        "scope": [
-
-        ],
         "type": "has_one"
       },
       {
@@ -4737,13 +4635,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -4808,13 +4705,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -4851,13 +4747,13 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "title",
+        "field_name": [
+          "title",
+          "wiki_id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-          "wiki_id"
-        ],
         "type": "builtin"
       },
       {
@@ -4906,13 +4802,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -4993,13 +4888,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -5122,13 +5016,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -5161,13 +5054,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
@@ -5184,13 +5076,12 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "id",
+        "field_name": [
+          "id"
+        ],
         "db": false,
         "cond": "",
         "case_sensitive": false,
-        "scope": [
-
-        ],
         "type": "pk"
       }
     ]
