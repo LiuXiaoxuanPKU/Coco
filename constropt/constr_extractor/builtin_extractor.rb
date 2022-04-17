@@ -76,7 +76,9 @@ class BuiltinExtractor < Extractor
     content = ast[1].children
     constraints = []
     fields = []
+    presence_fields = []
     validate_node = nil
+    allow_nil = false
     content.each do |c|
       if c.type.to_s == "symbol_literal"
         fields << handle_symbol_literal_node(c)
@@ -96,13 +98,16 @@ class BuiltinExtractor < Extractor
         puts "[Warning] Does not handle node #{node.source} of type #{node_type}, #{ast.source}"
       end
       other = node.children[1]
+      allow_nil = false
       if label == 'presence'
         if other.source == 'true'
           cond = nil
         elsif other.type.to_s == 'hash'
         end
         fields.each do |field|
-          constraints << PresenceConstraint.new(field, cond)
+          db = false
+          presence_fields << field
+          constraints << PresenceConstraint.new(field, cond, db)
         end
       elsif label == 'uniqueness'
         cond = nil
@@ -111,31 +116,35 @@ class BuiltinExtractor < Extractor
         if other.source == 'true'
           cond = nil
         elsif other.type.to_s == 'hash'
-          scope, cond, case_sensitive = extract_unique_scope_cond_sense(other.children)
+          scope, cond, case_sensitive, allow_nil = extract_unique_scope_cond_sense(other.children)
         end
         fields.each do |field|
           type = "builtin"
-          constraints << UniqueConstraint.new(field, cond, case_sensitive, scope, type)
+          db = false
+          constraints << UniqueConstraint.new(field, cond, case_sensitive, scope, type, db)
         end
       elsif label == 'inclusion'
         values = []
         type = 'builtin'
+        db = false
         fields.each do |field|
-          constraints << InclusionConstraint.new(field, values, type)
+          constraints << InclusionConstraint.new(field, values, type, db)
         end
       elsif label == 'length'
         min = -1
         max = -1
+        db = false
         fields.each do |field|
-          constraints << LengthConstraint.new(field, min, max)
+          constraints << LengthConstraint.new(field, min, max, db)
         end
       elsif label == 'numericality'
+        db = false
         min, max, allow_nil = extract_numerical_hash(other.children)
         fields.each do |field|
-          constraints << NumericalConstraint.new(field, min, max, false, allow_nil)
+          constraints << NumericalConstraint.new(field, min, max, db)
         end
-      elsif label == 'allow_blank'
-        constraints.each { |c| c.allow_nil = true }
+      elsif ['allow_blank', 'allow_nil'].include? label
+        allow_nil = true
       else
         begin
           puts "[Warning] Does not handle #{field}, #{label.type} #{label.type.to_s}"
@@ -143,18 +152,32 @@ class BuiltinExtractor < Extractor
         rescue StandardError
         end
       end
+
     end
-    constraints
+    
+    # add corresponding presence constraints
+    all_constraints = []
+    fields.each do |field|
+      if !allow_nil && !(presence_fields.include?field)
+        cond = nil
+        db = false
+        all_constraints << PresenceConstraint.new(field, cond, db)
+      end
+    end
+    all_constraints += constraints
+    all_constraints
   end
 
   def extract_unique_scope_cond_sense(nodes)
     scope = []
     cond = nil
     case_sensitive = nil
+    allow_nil = false # default is false for validate_uniqueness_of
     nodes.each do |n|
       k, v = handle_assoc_node(n)
       cond = v if !k.nil? && (k == 'if')
       case_sensitive = (v.source.downcase == 'true') if !k.nil? && (k == 'case_sensitive')
+      allow_nil = (v.source.downcase == 'true') if !k.nil? && (['allow_nil', 'allow_blank'].include? k)
       next if k.nil? || (k != 'scope')
 
       v.children.each do |s|
@@ -171,7 +194,7 @@ class BuiltinExtractor < Extractor
         end
       end
     end
-    [scope, cond, case_sensitive]
+    [scope, cond, case_sensitive, allow_nil]
   end
 
   def extract_builtin_unique(ast)
@@ -181,15 +204,21 @@ class BuiltinExtractor < Extractor
     content = ast[1].children
     cond = nil
     case_sensitive = nil
+    allow_nil = false
+    db = false
     content.each do |node|
       field = handle_symbol_literal_node(node)
       fields << field unless field.nil?
-      scope, cond, case_sensitive = extract_unique_scope_cond_sense(node.children)
+      scope, cond, case_sensitive, allow_nil = extract_unique_scope_cond_sense(node.children)
     end
     fields.each do |field|
       type = "builtin"
-      c = UniqueConstraint.new(field, cond, case_sensitive, scope, type)
+      c = UniqueConstraint.new(field, cond, case_sensitive, scope, type, db)
       constraints << c
+      unless allow_nil
+        c = PresenceConstraint.new(field, cond, db)
+        constraints << c
+      end
     end
     constraints
   end
@@ -206,7 +235,8 @@ class BuiltinExtractor < Extractor
       cond = v if !k.nil? && (k == 'if')
     end
     fields.each do |field|
-      c = PresenceConstraint.new(field, cond)
+      db = false
+      c = PresenceConstraint.new(field, cond, db)
       constraints << c
     end
     constraints
@@ -249,13 +279,19 @@ class BuiltinExtractor < Extractor
         end
 
         # allow_blank means the empty string is allowed
-        allow_nil = true if !k.nil? && k == 'allow_blank'
+        allow_nil = (v.source.downcase == 'true') if !k.nil? && (['allow_nil', 'allow_blank'].include? k)
       end
     end
 
     fields.each do |field|
-      c = InclusionConstraint.new(field, values, type, false, allow_nil)
+      db = false
+      c = InclusionConstraint.new(field, values, type, db)
       constraints << c
+      unless allow_nil
+        cond = nil
+        c = PresenceConstraint.new(field, cond, db)
+        constraints << c
+      end
     end
     constraints
   end
@@ -264,16 +300,24 @@ class BuiltinExtractor < Extractor
     constraints = []
     fields = []
     format = nil
+    allow_nil = false
     content = ast[1].children
     content.each do |node|
       field = handle_symbol_literal_node(node)
       fields << field unless field.nil?
       k, v = handle_assoc_node(node[0])
       format = v.source if k == 'with'
+      allow_nil = (v.source.downcase == 'true') if !k.nil? && (['allow_nil', 'allow_blank'].include? k)
     end
     fields.each do |field|
-      c = FormatConstraint.new(field, format)
+      db = false
+      c = FormatConstraint.new(field, format, db)
       constraints << c
+      unless allow_nil
+        cond = nil
+        c = PresenceConstraint.new(field, cond, db)
+        constraints << c
+      end
     end
     constraints
   end
@@ -282,6 +326,7 @@ class BuiltinExtractor < Extractor
     constraints = []
     min = nil
     max = nil
+    allow_nil = false
     fields = []
     content = ast[1].children
     content.each do |node|
@@ -291,11 +336,18 @@ class BuiltinExtractor < Extractor
         k, v = handle_assoc_node(n)
         max = v.source.to_i if !k.nil? && k == 'maximum' && v.type.to_s == 'int'
         min = v.source.to_i if !k.nil? && k == 'minimum' && v.type.to_s == 'int'
+        allow_nil = (v.source.downcase == 'true') if !k.nil? && (['allow_nil', 'allow_blank'].include? k)
       end
     end
     fields.each do |field|
-      constraint = LengthConstraint.new(field, min, max)
-      constraints << constraint
+      db = false
+      c = LengthConstraint.new(field, min, max, db)
+      constraints << c
+      if !allow_nil && (min.nil? || (!min.nil? && min > 0))
+        cond = nil
+        c = PresenceConstraint.new(field, cond, db)
+        constraints << c
+      end
     end
     constraints
   end
@@ -316,7 +368,7 @@ class BuiltinExtractor < Extractor
       rescue StandardError
         puts "[Error] Fail to parse min, max value k: #{k}, v: #{v.source}"
       end
-      allow_nil = true if !k.nil? && %w[allow_nil allow_blank].include?(k)
+      allow_nil = true if !k.nil? && %w[allow_nil allow_blank].include?(k) && v.source.downcase == 'true'
     end
     [min, max, allow_nil]
   end
@@ -337,8 +389,15 @@ class BuiltinExtractor < Extractor
       allow_nil ||= tmp_allow_nil
     end
     fields.each do |field|
-      c = NumericalConstraint.new(field, min, max, false, allow_nil)
+      db = false
+      c = NumericalConstraint.new(field, min, max, db)
       constraints << c
+      unless allow_nil
+        cond = nil
+        db = false
+        c = PresenceConstraint.new(field, cond, db)
+        constraints << c
+      end
     end
     constraints
   end
@@ -370,7 +429,8 @@ class BuiltinExtractor < Extractor
     end
 
     fields.each do |field|
-      c = ForeignKeyConstraint.new(field, class_name, fk_column_name, polymorphic)
+      db = false
+      c = ForeignKeyConstraint.new(field, class_name, fk_column_name, polymorphic, db)
       constraints << c
     end
     constraints
@@ -409,7 +469,8 @@ class BuiltinExtractor < Extractor
     end
 
     fields.each do |field|
-      c = HasOneManyConstraint.new(field, class_name, foreign_key, as_field, validate_type, through)
+      db = false
+      c = HasOneManyConstraint.new(field, class_name, foreign_key, as_field, validate_type, through, db)
       constraints << c
     end
     constraints

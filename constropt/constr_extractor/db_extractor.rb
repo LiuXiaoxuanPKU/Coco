@@ -18,12 +18,12 @@ class DBExtractor < Extractor
       field = tokens[0].split(' ')[1][1..-2]
       token_with_limit = tokens.select { |t| t.include? 'limit' }[0]
       limit = token_with_limit['limit'.length..-1].to_i
-      return LengthConstraint.new(field, 0, limit, db=true, allow_nil=true), nil
+      return LengthConstraint.new(field, 0, limit, db=true), nil
     end
     # presence constraint
     if line.include? 'null: false'
       field = tokens[0].split(' ')[1][1..-2]
-      return PresenceConstraint.new(field, nil, db=true, allow_nil=false), nil
+      return PresenceConstraint.new(field, nil, db=true), nil
     end
 
     # 3 "user_subscriptions", "users", column: "subscriber_id"
@@ -63,7 +63,7 @@ class DBExtractor < Extractor
         assoc = handle_assoc_node(t)
         cond = assoc[1].source if assoc[0] == 'where'
       end
-      return UniqueConstraint.new(idx_columns, cond, true, [], "db-index", true), nil
+      return UniqueConstraint.new(idx_columns, cond, true, [], "db-index", db=true), nil
     end
     nil
   end

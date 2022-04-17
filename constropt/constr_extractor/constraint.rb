@@ -4,20 +4,19 @@ require 'json'
 require 'active_support/inflector'
 
 class Constraint
-  attr_accessor :class_name, :field_name, :db, :allow_nil
+  attr_accessor :class_name, :field_name, :db
 
-  def initialize(field, db, allow_nil)
+  def initialize(field, db)
     @field_name = field
     @db = db
-    @allow_nil = allow_nil
   end
 end
 
 class InclusionConstraint < Constraint
   attr_accessor :values, :type
 
-  def initialize(field, values, type, db = false, allow_nil = false)
-    super(field, db, allow_nil)
+  def initialize(field, values, type, db)
+    super(field, db)
     @values = values
     @type = type
   end
@@ -26,8 +25,8 @@ end
 class UniqueConstraint < Constraint
   attr_accessor :cond, :case_sensitive, :scope
 
-  def initialize(field, cond, case_sensitive, scope, type, db = false, allow_nil = false)
-    super(field, db, allow_nil)
+  def initialize(field, cond, case_sensitive, scope, type, db)
+    super(field, db)
     @cond = cond
     @case_sensitive = case_sensitive
     @scope = scope
@@ -38,8 +37,8 @@ end
 class PresenceConstraint < Constraint
   attr_accessor :cond
 
-  def initialize(field, cond, db = false, allow_nil = false)
-    super(field, db, allow_nil)
+  def initialize(field, cond, db)
+    super(field, db)
     @cond = cond
   end
 end
@@ -47,8 +46,8 @@ end
 class LengthConstraint < Constraint
   attr_accessor :min, :max
 
-  def initialize(field, min, max, db = false, allow_nil = false)
-    super(field, db, allow_nil)
+  def initialize(field, min, max, db)
+    super(field, db)
     @min = min
     @max = max
   end
@@ -57,17 +56,17 @@ end
 class FormatConstraint < Constraint
   attr_accessor :format
 
-  def initialize(field, format_regex, db = false, allow_nil = false)
-    super(field, db, allow_nil)
+  def initialize(field, format_regex, db)
+    super(field, db)
     @format = format_regex
   end
 end
 
 class NumericalConstraint < Constraint
-  attr_accessor :min, :max, :allow_nil
+  attr_accessor :min, :max
 
-  def initialize(field, min, max, db = false, allow_nil = false)
-    super(field, db, allow_nil)
+  def initialize(field, min, max, db)
+    super(field, db)
     @min = min
     @max = max
   end
@@ -77,8 +76,8 @@ end
 class HasManyConstraint < Constraint
   attr_accessor :class_name, :foreign_key, :callable, :dependent, :inverse_of, :through, :as, :extend
 
-  def initialize(field, class_name, foreign_key, callable, dependent, inverse_of, through, as, extend, db = false, allow_nil = false)
-    super(field, db, allow_nil)
+  def initialize(field, class_name, foreign_key, callable, dependent, inverse_of, through, as, extend, db = false)
+    super(field, db)
     @class_name = class_name
     @foreign_key = foreign_key
     @callable = callable
@@ -93,8 +92,8 @@ end
 class ForeignKeyConstraint < Constraint
   attr_accessor :class_name, :fk_column_name, :polymorphic
 
-  def initialize(field, class_name, fk_column_name, polymorphic, db = false, allow_nil = true)
-    super(field, db, allow_nil)
+  def initialize(field, class_name, fk_column_name, polymorphic, db)
+    super(field, db)
     @field_name = field
     @class_name = class_name
     @fk_column_name = fk_column_name
@@ -105,7 +104,7 @@ end
 class HasOneManyConstraint < Constraint
   attr_accessor :class_name, :foreign_key, :as_field, :type
 
-  def initialize(field, class_name, foreign_key, as_field, type, through, db=false)
+  def initialize(field, class_name, foreign_key, as_field, type, through, db)
     @field_name = field
     @class_name = class_name
     @foreign_key = foreign_key
