@@ -10,7 +10,9 @@ from utils import GlobalExpRecorder
 
 # ------------------------------------------------------------------------------
 # This script counts queries has table column with a certain type of constraints
-# dump the results into logs
+# dump the results into logs. Here's how to run this script: 
+# run under autrite directory: python3 benchmark/extract_query.py
+# option to verbal for debug purpose: python3 benchmark/extract_query.py -v
 # ------------------------------------------------------------------------------
 def main(verbal) -> None:
     # make sure log file is clean
@@ -81,7 +83,5 @@ def print_error(q, verbal) -> None:
         pass
 
 if __name__=="__main__":
-    # run under autrite directory: python3 benchmark/extract_query.py
-    # option to verbal for debug purpose: python3 benchmark/extract_query.py -v
     verbal = len(sys.argv) > 1
     main(verbal)
