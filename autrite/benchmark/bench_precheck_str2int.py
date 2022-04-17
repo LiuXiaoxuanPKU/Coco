@@ -40,8 +40,8 @@ def main(verbal) -> None:
 #################################
 # load queries
 def load_queries(appname) -> list:
-    # app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021}
-    app_to_cnt = {"redmine": 100, "forem": 10, "openproject": 10}
+    app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021}
+    # app_to_cnt = {"redmine": 100, "forem": 100, "openproject": 100}
     query_filename = get_filename(FileType.RAW_QUERY, appname)
     offset = 0
     query_cnt = app_to_cnt[appname]
@@ -60,7 +60,7 @@ def count(filtered_cs, queries, verbal) -> int:
     cnt = 0
     for q in queries:
         try:
-            rewrite_q = ExtractQueryRule(filtered_cs).apply(q)
+            rewrite_q = ExtractQueryRule(filtered_cs).apply(q.q_obj)
             if extracted(rewrite_q):
                 cnt += 1
         except (KeyError, TypeError, AttributeError, ValueError):

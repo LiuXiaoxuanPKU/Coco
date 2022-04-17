@@ -83,6 +83,7 @@ class ExtractQueryRule(rule.Rule):
             if isinstance(value, int):
                 return False
             if "*" in value:
+                return False
                 return True
             elif table is not None and value in self.table_to_field[table]:
                 return True
@@ -113,6 +114,9 @@ class ExtractQueryRule(rule.Rule):
                     return True
             return False
         else: # base case
+            if op == "not":
+                clause = clause['not']
+                op = list(clause.keys())[0]
             return clause[op][0] in self.table_to_field[table]
 
     # check on_clause inside from_clause

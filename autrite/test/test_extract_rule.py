@@ -23,18 +23,18 @@ class TestInclusionConstraintQuery(unittest.TestCase):
         self.assertEqual(len(extracted), 1)
 
     def test_where_naive_2(self):
-        cs = [InclusionConstraint("rolse", "builin", False, [])]
+        cs = [InclusionConstraint("roles", "builin", False, [])]
         q = "SELECT roles.* FROM roles WHERE NOT(builtin = 0)"
         q = parse(q)
         extracted = ExtractQueryRule(cs).apply(q)
         self.assertEqual(len(extracted), 1)
 
     def test_where_naive_3(self):
-        cs = [InclusionConstraint("rolse", "anycolumn", False, [])]
-        q = "SELECT roles.* FROM roles WHERE NOT(builtin = 0)"
+        cs = [InclusionConstraint("roles", "anycolumn", False, [])]
+        q = "SELECT roles.anycolumn1 FROM roles WHERE NOT(builtin = 0)"
         q = parse(q)
         extracted = ExtractQueryRule(cs).apply(q)
-        self.assertEqual(len(extracted), 1)
+        self.assertEqual(len(extracted), 0)
 
     def test_where_and(self):
         cs = [InclusionConstraint("attachments", "disk_filename", False, [])]
