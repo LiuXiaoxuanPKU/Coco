@@ -1,5 +1,5 @@
 from mo_sql_parsing import parse, format
-
+import traceback
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from loader import Loader
@@ -19,7 +19,7 @@ def main(verbal) -> None:
     recorder = GlobalExpRecorder()
     recorder.clear(get_filename(FileType.PRECHECK_STR2INT_NUM, None))
 
-    appnames = ['openproject', 'forem', 'redmine']
+    appnames = ['forem', 'redmine', 'openproject']
     name_to_type = {'inclusion': constraint.InclusionConstraint, 
                'length': constraint.LengthConstraint, 
                'format': constraint.FormatConstraint}
@@ -28,6 +28,10 @@ def main(verbal) -> None:
         # load query once for each app
         queries = load_queries(appname)
         recorder.record("app_name", appname)
+        # count the number of queries with constraints on it 
+        all_cs = load_cs(appname, 'all')
+        all_cnt = count(all_cs, queries, verbal)
+        recorder.record("queries_with_cs", all_cnt)
         for type_name in name_to_type.keys():
             cs_type = name_to_type[type_name]
             filtered_cs = load_cs(appname, cs_type)
@@ -52,6 +56,8 @@ def load_queries(appname) -> list:
 def load_cs(appname, cs_type) -> list:
     constraint_filename = get_filename(FileType.CONSTRAINT, appname)
     constraints = Loader.load_constraints(constraint_filename)
+    if cs_type == 'all':
+        return constraints
     filtered_cs = [c for c in constraints if isinstance(c, cs_type)]
     return filtered_cs
 
@@ -75,9 +81,9 @@ def extracted(q) -> bool:
 # print info about errored query
 def print_error(q, verbal) -> None:
     if verbal:
-        print(format(q))
+        print(q.q_raw)
         print("----------------")
-        print(q)
+        print(traceback.format_exc())
         print("================")
     else:
         pass

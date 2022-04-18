@@ -3,11 +3,11 @@ import os
 from mo_sql_parsing import parse, format
 import unittest
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from constraint import InclusionConstraint
+from constraint import FormatConstraint, InclusionConstraint
 from extract_rule import ExtractQueryRule
 
 class TestInclusionConstraintQuery(unittest.TestCase):
-
+    
     def test_non_example_naive(self):
         cs = [InclusionConstraint("auth_sources", "fake_column", False, [])]
         q = "SELECT 1 AS one FROM auth_sources LIMIT 1"
@@ -23,7 +23,7 @@ class TestInclusionConstraintQuery(unittest.TestCase):
         self.assertEqual(len(extracted), 1)
 
     def test_where_naive_2(self):
-        cs = [InclusionConstraint("roles", "builin", False, [])]
+        cs = [InclusionConstraint("roles", "builtin", False, [])]
         q = "SELECT roles.* FROM roles WHERE NOT(builtin = 0)"
         q = parse(q)
         extracted = ExtractQueryRule(cs).apply(q)
@@ -85,5 +85,22 @@ class TestInclusionConstraintQuery(unittest.TestCase):
         extracted = ExtractQueryRule(cs).apply(q)
         self.assertEqual(len(extracted), 1)
 
+
+class TestFormatConstraintQuery(unittest.TestCase):
+    def test_non_example_naive(self):
+        cs = [FormatConstraint("auth_sources", "fake_column", False, "a-zA-Z")]
+        q = "SELECT 1 AS one FROM auth_sources LIMIT 1"
+        q = parse(q)
+        extracted = ExtractQueryRule(cs).apply(q)
+        self.assertEqual(len(extracted), 0) 
+    
+    def test_where_naive(self):
+        cs = [FormatConstraint("attachments", "disk_filename", False, "a-zA-Z")]
+        q = "SELECT 1 AS one FROM attachments WHERE disk_filename = '060719210727_archive.zip'"
+        q = parse(q)
+        extracted = ExtractQueryRule(cs).apply(q)
+        self.assertEqual(len(extracted), 1) 
+
 if __name__ == "__main__":
     unittest.main()
+    
