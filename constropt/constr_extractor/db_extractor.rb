@@ -49,6 +49,9 @@ class DBExtractor < Extractor
         end
       end
 
+      if fk_column.nil?
+        fk_column = primary_table.singularize + "_id"
+      end
       return ForeignKeyConstraint.new(primary_table.singularize, primary_table.classify, fk_column, false, db=true), fk_table
     end
 
@@ -62,6 +65,9 @@ class DBExtractor < Extractor
       node.children[1].each do |t|
         assoc = handle_assoc_node(t)
         cond = assoc[1].source if assoc[0] == 'where'
+      end
+      if idx_columns.nil?
+        return nil, nil
       end
       return UniqueConstraint.new(idx_columns, cond, true, "db-index", db=true), nil
     end

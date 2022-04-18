@@ -75,7 +75,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -117,7 +117,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -218,7 +218,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -560,14 +560,6 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": null,
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
         "field_name": [
           "canonical_url"
         ],
@@ -602,7 +594,7 @@
         "field_name": "collection",
         "db": true,
         "class_name": "Collection",
-        "fk_column_name": null,
+        "fk_column_name": "collection_id",
         "polymorphic": false
       },
       {
@@ -610,7 +602,7 @@
         "field_name": "organization",
         "db": true,
         "class_name": "Organization",
-        "fk_column_name": null,
+        "fk_column_name": "organization_id",
         "polymorphic": false
       },
       {
@@ -618,7 +610,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -1382,7 +1374,7 @@
         "field_name": "organization",
         "db": true,
         "class_name": "Organization",
-        "fk_column_name": null,
+        "fk_column_name": "organization_id",
         "polymorphic": false
       },
       {
@@ -1390,7 +1382,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -1551,19 +1543,11 @@
         "cond": ""
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": null,
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
         "^o": "ForeignKeyConstraint",
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -1737,7 +1721,7 @@
         "field_name": "organization",
         "db": true,
         "class_name": "Organization",
-        "fk_column_name": null,
+        "fk_column_name": "organization_id",
         "polymorphic": false
       },
       {
@@ -1745,7 +1729,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -2127,7 +2111,7 @@
         "field_name": "organization",
         "db": true,
         "class_name": "Organization",
-        "fk_column_name": null,
+        "fk_column_name": "organization_id",
         "polymorphic": false
       },
       {
@@ -2209,7 +2193,7 @@
         "field_name": "display_ad",
         "db": true,
         "class_name": "DisplayAd",
-        "fk_column_name": null,
+        "fk_column_name": "display_ad_id",
         "polymorphic": false
       },
       {
@@ -2217,7 +2201,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -2288,7 +2272,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -2833,7 +2817,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -2930,7 +2914,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -2988,7 +2972,7 @@
         "field_name": "article",
         "db": true,
         "class_name": "Article",
-        "fk_column_name": null,
+        "fk_column_name": "article_id",
         "polymorphic": false
       },
       {
@@ -2996,7 +2980,7 @@
         "field_name": "html_variant",
         "db": true,
         "class_name": "HtmlVariant",
-        "fk_column_name": null,
+        "fk_column_name": "html_variant_id",
         "polymorphic": false
       },
       {
@@ -3054,7 +3038,7 @@
         "field_name": "article",
         "db": true,
         "class_name": "Article",
-        "fk_column_name": null,
+        "fk_column_name": "article_id",
         "polymorphic": false
       },
       {
@@ -3062,7 +3046,7 @@
         "field_name": "html_variant",
         "db": true,
         "class_name": "HtmlVariant",
-        "fk_column_name": null,
+        "fk_column_name": "html_variant_id",
         "polymorphic": false
       },
       {
@@ -3195,7 +3179,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -3346,7 +3330,7 @@
         "field_name": "organization",
         "db": true,
         "class_name": "Organization",
-        "fk_column_name": null,
+        "fk_column_name": "organization_id",
         "polymorphic": false
       },
       {
@@ -3354,7 +3338,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -3586,7 +3570,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -4070,7 +4054,7 @@
         "field_name": "organization",
         "db": true,
         "class_name": "Organization",
-        "fk_column_name": null,
+        "fk_column_name": "organization_id",
         "polymorphic": false
       },
       {
@@ -4078,7 +4062,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -4234,7 +4218,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -4738,7 +4722,7 @@
         "field_name": "organization",
         "db": true,
         "class_name": "Organization",
-        "fk_column_name": null,
+        "fk_column_name": "organization_id",
         "polymorphic": false
       },
       {
@@ -4746,7 +4730,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -4891,7 +4875,7 @@
         "field_name": "article",
         "db": true,
         "class_name": "Article",
-        "fk_column_name": null,
+        "fk_column_name": "article_id",
         "polymorphic": false
       },
       {
@@ -4899,7 +4883,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -5227,7 +5211,7 @@
         "field_name": "podcast",
         "db": true,
         "class_name": "Podcast",
-        "fk_column_name": null,
+        "fk_column_name": "podcast_id",
         "polymorphic": false
       },
       {
@@ -5596,7 +5580,7 @@
         "field_name": "article",
         "db": true,
         "class_name": "Article",
-        "fk_column_name": null,
+        "fk_column_name": "article_id",
         "polymorphic": false
       },
       {
@@ -5665,7 +5649,7 @@
         "field_name": "poll",
         "db": true,
         "class_name": "Poll",
-        "fk_column_name": null,
+        "fk_column_name": "poll_id",
         "polymorphic": false
       },
       {
@@ -5728,7 +5712,7 @@
         "field_name": "poll",
         "db": true,
         "class_name": "Poll",
-        "fk_column_name": null,
+        "fk_column_name": "poll_id",
         "polymorphic": false
       },
       {
@@ -5736,7 +5720,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -5870,7 +5854,7 @@
         "field_name": "poll_option",
         "db": true,
         "class_name": "PollOption",
-        "fk_column_name": null,
+        "fk_column_name": "poll_option_id",
         "polymorphic": false
       },
       {
@@ -5878,7 +5862,7 @@
         "field_name": "poll",
         "db": true,
         "class_name": "Poll",
-        "fk_column_name": null,
+        "fk_column_name": "poll_id",
         "polymorphic": false
       },
       {
@@ -5886,7 +5870,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -6026,7 +6010,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -6481,7 +6465,7 @@
         "field_name": "article",
         "db": true,
         "class_name": "Article",
-        "fk_column_name": null,
+        "fk_column_name": "article_id",
         "polymorphic": false
       },
       {
@@ -6489,7 +6473,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -6618,7 +6602,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -7148,7 +7132,7 @@
         "field_name": "article",
         "db": true,
         "class_name": "Article",
-        "fk_column_name": null,
+        "fk_column_name": "article_id",
         "polymorphic": false
       },
       {
@@ -7156,7 +7140,7 @@
         "field_name": "tag",
         "db": true,
         "class_name": "Tag",
-        "fk_column_name": null,
+        "fk_column_name": "tag_id",
         "polymorphic": false
       },
       {
@@ -7164,7 +7148,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -7236,7 +7220,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {
@@ -7784,7 +7768,7 @@
         "field_name": "role",
         "db": true,
         "class_name": "Role",
-        "fk_column_name": null,
+        "fk_column_name": "role_id",
         "polymorphic": false
       },
       {
@@ -7792,7 +7776,7 @@
         "field_name": "user",
         "db": true,
         "class_name": "User",
-        "fk_column_name": null,
+        "fk_column_name": "user_id",
         "polymorphic": false
       },
       {

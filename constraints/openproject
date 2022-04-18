@@ -3219,7 +3219,7 @@
         "field_name": "query",
         "db": true,
         "class_name": "Query",
-        "fk_column_name": null,
+        "fk_column_name": "query_id",
         "polymorphic": false
       },
       {
@@ -3227,7 +3227,7 @@
         "field_name": "work_package",
         "db": true,
         "class_name": "WorkPackage",
-        "fk_column_name": null,
+        "fk_column_name": "work_package_id",
         "polymorphic": false
       },
       {
