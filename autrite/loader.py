@@ -19,7 +19,7 @@ class Loader:
                         classnode['table'], obj['field_name'], obj['db'], obj['min'], obj['max'])
                 elif obj["^o"] == "UniqueConstraint":
                     c = constraint.UniqueConstraint(
-                        classnode['table'], obj['field_name'], obj['db'], obj["type"], obj['scope'], cond=None)
+                        classnode['table'], obj['field_name'], obj['db'], obj["type"], cond=None)
                 elif obj["^o"] == "PresenceConstraint":
                     c = constraint.PresenceConstraint(
                         classnode['table'], obj['field_name'], obj['db'])
@@ -31,10 +31,10 @@ class Loader:
                         classnode['table'], obj['field_name'], obj['db'], obj['format'])
                 elif obj["^o"] == "NumericalConstraint":
                     c = constraint.NumericalConstraint(
-                        classnode['table'], obj['field_name'], obj['db'], obj['min'], obj['max'], obj['allow_nil'])
+                        classnode['table'], obj['field_name'], obj['db'], obj['min'], obj['max'])
                 elif obj["^o"] == "ForeignKeyConstraint":
                     c = constraint.ForeignKeyConstraint(
-                        classnode['table'], obj['fk_column_name'], obj['db'], obj['class_name'], obj['allow_nil']
+                        classnode['table'], obj['fk_column_name'], obj['db'], obj['class_name']
                     )
                 else:
                     print("[Error] Unsupport constraint type ", obj)
@@ -63,7 +63,7 @@ class Loader:
         print("Total # of raw queries: ", total_raw_queries)
         print("Total # of unique raw queries: ", unique_raw_queries)
 
-        lines.sort()
+        lines.sort(key=len)
         lines = lines[offset:offset+cnt]
         return lines
 

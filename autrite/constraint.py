@@ -11,22 +11,17 @@ class Constraint:
         return hash(str(self))
 
 class UniqueConstraint(Constraint):
-    def __init__(self, table, field, db, type, scope, cond) -> None:
+    def __init__(self, table, field, db, type, cond) -> None:
         if table == "principals":
             table = "users"
 
         super().__init__(table, field, db)
-        self.scope = scope
         self.cond = cond
         assert(type in ["pk", "has_one", "builtin", "db-index"])
         self.type = type
 
     def __str__(self) -> str:
-        if len(self.scope) == 0:
-            scope_str = 'None'
-        else:
-            scope_str = '|'.join(self.scope)
-        return "Unique_table_%s_field_%s_scope_%s_cond_%s" % (self.table, self.field, scope_str, self.cond)
+        return "Unique_table_%s_field_%s_cond_%s" % (self.table, self.field, self.cond)
 
 
 class InclusionConstraint(Constraint):
@@ -73,11 +68,10 @@ class PresenceConstraint(Constraint):
 
 
 class NumericalConstraint(Constraint):
-    def __init__(self, table, field, db, min, max, allow_nil=True) -> None:
+    def __init__(self, table, field, db, min, max) -> None:
         super().__init__(table, field, db)
         self.min = min
         self.max = max
-        self.allow_nil = allow_nil
         if self.min is None and self.max is None:
             print("[Error] Numerical Constraint, Min and Max cannot be None at the same time")
         #     raise Exception(
@@ -92,15 +86,14 @@ class NumericalConstraint(Constraint):
             return v <= self.max
 
     def __str__(self) -> str:
-        return "Numerical_table_%s_field_%s_min_%s_max_%s_allownil_%d" % (self.table, self.field, self.min, self.max, self.allow_nil)
+        return "Numerical_table_%s_field_%s_min_%s_max_%s" % (self.table, self.field, self.min, self.max)
 
 
 class ForeignKeyConstraint(Constraint):
-    def __init__(self, table, field, db, ref_class, allow_nil) -> None:
+    def __init__(self, table, field, db, ref_class) -> None:
         super().__init__(table, field, db)
         self.ref_class = ref_class
-        self.allow_nil = allow_nil
     
     def __str__(self) -> str:
-        return "ForeignKey_table_%s_field_%s_refclass_%s_allownil_%d" % (self.table, self.field, self.ref_class, self.allow_nil) 
+        return "ForeignKey_table_%s_field_%s_refclass_%s" % (self.table, self.field, self.ref_class) 
     

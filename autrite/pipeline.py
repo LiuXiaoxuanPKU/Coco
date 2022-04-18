@@ -20,6 +20,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--app', default='redmine')
     parser.add_argument('--prove', action='store_true')
+    parser.add_argument('--db', action='store_true', \
+            help='only use db constraints to perform optimization')
     args = parser.parse_args()
     
     appname =  args.app
@@ -32,8 +34,12 @@ if __name__ == '__main__':
     query_cnt = 10000
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
              rule.AddLimitOne, rule.RemoveJoin, rule.ReplaceOuterJoin]
-    # rules = [rule.RewriteNullPredicate]
     constraints = Loader.load_constraints(constraint_filename)
+    if args.db:
+        print("========Only use DB constraints to perform optimization======")
+        print("[Before filtering DB constraints] ", len(constraints))
+        constraints = [c for c in constraints if c.db == True]
+        print("[After filtering DB constraints] ", len(constraints))
     queries = Loader.load_queries(query_filename, offset, query_cnt)
     rewriter = Rewriter()
     rewriter.set_rules(rules)
@@ -41,10 +47,8 @@ if __name__ == '__main__':
     rewrite_time = []
     rewrite_cnt = 0
     total_candidate_cnt = []
-    total_verified_cnt = 0
-    only_rewrite = False
     dump_counter = False # only dump counter example
-    slow_cnt = 0
+
     for q in tqdm(queries):
         start = time.time()
         # =================Enumerate Candidates================
