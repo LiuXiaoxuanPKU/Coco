@@ -12,6 +12,10 @@ class TreeVisitor
   end
 
   def visit(node, _params)
+    unless ["ApplicationRecord", "ActiveRecord::Base"].include?node.parent
+      # puts "#{node.parent}"
+      return
+    end
     c = Serializer.serialize_node(node)
     @constraints << c
     @constraints_cnt += node.constraints.length

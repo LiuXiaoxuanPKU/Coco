@@ -1,5 +1,47 @@
 [
   {
+    "table": null,
+    "class": "DummyRoot",
+    "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "type",
+        "db": false,
+        "values": [
+          "DummyRoot",
+          "ActiveRecord::Base"
+        ],
+        "type": "class_inheritance"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": null,
+    "class": "ActiveRecord::Base",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
     "table": "attachments",
     "class": "Attachment",
     "constraints": [
@@ -248,6 +290,123 @@
         "field_name": "verify_peer",
         "db": true,
         "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "auth_sources",
+    "class": "AuthSourceLdap",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "host",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "port",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "attr_login",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "db": false,
+        "min": null,
+        "max": 60
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "host",
+        "db": false,
+        "min": null,
+        "max": 60
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "account",
+        "db": false,
+        "min": null,
+        "max": 255
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "account_password",
+        "db": false,
+        "min": null,
+        "max": 255
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "base_dn",
+        "db": false,
+        "min": null,
+        "max": 255
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_login",
+        "db": false,
+        "min": null,
+        "max": 30
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_firstname",
+        "db": false,
+        "min": null,
+        "max": 30
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_lastname",
+        "db": false,
+        "min": null,
+        "max": 30
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_mail",
+        "db": false,
+        "min": null,
+        "max": 30
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "port",
+        "db": false,
+        "min": null,
+        "max": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "port",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "timeout",
+        "db": false,
+        "min": null,
+        "max": null
       },
       {
         "^o": "UniqueConstraint",
@@ -770,6 +929,166 @@
     ]
   },
   {
+    "table": "custom_fields",
+    "class": "DocumentCategoryCustomField",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "custom_fields",
+    "class": "DocumentCustomField",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "custom_fields",
+    "class": "GroupCustomField",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "custom_fields",
+    "class": "IssueCustomField",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "custom_fields",
+    "class": "IssuePriorityCustomField",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "custom_fields",
+    "class": "ProjectCustomField",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "custom_fields",
+    "class": "TimeEntryActivityCustomField",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "custom_fields",
+    "class": "TimeEntryCustomField",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "custom_fields",
+    "class": "UserCustomField",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "custom_fields",
+    "class": "VersionCustomField",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
     "table": "custom_field_enumerations",
     "class": "CustomFieldEnumeration",
     "constraints": [
@@ -1257,6 +1576,54 @@
     ]
   },
   {
+    "table": "enumerations",
+    "class": "DocumentCategory",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "enumerations",
+    "class": "IssuePriority",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "enumerations",
+    "class": "TimeEntryActivity",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
     "table": "imports",
     "class": "Import",
     "constraints": [
@@ -1329,6 +1696,54 @@
         "db": true,
         "cond": ""
       },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "imports",
+    "class": "IssueImport",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "imports",
+    "class": "TimeEntryImport",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "imports",
+    "class": "UserImport",
+    "constraints": [
       {
         "^o": "UniqueConstraint",
         "field_name": [
@@ -2459,6 +2874,257 @@
     ]
   },
   {
+    "table": "users",
+    "class": "Group",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lastname",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "lastname"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lastname",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "lastname",
+        "db": false,
+        "min": null,
+        "max": 255
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lastname",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "users",
+    "class": "GroupBuiltin",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "users",
+    "class": "GroupAnonymous",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "users",
+    "class": "GroupNonMember",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "users",
+    "class": "User",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "auth_source",
+        "db": false,
+        "class_name": "Auth_source",
+        "fk_column_name": "auth_source_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "login",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "firstname",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lastname",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "login"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "login",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "FormatConstraint",
+        "field_name": "login",
+        "db": false,
+        "format": "/\\A[a-z0-9_\\-@\\.]*\\z/i"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "login",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "login",
+        "db": false,
+        "min": null,
+        "max": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "login",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "firstname",
+        "db": false,
+        "min": null,
+        "max": 30
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "firstname",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "lastname",
+        "db": false,
+        "min": null,
+        "max": 30
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lastname",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "identity_url",
+        "db": false,
+        "min": null,
+        "max": 255
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "identity_url",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "mail_notification",
+        "db": false,
+        "values": [
+          "all",
+          "selected",
+          "only_my_events",
+          "only_assigned",
+          "only_owner",
+          "none"
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "users",
+    "class": "AnonymousUser",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
     "table": "projects",
     "class": "Project",
     "constraints": [
@@ -2684,6 +3350,54 @@
     ]
   },
   {
+    "table": "queries",
+    "class": "IssueQuery",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "queries",
+    "class": "ProjectQuery",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "queries",
+    "class": "TimeEntryQuery",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
     "table": "repositories",
     "class": "Repository",
     "constraints": [
@@ -2835,6 +3549,168 @@
         "db": true,
         "min": 0,
         "max": 0
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "repositories",
+    "class": "Repository::Bazaar",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "log_encoding",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "repositories",
+    "class": "Repository::Cvs",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "root_url",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "log_encoding",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "repositories",
+    "class": "Repository::Filesystem",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "repositories",
+    "class": "Repository::Git",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "repositories",
+    "class": "Repository::Mercurial",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "repositories",
+    "class": "Repository::Subversion",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "FormatConstraint",
+        "field_name": "url",
+        "db": false,
+        "format": "%r{\\A(http|https|svn(\\+[^\\s:\\/\\\\]+)?|file):\\/\\/.+}i"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "db": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
@@ -4137,6 +5013,66 @@
         "db": true,
         "min": 0,
         "max": 0
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "workflows",
+    "class": "WorkflowPermission",
+    "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "rule",
+        "db": false,
+        "values": [
+          "readonly",
+          "required"
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "rule",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "old_status",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "workflows",
+    "class": "WorkflowTransition",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "new_status",
+        "db": false,
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
