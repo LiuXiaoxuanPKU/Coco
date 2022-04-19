@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.id = 5;
+SELECT COUNT(*) AS count_all, issues.fixed_version_id AS issues_fixed_version_id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND projects.lft >= 1 AND projects.rgt <= 10 GROUP BY issues.fixed_version_id;
 -- Rewritten Queries
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.id = 5 LIMIT 1;
+SELECT COUNT(*) AS count_all, issues.fixed_version_id AS issues_fixed_version_id FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND projects.lft >= 1 AND projects.rgt <= 10 GROUP BY issues.fixed_version_id;

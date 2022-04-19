@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT import_items.obj_id FROM import_items WHERE import_items.import_id = 15647 AND obj_id IS NOT NULL;
+SELECT SUM(issues.estimated_hours) AS sum_estimated_hours, issues.category_id AS issues_category_id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) GROUP BY issues.category_id;
 -- Rewritten Queries
-SELECT import_items.obj_id FROM import_items WHERE import_items.import_id = 15647 AND obj_id IS NOT NULL LIMIT 1;
+SELECT SUM(issues.estimated_hours) AS sum_estimated_hours, issues.category_id AS issues_category_id FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) GROUP BY issues.category_id;

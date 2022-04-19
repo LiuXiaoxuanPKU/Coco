@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM articles WHERE articles.user_id = 9962 AND articles.published = False AND published_at <= '2022-02-27 06:50:38.576143';
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '375/376/377/%' OR comments.ancestry = '375/376/377' OR comments.id = 377;
 -- Rewritten Queries
-SELECT COUNT(*) FROM articles WHERE articles.user_id = 9962 AND articles.published = False AND published_at <= '2022-02-27 06:50:38.576143' LIMIT 1;
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '375/376/377/%' OR comments.ancestry = '375/376/377' OR comments.id = 377 LIMIT 1;

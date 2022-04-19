@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT setting FROM pg_settings WHERE name = 'statement_timeout';
+SELECT identities.* FROM identities WHERE identities.user_id = 2293;
 -- Rewritten Queries
-SELECT setting FROM pg_settings WHERE name = 'statement_timeout' LIMIT 1;
+SELECT identities.* FROM identities WHERE identities.user_id = 2293 LIMIT 1;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM versions WHERE versions.project_id = 2738;
+SELECT trackers.* FROM trackers INNER JOIN projects_trackers ON trackers.id = projects_trackers.tracker_id WHERE projects_trackers.project_id = 8529 AND 1 = 0 ORDER BY trackers.position ASC LIMIT 2;
 -- Rewritten Queries
-SELECT COUNT(*) FROM versions WHERE versions.project_id = 2738 LIMIT 1;
+SELECT trackers.* FROM trackers WHERE 1 = 0 ORDER BY trackers.position ASC LIMIT 2;

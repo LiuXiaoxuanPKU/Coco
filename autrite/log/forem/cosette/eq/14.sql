@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'html';
+SELECT devices.* FROM devices WHERE devices.user_id = 5798 AND devices.token IS NULL AND devices.platform = 'Android' AND devices.consumer_app_id = 2620 LIMIT 3;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'html' LIMIT 1;
+SELECT devices.* FROM devices WHERE devices.user_id = 5798 AND False AND devices.platform = 'Android' AND devices.consumer_app_id = 2620 LIMIT 3;

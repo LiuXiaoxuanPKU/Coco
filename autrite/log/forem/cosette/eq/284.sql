@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.id FROM comments WHERE comments.ancestry LIKE '239/240/%' OR comments.ancestry = '239/240';
+SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = 'tkynydlblcriwnbewhzkhplriw' AND consumer_apps.platform = 'Android';
 -- Rewritten Queries
-SELECT comments.id FROM comments WHERE comments.ancestry LIKE '239/240/%' OR comments.ancestry = '239/240' LIMIT 1;
+SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = 'tkynydlblcriwnbewhzkhplriw' AND consumer_apps.platform = 'Android' LIMIT 1;

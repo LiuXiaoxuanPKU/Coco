@@ -2050,8 +2050,7 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT DISTINCT collections.* FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 1852 ORDER BY collections.created_at DESC;
+SELECT tags.requires_approval FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 453 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags';
 -- Rewritten Queries
-SELECT collections.* FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 1852 ORDER BY collections.created_at DESC;
-SELECT collections.* FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 1852 ORDER BY collections.created_at DESC LIMIT 1;
-SELECT DISTINCT collections.* FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 1852 ORDER BY collections.created_at DESC LIMIT 1;
+SELECT tags.requires_approval FROM tags LIMIT 1;
+SELECT tags.requires_approval FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 453 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags' LIMIT 1;

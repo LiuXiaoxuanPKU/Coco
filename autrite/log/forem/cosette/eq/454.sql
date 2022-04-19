@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) AS count_all, DATE(created_at) AS date_created_at FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7410 GROUP BY DATE(created_at);
+SELECT notification_subscriptions.* FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 3920 AND notification_subscriptions.notifiable_type = 'Article';
 -- Rewritten Queries
-SELECT COUNT(*) AS count_all, DATE(created_at) AS date_created_at FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7410 GROUP BY DATE(created_at) LIMIT 1;
+SELECT notification_subscriptions.* FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 3920 AND notification_subscriptions.notifiable_type = 'Article' LIMIT 1;

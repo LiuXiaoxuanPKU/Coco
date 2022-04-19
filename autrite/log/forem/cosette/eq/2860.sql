@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 3088 AND organization_memberships.type_of_user IN ('guest', 'admin') AND organization_memberships.organization_id IS NULL LIMIT 9;
+SELECT SUM(organizations.unspent_credits_count) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 8172;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 3088 AND organization_memberships.type_of_user IN ('guest', 'admin') AND False LIMIT 9;
+SELECT SUM(organizations.unspent_credits_count) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 8172 LIMIT 1;

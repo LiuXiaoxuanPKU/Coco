@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM badges INNER JOIN badge_achievements ON badges.id = badge_achievements.badge_id WHERE badge_achievements.user_id = 8758;
+SELECT COUNT(*) FROM feedback_messages WHERE feedback_messages.category IN ('other', 'harassment', 'other', 'harassment') AND created_at > '2022-02-26 07:20:35.436204';
 -- Rewritten Queries
-SELECT COUNT(*) FROM badges INNER JOIN badge_achievements ON badges.id = badge_achievements.badge_id WHERE badge_achievements.user_id = 8758 LIMIT 1;
+SELECT COUNT(*) FROM feedback_messages WHERE feedback_messages.category IN ('other', 'harassment', 'other', 'harassment') AND created_at > '2022-02-26 07:20:35.436204' LIMIT 1;

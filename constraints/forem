@@ -318,12 +318,6 @@
         "max": -1
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "canonical_url",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "canonical_url",
@@ -336,19 +330,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "canonical_url",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "comments_count",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "feed_source_url",
         "db": false,
         "cond": ""
       },
@@ -362,18 +344,6 @@
         "cond": "",
         "case_sensitive": null,
         "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "feed_source_url",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "main_image",
-        "db": false,
-        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -460,30 +430,6 @@
         "cond": ""
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "video",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "video_closed_caption_track_url",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "video_source_url",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "video_source_url",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "InclusionConstraint",
         "field_name": "video_state",
         "db": false,
@@ -491,12 +437,6 @@
 
         ],
         "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "video_thumbnail_url",
-        "db": false,
-        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -1497,7 +1437,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "commentable",
+        "field_name": "commentable_id",
         "db": false,
         "cond": ""
       },
@@ -2382,12 +2322,6 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "reported_url",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "category",
         "db": false,
         "cond": ""
@@ -2845,12 +2779,6 @@
         "polymorphic": null
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "group",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "InclusionConstraint",
         "field_name": "group",
         "db": false,
@@ -3211,7 +3139,7 @@
     ]
   },
   {
-    "table": "liquid_tags/user_subscription_tags",
+    "table": "liquid_tags_user_subscription_tags",
     "class": "LiquidTags::UserSubscriptionTag",
     "constraints": [
       {
@@ -3257,12 +3185,6 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "organization_id",
         "db": false,
         "cond": ""
       },
@@ -4244,12 +4166,6 @@
         "cond": ""
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "company_size",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "company_size",
         "db": false,
@@ -4263,82 +4179,46 @@
         "cond": ""
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "cta_body_markdown",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "cta_body_markdown",
         "db": false,
         "min": -1,
-        "max": -1
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "cta_button_text",
-        "db": false,
-        "cond": ""
+        "max": 256
       },
       {
         "^o": "LengthConstraint",
         "field_name": "cta_button_text",
         "db": false,
         "min": -1,
-        "max": -1
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "cta_button_url",
-        "db": false,
-        "cond": ""
+        "max": 20
       },
       {
         "^o": "LengthConstraint",
         "field_name": "cta_button_url",
         "db": false,
         "min": -1,
-        "max": -1
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "github_username",
-        "db": false,
-        "cond": ""
+        "max": 150
       },
       {
         "^o": "LengthConstraint",
         "field_name": "github_username",
         "db": false,
         "min": -1,
-        "max": -1
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "location",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "email",
-        "db": false,
-        "cond": ""
+        "max": 50
       },
       {
         "^o": "LengthConstraint",
         "field_name": "location",
         "db": false,
         "min": -1,
-        "max": -1
+        "max": 64
       },
       {
         "^o": "LengthConstraint",
         "field_name": "email",
         "db": false,
         "min": -1,
-        "max": -1
+        "max": 64
       },
       {
         "^o": "PresenceConstraint",
@@ -4375,33 +4255,21 @@
         "field_name": "name",
         "db": false,
         "min": -1,
-        "max": -1
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "proof",
-        "db": false,
-        "cond": ""
+        "max": 50
       },
       {
         "^o": "LengthConstraint",
         "field_name": "proof",
         "db": false,
         "min": -1,
-        "max": -1
+        "max": 1500
       },
       {
         "^o": "LengthConstraint",
         "field_name": "secret",
         "db": false,
         "min": -1,
-        "max": -1
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "secret",
-        "db": false,
-        "cond": ""
+        "max": 100
       },
       {
         "^o": "UniqueConstraint",
@@ -4420,17 +4288,11 @@
         "cond": ""
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "slug",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "slug",
         "db": false,
-        "min": -1,
-        "max": -1
+        "min": 2,
+        "max": 18
       },
       {
         "^o": "PresenceConstraint",
@@ -4455,69 +4317,39 @@
         "cond": ""
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "summary",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "summary",
         "db": false,
         "min": -1,
-        "max": -1
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "tag_line",
-        "db": false,
-        "cond": ""
+        "max": 250
       },
       {
         "^o": "LengthConstraint",
         "field_name": "tag_line",
         "db": false,
         "min": -1,
-        "max": -1
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "tech_stack",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "story",
-        "db": false,
-        "cond": ""
+        "max": 60
       },
       {
         "^o": "LengthConstraint",
         "field_name": "tech_stack",
         "db": false,
         "min": -1,
-        "max": -1
+        "max": 640
       },
       {
         "^o": "LengthConstraint",
         "field_name": "story",
         "db": false,
         "min": -1,
-        "max": -1
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "twitter_username",
-        "db": false,
-        "cond": ""
+        "max": 640
       },
       {
         "^o": "LengthConstraint",
         "field_name": "twitter_username",
         "db": false,
         "min": -1,
-        "max": -1
+        "max": 15
       },
       {
         "^o": "PresenceConstraint",
@@ -4526,17 +4358,11 @@
         "cond": ""
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "url",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "url",
         "db": false,
         "min": -1,
-        "max": -1
+        "max": 200
       },
       {
         "^o": "PresenceConstraint",
@@ -5508,17 +5334,11 @@
         "cond": ""
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "poll_options_input_array",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "poll_options_input_array",
         "db": false,
-        "min": -1,
-        "max": -1
+        "min": 2,
+        "max": 15
       },
       {
         "^o": "PresenceConstraint",
@@ -5543,7 +5363,7 @@
         "field_name": "prompt_markdown",
         "db": false,
         "min": -1,
-        "max": -1
+        "max": 128
       },
       {
         "^o": "PresenceConstraint",
@@ -5930,36 +5750,18 @@
         "type": "builtin"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "location",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "website_url",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "location",
         "db": false,
         "min": -1,
-        "max": -1
+        "max": 100
       },
       {
         "^o": "LengthConstraint",
         "field_name": "website_url",
         "db": false,
         "min": -1,
-        "max": -1
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "website_url",
-        "db": false,
-        "cond": ""
+        "max": 100
       },
       {
         "^o": "UniqueConstraint",
@@ -6383,12 +6185,6 @@
 
         ],
         "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "group",
-        "db": false,
-        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
@@ -6925,19 +6721,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "url",
+        "field_name": "user_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "user",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "organization",
+        "field_name": "organization_id",
         "db": false,
         "cond": ""
       },
@@ -7976,7 +7766,7 @@
     ]
   },
   {
-    "table": "users/gdpr_delete_requests",
+    "table": "users_gdpr_delete_requests",
     "class": "Users::GdprDeleteRequest",
     "constraints": [
       {
@@ -8355,12 +8145,6 @@
     "class": "Users::SuspendedUsername",
     "constraints": [
       {
-        "^o": "PresenceConstraint",
-        "field_name": "username_hash",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "username_hash"
@@ -8395,7 +8179,7 @@
     ]
   },
   {
-    "table": "webhook/endpoints",
+    "table": "webhook_endpoints",
     "class": "Webhook::Endpoint",
     "constraints": [
       {

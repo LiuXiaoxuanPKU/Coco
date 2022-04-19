@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.lft FROM projects WHERE projects.id = 7752;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id = 14631 AND workflows.old_status_id IS NULL AND workflows.role_id = 4213;
 -- Rewritten Queries
-SELECT projects.lft FROM projects WHERE projects.id = 7752 LIMIT 1;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id = 14631 AND False AND workflows.role_id = 4213;

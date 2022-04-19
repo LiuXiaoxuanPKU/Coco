@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'heyheyhey' OR name = 'tag151';
+SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = 9179;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'heyheyhey' OR name = 'tag151' LIMIT 1;
+SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = 9179 LIMIT 1;

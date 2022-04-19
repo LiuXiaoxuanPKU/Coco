@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT SUM(organizations.unspent_credits_count) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 5692;
+SELECT taggings.* FROM taggings WHERE taggings.taggable_id = 2428 AND taggings.taggable_type = 'Article' AND taggings.tagger_id IS NULL AND taggings.tagger_type IS NULL AND taggings.context = 'tags' AND taggings.tag_id = 16;
 -- Rewritten Queries
-SELECT SUM(organizations.unspent_credits_count) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 5692 LIMIT 1;
+SELECT taggings.* FROM taggings WHERE taggings.taggable_id = 2428 AND taggings.taggable_type = 'Article' AND taggings.tagger_id IS NULL AND taggings.tagger_type IS NULL AND taggings.context = 'tags' AND taggings.tag_id = 16 LIMIT 1;

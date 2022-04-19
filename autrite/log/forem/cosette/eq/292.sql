@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT profile_pins.* FROM profile_pins WHERE profile_pins.profile_id = 1461 AND profile_pins.profile_type = 'User';
+SELECT 1 AS "one" FROM user_blocks WHERE user_blocks.blocker_id IS NULL AND user_blocks.blocked_id = 3721 LIMIT 8;
 -- Rewritten Queries
-SELECT profile_pins.* FROM profile_pins WHERE profile_pins.profile_id = 1461 AND profile_pins.profile_type = 'User' LIMIT 1;
+SELECT 1 AS "one" FROM user_blocks WHERE False AND user_blocks.blocked_id = 3721 LIMIT 8;

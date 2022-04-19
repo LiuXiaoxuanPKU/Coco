@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'computerscience' OR name = 'softwaredevelopment' OR name = 'programming' OR name = 'distributedsystems';
+SELECT COUNT(*) FROM reactions WHERE reactions.reactable_id = 5130 AND reactions.reactable_type = 'Comment' AND reactions.category IN ('unicorn', 'unicorn', 'readinglist', 'unicorn', 'hands');
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'computerscience' OR name = 'softwaredevelopment' OR name = 'programming' OR name = 'distributedsystems' LIMIT 1;
+SELECT COUNT(*) FROM reactions WHERE reactions.reactable_id = 5130 AND reactions.reactable_type = 'Comment' AND reactions.category IN ('unicorn', 'unicorn', 'readinglist', 'unicorn', 'hands') LIMIT 1;

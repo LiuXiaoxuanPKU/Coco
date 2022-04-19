@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'tag145' OR name = 'yoyo' OR name = 'bobo';
+SELECT organizations.* FROM organizations WHERE organizations.slug IS NULL LIMIT 5;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'tag145' OR name = 'yoyo' OR name = 'bobo' LIMIT 1;
+SELECT organizations.* FROM organizations WHERE False LIMIT 5;

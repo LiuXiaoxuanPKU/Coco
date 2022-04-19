@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:06:49.494444';
+SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 3572 AND reactions.reactable_type = 'Comment';
 -- Rewritten Queries
-SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:06:49.494444' LIMIT 1;
+SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 3572 AND reactions.reactable_type = 'Comment' LIMIT 1;

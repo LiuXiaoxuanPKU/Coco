@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT roles.* FROM roles WHERE roles.id = 1;
+SELECT 1 AS "one" FROM members INNER JOIN member_roles ON members.id = member_roles.member_id WHERE member_roles.role_id = 3 LIMIT 5;
 -- Rewritten Queries
-SELECT roles.* FROM roles WHERE roles.id = 1;
-SELECT roles.* FROM roles WHERE roles.id = 1 LIMIT 1;
-SELECT DISTINCT roles.* FROM roles WHERE roles.id = 1 LIMIT 1;
+SELECT 1 AS "one" FROM members LIMIT 5;

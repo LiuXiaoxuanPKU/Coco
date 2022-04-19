@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.id FROM projects WHERE projects.id = 5616;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issue_statuses.is_closed = False ORDER BY issues.id ASC LIMIT 5;
 -- Rewritten Queries
-SELECT projects.id FROM projects WHERE projects.id = 5616 LIMIT 1;
+SELECT issues.* FROM issues ORDER BY issues.id ASC LIMIT 5;

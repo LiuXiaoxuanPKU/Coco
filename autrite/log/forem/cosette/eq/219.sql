@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM follows WHERE follows.followable_id = 3917 AND follows.followable_type = 'User';
+SELECT badge_achievements.user_id FROM badge_achievements WHERE badge_achievements.badge_id = 7805;
 -- Rewritten Queries
-SELECT COUNT(*) FROM follows WHERE follows.followable_id = 3917 AND follows.followable_type = 'User' LIMIT 1;
+SELECT badge_achievements.user_id FROM badge_achievements WHERE badge_achievements.badge_id = 7805 LIMIT 1;

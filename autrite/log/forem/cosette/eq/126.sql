@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT reactions.* FROM reactions WHERE reactions.user_id = 1591;
+SELECT tags.* FROM tags WHERE name = 'golang' OR name = 'api';
 -- Rewritten Queries
-SELECT reactions.* FROM reactions WHERE reactions.user_id = 1591 LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'golang' OR name = 'api' LIMIT 1;

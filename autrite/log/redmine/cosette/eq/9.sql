@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.* FROM projects WHERE projects.id = 4;
+SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 8702 AND users.type IN ('User', 'User');
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE projects.id = 4 LIMIT 1;
+SELECT members.* FROM members WHERE members.project_id = 8702;

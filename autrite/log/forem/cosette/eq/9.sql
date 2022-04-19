@@ -2050,6 +2050,8 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'game';
+SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle IS NULL AND consumer_apps.platform IS NULL LIMIT 10;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'game' LIMIT 1;
+SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle IS NULL AND False LIMIT 10;
+SELECT consumer_apps.* FROM consumer_apps WHERE False AND consumer_apps.platform IS NULL LIMIT 10;
+SELECT consumer_apps.* FROM consumer_apps WHERE False AND False LIMIT 10;

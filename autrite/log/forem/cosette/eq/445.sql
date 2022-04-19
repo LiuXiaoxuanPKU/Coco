@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 4140 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 783 AND reactions.category IN ('readinglist', 'thinking');
+SELECT tags.name FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 1073 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags';
 -- Rewritten Queries
-SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 4140 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 783 AND reactions.category IN ('readinglist', 'thinking') LIMIT 1;
+SELECT tags.name FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 1073 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags' LIMIT 1;

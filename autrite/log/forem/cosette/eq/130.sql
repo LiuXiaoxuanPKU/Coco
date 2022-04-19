@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM api_secrets WHERE api_secrets.user_id = 2869;
+SELECT tags.* FROM tags WHERE name = 'ror' OR name = 'webdev';
 -- Rewritten Queries
-SELECT COUNT(*) FROM api_secrets WHERE api_secrets.user_id = 2869 LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'ror' OR name = 'webdev' LIMIT 1;

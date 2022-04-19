@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'tag137';
+SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.unspent_credits_count) AS unspent_credits_count FROM users LEFT JOIN credits AS credits ON users.id = credits.user_id AND credits.spent = False GROUP BY users.id ORDER BY users.id ASC LIMIT 4;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'tag137' LIMIT 1;
+SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.unspent_credits_count) AS unspent_credits_count FROM users INNER JOIN credits AS credits ON users.id = credits.user_id AND credits.spent = False GROUP BY users.id ORDER BY users.id ASC LIMIT 4;

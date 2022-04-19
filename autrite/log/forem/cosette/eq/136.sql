@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'ruby' OR name = 'rails';
+SELECT setting FROM pg_settings WHERE name = 'statement_timeout';
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'ruby' OR name = 'rails' LIMIT 1;
+SELECT setting FROM pg_settings WHERE name = 'statement_timeout' LIMIT 1;

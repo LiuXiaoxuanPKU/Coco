@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM reactions WHERE reactions.user_id IS NULL AND reactions.reactable_type = 'Comment' AND reactions.reactable_id = 1694 LIMIT 3;
+SELECT articles.id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:07:25.753924' AND articles.user_id = 6037;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM reactions WHERE False AND reactions.reactable_type = 'Comment' AND reactions.reactable_id = 1694 LIMIT 3;
+SELECT articles.id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:07:25.753924' AND articles.user_id = 6037 LIMIT 1;

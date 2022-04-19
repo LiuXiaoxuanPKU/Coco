@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT roles.* FROM roles WHERE roles.id = 4;
+SELECT issue_statuses.* FROM issue_statuses WHERE default_done_ratio >= 0;
 -- Rewritten Queries
-SELECT roles.* FROM roles WHERE roles.id = 4 LIMIT 1;
+SELECT issue_statuses.* FROM issue_statuses;

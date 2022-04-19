@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT attachments.* FROM attachments WHERE attachments.id = 8004;
+SELECT users.* FROM users INNER JOIN groups_users ON users.id = groups_users.group_id WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') AND groups_users.user_id = 8 ORDER BY users.id ASC LIMIT 2;
 -- Rewritten Queries
-SELECT attachments.* FROM attachments WHERE attachments.id = 8004 LIMIT 1;
+SELECT users.* FROM users WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') ORDER BY users.id ASC LIMIT 2;

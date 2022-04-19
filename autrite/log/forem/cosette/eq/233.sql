@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM organization_memberships WHERE organization_memberships.organization_id = 9311;
+SELECT COUNT(*) FROM comments WHERE comments.commentable_id = 23 AND comments.commentable_type = 'Article';
 -- Rewritten Queries
-SELECT COUNT(*) FROM organization_memberships WHERE organization_memberships.organization_id = 9311 LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE comments.commentable_id = 23 AND comments.commentable_type = 'Article' LIMIT 1;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = 72 AND mentions.mentionable_type = 'Comment';
+SELECT identities.provider FROM identities WHERE identities.user_id = 1847 AND identities.provider = 'facebook';
 -- Rewritten Queries
-SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = 72 AND mentions.mentionable_type = 'Comment' LIMIT 1;
+SELECT identities.provider FROM identities WHERE identities.user_id = 1847 AND identities.provider = 'facebook' LIMIT 1;

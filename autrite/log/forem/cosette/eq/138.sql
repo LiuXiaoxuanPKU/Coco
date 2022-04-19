@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT devices.* FROM devices WHERE devices.consumer_app_id = 6125;
+SELECT COUNT(*) FROM github_repos WHERE github_repos.user_id = 2269;
 -- Rewritten Queries
-SELECT devices.* FROM devices WHERE devices.consumer_app_id = 6125 LIMIT 1;
+SELECT COUNT(*) FROM github_repos WHERE github_repos.user_id = 2269 LIMIT 1;

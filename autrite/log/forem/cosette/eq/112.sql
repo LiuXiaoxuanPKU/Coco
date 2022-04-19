@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'explainlikeimfive';
+SELECT COUNT(*) FROM reactions WHERE reactions.user_id = 3223;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'explainlikeimfive' LIMIT 1;
+SELECT COUNT(*) FROM reactions WHERE reactions.user_id = 3223 LIMIT 1;

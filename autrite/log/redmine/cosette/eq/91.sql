@@ -576,6 +576,7 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'D';
+SELECT attachments.* FROM attachments LEFT JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id LEFT JOIN projects ON documents.project_id = projects.id WHERE attachments.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL ORDER BY attachments.id DESC LIMIT 10;
 -- Rewritten Queries
-SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'D' LIMIT 1;
+SELECT attachments.* FROM attachments INNER JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id LEFT JOIN projects ON documents.project_id = projects.id WHERE attachments.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL ORDER BY attachments.id DESC LIMIT 10;
+SELECT attachments.* FROM attachments LEFT JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id INNER JOIN projects ON documents.project_id = projects.id WHERE attachments.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL ORDER BY attachments.id DESC LIMIT 10;

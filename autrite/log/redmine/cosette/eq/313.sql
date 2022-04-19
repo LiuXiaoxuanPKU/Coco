@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT MAX(custom_fields.position) FROM custom_fields WHERE custom_fields.type IN ('ProjectCustomField');
+SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id LEFT OUTER JOIN trackers ON trackers.id = issues.tracker_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) ORDER BY trackers.position ASC, issues.id DESC LIMIT 7;
 -- Rewritten Queries
-SELECT MAX(custom_fields.position) FROM custom_fields WHERE custom_fields.type IN ('ProjectCustomField') LIMIT 1;
+SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) ORDER BY trackers.position ASC, issues.id DESC LIMIT 7;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.path, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:18.969491' AND published_at > '2022-02-01 12:00:00' AND published_at < '2022-03-01 11:59:59.999999' AND score >= 0;
+SELECT articles.path, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:18.989312' AND published_at > '2022-01-01 12:00:00' AND published_at < '2022-02-01 11:59:59.999999' AND score >= 0;
 -- Rewritten Queries
-SELECT articles.path, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:18.969491' AND published_at > '2022-02-01 12:00:00' AND published_at < '2022-03-01 11:59:59.999999' AND score >= 0 LIMIT 1;
+SELECT articles.path, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:18.989312' AND published_at > '2022-01-01 12:00:00' AND published_at < '2022-02-01 11:59:59.999999' AND score >= 0 LIMIT 1;

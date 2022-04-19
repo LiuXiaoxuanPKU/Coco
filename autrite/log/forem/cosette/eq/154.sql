@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'meta' OR name = 'discussion';
+SELECT api_secrets.* FROM api_secrets WHERE api_secrets.user_id = 1259;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'meta' OR name = 'discussion' LIMIT 1;
+SELECT api_secrets.* FROM api_secrets WHERE api_secrets.user_id = 1259 LIMIT 1;

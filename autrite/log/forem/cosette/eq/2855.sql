@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT reactions.reactable_id FROM reactions WHERE reactions.category = 'thumbsup' AND reactions.user_id = 2426 AND reactions.reactable_type = 'Comment' AND reactions.status <> 'archived' ORDER BY reactions.created_at DESC;
+SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 2719 AND organization_memberships.type_of_user = 'guest' AND organization_memberships.organization_id IS NULL LIMIT 5;
 -- Rewritten Queries
-SELECT reactions.reactable_id FROM reactions WHERE reactions.category = 'thumbsup' AND reactions.user_id = 2426 AND reactions.reactable_type = 'Comment' AND reactions.status <> 'archived' ORDER BY reactions.created_at DESC LIMIT 1;
+SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 2719 AND organization_memberships.type_of_user = 'guest' AND False LIMIT 5;

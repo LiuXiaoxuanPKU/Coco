@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM notifications WHERE notifications.user_id = 9084 AND notifications.notifiable_id = 2553 AND notifications.notifiable_type = 'Article';
+SELECT reactions.* FROM reactions WHERE reactions.user_id = 2180 AND reactions.category IN ('thumbsup', 'like', 'thumbsup', 'like', 'hands') AND reactions.reactable_type = 'Comment';
 -- Rewritten Queries
-SELECT COUNT(*) FROM notifications WHERE notifications.user_id = 9084 AND notifications.notifiable_id = 2553 AND notifications.notifiable_type = 'Article' LIMIT 1;
+SELECT reactions.* FROM reactions WHERE reactions.user_id = 2180 AND reactions.category IN ('thumbsup', 'like', 'thumbsup', 'like', 'hands') AND reactions.reactable_type = 'Comment' LIMIT 1;

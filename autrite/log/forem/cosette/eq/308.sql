@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT organization_memberships.* FROM organization_memberships WHERE organization_memberships.organization_id = 1509;
+SELECT COUNT(*) FROM follows WHERE follows.followable_id = 7285 AND follows.followable_type = 'User' AND follows.blocked = False;
 -- Rewritten Queries
-SELECT organization_memberships.* FROM organization_memberships WHERE organization_memberships.organization_id = 1509 LIMIT 1;
+SELECT COUNT(*) FROM follows WHERE follows.followable_id = 7285 AND follows.followable_type = 'User' AND follows.blocked = False LIMIT 1;

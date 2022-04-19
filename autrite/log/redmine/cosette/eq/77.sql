@@ -576,6 +576,20 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission');
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
 -- Rewritten Queries
-SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') LIMIT 1;
+SELECT issues.* FROM issues WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
+SELECT issues.* FROM issues INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4;

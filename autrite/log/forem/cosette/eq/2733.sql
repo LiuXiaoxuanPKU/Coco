@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = 9533 AND organization_memberships.type_of_user IN ('member', 'admin');
+SELECT follows.* FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 4252 AND created_at > '2022-02-26 07:17:06.323212' ORDER BY follows.created_at DESC;
 -- Rewritten Queries
-SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = 9533 AND organization_memberships.type_of_user IN ('member', 'admin') LIMIT 1;
+SELECT follows.* FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 4252 AND created_at > '2022-02-26 07:17:06.323212' ORDER BY follows.created_at DESC LIMIT 1;

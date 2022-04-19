@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT wiki_contents.* FROM wiki_contents WHERE wiki_contents.page_id = 8840;
+SELECT queries.* FROM queries LEFT OUTER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('ProjectQuery') AND (queries.project_id IS NULL OR projects.status <> 9) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC;
 -- Rewritten Queries
-SELECT wiki_contents.* FROM wiki_contents WHERE wiki_contents.page_id = 8840 LIMIT 1;
+SELECT queries.* FROM queries INNER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('ProjectQuery') AND (queries.project_id IS NULL OR projects.status <> 9) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC;

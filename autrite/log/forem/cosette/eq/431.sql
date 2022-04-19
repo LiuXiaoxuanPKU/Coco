@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM follows WHERE follows.follower_id = 2943 AND follows.follower_type = 'User' AND follows.blocked = True AND follows.followable_type = 'User';
+SELECT devices.* FROM devices WHERE devices.user_id = 4312 AND devices.token IS NULL AND devices.platform = 'iOS' AND devices.consumer_app_id = 8688 LIMIT 2;
 -- Rewritten Queries
-SELECT COUNT(*) FROM follows WHERE follows.follower_id = 2943 AND follows.follower_type = 'User' AND follows.blocked = True AND follows.followable_type = 'User' LIMIT 1;
+SELECT devices.* FROM devices WHERE devices.user_id = 4312 AND False AND devices.platform = 'iOS' AND devices.consumer_app_id = 8688 LIMIT 2;

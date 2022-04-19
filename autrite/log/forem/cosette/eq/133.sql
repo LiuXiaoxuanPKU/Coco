@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.id = 3524 AND users.id = 3524;
+SELECT tags.* FROM tags WHERE name = 'tag31' OR name = 'tag32';
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.id = 3524 AND users.id = 3524 LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'tag31' OR name = 'tag32' LIMIT 1;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'softwaredevelopment' OR name = 'codereview' OR name = 'personaldevelopment' OR name = 'softwareengineering';
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 2832 AND identities.provider IN ('apple', 'twitter') AND identities.provider IN ('github', 'apple', 'github', 'github', 'apple', 'apple');
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'softwaredevelopment' OR name = 'codereview' OR name = 'personaldevelopment' OR name = 'softwareengineering' LIMIT 1;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 2832 AND identities.provider IN ('apple', 'twitter') AND identities.provider IN ('github', 'apple', 'github', 'github', 'apple', 'apple') LIMIT 1;

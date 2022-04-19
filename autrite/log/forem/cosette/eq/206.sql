@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT podcast_ownerships.* FROM podcast_ownerships WHERE podcast_ownerships.user_id = 7928;
+SELECT COUNT(*) FROM comments WHERE 1 = 0 AND comments.commentable_type = 'Article' AND score > 0;
 -- Rewritten Queries
-SELECT podcast_ownerships.* FROM podcast_ownerships WHERE podcast_ownerships.user_id = 7928 LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE 1 = 0 AND comments.commentable_type = 'Article' AND score > 0 LIMIT 1;

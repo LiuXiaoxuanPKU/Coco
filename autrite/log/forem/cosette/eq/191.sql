@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM classified_listings WHERE classified_listings.user_id = 9832;
+SELECT tags.* FROM tags WHERE name = 'yoyo' OR name = 'bobo' OR name = 'tag150';
 -- Rewritten Queries
-SELECT COUNT(*) FROM classified_listings WHERE classified_listings.user_id = 9832 LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'yoyo' OR name = 'bobo' OR name = 'tag150' LIMIT 1;

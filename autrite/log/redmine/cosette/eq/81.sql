@@ -576,6 +576,7 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM wiki_content_versions WHERE wiki_content_versions.page_id = 8869;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = 2 AND users.type = 'User' AND members.project_id = 6984 AND roles.assignable = True AND roles.id IN (2, 3, 4, 5) ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
 -- Rewritten Queries
-SELECT COUNT(*) FROM wiki_content_versions WHERE wiki_content_versions.page_id = 8869 LIMIT 1;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND users.type = 'User' AND members.project_id = 6984 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE users.status = 2 AND users.type = 'User' AND members.project_id = 6984 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;

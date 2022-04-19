@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM members WHERE members.project_id = 8908;
+SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 4507 AND users.type = 'User' AND users.status = 2 ORDER BY members.id ASC LIMIT 3;
 -- Rewritten Queries
-SELECT COUNT(*) FROM members WHERE members.project_id = 8908 LIMIT 1;
+SELECT members.* FROM members WHERE members.project_id = 4507 ORDER BY members.id ASC LIMIT 3;

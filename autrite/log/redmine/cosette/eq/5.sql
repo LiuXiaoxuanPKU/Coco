@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.id IS NULL;
+SELECT 1 AS "one" FROM wiki_pages WHERE wiki_pages.title IS NULL AND wiki_pages.wiki_id = 8219 LIMIT 1;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.id IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM wiki_pages WHERE False AND wiki_pages.wiki_id = 8219 LIMIT 1;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.id FROM comments WHERE comments.ancestry LIKE '341/%' OR comments.ancestry = '341';
+SELECT COUNT(*) FROM html_variants WHERE html_variants.published = False AND html_variants.approved = False;
 -- Rewritten Queries
-SELECT comments.id FROM comments WHERE comments.ancestry LIKE '341/%' OR comments.ancestry = '341' LIMIT 1;
+SELECT COUNT(*) FROM html_variants WHERE html_variants.published = False AND html_variants.approved = False LIMIT 1;

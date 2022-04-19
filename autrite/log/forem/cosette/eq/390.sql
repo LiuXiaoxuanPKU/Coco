@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM articles WHERE articles.user_id = 9806 AND articles.published = False AND published_at <= '2022-02-27 07:12:50.482863';
+SELECT COUNT(*) FROM badges INNER JOIN badge_achievements ON badges.id = badge_achievements.badge_id WHERE badge_achievements.user_id = 9036;
 -- Rewritten Queries
-SELECT COUNT(*) FROM articles WHERE articles.user_id = 9806 AND articles.published = False AND published_at <= '2022-02-27 07:12:50.482863' LIMIT 1;
+SELECT COUNT(*) FROM badges INNER JOIN badge_achievements ON badges.id = badge_achievements.badge_id WHERE badge_achievements.user_id = 9036 LIMIT 1;

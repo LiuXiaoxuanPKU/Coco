@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT rating_votes.* FROM rating_votes WHERE rating_votes.article_id = 3800;
+SELECT COUNT(*) FROM badge_achievements WHERE badge_achievements.user_id = 4561;
 -- Rewritten Queries
-SELECT rating_votes.* FROM rating_votes WHERE rating_votes.article_id = 3800 LIMIT 1;
+SELECT COUNT(*) FROM badge_achievements WHERE badge_achievements.user_id = 4561 LIMIT 1;

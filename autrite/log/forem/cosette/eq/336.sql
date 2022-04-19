@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM reactions WHERE reactions.category = 'like' AND reactions.reactable_type = 'User' AND reactions.reactable_id = 5943;
+SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:20.259289' AND score >= 0;
 -- Rewritten Queries
-SELECT COUNT(*) FROM reactions WHERE reactions.category = 'like' AND reactions.reactable_type = 'User' AND reactions.reactable_id = 5943 LIMIT 1;
+SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:20.259289' AND score >= 0 LIMIT 1;

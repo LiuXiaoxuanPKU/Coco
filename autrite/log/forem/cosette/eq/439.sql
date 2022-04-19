@@ -2050,8 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT devices.* FROM devices WHERE devices.user_id = 9143 AND devices.token IS NULL AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT 8;
+SELECT SUM(articles.page_views_count) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:07:25.414734' AND articles.user_id = 8783;
 -- Rewritten Queries
-SELECT devices.* FROM devices WHERE devices.user_id = 9143 AND devices.token IS NULL AND False AND devices.consumer_app_id IS NULL LIMIT 8;
-SELECT devices.* FROM devices WHERE devices.user_id = 9143 AND False AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT 8;
-SELECT devices.* FROM devices WHERE devices.user_id = 9143 AND False AND False AND devices.consumer_app_id IS NULL LIMIT 8;
+SELECT SUM(articles.page_views_count) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:07:25.414734' AND articles.user_id = 8783 LIMIT 1;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'tag146' OR name = 'yoyo' OR name = 'bobo';
+SELECT consumer_apps.platform FROM consumer_apps WHERE consumer_apps.app_bundle = 'aznhrtckbzsjeyelirxzflnzqjobiglchsjvtvgvbnwldiqggdlbtraegiqveaxrpsbuuntjoacrhvzcgdtgefpquqiwzuaevbdtmopdvtivjdlweypavuwctpcpniyxbxppvggagjssbfoiirtehvkxbxajbkqphpuiwgpnzksuvqbvt';
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'tag146' OR name = 'yoyo' OR name = 'bobo' LIMIT 1;
+SELECT consumer_apps.platform FROM consumer_apps WHERE consumer_apps.app_bundle = 'aznhrtckbzsjeyelirxzflnzqjobiglchsjvtvgvbnwldiqggdlbtraegiqveaxrpsbuuntjoacrhvzcgdtgefpquqiwzuaevbdtmopdvtivjdlweypavuwctpcpniyxbxppvggagjssbfoiirtehvkxbxajbkqphpuiwgpnzksuvqbvt' LIMIT 1;

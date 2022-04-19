@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT taggings.* FROM taggings WHERE taggings.taggable_id = 5421 AND taggings.taggable_type = 'Article' AND taggings.tagger_id IS NULL AND taggings.tagger_type IS NULL AND taggings.context = 'tags' AND taggings.tag_id IN (10130, 10146, 10220);
+SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 9569 ORDER BY articles.id ASC LIMIT 1;
 -- Rewritten Queries
-SELECT taggings.* FROM taggings WHERE taggings.taggable_id = 5421 AND taggings.taggable_type = 'Article' AND taggings.tagger_id IS NULL AND taggings.tagger_type IS NULL AND taggings.context = 'tags' AND taggings.tag_id IN (10130, 10146, 10220) LIMIT 1;
+SELECT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 9569 ORDER BY articles.id ASC LIMIT 1;

@@ -2050,6 +2050,7 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT roles.resource_id FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 996 AND roles.name = 'single_resource_admin';
+SELECT roles.resource_id FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 4429 AND roles.name = 'admin';
 -- Rewritten Queries
-SELECT roles.resource_id FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 996 AND roles.name = 'single_resource_admin' LIMIT 1;
+SELECT roles.resource_id FROM roles WHERE roles.name = 'admin' LIMIT 1;
+SELECT roles.resource_id FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 4429 AND roles.name = 'admin' LIMIT 1;

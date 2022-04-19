@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM reactions WHERE reactions.reactable_id = 490 AND reactions.reactable_type = 'Comment';
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '463/%' OR comments.ancestry = '463';
 -- Rewritten Queries
-SELECT COUNT(*) FROM reactions WHERE reactions.reactable_id = 490 AND reactions.reactable_type = 'Comment' LIMIT 1;
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '463/%' OR comments.ancestry = '463' LIMIT 1;

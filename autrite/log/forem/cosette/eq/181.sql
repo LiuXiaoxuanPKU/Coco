@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM badge_achievements WHERE badge_achievements.user_id = 9231;
+SELECT tags.* FROM tags WHERE name = 'html' OR name = 'ruby' OR name = 'js';
 -- Rewritten Queries
-SELECT COUNT(*) FROM badge_achievements WHERE badge_achievements.user_id = 9231 LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'html' OR name = 'ruby' OR name = 'js' LIMIT 1;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM email_addresses WHERE email_addresses.user_id = 5067;
+SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 5252 AND projects.status <> 9 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (37, 12));
 -- Rewritten Queries
-SELECT COUNT(*) FROM email_addresses WHERE email_addresses.user_id = 5067 LIMIT 1;
+SELECT members.* FROM members WHERE members.user_id = 5252;

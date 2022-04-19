@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'watercooler';
+SELECT field_test_events.name FROM field_test_events;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'watercooler' LIMIT 1;
+SELECT field_test_events.name FROM field_test_events LIMIT 1;

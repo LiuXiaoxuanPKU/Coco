@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.* FROM members WHERE members.user_id = 4545;
+SELECT 1 AS "one" FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.lft >= 1 AND projects.rgt <= 10 AND projects.status <> 9 LIMIT 2;
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.user_id = 4545 LIMIT 1;
+SELECT 1 AS "one" FROM versions LIMIT 2;

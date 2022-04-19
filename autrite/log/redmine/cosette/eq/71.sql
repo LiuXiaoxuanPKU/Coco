@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issue_categories.* FROM issue_categories WHERE issue_categories.id = 12216;
+SELECT COUNT(*) AS count_all, custom_field_id AS custom_field_id FROM custom_fields INNER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id INNER JOIN projects ON projects.id = custom_fields_projects.project_id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.is_for_all = False GROUP BY custom_field_id;
 -- Rewritten Queries
-SELECT issue_categories.* FROM issue_categories WHERE issue_categories.id = 12216 LIMIT 1;
+SELECT COUNT(*) AS count_all, custom_field_id AS custom_field_id FROM custom_fields INNER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.is_for_all = False GROUP BY custom_field_id;

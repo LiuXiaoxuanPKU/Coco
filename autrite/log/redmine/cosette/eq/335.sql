@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.* FROM custom_fields WHERE type = 'TimeEntryCustomField' ORDER BY custom_fields.position ASC;
+SELECT DISTINCT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id LEFT OUTER JOIN journal_details ON journal_details.journal_id = journals.id WHERE journals.journalized_type = 'Issue' AND (journal_details.prop_key = 'status_id' OR journals.notes <> '') AND journals.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND journals.user_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND (journals.private_notes = False OR journals.user_id = 1 OR projects.status <> 9);
 -- Rewritten Queries
-SELECT custom_fields.* FROM custom_fields WHERE type = 'TimeEntryCustomField' ORDER BY custom_fields.position ASC LIMIT 1;
+SELECT DISTINCT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN journal_details ON journal_details.journal_id = journals.id WHERE journals.journalized_type = 'Issue' AND (journal_details.prop_key = 'status_id' OR journals.notes <> '') AND journals.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND journals.user_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND (journals.private_notes = False OR journals.user_id = 1 OR projects.status <> 9);

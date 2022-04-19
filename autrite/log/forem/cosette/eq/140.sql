@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'tag35' OR name = 'tag34';
+SELECT poll_skips.* FROM poll_skips WHERE poll_skips.user_id = 4406;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'tag35' OR name = 'tag34' LIMIT 1;
+SELECT poll_skips.* FROM poll_skips WHERE poll_skips.user_id = 4406 LIMIT 1;

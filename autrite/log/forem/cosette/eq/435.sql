@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT devices.* FROM devices WHERE devices.user_id = 7003 AND devices.token IS NULL AND devices.platform = 'iOS' AND devices.consumer_app_id = 823 LIMIT 2;
+SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id = 1481 AND users.id = 1481;
 -- Rewritten Queries
-SELECT devices.* FROM devices WHERE devices.user_id = 7003 AND False AND devices.platform = 'iOS' AND devices.consumer_app_id = 823 LIMIT 2;
+SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id = 1481 AND users.id = 1481 LIMIT 1;

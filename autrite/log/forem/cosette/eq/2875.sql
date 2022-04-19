@@ -2050,6 +2050,8 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'User' AND reactions.reactable_id = articles.id WHERE articles.id = 4887 ORDER BY articles.id ASC LIMIT 1;
+SELECT 1 AS "one" FROM comments WHERE comments.body_markdown = 'sltalwiqilvpujvwjzlvgjckqsbmwizyppmrdtvmwumhorwqfmlefnmdbegdfdufjhafaomqwjetizkshrlrnczauubrxyuuwlspvfutvcorosqlgxegazyvgxizohbcsrnlyrwvrstasyimoexyxxlgjsfqqjdnwvk' AND comments.id <> 6115 AND comments.user_id = 9728 AND comments.ancestry IS NULL AND comments.commentable_id IS NULL AND comments.commentable_type IS NULL LIMIT 8;
 -- Rewritten Queries
-SELECT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'User' AND reactions.reactable_id = articles.id WHERE articles.id = 4887 ORDER BY articles.id ASC LIMIT 1;
+SELECT 1 AS "one" FROM comments WHERE comments.body_markdown = 'sltalwiqilvpujvwjzlvgjckqsbmwizyppmrdtvmwumhorwqfmlefnmdbegdfdufjhafaomqwjetizkshrlrnczauubrxyuuwlspvfutvcorosqlgxegazyvgxizohbcsrnlyrwvrstasyimoexyxxlgjsfqqjdnwvk' AND comments.id <> 6115 AND comments.user_id = 9728 AND comments.ancestry IS NULL AND False AND comments.commentable_type IS NULL LIMIT 8;
+SELECT 1 AS "one" FROM comments WHERE comments.body_markdown = 'sltalwiqilvpujvwjzlvgjckqsbmwizyppmrdtvmwumhorwqfmlefnmdbegdfdufjhafaomqwjetizkshrlrnczauubrxyuuwlspvfutvcorosqlgxegazyvgxizohbcsrnlyrwvrstasyimoexyxxlgjsfqqjdnwvk' AND comments.id <> 6115 AND comments.user_id = 9728 AND comments.ancestry IS NULL AND comments.commentable_id IS NULL AND False LIMIT 8;
+SELECT 1 AS "one" FROM comments WHERE comments.body_markdown = 'sltalwiqilvpujvwjzlvgjckqsbmwizyppmrdtvmwumhorwqfmlefnmdbegdfdufjhafaomqwjetizkshrlrnczauubrxyuuwlspvfutvcorosqlgxegazyvgxizohbcsrnlyrwvrstasyimoexyxxlgjsfqqjdnwvk' AND comments.id <> 6115 AND comments.user_id = 9728 AND comments.ancestry IS NULL AND False AND False LIMIT 8;

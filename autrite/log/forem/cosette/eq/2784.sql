@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) AS count_all, reactions.category AS reactions_category FROM reactions WHERE reactions.reactable_id = 9975 AND reactions.reactable_type = 'Comment' GROUP BY reactions.category;
+SELECT COUNT(*) AS count_all, DATE(created_at) AS date_created_at FROM comments WHERE comments.user_id = 763 AND created_at > '2022-02-20 07:08:39.178576' GROUP BY DATE(created_at);
 -- Rewritten Queries
-SELECT COUNT(*) AS count_all, reactions.category AS reactions_category FROM reactions WHERE reactions.reactable_id = 9975 AND reactions.reactable_type = 'Comment' GROUP BY reactions.category LIMIT 1;
+SELECT COUNT(*) AS count_all, DATE(created_at) AS date_created_at FROM comments WHERE comments.user_id = 763 AND created_at > '2022-02-20 07:08:39.178576' GROUP BY DATE(created_at) LIMIT 1;

@@ -2050,6 +2050,8 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(DISTINCT collections.id) FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 1527;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 594 AND articles.user_id = 7870 AND articles.title IS NULL LIMIT 2;
 -- Rewritten Queries
-SELECT COUNT(DISTINCT collections.id) FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 1527 LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 594 AND articles.user_id = 7870 AND articles.title IS NULL LIMIT 2;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 594 AND articles.user_id = 7870 AND False LIMIT 2;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 594 AND articles.user_id = 7870 AND False LIMIT 2;

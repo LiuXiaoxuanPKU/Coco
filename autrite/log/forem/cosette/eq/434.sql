@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 3915 AND reactions.reactable_type = 'Comment' AND reactions.category IN ('thumbsup', 'unicorn', 'thumbsup');
+SELECT SUM(articles.page_views_count) FROM articles WHERE articles.published = False AND published_at <= '2019-04-01 12:00:00' AND articles.user_id = 1008;
 -- Rewritten Queries
-SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 3915 AND reactions.reactable_type = 'Comment' AND reactions.category IN ('thumbsup', 'unicorn', 'thumbsup') LIMIT 1;
+SELECT SUM(articles.page_views_count) FROM articles WHERE articles.published = False AND published_at <= '2019-04-01 12:00:00' AND articles.user_id = 1008 LIMIT 1;

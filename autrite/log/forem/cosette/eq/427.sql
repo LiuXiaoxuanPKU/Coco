@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '384/385/386/387/%' OR comments.ancestry = '384/385/386/387' OR comments.id = 387;
+SELECT COUNT(DISTINCT collections.id) FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 460;
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '384/385/386/387/%' OR comments.ancestry = '384/385/386/387' OR comments.id = 387 LIMIT 1;
+SELECT COUNT(DISTINCT collections.id) FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 460 LIMIT 1;

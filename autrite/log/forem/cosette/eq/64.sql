@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT pages.* FROM pages WHERE pages.slug = 'amhyujwhzlbnosxsunzfgowdynatirytlftkmugdpbuaxeaavitrzqkitjdotgoeytbokcpfscutncaelcluxukjzttccwlfmueblrotofffkbuettciwvseqlevkjwajlnvqqwdzfmaocibscbfimsejzqdqsctzjk';
+SELECT tags.* FROM tags WHERE name = 'tag113';
 -- Rewritten Queries
-SELECT pages.* FROM pages WHERE pages.slug = 'amhyujwhzlbnosxsunzfgowdynatirytlftkmugdpbuaxeaavitrzqkitjdotgoeytbokcpfscutncaelcluxukjzttccwlfmueblrotofffkbuettciwvseqlevkjwajlnvqqwdzfmaocibscbfimsejzqdqsctzjk' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'tag113' LIMIT 1;

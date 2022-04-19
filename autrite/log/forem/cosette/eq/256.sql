@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.* FROM articles WHERE articles.main_image IS NOT NULL ORDER BY articles.id ASC LIMIT 5;
+SELECT COUNT(*) FROM comments WHERE comments.user_id = 7865 AND created_at > '2022-02-27 07:16:52.639417';
 -- Rewritten Queries
-SELECT articles.* FROM articles WHERE True ORDER BY articles.id ASC LIMIT 5;
+SELECT COUNT(*) FROM comments WHERE comments.user_id = 7865 AND created_at > '2022-02-27 07:16:52.639417' LIMIT 1;

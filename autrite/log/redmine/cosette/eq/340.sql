@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.id FROM issues WHERE issues.root_id = 2087 AND issues.lft > 1 AND issues.rgt < 4 ORDER BY issues.lft ASC;
+SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') LEFT OUTER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND projects.status IN ('1');
 -- Rewritten Queries
-SELECT issues.id FROM issues WHERE issues.root_id = 2087 AND issues.lft > 1 AND issues.rgt < 4 ORDER BY issues.lft ASC LIMIT 1;
+SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') LEFT OUTER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND projects.status IN ('1');

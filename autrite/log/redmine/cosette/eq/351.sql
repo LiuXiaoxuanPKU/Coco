@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 1358 AND issue_relations.issue_to_id = 3820;
+SELECT COUNT(*) FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND (issues.assigned_to_id IS NULL OR issues.assigned_to_id NOT IN (SELECT DISTINCT members.user_id FROM members WHERE members.project_id = issues.project_id)) AND projects.id = 9;
 -- Rewritten Queries
-SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 1358 AND issue_relations.issue_to_id = 3820 LIMIT 1;
+SELECT COUNT(*) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND (issues.assigned_to_id IS NULL OR issues.assigned_to_id NOT IN (SELECT DISTINCT members.user_id FROM members WHERE members.project_id = issues.project_id)) AND projects.id = 9;

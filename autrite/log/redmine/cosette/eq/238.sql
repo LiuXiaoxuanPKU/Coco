@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0241';
+SELECT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND (journals.private_notes = False OR journals.user_id = 1 OR projects.status <> 9) AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) ORDER BY journals.created_on DESC LIMIT 7;
 -- Rewritten Queries
-SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0241' LIMIT 1;
+SELECT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND (journals.private_notes = False OR journals.user_id = 1 OR projects.status <> 9) AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) ORDER BY journals.created_on DESC LIMIT 7;

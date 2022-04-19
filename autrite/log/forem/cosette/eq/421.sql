@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT reactions.* FROM reactions WHERE reactions.user_id = 7375 AND reactions.category IN ('thumbsup', 'unicorn', 'thinking', 'thinking', 'like') AND reactions.reactable_type = 'Comment';
+SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = 6075;
 -- Rewritten Queries
-SELECT reactions.* FROM reactions WHERE reactions.user_id = 7375 AND reactions.category IN ('thumbsup', 'unicorn', 'thinking', 'thinking', 'like') AND reactions.reactable_type = 'Comment' LIMIT 1;
+SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = 6075 LIMIT 1;

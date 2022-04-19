@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.name FROM tags WHERE tags.id = 2781;
+SELECT 1 AS "one" FROM user_blocks WHERE user_blocks.blocker_id IS NULL AND user_blocks.blocked_id = 2517 LIMIT 7;
 -- Rewritten Queries
-SELECT tags.name FROM tags WHERE tags.id = 2781 LIMIT 1;
+SELECT 1 AS "one" FROM user_blocks WHERE False AND user_blocks.blocked_id = 2517 LIMIT 7;

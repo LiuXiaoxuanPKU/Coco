@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT consumer_apps.platform FROM consumer_apps WHERE consumer_apps.app_bundle = 'pkkrzeudzgjbvixgliwxjajpwpoboggswwfqkgffmbrcursdxicfhzhcpstnyohbujmrdggmfdilgnkmualsryfvwaopwokfoqvboqhivzyejorerfiwzktahftfxbav';
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 3227 AND identities.provider = 'twitter';
 -- Rewritten Queries
-SELECT consumer_apps.platform FROM consumer_apps WHERE consumer_apps.app_bundle = 'pkkrzeudzgjbvixgliwxjajpwpoboggswwfqkgffmbrcursdxicfhzhcpstnyohbujmrdggmfdilgnkmualsryfvwaopwokfoqvboqhivzyejorerfiwzktahftfxbav' LIMIT 1;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 3227 AND identities.provider = 'twitter' LIMIT 1;

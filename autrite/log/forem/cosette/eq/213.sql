@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM articles WHERE articles.slug IS NULL AND articles.user_id = 5128 LIMIT 9;
+SELECT COUNT(*) FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 1779;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM articles WHERE False AND articles.user_id = 5128 LIMIT 9;
+SELECT COUNT(*) FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 1779 LIMIT 1;

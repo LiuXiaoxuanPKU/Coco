@@ -2050,8 +2050,8 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 7083;
+SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 6953;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 7083 LIMIT 1;
-SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 7083 LIMIT 1;
-SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 7083;
+SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 6953;
+SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 6953 LIMIT 1;
+SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 6953 LIMIT 1;

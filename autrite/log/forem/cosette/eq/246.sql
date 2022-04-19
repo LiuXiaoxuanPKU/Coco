@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.id FROM comments WHERE comments.ancestry LIKE '339/%' OR comments.ancestry = '339';
+SELECT tags.* FROM tags WHERE name = 'worklifebalance' OR name = 'burnout' OR name = 'mentalhealth';
 -- Rewritten Queries
-SELECT comments.id FROM comments WHERE comments.ancestry LIKE '339/%' OR comments.ancestry = '339' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'worklifebalance' OR name = 'burnout' OR name = 'mentalhealth' LIMIT 1;

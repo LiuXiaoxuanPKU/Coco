@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'A2';
+SELECT queries.* FROM queries LEFT OUTER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('TimeEntryQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC;
 -- Rewritten Queries
-SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'A2' LIMIT 1;
+SELECT queries.* FROM queries INNER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('TimeEntryQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC;

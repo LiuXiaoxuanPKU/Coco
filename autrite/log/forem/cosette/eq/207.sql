@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT feedback_messages.* FROM feedback_messages WHERE feedback_messages.reporter_id = 7057;
+SELECT feedback_messages.id FROM feedback_messages WHERE feedback_messages.reporter_id = 5007;
 -- Rewritten Queries
-SELECT feedback_messages.* FROM feedback_messages WHERE feedback_messages.reporter_id = 7057 LIMIT 1;
+SELECT feedback_messages.id FROM feedback_messages WHERE feedback_messages.reporter_id = 5007 LIMIT 1;

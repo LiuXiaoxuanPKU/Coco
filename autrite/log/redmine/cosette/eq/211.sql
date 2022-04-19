@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0189';
+SELECT DISTINCT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id INNER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE projects.status <> 9 AND enabled_modules.name = 'news' AND projects.lft >= 1 AND projects.rgt <= 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL ORDER BY trackers.position ASC;
 -- Rewritten Queries
-SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0189' LIMIT 1;
+SELECT DISTINCT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id WHERE projects.status <> 9 AND projects.lft >= 1 AND projects.rgt <= 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL ORDER BY trackers.position ASC;

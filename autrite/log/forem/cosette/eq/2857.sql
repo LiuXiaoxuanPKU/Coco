@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 4288 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags' AND taggings.tagger_id IS NULL;
+SELECT COUNT(*) FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned')));
 -- Rewritten Queries
-SELECT tags.* FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 4288 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags' AND taggings.tagger_id IS NULL LIMIT 1;
+SELECT COUNT(*) FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned'))) LIMIT 1;

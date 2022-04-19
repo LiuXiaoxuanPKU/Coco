@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT organizations.* FROM organizations WHERE organizations.id = 5336;
+SELECT COUNT(*) FROM reactions WHERE reactions.category IN ('hands', 'thinking', 'readinglist');
 -- Rewritten Queries
-SELECT organizations.* FROM organizations WHERE organizations.id = 5336 LIMIT 1;
+SELECT COUNT(*) FROM reactions WHERE reactions.category IN ('hands', 'thinking', 'readinglist') LIMIT 1;

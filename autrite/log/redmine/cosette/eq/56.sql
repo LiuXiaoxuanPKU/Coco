@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser');
+SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 6 OR projects.is_public = True AND members.user_id = 13);
 -- Rewritten Queries
-SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') LIMIT 1;
+SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = 6 OR members.user_id = 13;

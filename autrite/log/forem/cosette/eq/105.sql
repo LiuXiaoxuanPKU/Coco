@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT podcasts.* FROM podcasts WHERE podcasts.id = 3195;
+SELECT comments.* FROM comments WHERE comments.id = 8521;
 -- Rewritten Queries
-SELECT podcasts.* FROM podcasts WHERE podcasts.id = 3195 LIMIT 1;
+SELECT comments.* FROM comments WHERE comments.id = 8521 LIMIT 1;

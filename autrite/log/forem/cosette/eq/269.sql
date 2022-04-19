@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '255/256/%' OR comments.ancestry = '255/256';
+SELECT rating_votes.rating FROM rating_votes WHERE rating_votes.article_id = 6200 AND rating_votes."group" = 'experience_level';
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '255/256/%' OR comments.ancestry = '255/256' LIMIT 1;
+SELECT rating_votes.rating FROM rating_votes WHERE rating_votes.article_id = 6200 AND rating_votes."group" = 'experience_level' LIMIT 1;

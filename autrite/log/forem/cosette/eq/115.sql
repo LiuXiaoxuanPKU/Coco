@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM reactions WHERE reactions.user_id = 4469;
+SELECT COUNT(*) FROM reactions WHERE reactions.category = 'hands';
 -- Rewritten Queries
-SELECT COUNT(*) FROM reactions WHERE reactions.user_id = 4469 LIMIT 1;
+SELECT COUNT(*) FROM reactions WHERE reactions.category = 'hands' LIMIT 1;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT roles.name FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 9887;
+SELECT follows.* FROM follows WHERE follows.followable_id = 7191 AND follows.followable_type = 'User' AND follows.blocked = False;
 -- Rewritten Queries
-SELECT roles.name FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 9887 LIMIT 1;
+SELECT follows.* FROM follows WHERE follows.followable_id = 7191 AND follows.followable_type = 'User' AND follows.blocked = False LIMIT 1;

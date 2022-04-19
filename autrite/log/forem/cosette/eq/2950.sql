@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '293/%' OR comments.ancestry = '293' OR comments.id = 293;
+SELECT users.id, users.username, users.comments_count, users.badge_achievements_count, users.last_comment_at FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 8101 LIMIT 5 OFFSET 1;
 -- Rewritten Queries
-SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '293/%' OR comments.ancestry = '293' OR comments.id = 293 LIMIT 1;
+SELECT users.id, users.username, users.comments_count, users.badge_achievements_count, users.last_comment_at FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 8101 LIMIT 5 OFFSET 1;

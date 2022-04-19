@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id IS NULL AND taggings.taggable_type = 'Article' AND taggings.context = 'tags' AND taggings.tagger_id IS NULL;
+SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 8515 AND organization_memberships.type_of_user IN ('admin', 'member') AND organization_memberships.organization_id IS NULL LIMIT 9;
 -- Rewritten Queries
-SELECT tags.* FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id IS NULL AND taggings.taggable_type = 'Article' AND taggings.context = 'tags' AND taggings.tagger_id IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 8515 AND organization_memberships.type_of_user IN ('admin', 'member') AND False LIMIT 9;

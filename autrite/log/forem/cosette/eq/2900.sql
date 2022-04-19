@@ -2050,8 +2050,8 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7559 AND created_at > '2022-02-26 07:10:17.930996' ORDER BY follows.created_at DESC);
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 7111 AND created_at > '2022-02-26 07:17:05.246986' ORDER BY follows.created_at DESC);
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7559 AND created_at > '2022-02-26 07:10:17.930996' ORDER BY follows.created_at DESC) LIMIT 1;
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7559 AND created_at > '2022-02-26 07:10:17.930996' ORDER BY follows.created_at DESC LIMIT 1);
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7559 AND created_at > '2022-02-26 07:10:17.930996' ORDER BY follows.created_at DESC LIMIT 1) LIMIT 1;
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 7111 AND created_at > '2022-02-26 07:17:05.246986' ORDER BY follows.created_at DESC) LIMIT 1;
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 7111 AND created_at > '2022-02-26 07:17:05.246986' ORDER BY follows.created_at DESC LIMIT 1);
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 7111 AND created_at > '2022-02-26 07:17:05.246986' ORDER BY follows.created_at DESC LIMIT 1) LIMIT 1;

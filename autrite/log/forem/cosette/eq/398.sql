@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT SUM(reactions.points) FROM reactions WHERE reactions.category = 'readinglist' AND reactions.reactable_type = 'Comment' AND reactions.reactable_id = 1116;
+SELECT COUNT(*) FROM feedback_messages WHERE feedback_messages.category IN ('harassment', 'listings', 'rude or vulgar', 'rude or vulgar') AND created_at > '2022-02-26 07:20:34.501562';
 -- Rewritten Queries
-SELECT SUM(reactions.points) FROM reactions WHERE reactions.category = 'readinglist' AND reactions.reactable_type = 'Comment' AND reactions.reactable_id = 1116 LIMIT 1;
+SELECT COUNT(*) FROM feedback_messages WHERE feedback_messages.category IN ('harassment', 'listings', 'rude or vulgar', 'rude or vulgar') AND created_at > '2022-02-26 07:20:34.501562' LIMIT 1;

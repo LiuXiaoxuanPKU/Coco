@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT sponsorships.* FROM sponsorships WHERE sponsorships.id = 9114;
+SELECT COUNT(*) FROM notifications WHERE notifications.user_id = 6149;
 -- Rewritten Queries
-SELECT sponsorships.* FROM sponsorships WHERE sponsorships.id = 9114 LIMIT 1;
+SELECT COUNT(*) FROM notifications WHERE notifications.user_id = 6149 LIMIT 1;

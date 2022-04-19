@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT follows.* FROM follows WHERE follows.followable_id = 3267 AND follows.followable_type = 'User' AND follows.subscription_status = 'none';
+SELECT tags.* FROM tags WHERE name = 'bestpractices' OR name = 'documentation' OR name = 'codereview' OR name = 'softwareengineering';
 -- Rewritten Queries
-SELECT follows.* FROM follows WHERE follows.followable_id = 3267 AND follows.followable_type = 'User' AND follows.subscription_status = 'none' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'bestpractices' OR name = 'documentation' OR name = 'codereview' OR name = 'softwareengineering' LIMIT 1;

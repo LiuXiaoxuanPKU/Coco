@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT follows.* FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 5929 AND created_at > '2022-02-26 07:07:14.738230' ORDER BY follows.created_at DESC;
+SELECT follows.* FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 6303 AND created_at > '2022-02-26 07:10:17.930996' ORDER BY follows.created_at DESC;
 -- Rewritten Queries
-SELECT follows.* FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 5929 AND created_at > '2022-02-26 07:07:14.738230' ORDER BY follows.created_at DESC LIMIT 1;
+SELECT follows.* FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 6303 AND created_at > '2022-02-26 07:10:17.930996' ORDER BY follows.created_at DESC LIMIT 1;

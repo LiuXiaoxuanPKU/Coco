@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM notifications WHERE notifications.user_id = 9819 AND notifications.read = False;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 9942 AND identities.provider IN ('apple', 'apple');
 -- Rewritten Queries
-SELECT COUNT(*) FROM notifications WHERE notifications.user_id = 9819 AND notifications.read = False LIMIT 1;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 9942 AND identities.provider IN ('apple', 'apple') LIMIT 1;

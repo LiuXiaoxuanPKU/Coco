@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.username = 'ety';
+SELECT tags.* FROM tags WHERE name = 'javascript';
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.username = 'ety' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'javascript' LIMIT 1;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.credits_count) AS credits_count FROM users LEFT JOIN credits AS credits ON users.id = credits.user_id AND credits.id > 0 GROUP BY users.id ORDER BY users.id ASC LIMIT 4;
+SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id IN (SELECT users_settings.user_id FROM users_settings WHERE users_settings.feed_url IS NULL) AND users.id = 345;
 -- Rewritten Queries
-SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.credits_count) AS credits_count FROM users INNER JOIN credits AS credits ON users.id = credits.user_id AND credits.id > 0 GROUP BY users.id ORDER BY users.id ASC LIMIT 4;
+SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id IN (SELECT users_settings.user_id FROM users_settings WHERE users_settings.feed_url IS NULL) AND users.id = 345 LIMIT 1;

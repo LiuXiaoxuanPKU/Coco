@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM enumerations WHERE enumerations.type IN ('TimeEntryActivity');
+SELECT COUNT(*) AS count_all, group_id AS group_id FROM users INNER JOIN groups_users AS users_groups_users_join ON users_groups_users_join.user_id = users.id INNER JOIN users AS groups_users ON groups_users.id = users_groups_users_join.group_id AND groups_users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') WHERE users.type IN ('User', 'AnonymousUser') GROUP BY group_id;
 -- Rewritten Queries
-SELECT COUNT(*) FROM enumerations WHERE enumerations.type IN ('TimeEntryActivity') LIMIT 1;
+SELECT COUNT(*) AS count_all, group_id AS group_id FROM users INNER JOIN groups_users AS users_groups_users_join ON users_groups_users_join.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') GROUP BY group_id;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'bestpractices' OR name = 'documentation' OR name = 'codereview' OR name = 'softwareengineering';
+SELECT COUNT(*) FROM articles WHERE articles.user_id = 4677 AND articles.published = False AND published_at <= '2022-02-27 06:53:10.598928';
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'bestpractices' OR name = 'documentation' OR name = 'codereview' OR name = 'softwareengineering' LIMIT 1;
+SELECT COUNT(*) FROM articles WHERE articles.user_id = 4677 AND articles.published = False AND published_at <= '2022-02-27 06:53:10.598928' LIMIT 1;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM profile_pins WHERE profile_pins.profile_id = 5517 AND profile_pins.profile_type = 'User';
+SELECT COUNT(*) FROM comments WHERE comments.user_id = 196 AND created_at > '2022-02-27 07:08:09.971712';
 -- Rewritten Queries
-SELECT COUNT(*) FROM profile_pins WHERE profile_pins.profile_id = 5517 AND profile_pins.profile_type = 'User' LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE comments.user_id = 196 AND created_at > '2022-02-27 07:08:09.971712' LIMIT 1;

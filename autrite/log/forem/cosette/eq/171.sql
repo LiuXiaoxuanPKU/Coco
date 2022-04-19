@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.* FROM articles WHERE title LIKE 'Welcome Thread - %';
+SELECT identities.provider FROM identities WHERE identities.user_id = 2869;
 -- Rewritten Queries
-SELECT articles.* FROM articles WHERE title LIKE 'Welcome Thread - %' LIMIT 1;
+SELECT identities.provider FROM identities WHERE identities.user_id = 2869 LIMIT 1;

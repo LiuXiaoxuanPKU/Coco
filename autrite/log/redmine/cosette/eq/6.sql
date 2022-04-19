@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT boards.* FROM boards WHERE boards.id = 8566;
+SELECT time_entries.* FROM time_entries WHERE time_entries.issue_id IS NULL ORDER BY time_entries.id ASC LIMIT 5;
 -- Rewritten Queries
-SELECT boards.* FROM boards WHERE boards.id = 8566 LIMIT 1;
+SELECT time_entries.* FROM time_entries WHERE False ORDER BY time_entries.id ASC LIMIT 5;

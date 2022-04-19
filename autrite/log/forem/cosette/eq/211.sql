@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT reactions.* FROM reactions WHERE reactions.user_id = 4881 AND reactions.category = 'thumbsup';
+SELECT identities.* FROM identities WHERE identities.user_id = 5867 AND identities.provider = 'twitter';
 -- Rewritten Queries
-SELECT reactions.* FROM reactions WHERE reactions.user_id = 4881 AND reactions.category = 'thumbsup' LIMIT 1;
+SELECT identities.* FROM identities WHERE identities.user_id = 5867 AND identities.provider = 'twitter' LIMIT 1;

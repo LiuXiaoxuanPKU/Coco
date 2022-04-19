@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.path, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:18.910862' AND published_at > '2011-03-01 12:00:00' AND published_at < '2011-04-01 11:59:59.999999' AND score >= 0;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.id <> 3328 AND notifications.organization_id = 3 AND notifications.notifiable_id = 4479 AND notifications.notifiable_type = 'Comment' AND notifications.action = 'ufollouzhpdumsazqlliffdxgkacujxutknhixkahhwhdfeocxdcngrcsbzoodngwyvxapbwyiasyfstokigmveshggwfwtxydjkvxubvpsbaezdbfqdkfidemnievnozbzugbtbznzksmful' LIMIT 8;
 -- Rewritten Queries
-SELECT articles.path, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:18.910862' AND published_at > '2011-03-01 12:00:00' AND published_at < '2011-04-01 11:59:59.999999' AND score >= 0 LIMIT 1;
+SELECT 1 AS "one" FROM notifications WHERE False AND notifications.id <> 3328 AND notifications.organization_id = 3 AND notifications.notifiable_id = 4479 AND notifications.notifiable_type = 'Comment' AND notifications.action = 'ufollouzhpdumsazqlliffdxgkacujxutknhixkahhwhdfeocxdcngrcsbzoodngwyvxapbwyiasyfstokigmveshggwfwtxydjkvxubvpsbaezdbfqdkfidemnievnozbzugbtbznzksmful' LIMIT 8;

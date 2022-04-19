@@ -2050,8 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT DISTINCT github_repos.* FROM github_repos WHERE github_repos.user_id = 782 AND github_repos.featured = False;
+SELECT organization_memberships.* FROM organization_memberships WHERE organization_memberships.organization_id = 3196;
 -- Rewritten Queries
-SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = 782 AND github_repos.featured = False LIMIT 1;
-SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = 782 AND github_repos.featured = False;
-SELECT DISTINCT github_repos.* FROM github_repos WHERE github_repos.user_id = 782 AND github_repos.featured = False LIMIT 1;
+SELECT organization_memberships.* FROM organization_memberships WHERE organization_memberships.organization_id = 3196 LIMIT 1;

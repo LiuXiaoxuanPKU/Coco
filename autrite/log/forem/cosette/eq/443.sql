@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.* FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = 201;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id = 2354 AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'resolved';
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = 201 LIMIT 1;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id = 2354 AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'resolved' LIMIT 1;

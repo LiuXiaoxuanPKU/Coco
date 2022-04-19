@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM display_ad_events WHERE display_ad_events.display_ad_id = 3293 AND display_ad_events.category = 'impression';
+SELECT tags.* FROM tags WHERE name = 'softwaredevelopment' OR name = 'debugging' OR name = 'dotnet' OR name = 'csharp';
 -- Rewritten Queries
-SELECT COUNT(*) FROM display_ad_events WHERE display_ad_events.display_ad_id = 3293 AND display_ad_events.category = 'impression' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'softwaredevelopment' OR name = 'debugging' OR name = 'dotnet' OR name = 'csharp' LIMIT 1;

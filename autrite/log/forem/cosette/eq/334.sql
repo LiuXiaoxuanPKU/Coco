@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown = 'iywgdnucrqcwttbztisiiyzxdsgbtyahmvxfavlbapydfowbpnoieqdcfysotsmefgeukgbgjw' AND articles.user_id = 4589 AND articles.title IS NULL LIMIT 3;
+SELECT tags.* FROM tags WHERE name = 'softwaredevelopment' OR name = 'csharp' OR name = 'visualstudio' OR name = 'debugging';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown = 'iywgdnucrqcwttbztisiiyzxdsgbtyahmvxfavlbapydfowbpnoieqdcfysotsmefgeukgbgjw' AND articles.user_id = 4589 AND False LIMIT 3;
+SELECT tags.* FROM tags WHERE name = 'softwaredevelopment' OR name = 'csharp' OR name = 'visualstudio' OR name = 'debugging' LIMIT 1;

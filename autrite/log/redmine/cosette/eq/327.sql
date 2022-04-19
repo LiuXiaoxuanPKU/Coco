@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.* FROM custom_fields WHERE type = 'ProjectCustomField' ORDER BY custom_fields.position ASC;
+SELECT DISTINCT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id INNER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE projects.status <> 9 AND enabled_modules.name = 'news' AND projects.lft >= 18 AND projects.rgt <= 19 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) ORDER BY trackers.position ASC;
 -- Rewritten Queries
-SELECT custom_fields.* FROM custom_fields WHERE type = 'ProjectCustomField' ORDER BY custom_fields.position ASC LIMIT 1;
+SELECT DISTINCT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id WHERE projects.status <> 9 AND projects.lft >= 18 AND projects.rgt <= 19 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) ORDER BY trackers.position ASC;

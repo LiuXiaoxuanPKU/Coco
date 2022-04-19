@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM users_roles INNER JOIN roles ON roles.id = users_roles.role_id WHERE roles.name = 'tag_moderator' LIMIT 6;
+SELECT identities.* FROM identities WHERE identities.user_id = 4004 AND identities.provider IN ('twitter', 'apple', 'facebook', 'facebook', 'twitter', 'twitter');
 -- Rewritten Queries
-SELECT 1 AS "one" FROM users_roles LIMIT 6;
+SELECT identities.* FROM identities WHERE identities.user_id = 4004 AND identities.provider IN ('twitter', 'apple', 'facebook', 'facebook', 'twitter', 'twitter') LIMIT 1;

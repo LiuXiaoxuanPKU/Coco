@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.id = 3146;
+SELECT wikis.* FROM wikis WHERE wikis.project_id IS NULL LIMIT 7;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.id = 3146 LIMIT 1;
+SELECT wikis.* FROM wikis WHERE False LIMIT 7;

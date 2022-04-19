@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT profile_pins.* FROM profile_pins WHERE profile_pins.profile_id = 1036 AND profile_pins.profile_type = 'User' AND profile_pins.id = 5466;
+SELECT COUNT(*) FROM articles WHERE articles.user_id = 8681 AND articles.published = False AND published_at <= '2022-02-27 07:20:37.612691';
 -- Rewritten Queries
-SELECT profile_pins.* FROM profile_pins WHERE profile_pins.profile_id = 1036 AND profile_pins.profile_type = 'User' AND profile_pins.id = 5466 LIMIT 1;
+SELECT COUNT(*) FROM articles WHERE articles.user_id = 8681 AND articles.published = False AND published_at <= '2022-02-27 07:20:37.612691' LIMIT 1;

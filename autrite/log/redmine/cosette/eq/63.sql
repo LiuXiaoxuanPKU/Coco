@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM issue_relations WHERE issue_relations.issue_to_id = 4694;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN versions ON versions.id = issues.fixed_version_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id <> versions.project_id AND versions.sharing <> 'system' AND (versions.project_id IN (61, 62) OR issues.project_id IN (61, 62));
 -- Rewritten Queries
-SELECT COUNT(*) FROM issue_relations WHERE issue_relations.issue_to_id = 4694 LIMIT 1;
+SELECT issues.* FROM issues WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id IN (61, 62);
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id IN (61, 62);
+SELECT issues.* FROM issues INNER JOIN versions ON versions.id = issues.fixed_version_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id <> versions.project_id AND versions.sharing <> 'system' AND (versions.project_id IN (61, 62) OR issues.project_id IN (61, 62));

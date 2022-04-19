@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT feedback_messages.id FROM feedback_messages WHERE feedback_messages.reporter_id = 7568;
+SELECT COUNT(*) FROM follows WHERE follows.followable_id = 1503 AND follows.followable_type = 'Organization';
 -- Rewritten Queries
-SELECT feedback_messages.id FROM feedback_messages WHERE feedback_messages.reporter_id = 7568 LIMIT 1;
+SELECT COUNT(*) FROM follows WHERE follows.followable_id = 1503 AND follows.followable_type = 'Organization' LIMIT 1;

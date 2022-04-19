@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'notestoself' OR name = 'lists' OR name = 'productivity' OR name = 'timemanagementtips';
+SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:19.388006' AND score >= 0;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'notestoself' OR name = 'lists' OR name = 'productivity' OR name = 'timemanagementtips' LIMIT 1;
+SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:19.388006' AND score >= 0 LIMIT 1;

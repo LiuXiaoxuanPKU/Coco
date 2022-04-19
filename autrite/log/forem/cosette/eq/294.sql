@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT SUM(comments.score) FROM comments WHERE comments.commentable_id = 6 AND comments.commentable_type = 'Article';
+SELECT DISTINCT github_repos.* FROM github_repos WHERE github_repos.user_id = 111 AND github_repos.featured = False;
 -- Rewritten Queries
-SELECT SUM(comments.score) FROM comments WHERE comments.commentable_id = 6 AND comments.commentable_type = 'Article' LIMIT 1;
+SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = 111 AND github_repos.featured = False;

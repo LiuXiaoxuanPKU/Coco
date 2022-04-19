@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'html' OR name = 'rss' OR name = 'css';
+SELECT users.* FROM users WHERE users.registered = True AND users.username = 'ketlrumburbqtdlirzlwww';
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'html' OR name = 'rss' OR name = 'css' LIMIT 1;
+SELECT users.* FROM users WHERE users.registered = True AND users.username = 'ketlrumburbqtdlirzlwww' LIMIT 1;

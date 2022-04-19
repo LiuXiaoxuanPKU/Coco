@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM identities WHERE identities.user_id = 1762 AND identities.provider IN ('facebook', 'twitter');
+SELECT COUNT(*) FROM comments WHERE comments.ancestry LIKE '511/%' OR comments.ancestry = '511';
 -- Rewritten Queries
-SELECT COUNT(*) FROM identities WHERE identities.user_id = 1762 AND identities.provider IN ('facebook', 'twitter') LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE comments.ancestry LIKE '511/%' OR comments.ancestry = '511' LIMIT 1;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tag_adjustments.* FROM tag_adjustments WHERE tag_adjustments.article_id = 9545;
+SELECT COUNT(*) FROM follows WHERE follows.follower_id = 6507 AND follows.follower_type = 'User';
 -- Rewritten Queries
-SELECT tag_adjustments.* FROM tag_adjustments WHERE tag_adjustments.article_id = 9545 LIMIT 1;
+SELECT COUNT(*) FROM follows WHERE follows.follower_id = 6507 AND follows.follower_type = 'User' LIMIT 1;

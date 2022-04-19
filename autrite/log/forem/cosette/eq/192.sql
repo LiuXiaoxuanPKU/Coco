@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM profile_fields WHERE profile_fields.label IS NULL LIMIT 1;
+SELECT articles.id, articles.cached_tag_list FROM articles WHERE articles.id = 9109;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM profile_fields WHERE False LIMIT 1;
+SELECT articles.id, articles.cached_tag_list FROM articles WHERE articles.id = 9109 LIMIT 1;

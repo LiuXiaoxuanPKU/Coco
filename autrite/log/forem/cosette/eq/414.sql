@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:32.910531' AND articles.id IN (6606, 7908, 5278);
+SELECT tags.* FROM tags WHERE name = 'distributedsystems' OR name = 'programming' OR name = 'computerscience' OR name = 'softwaredevelopment';
 -- Rewritten Queries
-SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:32.910531' AND articles.id IN (6606, 7908, 5278) LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'distributedsystems' OR name = 'programming' OR name = 'computerscience' OR name = 'softwaredevelopment' LIMIT 1;

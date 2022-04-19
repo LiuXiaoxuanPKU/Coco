@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 4701;
+SELECT podcast_episodes.media_url FROM podcast_episodes WHERE podcast_episodes.podcast_id = 248;
 -- Rewritten Queries
-SELECT COUNT(*) FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 4701 LIMIT 1;
+SELECT podcast_episodes.media_url FROM podcast_episodes WHERE podcast_episodes.podcast_id = 248 LIMIT 1;

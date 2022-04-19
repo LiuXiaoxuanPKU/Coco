@@ -2050,6 +2050,8 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 9193 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags';
+SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 6327;
 -- Rewritten Queries
-SELECT tags.* FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 9193 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags' LIMIT 1;
+SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 6327 LIMIT 1;
+SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 6327 LIMIT 1;
+SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 6327;

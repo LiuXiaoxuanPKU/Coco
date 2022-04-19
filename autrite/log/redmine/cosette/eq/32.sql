@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM documents WHERE documents.project_id = 1133;
+SELECT 1 AS "one" FROM users INNER JOIN groups_users ON users.id = groups_users.group_id WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') AND groups_users.user_id = 8 AND users.id = 58 LIMIT 9;
 -- Rewritten Queries
-SELECT COUNT(*) FROM documents WHERE documents.project_id = 1133 LIMIT 1;
+SELECT 1 AS "one" FROM users WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') AND users.id = 58 LIMIT 9;

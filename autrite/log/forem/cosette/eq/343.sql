@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.body_markdown = 'eabkmowiqugklubwcsilllpljymxmmpbctcibnzjdvhykuaqspshnhqqeazbvycavctdmcgkztxysopyxlzkzrncmkmmxhuwyxubwcqwkfmxojrdpvgxiyjajkexcpihmjjbtwityzlxqvynvadzvktdishfjtfhwrf' AND comments.commentable_id = 29 AND comments.ancestry IS NULL;
+SELECT tags.* FROM tags WHERE name = 'collaboration' OR name = 'trust' OR name = 'effectivecommunicati' OR name = 'leadership';
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.body_markdown = 'eabkmowiqugklubwcsilllpljymxmmpbctcibnzjdvhykuaqspshnhqqeazbvycavctdmcgkztxysopyxlzkzrncmkmmxhuwyxubwcqwkfmxojrdpvgxiyjajkexcpihmjjbtwityzlxqvynvadzvktdishfjtfhwrf' AND comments.commentable_id = 29 AND comments.ancestry IS NULL LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'collaboration' OR name = 'trust' OR name = 'effectivecommunicati' OR name = 'leadership' LIMIT 1;

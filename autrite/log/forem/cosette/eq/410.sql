@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM follows WHERE follows.followable_id = 9496 AND follows.followable_type = 'Organization' AND created_at > '2022-02-26 07:04:34.404892';
+SELECT COUNT(*) FROM follows WHERE follows.followable_id = 9646 AND follows.followable_type = 'Organization' AND created_at > '2022-02-26 07:04:34.469718';
 -- Rewritten Queries
-SELECT COUNT(*) FROM follows WHERE follows.followable_id = 9496 AND follows.followable_type = 'Organization' AND created_at > '2022-02-26 07:04:34.404892' LIMIT 1;
+SELECT COUNT(*) FROM follows WHERE follows.followable_id = 9646 AND follows.followable_type = 'Organization' AND created_at > '2022-02-26 07:04:34.469718' LIMIT 1;

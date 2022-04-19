@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id IN (SELECT users_settings.user_id FROM users_settings WHERE users_settings.feed_url IS NULL) AND users.id = 2034;
+SELECT credits.purchase_id, credits.purchase_type, COUNT(*) AS cost, MAX(spent_at) AS purchased_at FROM credits WHERE credits.user_id = 6126 AND credits.spent = False GROUP BY credits.purchase_id, credits.purchase_type ORDER BY purchased_at DESC;
 -- Rewritten Queries
-SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id IN (SELECT users_settings.user_id FROM users_settings WHERE users_settings.feed_url IS NULL) AND users.id = 2034 LIMIT 1;
+SELECT credits.purchase_id, credits.purchase_type, COUNT(*) AS cost, MAX(spent_at) AS purchased_at FROM credits WHERE credits.user_id = 6126 AND credits.spent = False GROUP BY credits.purchase_id, credits.purchase_type ORDER BY purchased_at DESC LIMIT 1;

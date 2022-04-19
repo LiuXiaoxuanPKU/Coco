@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '301/302/%' OR comments.ancestry = '301/302';
+SELECT identities.provider FROM identities WHERE identities.user_id = 514 AND identities.provider IN ('apple', 'twitter');
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '301/302/%' OR comments.ancestry = '301/302' LIMIT 1;
+SELECT identities.provider FROM identities WHERE identities.user_id = 514 AND identities.provider IN ('apple', 'twitter') LIMIT 1;

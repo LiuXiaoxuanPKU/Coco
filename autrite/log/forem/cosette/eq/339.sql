@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'softwaredevelopment' OR name = 'csharp' OR name = 'visualstudio' OR name = 'debugging';
+SELECT tags.* FROM tags WHERE name = 'distributedsystems' OR name = 'code' OR name = 'computerscience' OR name = 'programming';
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'softwaredevelopment' OR name = 'csharp' OR name = 'visualstudio' OR name = 'debugging' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'distributedsystems' OR name = 'code' OR name = 'computerscience' OR name = 'programming' LIMIT 1;

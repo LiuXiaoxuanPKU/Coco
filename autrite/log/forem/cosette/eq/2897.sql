@@ -2050,8 +2050,8 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 3543 AND created_at > '2022-02-26 07:10:14.740820' ORDER BY follows.created_at DESC);
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7532 AND created_at > '2022-02-26 07:10:11.575244' ORDER BY follows.created_at DESC);
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 3543 AND created_at > '2022-02-26 07:10:14.740820' ORDER BY follows.created_at DESC) LIMIT 1;
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 3543 AND created_at > '2022-02-26 07:10:14.740820' ORDER BY follows.created_at DESC LIMIT 1);
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 3543 AND created_at > '2022-02-26 07:10:14.740820' ORDER BY follows.created_at DESC LIMIT 1) LIMIT 1;
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7532 AND created_at > '2022-02-26 07:10:11.575244' ORDER BY follows.created_at DESC) LIMIT 1;
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7532 AND created_at > '2022-02-26 07:10:11.575244' ORDER BY follows.created_at DESC LIMIT 1);
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7532 AND created_at > '2022-02-26 07:10:11.575244' ORDER BY follows.created_at DESC LIMIT 1) LIMIT 1;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM comments WHERE comments.user_id = 5401 AND comments.deleted = False;
+SELECT tags.name, tags.bg_color_hex, tags.text_color_hex FROM tags WHERE tags.name = 'xsdmtjitatarrixoopogczbjlctez';
 -- Rewritten Queries
-SELECT COUNT(*) FROM comments WHERE comments.user_id = 5401 AND comments.deleted = False LIMIT 1;
+SELECT tags.name, tags.bg_color_hex, tags.text_color_hex FROM tags WHERE tags.name = 'xsdmtjitatarrixoopogczbjlctez' LIMIT 1;

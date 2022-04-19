@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.id = 1512;
+SELECT articles.* FROM articles WHERE articles.id = 1290;
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.id = 1512 LIMIT 1;
+SELECT articles.* FROM articles WHERE articles.id = 1290 LIMIT 1;

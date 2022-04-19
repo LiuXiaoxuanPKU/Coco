@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 8003 ORDER BY organizations.name ASC;
+SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 8831 AND roles.name = 'super_admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL;
 -- Rewritten Queries
-SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 8003 ORDER BY organizations.name ASC LIMIT 1;
+SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 8831 AND roles.name = 'super_admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL LIMIT 1;

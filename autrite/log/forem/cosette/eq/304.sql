@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT notification_subscriptions.* FROM notification_subscriptions WHERE notification_subscriptions.user_id = 6523;
+SELECT COUNT(*) FROM display_ad_events WHERE display_ad_events.display_ad_id = 917 AND display_ad_events.category = 'click';
 -- Rewritten Queries
-SELECT notification_subscriptions.* FROM notification_subscriptions WHERE notification_subscriptions.user_id = 6523 LIMIT 1;
+SELECT COUNT(*) FROM display_ad_events WHERE display_ad_events.display_ad_id = 917 AND display_ad_events.category = 'click' LIMIT 1;

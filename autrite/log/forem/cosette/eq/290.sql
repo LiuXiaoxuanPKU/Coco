@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = 'evrizbzmkzpnwsmvsfpnwecazgfpmgdjjnnvelyxewmragfugtrnowlruvtydnbhstgczbpebripbdigcenihkieqfgxmdvlufqgqsxzrtkppajttnbsbenwnrkzxfbwsayziiceeiscckmd' AND consumer_apps.platform = 'Android';
+SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:06:49.137224';
 -- Rewritten Queries
-SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = 'evrizbzmkzpnwsmvsfpnwecazgfpmgdjjnnvelyxewmragfugtrnowlruvtydnbhstgczbpebripbdigcenihkieqfgxmdvlufqgqsxzrtkppajttnbsbenwnrkzxfbwsayziiceeiscckmd' AND consumer_apps.platform = 'Android' LIMIT 1;
+SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:06:49.137224' LIMIT 1;

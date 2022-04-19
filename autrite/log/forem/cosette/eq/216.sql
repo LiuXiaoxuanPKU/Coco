@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT identities.* FROM identities WHERE identities.user_id = 8737 AND identities.provider = 'github';
+SELECT users.id, users.name, users.profile_image, users.username FROM users WHERE users.id = 8018;
 -- Rewritten Queries
-SELECT identities.* FROM identities WHERE identities.user_id = 8737 AND identities.provider = 'github' LIMIT 1;
+SELECT users.id, users.name, users.profile_image, users.username FROM users WHERE users.id = 8018 LIMIT 1;

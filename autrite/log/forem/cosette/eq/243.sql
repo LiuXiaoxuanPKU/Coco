@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'alpha' OR name = 'beta' OR name = 'delta' OR name = 'gamma';
+SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = 511 AND mentions.mentionable_type = 'Article';
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'alpha' OR name = 'beta' OR name = 'delta' OR name = 'gamma' LIMIT 1;
+SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = 511 AND mentions.mentionable_type = 'Article' LIMIT 1;

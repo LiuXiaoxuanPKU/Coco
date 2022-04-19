@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 7128 AND reactions.reactable_type = 'Comment';
+SELECT articles.* FROM articles WHERE articles.main_image IS NOT NULL ORDER BY articles.id ASC LIMIT 5;
 -- Rewritten Queries
-SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 7128 AND reactions.reactable_type = 'Comment' LIMIT 1;
+SELECT articles.* FROM articles WHERE True ORDER BY articles.id ASC LIMIT 5;

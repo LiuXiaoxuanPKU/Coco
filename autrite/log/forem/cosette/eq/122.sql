@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM identities WHERE identities.user_id = 962;
+SELECT tags.* FROM tags WHERE name = 'tag7' OR name = 'tag8';
 -- Rewritten Queries
-SELECT COUNT(*) FROM identities WHERE identities.user_id = 962 LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'tag7' OR name = 'tag8' LIMIT 1;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT credits.purchase_id, credits.purchase_type, COUNT(*) AS cost, MAX(spent_at) AS purchased_at FROM credits WHERE credits.user_id = 8444 AND credits.spent = False GROUP BY credits.purchase_id, credits.purchase_type ORDER BY purchased_at DESC;
+SELECT follows.id, follows.followable_id, follows.followable_type, follows.points FROM follows WHERE follows.follower_id = 4777 AND follows.follower_type = 'User' AND follows.blocked = False AND follows.followable_type = 'User' ORDER BY follows.points DESC;
 -- Rewritten Queries
-SELECT credits.purchase_id, credits.purchase_type, COUNT(*) AS cost, MAX(spent_at) AS purchased_at FROM credits WHERE credits.user_id = 8444 AND credits.spent = False GROUP BY credits.purchase_id, credits.purchase_type ORDER BY purchased_at DESC LIMIT 1;
+SELECT follows.id, follows.followable_id, follows.followable_type, follows.points FROM follows WHERE follows.follower_id = 4777 AND follows.follower_type = 'User' AND follows.blocked = False AND follows.followable_type = 'User' ORDER BY follows.points DESC LIMIT 1;

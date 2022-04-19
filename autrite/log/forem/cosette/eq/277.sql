@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT mentions.user_id FROM mentions WHERE mentions.mentionable_id = 8218 AND mentions.mentionable_type = 'Article';
+SELECT comments.id FROM comments WHERE comments.ancestry LIKE '231/232/%' OR comments.ancestry = '231/232';
 -- Rewritten Queries
-SELECT mentions.user_id FROM mentions WHERE mentions.mentionable_id = 8218 AND mentions.mentionable_type = 'Article' LIMIT 1;
+SELECT comments.id FROM comments WHERE comments.ancestry LIKE '231/232/%' OR comments.ancestry = '231/232' LIMIT 1;

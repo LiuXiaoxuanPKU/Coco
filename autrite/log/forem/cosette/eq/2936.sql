@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT podcast_episodes.* FROM podcast_episodes INNER JOIN podcasts ON podcasts.id = podcast_episodes.podcast_id WHERE podcast_episodes.podcast_id = 431 AND podcast_episodes.reachable = True AND podcasts.published = False AND podcast_episodes.slug = 'szrstsygwfkamnvnassdbwvozfphrugmheqqqxvzhugiohzinjdclfipadtuwglpwmgiafpokq' LIMIT 2;
+SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '305/%' OR comments.ancestry = '305' OR comments.id = 305;
 -- Rewritten Queries
-SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.podcast_id = 431 AND podcast_episodes.reachable = True AND podcast_episodes.slug = 'szrstsygwfkamnvnassdbwvozfphrugmheqqqxvzhugiohzinjdclfipadtuwglpwmgiafpokq' LIMIT 2;
+SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '305/%' OR comments.ancestry = '305' OR comments.id = 305 LIMIT 1;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'a89f59af58b85';
+SELECT DISTINCT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id LEFT OUTER JOIN journal_details ON journal_details.journal_id = journals.id WHERE journals.journalized_type = 'Issue' AND (journal_details.prop_key = 'status_id' OR journals.notes <> '') AND journals.user_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND (journals.private_notes = False OR journals.user_id = 1 OR projects.status <> 9) ORDER BY journals.id DESC LIMIT 1;
 -- Rewritten Queries
-SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'a89f59af58b85' LIMIT 1;
+SELECT DISTINCT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN journal_details ON journal_details.journal_id = journals.id WHERE journals.journalized_type = 'Issue' AND (journal_details.prop_key = 'status_id' OR journals.notes <> '') AND journals.user_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND (journals.private_notes = False OR journals.user_id = 1 OR projects.status <> 9) ORDER BY journals.id DESC LIMIT 1;

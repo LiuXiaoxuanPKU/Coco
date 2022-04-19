@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.id FROM articles WHERE articles.user_id = 6417 AND articles.published = False AND published_at <= '2022-02-27 07:14:52.604516' ORDER BY articles.published_at ASC;
+SELECT articles.id FROM articles WHERE articles.user_id = 6630 AND articles.published = False AND published_at <= '2022-02-27 07:17:10.234568' ORDER BY articles.published_at ASC;
 -- Rewritten Queries
-SELECT articles.id FROM articles WHERE articles.user_id = 6417 AND articles.published = False AND published_at <= '2022-02-27 07:14:52.604516' ORDER BY articles.published_at ASC LIMIT 1;
+SELECT articles.id FROM articles WHERE articles.user_id = 6630 AND articles.published = False AND published_at <= '2022-02-27 07:17:10.234568' ORDER BY articles.published_at ASC LIMIT 1;

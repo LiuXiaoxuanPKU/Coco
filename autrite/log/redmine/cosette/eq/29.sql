@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT wiki_pages.* FROM wiki_pages WHERE wiki_pages.id = 1567;
+SELECT 1 AS "one" FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.root_id = 3401 AND issues.lft > 1 AND issues.rgt < 4 AND issue_statuses.is_closed = True LIMIT 10;
 -- Rewritten Queries
-SELECT wiki_pages.* FROM wiki_pages WHERE wiki_pages.id = 1567 LIMIT 1;
+SELECT 1 AS "one" FROM issues WHERE issues.root_id = 3401 AND issues.lft > 1 AND issues.rgt < 4 LIMIT 10;

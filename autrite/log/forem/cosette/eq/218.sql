@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.name, users.username FROM users WHERE users.id = 2492 ORDER BY users.created_at ASC;
+SELECT badge_achievements.badge_id FROM badge_achievements WHERE badge_achievements.user_id = 207;
 -- Rewritten Queries
-SELECT users.name, users.username FROM users WHERE users.id = 2492 ORDER BY users.created_at ASC LIMIT 1;
+SELECT badge_achievements.badge_id FROM badge_achievements WHERE badge_achievements.user_id = 207 LIMIT 1;

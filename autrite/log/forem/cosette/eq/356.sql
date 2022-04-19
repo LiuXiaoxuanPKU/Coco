@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '356/357/%' OR comments.ancestry = '356/357' OR comments.id = 357;
+SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 6982 AND roles.name = 'workshop_pass';
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '356/357/%' OR comments.ancestry = '356/357' OR comments.id = 357 LIMIT 1;
+SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 6982 AND roles.name = 'workshop_pass' LIMIT 1;

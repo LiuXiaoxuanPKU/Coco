@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 8483 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 537 AND reactions.category = 'unicorn';
+SELECT users.* FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = 9329;
 -- Rewritten Queries
-SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 8483 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 537 AND reactions.category = 'unicorn' LIMIT 1;
+SELECT users.* FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = 9329 LIMIT 1;

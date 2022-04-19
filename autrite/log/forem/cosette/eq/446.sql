@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id = 4333 AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'pending';
+SELECT notifications.* FROM notifications WHERE notifications.organization_id = 2 AND notifications.user_id IS NULL ORDER BY notifications.notified_at DESC LIMIT 2;
 -- Rewritten Queries
-SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id = 4333 AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'pending' LIMIT 1;
+SELECT notifications.* FROM notifications WHERE notifications.organization_id = 2 AND False ORDER BY notifications.notified_at DESC LIMIT 2;

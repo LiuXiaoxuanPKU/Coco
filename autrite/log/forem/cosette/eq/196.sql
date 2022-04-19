@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'yoyo' OR name = 'bobo' OR name = 'tag149';
+SELECT COUNT(*) FROM comments WHERE comments.user_id = 8277 AND comments.deleted = False;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'yoyo' OR name = 'bobo' OR name = 'tag149' LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE comments.user_id = 8277 AND comments.deleted = False LIMIT 1;

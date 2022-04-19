@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '317/%' OR comments.ancestry = '317' OR comments.id = 317;
+SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '297/%' OR comments.ancestry = '297' OR comments.id = 297;
 -- Rewritten Queries
-SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '317/%' OR comments.ancestry = '317' OR comments.id = 317 LIMIT 1;
+SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '297/%' OR comments.ancestry = '297' OR comments.id = 297 LIMIT 1;

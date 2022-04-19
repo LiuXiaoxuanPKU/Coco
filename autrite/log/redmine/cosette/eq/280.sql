@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM wiki_pages WHERE wiki_pages.title IS NULL AND wiki_pages.wiki_id = 9213 LIMIT 5;
+SELECT 1 AS "one" FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id INNER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE projects.status <> 9 AND enabled_modules.name = 'files' AND projects.lft >= 1 AND projects.rgt <= 10 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) LIMIT 3;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM wiki_pages WHERE False AND wiki_pages.wiki_id = 9213 LIMIT 5;
+SELECT 1 AS "one" FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id WHERE projects.status <> 9 AND projects.lft >= 1 AND projects.rgt <= 10 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) LIMIT 3;

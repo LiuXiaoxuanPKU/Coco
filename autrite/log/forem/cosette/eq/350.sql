@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'code' OR name = 'softwaredevelopment' OR name = 'computerscience' OR name = 'programming';
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '366/367/%' OR comments.ancestry = '366/367' OR comments.id = 367;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'code' OR name = 'softwaredevelopment' OR name = 'computerscience' OR name = 'programming' LIMIT 1;
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '366/367/%' OR comments.ancestry = '366/367' OR comments.id = 367 LIMIT 1;

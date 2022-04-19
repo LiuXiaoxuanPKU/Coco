@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM comments WHERE comments.commentable_id IS NULL AND comments.user_id = 8468 LIMIT 7;
+SELECT COUNT(*) FROM comments WHERE comments.ancestry LIKE '333/334/%' OR comments.ancestry = '333/334';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM comments WHERE False AND comments.user_id = 8468 LIMIT 7;
+SELECT COUNT(*) FROM comments WHERE comments.ancestry LIKE '333/334/%' OR comments.ancestry = '333/334' LIMIT 1;

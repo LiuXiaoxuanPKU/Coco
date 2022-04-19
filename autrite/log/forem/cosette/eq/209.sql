@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM identities WHERE identities.user_id = 3161 AND identities.provider = 'twitter';
+SELECT 1 AS "one" FROM articles WHERE articles.slug IS NULL AND articles.user_id = 6699 LIMIT 9;
 -- Rewritten Queries
-SELECT COUNT(*) FROM identities WHERE identities.user_id = 3161 AND identities.provider = 'twitter' LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.user_id = 6699 LIMIT 9;

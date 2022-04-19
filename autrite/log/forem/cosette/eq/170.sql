@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = 2535;
+SELECT articles.* FROM articles WHERE title LIKE 'Welcome Thread - %';
 -- Rewritten Queries
-SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = 2535 LIMIT 1;
+SELECT articles.* FROM articles WHERE title LIKE 'Welcome Thread - %' LIMIT 1;

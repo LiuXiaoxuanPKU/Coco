@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.unspent_credits_count) AS unspent_credits_count FROM users LEFT JOIN credits AS credits ON users.id = credits.user_id AND credits.spent = False GROUP BY users.id ORDER BY users.id ASC LIMIT 9;
+SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '289/%' OR comments.ancestry = '289' OR comments.id = 289;
 -- Rewritten Queries
-SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.unspent_credits_count) AS unspent_credits_count FROM users INNER JOIN credits AS credits ON users.id = credits.user_id AND credits.spent = False GROUP BY users.id ORDER BY users.id ASC LIMIT 9;
+SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '289/%' OR comments.ancestry = '289' OR comments.id = 289 LIMIT 1;

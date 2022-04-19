@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM notifications WHERE notifications.organization_id = 2 AND notifications.read = False;
+SELECT COUNT(*) FROM comments WHERE comments.ancestry LIKE '335/336/%' OR comments.ancestry = '335/336';
 -- Rewritten Queries
-SELECT COUNT(*) FROM notifications WHERE notifications.organization_id = 2 AND notifications.read = False LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE comments.ancestry LIKE '335/336/%' OR comments.ancestry = '335/336' LIMIT 1;

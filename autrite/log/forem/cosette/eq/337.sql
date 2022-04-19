@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM reactions WHERE reactions.reactable_type = 'Comment' AND reactions.reactable_id = 515 AND reactions.category = 'unicorn';
+SELECT podcast_episode_appearances.* FROM podcast_episode_appearances WHERE podcast_episode_appearances.podcast_episode_id = 384;
 -- Rewritten Queries
-SELECT COUNT(*) FROM reactions WHERE reactions.reactable_type = 'Comment' AND reactions.reactable_id = 515 AND reactions.category = 'unicorn' LIMIT 1;
+SELECT podcast_episode_appearances.* FROM podcast_episode_appearances WHERE podcast_episode_appearances.podcast_episode_id = 384 LIMIT 1;

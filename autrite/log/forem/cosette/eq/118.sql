@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM reactions WHERE reactions.category = 'unicorn';
+SELECT COUNT(*) FROM poll_skips WHERE poll_skips.user_id = 1818;
 -- Rewritten Queries
-SELECT COUNT(*) FROM reactions WHERE reactions.category = 'unicorn' LIMIT 1;
+SELECT COUNT(*) FROM poll_skips WHERE poll_skips.user_id = 1818 LIMIT 1;

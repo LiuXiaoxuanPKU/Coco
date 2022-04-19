@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 3508 AND articles.user_id = 1837 AND articles.title = 'mryrufafyfsafgbjhdmgzextmuuhemiusodfvogjifzvptgieyfbygvzdrgltcgeovxqcgnbhrmvqoaadnfqrjqrsljzgj' LIMIT 5;
+SELECT COUNT(*) FROM follows WHERE follows.follower_id = 7611 AND follows.follower_type = 'User' AND follows.blocked = False AND follows.followable_type = 'User';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 3508 AND articles.user_id = 1837 AND articles.title = 'mryrufafyfsafgbjhdmgzextmuuhemiusodfvogjifzvptgieyfbygvzdrgltcgeovxqcgnbhrmvqoaadnfqrjqrsljzgj' LIMIT 5;
+SELECT COUNT(*) FROM follows WHERE follows.follower_id = 7611 AND follows.follower_type = 'User' AND follows.blocked = False AND follows.followable_type = 'User' LIMIT 1;

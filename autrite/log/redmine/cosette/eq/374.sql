@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 3505 AND users.type IN ('User', 'User');
+SELECT COUNT(DISTINCT time_entries.id) AS count_id, CAST(time_entries.created_on AS DATE) AS time_entries_created_on_date FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') LEFT OUTER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) GROUP BY CAST(time_entries.created_on AS DATE);
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.project_id = 3505;
-SELECT members.* FROM members WHERE members.project_id = 3505 LIMIT 1;
-SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 3505 AND users.type IN ('User', 'User') LIMIT 1;
+SELECT COUNT(DISTINCT time_entries.id) AS count_id, CAST(time_entries.created_on AS DATE) AS time_entries_created_on_date FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') LEFT OUTER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) GROUP BY CAST(time_entries.created_on AS DATE);

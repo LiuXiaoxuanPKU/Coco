@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = 6464;
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '380/381/382/383/%' OR comments.ancestry = '380/381/382/383' OR comments.id = 383;
 -- Rewritten Queries
-SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = 6464 LIMIT 1;
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '380/381/382/383/%' OR comments.ancestry = '380/381/382/383' OR comments.id = 383 LIMIT 1;

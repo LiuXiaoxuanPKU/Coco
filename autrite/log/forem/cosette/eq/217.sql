@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.* FROM articles WHERE articles.user_id = 7500 AND articles.slug IS NULL LIMIT 8;
+SELECT COUNT(*) FROM notifications WHERE notifications.user_id = 5161 AND notifications.read = False;
 -- Rewritten Queries
-SELECT articles.* FROM articles WHERE articles.user_id = 7500 AND False LIMIT 8;
+SELECT COUNT(*) FROM notifications WHERE notifications.user_id = 5161 AND notifications.read = False LIMIT 1;

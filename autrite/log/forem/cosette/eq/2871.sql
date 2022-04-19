@@ -2050,8 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned'))) LIMIT 7 OFFSET 1;
+SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 101 AND notification_subscriptions.notifiable_type = 'Article' AND notification_subscriptions.config = 'all_comments';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned')) LIMIT 1) LIMIT 7 OFFSET 1;
-SELECT 1 AS "one" FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned') LIMIT 1) LIMIT 1) LIMIT 7 OFFSET 1;
-SELECT 1 AS "one" FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned') LIMIT 1)) LIMIT 7 OFFSET 1;
+SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 101 AND notification_subscriptions.notifiable_type = 'Article' AND notification_subscriptions.config = 'all_comments' LIMIT 1;

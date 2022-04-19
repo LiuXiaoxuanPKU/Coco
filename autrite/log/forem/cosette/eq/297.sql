@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM user_blocks WHERE user_blocks.blocker_id IS NULL AND user_blocks.blocked_id = 6350 LIMIT 8;
+SELECT notification_subscriptions.* FROM notification_subscriptions WHERE notification_subscriptions.user_id = 50;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM user_blocks WHERE False AND user_blocks.blocked_id = 6350 LIMIT 8;
+SELECT notification_subscriptions.* FROM notification_subscriptions WHERE notification_subscriptions.user_id = 50 LIMIT 1;

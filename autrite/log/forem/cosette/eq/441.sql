@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT SUM(articles.page_views_count) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:07:25.414734' AND articles.user_id = 8951;
+SELECT tags.* FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 9637 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags';
 -- Rewritten Queries
-SELECT SUM(articles.page_views_count) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:07:25.414734' AND articles.user_id = 8951 LIMIT 1;
+SELECT tags.* FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 9637 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags' LIMIT 1;

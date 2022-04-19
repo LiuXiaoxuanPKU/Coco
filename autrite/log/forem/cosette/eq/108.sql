@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM credits WHERE credits.user_id = 692;
+SELECT COUNT(*) FROM comments WHERE comments.user_id = 8405;
 -- Rewritten Queries
-SELECT COUNT(*) FROM credits WHERE credits.user_id = 692 LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE comments.user_id = 8405 LIMIT 1;

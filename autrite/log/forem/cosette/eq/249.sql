@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'worklifebalance' OR name = 'burnout' OR name = 'mentalhealth';
+SELECT COUNT(*) FROM notifications WHERE notifications.organization_id = 2 AND notifications.read = False;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'worklifebalance' OR name = 'burnout' OR name = 'mentalhealth' LIMIT 1;
+SELECT COUNT(*) FROM notifications WHERE notifications.organization_id = 2 AND notifications.read = False LIMIT 1;

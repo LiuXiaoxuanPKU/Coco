@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM organizations WHERE organizations.secret IS NULL LIMIT 7;
+SELECT COUNT(*) FROM classified_listings WHERE classified_listings.user_id = 4035;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM organizations WHERE False LIMIT 7;
+SELECT COUNT(*) FROM classified_listings WHERE classified_listings.user_id = 4035 LIMIT 1;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.id = 8028;
+SELECT 1 AS "one" FROM profile_fields WHERE profile_fields.label IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.id = 8028 LIMIT 1;
+SELECT 1 AS "one" FROM profile_fields WHERE False LIMIT 1;

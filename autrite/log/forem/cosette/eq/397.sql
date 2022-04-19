@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM feedback_messages WHERE feedback_messages.category IN ('bug', 'rude or vulgar', 'rude or vulgar', 'spam') AND created_at > '2022-02-26 07:20:34.501562';
+SELECT articles.id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:07:28.390608' AND articles.user_id = 1546;
 -- Rewritten Queries
-SELECT COUNT(*) FROM feedback_messages WHERE feedback_messages.category IN ('bug', 'rude or vulgar', 'rude or vulgar', 'spam') AND created_at > '2022-02-26 07:20:34.501562' LIMIT 1;
+SELECT articles.id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:07:28.390608' AND articles.user_id = 1546 LIMIT 1;

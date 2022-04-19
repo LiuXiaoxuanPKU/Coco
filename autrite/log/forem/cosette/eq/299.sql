@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 7441 AND reactions.reactable_type = 'Comment';
+SELECT 1 AS "one" FROM users_roles INNER JOIN roles ON roles.id = users_roles.role_id WHERE roles.name = 'single_resource_admin' LIMIT 6;
 -- Rewritten Queries
-SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 7441 AND reactions.reactable_type = 'Comment' LIMIT 1;
+SELECT 1 AS "one" FROM users_roles LIMIT 6;

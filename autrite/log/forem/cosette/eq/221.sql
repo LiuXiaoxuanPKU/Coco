@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT follows.* FROM follows WHERE follows.followable_id = 8840 AND follows.followable_type = 'Organization';
+SELECT COUNT(*) FROM comments WHERE comments.ancestry LIKE '587/%' OR comments.ancestry = '587';
 -- Rewritten Queries
-SELECT follows.* FROM follows WHERE follows.followable_id = 8840 AND follows.followable_type = 'Organization' LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE comments.ancestry LIKE '587/%' OR comments.ancestry = '587' LIMIT 1;

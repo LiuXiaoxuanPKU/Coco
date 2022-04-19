@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:20:34.174939' AND score >= 15 AND published_at > '2022-02-26 07:20:34.175064';
+SELECT follows.* FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 287 AND created_at > '2022-02-26 07:10:12.830588' ORDER BY follows.created_at DESC;
 -- Rewritten Queries
-SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:20:34.174939' AND score >= 15 AND published_at > '2022-02-26 07:20:34.175064' LIMIT 1;
+SELECT follows.* FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 287 AND created_at > '2022-02-26 07:10:12.830588' ORDER BY follows.created_at DESC LIMIT 1;

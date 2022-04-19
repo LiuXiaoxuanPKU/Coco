@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'java';
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 1254 AND articles.user_id = 4411 AND articles.title = 'vkghzpmmvcicmut' LIMIT 10;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'java' LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 1254 AND articles.user_id = 4411 AND articles.title = 'vkghzpmmvcicmut' LIMIT 10;

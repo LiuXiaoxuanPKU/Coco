@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.id, users.id, COUNT(badge_achievements.id) * 1 AS count, MAX(users.badge_achievements_count) AS badge_achievements_count FROM users LEFT JOIN badge_achievements AS badge_achievements ON users.id = badge_achievements.user_id WHERE users.id = 5507 GROUP BY users.id ORDER BY users.id ASC LIMIT 6;
+SELECT COUNT(*) FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 7119 AND (roles.name = 'admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL OR roles.name = 'super_admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL);
 -- Rewritten Queries
-SELECT users.id, users.id, COUNT(badge_achievements.id) * 1 AS count, MAX(users.badge_achievements_count) AS badge_achievements_count FROM users INNER JOIN badge_achievements AS badge_achievements ON users.id = badge_achievements.user_id WHERE users.id = 5507 GROUP BY users.id ORDER BY users.id ASC LIMIT 6;
+SELECT COUNT(*) FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 7119 AND (roles.name = 'admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL OR roles.name = 'super_admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL) LIMIT 1;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.* FROM articles WHERE articles.id = 5309;
+SELECT COUNT(*) FROM devices WHERE devices.user_id = 5274;
 -- Rewritten Queries
-SELECT articles.* FROM articles WHERE articles.id = 5309 LIMIT 1;
+SELECT COUNT(*) FROM devices WHERE devices.user_id = 5274 LIMIT 1;

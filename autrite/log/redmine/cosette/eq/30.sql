@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM wiki_pages WHERE wiki_pages.wiki_id = 15799;
+SELECT 1 AS "one" FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.root_id = 5223 AND issues.lft < 2 AND issues.rgt > 3 AND issue_statuses.is_closed = False LIMIT 4;
 -- Rewritten Queries
-SELECT COUNT(*) FROM wiki_pages WHERE wiki_pages.wiki_id = 15799 LIMIT 1;
+SELECT 1 AS "one" FROM issues WHERE issues.root_id = 5223 AND issues.lft < 2 AND issues.rgt > 3 LIMIT 4;

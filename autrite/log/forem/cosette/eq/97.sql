@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.badge_id FROM tags WHERE tags.name = 'ychtldnmfeidedgqzumvsaa';
+SELECT follows.* FROM follows WHERE follows.id = 8840;
 -- Rewritten Queries
-SELECT tags.badge_id FROM tags WHERE tags.name = 'ychtldnmfeidedgqzumvsaa' LIMIT 1;
+SELECT follows.* FROM follows WHERE follows.id = 8840 LIMIT 1;

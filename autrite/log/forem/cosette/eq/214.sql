@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'thirty' OR name = 'birthday' OR name = 'lifelessons';
+SELECT users.name, users.username FROM users WHERE users.id = 1511 ORDER BY users.created_at ASC;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'thirty' OR name = 'birthday' OR name = 'lifelessons' LIMIT 1;
+SELECT users.name, users.username FROM users WHERE users.id = 1511 ORDER BY users.created_at ASC LIMIT 1;

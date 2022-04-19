@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '380/381/382/383/%' OR comments.ancestry = '380/381/382/383' OR comments.id = 383;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 7025 AND articles.user_id = 2019 AND articles.title = 'hxf' LIMIT 5;
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '380/381/382/383/%' OR comments.ancestry = '380/381/382/383' OR comments.id = 383 LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 7025 AND articles.user_id = 2019 AND articles.title = 'hxf' LIMIT 5;

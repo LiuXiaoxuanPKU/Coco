@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '364/365/%' OR comments.ancestry = '364/365' OR comments.id = 365;
+SELECT follows.* FROM follows WHERE follows.followable_id = 5683 AND follows.followable_type = 'User' AND follows.subscription_status = 'none';
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '364/365/%' OR comments.ancestry = '364/365' OR comments.id = 365 LIMIT 1;
+SELECT follows.* FROM follows WHERE follows.followable_id = 5683 AND follows.followable_type = 'User' AND follows.subscription_status = 'none' LIMIT 1;

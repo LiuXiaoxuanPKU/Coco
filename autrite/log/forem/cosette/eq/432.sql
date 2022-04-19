@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM identities WHERE identities.user_id = 4500 AND identities.provider IN ('twitter', 'apple') AND identities.provider IN ('github', 'twitter', 'github', 'facebook', 'github', 'twitter');
+SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 7496 AND reactions.reactable_type = 'User' AND reactions.category IN ('hands', 'like', 'unicorn');
 -- Rewritten Queries
-SELECT COUNT(*) FROM identities WHERE identities.user_id = 4500 AND identities.provider IN ('twitter', 'apple') AND identities.provider IN ('github', 'twitter', 'github', 'facebook', 'github', 'twitter') LIMIT 1;
+SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 7496 AND reactions.reactable_type = 'User' AND reactions.category IN ('hands', 'like', 'unicorn') LIMIT 1;

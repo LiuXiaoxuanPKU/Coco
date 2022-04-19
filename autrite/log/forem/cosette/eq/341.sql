@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT podcast_episode_appearances.* FROM podcast_episode_appearances WHERE podcast_episode_appearances.podcast_episode_id = 3121;
+SELECT reactions.* FROM reactions WHERE reactions.user_id = 3854 AND reactions.reactable_type = 'Comment' AND reactions.reactable_id = 6512;
 -- Rewritten Queries
-SELECT podcast_episode_appearances.* FROM podcast_episode_appearances WHERE podcast_episode_appearances.podcast_episode_id = 3121 LIMIT 1;
+SELECT reactions.* FROM reactions WHERE reactions.user_id = 3854 AND reactions.reactable_type = 'Comment' AND reactions.reactable_id = 6512 LIMIT 1;

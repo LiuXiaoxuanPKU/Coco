@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.id FROM comments WHERE comments.ancestry LIKE '297/298/%' OR comments.ancestry = '297/298';
+SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:06:49.494444';
 -- Rewritten Queries
-SELECT comments.id FROM comments WHERE comments.ancestry LIKE '297/298/%' OR comments.ancestry = '297/298' LIMIT 1;
+SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:06:49.494444' LIMIT 1;

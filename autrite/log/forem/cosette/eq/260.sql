@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM comments WHERE comments.user_id = 9219 AND created_at > '2022-02-27 07:16:52.610584';
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '305/306/%' OR comments.ancestry = '305/306';
 -- Rewritten Queries
-SELECT COUNT(*) FROM comments WHERE comments.user_id = 9219 AND created_at > '2022-02-27 07:16:52.610584' LIMIT 1;
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '305/306/%' OR comments.ancestry = '305/306' LIMIT 1;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM reactions WHERE reactions.reactable_type = 'Comment' AND reactions.reactable_id = 4466;
+SELECT tags.* FROM tags WHERE name = 'alpha' OR name = 'beta' OR name = 'delta' OR name = 'gamma';
 -- Rewritten Queries
-SELECT COUNT(*) FROM reactions WHERE reactions.reactable_type = 'Comment' AND reactions.reactable_id = 4466 LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'alpha' OR name = 'beta' OR name = 'delta' OR name = 'gamma' LIMIT 1;

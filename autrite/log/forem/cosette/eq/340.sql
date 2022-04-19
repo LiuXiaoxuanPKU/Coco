@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:20.259289' AND score >= 0;
+SELECT comments.* FROM comments WHERE comments.body_markdown = 'hczwentbueozvvgkpwroikqsjzhxdqsrficqdgptsjoymqzictatxzirrhgwuylzmeyksjpziucvheywufidfkuujygsbkrrwgbrhlpresistujrbwdlxcnpyuwrziolnlbjvtjzprtyzdvxauunpnjmuxrtejykyzkasuejooxfhgdwakzqvfziikbekbijedtnsbuclkxemkbhdgrhbsjrxmiymyzyxauisvwrbbaxwewqjluvbevvujonulbhluirplyjpmnadluzhfbzaoewriocsnipybbvdactyazhqflasptwbmeykwhyybultdpwsaosnrhewiiwzwh' AND comments.commentable_id = 22 AND comments.ancestry IS NULL;
 -- Rewritten Queries
-SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:20.259289' AND score >= 0 LIMIT 1;
+SELECT comments.* FROM comments WHERE comments.body_markdown = 'hczwentbueozvvgkpwroikqsjzhxdqsrficqdgptsjoymqzictatxzirrhgwuylzmeyksjpziucvheywufidfkuujygsbkrrwgbrhlpresistujrbwdlxcnpyuwrziolnlbjvtjzprtyzdvxauunpnjmuxrtejykyzkasuejooxfhgdwakzqvfziikbekbijedtnsbuclkxemkbhdgrhbsjrxmiymyzyxauisvwrbbaxwewqjluvbevvujonulbhluirplyjpmnadluzhfbzaoewriocsnipybbvdactyazhqflasptwbmeykwhyybultdpwsaosnrhewiiwzwh' AND comments.commentable_id = 22 AND comments.ancestry IS NULL LIMIT 1;

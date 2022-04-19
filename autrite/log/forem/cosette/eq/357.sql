@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.id FROM articles WHERE articles.published = False AND published_at <= '2019-04-01 12:00:00' AND articles.user_id = 738;
+SELECT profile_pins.* FROM profile_pins WHERE profile_pins.profile_id = 2555 AND profile_pins.profile_type = 'User' AND profile_pins.id = 1036;
 -- Rewritten Queries
-SELECT articles.id FROM articles WHERE articles.published = False AND published_at <= '2019-04-01 12:00:00' AND articles.user_id = 738 LIMIT 1;
+SELECT profile_pins.* FROM profile_pins WHERE profile_pins.profile_id = 2555 AND profile_pins.profile_type = 'User' AND profile_pins.id = 1036 LIMIT 1;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT member_roles.id FROM member_roles WHERE member_roles.member_id = 2688;
+SELECT DISTINCT projects.* FROM projects LEFT JOIN projects AS child ON projects.lft <= child.lft AND projects.rgt >= child.rgt WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND child.id IN (1, 3) ORDER BY projects.lft ASC;
 -- Rewritten Queries
-SELECT member_roles.id FROM member_roles WHERE member_roles.member_id = 2688 LIMIT 1;
+SELECT DISTINCT projects.* FROM projects INNER JOIN projects AS child ON projects.lft <= child.lft AND projects.rgt >= child.rgt WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND child.id IN (1, 3) ORDER BY projects.lft ASC;

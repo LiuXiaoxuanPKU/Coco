@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'html' OR name = 'ruby' OR name = 'js';
+SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.id = 7201;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'html' OR name = 'ruby' OR name = 'js' LIMIT 1;
+SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.id = 7201 LIMIT 1;

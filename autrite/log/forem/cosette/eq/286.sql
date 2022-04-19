@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.id FROM comments WHERE comments.ancestry LIKE '301/302/%' OR comments.ancestry = '301/302';
+SELECT profile_pins.* FROM profile_pins WHERE profile_pins.profile_id = 5191 AND profile_pins.profile_type = 'User';
 -- Rewritten Queries
-SELECT comments.id FROM comments WHERE comments.ancestry LIKE '301/302/%' OR comments.ancestry = '301/302' LIMIT 1;
+SELECT profile_pins.* FROM profile_pins WHERE profile_pins.profile_id = 5191 AND profile_pins.profile_type = 'User' LIMIT 1;

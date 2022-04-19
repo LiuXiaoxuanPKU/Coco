@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT mentions.id FROM mentions WHERE mentions.mentionable_id = 8110 AND mentions.mentionable_type = 'Comment';
+SELECT COUNT(*) FROM comments WHERE comments.user_id = 6837 AND created_at > '2022-02-27 07:16:52.610584';
 -- Rewritten Queries
-SELECT mentions.id FROM mentions WHERE mentions.mentionable_id = 8110 AND mentions.mentionable_type = 'Comment' LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE comments.user_id = 6837 AND created_at > '2022-02-27 07:16:52.610584' LIMIT 1;

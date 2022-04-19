@@ -576,6 +576,20 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT email_addresses.* FROM email_addresses WHERE email_addresses.address = 'exelmqrqjmpcbrkezyglsrxfrousmsg@gmail.com';
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
 -- Rewritten Queries
-SELECT email_addresses.* FROM email_addresses WHERE email_addresses.address = 'exelmqrqjmpcbrkezyglsrxfrousmsg@gmail.com' LIMIT 1;
+SELECT issues.* FROM issues WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
+SELECT issues.* FROM issues INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 43 AND issues.lft > 1 AND issues.rgt < 8;

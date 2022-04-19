@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.name, tags.bg_color_hex, tags.text_color_hex FROM tags WHERE tags.name = 'chlehxiyhsbqntpwtkjdqtfyclesw';
+SELECT feedback_messages.* FROM feedback_messages WHERE feedback_messages.reporter_id = 355;
 -- Rewritten Queries
-SELECT tags.name, tags.bg_color_hex, tags.text_color_hex FROM tags WHERE tags.name = 'chlehxiyhsbqntpwtkjdqtfyclesw' LIMIT 1;
+SELECT feedback_messages.* FROM feedback_messages WHERE feedback_messages.reporter_id = 355 LIMIT 1;

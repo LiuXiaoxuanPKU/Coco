@@ -576,6 +576,12 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.* FROM projects WHERE projects.id IN (5487, 7347) AND projects.status <> 9;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE projects.id IN (5487, 7347) AND projects.status <> 9 LIMIT 1;
+SELECT issues.* FROM issues INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);

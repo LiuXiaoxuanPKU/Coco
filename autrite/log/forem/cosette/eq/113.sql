@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT profiles.* FROM profiles WHERE profiles.user_id = 5358;
+SELECT profiles.* FROM profiles WHERE profiles.user_id = 755;
 -- Rewritten Queries
-SELECT profiles.* FROM profiles WHERE profiles.user_id = 5358 LIMIT 1;
+SELECT profiles.* FROM profiles WHERE profiles.user_id = 755 LIMIT 1;

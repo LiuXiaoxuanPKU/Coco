@@ -101,7 +101,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "author",
+        "field_name": "author_id",
         "db": false,
         "cond": ""
       },
@@ -123,12 +123,6 @@
         "db": false,
         "min": null,
         "max": 255
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "description",
-        "db": false,
-        "cond": ""
       },
       {
         "^o": "LengthConstraint",
@@ -441,154 +435,6 @@
         "^o": "PresenceConstraint",
         "field_name": "tls_mode",
         "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": "auth_sources",
-    "class": "DummyAuthSource",
-    "constraints": [
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": "auth_sources",
-    "class": "LdapAuthSource",
-    "constraints": [
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "tls_mode",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "tls_mode",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "host",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "port",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "attr_login",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "name",
-        "db": false,
-        "min": null,
-        "max": 60
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "host",
-        "db": false,
-        "min": null,
-        "max": 60
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "account",
-        "db": false,
-        "min": null,
-        "max": 255
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "account_password",
-        "db": false,
-        "min": null,
-        "max": 255
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "base_dn",
-        "db": false,
-        "min": null,
-        "max": 255
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "attr_login",
-        "db": false,
-        "min": null,
-        "max": 30
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "attr_firstname",
-        "db": false,
-        "min": null,
-        "max": 30
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "attr_lastname",
-        "db": false,
-        "min": null,
-        "max": 30
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "attr_mail",
-        "db": false,
-        "min": null,
-        "max": 30
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "attr_admin",
-        "db": false,
-        "min": null,
-        "max": 30
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "port",
-        "db": false,
-        "min": null,
-        "max": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "port",
-        "db": false,
         "cond": ""
       },
       {
@@ -977,13 +823,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "commented",
+        "field_name": "commented_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "author",
+        "field_name": "author_id",
         "db": false,
         "cond": ""
       },
@@ -1081,12 +927,6 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "field_format",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "custom_options",
         "db": false,
         "cond": ""
       },
@@ -2520,7 +2360,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "principal",
+        "field_name": "user_id",
         "db": false,
         "cond": ""
       },
@@ -2598,7 +2438,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "role",
+        "field_name": "role_id",
         "db": false,
         "cond": ""
       },
@@ -2797,7 +2637,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "forum",
+        "field_name": "forum_id",
         "db": false,
         "cond": ""
       },
@@ -3329,272 +3169,6 @@
         "case_sensitive": true,
         "type": "db-index"
       },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": "users",
-    "class": "Group",
-    "constraints": [
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "name",
-        "db": false,
-        "min": null,
-        "max": 256
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": "users",
-    "class": "PlaceholderUser",
-    "constraints": [
-      {
-        "^o": "LengthConstraint",
-        "field_name": "name",
-        "db": false,
-        "min": null,
-        "max": 256
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": "users",
-    "class": "User",
-    "constraints": [
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "auth_source",
-        "db": false,
-        "class_name": "Auth_source",
-        "fk_column_name": "auth_source_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "login",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "firstname",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "lastname",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "mail",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "login"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "login",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "mail"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "builtin"
-      },
-      {
-        "^o": "FormatConstraint",
-        "field_name": "login",
-        "db": false,
-        "format": "/\\A[a-z0-9_\\-@.+ ]*\\z/i"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "login",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "login",
-        "db": false,
-        "min": null,
-        "max": 256
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "login",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "firstname",
-        "db": false,
-        "min": null,
-        "max": 256
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "firstname",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "lastname",
-        "db": false,
-        "min": null,
-        "max": 256
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "lastname",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "mail",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "mail",
-        "db": false,
-        "min": null,
-        "max": 256
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": "users",
-    "class": "AnonymousUser",
-    "constraints": [
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": "users",
-    "class": "DeletedUser",
-    "constraints": [
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": "users",
-    "class": "SystemUser",
-    "constraints": [
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": "users",
-    "class": "Users::InexistentUser",
-    "constraints": [
       {
         "^o": "UniqueConstraint",
         "field_name": [
@@ -4414,7 +3988,7 @@
     ]
   },
   {
-    "table": "/types",
+    "table": "types",
     "class": "::Type",
     "constraints": [
       {
@@ -4599,7 +4173,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "user",
+        "field_name": "user_id",
         "db": false,
         "cond": ""
       },
@@ -4667,22 +4241,10 @@
         "format": "/\\A\\d{4}-\\d{2}-\\d{2}\\z/"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "effective_date",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "FormatConstraint",
         "field_name": "start_date",
         "db": false,
         "format": "/\\A\\d{4}-\\d{2}-\\d{2}\\z/"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "start_date",
-        "db": false,
-        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
@@ -4753,13 +4315,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "watchable",
+        "field_name": "watchable_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "user",
+        "field_name": "user_id",
         "db": false,
         "cond": ""
       },
@@ -5293,19 +4855,19 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "role",
+        "field_name": "role_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "old_status",
+        "field_name": "old_status_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "new_status",
+        "field_name": "new_status_id",
         "db": false,
         "cond": ""
       },

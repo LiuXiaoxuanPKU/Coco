@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT rating_votes.* FROM rating_votes WHERE rating_votes.user_id = 1406;
+SELECT tags.* FROM tags WHERE name = 'ama' OR name = 'explainlikeimfive';
 -- Rewritten Queries
-SELECT rating_votes.* FROM rating_votes WHERE rating_votes.user_id = 1406 LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'ama' OR name = 'explainlikeimfive' LIMIT 1;

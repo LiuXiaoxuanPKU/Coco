@@ -576,6 +576,7 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.root_id, issues.lft, issues.rgt FROM issues WHERE issues.id = 4331;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = 1 AND users.type IN ('User', 'User') AND members.project_id = 3037 AND roles.assignable = True ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
 -- Rewritten Queries
-SELECT issues.root_id, issues.lft, issues.rgt FROM issues WHERE issues.id = 4331 LIMIT 1;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND users.type IN ('User', 'User') AND members.project_id = 3037 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE users.status = 1 AND users.type IN ('User', 'User') AND members.project_id = 3037 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;

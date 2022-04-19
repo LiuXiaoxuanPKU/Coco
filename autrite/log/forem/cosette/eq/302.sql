@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.* FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:00:00.510669';
+SELECT podcast_episode_appearances.* FROM podcast_episode_appearances WHERE podcast_episode_appearances.user_id = 5147;
 -- Rewritten Queries
-SELECT articles.* FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:00:00.510669' LIMIT 1;
+SELECT podcast_episode_appearances.* FROM podcast_episode_appearances WHERE podcast_episode_appearances.user_id = 5147 LIMIT 1;

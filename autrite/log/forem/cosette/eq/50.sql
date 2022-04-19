@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'tag128';
+SELECT articles.cached_tag_list, articles.crossposted_at, articles.path, articles.published_at, articles.reading_time, articles.title, articles.user_id, reactions.id AS reaction_id, reactions.user_id AS reaction_user_id, articles.id AS t0_r0, reactions.id AS t1_r0, reactions.category AS t1_r1, reactions.created_at AS t1_r2, reactions.points AS t1_r3, reactions.reactable_id AS t1_r4, reactions.reactable_type AS t1_r5, reactions.status AS t1_r6, reactions.updated_at AS t1_r7, reactions.user_id AS t1_r8 FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 2553 AND articles.id = 2553 ORDER BY articles.id ASC;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'tag128' LIMIT 1;
+SELECT articles.cached_tag_list, articles.crossposted_at, articles.path, articles.published_at, articles.reading_time, articles.title, articles.user_id, reactions.id AS reaction_id, reactions.user_id AS reaction_user_id, articles.id AS t0_r0, reactions.id AS t1_r0, reactions.category AS t1_r1, reactions.created_at AS t1_r2, reactions.points AS t1_r3, reactions.reactable_id AS t1_r4, reactions.reactable_type AS t1_r5, reactions.status AS t1_r6, reactions.updated_at AS t1_r7, reactions.user_id AS t1_r8 FROM articles INNER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 2553 AND articles.id = 2553 ORDER BY articles.id ASC;

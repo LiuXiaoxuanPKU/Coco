@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM notification_subscriptions WHERE notification_subscriptions.notifiable_type = 'Article' AND notification_subscriptions.config = 'top_level_comments';
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '384/385/386/387/%' OR comments.ancestry = '384/385/386/387' OR comments.id = 387;
 -- Rewritten Queries
-SELECT COUNT(*) FROM notification_subscriptions WHERE notification_subscriptions.notifiable_type = 'Article' AND notification_subscriptions.config = 'top_level_comments' LIMIT 1;
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '384/385/386/387/%' OR comments.ancestry = '384/385/386/387' OR comments.id = 387 LIMIT 1;

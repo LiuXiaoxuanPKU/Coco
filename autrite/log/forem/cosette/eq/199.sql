@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'tag153' OR name = 'yoyo' OR name = 'bobo';
+SELECT display_ad_events.* FROM display_ad_events WHERE display_ad_events.user_id = 6637;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'tag153' OR name = 'yoyo' OR name = 'bobo' LIMIT 1;
+SELECT display_ad_events.* FROM display_ad_events WHERE display_ad_events.user_id = 6637 LIMIT 1;

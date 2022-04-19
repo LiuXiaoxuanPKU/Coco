@@ -576,6 +576,7 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'Parent';
+SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (8596, 2655, 5058, 6503, 7584, 2878) AND (journals.private_notes = False OR journals.user_id = 6 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
 -- Rewritten Queries
-SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'Parent' LIMIT 1;
+SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (1622, 767, 7316, 9575, 270, 7580) AND (journals.private_notes = False OR journals.user_id = 6 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
+SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals INNER JOIN issues ON issues.id = journals.journalized_id WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (8151, 5561, 6899, 1499, 7788, 4975) AND (journals.private_notes = False OR journals.user_id = 6 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;

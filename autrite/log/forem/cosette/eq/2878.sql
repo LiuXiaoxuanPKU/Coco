@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 8911 AND notifications.organization_id IS NULL AND notifications.notifiable_id = 3051 AND notifications.notifiable_type = 'Broadcast' AND notifications.action = 'kvmqxtmiglxnugprisiwjshzskxffepndhxcoajdsucprqbonjsaamvdekzekklcaddwfwarahatexhtujqwbfhzjtqvodowkxotipxdabidkqshxnckgmdibqzaskkktmkgbxikrewffoqfiqxcllitiqaabbdlkssenmxjqkvvhbdhykuaqdgyqenzbmvaxtfcrpunqbtwdcqqqdlaybxnyrdvrwrmfhdrnugctqchebg' LIMIT 4;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.organization_id = 2 AND notifications.notifiable_id = 3508 AND notifications.notifiable_type = 'Broadcast' AND notifications.action IS NULL LIMIT 2;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 8911 AND False AND notifications.notifiable_id = 3051 AND notifications.notifiable_type = 'Broadcast' AND notifications.action = 'kvmqxtmiglxnugprisiwjshzskxffepndhxcoajdsucprqbonjsaamvdekzekklcaddwfwarahatexhtujqwbfhzjtqvodowkxotipxdabidkqshxnckgmdibqzaskkktmkgbxikrewffoqfiqxcllitiqaabbdlkssenmxjqkvvhbdhykuaqdgyqenzbmvaxtfcrpunqbtwdcqqqdlaybxnyrdvrwrmfhdrnugctqchebg' LIMIT 4;
+SELECT 1 AS "one" FROM notifications WHERE False AND notifications.organization_id = 2 AND notifications.notifiable_id = 3508 AND notifications.notifiable_type = 'Broadcast' AND notifications.action IS NULL LIMIT 2;

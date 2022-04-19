@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.id FROM issues WHERE issues.root_id = 1686 AND issues.lft > 1 AND issues.rgt < 10 ORDER BY issues.lft ASC;
+SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id LEFT OUTER JOIN users AS authors ON authors.id = issues.author_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) ORDER BY authors.firstname ASC, authors.lastname ASC, authors.id ASC, issues.id DESC LIMIT 6;
 -- Rewritten Queries
-SELECT issues.id FROM issues WHERE issues.root_id = 1686 AND issues.lft > 1 AND issues.rgt < 10 ORDER BY issues.lft ASC LIMIT 1;
+SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN users AS authors ON authors.id = issues.author_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) ORDER BY authors.firstname ASC, authors.lastname ASC, authors.id ASC, issues.id DESC LIMIT 6;

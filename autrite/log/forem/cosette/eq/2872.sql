@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 2085 AND notification_subscriptions.notifiable_type = 'Article' AND notification_subscriptions.config = 'top_level_comments';
+SELECT taggings.* FROM taggings WHERE taggings.taggable_id = 8005 AND taggings.taggable_type = 'Article' AND taggings.tagger_id IS NULL AND taggings.tagger_type IS NULL AND taggings.context = 'tags' AND taggings.tag_id IN (10053, 10, 16);
 -- Rewritten Queries
-SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 2085 AND notification_subscriptions.notifiable_type = 'Article' AND notification_subscriptions.config = 'top_level_comments' LIMIT 1;
+SELECT taggings.* FROM taggings WHERE taggings.taggable_id = 8005 AND taggings.taggable_type = 'Article' AND taggings.tagger_id IS NULL AND taggings.tagger_type IS NULL AND taggings.context = 'tags' AND taggings.tag_id IN (10053, 10, 16) LIMIT 1;

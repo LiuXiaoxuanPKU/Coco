@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT trackers.* FROM trackers WHERE trackers.id = 3745;
+SELECT COUNT(*) FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 6168 AND users.type = 'User' AND users.status = 1;
 -- Rewritten Queries
-SELECT trackers.* FROM trackers WHERE trackers.id = 3745 LIMIT 1;
+SELECT COUNT(*) FROM members WHERE members.project_id = 6168;

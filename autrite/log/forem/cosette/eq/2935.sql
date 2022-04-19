@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 7511 AND notifications.id <> 7788 AND notifications.organization_id IS NULL AND notifications.notifiable_id = 1995 AND notifications.notifiable_type = 'Article' AND notifications.action = 'djkjyxjkgfezumiluykhosvgckcneekjhvkivaiotfelhsrtkokfdfdltevdypkygdwubxjvinlavffhgigoarywxrawydjlqbjnffgkmckqpvoyjflyyogzelymnivymwtecypzwxtcjftdyjkyjohzfqegovajlwatszwoysxcblhglocxlknrktpgedbyabqeheb' LIMIT 2;
+SELECT podcast_episodes.* FROM podcast_episodes INNER JOIN podcasts ON podcasts.id = podcast_episodes.podcast_id WHERE podcast_episodes.podcast_id = 1793 AND podcast_episodes.reachable = True AND podcasts.published = False AND podcast_episodes.slug = 'jvyosnoiyzbtwohoqqlbfsihtmcqmhqqeruyzbtiffujiaigvtszftoeozthunekwrxdhfxmdarkmsqgacdebvwlvqaqlappnqolfzupvkheslebkrdsbgfmuojufpmnlgzzvngcdbxrhzjmldygkwkc' LIMIT 2;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 7511 AND notifications.id <> 7788 AND False AND notifications.notifiable_id = 1995 AND notifications.notifiable_type = 'Article' AND notifications.action = 'djkjyxjkgfezumiluykhosvgckcneekjhvkivaiotfelhsrtkokfdfdltevdypkygdwubxjvinlavffhgigoarywxrawydjlqbjnffgkmckqpvoyjflyyogzelymnivymwtecypzwxtcjftdyjkyjohzfqegovajlwatszwoysxcblhglocxlknrktpgedbyabqeheb' LIMIT 2;
+SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.podcast_id = 1793 AND podcast_episodes.reachable = True AND podcast_episodes.slug = 'jvyosnoiyzbtwohoqqlbfsihtmcqmhqqeruyzbtiffujiaigvtszftoeozthunekwrxdhfxmdarkmsqgacdebvwlvqaqlappnqolfzupvkheslebkrdsbgfmuojufpmnlgzzvngcdbxrhzjmldygkwkc' LIMIT 2;

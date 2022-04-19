@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'tag112';
+SELECT users.id, users.id, COUNT(badge_achievements.id) * 1 AS count, MAX(users.badge_achievements_count) AS badge_achievements_count FROM users LEFT JOIN badge_achievements AS badge_achievements ON users.id = badge_achievements.user_id WHERE users.id = 5367 GROUP BY users.id ORDER BY users.id ASC LIMIT 2;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'tag112' LIMIT 1;
+SELECT users.id, users.id, COUNT(badge_achievements.id) * 1 AS count, MAX(users.badge_achievements_count) AS badge_achievements_count FROM users INNER JOIN badge_achievements AS badge_achievements ON users.id = badge_achievements.user_id WHERE users.id = 5367 GROUP BY users.id ORDER BY users.id ASC LIMIT 2;

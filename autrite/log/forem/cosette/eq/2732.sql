@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT reactions.* FROM reactions WHERE reactions.category IN ('thinking', 'thumbsup', 'hands', 'like', 'readinglist') AND reactions.reactable_id = 3771 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 4672;
+SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = 485 AND organization_memberships.type_of_user IN ('member', 'member');
 -- Rewritten Queries
-SELECT reactions.* FROM reactions WHERE reactions.category IN ('thinking', 'thumbsup', 'hands', 'like', 'readinglist') AND reactions.reactable_id = 3771 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 4672 LIMIT 1;
+SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = 485 AND organization_memberships.type_of_user IN ('member', 'member') LIMIT 1;

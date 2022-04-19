@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 1504 AND projects.status <> 9;
+SELECT COUNT(*) FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND (issues.assigned_to_id IS NULL OR issues.assigned_to_id NOT IN (SELECT DISTINCT members.user_id FROM members, member_roles WHERE members.project_id = issues.project_id AND members.id = member_roles.member_id AND member_roles.role_id IN ('1'))) AND projects.id = 14;
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.user_id = 1504;
-SELECT members.* FROM members WHERE members.user_id = 1504 LIMIT 1;
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 1504 AND projects.status <> 9 LIMIT 1;
+SELECT COUNT(*) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND (issues.assigned_to_id IS NULL OR issues.assigned_to_id NOT IN (SELECT DISTINCT members.user_id FROM members, member_roles WHERE members.project_id = issues.project_id AND members.id = member_roles.member_id AND member_roles.role_id IN ('1'))) AND projects.id = 14;

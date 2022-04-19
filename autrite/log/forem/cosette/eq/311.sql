@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT identities.* FROM identities WHERE identities.user_id = 9329 AND identities.provider IN ('twitter', 'github', 'facebook', 'apple', 'apple', 'github');
+SELECT taggings.* FROM taggings WHERE taggings.taggable_id = 8916 AND taggings.taggable_type = 'Listing' AND taggings.context = 'tags';
 -- Rewritten Queries
-SELECT identities.* FROM identities WHERE identities.user_id = 9329 AND identities.provider IN ('twitter', 'github', 'facebook', 'apple', 'apple', 'github') LIMIT 1;
+SELECT taggings.* FROM taggings WHERE taggings.taggable_id = 8916 AND taggings.taggable_type = 'Listing' AND taggings.context = 'tags' LIMIT 1;

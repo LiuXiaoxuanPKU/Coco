@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM audit_logs WHERE audit_logs.category = 'giulcmlqyzgnrbxrjurvgrpcoconuubmeajvqpfuhbhqirvoizsymofexkgorunjoisvkxtqrycsvutkaihuokwoppmybywffzpzzimwqwnlaszrjdgkgeuawglggwfpjwzr';
+SELECT users.* FROM users WHERE users.username IS NULL LIMIT 7;
 -- Rewritten Queries
-SELECT COUNT(*) FROM audit_logs WHERE audit_logs.category = 'giulcmlqyzgnrbxrjurvgrpcoconuubmeajvqpfuhbhqirvoizsymofexkgorunjoisvkxtqrycsvutkaihuokwoppmybywffzpzzimwqwnlaszrjdgkgeuawglggwfpjwzr' LIMIT 1;
+SELECT users.* FROM users WHERE False LIMIT 7;

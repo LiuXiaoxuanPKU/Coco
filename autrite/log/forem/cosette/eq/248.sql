@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM html_variants WHERE html_variants.published = False AND html_variants.approved = False;
+SELECT 1 AS "one" FROM comments WHERE comments.commentable_id IS NULL AND comments.user_id = 588 LIMIT 7;
 -- Rewritten Queries
-SELECT COUNT(*) FROM html_variants WHERE html_variants.published = False AND html_variants.approved = False LIMIT 1;
+SELECT 1 AS "one" FROM comments WHERE False AND comments.user_id = 588 LIMIT 7;

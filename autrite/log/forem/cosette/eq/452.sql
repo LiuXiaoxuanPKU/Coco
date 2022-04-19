@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT comments.receive_notifications FROM comments WHERE (comments.ancestry LIKE '490/%' OR comments.ancestry = '490' OR comments.id = 490) AND comments.user_id = 5966;
+SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = 9884 AND github_repos.featured = False ORDER BY github_repos.stargazers_count DESC, github_repos.name ASC;
 -- Rewritten Queries
-SELECT comments.receive_notifications FROM comments WHERE (comments.ancestry LIKE '490/%' OR comments.ancestry = '490' OR comments.id = 490) AND comments.user_id = 5966 LIMIT 1;
+SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = 9884 AND github_repos.featured = False ORDER BY github_repos.stargazers_count DESC, github_repos.name ASC LIMIT 1;

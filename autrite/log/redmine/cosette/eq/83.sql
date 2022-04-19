@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT user_preferences.* FROM user_preferences WHERE user_preferences.user_id = 440;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.updated_on > issues.created_on AND projects.lft >= 1 AND projects.rgt <= 10;
 -- Rewritten Queries
-SELECT user_preferences.* FROM user_preferences WHERE user_preferences.user_id = 440 LIMIT 1;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.updated_on > issues.created_on AND projects.lft >= 1 AND projects.rgt <= 10;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.updated_on > issues.created_on AND projects.lft >= 1 AND projects.rgt <= 10;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.updated_on > issues.created_on AND projects.lft >= 1 AND projects.rgt <= 10;

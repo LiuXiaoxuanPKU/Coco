@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM feedback_messages WHERE feedback_messages.category IN ('listings', 'spam', 'listings', 'harassment') AND created_at > '2022-02-26 07:20:35.436204';
+SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:29.092692' AND articles.id IN (5306, 6370, 8241);
 -- Rewritten Queries
-SELECT COUNT(*) FROM feedback_messages WHERE feedback_messages.category IN ('listings', 'spam', 'listings', 'harassment') AND created_at > '2022-02-26 07:20:35.436204' LIMIT 1;
+SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:29.092692' AND articles.id IN (5306, 6370, 8241) LIMIT 1;
