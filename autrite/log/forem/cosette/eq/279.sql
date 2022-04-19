@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT mentions.user_id FROM mentions WHERE mentions.mentionable_id = 9581 AND mentions.mentionable_type = 'Article';
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '301/302/%' OR comments.ancestry = '301/302';
 -- Rewritten Queries
-SELECT mentions.user_id FROM mentions WHERE mentions.mentionable_id = 9581 AND mentions.mentionable_type = 'Article' LIMIT 1;
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '301/302/%' OR comments.ancestry = '301/302' LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT articles.user_id FROM articles INNER JOIN (SELECT reactions.id, reactions.reactable_id, reactions.user_id FROM reactions WHERE reactions.user_id = 5381 AND reactions.category = 'readinglist' AND reactions.status IN ('confirmed', 'valid') AND reactions.reactable_type = 'Article' ORDER BY reactions.created_at DESC) AS reactions ON reactions.reactable_id = articles.id WHERE articles.published = False AND published_at <= '2022-02-27 07:17:29.749956' LIMIT 3 OFFSET 1;
+SELECT articles.id, articles.user_id, articles.organization_id, articles.collection_id, articles.title, articles.description, articles.main_image, articles.published_at, articles.crossposted_at, articles.social_image, articles.cached_tag_list, articles.slug, articles.path, articles.canonical_url, articles.comments_count, articles.public_reactions_count, articles.created_at, articles.edited_at, articles.last_comment_at, articles.published, articles.updated_at, articles.video_thumbnail_url, articles.reading_time FROM articles WHERE articles.id = 1575;
 -- Rewritten Queries
-SELECT articles.user_id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:29.749956' LIMIT 3 OFFSET 1;
+SELECT articles.id, articles.user_id, articles.organization_id, articles.collection_id, articles.title, articles.description, articles.main_image, articles.published_at, articles.crossposted_at, articles.social_image, articles.cached_tag_list, articles.slug, articles.path, articles.canonical_url, articles.comments_count, articles.public_reactions_count, articles.created_at, articles.edited_at, articles.last_comment_at, articles.published, articles.updated_at, articles.video_thumbnail_url, articles.reading_time FROM articles WHERE articles.id = 1575 LIMIT 1;

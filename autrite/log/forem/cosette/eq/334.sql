@@ -2049,11 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle IS NULL AND consumer_apps.platform IS NULL LIMIT 9;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown = 'iywgdnucrqcwttbztisiiyzxdsgbtyahmvxfavlbapydfowbpnoieqdcfysotsmefgeukgbgjw' AND articles.user_id = 4589 AND articles.title IS NULL LIMIT 3;
 -- Rewritten Queries
-SELECT consumer_apps.* FROM consumer_apps WHERE False AND consumer_apps.platform IS NULL LIMIT 9;
-SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle IS NULL AND False LIMIT 9;
-SELECT consumer_apps.* FROM consumer_apps WHERE False AND False LIMIT 9;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown = 'iywgdnucrqcwttbztisiiyzxdsgbtyahmvxfavlbapydfowbpnoieqdcfysotsmefgeukgbgjw' AND articles.user_id = 4589 AND False LIMIT 3;

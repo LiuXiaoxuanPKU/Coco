@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT notifications.* FROM notifications WHERE notifications.user_id = 8197;
+SELECT identities.provider FROM identities WHERE identities.user_id = 6885;
 -- Rewritten Queries
-SELECT notifications.* FROM notifications WHERE notifications.user_id = 8197 LIMIT 1;
+SELECT identities.provider FROM identities WHERE identities.user_id = 6885 LIMIT 1;

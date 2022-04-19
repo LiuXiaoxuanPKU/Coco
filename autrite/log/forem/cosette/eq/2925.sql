@@ -2049,11 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 3988 AND created_at > '2022-02-26 07:17:05.616139' ORDER BY follows.created_at DESC);
+SELECT users.* FROM users INNER JOIN follows ON follows.followable_type = 'User' AND follows.followable_id = users.id WHERE follows.blocked = False AND follows.follower_id = 8851 AND follows.follower_type = 'User' AND follows.followable_type = 'User';
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 3988 AND created_at > '2022-02-26 07:17:05.616139' ORDER BY follows.created_at DESC) LIMIT 1;
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 3988 AND created_at > '2022-02-26 07:17:05.616139' ORDER BY follows.created_at DESC LIMIT 1);
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 3988 AND created_at > '2022-02-26 07:17:05.616139' ORDER BY follows.created_at DESC LIMIT 1) LIMIT 1;
+SELECT users.* FROM users INNER JOIN follows ON follows.followable_type = 'User' AND follows.followable_id = users.id WHERE follows.blocked = False AND follows.follower_id = 8851 AND follows.follower_type = 'User' AND follows.followable_type = 'User' LIMIT 1;

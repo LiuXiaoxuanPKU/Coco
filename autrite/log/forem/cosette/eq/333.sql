@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'careerladder' OR name = 'leadership' OR name = 'seniorengineer' OR name = 'techlead';
+SELECT notifications.user_id FROM notifications WHERE notifications.notifiable_type = 'Comment' AND notifications.notifiable_id = 8952;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'careerladder' OR name = 'leadership' OR name = 'seniorengineer' OR name = 'techlead' LIMIT 1;
+SELECT notifications.user_id FROM notifications WHERE notifications.notifiable_type = 'Comment' AND notifications.notifiable_id = 8952 LIMIT 1;

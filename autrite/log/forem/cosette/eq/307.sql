@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT roles.name FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 4121;
+SELECT COUNT(*) FROM comments WHERE comments.commentable_id = 22 AND comments.commentable_type = 'Article' AND score > 0;
 -- Rewritten Queries
-SELECT roles.name FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 4121 LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE comments.commentable_id = 22 AND comments.commentable_type = 'Article' AND score > 0 LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.id = 2701;
+SELECT 1 AS "one" FROM organizations WHERE organizations.secret IS NULL LIMIT 7;
 -- Rewritten Queries
-SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.id = 2701 LIMIT 1;
+SELECT 1 AS "one" FROM organizations WHERE False LIMIT 7;

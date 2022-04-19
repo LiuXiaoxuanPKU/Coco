@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT identities.* FROM identities WHERE identities.user_id = 4223 AND identities.provider IN ('github', 'apple', 'twitter', 'apple', 'github', 'facebook');
+SELECT COUNT(*) FROM display_ad_events WHERE display_ad_events.display_ad_id = 3293 AND display_ad_events.category = 'impression';
 -- Rewritten Queries
-SELECT identities.* FROM identities WHERE identities.user_id = 4223 AND identities.provider IN ('github', 'apple', 'twitter', 'apple', 'github', 'facebook') LIMIT 1;
+SELECT COUNT(*) FROM display_ad_events WHERE display_ad_events.display_ad_id = 3293 AND display_ad_events.category = 'impression' LIMIT 1;

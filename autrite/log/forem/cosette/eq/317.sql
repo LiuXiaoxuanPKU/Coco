@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT taggings.* FROM taggings WHERE taggings.taggable_id = 822 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags';
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '341/%' OR comments.ancestry = '341' OR comments.id = 341;
 -- Rewritten Queries
-SELECT taggings.* FROM taggings WHERE taggings.taggable_id = 822 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags' LIMIT 1;
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '341/%' OR comments.ancestry = '341' OR comments.id = 341 LIMIT 1;

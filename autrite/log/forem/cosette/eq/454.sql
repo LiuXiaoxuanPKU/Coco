@@ -2049,11 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 2960;
+SELECT COUNT(*) AS count_all, DATE(created_at) AS date_created_at FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7410 GROUP BY DATE(created_at);
 -- Rewritten Queries
-SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 2960;
-SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 2960 LIMIT 1;
-SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 2960 LIMIT 1;
+SELECT COUNT(*) AS count_all, DATE(created_at) AS date_created_at FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7410 GROUP BY DATE(created_at) LIMIT 1;

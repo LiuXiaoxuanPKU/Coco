@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM articles WHERE articles.user_id = 7323 AND articles.published = False AND published_at <= '2022-02-27 07:17:22.429744' AND created_at > '2022-02-27 07:16:52.429849';
+SELECT reactions.reactable_id FROM reactions WHERE reactions.category = 'thumbsup' AND reactions.user_id = 2426 AND reactions.reactable_type = 'Comment' AND reactions.status <> 'archived' ORDER BY reactions.created_at DESC;
 -- Rewritten Queries
-SELECT COUNT(*) FROM articles WHERE articles.user_id = 7323 AND articles.published = False AND published_at <= '2022-02-27 07:17:22.429744' AND created_at > '2022-02-27 07:16:52.429849' LIMIT 1;
+SELECT reactions.reactable_id FROM reactions WHERE reactions.category = 'thumbsup' AND reactions.user_id = 2426 AND reactions.reactable_type = 'Comment' AND reactions.status <> 'archived' ORDER BY reactions.created_at DESC LIMIT 1;

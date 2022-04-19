@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'tag5' OR name = 'tag6';
+SELECT COUNT(*) FROM audit_logs WHERE audit_logs.category = 'giulcmlqyzgnrbxrjurvgrpcoconuubmeajvqpfuhbhqirvoizsymofexkgorunjoisvkxtqrycsvutkaihuokwoppmybywffzpzzimwqwnlaszrjdgkgeuawglggwfpjwzr';
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'tag5' OR name = 'tag6' LIMIT 1;
+SELECT COUNT(*) FROM audit_logs WHERE audit_logs.category = 'giulcmlqyzgnrbxrjurvgrpcoconuubmeajvqpfuhbhqirvoizsymofexkgorunjoisvkxtqrycsvutkaihuokwoppmybywffzpzzimwqwnlaszrjdgkgeuawglggwfpjwzr' LIMIT 1;

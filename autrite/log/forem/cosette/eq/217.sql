@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT users.name, users.username FROM users WHERE users.id = 9810 ORDER BY users.created_at ASC;
+SELECT articles.* FROM articles WHERE articles.user_id = 7500 AND articles.slug IS NULL LIMIT 8;
 -- Rewritten Queries
-SELECT users.name, users.username FROM users WHERE users.id = 9810 ORDER BY users.created_at ASC LIMIT 1;
+SELECT articles.* FROM articles WHERE articles.user_id = 7500 AND False LIMIT 8;

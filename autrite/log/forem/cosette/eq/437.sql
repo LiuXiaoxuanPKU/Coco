@@ -2049,11 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 257 AND articles.user_id = 6918 AND articles.title IS NULL LIMIT 2;
+SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 5206 AND organization_memberships.organization_id IS NULL LIMIT 6;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 257 AND articles.user_id = 6918 AND articles.title IS NULL LIMIT 2;
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 257 AND articles.user_id = 6918 AND False LIMIT 2;
-SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 257 AND articles.user_id = 6918 AND False LIMIT 2;
+SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 5206 AND False LIMIT 6;

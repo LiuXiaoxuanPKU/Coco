@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '343/%' OR comments.ancestry = '343' OR comments.id = 343;
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '350/%' OR comments.ancestry = '350' OR comments.id = 350;
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '343/%' OR comments.ancestry = '343' OR comments.id = 343 LIMIT 1;
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '350/%' OR comments.ancestry = '350' OR comments.id = 350 LIMIT 1;

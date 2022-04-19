@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 2942 AND roles.name = 'super_admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL;
+SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'User' AND reactions.reactable_id = articles.id WHERE articles.id = 4887 ORDER BY articles.id ASC LIMIT 1;
 -- Rewritten Queries
-SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 2942 AND roles.name = 'super_admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL LIMIT 1;
+SELECT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'User' AND reactions.reactable_id = articles.id WHERE articles.id = 4887 ORDER BY articles.id ASC LIMIT 1;

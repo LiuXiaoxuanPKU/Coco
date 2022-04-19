@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT organization_memberships.* FROM organization_memberships WHERE organization_memberships.organization_id = 7581;
+SELECT COUNT(*) FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 7571;
 -- Rewritten Queries
-SELECT organization_memberships.* FROM organization_memberships WHERE organization_memberships.organization_id = 7581 LIMIT 1;
+SELECT COUNT(*) FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 7571 LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT reactions.* FROM reactions WHERE reactions.user_id = 808 AND reactions.reactable_type = 'User' AND reactions.reactable_id = 7972;
+SELECT tags.* FROM tags WHERE name = 'bestpractices' OR name = 'code' OR name = 'softwaretools' OR name = 'softwareengineering';
 -- Rewritten Queries
-SELECT reactions.* FROM reactions WHERE reactions.user_id = 808 AND reactions.reactable_type = 'User' AND reactions.reactable_id = 7972 LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'bestpractices' OR name = 'code' OR name = 'softwaretools' OR name = 'softwareengineering' LIMIT 1;

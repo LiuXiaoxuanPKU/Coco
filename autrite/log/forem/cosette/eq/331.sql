@@ -2049,9 +2049,9 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '403/%' OR comments.ancestry = '403' OR comments.id = 403;
+SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle IS NULL AND consumer_apps.platform IS NULL LIMIT 9;
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '403/%' OR comments.ancestry = '403' OR comments.id = 403 LIMIT 1;
+SELECT consumer_apps.* FROM consumer_apps WHERE False AND consumer_apps.platform IS NULL LIMIT 9;
+SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle IS NULL AND False LIMIT 9;
+SELECT consumer_apps.* FROM consumer_apps WHERE False AND False LIMIT 9;

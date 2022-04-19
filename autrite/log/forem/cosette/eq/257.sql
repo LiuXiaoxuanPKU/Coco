@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM comments WHERE comments.user_id = 9975 AND created_at > '2022-02-27 07:16:52.639417';
+SELECT COUNT(*) FROM comments WHERE comments.ancestry LIKE '333/334/%' OR comments.ancestry = '333/334';
 -- Rewritten Queries
-SELECT COUNT(*) FROM comments WHERE comments.user_id = 9975 AND created_at > '2022-02-27 07:16:52.639417' LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE comments.ancestry LIKE '333/334/%' OR comments.ancestry = '333/334' LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.* FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 9638 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags';
+SELECT notifications.* FROM notifications WHERE notifications.organization_id = 1 AND notifications.user_id IS NULL ORDER BY notifications.notified_at DESC LIMIT 9;
 -- Rewritten Queries
-SELECT tags.* FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 9638 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags' LIMIT 1;
+SELECT notifications.* FROM notifications WHERE notifications.organization_id = 1 AND False ORDER BY notifications.notified_at DESC LIMIT 9;

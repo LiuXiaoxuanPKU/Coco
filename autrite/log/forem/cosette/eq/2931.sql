@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT users.* FROM users INNER JOIN follows ON follows.followable_type = 'Organization' AND follows.followable_id = users.id WHERE follows.blocked = True AND follows.follower_id = 4988 AND follows.follower_type = 'User' AND follows.followable_type = 'Organization';
+SELECT articles.path, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:18.969491' AND published_at > '2022-02-01 12:00:00' AND published_at < '2022-03-01 11:59:59.999999' AND score >= 0;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN follows ON follows.followable_type = 'Organization' AND follows.followable_id = users.id WHERE follows.blocked = True AND follows.follower_id = 4988 AND follows.follower_type = 'User' AND follows.followable_type = 'Organization' LIMIT 1;
+SELECT articles.path, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:18.969491' AND published_at > '2022-02-01 12:00:00' AND published_at < '2022-03-01 11:59:59.999999' AND score >= 0 LIMIT 1;

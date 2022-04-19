@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'ruby';
+SELECT tags.* FROM tags WHERE name = 'node';
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'ruby' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'node' LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT identities.provider FROM identities WHERE identities.user_id = 6108 AND identities.provider IN ('facebook', 'github');
+SELECT comments.id FROM comments WHERE comments.ancestry LIKE '231/232/%' OR comments.ancestry = '231/232';
 -- Rewritten Queries
-SELECT identities.provider FROM identities WHERE identities.user_id = 6108 AND identities.provider IN ('facebook', 'github') LIMIT 1;
+SELECT comments.id FROM comments WHERE comments.ancestry LIKE '231/232/%' OR comments.ancestry = '231/232' LIMIT 1;

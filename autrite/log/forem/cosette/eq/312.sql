@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM follows WHERE follows.followable_id = 8273 AND follows.followable_type = 'Organization' AND follows.blocked = True;
+SELECT classified_listing_categories.* FROM classified_listing_categories WHERE classified_listing_categories.id = 1965;
 -- Rewritten Queries
-SELECT COUNT(*) FROM follows WHERE follows.followable_id = 8273 AND follows.followable_type = 'Organization' AND follows.blocked = True LIMIT 1;
+SELECT classified_listing_categories.* FROM classified_listing_categories WHERE classified_listing_categories.id = 1965 LIMIT 1;

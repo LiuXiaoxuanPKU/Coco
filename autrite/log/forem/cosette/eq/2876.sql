@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 5692 ORDER BY organizations.name ASC;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.organization_id = 2 AND notifications.notifiable_id = 5794 AND notifications.notifiable_type = 'Comment' AND notifications.action = 'weydxksqufjhgrutzalqqosgzrcfdftthtfiukivlhswrvyurhfjlnqeproegmietawueoqbwotaixokjxknflavkwmhfyjxadtmj' LIMIT 8;
 -- Rewritten Queries
-SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 5692 ORDER BY organizations.name ASC LIMIT 1;
+SELECT 1 AS "one" FROM notifications WHERE False AND notifications.organization_id = 2 AND notifications.notifiable_id = 5794 AND notifications.notifiable_type = 'Comment' AND notifications.action = 'weydxksqufjhgrutzalqqosgzrcfdftthtfiukivlhswrvyurhfjlnqeproegmietawueoqbwotaixokjxknflavkwmhfyjxadtmj' LIMIT 8;

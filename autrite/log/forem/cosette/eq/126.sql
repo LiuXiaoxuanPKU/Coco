@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM audit_logs WHERE audit_logs.category = 'uzujfgjydgmzmpbitbhhylykiquwtxvxxnlwvjjniyvtknocdwhizeslycltvjejiyvkrlkuoobpulgwhlbrupejxiltnpadcflbqgugnyrwvwcqeqcpojqnktogxoqfqepsyquqcpanufnxwygbwpmpcxndxzvwcukdtkzttfvxjyhhofjzssnlwvnegafftlbhe';
+SELECT reactions.* FROM reactions WHERE reactions.user_id = 1591;
 -- Rewritten Queries
-SELECT COUNT(*) FROM audit_logs WHERE audit_logs.category = 'uzujfgjydgmzmpbitbhhylykiquwtxvxxnlwvjjniyvtknocdwhizeslycltvjejiyvkrlkuoobpulgwhlbrupejxiltnpadcflbqgugnyrwvwcqeqcpojqnktogxoqfqepsyquqcpanufnxwygbwpmpcxndxzvwcukdtkzttfvxjyhhofjzssnlwvnegafftlbhe' LIMIT 1;
+SELECT reactions.* FROM reactions WHERE reactions.user_id = 1591 LIMIT 1;

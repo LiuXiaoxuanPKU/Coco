@@ -2049,9 +2049,9 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 7327 AND reactions.reactable_type = 'Comment' AND reactions.category IN ('thumbsup', 'hands', 'thumbsup');
+SELECT devices.* FROM devices WHERE devices.user_id = 9143 AND devices.token IS NULL AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT 8;
 -- Rewritten Queries
-SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 7327 AND reactions.reactable_type = 'Comment' AND reactions.category IN ('thumbsup', 'hands', 'thumbsup') LIMIT 1;
+SELECT devices.* FROM devices WHERE devices.user_id = 9143 AND devices.token IS NULL AND False AND devices.consumer_app_id IS NULL LIMIT 8;
+SELECT devices.* FROM devices WHERE devices.user_id = 9143 AND False AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT 8;
+SELECT devices.* FROM devices WHERE devices.user_id = 9143 AND False AND False AND devices.consumer_app_id IS NULL LIMIT 8;

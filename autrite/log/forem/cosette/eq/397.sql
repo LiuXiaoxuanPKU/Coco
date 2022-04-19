@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '375/376/377/%' OR comments.ancestry = '375/376/377' OR comments.id = 377;
+SELECT COUNT(*) FROM feedback_messages WHERE feedback_messages.category IN ('bug', 'rude or vulgar', 'rude or vulgar', 'spam') AND created_at > '2022-02-26 07:20:34.501562';
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '375/376/377/%' OR comments.ancestry = '375/376/377' OR comments.id = 377 LIMIT 1;
+SELECT COUNT(*) FROM feedback_messages WHERE feedback_messages.category IN ('bug', 'rude or vulgar', 'rude or vulgar', 'spam') AND created_at > '2022-02-26 07:20:34.501562' LIMIT 1;

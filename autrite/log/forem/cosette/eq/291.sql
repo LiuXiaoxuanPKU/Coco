@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT profile_pins.* FROM profile_pins WHERE profile_pins.profile_id = 6819 AND profile_pins.profile_type = 'User';
+SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = 9384 AND mentions.mentionable_type = 'Comment' AND 1 = 1;
 -- Rewritten Queries
-SELECT profile_pins.* FROM profile_pins WHERE profile_pins.profile_id = 6819 AND profile_pins.profile_type = 'User' LIMIT 1;
+SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = 9384 AND mentions.mentionable_type = 'Comment' AND 1 = 1 LIMIT 1;

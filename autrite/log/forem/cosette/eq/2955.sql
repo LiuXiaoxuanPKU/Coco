@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '325/%' OR comments.ancestry = '325' OR comments.id = 325;
+SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 9299 AND (roles.name = 'single_resource_admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL OR roles.name = 'single_resource_admin' AND roles.resource_type = 'Mod' AND roles.resource_id IS NULL);
 -- Rewritten Queries
-SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '325/%' OR comments.ancestry = '325' OR comments.id = 325 LIMIT 1;
+SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 9299 AND (roles.name = 'single_resource_admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL OR roles.name = 'single_resource_admin' AND roles.resource_type = 'Mod' AND roles.resource_id IS NULL) LIMIT 1;

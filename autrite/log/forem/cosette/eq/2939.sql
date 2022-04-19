@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT articles.path, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:18.969491' AND published_at > '2022-02-01 12:00:00' AND published_at < '2022-03-01 11:59:59.999999' AND score >= 0;
+SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '325/%' OR comments.ancestry = '325' OR comments.id = 325;
 -- Rewritten Queries
-SELECT articles.path, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:18.969491' AND published_at > '2022-02-01 12:00:00' AND published_at < '2022-03-01 11:59:59.999999' AND score >= 0 LIMIT 1;
+SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '325/%' OR comments.ancestry = '325' OR comments.id = 325 LIMIT 1;

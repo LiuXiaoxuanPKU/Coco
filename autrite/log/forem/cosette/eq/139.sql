@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT setting FROM pg_settings WHERE name = 'statement_timeout';
+SELECT tags.* FROM tags WHERE name = 'tag31' OR name = 'tag32';
 -- Rewritten Queries
-SELECT setting FROM pg_settings WHERE name = 'statement_timeout' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'tag31' OR name = 'tag32' LIMIT 1;

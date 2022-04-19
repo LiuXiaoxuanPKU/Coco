@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM follows WHERE follows.follower_id = 6866 AND follows.follower_type = 'User';
+SELECT COUNT(*) FROM comments WHERE 1 = 0 AND comments.commentable_type = 'Article' AND score > 0;
 -- Rewritten Queries
-SELECT COUNT(*) FROM follows WHERE follows.follower_id = 6866 AND follows.follower_type = 'User' LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE 1 = 0 AND comments.commentable_type = 'Article' AND score > 0 LIMIT 1;

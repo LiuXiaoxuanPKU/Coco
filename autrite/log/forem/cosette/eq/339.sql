@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM reactions WHERE reactions.reactable_type = 'Comment' AND reactions.reactable_id = 9676 AND reactions.category = 'thumbsup';
+SELECT tags.* FROM tags WHERE name = 'softwaredevelopment' OR name = 'csharp' OR name = 'visualstudio' OR name = 'debugging';
 -- Rewritten Queries
-SELECT COUNT(*) FROM reactions WHERE reactions.reactable_type = 'Comment' AND reactions.reactable_id = 9676 AND reactions.category = 'thumbsup' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'softwaredevelopment' OR name = 'csharp' OR name = 'visualstudio' OR name = 'debugging' LIMIT 1;

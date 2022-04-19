@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM follows WHERE follows.follower_id = 6907 AND follows.follower_type = 'User' AND follows.blocked = True AND follows.followable_type = 'User';
+SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 3915 AND reactions.reactable_type = 'Comment' AND reactions.category IN ('thumbsup', 'unicorn', 'thumbsup');
 -- Rewritten Queries
-SELECT COUNT(*) FROM follows WHERE follows.follower_id = 6907 AND follows.follower_type = 'User' AND follows.blocked = True AND follows.followable_type = 'User' LIMIT 1;
+SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 3915 AND reactions.reactable_type = 'Comment' AND reactions.category IN ('thumbsup', 'unicorn', 'thumbsup') LIMIT 1;

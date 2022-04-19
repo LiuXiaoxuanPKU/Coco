@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) AS count_all, DATE(created_at) AS date_created_at FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 9129 GROUP BY DATE(created_at);
+SELECT page_views.user_id FROM page_views WHERE created_at > '2022-02-26 07:20:34.181313' AND created_at < '2022-02-27 07:20:34.181366' AND page_views.user_id IS NOT NULL;
 -- Rewritten Queries
-SELECT COUNT(*) AS count_all, DATE(created_at) AS date_created_at FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 9129 GROUP BY DATE(created_at) LIMIT 1;
+SELECT page_views.user_id FROM page_views WHERE created_at > '2022-02-26 07:20:34.181313' AND created_at < '2022-02-27 07:20:34.181366' AND page_views.user_id IS NOT NULL LIMIT 1;

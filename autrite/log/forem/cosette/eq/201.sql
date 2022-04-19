@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT consumer_apps.platform FROM consumer_apps WHERE consumer_apps.app_bundle = 'vlmsykboqvrbydxseprteufgzvhplftuqfucrctcgtvvfcjflynitpzkexxcmmnyffzkljblldsyqhqgypwpenuznesiqlnpqtvigscingifcaidvtfkohkycgalmtujoaznaiuniyoil';
+SELECT COUNT(*) FROM comments WHERE comments.user_id = 5401 AND comments.deleted = False;
 -- Rewritten Queries
-SELECT consumer_apps.platform FROM consumer_apps WHERE consumer_apps.app_bundle = 'vlmsykboqvrbydxseprteufgzvhplftuqfucrctcgtvvfcjflynitpzkexxcmmnyffzkljblldsyqhqgypwpenuznesiqlnpqtvigscingifcaidvtfkohkycgalmtujoaznaiuniyoil' LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE comments.user_id = 5401 AND comments.deleted = False LIMIT 1;

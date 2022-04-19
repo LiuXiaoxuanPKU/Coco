@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT notifications.* FROM notifications WHERE notifications.notifiable_id = 7609 AND notifications.notifiable_type = 'Broadcast';
+SELECT COUNT(*) FROM follows WHERE follows.followable_id = 5749 AND follows.followable_type = 'User' AND follows.blocked = True;
 -- Rewritten Queries
-SELECT notifications.* FROM notifications WHERE notifications.notifiable_id = 7609 AND notifications.notifiable_type = 'Broadcast' LIMIT 1;
+SELECT COUNT(*) FROM follows WHERE follows.followable_id = 5749 AND follows.followable_type = 'User' AND follows.blocked = True LIMIT 1;

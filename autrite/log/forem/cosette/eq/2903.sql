@@ -2049,11 +2049,9 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 6264 AND created_at > '2022-02-26 07:17:06.323212' ORDER BY follows.created_at DESC);
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 298 AND created_at > '2022-02-26 07:10:16.505914' ORDER BY follows.created_at DESC);
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 6264 AND created_at > '2022-02-26 07:17:06.323212' ORDER BY follows.created_at DESC) LIMIT 1;
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 6264 AND created_at > '2022-02-26 07:17:06.323212' ORDER BY follows.created_at DESC LIMIT 1);
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 6264 AND created_at > '2022-02-26 07:17:06.323212' ORDER BY follows.created_at DESC LIMIT 1) LIMIT 1;
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 298 AND created_at > '2022-02-26 07:10:16.505914' ORDER BY follows.created_at DESC) LIMIT 1;
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 298 AND created_at > '2022-02-26 07:10:16.505914' ORDER BY follows.created_at DESC LIMIT 1);
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 298 AND created_at > '2022-02-26 07:10:16.505914' ORDER BY follows.created_at DESC LIMIT 1) LIMIT 1;

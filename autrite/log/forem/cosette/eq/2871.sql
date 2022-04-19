@@ -2049,9 +2049,9 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 2244 AND roles.name = 'warned' AND roles.resource_type IS NULL AND roles.resource_id IS NULL;
+SELECT 1 AS "one" FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned'))) LIMIT 7 OFFSET 1;
 -- Rewritten Queries
-SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 2244 AND roles.name = 'warned' AND roles.resource_type IS NULL AND roles.resource_id IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned')) LIMIT 1) LIMIT 7 OFFSET 1;
+SELECT 1 AS "one" FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned') LIMIT 1) LIMIT 1) LIMIT 7 OFFSET 1;
+SELECT 1 AS "one" FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned') LIMIT 1)) LIMIT 7 OFFSET 1;

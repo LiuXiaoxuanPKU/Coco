@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT rating_votes.* FROM rating_votes WHERE rating_votes.article_id = 5619;
+SELECT rating_votes.* FROM rating_votes WHERE rating_votes.article_id = 3800;
 -- Rewritten Queries
-SELECT rating_votes.* FROM rating_votes WHERE rating_votes.article_id = 5619 LIMIT 1;
+SELECT rating_votes.* FROM rating_votes WHERE rating_votes.article_id = 3800 LIMIT 1;

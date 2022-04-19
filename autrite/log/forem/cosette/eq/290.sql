@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = 'uiqngduwzkjifmqpmxdtejtalcsknrfxnwcsjykvmhsmontcsbdchtiwvjkvgmbfiigcfjpbynaubeldmkywptjgslyemnoxgepgmybmzqwoqcvlbezsdeannmiqolnhjltsavkjqtubyecezlgczkatg' AND consumer_apps.platform = 'iOS';
+SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = 'evrizbzmkzpnwsmvsfpnwecazgfpmgdjjnnvelyxewmragfugtrnowlruvtydnbhstgczbpebripbdigcenihkieqfgxmdvlufqgqsxzrtkppajttnbsbenwnrkzxfbwsayziiceeiscckmd' AND consumer_apps.platform = 'Android';
 -- Rewritten Queries
-SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = 'uiqngduwzkjifmqpmxdtejtalcsknrfxnwcsjykvmhsmontcsbdchtiwvjkvgmbfiigcfjpbynaubeldmkywptjgslyemnoxgepgmybmzqwoqcvlbezsdeannmiqolnhjltsavkjqtubyecezlgczkatg' AND consumer_apps.platform = 'iOS' LIMIT 1;
+SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = 'evrizbzmkzpnwsmvsfpnwecazgfpmgdjjnnvelyxewmragfugtrnowlruvtydnbhstgczbpebripbdigcenihkieqfgxmdvlufqgqsxzrtkppajttnbsbenwnrkzxfbwsayziiceeiscckmd' AND consumer_apps.platform = 'Android' LIMIT 1;

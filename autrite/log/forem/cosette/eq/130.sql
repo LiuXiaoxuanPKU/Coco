@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM devices WHERE devices.consumer_app_id = 8084;
+SELECT COUNT(*) FROM api_secrets WHERE api_secrets.user_id = 2869;
 -- Rewritten Queries
-SELECT COUNT(*) FROM devices WHERE devices.consumer_app_id = 8084 LIMIT 1;
+SELECT COUNT(*) FROM api_secrets WHERE api_secrets.user_id = 2869 LIMIT 1;

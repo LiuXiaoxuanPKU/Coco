@@ -2049,9 +2049,9 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 5104 AND organization_memberships.type_of_user IN ('admin', 'admin') AND organization_memberships.organization_id IS NULL LIMIT 9;
+SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 5292 AND roles.name = 'creator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 5104 AND organization_memberships.type_of_user IN ('admin', 'admin') AND False LIMIT 9;
+SELECT roles.* FROM roles WHERE roles.name = 'creator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL;
+SELECT roles.* FROM roles WHERE roles.name = 'creator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL LIMIT 1;
+SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 5292 AND roles.name = 'creator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL LIMIT 1;

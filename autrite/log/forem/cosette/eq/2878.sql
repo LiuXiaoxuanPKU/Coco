@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 3822 AND notification_subscriptions.notifiable_type = 'Article' AND notification_subscriptions.config = 'only_author_comments';
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 8911 AND notifications.organization_id IS NULL AND notifications.notifiable_id = 3051 AND notifications.notifiable_type = 'Broadcast' AND notifications.action = 'kvmqxtmiglxnugprisiwjshzskxffepndhxcoajdsucprqbonjsaamvdekzekklcaddwfwarahatexhtujqwbfhzjtqvodowkxotipxdabidkqshxnckgmdibqzaskkktmkgbxikrewffoqfiqxcllitiqaabbdlkssenmxjqkvvhbdhykuaqdgyqenzbmvaxtfcrpunqbtwdcqqqdlaybxnyrdvrwrmfhdrnugctqchebg' LIMIT 4;
 -- Rewritten Queries
-SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 3822 AND notification_subscriptions.notifiable_type = 'Article' AND notification_subscriptions.config = 'only_author_comments' LIMIT 1;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 8911 AND False AND notifications.notifiable_id = 3051 AND notifications.notifiable_type = 'Broadcast' AND notifications.action = 'kvmqxtmiglxnugprisiwjshzskxffepndhxcoajdsucprqbonjsaamvdekzekklcaddwfwarahatexhtujqwbfhzjtqvodowkxotipxdabidkqshxnckgmdibqzaskkktmkgbxikrewffoqfiqxcllitiqaabbdlkssenmxjqkvvhbdhykuaqdgyqenzbmvaxtfcrpunqbtwdcqqqdlaybxnyrdvrwrmfhdrnugctqchebg' LIMIT 4;

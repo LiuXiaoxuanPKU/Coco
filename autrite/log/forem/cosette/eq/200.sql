@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM comments WHERE comments.user_id = 9909 AND comments.deleted = False;
+SELECT organizations.* FROM organizations WHERE organizations.slug IS NULL LIMIT 5;
 -- Rewritten Queries
-SELECT COUNT(*) FROM comments WHERE comments.user_id = 9909 AND comments.deleted = False LIMIT 1;
+SELECT organizations.* FROM organizations WHERE False LIMIT 5;

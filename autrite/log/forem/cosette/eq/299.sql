@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 9650 AND reactions.reactable_type = 'Comment';
+SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 7441 AND reactions.reactable_type = 'Comment';
 -- Rewritten Queries
-SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 9650 AND reactions.reactable_type = 'Comment' LIMIT 1;
+SELECT SUM(reactions.points) FROM reactions WHERE reactions.reactable_id = 7441 AND reactions.reactable_type = 'Comment' LIMIT 1;

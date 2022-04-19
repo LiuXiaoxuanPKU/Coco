@@ -2049,11 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 2720 AND created_at > '2022-02-26 07:10:15.178342' ORDER BY follows.created_at DESC);
+SELECT articles.path, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:19.367464' AND published_at > '2020-03-01 12:00:00' AND published_at < '2020-04-01 11:59:59.999999' AND score >= 0;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 2720 AND created_at > '2022-02-26 07:10:15.178342' ORDER BY follows.created_at DESC) LIMIT 1;
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 2720 AND created_at > '2022-02-26 07:10:15.178342' ORDER BY follows.created_at DESC LIMIT 1);
-SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 2720 AND created_at > '2022-02-26 07:10:15.178342' ORDER BY follows.created_at DESC LIMIT 1) LIMIT 1;
+SELECT articles.path, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:19.367464' AND published_at > '2020-03-01 12:00:00' AND published_at < '2020-04-01 11:59:59.999999' AND score >= 0 LIMIT 1;

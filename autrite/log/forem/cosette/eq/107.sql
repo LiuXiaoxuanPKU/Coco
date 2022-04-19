@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM devices WHERE devices.user_id = 1117;
+SELECT COUNT(*) FROM devices WHERE devices.user_id = 9685;
 -- Rewritten Queries
-SELECT COUNT(*) FROM devices WHERE devices.user_id = 1117 LIMIT 1;
+SELECT COUNT(*) FROM devices WHERE devices.user_id = 9685 LIMIT 1;

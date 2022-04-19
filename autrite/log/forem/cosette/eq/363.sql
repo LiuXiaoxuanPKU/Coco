@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 3811 AND roles.name = 'restricted_liquid_tag';
+SELECT COUNT(*) FROM articles WHERE articles.user_id = 7497 AND articles.published = False AND published_at <= '2022-02-27 06:52:21.399754';
 -- Rewritten Queries
-SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 3811 AND roles.name = 'restricted_liquid_tag' LIMIT 1;
+SELECT COUNT(*) FROM articles WHERE articles.user_id = 7497 AND articles.published = False AND published_at <= '2022-02-27 06:52:21.399754' LIMIT 1;

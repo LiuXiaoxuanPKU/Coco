@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT articles.user_id FROM articles INNER JOIN (SELECT reactions.id, reactions.reactable_id, reactions.user_id FROM reactions WHERE reactions.user_id = 5360 AND reactions.category = 'readinglist' AND reactions.status IN ('confirmed', 'valid') AND reactions.reactable_type = 'Article' ORDER BY reactions.created_at DESC) AS reactions ON reactions.reactable_id = articles.id WHERE articles.published = False AND published_at <= '2022-02-27 07:17:28.430331' LIMIT 10 OFFSET 1;
+SELECT articles.user_id FROM articles INNER JOIN (SELECT reactions.id, reactions.reactable_id, reactions.user_id FROM reactions WHERE reactions.user_id = 5385 AND reactions.category = 'readinglist' AND reactions.status IN ('confirmed', 'valid') AND reactions.reactable_type = 'Article' ORDER BY reactions.created_at DESC) AS reactions ON reactions.reactable_id = articles.id WHERE articles.published = False AND published_at <= '2022-02-27 07:17:29.988451' LIMIT 3 OFFSET 1;
 -- Rewritten Queries
-SELECT articles.user_id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:28.430331' LIMIT 10 OFFSET 1;
+SELECT articles.user_id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:29.988451' LIMIT 3 OFFSET 1;

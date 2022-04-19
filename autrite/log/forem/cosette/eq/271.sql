@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT rating_votes.rating FROM rating_votes WHERE rating_votes.article_id = 5215 AND rating_votes."group" = 'experience_level';
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '297/298/%' OR comments.ancestry = '297/298';
 -- Rewritten Queries
-SELECT rating_votes.rating FROM rating_votes WHERE rating_votes.article_id = 5215 AND rating_votes."group" = 'experience_level' LIMIT 1;
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '297/298/%' OR comments.ancestry = '297/298' LIMIT 1;

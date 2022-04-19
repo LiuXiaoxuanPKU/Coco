@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'tag31' OR name = 'tag32';
+SELECT devices.* FROM devices WHERE devices.consumer_app_id = 6125;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'tag31' OR name = 'tag32' LIMIT 1;
+SELECT devices.* FROM devices WHERE devices.consumer_app_id = 6125 LIMIT 1;

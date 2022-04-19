@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'computerscience' OR name = 'softwaredevelopment' OR name = 'programming' OR name = 'distributedsystems';
+SELECT reactions.* FROM reactions WHERE reactions.user_id = 7375 AND reactions.category IN ('thumbsup', 'unicorn', 'thinking', 'thinking', 'like') AND reactions.reactable_type = 'Comment';
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'computerscience' OR name = 'softwaredevelopment' OR name = 'programming' OR name = 'distributedsystems' LIMIT 1;
+SELECT reactions.* FROM reactions WHERE reactions.user_id = 7375 AND reactions.category IN ('thumbsup', 'unicorn', 'thinking', 'thinking', 'like') AND reactions.reactable_type = 'Comment' LIMIT 1;

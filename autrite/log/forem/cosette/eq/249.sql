@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT identities.provider FROM identities WHERE identities.user_id = 1960 AND identities.provider = 'facebook';
+SELECT tags.* FROM tags WHERE name = 'worklifebalance' OR name = 'burnout' OR name = 'mentalhealth';
 -- Rewritten Queries
-SELECT identities.provider FROM identities WHERE identities.user_id = 1960 AND identities.provider = 'facebook' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'worklifebalance' OR name = 'burnout' OR name = 'mentalhealth' LIMIT 1;

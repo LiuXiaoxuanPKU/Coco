@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT reactions.reactable_id FROM reactions WHERE reactions.category = 'thinking' AND reactions.user_id = 695 AND reactions.reactable_type = 'Comment' AND reactions.status <> 'confirmed' ORDER BY reactions.created_at DESC;
+SELECT SUM(organizations.unspent_credits_count) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 5692;
 -- Rewritten Queries
-SELECT reactions.reactable_id FROM reactions WHERE reactions.category = 'thinking' AND reactions.user_id = 695 AND reactions.reactable_type = 'Comment' AND reactions.status <> 'confirmed' ORDER BY reactions.created_at DESC LIMIT 1;
+SELECT SUM(organizations.unspent_credits_count) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 5692 LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 6829 AND (roles.name = 'tag_moderator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL OR roles.name = 'tag_moderator' AND roles.resource_type = 'Tag' AND roles.resource_id IS NULL OR roles.name = 'tag_moderator' AND roles.resource_type = 'Tag' AND roles.resource_id = 2350);
+SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 6069 AND (roles.name = 'tag_moderator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL OR roles.name = 'tag_moderator' AND roles.resource_type = 'Tag' AND roles.resource_id IS NULL OR roles.name = 'tag_moderator' AND roles.resource_type = 'Tag' AND roles.resource_id = 2354);
 -- Rewritten Queries
-SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 6829 AND (roles.name = 'tag_moderator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL OR roles.name = 'tag_moderator' AND roles.resource_type = 'Tag' AND roles.resource_id IS NULL OR roles.name = 'tag_moderator' AND roles.resource_type = 'Tag' AND roles.resource_id = 2350) LIMIT 1;
+SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 6069 AND (roles.name = 'tag_moderator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL OR roles.name = 'tag_moderator' AND roles.resource_type = 'Tag' AND roles.resource_id IS NULL OR roles.name = 'tag_moderator' AND roles.resource_type = 'Tag' AND roles.resource_id = 2354) LIMIT 1;

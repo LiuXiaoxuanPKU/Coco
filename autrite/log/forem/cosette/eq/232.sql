@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM organization_memberships WHERE organization_memberships.organization_id = 6313;
+SELECT COUNT(*) FROM comments WHERE comments.ancestry LIKE '513/%' OR comments.ancestry = '513';
 -- Rewritten Queries
-SELECT COUNT(*) FROM organization_memberships WHERE organization_memberships.organization_id = 6313 LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE comments.ancestry LIKE '513/%' OR comments.ancestry = '513' LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT users.* FROM users WHERE users.id = 9931 AND users.id = 9931;
+SELECT users.* FROM users WHERE users.username IS NULL LIMIT 7;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.id = 9931 AND users.id = 9931 LIMIT 1;
+SELECT users.* FROM users WHERE False LIMIT 7;

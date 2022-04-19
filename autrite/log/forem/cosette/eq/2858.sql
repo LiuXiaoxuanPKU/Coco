@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM articles WHERE articles.user_id = 5896 AND articles.published = False AND published_at <= '2022-02-27 07:07:38.978163' AND created_at > '2022-02-27 07:02:38.978292';
+SELECT COUNT(*) FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned')));
 -- Rewritten Queries
-SELECT COUNT(*) FROM articles WHERE articles.user_id = 5896 AND articles.published = False AND published_at <= '2022-02-27 07:07:38.978163' AND created_at > '2022-02-27 07:02:38.978292' LIMIT 1;
+SELECT COUNT(*) FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned'))) LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'functional' OR name = 'javascript';
+SELECT notifications.* FROM notifications WHERE notifications.user_id = 6266;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'functional' OR name = 'javascript' LIMIT 1;
+SELECT notifications.* FROM notifications WHERE notifications.user_id = 6266 LIMIT 1;

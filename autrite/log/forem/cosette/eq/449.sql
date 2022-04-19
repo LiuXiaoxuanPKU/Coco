@@ -2049,9 +2049,9 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 4928 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 5297 AND reactions.category IN ('hands', 'unicorn');
+SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 1333;
 -- Rewritten Queries
-SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 4928 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 5297 AND reactions.category IN ('hands', 'unicorn') LIMIT 1;
+SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 1333;
+SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 1333 LIMIT 1;
+SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 1333 LIMIT 1;

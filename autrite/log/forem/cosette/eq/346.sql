@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = 6542 AND mentions.mentionable_type = 'Comment' AND mentions.user_id <> 1880;
+SELECT tags.* FROM tags WHERE name = 'collaboration' OR name = 'trust' OR name = 'effectivecommunicati' OR name = 'leadership';
 -- Rewritten Queries
-SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = 6542 AND mentions.mentionable_type = 'Comment' AND mentions.user_id <> 1880 LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'collaboration' OR name = 'trust' OR name = 'effectivecommunicati' OR name = 'leadership' LIMIT 1;

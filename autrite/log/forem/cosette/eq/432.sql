@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 9820 AND articles.user_id = 7800 AND articles.title = 'zmwrummkjncthffrmyqebumjxpkymtdejimaynhvjyefoahuvhtmjyvcqlutjcfpygidneolfbrmiguhuhquvckgofqnkpwidpbjcwaairmwypxvgp' LIMIT 5;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 4500 AND identities.provider IN ('twitter', 'apple') AND identities.provider IN ('github', 'twitter', 'github', 'facebook', 'github', 'twitter');
 -- Rewritten Queries
-SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 9820 AND articles.user_id = 7800 AND articles.title = 'zmwrummkjncthffrmyqebumjxpkymtdejimaynhvjyefoahuvhtmjyvcqlutjcfpygidneolfbrmiguhuhquvckgofqnkpwidpbjcwaairmwypxvgp' LIMIT 5;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 4500 AND identities.provider IN ('twitter', 'apple') AND identities.provider IN ('github', 'twitter', 'github', 'facebook', 'github', 'twitter') LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT articles.* FROM articles WHERE articles.user_id = 1809 AND articles.slug IS NULL LIMIT 8;
+SELECT identities.* FROM identities WHERE identities.user_id = 8737 AND identities.provider = 'github';
 -- Rewritten Queries
-SELECT articles.* FROM articles WHERE articles.user_id = 1809 AND False LIMIT 8;
+SELECT identities.* FROM identities WHERE identities.user_id = 8737 AND identities.provider = 'github' LIMIT 1;

@@ -2049,9 +2049,9 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id = 2414 AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'committed';
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'resolved';
 -- Rewritten Queries
-SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id = 2414 AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'committed' LIMIT 1;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'resolved';
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'resolved' LIMIT 1;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'resolved' LIMIT 1;

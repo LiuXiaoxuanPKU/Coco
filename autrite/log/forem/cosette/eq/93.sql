@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.badge_id FROM tags WHERE tags.name = 'wbmrxlgl';
+SELECT tags.* FROM tags WHERE name = 'javascript';
 -- Rewritten Queries
-SELECT tags.badge_id FROM tags WHERE tags.name = 'wbmrxlgl' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'javascript' LIMIT 1;

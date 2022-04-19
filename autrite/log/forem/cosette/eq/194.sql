@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT articles.id, articles.cached_tag_list FROM articles WHERE articles.id = 1715;
+SELECT articles.id, articles.cached_tag_list FROM articles WHERE articles.id = 4455;
 -- Rewritten Queries
-SELECT articles.id, articles.cached_tag_list FROM articles WHERE articles.id = 1715 LIMIT 1;
+SELECT articles.id, articles.cached_tag_list FROM articles WHERE articles.id = 4455 LIMIT 1;

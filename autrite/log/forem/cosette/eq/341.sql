@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'notestoself' OR name = 'lists' OR name = 'productivity' OR name = 'timemanagementtips';
+SELECT podcast_episode_appearances.* FROM podcast_episode_appearances WHERE podcast_episode_appearances.podcast_episode_id = 3121;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'notestoself' OR name = 'lists' OR name = 'productivity' OR name = 'timemanagementtips' LIMIT 1;
+SELECT podcast_episode_appearances.* FROM podcast_episode_appearances WHERE podcast_episode_appearances.podcast_episode_id = 3121 LIMIT 1;

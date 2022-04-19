@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'softwareengineering' OR name = 'softwaredevelopment' OR name = 'softwarelifecycle' OR name = 'security';
+SELECT COUNT(*) FROM notification_subscriptions WHERE notification_subscriptions.notifiable_type = 'Article' AND notification_subscriptions.config = 'top_level_comments';
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'softwareengineering' OR name = 'softwaredevelopment' OR name = 'softwarelifecycle' OR name = 'security' LIMIT 1;
+SELECT COUNT(*) FROM notification_subscriptions WHERE notification_subscriptions.notifiable_type = 'Article' AND notification_subscriptions.config = 'top_level_comments' LIMIT 1;

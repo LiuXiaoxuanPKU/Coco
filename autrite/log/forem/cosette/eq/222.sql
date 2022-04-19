@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT badge_achievements.user_id FROM badge_achievements WHERE badge_achievements.badge_id = 7967;
+SELECT COUNT(*) FROM notifications WHERE notifications.user_id = 9819 AND notifications.read = False;
 -- Rewritten Queries
-SELECT badge_achievements.user_id FROM badge_achievements WHERE badge_achievements.badge_id = 7967 LIMIT 1;
+SELECT COUNT(*) FROM notifications WHERE notifications.user_id = 9819 AND notifications.read = False LIMIT 1;

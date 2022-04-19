@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT mentions.id FROM mentions WHERE mentions.mentionable_id = 5569 AND mentions.mentionable_type = 'Comment';
+SELECT identities.provider FROM identities WHERE identities.user_id = 963 AND identities.provider = 'github';
 -- Rewritten Queries
-SELECT mentions.id FROM mentions WHERE mentions.mentionable_id = 5569 AND mentions.mentionable_type = 'Comment' LIMIT 1;
+SELECT identities.provider FROM identities WHERE identities.user_id = 963 AND identities.provider = 'github' LIMIT 1;

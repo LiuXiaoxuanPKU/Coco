@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT follows.id, follows.followable_id, follows.followable_type, follows.points FROM follows WHERE follows.follower_id = 992 AND follows.follower_type = 'User' AND follows.blocked = True AND follows.followable_type = 'User' ORDER BY follows.points DESC;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 7511 AND notifications.id <> 7788 AND notifications.organization_id IS NULL AND notifications.notifiable_id = 1995 AND notifications.notifiable_type = 'Article' AND notifications.action = 'djkjyxjkgfezumiluykhosvgckcneekjhvkivaiotfelhsrtkokfdfdltevdypkygdwubxjvinlavffhgigoarywxrawydjlqbjnffgkmckqpvoyjflyyogzelymnivymwtecypzwxtcjftdyjkyjohzfqegovajlwatszwoysxcblhglocxlknrktpgedbyabqeheb' LIMIT 2;
 -- Rewritten Queries
-SELECT follows.id, follows.followable_id, follows.followable_type, follows.points FROM follows WHERE follows.follower_id = 992 AND follows.follower_type = 'User' AND follows.blocked = True AND follows.followable_type = 'User' ORDER BY follows.points DESC LIMIT 1;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 7511 AND notifications.id <> 7788 AND False AND notifications.notifiable_id = 1995 AND notifications.notifiable_type = 'Article' AND notifications.action = 'djkjyxjkgfezumiluykhosvgckcneekjhvkivaiotfelhsrtkokfdfdltevdypkygdwubxjvinlavffhgigoarywxrawydjlqbjnffgkmckqpvoyjflyyogzelymnivymwtecypzwxtcjftdyjkyjohzfqegovajlwatszwoysxcblhglocxlknrktpgedbyabqeheb' LIMIT 2;

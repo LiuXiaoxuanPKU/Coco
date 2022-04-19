@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM comments WHERE 1 = 0 AND comments.commentable_type = 'Article' AND score > 0;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 3161 AND identities.provider = 'twitter';
 -- Rewritten Queries
-SELECT COUNT(*) FROM comments WHERE 1 = 0 AND comments.commentable_type = 'Article' AND score > 0 LIMIT 1;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 3161 AND identities.provider = 'twitter' LIMIT 1;

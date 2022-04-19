@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT user_blocks.* FROM user_blocks WHERE user_blocks.blocked_id = 6985;
+SELECT user_blocks.* FROM user_blocks WHERE user_blocks.blocked_id = 6170;
 -- Rewritten Queries
-SELECT user_blocks.* FROM user_blocks WHERE user_blocks.blocked_id = 6985 LIMIT 1;
+SELECT user_blocks.* FROM user_blocks WHERE user_blocks.blocked_id = 6170 LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 1042 AND notifications.id <> 7399 AND notifications.organization_id IS NULL AND notifications.notifiable_id = 2564 AND notifications.notifiable_type = 'Comment' AND notifications.action = 'vvksmcysxsmqvostjkpldjmamfkhnrzyobquqcfinrnzmmyxoghucrtdxiqmnulbpinqndhzrmzpcuaxcuxilmephoetkunxcfwhs' LIMIT 2;
+SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '289/%' OR comments.ancestry = '289' OR comments.id = 289;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 1042 AND notifications.id <> 7399 AND False AND notifications.notifiable_id = 2564 AND notifications.notifiable_type = 'Comment' AND notifications.action = 'vvksmcysxsmqvostjkpldjmamfkhnrzyobquqcfinrnzmmyxoghucrtdxiqmnulbpinqndhzrmzpcuaxcuxilmephoetkunxcfwhs' LIMIT 2;
+SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '289/%' OR comments.ancestry = '289' OR comments.id = 289 LIMIT 1;

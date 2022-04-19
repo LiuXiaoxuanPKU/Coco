@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.name, tags.bg_color_hex, tags.text_color_hex FROM tags WHERE tags.name = 'linphq';
+SELECT tags.* FROM tags WHERE name = 'javascript' OR name = 'cool' OR name = 'beans';
 -- Rewritten Queries
-SELECT tags.name, tags.bg_color_hex, tags.text_color_hex FROM tags WHERE tags.name = 'linphq' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'javascript' OR name = 'cool' OR name = 'beans' LIMIT 1;

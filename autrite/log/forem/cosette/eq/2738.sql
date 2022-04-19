@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT reactions.* FROM reactions WHERE reactions.category IN ('thumbsup', 'thinking', 'thumbsup', 'thumbsup', 'like') AND reactions.reactable_id = 7997 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 6792;
+SELECT follows.* FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7307 AND created_at > '2022-02-26 07:10:16.515773' ORDER BY follows.created_at DESC;
 -- Rewritten Queries
-SELECT reactions.* FROM reactions WHERE reactions.category IN ('thumbsup', 'thinking', 'thumbsup', 'thumbsup', 'like') AND reactions.reactable_id = 7997 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 6792 LIMIT 1;
+SELECT follows.* FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7307 AND created_at > '2022-02-26 07:10:16.515773' ORDER BY follows.created_at DESC LIMIT 1;

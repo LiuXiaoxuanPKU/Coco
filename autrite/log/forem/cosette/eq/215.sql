@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT identities.* FROM identities WHERE identities.user_id = 547 AND identities.provider = 'twitter';
+SELECT COUNT(*) FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 4701;
 -- Rewritten Queries
-SELECT identities.* FROM identities WHERE identities.user_id = 547 AND identities.provider = 'twitter' LIMIT 1;
+SELECT COUNT(*) FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 4701 LIMIT 1;

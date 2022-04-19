@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT notification_subscriptions.* FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 9811 AND notification_subscriptions.notifiable_type = 'Comment';
+SELECT page_views.user_id FROM page_views WHERE created_at > '2022-02-25 07:20:35.437881' AND created_at < '2022-02-26 07:20:35.437935' AND page_views.user_id IS NOT NULL;
 -- Rewritten Queries
-SELECT notification_subscriptions.* FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 9811 AND notification_subscriptions.notifiable_type = 'Comment' LIMIT 1;
+SELECT page_views.user_id FROM page_views WHERE created_at > '2022-02-25 07:20:35.437881' AND created_at < '2022-02-26 07:20:35.437935' AND page_views.user_id IS NOT NULL LIMIT 1;

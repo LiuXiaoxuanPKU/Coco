@@ -2049,10 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.requires_approval FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 2419 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags';
+SELECT COUNT(*) AS count_all, DATE(created_at) AS date_created_at FROM comments WHERE comments.user_id = 4456 AND created_at > '2022-02-20 07:08:40.222858' GROUP BY DATE(created_at);
 -- Rewritten Queries
-SELECT tags.requires_approval FROM tags LIMIT 1;
-SELECT tags.requires_approval FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 2419 AND taggings.taggable_type = 'Article' AND taggings.context = 'tags' LIMIT 1;
+SELECT COUNT(*) AS count_all, DATE(created_at) AS date_created_at FROM comments WHERE comments.user_id = 4456 AND created_at > '2022-02-20 07:08:40.222858' GROUP BY DATE(created_at) LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT users.id, users.name, users.profile_image, users.username FROM users WHERE users.id = 5770;
+SELECT users.id, users.name, users.profile_image, users.username FROM users WHERE users.id = 9228;
 -- Rewritten Queries
-SELECT users.id, users.name, users.profile_image, users.username FROM users WHERE users.id = 5770 LIMIT 1;
+SELECT users.id, users.name, users.profile_image, users.username FROM users WHERE users.id = 9228 LIMIT 1;

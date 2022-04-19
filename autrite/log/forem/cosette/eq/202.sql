@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT display_ad_events.* FROM display_ad_events WHERE display_ad_events.user_id = 2958;
+SELECT tag_adjustments.* FROM tag_adjustments WHERE tag_adjustments.article_id = 9545;
 -- Rewritten Queries
-SELECT display_ad_events.* FROM display_ad_events WHERE display_ad_events.user_id = 2958 LIMIT 1;
+SELECT tag_adjustments.* FROM tag_adjustments WHERE tag_adjustments.article_id = 9545 LIMIT 1;

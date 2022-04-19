@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '354/355/%' OR comments.ancestry = '354/355' OR comments.id = 355;
+SELECT profile_pins.* FROM profile_pins WHERE profile_pins.profile_id = 1036 AND profile_pins.profile_type = 'User' AND profile_pins.id = 5466;
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '354/355/%' OR comments.ancestry = '354/355' OR comments.id = 355 LIMIT 1;
+SELECT profile_pins.* FROM profile_pins WHERE profile_pins.profile_id = 1036 AND profile_pins.profile_type = 'User' AND profile_pins.id = 5466 LIMIT 1;

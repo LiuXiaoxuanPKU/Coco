@@ -2049,11 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT devices.* FROM devices WHERE devices.user_id = 7136 AND devices.token IS NULL AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT 8;
+SELECT users.* FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = 201;
 -- Rewritten Queries
-SELECT devices.* FROM devices WHERE devices.user_id = 7136 AND devices.token IS NULL AND False AND devices.consumer_app_id IS NULL LIMIT 8;
-SELECT devices.* FROM devices WHERE devices.user_id = 7136 AND False AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT 8;
-SELECT devices.* FROM devices WHERE devices.user_id = 7136 AND False AND False AND devices.consumer_app_id IS NULL LIMIT 8;
+SELECT users.* FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = 201 LIMIT 1;

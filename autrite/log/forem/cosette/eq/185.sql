@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM credits WHERE credits.user_id = 8940 AND credits.spent = False;
+SELECT users_settings.* FROM users_settings WHERE users_settings.user_id = 3498;
 -- Rewritten Queries
-SELECT COUNT(*) FROM credits WHERE credits.user_id = 8940 AND credits.spent = False LIMIT 1;
+SELECT users_settings.* FROM users_settings WHERE users_settings.user_id = 3498 LIMIT 1;

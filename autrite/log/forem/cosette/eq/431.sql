@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '384/385/386/387/%' OR comments.ancestry = '384/385/386/387' OR comments.id = 387;
+SELECT COUNT(*) FROM follows WHERE follows.follower_id = 2943 AND follows.follower_type = 'User' AND follows.blocked = True AND follows.followable_type = 'User';
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '384/385/386/387/%' OR comments.ancestry = '384/385/386/387' OR comments.id = 387 LIMIT 1;
+SELECT COUNT(*) FROM follows WHERE follows.follower_id = 2943 AND follows.follower_type = 'User' AND follows.blocked = True AND follows.followable_type = 'User' LIMIT 1;

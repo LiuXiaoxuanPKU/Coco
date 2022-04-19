@@ -2049,8 +2049,6 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
 SELECT comments.* FROM comments WHERE comments.ancestry LIKE '235/236/%' OR comments.ancestry = '235/236';
 -- Rewritten Queries

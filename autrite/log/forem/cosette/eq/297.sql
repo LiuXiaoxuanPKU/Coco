@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:06:49.654558';
+SELECT 1 AS "one" FROM user_blocks WHERE user_blocks.blocker_id IS NULL AND user_blocks.blocked_id = 6350 LIMIT 8;
 -- Rewritten Queries
-SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:06:49.654558' LIMIT 1;
+SELECT 1 AS "one" FROM user_blocks WHERE False AND user_blocks.blocked_id = 6350 LIMIT 8;

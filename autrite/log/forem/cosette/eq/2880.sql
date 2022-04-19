@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'User' AND reactions.reactable_id = articles.id WHERE articles.id = 6177 ORDER BY articles.id ASC LIMIT 1;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 7659 AND notifications.organization_id IS NULL AND notifications.notifiable_id = 4306 AND notifications.notifiable_type = 'Article' AND notifications.action IS NULL LIMIT 4;
 -- Rewritten Queries
-SELECT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'User' AND reactions.reactable_id = articles.id WHERE articles.id = 6177 ORDER BY articles.id ASC LIMIT 1;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 7659 AND False AND notifications.notifiable_id = 4306 AND notifications.notifiable_type = 'Article' AND notifications.action IS NULL LIMIT 4;

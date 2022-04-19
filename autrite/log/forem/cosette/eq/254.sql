@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM notifications WHERE notifications.organization_id = 3 AND notifications.read = False;
+SELECT COUNT(*) FROM profile_pins WHERE profile_pins.profile_id = 5517 AND profile_pins.profile_type = 'User';
 -- Rewritten Queries
-SELECT COUNT(*) FROM notifications WHERE notifications.organization_id = 3 AND notifications.read = False LIMIT 1;
+SELECT COUNT(*) FROM profile_pins WHERE profile_pins.profile_id = 5517 AND profile_pins.profile_type = 'User' LIMIT 1;

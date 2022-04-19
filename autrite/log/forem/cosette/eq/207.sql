@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT podcast_episodes.title FROM podcast_episodes WHERE podcast_episodes.podcast_id = 7237;
+SELECT feedback_messages.* FROM feedback_messages WHERE feedback_messages.reporter_id = 7057;
 -- Rewritten Queries
-SELECT podcast_episodes.title FROM podcast_episodes WHERE podcast_episodes.podcast_id = 7237 LIMIT 1;
+SELECT feedback_messages.* FROM feedback_messages WHERE feedback_messages.reporter_id = 7057 LIMIT 1;

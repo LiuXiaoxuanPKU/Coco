@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM comments WHERE comments.ancestry LIKE '333/334/%' OR comments.ancestry = '333/334';
+SELECT articles.* FROM articles WHERE articles.main_image IS NOT NULL ORDER BY articles.id ASC LIMIT 5;
 -- Rewritten Queries
-SELECT COUNT(*) FROM comments WHERE comments.ancestry LIKE '333/334/%' OR comments.ancestry = '333/334' LIMIT 1;
+SELECT articles.* FROM articles WHERE True ORDER BY articles.id ASC LIMIT 5;

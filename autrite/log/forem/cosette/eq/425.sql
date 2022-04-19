@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT roles.resource_id FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 1428 AND roles.name = 'trusted';
+SELECT COUNT(*) FROM reactions WHERE reactions.reactable_id = 8833 AND reactions.reactable_type = 'Comment' AND reactions.category IN ('readinglist', 'thumbsup', 'thinking', 'unicorn', 'thinking');
 -- Rewritten Queries
-SELECT roles.resource_id FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 1428 AND roles.name = 'trusted' LIMIT 1;
+SELECT COUNT(*) FROM reactions WHERE reactions.reactable_id = 8833 AND reactions.reactable_type = 'Comment' AND reactions.category IN ('readinglist', 'thumbsup', 'thinking', 'unicorn', 'thinking') LIMIT 1;

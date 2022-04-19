@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT SUM(comments.score) FROM comments WHERE comments.commentable_id = 14 AND comments.commentable_type = 'Article';
+SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:06:49.494444';
 -- Rewritten Queries
-SELECT SUM(comments.score) FROM comments WHERE comments.commentable_id = 14 AND comments.commentable_type = 'Article' LIMIT 1;
+SELECT COUNT(*) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:06:49.494444' LIMIT 1;

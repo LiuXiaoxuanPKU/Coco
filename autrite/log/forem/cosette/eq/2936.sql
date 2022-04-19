@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT articles.path, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:18.989312' AND published_at > '2022-01-01 12:00:00' AND published_at < '2022-02-01 11:59:59.999999' AND score >= 0;
+SELECT podcast_episodes.* FROM podcast_episodes INNER JOIN podcasts ON podcasts.id = podcast_episodes.podcast_id WHERE podcast_episodes.podcast_id = 431 AND podcast_episodes.reachable = True AND podcasts.published = False AND podcast_episodes.slug = 'szrstsygwfkamnvnassdbwvozfphrugmheqqqxvzhugiohzinjdclfipadtuwglpwmgiafpokq' LIMIT 2;
 -- Rewritten Queries
-SELECT articles.path, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:18.989312' AND published_at > '2022-01-01 12:00:00' AND published_at < '2022-02-01 11:59:59.999999' AND score >= 0 LIMIT 1;
+SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.podcast_id = 431 AND podcast_episodes.reachable = True AND podcast_episodes.slug = 'szrstsygwfkamnvnassdbwvozfphrugmheqqqxvzhugiohzinjdclfipadtuwglpwmgiafpokq' LIMIT 2;

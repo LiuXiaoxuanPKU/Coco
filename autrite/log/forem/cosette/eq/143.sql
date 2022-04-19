@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM github_repos WHERE github_repos.user_id = 204;
+SELECT COUNT(*) FROM github_repos WHERE github_repos.user_id = 6934;
 -- Rewritten Queries
-SELECT COUNT(*) FROM github_repos WHERE github_repos.user_id = 204 LIMIT 1;
+SELECT COUNT(*) FROM github_repos WHERE github_repos.user_id = 6934 LIMIT 1;

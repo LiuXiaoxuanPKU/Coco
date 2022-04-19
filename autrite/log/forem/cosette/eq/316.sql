@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT follows.* FROM follows WHERE follows.followable_id = 5843 AND follows.followable_type = 'Organization' AND follows.blocked = False;
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '390/%' OR comments.ancestry = '390' OR comments.id = 390;
 -- Rewritten Queries
-SELECT follows.* FROM follows WHERE follows.followable_id = 5843 AND follows.followable_type = 'Organization' AND follows.blocked = False LIMIT 1;
+SELECT comments.* FROM comments WHERE comments.ancestry LIKE '390/%' OR comments.ancestry = '390' OR comments.id = 390 LIMIT 1;

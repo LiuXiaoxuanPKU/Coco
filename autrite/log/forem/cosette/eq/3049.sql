@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT articles.user_id FROM articles INNER JOIN (SELECT reactions.id, reactions.reactable_id, reactions.user_id FROM reactions WHERE reactions.user_id = 5385 AND reactions.category = 'readinglist' AND reactions.status IN ('confirmed', 'valid') AND reactions.reactable_type = 'Article' ORDER BY reactions.created_at DESC) AS reactions ON reactions.reactable_id = articles.id WHERE articles.published = False AND published_at <= '2022-02-27 07:17:29.988451' LIMIT 1 OFFSET 1;
+SELECT classified_listings.id, classified_listings.body_markdown, classified_listings.bumped_at, classified_listings.cached_tag_list, classified_listings.classified_listing_category_id, classified_listings.created_at, classified_listings.expires_at, classified_listings.location, classified_listings.organization_id, classified_listings.originally_published_at, classified_listings.processed_html, classified_listings.published, classified_listings.slug, classified_listings.title, classified_listings.updated_at, classified_listings.user_id FROM classified_listings WHERE classified_listings.id = 1825;
 -- Rewritten Queries
-SELECT articles.user_id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:29.988451' LIMIT 1 OFFSET 1;
+SELECT classified_listings.id, classified_listings.body_markdown, classified_listings.bumped_at, classified_listings.cached_tag_list, classified_listings.classified_listing_category_id, classified_listings.created_at, classified_listings.expires_at, classified_listings.location, classified_listings.organization_id, classified_listings.originally_published_at, classified_listings.processed_html, classified_listings.published, classified_listings.slug, classified_listings.title, classified_listings.updated_at, classified_listings.user_id FROM classified_listings WHERE classified_listings.id = 1825 LIMIT 1;

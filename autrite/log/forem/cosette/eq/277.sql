@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '309/310/%' OR comments.ancestry = '309/310';
+SELECT mentions.user_id FROM mentions WHERE mentions.mentionable_id = 8218 AND mentions.mentionable_type = 'Article';
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '309/310/%' OR comments.ancestry = '309/310' LIMIT 1;
+SELECT mentions.user_id FROM mentions WHERE mentions.mentionable_id = 8218 AND mentions.mentionable_type = 'Article' LIMIT 1;

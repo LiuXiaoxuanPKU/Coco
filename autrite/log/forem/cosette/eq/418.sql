@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM follows WHERE follows.followable_id = 4986 AND follows.followable_type = 'Organization' AND created_at > '2022-02-26 07:04:34.404892';
+SELECT roles.resource_id FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 996 AND roles.name = 'single_resource_admin';
 -- Rewritten Queries
-SELECT COUNT(*) FROM follows WHERE follows.followable_id = 4986 AND follows.followable_type = 'Organization' AND created_at > '2022-02-26 07:04:34.404892' LIMIT 1;
+SELECT roles.resource_id FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 996 AND roles.name = 'single_resource_admin' LIMIT 1;

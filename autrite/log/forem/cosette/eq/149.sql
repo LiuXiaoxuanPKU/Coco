@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM poll_votes WHERE poll_votes.poll_option_id = 21999;
+SELECT tags.* FROM tags WHERE name = 'beginners' OR name = 'ruby';
 -- Rewritten Queries
-SELECT COUNT(*) FROM poll_votes WHERE poll_votes.poll_option_id = 21999 LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'beginners' OR name = 'ruby' LIMIT 1;

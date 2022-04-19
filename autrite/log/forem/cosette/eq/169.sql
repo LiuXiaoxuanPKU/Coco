@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM reactions WHERE reactions.category IN ('unicorn', 'thumbsup', 'readinglist');
+SELECT tags.* FROM tags WHERE name = 'ruby' OR name = 'productivity';
 -- Rewritten Queries
-SELECT COUNT(*) FROM reactions WHERE reactions.category IN ('unicorn', 'thumbsup', 'readinglist') LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'ruby' OR name = 'productivity' LIMIT 1;

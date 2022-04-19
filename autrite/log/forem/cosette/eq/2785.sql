@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT follows.* FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 9478 AND created_at > '2022-02-26 07:17:06.323212' ORDER BY follows.created_at DESC;
+SELECT COUNT(*) AS count_all, DATE(created_at) AS date_created_at FROM comments WHERE comments.user_id = 4967 AND created_at > '2022-02-20 07:10:39.075605' GROUP BY DATE(created_at);
 -- Rewritten Queries
-SELECT follows.* FROM follows WHERE follows.followable_type = 'Organization' AND follows.followable_id = 9478 AND created_at > '2022-02-26 07:17:06.323212' ORDER BY follows.created_at DESC LIMIT 1;
+SELECT COUNT(*) AS count_all, DATE(created_at) AS date_created_at FROM comments WHERE comments.user_id = 4967 AND created_at > '2022-02-20 07:10:39.075605' GROUP BY DATE(created_at) LIMIT 1;

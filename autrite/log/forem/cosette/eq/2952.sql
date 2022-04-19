@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '289/%' OR comments.ancestry = '289' OR comments.id = 289;
+SELECT users.id, users.id, COUNT(badge_achievements.id) * 1 AS count, MAX(users.badge_achievements_count) AS badge_achievements_count FROM users LEFT JOIN badge_achievements AS badge_achievements ON users.id = badge_achievements.user_id WHERE users.id = 5507 GROUP BY users.id ORDER BY users.id ASC LIMIT 6;
 -- Rewritten Queries
-SELECT comments.id, comments.processed_html, comments.user_id, comments.ancestry, comments.deleted, comments.hidden_by_commentable_user, comments.created_at FROM comments WHERE comments.ancestry LIKE '289/%' OR comments.ancestry = '289' OR comments.id = 289 LIMIT 1;
+SELECT users.id, users.id, COUNT(badge_achievements.id) * 1 AS count, MAX(users.badge_achievements_count) AS badge_achievements_count FROM users INNER JOIN badge_achievements AS badge_achievements ON users.id = badge_achievements.user_id WHERE users.id = 5507 GROUP BY users.id ORDER BY users.id ASC LIMIT 6;

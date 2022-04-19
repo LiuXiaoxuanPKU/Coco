@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '380/381/382/383/%' OR comments.ancestry = '380/381/382/383' OR comments.id = 383;
+SELECT COUNT(DISTINCT collections.id) FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 1527;
 -- Rewritten Queries
-SELECT comments.* FROM comments WHERE comments.ancestry LIKE '380/381/382/383/%' OR comments.ancestry = '380/381/382/383' OR comments.id = 383 LIMIT 1;
+SELECT COUNT(DISTINCT collections.id) FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 1527 LIMIT 1;

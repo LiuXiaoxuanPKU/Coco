@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM notifications WHERE notifications.user_id = 8586 AND notifications.notifiable_id = 10002 AND notifications.notifiable_type = 'TagAdjustment';
+SELECT tags.* FROM tags WHERE name = 'computerscience' OR name = 'softwaredevelopment' OR name = 'programming' OR name = 'distributedsystems';
 -- Rewritten Queries
-SELECT COUNT(*) FROM notifications WHERE notifications.user_id = 8586 AND notifications.notifiable_id = 10002 AND notifications.notifiable_type = 'TagAdjustment' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'computerscience' OR name = 'softwaredevelopment' OR name = 'programming' OR name = 'distributedsystems' LIMIT 1;

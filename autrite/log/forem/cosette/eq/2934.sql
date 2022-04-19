@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id IN (SELECT users_settings.user_id FROM users_settings WHERE users_settings.feed_url IS NULL) AND users.id = 6020;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.id <> 2150 AND notifications.organization_id = 3 AND notifications.notifiable_id = 5130 AND notifications.notifiable_type = 'Article' AND notifications.action = 'scjvvtdxnzasulqlwnueefkujmdkahztgmboamyujsncijbmuvhzmvejpwoduqlexqkhxgboddsefgdpmfzcfqclqjhieoqabmrjizgnqruiehuhgxyvxslemcezxvpbaedphlepfgzxftrjlhwwnprqynqumrniqrgnxlbeuaglppyaakteqzxhubdiaooezhbmwylpbvvzeyjewweubxogxyojjaylmjzzgtwjuwyaha' LIMIT 8;
 -- Rewritten Queries
-SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id IN (SELECT users_settings.user_id FROM users_settings WHERE users_settings.feed_url IS NULL) AND users.id = 6020 LIMIT 1;
+SELECT 1 AS "one" FROM notifications WHERE False AND notifications.id <> 2150 AND notifications.organization_id = 3 AND notifications.notifiable_id = 5130 AND notifications.notifiable_type = 'Article' AND notifications.action = 'scjvvtdxnzasulqlwnueefkujmdkahztgmboamyujsncijbmuvhzmvejpwoduqlexqkhxgboddsefgdpmfzcfqclqjhieoqabmrjizgnqruiehuhgxyvxslemcezxvpbaedphlepfgzxftrjlhwwnprqynqumrniqrgnxlbeuaglppyaakteqzxhubdiaooezhbmwylpbvvzeyjewweubxogxyojjaylmjzzgtwjuwyaha' LIMIT 8;

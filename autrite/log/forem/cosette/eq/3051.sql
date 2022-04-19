@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT articles.user_id FROM articles INNER JOIN (SELECT reactions.id, reactions.reactable_id, reactions.user_id FROM reactions WHERE reactions.user_id = 5379 AND reactions.category = 'readinglist' AND reactions.status IN ('confirmed', 'valid') AND reactions.reactable_type = 'Article' ORDER BY reactions.created_at DESC) AS reactions ON reactions.reactable_id = articles.id WHERE articles.published = False AND published_at <= '2022-02-27 07:17:29.634659' LIMIT 9 OFFSET 1;
+SELECT COUNT(*) FROM (SELECT users.* FROM (SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE roles.name = 'admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL UNION SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE roles.name = 'super_admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL) AS users UNION SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE roles.name = 'single_resource_admin') AS users;
 -- Rewritten Queries
-SELECT articles.user_id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:29.634659' LIMIT 9 OFFSET 1;
+SELECT COUNT(*) FROM (SELECT users.* FROM (SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE roles.name = 'admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL UNION SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE roles.name = 'super_admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL) AS users UNION SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE roles.name = 'single_resource_admin') AS users LIMIT 1;

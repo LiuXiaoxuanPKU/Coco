@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) AS count_all, DATE(created_at) AS date_created_at FROM comments WHERE comments.user_id = 7219 AND created_at > '2022-02-20 07:10:43.151646' GROUP BY DATE(created_at);
+SELECT COUNT(*) FROM articles WHERE articles.user_id = 2397 AND articles.published = False AND published_at <= '2022-02-27 07:07:39.150954' AND created_at > '2022-02-27 07:02:39.151071';
 -- Rewritten Queries
-SELECT COUNT(*) AS count_all, DATE(created_at) AS date_created_at FROM comments WHERE comments.user_id = 7219 AND created_at > '2022-02-20 07:10:43.151646' GROUP BY DATE(created_at) LIMIT 1;
+SELECT COUNT(*) FROM articles WHERE articles.user_id = 2397 AND articles.published = False AND published_at <= '2022-02-27 07:07:39.150954' AND created_at > '2022-02-27 07:02:39.151071' LIMIT 1;

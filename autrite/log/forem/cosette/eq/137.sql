@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT devices.* FROM devices WHERE devices.consumer_app_id = 4098;
+SELECT setting FROM pg_settings WHERE name = 'statement_timeout';
 -- Rewritten Queries
-SELECT devices.* FROM devices WHERE devices.consumer_app_id = 4098 LIMIT 1;
+SELECT setting FROM pg_settings WHERE name = 'statement_timeout' LIMIT 1;

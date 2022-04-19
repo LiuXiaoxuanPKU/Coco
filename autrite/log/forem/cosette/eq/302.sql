@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT notification_subscriptions.* FROM notification_subscriptions WHERE notification_subscriptions.user_id = 1065;
+SELECT articles.* FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:00:00.510669';
 -- Rewritten Queries
-SELECT notification_subscriptions.* FROM notification_subscriptions WHERE notification_subscriptions.user_id = 1065 LIMIT 1;
+SELECT articles.* FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:00:00.510669' LIMIT 1;

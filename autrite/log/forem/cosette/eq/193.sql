@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'yoyo' OR name = 'bobo' OR name = 'tag149';
+SELECT user_blocks.blocked_id FROM user_blocks WHERE user_blocks.blocker_id = 2341;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'yoyo' OR name = 'bobo' OR name = 'tag149' LIMIT 1;
+SELECT user_blocks.blocked_id FROM user_blocks WHERE user_blocks.blocker_id = 2341 LIMIT 1;

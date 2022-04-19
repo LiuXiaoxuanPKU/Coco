@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT SUM(reactions.points) FROM reactions WHERE reactions.category = 'thumbsup' AND reactions.reactable_type = 'Comment' AND reactions.reactable_id = 1367;
+SELECT COUNT(*) FROM follows WHERE follows.followable_id = 7077 AND follows.followable_type = 'User' AND created_at > '2022-02-26 07:04:34.469718';
 -- Rewritten Queries
-SELECT SUM(reactions.points) FROM reactions WHERE reactions.category = 'thumbsup' AND reactions.reactable_type = 'Comment' AND reactions.reactable_id = 1367 LIMIT 1;
+SELECT COUNT(*) FROM follows WHERE follows.followable_id = 7077 AND follows.followable_type = 'User' AND created_at > '2022-02-26 07:04:34.469718' LIMIT 1;

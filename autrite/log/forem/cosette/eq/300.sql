@@ -2049,9 +2049,9 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM notifications WHERE notifications.notifiable_id = 2627 AND notifications.notifiable_type = 'Comment';
+SELECT DISTINCT github_repos.* FROM github_repos WHERE github_repos.user_id = 782 AND github_repos.featured = False;
 -- Rewritten Queries
-SELECT COUNT(*) FROM notifications WHERE notifications.notifiable_id = 2627 AND notifications.notifiable_type = 'Comment' LIMIT 1;
+SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = 782 AND github_repos.featured = False LIMIT 1;
+SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = 782 AND github_repos.featured = False;
+SELECT DISTINCT github_repos.* FROM github_repos WHERE github_repos.user_id = 782 AND github_repos.featured = False LIMIT 1;

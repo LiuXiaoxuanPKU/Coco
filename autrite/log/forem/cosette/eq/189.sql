@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT 1 AS "one" FROM profile_fields WHERE profile_fields.label IS NULL LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'ruby' OR name = 'rails' OR name = 'go';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM profile_fields WHERE False LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'ruby' OR name = 'rails' OR name = 'go' LIMIT 1;

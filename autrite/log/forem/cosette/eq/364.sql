@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT profile_pins.* FROM profile_pins WHERE profile_pins.profile_id = 2922 AND profile_pins.profile_type = 'User' AND profile_pins.id = 196;
+SELECT tags.* FROM tags WHERE name = 'code' OR name = 'softwaredevelopment' OR name = 'computerscience' OR name = 'distributedsystems';
 -- Rewritten Queries
-SELECT profile_pins.* FROM profile_pins WHERE profile_pins.profile_id = 2922 AND profile_pins.profile_type = 'User' AND profile_pins.id = 196 LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'code' OR name = 'softwaredevelopment' OR name = 'computerscience' OR name = 'distributedsystems' LIMIT 1;

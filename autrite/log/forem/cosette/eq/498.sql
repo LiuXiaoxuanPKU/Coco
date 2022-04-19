@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT page_views.user_id FROM page_views WHERE created_at > '2022-02-25 07:20:34.503293' AND created_at < '2022-02-26 07:20:34.503348' AND page_views.user_id IS NOT NULL;
+SELECT users.name, users.id FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = 1480;
 -- Rewritten Queries
-SELECT page_views.user_id FROM page_views WHERE created_at > '2022-02-25 07:20:34.503293' AND created_at < '2022-02-26 07:20:34.503348' AND page_views.user_id IS NOT NULL LIMIT 1;
+SELECT users.name, users.id FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = 1480 LIMIT 1;

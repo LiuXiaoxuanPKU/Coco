@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT classified_listing_categories.* FROM classified_listing_categories WHERE classified_listing_categories.id = 7637;
+SELECT roles.name FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 9887;
 -- Rewritten Queries
-SELECT classified_listing_categories.* FROM classified_listing_categories WHERE classified_listing_categories.id = 7637 LIMIT 1;
+SELECT roles.name FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 9887 LIMIT 1;

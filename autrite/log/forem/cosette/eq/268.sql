@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT organization_memberships.* FROM organization_memberships WHERE organization_memberships.user_id = 5600;
+SELECT rating_votes.rating FROM rating_votes WHERE rating_votes.article_id = 9313 AND rating_votes."group" = 'experience_level';
 -- Rewritten Queries
-SELECT organization_memberships.* FROM organization_memberships WHERE organization_memberships.user_id = 5600 LIMIT 1;
+SELECT rating_votes.rating FROM rating_votes WHERE rating_votes.article_id = 9313 AND rating_votes."group" = 'experience_level' LIMIT 1;

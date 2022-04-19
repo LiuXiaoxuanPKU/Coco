@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM identities WHERE identities.user_id = 7891 AND identities.provider IN ('twitter', 'facebook') AND identities.provider IN ('apple', 'github', 'github', 'facebook', 'twitter', 'twitter');
+SELECT SUM(articles.page_views_count) FROM articles WHERE articles.published = False AND published_at <= '2019-04-01 12:00:00' AND articles.user_id = 9170;
 -- Rewritten Queries
-SELECT COUNT(*) FROM identities WHERE identities.user_id = 7891 AND identities.provider IN ('twitter', 'facebook') AND identities.provider IN ('apple', 'github', 'github', 'facebook', 'twitter', 'twitter') LIMIT 1;
+SELECT SUM(articles.page_views_count) FROM articles WHERE articles.published = False AND published_at <= '2019-04-01 12:00:00' AND articles.user_id = 9170 LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT podcast_episode_appearances.* FROM podcast_episode_appearances WHERE podcast_episode_appearances.podcast_episode_id = 2386;
+SELECT comments.* FROM comments WHERE comments.body_markdown = 'eabkmowiqugklubwcsilllpljymxmmpbctcibnzjdvhykuaqspshnhqqeazbvycavctdmcgkztxysopyxlzkzrncmkmmxhuwyxubwcqwkfmxojrdpvgxiyjajkexcpihmjjbtwityzlxqvynvadzvktdishfjtfhwrf' AND comments.commentable_id = 29 AND comments.ancestry IS NULL;
 -- Rewritten Queries
-SELECT podcast_episode_appearances.* FROM podcast_episode_appearances WHERE podcast_episode_appearances.podcast_episode_id = 2386 LIMIT 1;
+SELECT comments.* FROM comments WHERE comments.body_markdown = 'eabkmowiqugklubwcsilllpljymxmmpbctcibnzjdvhykuaqspshnhqqeazbvycavctdmcgkztxysopyxlzkzrncmkmmxhuwyxubwcqwkfmxojrdpvgxiyjajkexcpihmjjbtwityzlxqvynvadzvktdishfjtfhwrf' AND comments.commentable_id = 29 AND comments.ancestry IS NULL LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT notifications.* FROM notifications WHERE notifications.organization_id = 1 AND notifications.user_id IS NULL ORDER BY notifications.notified_at DESC LIMIT 9;
+SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = 3021 AND organization_memberships.type_of_user = 'admin';
 -- Rewritten Queries
-SELECT notifications.* FROM notifications WHERE notifications.organization_id = 1 AND False ORDER BY notifications.notified_at DESC LIMIT 9;
+SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = 3021 AND organization_memberships.type_of_user = 'admin' LIMIT 1;

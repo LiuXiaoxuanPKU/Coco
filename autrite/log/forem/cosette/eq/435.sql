@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(DISTINCT collections.id) FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 2539;
+SELECT devices.* FROM devices WHERE devices.user_id = 7003 AND devices.token IS NULL AND devices.platform = 'iOS' AND devices.consumer_app_id = 823 LIMIT 2;
 -- Rewritten Queries
-SELECT COUNT(DISTINCT collections.id) FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 2539 LIMIT 1;
+SELECT devices.* FROM devices WHERE devices.user_id = 7003 AND False AND devices.platform = 'iOS' AND devices.consumer_app_id = 823 LIMIT 2;

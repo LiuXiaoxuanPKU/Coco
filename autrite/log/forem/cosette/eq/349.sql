@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'collaboration' OR name = 'trust' OR name = 'effectivecommunicati' OR name = 'leadership';
+SELECT tags.* FROM tags WHERE name = 'code' OR name = 'computerscience' OR name = 'softwaredevelopment' OR name = 'programming';
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'collaboration' OR name = 'trust' OR name = 'effectivecommunicati' OR name = 'leadership' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'code' OR name = 'computerscience' OR name = 'softwaredevelopment' OR name = 'programming' LIMIT 1;

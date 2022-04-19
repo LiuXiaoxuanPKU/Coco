@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT users.* FROM users WHERE users.registered = True AND users.username = 'qyultunznawffibtszhepx';
+SELECT COUNT(*) FROM notifications WHERE notifications.organization_id = 2;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.registered = True AND users.username = 'qyultunznawffibtszhepx' LIMIT 1;
+SELECT COUNT(*) FROM notifications WHERE notifications.organization_id = 2 LIMIT 1;

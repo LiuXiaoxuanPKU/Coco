@@ -2049,9 +2049,9 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.organization_id = 2 AND notifications.notifiable_id = 4511 AND notifications.notifiable_type = 'Article' AND notifications.action = 'uswdndqprftyepkzpuvhcwooepxubbdhdlxndpxkdlerjikfsncgowivhngnvhgsehqitytulhxjrajawtevbdrwaedmdtwtzzqwyrv' LIMIT 4;
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7559 AND created_at > '2022-02-26 07:17:05.696278' ORDER BY follows.created_at DESC);
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE False AND notifications.organization_id = 2 AND notifications.notifiable_id = 4511 AND notifications.notifiable_type = 'Article' AND notifications.action = 'uswdndqprftyepkzpuvhcwooepxubbdhdlxndpxkdlerjikfsncgowivhngnvhgsehqitytulhxjrajawtevbdrwaedmdtwtzzqwyrv' LIMIT 4;
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7559 AND created_at > '2022-02-26 07:17:05.696278' ORDER BY follows.created_at DESC) LIMIT 1;
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7559 AND created_at > '2022-02-26 07:17:05.696278' ORDER BY follows.created_at DESC LIMIT 1);
+SELECT users.* FROM users WHERE users.id IN (SELECT follows.follower_id FROM follows WHERE follows.followable_type = 'User' AND follows.followable_id = 7559 AND created_at > '2022-02-26 07:17:05.696278' ORDER BY follows.created_at DESC LIMIT 1) LIMIT 1;

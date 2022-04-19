@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = 6557;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 3508 AND articles.user_id = 1837 AND articles.title = 'mryrufafyfsafgbjhdmgzextmuuhemiusodfvogjifzvptgieyfbygvzdrgltcgeovxqcgnbhrmvqoaadnfqrjqrsljzgj' LIMIT 5;
 -- Rewritten Queries
-SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = 6557 LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 3508 AND articles.user_id = 1837 AND articles.title = 'mryrufafyfsafgbjhdmgzextmuuhemiusodfvogjifzvptgieyfbygvzdrgltcgeovxqcgnbhrmvqoaadnfqrjqrsljzgj' LIMIT 5;

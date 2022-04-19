@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned')));
+SELECT taggings.* FROM taggings WHERE taggings.taggable_id = 6 AND taggings.taggable_type = 'Article' AND taggings.tagger_id IS NULL AND taggings.tagger_type IS NULL AND taggings.context = 'tags' AND taggings.tag_id = 10014;
 -- Rewritten Queries
-SELECT COUNT(*) FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned'))) LIMIT 1;
+SELECT taggings.* FROM taggings WHERE taggings.taggable_id = 6 AND taggings.taggable_type = 'Article' AND taggings.tagger_id IS NULL AND taggings.tagger_type IS NULL AND taggings.context = 'tags' AND taggings.tag_id = 10014 LIMIT 1;

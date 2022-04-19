@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.user_id = 3282 AND articles.title = 'ozdkxcyqigjvnbdxmttuhaeyozclhtwxpoujlydapncpg' LIMIT 3;
+SELECT COUNT(*) FROM reactions WHERE reactions.reactable_type = 'Comment' AND reactions.reactable_id = 515 AND reactions.category = 'unicorn';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM articles WHERE False AND articles.user_id = 3282 AND articles.title = 'ozdkxcyqigjvnbdxmttuhaeyozclhtwxpoujlydapncpg' LIMIT 3;
+SELECT COUNT(*) FROM reactions WHERE reactions.reactable_type = 'Comment' AND reactions.reactable_id = 515 AND reactions.category = 'unicorn' LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT 1 AS "one" FROM comments WHERE comments.commentable_id IS NULL AND comments.user_id = 1765 LIMIT 7;
+SELECT mentions.id FROM mentions WHERE mentions.mentionable_id = 8110 AND mentions.mentionable_type = 'Comment';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM comments WHERE False AND comments.user_id = 1765 LIMIT 7;
+SELECT mentions.id FROM mentions WHERE mentions.mentionable_id = 8110 AND mentions.mentionable_type = 'Comment' LIMIT 1;

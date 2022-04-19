@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'yoyo' OR name = 'bobo' OR name = 'tag150';
+SELECT tags.* FROM tags WHERE name = 'yoyo' OR name = 'bobo' OR name = 'tag149';
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'yoyo' OR name = 'bobo' OR name = 'tag150' LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'yoyo' OR name = 'bobo' OR name = 'tag149' LIMIT 1;

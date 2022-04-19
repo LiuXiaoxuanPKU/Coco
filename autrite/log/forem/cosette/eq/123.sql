@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM poll_skips WHERE poll_skips.user_id = 2513;
+SELECT COUNT(*) FROM poll_votes WHERE poll_votes.user_id = 7909;
 -- Rewritten Queries
-SELECT COUNT(*) FROM poll_skips WHERE poll_skips.user_id = 2513 LIMIT 1;
+SELECT COUNT(*) FROM poll_votes WHERE poll_votes.user_id = 7909 LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT SUM(articles.page_views_count) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:07:24.951829' AND articles.user_id = 8467;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id = 4333 AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'pending';
 -- Rewritten Queries
-SELECT SUM(articles.page_views_count) FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:07:24.951829' AND articles.user_id = 8467 LIMIT 1;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id = 4333 AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'pending' LIMIT 1;

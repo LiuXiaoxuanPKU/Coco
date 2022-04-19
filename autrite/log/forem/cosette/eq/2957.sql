@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT users.id, users.username, users.comments_count, users.badge_achievements_count, users.last_comment_at FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 6524 LIMIT 5 OFFSET 1;
+SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 3842 AND (roles.name = 'single_resource_admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL OR roles.name = 'single_resource_admin' AND roles.resource_type = 'Tool' AND roles.resource_id IS NULL);
 -- Rewritten Queries
-SELECT users.id, users.username, users.comments_count, users.badge_achievements_count, users.last_comment_at FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 6524 LIMIT 5 OFFSET 1;
+SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 3842 AND (roles.name = 'single_resource_admin' AND roles.resource_type IS NULL AND roles.resource_id IS NULL OR roles.name = 'single_resource_admin' AND roles.resource_type = 'Tool' AND roles.resource_id IS NULL) LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT page_views.user_id FROM page_views WHERE created_at > '2022-02-22 07:20:34.184706' AND created_at < '2022-02-23 07:20:34.184759' AND page_views.user_id IS NOT NULL;
+SELECT page_views.user_id FROM page_views WHERE created_at > '2022-02-20 07:20:34.186218' AND created_at < '2022-02-21 07:20:34.186271' AND page_views.user_id IS NOT NULL;
 -- Rewritten Queries
-SELECT page_views.user_id FROM page_views WHERE created_at > '2022-02-22 07:20:34.184706' AND created_at < '2022-02-23 07:20:34.184759' AND page_views.user_id IS NOT NULL LIMIT 1;
+SELECT page_views.user_id FROM page_views WHERE created_at > '2022-02-20 07:20:34.186218' AND created_at < '2022-02-21 07:20:34.186271' AND page_views.user_id IS NOT NULL LIMIT 1;

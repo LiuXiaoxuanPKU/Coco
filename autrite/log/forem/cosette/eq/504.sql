@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT users.name, users.id FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = 3472;
+SELECT articles.id FROM articles WHERE articles.user_id = 9156 AND articles.published = False AND published_at <= '2022-02-27 07:00:04.686059' ORDER BY articles.published_at ASC;
 -- Rewritten Queries
-SELECT users.name, users.id FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = 3472 LIMIT 1;
+SELECT articles.id FROM articles WHERE articles.user_id = 9156 AND articles.published = False AND published_at <= '2022-02-27 07:00:04.686059' ORDER BY articles.published_at ASC LIMIT 1;

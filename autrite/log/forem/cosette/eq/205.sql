@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT podcast_ownerships.* FROM podcast_ownerships WHERE podcast_ownerships.user_id = 3930;
+SELECT tags.name, tags.bg_color_hex, tags.text_color_hex FROM tags WHERE tags.name = 'chlehxiyhsbqntpwtkjdqtfyclesw';
 -- Rewritten Queries
-SELECT podcast_ownerships.* FROM podcast_ownerships WHERE podcast_ownerships.user_id = 3930 LIMIT 1;
+SELECT tags.name, tags.bg_color_hex, tags.text_color_hex FROM tags WHERE tags.name = 'chlehxiyhsbqntpwtkjdqtfyclesw' LIMIT 1;

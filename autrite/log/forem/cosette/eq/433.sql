@@ -2049,9 +2049,9 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'softwaredevelopment' OR name = 'codereview' OR name = 'personaldevelopment' OR name = 'softwareengineering';
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 9377 AND articles.user_id = 3954 AND articles.title IS NULL LIMIT 2;
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'softwaredevelopment' OR name = 'codereview' OR name = 'personaldevelopment' OR name = 'softwareengineering' LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 9377 AND articles.user_id = 3954 AND False LIMIT 2;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 9377 AND articles.user_id = 3954 AND articles.title IS NULL LIMIT 2;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 9377 AND articles.user_id = 3954 AND False LIMIT 2;

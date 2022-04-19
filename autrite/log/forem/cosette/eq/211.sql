@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT reactions.* FROM reactions WHERE reactions.user_id = 2149 AND reactions.category = 'thumbsup';
+SELECT reactions.* FROM reactions WHERE reactions.user_id = 4881 AND reactions.category = 'thumbsup';
 -- Rewritten Queries
-SELECT reactions.* FROM reactions WHERE reactions.user_id = 2149 AND reactions.category = 'thumbsup' LIMIT 1;
+SELECT reactions.* FROM reactions WHERE reactions.user_id = 4881 AND reactions.category = 'thumbsup' LIMIT 1;

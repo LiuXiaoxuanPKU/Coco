@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT articles.* FROM articles WHERE articles.main_image IS NOT NULL ORDER BY articles.id ASC LIMIT 5;
+SELECT COUNT(*) FROM notifications WHERE notifications.organization_id = 2 AND notifications.read = False;
 -- Rewritten Queries
-SELECT articles.* FROM articles WHERE True ORDER BY articles.id ASC LIMIT 5;
+SELECT COUNT(*) FROM notifications WHERE notifications.organization_id = 2 AND notifications.read = False LIMIT 1;

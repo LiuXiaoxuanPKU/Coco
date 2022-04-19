@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.* FROM tags WHERE name = 'ama' OR name = 'explainlikeimfive';
+SELECT COUNT(*) FROM reactions WHERE reactions.category IN ('like', 'readinglist', 'unicorn');
 -- Rewritten Queries
-SELECT tags.* FROM tags WHERE name = 'ama' OR name = 'explainlikeimfive' LIMIT 1;
+SELECT COUNT(*) FROM reactions WHERE reactions.category IN ('like', 'readinglist', 'unicorn') LIMIT 1;

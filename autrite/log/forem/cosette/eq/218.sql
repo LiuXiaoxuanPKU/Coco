@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM follows WHERE follows.followable_id = 5176 AND follows.followable_type = 'User';
+SELECT users.name, users.username FROM users WHERE users.id = 2492 ORDER BY users.created_at ASC;
 -- Rewritten Queries
-SELECT COUNT(*) FROM follows WHERE follows.followable_id = 5176 AND follows.followable_type = 'User' LIMIT 1;
+SELECT users.name, users.username FROM users WHERE users.id = 2492 ORDER BY users.created_at ASC LIMIT 1;

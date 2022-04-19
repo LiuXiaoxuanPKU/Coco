@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT tags.name FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 1402 AND taggings.taggable_type = 'Listing' AND taggings.context = 'tags';
+SELECT comments.receive_notifications FROM comments WHERE (comments.ancestry LIKE '490/%' OR comments.ancestry = '490' OR comments.id = 490) AND comments.user_id = 5966;
 -- Rewritten Queries
-SELECT tags.name FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id = 1402 AND taggings.taggable_type = 'Listing' AND taggings.context = 'tags' LIMIT 1;
+SELECT comments.receive_notifications FROM comments WHERE (comments.ancestry LIKE '490/%' OR comments.ancestry = '490' OR comments.id = 490) AND comments.user_id = 5966 LIMIT 1;

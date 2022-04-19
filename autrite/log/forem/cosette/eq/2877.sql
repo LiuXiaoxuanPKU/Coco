@@ -2049,11 +2049,9 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT 1 AS "one" FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned'))) LIMIT 7 OFFSET 1;
+SELECT 1 AS "one" FROM comments WHERE comments.body_markdown = 'klbvkfavudfrvlhnkeepifcfmukehacyxetejtsbsxbebudbylpwjylfqxkbtzeibdejntlitroecxfdxyfwzcuzokdrlaxdpoerhrqitmjhjkvdsjogmbjzefwksemnefejjamfqxhtiuywcnjdasqitaseirkjfxdypmrcsdeolkfaaxrewhykjtkxbccsvag' AND comments.id <> 6880 AND comments.user_id = 2362 AND comments.ancestry IS NULL AND comments.commentable_id IS NULL AND comments.commentable_type IS NULL LIMIT 6;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned')) LIMIT 1) LIMIT 7 OFFSET 1;
-SELECT 1 AS "one" FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned') LIMIT 1) LIMIT 1) LIMIT 7 OFFSET 1;
-SELECT 1 AS "one" FROM users WHERE id NOT IN (SELECT user_id FROM users_roles WHERE role_id IN (SELECT roles.id FROM roles WHERE roles.name IN ('comment_suspended', 'suspended', 'trusted', 'warned') LIMIT 1)) LIMIT 7 OFFSET 1;
+SELECT 1 AS "one" FROM comments WHERE comments.body_markdown = 'klbvkfavudfrvlhnkeepifcfmukehacyxetejtsbsxbebudbylpwjylfqxkbtzeibdejntlitroecxfdxyfwzcuzokdrlaxdpoerhrqitmjhjkvdsjogmbjzefwksemnefejjamfqxhtiuywcnjdasqitaseirkjfxdypmrcsdeolkfaaxrewhykjtkxbccsvag' AND comments.id <> 6880 AND comments.user_id = 2362 AND comments.ancestry IS NULL AND comments.commentable_id IS NULL AND False LIMIT 6;
+SELECT 1 AS "one" FROM comments WHERE comments.body_markdown = 'klbvkfavudfrvlhnkeepifcfmukehacyxetejtsbsxbebudbylpwjylfqxkbtzeibdejntlitroecxfdxyfwzcuzokdrlaxdpoerhrqitmjhjkvdsjogmbjzefwksemnefejjamfqxhtiuywcnjdasqitaseirkjfxdypmrcsdeolkfaaxrewhykjtkxbccsvag' AND comments.id <> 6880 AND comments.user_id = 2362 AND comments.ancestry IS NULL AND False AND comments.commentable_type IS NULL LIMIT 6;
+SELECT 1 AS "one" FROM comments WHERE comments.body_markdown = 'klbvkfavudfrvlhnkeepifcfmukehacyxetejtsbsxbebudbylpwjylfqxkbtzeibdejntlitroecxfdxyfwzcuzokdrlaxdpoerhrqitmjhjkvdsjogmbjzefwksemnefejjamfqxhtiuywcnjdasqitaseirkjfxdypmrcsdeolkfaaxrewhykjtkxbccsvag' AND comments.id <> 6880 AND comments.user_id = 2362 AND comments.ancestry IS NULL AND False AND False LIMIT 6;

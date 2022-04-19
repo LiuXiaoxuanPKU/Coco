@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM articles WHERE articles.user_id = 5231 AND articles.published = False AND published_at <= '2022-02-27 07:14:34.287714' AND created_at > '2022-02-27 07:09:34.287823';
+SELECT COUNT(*) FROM articles WHERE articles.user_id = 3167 AND articles.published = False AND published_at <= '2022-02-27 07:14:34.365439' AND created_at > '2022-02-27 07:09:34.365544';
 -- Rewritten Queries
-SELECT COUNT(*) FROM articles WHERE articles.user_id = 5231 AND articles.published = False AND published_at <= '2022-02-27 07:14:34.287714' AND created_at > '2022-02-27 07:09:34.287823' LIMIT 1;
+SELECT COUNT(*) FROM articles WHERE articles.user_id = 3167 AND articles.published = False AND published_at <= '2022-02-27 07:14:34.365439' AND created_at > '2022-02-27 07:09:34.365544' LIMIT 1;

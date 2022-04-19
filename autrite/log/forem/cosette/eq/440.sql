@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT SUM(articles.page_views_count) FROM articles WHERE articles.published = False AND published_at <= '2019-04-01 12:00:00' AND articles.user_id = 1863;
+SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 8483 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 537 AND reactions.category = 'unicorn';
 -- Rewritten Queries
-SELECT SUM(articles.page_views_count) FROM articles WHERE articles.published = False AND published_at <= '2019-04-01 12:00:00' AND articles.user_id = 1863 LIMIT 1;
+SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 8483 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 537 AND reactions.category = 'unicorn' LIMIT 1;

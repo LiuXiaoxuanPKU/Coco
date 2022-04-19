@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT articles.user_id FROM articles INNER JOIN (SELECT reactions.id, reactions.reactable_id, reactions.user_id FROM reactions WHERE reactions.user_id = 5433 AND reactions.category = 'readinglist' AND reactions.status IN ('confirmed', 'valid') AND reactions.reactable_type = 'Article' ORDER BY reactions.created_at DESC) AS reactions ON reactions.reactable_id = articles.id WHERE articles.published = False AND published_at <= '2022-02-27 07:17:33.465266' LIMIT 3 OFFSET 1;
+SELECT tags.id, tags.alias_for, tags.badge_id, tags.bg_color_hex, tags.category, tags.created_at, tags.hotness_score, tags.keywords_for_search, tags.name, tags.pretty_name, tags.profile_image, tags.requires_approval, tags.rules_html, tags.rules_markdown, tags.short_summary, tags.social_image, tags.social_preview_template, tags.submission_template, tags.supported, tags.taggings_count, tags.text_color_hex, tags.updated_at, tags.wiki_body_html, tags.wiki_body_markdown FROM tags WHERE name = 'hey' OR name = 'haha' OR name = 'hoho' OR name = 'bobofofo';
 -- Rewritten Queries
-SELECT articles.user_id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:33.465266' LIMIT 3 OFFSET 1;
+SELECT tags.id, tags.alias_for, tags.badge_id, tags.bg_color_hex, tags.category, tags.created_at, tags.hotness_score, tags.keywords_for_search, tags.name, tags.pretty_name, tags.profile_image, tags.requires_approval, tags.rules_html, tags.rules_markdown, tags.short_summary, tags.social_image, tags.social_preview_template, tags.submission_template, tags.supported, tags.taggings_count, tags.text_color_hex, tags.updated_at, tags.wiki_body_html, tags.wiki_body_markdown FROM tags WHERE name = 'hey' OR name = 'haha' OR name = 'hoho' OR name = 'bobofofo' LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM notifications WHERE notifications.organization_id = 1;
+SELECT tags.* FROM tags WHERE name = 'functional' OR name = 'javascript';
 -- Rewritten Queries
-SELECT COUNT(*) FROM notifications WHERE notifications.organization_id = 1 LIMIT 1;
+SELECT tags.* FROM tags WHERE name = 'functional' OR name = 'javascript' LIMIT 1;

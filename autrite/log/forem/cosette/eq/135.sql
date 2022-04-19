@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT users.* FROM users WHERE users.username IS NULL LIMIT 7;
+SELECT tags.* FROM tags WHERE name = 'ror' OR name = 'webdev';
 -- Rewritten Queries
-SELECT users.* FROM users WHERE False LIMIT 7;
+SELECT tags.* FROM tags WHERE name = 'ror' OR name = 'webdev' LIMIT 1;

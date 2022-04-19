@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT 1 AS "one" FROM user_blocks WHERE user_blocks.blocker_id IS NULL AND user_blocks.blocked_id = 4253 LIMIT 8;
+SELECT SUM(comments.score) FROM comments WHERE comments.commentable_id = 6 AND comments.commentable_type = 'Article';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM user_blocks WHERE False AND user_blocks.blocked_id = 4253 LIMIT 8;
+SELECT SUM(comments.score) FROM comments WHERE comments.commentable_id = 6 AND comments.commentable_type = 'Article' LIMIT 1;

@@ -2049,9 +2049,7 @@ CREATE TABLE welcome_notifications (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
 -- Original Query
-SELECT COUNT(*) FROM comments WHERE comments.commentable_id = 27 AND comments.commentable_type = 'Article';
+SELECT COUNT(*) FROM comments WHERE comments.commentable_id = 20 AND comments.commentable_type = 'Article';
 -- Rewritten Queries
-SELECT COUNT(*) FROM comments WHERE comments.commentable_id = 27 AND comments.commentable_type = 'Article' LIMIT 1;
+SELECT COUNT(*) FROM comments WHERE comments.commentable_id = 20 AND comments.commentable_type = 'Article' LIMIT 1;
