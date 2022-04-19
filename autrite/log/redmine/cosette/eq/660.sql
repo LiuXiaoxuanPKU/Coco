@@ -576,8 +576,12 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = TRUE OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects cfp WHERE cfp.project_id = 22)) AND custom_fields.is_filter = True ORDER BY custom_fields.position ASC;
+SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE projects.status <> 9 AND members.user_id = 29;
 -- Rewritten Queries
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 22 LIMIT 1)) AND custom_fields.is_filter = True ORDER BY custom_fields.position ASC;
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 22 LIMIT 1)) AND custom_fields.is_filter = True ORDER BY custom_fields.position ASC;
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 22)) AND custom_fields.is_filter = True ORDER BY custom_fields.position ASC;
+SELECT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 29;
+SELECT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 29 LIMIT 1;
+SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 29;
+SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 29 LIMIT 1;
+SELECT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE projects.status <> 9 AND members.user_id = 29;
+SELECT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE projects.status <> 9 AND members.user_id = 29 LIMIT 1;
+SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE projects.status <> 9 AND members.user_id = 29 LIMIT 1;

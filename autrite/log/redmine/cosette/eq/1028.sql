@@ -576,8 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id IS NULL AND workflows.old_status_id IS NULL AND workflows.role_id = 1301;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.id = 8977 LIMIT 5;
 -- Rewritten Queries
-SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND False AND workflows.old_status_id IS NULL AND workflows.role_id = 1301;
-SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id IS NULL AND False AND workflows.role_id = 1301;
-SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND False AND False AND workflows.role_id = 1301;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND issues.id = 8977 LIMIT 5;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND issues.id = 8977 LIMIT 5;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.id = 8977 LIMIT 5;

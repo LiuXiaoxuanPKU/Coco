@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.project_id = 4799 AND (((projects.status <> 9 AND EXISTS (SELECT 1 AS "one" FROM enabled_modules em WHERE em.project_id = projects.id AND em.name='issue_tracking')) AND (((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6,13))) AND ((issues.is_private = FALSE)))))) AND issues.id = 9143 LIMIT 3;
+SELECT MAX(import_items.position) FROM import_items WHERE import_items.import_id = 12036;
 -- Rewritten Queries
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.project_id = 4799 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND issues.id = 9143 LIMIT 3;
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.project_id = 4799 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND issues.id = 9143 LIMIT 3;
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.project_id = 4799 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.id = 9143 LIMIT 3;
+SELECT MAX(import_items.position) FROM import_items WHERE import_items.import_id = 12036 LIMIT 1;

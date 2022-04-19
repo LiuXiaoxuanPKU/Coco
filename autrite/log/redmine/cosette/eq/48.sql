@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Pdhrighkqplrirrlqbybavnjcekiwngllgeznpfckfspqncbvkfzakuycqruzwponyzdqtukqzboqqfdfrzcdrdgoonomyzvyumkoutzuveljirqycuubgbwyunihm' AND wiki_pages.wiki_id IS NULL LIMIT 9;
+SELECT COUNT(*) FROM repositories WHERE repositories.project_id = 5655;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Pdhrighkqplrirrlqbybavnjcekiwngllgeznpfckfspqncbvkfzakuycqruzwponyzdqtukqzboqqfdfrzcdrdgoonomyzvyumkoutzuveljirqycuubgbwyunihm' AND False LIMIT 9;
+SELECT COUNT(*) FROM repositories WHERE repositories.project_id = 5655 LIMIT 1;

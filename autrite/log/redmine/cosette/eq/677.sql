@@ -576,8 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = TRUE OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects cfp WHERE cfp.project_id = 29)) ORDER BY custom_fields.position ASC;
+SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%Собо%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Собо%')) OR LOWER(users.firstname) LIKE LOWER('%Собо%') OR LOWER(users.lastname) LIKE LOWER('%Собо%');
 -- Rewritten Queries
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 29 LIMIT 1)) ORDER BY custom_fields.position ASC;
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 29 LIMIT 1)) ORDER BY custom_fields.position ASC;
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 29)) ORDER BY custom_fields.position ASC;
+SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%Собо%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Собо%')) OR LOWER(users.firstname) LIKE LOWER('%Собо%') OR LOWER(users.lastname) LIKE LOWER('%Собо%') LIMIT 1;
+SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%Собо%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Собо%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%Собо%') OR LOWER(users.lastname) LIKE LOWER('%Собо%');
+SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%Собо%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Собо%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%Собо%') OR LOWER(users.lastname) LIKE LOWER('%Собо%') LIMIT 1;

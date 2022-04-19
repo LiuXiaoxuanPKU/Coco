@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM projects WHERE (((projects.status <> 9) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6,13))))));
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'a9e97802e2a33';
 -- Rewritten Queries
-SELECT COUNT(*) FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1);
-SELECT COUNT(*) FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) LIMIT 1;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'a9e97802e2a33' LIMIT 1;

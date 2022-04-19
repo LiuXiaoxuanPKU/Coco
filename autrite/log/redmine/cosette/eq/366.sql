@@ -576,9 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (8030, 9355, 5581, 7181, 4708, 4813, 7242, 7812, 4214, 7803, 5398) AND ((journals.private_notes = FALSE OR journals.user_id = 2 OR (((projects.status <> 9) AND (projects.id IN (1,5)))))) AND journals.notes != '{}' GROUP BY journals.journalized_id;
+SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = 3635;
 -- Rewritten Queries
-SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (5809, 5094, 8565, 2798, 6354, 3919, 6790, 9434, 9621, 7985, 4858) AND (journals.private_notes = False OR journals.user_id = 2) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
-SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (5809, 5094, 8565, 2798, 6354, 3919, 6790, 9434, 9621, 7985, 4858) AND (journals.private_notes = False OR journals.user_id = 2) AND journals.notes <> '{}' GROUP BY journals.journalized_id LIMIT 1;
-SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals INNER JOIN issues ON issues.id = journals.journalized_id WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (9434, 9621, 7985, 4858, 1404, 5960, 2374, 8030, 9355, 5581, 7181) AND (journals.private_notes = False OR journals.user_id = 2) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
-SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals INNER JOIN issues ON issues.id = journals.journalized_id WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (9434, 9621, 7985, 4858, 1404, 5960, 2374, 8030, 9355, 5581, 7181) AND (journals.private_notes = False OR journals.user_id = 2) AND journals.notes <> '{}' GROUP BY journals.journalized_id LIMIT 1;
+SELECT roles.* FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = 3635;
+SELECT roles.* FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = 3635 LIMIT 1;
+SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = 3635 LIMIT 1;

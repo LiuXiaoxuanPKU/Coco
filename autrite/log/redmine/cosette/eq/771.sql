@@ -576,7 +576,7 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_values.id FROM custom_values WHERE custom_values.custom_field_id = 4 AND (EXISTS(SELECT 1 FROM custom_values cve WHERE cve.custom_field_id = custom_values.custom_field_id AND cve.customized_type = custom_values.customized_type AND cve.customized_id = custom_values.customized_id AND cve.id > custom_values.id));
+SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 64 OR projects.is_public = True AND members.user_id = 12);
 -- Rewritten Queries
-SELECT custom_values.id FROM custom_values WHERE custom_values.custom_field_id = 4 AND (SELECT 1 FROM custom_values AS cve WHERE cve.custom_field_id = custom_values.custom_field_id AND cve.customized_type = custom_values.customized_type AND cve.customized_id = custom_values.customized_id AND cve.id > custom_values.id) IS NOT NULL LIMIT 1;
-SELECT custom_values.id FROM custom_values WHERE custom_values.custom_field_id = 4 AND (SELECT 1 FROM custom_values AS cve WHERE cve.custom_field_id = custom_values.custom_field_id AND cve.customized_type = custom_values.customized_type AND cve.customized_id = custom_values.customized_id AND cve.id > custom_values.id LIMIT 1) IS NOT NULL LIMIT 1;
+SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = 64 OR members.user_id = 12 LIMIT 1;
+SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 64 OR projects.is_public = True AND members.user_id = 12) LIMIT 1;

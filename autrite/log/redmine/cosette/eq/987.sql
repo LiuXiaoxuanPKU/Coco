@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.id FROM projects WHERE (((projects.status <> 9) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (89,12))))));
+SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND users.status = 2 AND (LOWER(users.login) LIKE LOWER('%John%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%John%')) OR LOWER(users.firstname) LIKE LOWER('%John%') OR LOWER(users.lastname) LIKE LOWER('%John%')) ORDER BY login ASC LIMIT 1 OFFSET 1;
 -- Rewritten Queries
-SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (89, 12) LIMIT 1);
+SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND users.status = 2 AND (LOWER(users.login) LIKE LOWER('%John%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%John%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%John%') OR LOWER(users.lastname) LIKE LOWER('%John%')) ORDER BY login ASC LIMIT 1 OFFSET 1;

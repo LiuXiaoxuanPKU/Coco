@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  users.* FROM users WHERE users.status = 1 AND users.status = 1 AND (users.id = 2 OR users.id IN (SELECT user_id FROM members WHERE project_id IN (1,2,3,4,5,6))) AND users.type IN ('User', 'User') AND (LOWER(users.login) LIKE LOWER('%autocomp%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%autocomp%')) OR ((LOWER(users.firstname) LIKE LOWER('%autocomp%') OR LOWER(users.lastname) LIKE LOWER('%autocomp%')))) ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 4;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0253';
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.status = 1 AND users.status = 1 AND (users.id = 2 OR users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 2, 3, 4, 5, 6) LIMIT 1)) AND users.type IN ('User', 'User') AND (LOWER(users.login) LIKE LOWER('%autocomp%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%autocomp%')) OR LOWER(users.firstname) LIKE LOWER('%autocomp%') OR LOWER(users.lastname) LIKE LOWER('%autocomp%')) ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 4;
-SELECT users.* FROM users WHERE users.status = 1 AND users.status = 1 AND (users.id = 2 OR users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 2, 3, 4, 5, 6) LIMIT 1)) AND users.type IN ('User', 'User') AND (LOWER(users.login) LIKE LOWER('%autocomp%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%autocomp%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%autocomp%') OR LOWER(users.lastname) LIKE LOWER('%autocomp%')) ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 4;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0253' LIMIT 1;

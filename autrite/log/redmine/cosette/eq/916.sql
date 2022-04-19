@@ -576,9 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 5636 AND projects.status != 9 AND (((projects.status <> 9) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (35,12))))));
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.created_on BETWEEN '2022-02-02' AND '2022-02-12' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL;
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.user_id = 5636;
-SELECT members.* FROM members WHERE members.user_id = 5636 LIMIT 1;
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 5636 AND projects.status <> 9 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (35, 12) LIMIT 1);
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 5636 AND projects.status <> 9 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (35, 12) LIMIT 1) LIMIT 1;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.created_on BETWEEN '2022-02-02' AND '2022-02-12' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL LIMIT 1;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.created_on BETWEEN '2022-02-02' AND '2022-02-12' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.created_on BETWEEN '2022-02-02' AND '2022-02-12' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL LIMIT 1;

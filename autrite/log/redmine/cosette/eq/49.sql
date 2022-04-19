@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM wiki_pages WHERE wiki_pages.title IS NULL AND wiki_pages.wiki_id = 382 LIMIT 5;
+SELECT MAX(issues.due_date) FROM issues WHERE issues.project_id = 9007;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM wiki_pages WHERE False AND wiki_pages.wiki_id = 382 LIMIT 5;
+SELECT MAX(issues.due_date) FROM issues WHERE issues.project_id = 9007 LIMIT 1;

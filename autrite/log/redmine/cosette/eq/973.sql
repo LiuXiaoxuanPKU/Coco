@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.* FROM projects WHERE (projects.lft < 12 AND projects.rgt > 13) AND (((projects.status <> 9) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6,13)))))) ORDER BY projects.lft ASC;
+SELECT DISTINCT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id INNER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE projects.status <> 9 AND enabled_modules.name = 'wiki' AND projects.lft >= 6 AND projects.rgt <= 7 ORDER BY trackers.position ASC;
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE projects.lft < 12 AND projects.rgt > 13 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) ORDER BY projects.lft ASC;
+SELECT DISTINCT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id WHERE projects.status <> 9 AND projects.lft >= 6 AND projects.rgt <= 7 ORDER BY trackers.position ASC;

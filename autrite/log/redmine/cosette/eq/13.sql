@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.root_id = 890 AND (issues.lft > 1 AND issues.rgt < 4) AND issue_statuses.is_closed = False LIMIT 3;
+SELECT messages.* FROM messages WHERE messages.id = 2531;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM issues WHERE issues.root_id = 890 AND issues.lft > 1 AND issues.rgt < 4 LIMIT 3;
+SELECT messages.* FROM messages WHERE messages.id = 2531 LIMIT 1;

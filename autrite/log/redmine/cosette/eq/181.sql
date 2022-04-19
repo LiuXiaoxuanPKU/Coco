@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  projects.* FROM projects WHERE (((projects.status = 1 AND EXISTS (SELECT 1 AS "one" FROM enabled_modules em WHERE em.project_id = projects.id AND em.name='issue_tracking')) AND (projects.id IN (1,5)))) AND projects.id = 3866 LIMIT 10;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0230';
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.id IN (1, 5) AND projects.id = 3866 LIMIT 10;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0230' LIMIT 1;

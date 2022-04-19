@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT issue_statuses.* FROM issue_statuses INNER JOIN workflows ON workflows.new_status_id = issue_statuses.id AND workflows.type IN ('WorkflowTransition') WHERE workflows.old_status_id = 0 AND workflows.role_id IN (1435, 65, 315, 5483, 7744) AND workflows.tracker_id = 18607 AND (author = FALSE AND assignee = FALSE);
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < '[foo]eCookbook';
 -- Rewritten Queries
-SELECT issue_statuses.* FROM issue_statuses INNER JOIN workflows ON workflows.new_status_id = issue_statuses.id AND workflows.type IN ('WorkflowTransition') WHERE workflows.old_status_id = 0 AND workflows.role_id IN (5694, 1435, 65, 315, 5483) AND workflows.tracker_id = 18607 AND author = False AND assignee = False;
-SELECT issue_statuses.* FROM issue_statuses INNER JOIN workflows ON workflows.new_status_id = issue_statuses.id AND workflows.type IN ('WorkflowTransition') WHERE workflows.old_status_id = 0 AND workflows.role_id IN (5694, 1435, 65, 315, 5483) AND workflows.tracker_id = 18607 AND author = False AND assignee = False LIMIT 1;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < '[foo]eCookbook' LIMIT 1;

@@ -576,7 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 3038 AND users.type = 'User' AND users.status = 1;
+SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%john smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%john smi%')) OR (LOWER(users.firstname) LIKE LOWER('%john%') OR LOWER(users.lastname) LIKE LOWER('%john%')) AND (LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%'));
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.project_id = 3038;
-SELECT members.* FROM members WHERE members.project_id = 3038 LIMIT 1;
+SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%john smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%john smi%')) OR (LOWER(users.firstname) LIKE LOWER('%john%') OR LOWER(users.lastname) LIKE LOWER('%john%')) AND (LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%')) LIMIT 1;
+SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%john smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%john smi%') LIMIT 1) OR (LOWER(users.firstname) LIKE LOWER('%john%') OR LOWER(users.lastname) LIKE LOWER('%john%')) AND (LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%'));
+SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%john smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%john smi%') LIMIT 1) OR (LOWER(users.firstname) LIKE LOWER('%john%') OR LOWER(users.lastname) LIKE LOWER('%john%')) AND (LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%')) LIMIT 1;

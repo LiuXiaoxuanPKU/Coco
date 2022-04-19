@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  projects.* FROM projects WHERE projects.status = 1 AND (projects.id IN (SELECT em.project_id FROM enabled_modules em WHERE em.name='repository')) AND projects.identifier = 'zrtgsujvljcfwtovssaouiqzmsydyefzlvscopopihvjeiqutuxmkrsgxehmkfu' LIMIT 3;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0242';
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE projects.status = 1 AND projects.id IN (SELECT em.project_id FROM enabled_modules AS em WHERE em.name = 'repository' LIMIT 1) AND projects.identifier = 'zrtgsujvljcfwtovssaouiqzmsydyefzlvscopopihvjeiqutuxmkrsgxehmkfu' LIMIT 3;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0242' LIMIT 1;

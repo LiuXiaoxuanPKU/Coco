@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.* FROM projects WHERE (projects.lft < 16 AND projects.rgt > 17) AND (((projects.status <> 9) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6,13)))))) ORDER BY projects.lft ASC;
+SELECT projects.* FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (124, 12)) OR projects.id = 1) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers);
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE projects.lft < 16 AND projects.rgt > 17 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) ORDER BY projects.lft ASC;
+SELECT projects.* FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (124, 12)) OR projects.id = 1) AND projects.id IN (SELECT project_id FROM projects_trackers);
+SELECT projects.* FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (124, 12)) OR projects.id = 1) AND projects.id IN (SELECT project_id FROM projects_trackers);
+SELECT projects.* FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (124, 12)) OR projects.id = 1) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers);

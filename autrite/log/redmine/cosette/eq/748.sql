@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = TRUE OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects cfp WHERE cfp.project_id = 72)) ORDER BY custom_fields.position ASC;
+SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (9, 12))) AND enabled_modules.name = 'boards' LIMIT 5;
 -- Rewritten Queries
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 72 LIMIT 1)) ORDER BY custom_fields.position ASC;
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 72 LIMIT 1)) ORDER BY custom_fields.position ASC;
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 72)) ORDER BY custom_fields.position ASC;
+SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (9, 12) LIMIT 1)) AND enabled_modules.name = 'boards' LIMIT 5;

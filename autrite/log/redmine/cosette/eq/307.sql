@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT issue_statuses.* FROM issue_statuses INNER JOIN workflows ON workflows.new_status_id = issue_statuses.id AND workflows.type IN ('WorkflowTransition') WHERE workflows.old_status_id = 0 AND workflows.role_id IN (8158, 6847, 7438, 10080, 7321) AND workflows.tracker_id = 12518 AND (author = FALSE OR assignee = TRUE);
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('TimeEntryActivityCustomField');
 -- Rewritten Queries
-SELECT issue_statuses.* FROM issue_statuses INNER JOIN workflows ON workflows.new_status_id = issue_statuses.id AND workflows.type IN ('WorkflowTransition') WHERE workflows.old_status_id = 0 AND workflows.role_id IN (9921, 8158, 6847, 7438, 10080) AND workflows.tracker_id = 12518 AND (author = False OR assignee = True);
-SELECT issue_statuses.* FROM issue_statuses INNER JOIN workflows ON workflows.new_status_id = issue_statuses.id AND workflows.type IN ('WorkflowTransition') WHERE workflows.old_status_id = 0 AND workflows.role_id IN (9921, 8158, 6847, 7438, 10080) AND workflows.tracker_id = 12518 AND (author = False OR assignee = True) LIMIT 1;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('TimeEntryActivityCustomField') LIMIT 1;

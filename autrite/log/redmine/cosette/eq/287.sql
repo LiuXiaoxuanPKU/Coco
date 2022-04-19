@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND (users.id NOT IN (SELECT gu.user_id FROM groups_users gu WHERE gu.group_id = 69));
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'ac939da53d444';
 -- Rewritten Queries
-SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND users.id NOT IN (SELECT gu.user_id FROM groups_users AS gu WHERE gu.group_id = 69 LIMIT 1);
-SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND users.id NOT IN (SELECT gu.user_id FROM groups_users AS gu WHERE gu.group_id = 69 LIMIT 1) LIMIT 1;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'ac939da53d444' LIMIT 1;

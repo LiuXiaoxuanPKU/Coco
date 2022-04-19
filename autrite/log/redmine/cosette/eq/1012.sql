@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND (users.id NOT IN (SELECT gu.user_id FROM groups_users gu WHERE gu.group_id = 79)) AND users.id = 4123;
+SELECT users.* FROM users WHERE users.status = 1 AND users.status = 1 AND users.type IN ('User', 'User') AND (LOWER(users.login) LIKE LOWER('%mi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%mi%')) OR LOWER(users.firstname) LIKE LOWER('%mi%') OR LOWER(users.lastname) LIKE LOWER('%mi%')) ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.id NOT IN (SELECT gu.user_id FROM groups_users AS gu WHERE gu.group_id = 79 LIMIT 1) AND users.id = 4123;
-SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.id NOT IN (SELECT gu.user_id FROM groups_users AS gu WHERE gu.group_id = 79 LIMIT 1) AND users.id = 4123 LIMIT 1;
+SELECT users.* FROM users WHERE users.status = 1 AND users.status = 1 AND users.type IN ('User', 'User') AND (LOWER(users.login) LIKE LOWER('%mi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%mi%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%mi%') OR LOWER(users.lastname) LIKE LOWER('%mi%')) ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;

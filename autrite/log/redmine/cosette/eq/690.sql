@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = TRUE OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects cfp WHERE cfp.project_id = 34)) ORDER BY custom_fields.position ASC;
+SELECT 1 AS "one" FROM users WHERE LOWER(users.login) LIKE LOWER('%john%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%john%')) OR LOWER(users.firstname) LIKE LOWER('%john%') OR LOWER(users.lastname) LIKE LOWER('%john%') LIMIT 1;
 -- Rewritten Queries
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 34 LIMIT 1)) ORDER BY custom_fields.position ASC;
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 34 LIMIT 1)) ORDER BY custom_fields.position ASC;
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 34)) ORDER BY custom_fields.position ASC;
+SELECT 1 AS "one" FROM users WHERE LOWER(users.login) LIKE LOWER('%john%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%john%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%john%') OR LOWER(users.lastname) LIKE LOWER('%john%') LIMIT 1;

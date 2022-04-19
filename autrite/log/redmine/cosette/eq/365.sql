@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (6759, 2814, 8363, 9187, 264, 4066) AND ((journals.private_notes = FALSE OR journals.user_id = 6 OR (1=0))) AND journals.notes != '{}' GROUP BY journals.journalized_id;
+SELECT 1 AS "one" FROM issue_relations WHERE issue_relations.issue_to_id IS NULL AND issue_relations.issue_from_id = 2315 LIMIT 7;
 -- Rewritten Queries
-SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (4811, 1564, 8074, 4138, 63, 3667) AND (journals.private_notes = False OR journals.user_id = 6 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
-SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (4811, 1564, 8074, 4138, 63, 3667) AND (journals.private_notes = False OR journals.user_id = 6 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id LIMIT 1;
+SELECT 1 AS "one" FROM issue_relations WHERE False AND issue_relations.issue_from_id = 2315 LIMIT 7;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND (users.id = 6 OR users.id IN (SELECT user_id FROM members WHERE project_id IN (1,3,4,6))) AND users.status = 1 AND users.id = 2215 LIMIT 7;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0222';
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND (users.id = 6 OR users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6) LIMIT 1)) AND users.status = 1 AND users.id = 2215 LIMIT 7;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0222' LIMIT 1;

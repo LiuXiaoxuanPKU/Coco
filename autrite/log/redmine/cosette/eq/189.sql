@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE (time_entries.user_id = 4) AND (((projects.status <> 9 AND EXISTS (SELECT 1 AS "one" FROM enabled_modules em WHERE em.project_id = projects.id AND em.name='time_tracking')) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4,12)))))) ORDER BY time_entries.id DESC LIMIT 1;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0248';
 -- Rewritten Queries
-SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.user_id = 4 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) ORDER BY time_entries.id DESC LIMIT 1;
-SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.user_id = 4 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) ORDER BY time_entries.id DESC LIMIT 1;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0248' LIMIT 1;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  projects.* FROM projects WHERE (((projects.status <> 9) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6,13)))))) AND ((projects.status IN ('1'))) ORDER BY projects.created_on DESC LIMIT 3;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0182';
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND projects.status IN ('1') ORDER BY projects.created_on DESC LIMIT 3;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0182' LIMIT 1;

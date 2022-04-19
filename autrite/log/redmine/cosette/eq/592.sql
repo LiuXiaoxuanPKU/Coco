@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.* FROM custom_fields WHERE (custom_fields.visible = TRUE OR custom_fields.id IN (SELECT DISTINCT cfr.custom_field_id FROM members m INNER JOIN member_roles mr ON mr.member_id = m.id INNER JOIN custom_fields_roles cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 55)) AND custom_fields.is_filter = False;
+SELECT COUNT(*) AS count_all, commit_date AS commit_date FROM changes INNER JOIN changesets ON changesets.id = changes.changeset_id WHERE changesets.repository_id = 10 AND changesets.commit_date BETWEEN '2008-10-01' AND '2009-09-20' GROUP BY commit_date;
 -- Rewritten Queries
-SELECT custom_fields.* FROM custom_fields WHERE (custom_fields.visible = True OR custom_fields.id IN (SELECT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 55 LIMIT 1)) AND custom_fields.is_filter = False;
-SELECT custom_fields.* FROM custom_fields WHERE (custom_fields.visible = True OR custom_fields.id IN (SELECT DISTINCT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 55 LIMIT 1)) AND custom_fields.is_filter = False;
-SELECT custom_fields.* FROM custom_fields WHERE (custom_fields.visible = True OR custom_fields.id IN (SELECT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 55)) AND custom_fields.is_filter = False;
+SELECT COUNT(*) AS count_all, commit_date AS commit_date FROM changes INNER JOIN changesets ON changesets.id = changes.changeset_id WHERE changesets.repository_id = 10 AND changesets.commit_date BETWEEN '2008-10-01' AND '2009-09-20' GROUP BY commit_date LIMIT 1;

@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.* FROM projects WHERE (((projects.status <> 9) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6,13)))))) AND ((projects.status IN ('1'))) ORDER BY projects.lft ASC;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12)) ORDER BY news.id DESC LIMIT 2;
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND projects.status IN ('1') ORDER BY projects.lft ASC;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) ORDER BY news.id DESC LIMIT 2;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) ORDER BY news.id DESC LIMIT 2;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12)) ORDER BY news.id DESC LIMIT 2;

@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  attachments.* FROM attachments LEFT JOIN versions ON attachments.container_type='Version' AND versions.id = attachments.container_id LEFT JOIN projects ON versions.project_id = projects.id OR ( attachments.container_type='Project' AND attachments.container_id = projects.id ) WHERE (attachments.author_id = 5) AND (projects.status <> 9 AND EXISTS (SELECT 1 AS "one" FROM enabled_modules em WHERE em.project_id = projects.id AND em.name='files')) ORDER BY attachments.id DESC LIMIT 4;
+SELECT tokens.* FROM tokens WHERE tokens.user_id = 4413 AND tokens.action = 'tpsgjqgdpxycoobpnfddu';
 -- Rewritten Queries
-SELECT attachments.* FROM attachments INNER JOIN versions ON attachments.container_type = 'Version' AND versions.id = attachments.container_id LEFT JOIN projects ON versions.project_id = projects.id OR attachments.container_type = 'Project' AND attachments.container_id = projects.id WHERE attachments.author_id = 5 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'files') IS NOT NULL ORDER BY attachments.id DESC LIMIT 4;
-SELECT attachments.* FROM attachments INNER JOIN versions ON attachments.container_type = 'Version' AND versions.id = attachments.container_id LEFT JOIN projects ON versions.project_id = projects.id OR attachments.container_type = 'Project' AND attachments.container_id = projects.id WHERE attachments.author_id = 5 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'files' LIMIT 1) IS NOT NULL ORDER BY attachments.id DESC LIMIT 4;
+SELECT tokens.* FROM tokens WHERE tokens.user_id = 4413 AND tokens.action = 'tpsgjqgdpxycoobpnfddu' LIMIT 1;

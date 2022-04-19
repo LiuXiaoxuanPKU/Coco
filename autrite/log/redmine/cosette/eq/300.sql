@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT changesets.committer, changesets.user_id FROM changesets WHERE changesets.repository_id = 9770;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'aa6b68d758c59';
 -- Rewritten Queries
-SELECT changesets.committer, changesets.user_id FROM changesets WHERE changesets.repository_id = 9770;
-SELECT changesets.committer, changesets.user_id FROM changesets WHERE changesets.repository_id = 9770 LIMIT 1;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'aa6b68d758c59' LIMIT 1;

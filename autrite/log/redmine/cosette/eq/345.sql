@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND (LOWER(email_addresses.address) IN ('r@mycompanyname.com'));
+SELECT tokens.id FROM tokens WHERE tokens.user_id = 1368 AND tokens.action = 'toihbcnkkbcjrzmqbsaejpbfpjazm' ORDER BY tokens.updated_on DESC OFFSET 1;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND LOWER(email_addresses.address) IN ('r@mycompanyname.com');
-SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND LOWER(email_addresses.address) IN ('r@mycompanyname.com') LIMIT 1;
+SELECT tokens.id FROM tokens WHERE tokens.user_id = 1368 AND tokens.action = 'toihbcnkkbcjrzmqbsaejpbfpjazm' ORDER BY tokens.updated_on DESC LIMIT 1 OFFSET 1;

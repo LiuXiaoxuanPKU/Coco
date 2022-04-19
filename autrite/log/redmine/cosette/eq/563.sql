@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT SUM(time_entries.hours) AS sum_hours, time_entries.issue_id AS time_entries_issue_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE (projects.status <> 9 AND EXISTS (SELECT 1 AS "one" FROM enabled_modules em WHERE em.project_id = projects.id AND em.name='time_tracking')) AND time_entries.issue_id = 500 GROUP BY time_entries.issue_id;
+SELECT projects.* FROM projects WHERE projects.lft < 8 AND projects.rgt > 9 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) ORDER BY projects.lft ASC;
 -- Rewritten Queries
-SELECT SUM(time_entries.hours) AS sum_hours, time_entries.issue_id AS time_entries_issue_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND time_entries.issue_id = 500 GROUP BY time_entries.issue_id LIMIT 1;
-SELECT SUM(time_entries.hours) AS sum_hours, time_entries.issue_id AS time_entries_issue_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND time_entries.issue_id = 500 GROUP BY time_entries.issue_id LIMIT 1;
+SELECT projects.* FROM projects WHERE projects.lft < 8 AND projects.rgt > 9 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) ORDER BY projects.lft ASC;

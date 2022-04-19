@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.status IN (2, 2) AND (users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (1,2,3,4,5,6)));
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (custom_fields.visible = True OR custom_fields.id IN (SELECT DISTINCT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 28)) AND custom_fields.is_filter = False ORDER BY custom_fields.position ASC;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.status IN (2, 2) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 2, 3, 4, 5, 6));
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (custom_fields.visible = True OR custom_fields.id IN (SELECT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 28 LIMIT 1)) AND custom_fields.is_filter = False ORDER BY custom_fields.position ASC;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (custom_fields.visible = True OR custom_fields.id IN (SELECT DISTINCT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 28 LIMIT 1)) AND custom_fields.is_filter = False ORDER BY custom_fields.position ASC;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (custom_fields.visible = True OR custom_fields.id IN (SELECT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 28)) AND custom_fields.is_filter = False ORDER BY custom_fields.position ASC;

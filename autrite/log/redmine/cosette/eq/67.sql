@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  boards.* FROM boards INNER JOIN projects ON projects.id = boards.project_id WHERE boards.project_id = 4937 AND (((projects.status <> 9 AND EXISTS (SELECT 1 AS "one" FROM enabled_modules em WHERE em.project_id = projects.id AND em.name='boards')) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6,13)))))) AND boards.name = 'cgoldxynetqburufidwovfv' ORDER BY boards.position ASC LIMIT 7;
+SELECT COUNT(*) FROM issue_relations WHERE issue_relations.issue_from_id = 1800;
 -- Rewritten Queries
-SELECT boards.* FROM boards INNER JOIN projects ON projects.id = boards.project_id WHERE boards.project_id = 4937 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND boards.name = 'cgoldxynetqburufidwovfv' ORDER BY boards.position ASC LIMIT 7;
-SELECT boards.* FROM boards INNER JOIN projects ON projects.id = boards.project_id WHERE boards.project_id = 4937 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND boards.name = 'cgoldxynetqburufidwovfv' ORDER BY boards.position ASC LIMIT 7;
-SELECT boards.* FROM boards INNER JOIN projects ON projects.id = boards.project_id WHERE boards.project_id = 4937 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND boards.name = 'cgoldxynetqburufidwovfv' ORDER BY boards.position ASC LIMIT 7;
+SELECT COUNT(*) FROM issue_relations WHERE issue_relations.issue_from_id = 1800 LIMIT 1;

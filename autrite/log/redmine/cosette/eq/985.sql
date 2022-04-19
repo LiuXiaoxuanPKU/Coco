@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.* FROM projects WHERE projects.id = 9642 AND (((projects.status <> 9) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (7,12))))));
+SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND users.status = 2 AND (LOWER(users.login) LIKE LOWER('%Misc%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Misc%')) OR LOWER(users.firstname) LIKE LOWER('%Misc%') OR LOWER(users.lastname) LIKE LOWER('%Misc%')) ORDER BY login ASC LIMIT 2 OFFSET 1;
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE projects.id = 9642 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (7, 12) LIMIT 1);
-SELECT projects.* FROM projects WHERE projects.id = 9642 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (7, 12) LIMIT 1) LIMIT 1;
+SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND users.status = 2 AND (LOWER(users.login) LIKE LOWER('%Misc%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Misc%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%Misc%') OR LOWER(users.lastname) LIKE LOWER('%Misc%')) ORDER BY login ASC LIMIT 2 OFFSET 1;

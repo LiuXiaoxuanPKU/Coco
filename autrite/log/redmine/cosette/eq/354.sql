@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND (members.project_id = 1) AND users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User');
+SELECT custom_fields.* FROM custom_fields WHERE type = 'TimeEntryActivityCustomField' ORDER BY custom_fields.position ASC;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND members.project_id = 1 AND users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User');
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND members.project_id = 1 AND users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User') LIMIT 1;
+SELECT custom_fields.* FROM custom_fields WHERE type = 'TimeEntryActivityCustomField' ORDER BY custom_fields.position ASC LIMIT 1;

@@ -576,7 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND (users.id NOT IN (SELECT gu.user_id FROM groups_users gu WHERE gu.group_id = 78)) AND users.id = 666;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (custom_fields.visible = True OR custom_fields.id IN (SELECT DISTINCT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 129)) AND custom_fields.is_filter = True ORDER BY custom_fields.position ASC;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.id NOT IN (SELECT gu.user_id FROM groups_users AS gu WHERE gu.group_id = 78 LIMIT 1) AND users.id = 666;
-SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.id NOT IN (SELECT gu.user_id FROM groups_users AS gu WHERE gu.group_id = 78 LIMIT 1) AND users.id = 666 LIMIT 1;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (custom_fields.visible = True OR custom_fields.id IN (SELECT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 129 LIMIT 1)) AND custom_fields.is_filter = True ORDER BY custom_fields.position ASC;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (custom_fields.visible = True OR custom_fields.id IN (SELECT DISTINCT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 129 LIMIT 1)) AND custom_fields.is_filter = True ORDER BY custom_fields.position ASC;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (custom_fields.visible = True OR custom_fields.id IN (SELECT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 129)) AND custom_fields.is_filter = True ORDER BY custom_fields.position ASC;

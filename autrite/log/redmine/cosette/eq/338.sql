@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT roles.* FROM roles WHERE roles.id = 1;
+SELECT email_addresses.* FROM email_addresses WHERE email_addresses.is_default = False AND email_addresses.user_id = 298;
 -- Rewritten Queries
-SELECT roles.* FROM roles WHERE roles.id = 1;
-SELECT roles.* FROM roles WHERE roles.id = 1 LIMIT 1;
+SELECT email_addresses.* FROM email_addresses WHERE email_addresses.is_default = False AND email_addresses.user_id = 298 LIMIT 1;

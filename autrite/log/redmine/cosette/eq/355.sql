@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND (members.project_id = 1) AND users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
+SELECT MAX(enumerations.position) FROM enumerations WHERE enumerations.project_id IS NULL AND enumerations.parent_id IS NULL;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND members.project_id = 1 AND users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND members.project_id = 1 AND users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
+SELECT MAX(enumerations.position) FROM enumerations WHERE enumerations.project_id IS NULL AND enumerations.parent_id IS NULL LIMIT 1;

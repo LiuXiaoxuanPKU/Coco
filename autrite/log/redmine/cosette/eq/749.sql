@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = TRUE OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects cfp WHERE cfp.project_id = 8)) ORDER BY custom_fields.position ASC;
+SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 9 OR projects.is_public = True AND members.user_id = 12);
 -- Rewritten Queries
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 8 LIMIT 1)) ORDER BY custom_fields.position ASC;
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 8 LIMIT 1)) ORDER BY custom_fields.position ASC;
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 8)) ORDER BY custom_fields.position ASC;
+SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 9 OR projects.is_public = True AND members.user_id = 12) LIMIT 1;

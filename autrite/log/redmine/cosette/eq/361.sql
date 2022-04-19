@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND (members.project_id = 4);
+SELECT journals.* FROM journals WHERE journals.journalized_id = 2830 AND journals.journalized_type = 'Issue' ORDER BY journals.id ASC;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 4;
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 4 LIMIT 1;
+SELECT journals.* FROM journals WHERE journals.journalized_id = 2830 AND journals.journalized_type = 'Issue' ORDER BY journals.id ASC LIMIT 1;

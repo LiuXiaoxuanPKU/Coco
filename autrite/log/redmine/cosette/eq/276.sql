@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 3630 AND users.type = 'User' AND users.status = 2;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'a987548a765ab';
 -- Rewritten Queries
-SELECT COUNT(*) FROM members WHERE members.project_id = 3630;
-SELECT COUNT(*) FROM members WHERE members.project_id = 3630 LIMIT 1;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'a987548a765ab' LIMIT 1;

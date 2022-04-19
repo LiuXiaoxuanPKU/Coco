@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM issue_relations WHERE issue_relations.issue_to_id IS NULL AND issue_relations.issue_from_id = 2116 LIMIT 10;
+SELECT DISTINCT roles.* FROM roles WHERE roles.id = 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM issue_relations WHERE False AND issue_relations.issue_from_id = 2116 LIMIT 10;
+SELECT roles.* FROM roles WHERE roles.id = 1;
+SELECT roles.* FROM roles WHERE roles.id = 1 LIMIT 1;
+SELECT DISTINCT roles.* FROM roles WHERE roles.id = 1 LIMIT 1;

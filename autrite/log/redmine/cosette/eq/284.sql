@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND (users.id NOT IN (SELECT gu.user_id FROM groups_users gu WHERE gu.group_id = 10)) AND (LOWER(users.login) LIKE LOWER('%smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smi%')) OR ((LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%'))));
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'a0d9318650c8d';
 -- Rewritten Queries
-SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND users.id NOT IN (SELECT gu.user_id FROM groups_users AS gu WHERE gu.group_id = 10 LIMIT 1) AND (LOWER(users.login) LIKE LOWER('%smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smi%')) OR LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%'));
-SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND users.id NOT IN (SELECT gu.user_id FROM groups_users AS gu WHERE gu.group_id = 10 LIMIT 1) AND (LOWER(users.login) LIKE LOWER('%smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smi%')) OR LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%')) LIMIT 1;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'a0d9318650c8d' LIMIT 1;

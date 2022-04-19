@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND (LOWER(email_addresses.address) IN ('jdoe@example.net')) ORDER BY users.id ASC LIMIT 3;
+SELECT wiki_contents.* FROM wiki_contents WHERE wiki_contents.page_id = 8840;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND LOWER(email_addresses.address) IN ('jdoe@example.net') ORDER BY users.id ASC LIMIT 3;
+SELECT wiki_contents.* FROM wiki_contents WHERE wiki_contents.page_id = 8840 LIMIT 1;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM projects WHERE (projects.lft > 1 AND projects.rgt < 10) AND (((projects.status <> 9) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6,13)))))) LIMIT 6;
+SELECT COUNT(*) FROM members WHERE members.project_id = 8908;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM projects WHERE projects.lft > 1 AND projects.rgt < 10 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) LIMIT 6;
+SELECT COUNT(*) FROM members WHERE members.project_id = 8908 LIMIT 1;

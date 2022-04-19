@@ -576,7 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 2289 AND users.type IN ('User', 'User');
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) ORDER BY news.created_on DESC LIMIT 1;
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.project_id = 2289;
-SELECT members.* FROM members WHERE members.project_id = 2289 LIMIT 1;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) ORDER BY news.created_on DESC LIMIT 1;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) ORDER BY news.created_on DESC LIMIT 1;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) ORDER BY news.created_on DESC LIMIT 1;

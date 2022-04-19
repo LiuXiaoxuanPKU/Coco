@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE (((projects.status <> 9 AND EXISTS (SELECT 1 AS "one" FROM enabled_modules em WHERE em.project_id = projects.id AND em.name='repository')) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6,13)))))) AND (repository_id = 13 AND scmid LIKE 'abcd%') ORDER BY changesets.id ASC LIMIT 8;
+SELECT versions.id FROM versions WHERE LOWER(versions.name) = LOWER('acme');
 -- Rewritten Queries
-SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND repository_id = 13 AND scmid LIKE 'abcd%' ORDER BY changesets.id ASC LIMIT 8;
-SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND repository_id = 13 AND scmid LIKE 'abcd%' ORDER BY changesets.id ASC LIMIT 8;
+SELECT versions.id FROM versions WHERE LOWER(versions.name) = LOWER('acme') LIMIT 1;

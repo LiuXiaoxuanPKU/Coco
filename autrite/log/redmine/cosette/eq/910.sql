@@ -576,7 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT member_roles.* FROM member_roles INNER JOIN members ON members.id = member_roles.member_id WHERE (members.user_id = 9 AND member_roles.inherited_from IN (87,89));
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND news.id = 1063 LIMIT 7;
 -- Rewritten Queries
-SELECT member_roles.* FROM member_roles WHERE member_roles.inherited_from IN (87, 89) LIMIT 1;
-SELECT member_roles.* FROM member_roles WHERE member_roles.inherited_from IN (87, 89);
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND news.id = 1063 LIMIT 7;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND news.id = 1063 LIMIT 7;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND news.id = 1063 LIMIT 7;

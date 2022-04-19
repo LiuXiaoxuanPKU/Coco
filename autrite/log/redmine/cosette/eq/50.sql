@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  DISTINCT attachments.filename AS alias_0, projects.id FROM projects LEFT OUTER JOIN attachments ON attachments.container_id = projects.id AND attachments.container_type = 'dsetfyxrlagdfjmlmdurwb' WHERE projects.id = 855 ORDER BY attachments.filename ASC LIMIT 2;
+SELECT COUNT(*) FROM queries WHERE queries.type IN ('TimeEntryQuery');
 -- Rewritten Queries
-SELECT attachments.filename AS alias_0, projects.id FROM projects LEFT OUTER JOIN attachments ON attachments.container_id = projects.id AND attachments.container_type = 'dsetfyxrlagdfjmlmdurwb' WHERE projects.id = 855 ORDER BY attachments.filename ASC LIMIT 2;
+SELECT COUNT(*) FROM queries WHERE queries.type IN ('TimeEntryQuery') LIMIT 1;

@@ -576,7 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 3280 AND users.status = 1;
+SELECT messages.* FROM messages INNER JOIN boards ON boards.id = messages.board_id INNER JOIN projects ON projects.id = boards.project_id WHERE messages.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND messages.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards') IS NOT NULL;
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.project_id = 3280;
-SELECT members.* FROM members WHERE members.project_id = 3280 LIMIT 1;
+SELECT messages.* FROM messages INNER JOIN boards ON boards.id = messages.board_id INNER JOIN projects ON projects.id = boards.project_id WHERE messages.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND messages.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards') IS NOT NULL LIMIT 1;
+SELECT messages.* FROM messages INNER JOIN boards ON boards.id = messages.board_id INNER JOIN projects ON projects.id = boards.project_id WHERE messages.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND messages.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards' LIMIT 1) IS NOT NULL;
+SELECT messages.* FROM messages INNER JOIN boards ON boards.id = messages.board_id INNER JOIN projects ON projects.id = boards.project_id WHERE messages.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND messages.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards' LIMIT 1) IS NOT NULL LIMIT 1;

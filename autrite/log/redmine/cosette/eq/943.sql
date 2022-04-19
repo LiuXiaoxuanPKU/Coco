@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE (projects.status <> 9) AND (members.user_id = 50 OR (projects.is_public = TRUE AND members.user_id = 12));
+SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND users.status = 2 AND (LOWER(users.login) LIKE LOWER('%John%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%John%')) OR LOWER(users.firstname) LIKE LOWER('%John%') OR LOWER(users.lastname) LIKE LOWER('%John%')) ORDER BY login ASC;
 -- Rewritten Queries
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = 50 OR members.user_id = 12 LIMIT 1;
+SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND users.status = 2 AND (LOWER(users.login) LIKE LOWER('%John%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%John%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%John%') OR LOWER(users.lastname) LIKE LOWER('%John%')) ORDER BY login ASC LIMIT 1;
+SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND users.status = 2 AND (LOWER(users.login) LIKE LOWER('%John%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%John%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%John%') OR LOWER(users.lastname) LIKE LOWER('%John%')) ORDER BY login ASC;
+SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND users.status = 2 AND (LOWER(users.login) LIKE LOWER('%John%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%John%')) OR LOWER(users.firstname) LIKE LOWER('%John%') OR LOWER(users.lastname) LIKE LOWER('%John%')) ORDER BY login ASC LIMIT 1;

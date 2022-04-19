@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  users.* FROM users WHERE users.status = 1 AND users.type IN ('User', 'User') AND (LOWER(users.login) LIKE LOWER('%rober%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%rober%')) OR ((LOWER(users.firstname) LIKE LOWER('%rober%') OR LOWER(users.lastname) LIKE LOWER('%rober%')))) ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0009';
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.status = 1 AND users.type IN ('User', 'User') AND (LOWER(users.login) LIKE LOWER('%rober%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%rober%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%rober%') OR LOWER(users.lastname) LIKE LOWER('%rober%')) ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0009' LIMIT 1;

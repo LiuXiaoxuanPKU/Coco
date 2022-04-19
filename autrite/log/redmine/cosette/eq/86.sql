@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.project_id = 1982 AND (projects.status <> 9 AND EXISTS (SELECT 1 AS "one" FROM enabled_modules em WHERE em.project_id = projects.id AND em.name='issue_tracking')) AND issues.id != 9618 AND (LOWER(issues.subject) LIKE LOWER('%issue due%')) ORDER BY issues.id DESC LIMIT 2;
+SELECT boards.* FROM boards WHERE boards.project_id = 3175 ORDER BY boards.position ASC;
 -- Rewritten Queries
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.project_id = 1982 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND issues.id <> 9618 AND LOWER(issues.subject) LIKE LOWER('%issue due%') ORDER BY issues.id DESC LIMIT 2;
+SELECT boards.* FROM boards WHERE boards.project_id = 3175 ORDER BY boards.position ASC LIMIT 1;

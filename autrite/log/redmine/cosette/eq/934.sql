@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE (projects.status <> 9) AND (members.user_id = 124 OR (projects.is_public = TRUE AND members.user_id = 12));
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (custom_fields.visible = True OR custom_fields.id IN (SELECT DISTINCT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 115)) ORDER BY custom_fields.position ASC;
 -- Rewritten Queries
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = 124 OR members.user_id = 12 LIMIT 1;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (custom_fields.visible = True OR custom_fields.id IN (SELECT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 115 LIMIT 1)) ORDER BY custom_fields.position ASC;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (custom_fields.visible = True OR custom_fields.id IN (SELECT DISTINCT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 115 LIMIT 1)) ORDER BY custom_fields.position ASC;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (custom_fields.visible = True OR custom_fields.id IN (SELECT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 115)) ORDER BY custom_fields.position ASC;

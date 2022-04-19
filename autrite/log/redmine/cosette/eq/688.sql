@@ -576,8 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = TRUE OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects cfp WHERE cfp.project_id = 33)) ORDER BY custom_fields.position ASC;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND members.project_id = 1 AND users.status = 1 AND users.status = 1 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
 -- Rewritten Queries
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 33 LIMIT 1)) ORDER BY custom_fields.position ASC;
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 33 LIMIT 1)) ORDER BY custom_fields.position ASC;
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 33)) ORDER BY custom_fields.position ASC;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND members.project_id = 1 AND users.status = 1 AND users.status = 1 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND members.project_id = 1 AND users.status = 1 AND users.status = 1 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND members.project_id = 1 AND users.status = 1 AND users.status = 1 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;

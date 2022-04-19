@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE (projects.status <> 9) AND (members.user_id = 54 OR (projects.is_public = TRUE AND members.user_id = 12));
+SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE changesets.user_id = 8 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository') IS NOT NULL ORDER BY changesets.id DESC LIMIT 2;
 -- Rewritten Queries
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = 54 OR members.user_id = 12 LIMIT 1;
+SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE changesets.user_id = 8 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository' LIMIT 1) IS NOT NULL ORDER BY changesets.id DESC LIMIT 2;

@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) AS count_all, custom_field_id AS custom_field_id FROM custom_fields INNER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id INNER JOIN projects ON projects.id = custom_fields_projects.project_id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.is_for_all = True GROUP BY custom_field_id;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0235';
 -- Rewritten Queries
-SELECT COUNT(*) AS count_all, custom_field_id AS custom_field_id FROM custom_fields INNER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.is_for_all = True GROUP BY custom_field_id LIMIT 1;
-SELECT COUNT(*) AS count_all, custom_field_id AS custom_field_id FROM custom_fields INNER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id INNER JOIN projects ON projects.id = custom_fields_projects.project_id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.is_for_all = True GROUP BY custom_field_id LIMIT 1;
-SELECT COUNT(*) AS count_all, custom_field_id AS custom_field_id FROM custom_fields INNER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.is_for_all = True GROUP BY custom_field_id;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0235' LIMIT 1;

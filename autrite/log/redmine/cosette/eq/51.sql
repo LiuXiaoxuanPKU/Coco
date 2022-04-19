@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  DISTINCT roles.* FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = 848 ORDER BY roles.id ASC LIMIT 5;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.id = 1;
 -- Rewritten Queries
-SELECT roles.* FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = 848 ORDER BY roles.id ASC LIMIT 5;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.id = 1 LIMIT 1;

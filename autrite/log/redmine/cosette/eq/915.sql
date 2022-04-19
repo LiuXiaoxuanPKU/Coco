@@ -576,9 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 1765 AND projects.status != 5 AND (((projects.status <> 9) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (141,12))))));
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.project_id = 6871 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND issues.id <> 6335 AND LOWER(issues.subject) LIKE LOWER('%issue%') ORDER BY issues.id DESC LIMIT 1;
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.user_id = 1765;
-SELECT members.* FROM members WHERE members.user_id = 1765 LIMIT 1;
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 1765 AND projects.status <> 5 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (141, 12) LIMIT 1);
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 1765 AND projects.status <> 5 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (141, 12) LIMIT 1) LIMIT 1;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.project_id = 6871 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND issues.id <> 6335 AND LOWER(issues.subject) LIKE LOWER('%issue%') ORDER BY issues.id DESC LIMIT 1;

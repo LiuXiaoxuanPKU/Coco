@@ -576,6 +576,7 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.id, role_id FROM custom_fields INNER JOIN custom_fields_roles ON custom_fields_roles.custom_field_id = custom_fields.id INNER JOIN roles ON roles.id = custom_fields_roles.role_id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.visible = True;
+SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 95 OR projects.is_public = True AND members.user_id = 12);
 -- Rewritten Queries
-SELECT custom_fields.id, role_id FROM custom_fields INNER JOIN custom_fields_roles ON custom_fields_roles.custom_field_id = custom_fields.id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.visible = True;
+SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = 95 OR members.user_id = 12 LIMIT 1;
+SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 95 OR projects.is_public = True AND members.user_id = 12) LIMIT 1;

@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.status IN (1, 2) AND (users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (5,6,3,4)));
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.id = 1 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.status IN (1, 2) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (5, 6, 3, 4));
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.id = 1 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.id = 1 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.id = 1 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False;

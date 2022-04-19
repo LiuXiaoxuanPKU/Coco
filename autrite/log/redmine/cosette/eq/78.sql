@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.project_id = 826 AND issue_statuses.is_closed = False ORDER BY issues.id ASC LIMIT 10;
+SELECT email_addresses.* FROM email_addresses WHERE email_addresses.address = 'exelmqrqjmpcbrkezyglsrxfrousmsg@gmail.com';
 -- Rewritten Queries
-SELECT issues.* FROM issues WHERE issues.project_id = 826 ORDER BY issues.id ASC LIMIT 10;
+SELECT email_addresses.* FROM email_addresses WHERE email_addresses.address = 'exelmqrqjmpcbrkezyglsrxfrousmsg@gmail.com' LIMIT 1;

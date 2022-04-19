@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE (projects.status <> 9) AND members.user_id = 74;
+SELECT committer, user_id, COUNT(*) AS "count" FROM changesets WHERE repository_id = 10 GROUP BY committer, user_id;
 -- Rewritten Queries
-SELECT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE projects.status <> 9 AND members.user_id = 74;
-SELECT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE projects.status <> 9 AND members.user_id = 74 LIMIT 1;
+SELECT committer, user_id, COUNT(*) AS "count" FROM changesets WHERE repository_id = 10 GROUP BY committer, user_id LIMIT 1;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  time_entries.* FROM time_entries WHERE time_entries.issue_id IS NULL ORDER BY time_entries.id ASC LIMIT 9;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0278';
 -- Rewritten Queries
-SELECT time_entries.* FROM time_entries WHERE False ORDER BY time_entries.id ASC LIMIT 9;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0278' LIMIT 1;

@@ -576,15 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = 2 AND users.type = 'User' AND members.project_id = 636 AND roles.assignable = True ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 1358 AND issue_relations.issue_to_id = 3820;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND users.type = 'User' AND members.project_id = 636 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND users.type = 'User' AND members.project_id = 636 ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND users.type = 'User' AND members.project_id = 636 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND users.type = 'User' AND members.project_id = 636 ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE users.status = 2 AND users.type = 'User' AND members.project_id = 636 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE users.status = 2 AND users.type = 'User' AND members.project_id = 636 ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE users.status = 2 AND users.type = 'User' AND members.project_id = 636 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE users.status = 2 AND users.type = 'User' AND members.project_id = 636 ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = 2 AND users.type = 'User' AND members.project_id = 636 AND roles.assignable = True ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = 2 AND users.type = 'User' AND members.project_id = 636 AND roles.assignable = True ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 1358 AND issue_relations.issue_to_id = 3820 LIMIT 1;

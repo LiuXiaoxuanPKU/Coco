@@ -576,11 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE (projects.status <> 9) AND members.user_id = 64;
+SELECT MAX(custom_fields.position) FROM custom_fields WHERE custom_fields.type IN ('TimeEntryActivityCustomField');
 -- Rewritten Queries
-SELECT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 64;
-SELECT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 64 LIMIT 1;
-SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 64;
-SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 64 LIMIT 1;
-SELECT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE projects.status <> 9 AND members.user_id = 64;
-SELECT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE projects.status <> 9 AND members.user_id = 64 LIMIT 1;
+SELECT MAX(custom_fields.position) FROM custom_fields WHERE custom_fields.type IN ('TimeEntryActivityCustomField') LIMIT 1;

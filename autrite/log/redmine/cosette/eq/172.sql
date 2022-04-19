@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 2177 AND projects.status != 1 AND members.project_id IS NULL ORDER BY members.id ASC LIMIT 5;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0234';
 -- Rewritten Queries
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 2177 AND projects.status <> 1 AND False ORDER BY members.id ASC LIMIT 5;
-SELECT members.* FROM members WHERE members.user_id = 2177 AND False ORDER BY members.id ASC LIMIT 5;
-SELECT members.* FROM members WHERE members.user_id = 2177 AND members.project_id IS NULL ORDER BY members.id ASC LIMIT 5;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0234' LIMIT 1;

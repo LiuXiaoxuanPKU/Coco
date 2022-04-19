@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM members WHERE members.user_id IS NULL AND members.project_id = 9024 LIMIT 5;
+SELECT issues.parent_id FROM issues WHERE issues.id = 5491;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM members WHERE False AND members.project_id = 9024 LIMIT 5;
+SELECT issues.parent_id FROM issues WHERE issues.id = 5491 LIMIT 1;

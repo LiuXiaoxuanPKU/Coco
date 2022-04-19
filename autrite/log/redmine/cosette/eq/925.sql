@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE (projects.status <> 9) AND (members.user_id = 1 OR (projects.is_public = TRUE AND members.user_id = 12));
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12)) ORDER BY news.created_on DESC LIMIT 10;
 -- Rewritten Queries
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = 1 OR members.user_id = 12 LIMIT 1;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) ORDER BY news.created_on DESC LIMIT 10;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) ORDER BY news.created_on DESC LIMIT 10;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12)) ORDER BY news.created_on DESC LIMIT 10;

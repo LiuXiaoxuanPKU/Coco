@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT MAX(versions.effective_date) FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE (projects.id = 16 OR (projects.status <> 9 AND ( versions.sharing = 'system' OR (projects.lft >= 13 AND projects.rgt <= 14 AND versions.sharing = 'tree') OR (projects.lft < 13 AND projects.rgt > 14 AND versions.sharing IN ('hierarchy', 'descendants')) OR (projects.lft > 13 AND projects.rgt < 14 AND versions.sharing = 'hierarchy'))));
+SELECT changesets.* FROM changesets WHERE changesets.repository_id = 4583 ORDER BY changesets.committed_on DESC, changesets.id DESC;
 -- Rewritten Queries
-SELECT MAX(versions.effective_date) FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy';
-SELECT MAX(versions.effective_date) FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy' LIMIT 1;
+SELECT changesets.* FROM changesets WHERE changesets.repository_id = 4583 ORDER BY changesets.committed_on DESC, changesets.id DESC LIMIT 1;

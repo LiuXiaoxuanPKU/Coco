@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM members INNER JOIN member_roles ON members.id = member_roles.member_id WHERE member_roles.role_id = 2 LIMIT 3;
+SELECT COUNT(*) FROM members WHERE members.user_id = 3684;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM members LIMIT 3;
+SELECT COUNT(*) FROM members WHERE members.user_id = 3684 LIMIT 1;

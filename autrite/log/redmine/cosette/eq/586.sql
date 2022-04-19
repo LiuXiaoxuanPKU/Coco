@@ -576,8 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.* FROM custom_fields WHERE (custom_fields.visible = TRUE OR custom_fields.id IN (SELECT DISTINCT cfr.custom_field_id FROM members m INNER JOIN member_roles mr ON mr.member_id = m.id INNER JOIN custom_fields_roles cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 129)) AND custom_fields.is_filter = False;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 3)) ORDER BY custom_fields.position ASC;
 -- Rewritten Queries
-SELECT custom_fields.* FROM custom_fields WHERE (custom_fields.visible = True OR custom_fields.id IN (SELECT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 129 LIMIT 1)) AND custom_fields.is_filter = False;
-SELECT custom_fields.* FROM custom_fields WHERE (custom_fields.visible = True OR custom_fields.id IN (SELECT DISTINCT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 129 LIMIT 1)) AND custom_fields.is_filter = False;
-SELECT custom_fields.* FROM custom_fields WHERE (custom_fields.visible = True OR custom_fields.id IN (SELECT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 129)) AND custom_fields.is_filter = False;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 3 LIMIT 1)) ORDER BY custom_fields.position ASC;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 3 LIMIT 1)) ORDER BY custom_fields.position ASC;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 3)) ORDER BY custom_fields.position ASC;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE (projects.id = 2 OR (projects.status <> 9 AND ( versions.sharing = 'system' OR (projects.lft >= 11 AND projects.rgt <= 12 AND versions.sharing = 'tree') OR (projects.lft < 11 AND projects.rgt > 12 AND versions.sharing IN ('hierarchy', 'descendants')) OR (projects.lft > 11 AND projects.rgt < 12 AND versions.sharing = 'hierarchy')))) LIMIT 6;
+SELECT COUNT(*) FROM documents WHERE documents.project_id = 1133;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy' LIMIT 6;
+SELECT COUNT(*) FROM documents WHERE documents.project_id = 1133 LIMIT 1;

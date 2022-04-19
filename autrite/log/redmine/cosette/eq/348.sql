@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND (LOWER(email_addresses.address) IN ('testuser@example.org'));
+SELECT custom_fields.* FROM custom_fields WHERE type = 'GroupNonMemberCustomField' ORDER BY custom_fields.position ASC;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND LOWER(email_addresses.address) IN ('testuser@example.org');
-SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND LOWER(email_addresses.address) IN ('testuser@example.org') LIMIT 1;
+SELECT custom_fields.* FROM custom_fields WHERE type = 'GroupNonMemberCustomField' ORDER BY custom_fields.position ASC LIMIT 1;

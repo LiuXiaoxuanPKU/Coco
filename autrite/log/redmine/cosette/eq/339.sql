@@ -576,9 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT roles.id FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = 2593;
+SELECT custom_fields.* FROM custom_fields WHERE type = 'EnumerationCustomField' ORDER BY custom_fields.position ASC;
 -- Rewritten Queries
-SELECT roles.id FROM roles LIMIT 1;
-SELECT DISTINCT roles.id FROM roles LIMIT 1;
-SELECT roles.id FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = 2593;
-SELECT roles.id FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = 2593 LIMIT 1;
+SELECT custom_fields.* FROM custom_fields WHERE type = 'EnumerationCustomField' ORDER BY custom_fields.position ASC LIMIT 1;

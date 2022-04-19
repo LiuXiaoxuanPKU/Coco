@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE (projects.status <> 9) AND (members.user_id = 131 OR (projects.is_public = TRUE AND members.user_id = 12));
+SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%smith joh%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smith joh%')) OR (LOWER(users.firstname) LIKE LOWER('%smith%') OR LOWER(users.lastname) LIKE LOWER('%smith%')) AND (LOWER(users.firstname) LIKE LOWER('%joh%') OR LOWER(users.lastname) LIKE LOWER('%joh%'));
 -- Rewritten Queries
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = 131 OR members.user_id = 12 LIMIT 1;
+SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%smith joh%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smith joh%')) OR (LOWER(users.firstname) LIKE LOWER('%smith%') OR LOWER(users.lastname) LIKE LOWER('%smith%')) AND (LOWER(users.firstname) LIKE LOWER('%joh%') OR LOWER(users.lastname) LIKE LOWER('%joh%')) LIMIT 1;
+SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%smith joh%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smith joh%') LIMIT 1) OR (LOWER(users.firstname) LIKE LOWER('%smith%') OR LOWER(users.lastname) LIKE LOWER('%smith%')) AND (LOWER(users.firstname) LIKE LOWER('%joh%') OR LOWER(users.lastname) LIKE LOWER('%joh%'));
+SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%smith joh%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smith joh%') LIMIT 1) OR (LOWER(users.firstname) LIKE LOWER('%smith%') OR LOWER(users.lastname) LIKE LOWER('%smith%')) AND (LOWER(users.firstname) LIKE LOWER('%joh%') OR LOWER(users.lastname) LIKE LOWER('%joh%')) LIMIT 1;

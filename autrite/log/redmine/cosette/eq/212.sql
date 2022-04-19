@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND (users.id NOT IN (SELECT gu.user_id FROM groups_users gu WHERE gu.group_id = 10)) ORDER BY users.firstname, users.lastname, users.id LIMIT 4 OFFSET 1;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0196';
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND users.id NOT IN (SELECT gu.user_id FROM groups_users AS gu WHERE gu.group_id = 10 LIMIT 1) ORDER BY users.firstname, users.lastname, users.id LIMIT 4 OFFSET 1;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0196' LIMIT 1;

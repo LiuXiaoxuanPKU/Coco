@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM users WHERE (LOWER(users.login) LIKE LOWER('%smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smi%')) OR ((LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%')))) LIMIT 7;
+SELECT members.id FROM members WHERE members.project_id = 6756;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM users WHERE LOWER(users.login) LIKE LOWER('%smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smi%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%') LIMIT 7;
+SELECT members.id FROM members WHERE members.project_id = 6756 LIMIT 1;

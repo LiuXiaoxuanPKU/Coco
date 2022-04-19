@@ -576,8 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = TRUE OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects cfp WHERE cfp.project_id = 31)) AND custom_fields.visible = True AND custom_fields.is_filter = True ORDER BY custom_fields.position ASC;
+SELECT projects.* FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers);
 -- Rewritten Queries
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 31 LIMIT 1)) AND custom_fields.visible = True AND custom_fields.is_filter = True ORDER BY custom_fields.position ASC;
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 31 LIMIT 1)) AND custom_fields.visible = True AND custom_fields.is_filter = True ORDER BY custom_fields.position ASC;
-SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 31)) AND custom_fields.visible = True AND custom_fields.is_filter = True ORDER BY custom_fields.position ASC;
+SELECT projects.* FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers);
+SELECT projects.* FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT project_id FROM projects_trackers);
+SELECT projects.* FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT project_id FROM projects_trackers);

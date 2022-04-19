@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE versions.project_id = 6926 AND (((projects.status <> 9 AND EXISTS (SELECT 1 AS "one" FROM enabled_modules em WHERE em.project_id = projects.id AND em.name='issue_tracking')) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6,13)))))) AND versions.name = 'oieqmehtwprsayatpjxafqo' LIMIT 9;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0276';
 -- Rewritten Queries
-SELECT versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE versions.project_id = 6926 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND versions.name = 'oieqmehtwprsayatpjxafqo' LIMIT 9;
-SELECT versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE versions.project_id = 6926 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND versions.name = 'oieqmehtwprsayatpjxafqo' LIMIT 9;
-SELECT versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE versions.project_id = 6926 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND versions.name = 'oieqmehtwprsayatpjxafqo' LIMIT 9;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0276' LIMIT 1;

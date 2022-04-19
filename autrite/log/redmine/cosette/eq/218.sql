@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE (projects.id = 1 OR (projects.status <> 9 AND ( versions.sharing = 'system' OR (projects.lft >= 1 AND projects.rgt <= 10 AND versions.sharing = 'tree') OR (projects.lft < 1 AND projects.rgt > 10 AND versions.sharing IN ('hierarchy', 'descendants')) OR (projects.lft > 1 AND projects.rgt < 10 AND versions.sharing = 'hierarchy')))) AND (LOWER(versions.name) = LOWER('2.1')) ORDER BY versions.id ASC LIMIT 4;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0001';
 -- Rewritten Queries
-SELECT versions.* FROM versions WHERE (versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy') AND LOWER(versions.name) = LOWER('2.1') ORDER BY versions.id ASC LIMIT 4;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'project-0001' LIMIT 1;

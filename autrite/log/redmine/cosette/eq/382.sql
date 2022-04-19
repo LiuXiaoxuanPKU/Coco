@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT MIN(versions.effective_date) FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE (projects.id = 1 OR (projects.status <> 9 AND ( versions.sharing = 'system' OR (projects.lft >= 1 AND projects.rgt <= 10 AND versions.sharing = 'tree') OR (projects.lft < 1 AND projects.rgt > 10 AND versions.sharing IN ('hierarchy', 'descendants')) OR (projects.lft > 1 AND projects.rgt < 10 AND versions.sharing = 'hierarchy'))));
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id = 17562 AND workflows.role_id = 8565;
 -- Rewritten Queries
-SELECT MIN(versions.effective_date) FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy';
-SELECT MIN(versions.effective_date) FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy' LIMIT 1;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id = 17562 AND workflows.role_id = 8565 LIMIT 1;

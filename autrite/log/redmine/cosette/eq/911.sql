@@ -576,7 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 4059 AND projects.status != 1;
+SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND users.status = 1 AND (LOWER(users.login) LIKE LOWER('%Misc%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Misc%')) OR LOWER(users.firstname) LIKE LOWER('%Misc%') OR LOWER(users.lastname) LIKE LOWER('%Misc%'));
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.user_id = 4059;
-SELECT members.* FROM members WHERE members.user_id = 4059 LIMIT 1;
+SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND users.status = 1 AND (LOWER(users.login) LIKE LOWER('%Misc%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Misc%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%Misc%') OR LOWER(users.lastname) LIKE LOWER('%Misc%'));
+SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND users.status = 1 AND (LOWER(users.login) LIKE LOWER('%Misc%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Misc%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%Misc%') OR LOWER(users.lastname) LIKE LOWER('%Misc%')) LIMIT 1;
+SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND users.status = 1 AND (LOWER(users.login) LIKE LOWER('%Misc%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Misc%')) OR LOWER(users.firstname) LIKE LOWER('%Misc%') OR LOWER(users.lastname) LIKE LOWER('%Misc%')) LIMIT 1;

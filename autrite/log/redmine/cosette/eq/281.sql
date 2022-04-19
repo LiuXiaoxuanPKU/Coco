@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND (users.status <> 0) AND users.status = 2 AND (LOWER(users.login) LIKE LOWER('%Misc%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Misc%')) OR ((LOWER(users.firstname) LIKE LOWER('%Misc%') OR LOWER(users.lastname) LIKE LOWER('%Misc%'))));
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'a59bc2d71ed7e';
 -- Rewritten Queries
-SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND users.status = 2 AND (LOWER(users.login) LIKE LOWER('%Misc%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Misc%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%Misc%') OR LOWER(users.lastname) LIKE LOWER('%Misc%'));
-SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND users.status = 2 AND (LOWER(users.login) LIKE LOWER('%Misc%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Misc%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%Misc%') OR LOWER(users.lastname) LIKE LOWER('%Misc%')) LIMIT 1;
+SELECT MAX(projects.rgt) FROM projects WHERE projects.parent_id IS NULL AND name < 'a59bc2d71ed7e' LIMIT 1;

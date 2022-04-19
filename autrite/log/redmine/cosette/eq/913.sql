@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 3705 AND projects.status != 9 AND (((projects.status <> 9) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (137,12))))));
+SELECT DISTINCT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL ORDER BY trackers.position ASC;
 -- Rewritten Queries
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 3705 AND projects.status <> 9 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (137, 12) LIMIT 1);
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 3705 AND projects.status <> 9 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (137, 12) LIMIT 1) LIMIT 1;
+SELECT DISTINCT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL ORDER BY trackers.position ASC;

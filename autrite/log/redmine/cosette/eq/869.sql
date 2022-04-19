@@ -576,11 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN versions ON versions.id = issues.fixed_version_id WHERE (issues.fixed_version_id IS NOT NULL AND issues.project_id <> versions.project_id AND versions.sharing <> 'system') AND (versions.project_id IN (61,62) OR issues.project_id IN (61,62));
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 35)) AND custom_fields.visible = True AND custom_fields.is_filter = False ORDER BY custom_fields.position ASC;
 -- Rewritten Queries
-SELECT issues.* FROM issues WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id IN (61, 62);
-SELECT issues.* FROM issues WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id IN (61, 62) LIMIT 1;
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id IN (61, 62);
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id IN (61, 62) LIMIT 1;
-SELECT issues.* FROM issues INNER JOIN versions ON versions.id = issues.fixed_version_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id <> versions.project_id AND versions.sharing <> 'system' AND (versions.project_id IN (61, 62) OR issues.project_id IN (61, 62));
-SELECT issues.* FROM issues INNER JOIN versions ON versions.id = issues.fixed_version_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id <> versions.project_id AND versions.sharing <> 'system' AND (versions.project_id IN (61, 62) OR issues.project_id IN (61, 62)) LIMIT 1;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 35 LIMIT 1)) AND custom_fields.visible = True AND custom_fields.is_filter = False ORDER BY custom_fields.position ASC;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT DISTINCT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 35 LIMIT 1)) AND custom_fields.visible = True AND custom_fields.is_filter = False ORDER BY custom_fields.position ASC;
+SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR id IN (SELECT cfp.custom_field_id FROM custom_fields_projects AS cfp WHERE cfp.project_id = 35)) AND custom_fields.visible = True AND custom_fields.is_filter = False ORDER BY custom_fields.position ASC;
