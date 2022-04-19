@@ -27,7 +27,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "author",
+        "field_name": "author_id",
         "db": false,
         "cond": ""
       },
@@ -551,13 +551,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "commented",
+        "field_name": "commented_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "author",
+        "field_name": "author_id",
         "db": false,
         "cond": ""
       },
@@ -934,7 +934,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "project",
+        "field_name": "project_id",
         "db": false,
         "cond": ""
       },
@@ -946,7 +946,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "category",
+        "field_name": "category_id",
         "db": false,
         "cond": ""
       },
@@ -1476,31 +1476,31 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "project",
+        "field_name": "project_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "tracker",
+        "field_name": "tracker_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "priority",
+        "field_name": "priority_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "status",
+        "field_name": "status_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "author",
+        "field_name": "author_id",
         "db": false,
         "cond": ""
       },
@@ -1540,12 +1540,6 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "start_date",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "due_date",
         "db": false,
         "cond": ""
       },
@@ -1718,13 +1712,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "issue_from",
+        "field_name": "issue_from_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "issue_to",
+        "field_name": "issue_to_id",
         "db": false,
         "cond": ""
       },
@@ -2047,13 +2041,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "principal",
+        "field_name": "user_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "project",
+        "field_name": "project_id",
         "db": false,
         "cond": ""
       },
@@ -2137,7 +2131,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "role",
+        "field_name": "role_id",
         "db": false,
         "cond": ""
       },
@@ -2195,7 +2189,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "board",
+        "field_name": "board_id",
         "db": false,
         "cond": ""
       },
@@ -2792,7 +2786,7 @@
           "project_id"
         ],
         "db": false,
-        "cond": "",
+        "cond": "is_default => true",
         "case_sensitive": true,
         "type": "has_one"
       },
@@ -3268,13 +3262,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "default_status",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
+        "field_name": "default_status_id",
         "db": false,
         "cond": ""
       },
@@ -3302,23 +3290,11 @@
         "max": 30
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "description",
         "db": false,
         "min": null,
         "max": 255
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "description",
-        "db": false,
-        "cond": ""
       },
       {
         "^o": "LengthConstraint",
@@ -3421,12 +3397,6 @@
         "type": "builtin"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "name",
         "db": false,
@@ -3434,12 +3404,6 @@
         "max": 60
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "description",
         "db": false,
@@ -3462,12 +3426,6 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "wiki_page_title",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "effective_date",
         "db": false,
         "cond": ""
       },
@@ -3559,7 +3517,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "user",
+        "field_name": "user_id",
         "db": false,
         "cond": ""
       },
@@ -4060,13 +4018,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "role",
+        "field_name": "role_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "tracker",
+        "field_name": "tracker_id",
         "db": false,
         "cond": ""
       },
