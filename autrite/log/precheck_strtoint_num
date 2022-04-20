@@ -1,3 +1,3 @@
-{"app_name": "openproject", "inclusion": 7699, "length": 7133, "format": 1051}
-{"app_name": "forem", "inclusion": 665, "length": 1042, "format": 126}
-{"app_name": "redmine", "inclusion": 736, "length": 1368, "format": 603}
+{"app_name": "forem", "inclusion": 995, "length": 609, "format": 0, "queries_with_cs": 3802}
+{"app_name": "redmine", "inclusion": 947, "length": 817, "format": 206, "queries_with_cs": 4525}
+{"app_name": "openproject", "inclusion": 8676, "length": 5912, "format": 54, "queries_with_cs": 31564}
