@@ -3,10 +3,10 @@ import os
 from mo_sql_parsing import parse, format
 import unittest
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from constraint import FormatConstraint, InclusionConstraint
+from constraint import FormatConstraint, InclusionConstraint, LengthConstraint
 from extract_rule import ExtractQueryRule
 
-class TestInclusionConstraintQuery(unittest.TestCase):
+class InclusionConstraintQuery(unittest.TestCase):
     
     def test_non_example_naive(self):
         cs = [InclusionConstraint("auth_sources", "fake_column", False, [])]
@@ -78,15 +78,39 @@ class TestInclusionConstraintQuery(unittest.TestCase):
         extracted = ExtractQueryRule(cs).apply(q)
         self.assertEqual(len(extracted), 1)
 
-    def test_alias_in_subquery(self):
-        cs = []
-        q = "SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND news.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL"
+    def test_aggregation(self):
+        cs = [InclusionConstraint("follows", "anycolumn", False, [])]
+        q = "SELECT COUNT(*) FROM follows"
         q = parse(q)
         extracted = ExtractQueryRule(cs).apply(q)
         self.assertEqual(len(extracted), 1)
 
+    def test_select_all_column1(self):
+        # for inclusion constraint, if "SELECT *" shows up, table exists in constraint tables  
+        cs = [InclusionConstraint("attachments", "any_column", False, [])]
+        q = "SELECT * AS one FROM attachments WHERE disk_filename = '060719210727_archive.zip' AND id <> 21 LIMIT 1"
+        q = parse(q)
+        extracted = ExtractQueryRule(cs).apply(q)
+        self.assertEqual(len(extracted), 1)
 
-class TestFormatConstraintQuery(unittest.TestCase):
+    def test_select_all_column2(self):
+        # for inclusion constraint, if "SELECT *" shows up, table NOT exist in constraint tables 
+        cs = [InclusionConstraint("not_attachments", "any_column", False, [])]
+        q = "SELECT * AS one FROM attachments WHERE disk_filename = '060719210727_archive.zip' AND id <> 21 LIMIT 1"
+        q = parse(q)
+        extracted = ExtractQueryRule(cs).apply(q)
+        self.assertEqual(len(extracted), 0)
+
+    def test_select_all_column3(self):
+        # for inclusion constraint, if "SELECT *" shows up, table NOT exist in constraint tables 
+        cs = [InclusionConstraint("not_attachments", "disk_filename", False, [])]
+        q = "SELECT * AS one FROM attachments WHERE disk_filename = '060719210727_archive.zip' AND id <> 21 LIMIT 1"
+        q = parse(q)
+        extracted = ExtractQueryRule(cs).apply(q)
+        self.assertEqual(len(extracted), 0)
+
+
+class FormatConstraintQuery(unittest.TestCase):
     def test_non_example_naive(self):
         cs = [FormatConstraint("auth_sources", "fake_column", False, "a-zA-Z")]
         q = "SELECT 1 AS one FROM auth_sources LIMIT 1"
@@ -101,6 +125,31 @@ class TestFormatConstraintQuery(unittest.TestCase):
         extracted = ExtractQueryRule(cs).apply(q)
         self.assertEqual(len(extracted), 1) 
 
+    def test_select_all1(self):
+        cs = [FormatConstraint("attachments", "disk_filename", False, "a-zA-Z")]
+        q = "SELECT * FROM attachments WHERE disk_filename = '060719210727_archive.zip'"
+        q = parse(q)
+        extracted = ExtractQueryRule(cs).apply(q)
+        self.assertEqual(len(extracted), 1) 
+
+    def test_select_all2(self):
+        cs = [FormatConstraint("attachments", "disk_filename", False, "a-zA-Z")]
+        q = "SELECT * FROM attachments"
+        q = parse(q)
+        extracted = ExtractQueryRule(cs).apply(q)
+        self.assertEqual(len(extracted), 0) 
+
+    def test_select_all3(self):
+        cs = [FormatConstraint("attachments", "disk_filename", False, "a-zA-Z")]
+        q = "SELECT attachments.* FROM attachments WHERE disk_filename = '060719210727_archive.zip'"
+        q = parse(q)
+        extracted = ExtractQueryRule(cs).apply(q)
+        self.assertEqual(len(extracted), 1) 
+
+
+# To only run one test: python3 test_extract_rule.py TestFormatConstraintQuery.test_where_naive
 if __name__ == "__main__":
     unittest.main()
+
+
     

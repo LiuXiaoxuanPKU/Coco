@@ -1,14 +1,17 @@
 import rule
+from constraint import InclusionConstraint, Constraint
 
 
 class ExtractQueryRule(rule.Rule):
     def __init__(self, cs) -> None:
-        # cs is a list of all certain type constraints (e.g. a list of Inclusion constraints) 
-        # pre-filter constriants to use this function 
+        # cs is a non-empty list of a certain type constraint (e.g. a list of Inclusion constraints) 
+        # pre-filter constriants to use this function, pre-filered constraints only contain one type
+ 
         super().__init__(cs)
         self.name = "ExtractQuery"
         self.table_to_field = self.get_cs_map(cs)
         self.cs_tables = self.table_to_field.keys()
+        self.cs_type = type(cs[0]) if len(cs) > 0 else Constraint 
 
     def apply_single(self, q) -> list:
         if not 'from' in q:
@@ -58,7 +61,7 @@ class ExtractQueryRule(rule.Rule):
             
         return []
 
-    #=================== helper function ====================
+    #========================= helper function =======================
 
     # return a map: table(str) -> fields(set) 
     def get_cs_map(self, cs) -> dict:
@@ -87,14 +90,15 @@ class ExtractQueryRule(rule.Rule):
     def check_select(self, clause, table=None) -> bool:
         # {'value': 1, 'name': 'one'}
         # {'value': 'attachments.*'}
-        # [{'value': 'attachments.filename', 'name': 'alias_0'}, {'value': 'projects.id'}]
         def check_value_clause(clause):
             value = clause['value']
             if isinstance(value, int):
                 return False
+            if isinstance(value, dict):
+                aggr_op = list(value.keys())[0]
+                value = value[aggr_op]
             if "*" in value:
-                return False
-                return True
+                return self.cs_type == InclusionConstraint and table in self.cs_tables
             elif not isinstance(value, str):
                 print("[Warning] Does not handle value %s of type %s" % (value, type(value)))
                 return False
@@ -106,7 +110,8 @@ class ExtractQueryRule(rule.Rule):
                     return True
             else:
                 return False
-
+        if clause == "*":
+            return self.cs_type == InclusionConstraint and table in self.cs_tables
         if isinstance(clause, dict):
             return check_value_clause(clause)
         if isinstance(clause, list):
