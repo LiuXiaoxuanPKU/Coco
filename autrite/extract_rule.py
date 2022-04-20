@@ -4,14 +4,13 @@ from constraint import InclusionConstraint, Constraint
 
 class ExtractQueryRule(rule.Rule):
     def __init__(self, cs) -> None:
-        # cs is a non-empty list of a certain type constraint (e.g. a list of Inclusion constraints) 
-        # pre-filter constriants to use this function, pre-filered constraints only contain one type
+        # cs is a non-empty list of constraints
  
         super().__init__(cs)
         self.name = "ExtractQuery"
         self.table_to_field = self.get_cs_map(cs)
         self.cs_tables = self.table_to_field.keys()
-        self.cs_type = type(cs[0]) if len(cs) > 0 else Constraint 
+        self.inclusion_t = self.get_inclusion_table(cs)
 
     def apply_single(self, q) -> list:
         if not 'from' in q:
@@ -63,6 +62,14 @@ class ExtractQueryRule(rule.Rule):
 
     #========================= helper function =======================
 
+    # return a set of all tables that contains inclusion constraints 
+    def get_inclusion_table(self, cs) -> set:
+        inclusion_t = set()
+        for c in cs:
+            if type(c) == InclusionConstraint:
+                inclusion_t.add(c.table)
+        return inclusion_t
+
     # return a map: table(str) -> fields(set) 
     def get_cs_map(self, cs) -> dict:
         table_to_field = {}
@@ -98,7 +105,7 @@ class ExtractQueryRule(rule.Rule):
                 aggr_op = list(value.keys())[0]
                 value = value[aggr_op]
             if "*" in value:
-                return self.cs_type == InclusionConstraint and table in self.cs_tables
+                return table in self.inclusion_t
             elif not isinstance(value, str):
                 print("[Warning] Does not handle value %s of type %s" % (value, type(value)))
                 return False
@@ -111,7 +118,7 @@ class ExtractQueryRule(rule.Rule):
             else:
                 return False
         if clause == "*":
-            return self.cs_type == InclusionConstraint and table in self.cs_tables
+            return table in self.inclusion_t
         if isinstance(clause, dict):
             return check_value_clause(clause)
         if isinstance(clause, list):

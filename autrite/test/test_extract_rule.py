@@ -3,7 +3,7 @@ import os
 from mo_sql_parsing import parse, format
 import unittest
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from constraint import FormatConstraint, InclusionConstraint, LengthConstraint
+from constraint import FormatConstraint, InclusionConstraint, UniqueConstraint
 from extract_rule import ExtractQueryRule
 
 class InclusionConstraintQuery(unittest.TestCase):
@@ -145,6 +145,22 @@ class FormatConstraintQuery(unittest.TestCase):
         q = parse(q)
         extracted = ExtractQueryRule(cs).apply(q)
         self.assertEqual(len(extracted), 1) 
+
+
+class GeneralCase(unittest.TestCase):
+
+    def test_more_them_one_extarction(self):
+        cs = [
+             UniqueConstraint("projects", "id", False, "builtin", None),
+             UniqueConstraint("projects", "status", False, "builtin", None),
+             UniqueConstraint("projects", "user_id", False, "builtin", None),
+             UniqueConstraint("projects", "identifier", False, "builtin", None),
+             UniqueConstraint("projects", "name", False, "builtin", None)
+             ]
+        q = "SELECT projects.* FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND (identifier = 'subproject1' OR LOWER(name) = 'subproject1') ORDER BY projects.id ASC LIMIT 6" 
+        q = parse(q)
+        extracted = ExtractQueryRule(cs).apply(q)
+        self.assertEqual(len(extracted), 1)
 
 
 # To only run one test: python3 test_extract_rule.py TestFormatConstraintQuery.test_where_naive

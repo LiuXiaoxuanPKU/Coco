@@ -16,17 +16,13 @@ from utils import GlobalExpRecorder
 # ------------------------------------------------------------------------------
 
 #========================== static variables =========================
-app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021}
-# app_to_cnt = {"redmine": 100, "forem": 100, "openproject": 100}
+# app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021}
+app_to_cnt = {"redmine": 100, "forem": 100, "openproject": 100}
 appnames = ['forem', 'redmine', 'openproject']
 name_to_type = { 
-               'unique': constraint.UniqueConstraint,
                'inclusion': constraint.InclusionConstraint,
                'length': constraint.LengthConstraint,
                'format': constraint.FormatConstraint,
-               'presence': constraint.PresenceConstraint,
-               'numerical': constraint.NumericalConstraint,
-               'foreign_key': constraint.ForeignKeyConstraint
                }
 #=====================================================================
 
@@ -42,15 +38,16 @@ def main(verbal) -> None:
         queries = load_queries(appname)
         recorder.record("app_name", appname)
         # count the number of queries with constraints on it 
-        all_cnt = 0
+        all_cs = load_cs(appname, 'all')
+        all_cnt = count(all_cs, queries, verbal)
+        recorder.record("queries_with_cs", all_cnt)
+
+        # count inclusion, length, format constraint query
         for type_name in name_to_type.keys():
             cs_type = name_to_type[type_name]
             filtered_cs = load_cs(appname, cs_type)
-            cnt = count(filtered_cs, queries, verbal)
-            all_cnt += cnt
-            if type_name in {'format', 'length', 'inclusion'}:         
-                recorder.record(type_name, cnt)
-        recorder.record('queries_with_cs', all_cnt)
+            cnt = count(filtered_cs, queries, verbal)      
+            recorder.record(type_name, cnt)
         recorder.dump(get_filename(FileType.PRECHECK_STR2INT_NUM, None))
 #========================================================================
 
