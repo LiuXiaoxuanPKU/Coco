@@ -31,9 +31,12 @@ if __name__ == '__main__':
         query_filename = get_filename(FileType.RAW_QUERY, appname) 
     constraint_filename = get_filename(FileType.CONSTRAINT, appname)
     offset = 0
-    query_cnt = 10000
+    query_cnt = 1000000
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
              rule.AddLimitOne, rule.RemoveJoin, rule.ReplaceOuterJoin]
+    # does not support remove join for now, because it's too slower and not supported by the verifier 
+    # rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
+    #         rule.AddLimitOne, rule.ReplaceOuterJoin]
     constraints = Loader.load_constraints(constraint_filename)
     if args.db:
         print("========Only use DB constraints to perform optimization======")
@@ -83,7 +86,7 @@ if __name__ == '__main__':
         for rq in rewritten_queries:
             try:
                 estimate_cost = Evaluator.evaluate_cost(rq.q_raw_param, connect_str) 
-                if estimate_cost < 2 * org_cost:
+                if estimate_cost <= org_cost:
                     rq.estimate_cost = estimate_cost 
                     rewritten_queries_lower_cost.append(rq)
                 else:

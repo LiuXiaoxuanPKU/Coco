@@ -18,6 +18,8 @@ class Loader:
                     c = constraint.LengthConstraint(
                         classnode['table'], obj['field_name'], obj['db'], obj['min'], obj['max'])
                 elif obj["^o"] == "UniqueConstraint":
+                    if len(obj["cond"]) > 0:
+                        continue
                     c = constraint.UniqueConstraint(
                         classnode['table'], obj['field_name'], obj['db'], obj["type"], cond=None)
                 elif obj["^o"] == "PresenceConstraint":
@@ -30,6 +32,8 @@ class Loader:
                     c = constraint.FormatConstraint(
                         classnode['table'], obj['field_name'], obj['db'], obj['format'])
                 elif obj["^o"] == "NumericalConstraint":
+                    if obj['min'] is None and obj['max'] is None:
+                        continue
                     c = constraint.NumericalConstraint(
                         classnode['table'], obj['field_name'], obj['db'], obj['min'], obj['max'])
                 elif obj["^o"] == "ForeignKeyConstraint":

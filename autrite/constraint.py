@@ -21,7 +21,7 @@ class UniqueConstraint(Constraint):
         self.type = type
 
     def __str__(self) -> str:
-        return "Unique_table_%s_field_%s_cond_%s" % (self.table, self.field, self.cond)
+        return "Unique_table_%s_field_%s_cond_%s" % (self.table, '_'.join(self.field), self.cond)
 
 
 class InclusionConstraint(Constraint):
