@@ -12,7 +12,7 @@ class TreeVisitor
   end
 
   def visit(node, _params)
-    unless ["ApplicationRecord", "ActiveRecord::Base"].include?node.parent
+    if node.table.nil?
       # puts "#{node.parent}"
       return
     end
@@ -31,7 +31,6 @@ class Serializer
     node.table = node_obj['table']
     node.children = node_obj['children']
     node.constraints = Oj.load(node_obj['constraints'].to_json)
-    node
   end
 
   def self.serialize_node(node)
@@ -43,8 +42,10 @@ class Serializer
       HasOneManyConstraint
     ]
     dump_constrains = node.constraints.reject { |c| skip_types.include? c.class }
+    dump_constrains = dump_constrains.uniq
     obj = {
       table: node.table,
+      parent: node.parent,
       class: node.name,
       constraints: (JSON.parse Oj.dump(dump_constrains))
     }

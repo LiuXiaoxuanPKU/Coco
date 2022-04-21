@@ -164,7 +164,7 @@ class BuiltinExtractor < Extractor
   def extract_unique_scope_cond_sense(nodes)
     scope = []
     cond = nil
-    case_sensitive = nil
+    case_sensitive = false
     allow_nil = false # default is false for validate_uniqueness_of
     nodes.each do |n|
       k, v = handle_assoc_node(n)
@@ -196,7 +196,7 @@ class BuiltinExtractor < Extractor
     scope = []
     content = ast[1].children
     cond = nil
-    case_sensitive = nil
+    case_sensitive = false
     allow_nil = false
     content.each do |node|
       field = handle_symbol_literal_node(node)
@@ -321,7 +321,7 @@ class BuiltinExtractor < Extractor
     end
     fields.each do |field|
       constraints << LengthConstraint.new(field, min, max, db = false)
-      if !allow_nil && (min.nil? || (!min.nil? && min > 0))
+      if !allow_nil && (!min.nil? && min > 0)
         constraints << PresenceConstraint.new(field, cond = nil, db = false)
       end
     end

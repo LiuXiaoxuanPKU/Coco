@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.organization_id = 1 AND notifications.notifiable_id = 1439 AND notifications.notifiable_type = 'Broadcast' AND notifications.action = 'avjduqcygdmdmjxeiivwluedwmhlwjkceommaxffzswxefuyfhzglmzmfhemvbfhrnyqjyhzndfbgbiaavawijzukyxawwljfnlslhmxurzvtnsjbhehxgqtldzlqykhyjkevafxzaoivsnfdzleocnxlokyrlokyfpglzoouuvhretxpjgqzigjemtnpymwxzlpxdurmojtfmiokyijteylvtsunnesbf' LIMIT 9;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.organization_id = 2 AND notifications.notifiable_id = 893 AND notifications.notifiable_type = 'Broadcast' AND notifications.action = 'cjkjfryyzshodztytfqlqbltenkvizriuwbafkhjxsfwscqjbgghhb' LIMIT 9;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE False AND notifications.organization_id = 1 AND notifications.notifiable_id = 1439 AND notifications.notifiable_type = 'Broadcast' AND notifications.action = 'avjduqcygdmdmjxeiivwluedwmhlwjkceommaxffzswxefuyfhzglmzmfhemvbfhrnyqjyhzndfbgbiaavawijzukyxawwljfnlslhmxurzvtnsjbhehxgqtldzlqykhyjkevafxzaoivsnfdzleocnxlokyrlokyfpglzoouuvhretxpjgqzigjemtnpymwxzlpxdurmojtfmiokyijteylvtsunnesbf' LIMIT 9;
+SELECT 1 AS "one" FROM notifications WHERE False AND notifications.organization_id = 2 AND notifications.notifiable_id = 893 AND notifications.notifiable_type = 'Broadcast' AND notifications.action = 'cjkjfryyzshodztytfqlqbltenkvizriuwbafkhjxsfwscqjbgghhb' LIMIT 9;
