@@ -1,5 +1,5 @@
 import rule
-from constraint import InclusionConstraint, Constraint
+from constraint import InclusionConstraint
 
 
 class ExtractQueryRule(rule.Rule):
@@ -140,8 +140,10 @@ class ExtractQueryRule(rule.Rule):
             return False
         else: # base case
             if op == "not":
-                clause = clause['not']
+                clause = clause[op]
                 op = list(clause.keys())[0]
+            if isinstance(clause[op][0], int):
+                return False
             if not isinstance(clause[op], list):
                 print("[Warning] 1. Does not handle predicate %s of type %s for now" % (clause[op], type(clause[op])))
                 return False
