@@ -85,7 +85,7 @@ def count(filtered_cs, queries, verbal) -> int:
 # return True if query contains inclusion constrains
 def extracted(q) -> bool:
     # rewrite_q is a list of queries from the rewrite rules
-    return len(q) == 1
+    return len(q) >= 1
 
 # print info about errored query
 def print_error(q, verbal) -> None:
