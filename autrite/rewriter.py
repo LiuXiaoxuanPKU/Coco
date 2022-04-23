@@ -2,7 +2,6 @@ from config import REWRITE_LIMIT, RewriteQuery
 from constraint import *
 from rule import AddPredicate, RemoveDistinct, AddLimitOne, RemoveJoin, RemovePredicate, RewriteNullPredicate, UnionToUnionAll, ReplaceOuterJoin
 from mo_sql_parsing import format
-import copy
 
 class Rewriter:
     def __init__(self) -> None:
@@ -37,20 +36,25 @@ class Rewriter:
             # TODO: extract all the fields insteaf of all the tokens
             q_str = format(q)
             tokens = [t.lower().split('.')[-1] for t in q_str.split(' ')]
-            return tokens
+            tables = [t.lower().split('.')[0] for t in q_str.split(' ')]
+            return tokens, tables
 
-        def get_field_constraint(field, constraints):
+        def get_field_constraint(field, constraints, all_used_fields, tables):
             field_constraints = []
             for c in constraints:
-                if c.field == field or (isinstance(c.field, list) and field in c.field):
+                if isinstance(c.field, str) and c.field == field:
+                    field_constraints.append(c)
+                elif isinstance(c.field, list) and \
+                    set(c.field).issubset(all_used_fields) and \
+                    set([c.table.lower()]).issubset(tables):
                     field_constraints.append(c)
             return field_constraints
 
         # extract fields in q
-        fields = extract_q_field(q)
+        fields, tables = extract_q_field(q)
         q_constraints = []
         for field in fields:
-            cs = get_field_constraint(field, constraints)
+            cs = get_field_constraint(field, constraints, fields, tables)
             q_constraints += cs
         
         return list(set(q_constraints))
