@@ -3,10 +3,12 @@ import traceback
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from loader import Loader
-from config import FileType, get_filename
+from config import CONNECT_MAP, FileType, get_filename
 import constraint 
+from evaluator import Evaluator
 from extract_rule import ExtractQueryRule
-from utils import GlobalExpRecorder
+from utils import GlobalExpRecorder, generate_query_param_single
+from tqdm import tqdm
 
 # ------------------------------------------------------------------------------
 # This script counts queries has table column with a certain type of constraints
@@ -17,7 +19,7 @@ from utils import GlobalExpRecorder
 def main(verbal) -> None:
     # make sure log file is clean
     recorder = GlobalExpRecorder()
-    recorder.clear(get_filename(FileType.PRECHECK_STR2INT_NUM, None))
+    # recorder.clear(get_filename(FileType.PRECHECK_STR2INT_NUM, None))
 
     appnames = ['forem', 'redmine', 'openproject']
     name_to_type = {'inclusion': constraint.InclusionConstraint, 
@@ -26,7 +28,8 @@ def main(verbal) -> None:
 
     for appname in appnames:
         # load query once for each app
-        queries = load_queries(appname)
+        all_queries = load_queries(appname)
+        queries = get_valid_queries(all_queries, CONNECT_MAP[appname])
         recorder.record("app_name", appname)
         # count the number of queries with constraints on it 
         all_cs = load_cs(appname, 'all')
@@ -42,6 +45,22 @@ def main(verbal) -> None:
 #################################
 #        helper functions       #
 #################################
+def get_valid_queries(queries, connect_str):
+    print("==========Get Valida Queries============")
+    valid_queries = []
+    for q in tqdm(queries):
+        try:
+            q_param = generate_query_param_single(q.q_raw, connect_str, {})
+            if q_param is None:
+                continue
+            Evaluator.evaluate_query(q_param, connect_str)
+            valid_queries.append(q)
+        except:
+            print(traceback.format_exc())
+            pass
+    print("Total queries: %d, valid queries: %d" % (len(queries), len(valid_queries)))
+    return valid_queries
+        
 # load queries
 def load_queries(appname) -> list:
     app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021}
