@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE (projects.id = 2 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 11 AND projects.rgt <= 12 AND versions.sharing = 'tree' OR projects.lft < 11 AND projects.rgt > 12 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 11 AND projects.rgt < 12 AND versions.sharing = 'hierarchy')) AND LOWER(versions.name) = LOWER('alpha') ORDER BY versions.id ASC LIMIT 10;
+SELECT 1 AS "one" FROM users WHERE LOWER(users.login) LIKE LOWER('%jsmi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%jsmi%')) OR LOWER(users.firstname) LIKE LOWER('%jsmi%') OR LOWER(users.lastname) LIKE LOWER('%jsmi%') LIMIT 3;
 -- Rewritten Queries
-SELECT versions.* FROM versions WHERE (versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy') AND LOWER(versions.name) = LOWER('alpha') ORDER BY versions.id ASC LIMIT 10;
+SELECT 1 AS "one" FROM users WHERE LOWER(users.login) LIKE LOWER('%jsmi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%jsmi%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%jsmi%') OR LOWER(users.lastname) LIKE LOWER('%jsmi%') LIMIT 3;

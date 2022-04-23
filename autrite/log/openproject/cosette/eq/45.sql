@@ -1447,12 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (project_id IS NULL OR project_id = 277) LIMIT 2;
+SELECT 1 AS "one" FROM users WHERE users.type = 'Group' AND users.lastname IS NULL LIMIT 9;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 277) LIMIT 2;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 277) LIMIT 2;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 277) LIMIT 2;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 277) LIMIT 2;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 277) LIMIT 2;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 277) LIMIT 2;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 277) LIMIT 2;
+SELECT 1 AS "one" FROM users WHERE users.type = 'Group' AND False LIMIT 9;

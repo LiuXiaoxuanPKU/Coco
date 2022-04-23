@@ -576,6 +576,20 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id LEFT OUTER JOIN journal_details ON journal_details.journal_id = journals.id WHERE journals.journalized_type = 'Issue' AND (journal_details.prop_key = 'status_id' OR journals.notes <> '') AND journals.user_id = 3 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND (journals.private_notes = False OR journals.user_id = 1 OR projects.status <> 9) ORDER BY journals.id DESC LIMIT 10;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE 1 = 0;
 -- Rewritten Queries
-SELECT DISTINCT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN journal_details ON journal_details.journal_id = journals.id WHERE journals.journalized_type = 'Issue' AND (journal_details.prop_key = 'status_id' OR journals.notes <> '') AND journals.user_id = 3 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND (journals.private_notes = False OR journals.user_id = 1 OR projects.status <> 9) ORDER BY journals.id DESC LIMIT 10;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE 1 = 0;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE 1 = 0;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE 1 = 0;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE 1 = 0;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE 1 = 0;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE 1 = 0;
+SELECT issues.* FROM issues INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE 1 = 0;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE 1 = 0;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE 1 = 0;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id WHERE 1 = 0;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE 1 = 0;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE 1 = 0;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE 1 = 0;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE 1 = 0;
+SELECT issues.* FROM issues WHERE 1 = 0;

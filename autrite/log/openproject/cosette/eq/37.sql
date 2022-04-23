@@ -1447,12 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (project_id IS NULL OR project_id = 215) LIMIT 9;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'alert-foo%' AND wiki_id = 495;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 215) LIMIT 9;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 215) LIMIT 9;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 215) LIMIT 9;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 215) LIMIT 9;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 215) LIMIT 9;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 215) LIMIT 9;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 215) LIMIT 9;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'alert-foo%' AND wiki_id = 495 LIMIT 1;

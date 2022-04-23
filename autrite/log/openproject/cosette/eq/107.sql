@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT relations.* FROM relations WHERE relations.to_id IS NULL AND relations.hierarchy = 0 AND relations.relates = 0 AND relations.duplicates = 0 AND relations.follows = 0 AND relations.blocks = 0 AND relations.includes = 0 AND relations.requires = 0 LIMIT 5;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'current-page%' AND wiki_id = 68;
 -- Rewritten Queries
-SELECT relations.* FROM relations WHERE False AND relations.hierarchy = 0 AND relations.relates = 0 AND relations.duplicates = 0 AND relations.follows = 0 AND relations.blocks = 0 AND relations.includes = 0 AND relations.requires = 0 LIMIT 5;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'current-page%' AND wiki_id = 68 LIMIT 1;

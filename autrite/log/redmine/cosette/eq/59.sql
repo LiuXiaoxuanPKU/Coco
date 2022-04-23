@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT queries.* FROM queries LEFT OUTER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('ProjectQuery') AND (queries.project_id IS NULL OR projects.status <> 9) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC;
+SELECT COUNT(*) FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13));
 -- Rewritten Queries
-SELECT queries.* FROM queries INNER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('ProjectQuery') AND (queries.project_id IS NULL OR projects.status <> 9) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC;
+SELECT COUNT(*) FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1);
+SELECT COUNT(*) FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) LIMIT 1;
+SELECT COUNT(*) FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) LIMIT 1;

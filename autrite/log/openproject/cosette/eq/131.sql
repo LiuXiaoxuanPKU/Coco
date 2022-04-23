@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM work_packages INNER JOIN relations ON work_packages.id = relations.from_id LEFT OUTER JOIN statuses ON statuses.id = work_packages.status_id WHERE relations.to_id = 5842 AND relations.blocks = 0 AND relations.hierarchy = 0 AND relations.relates = 0 AND relations.duplicates = 0 AND relations.follows = 0 AND relations.includes = 0 AND relations.requires = 0 AND statuses.is_closed = False LIMIT 5;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'another-page%' AND wiki_id = 495;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM work_packages INNER JOIN relations ON work_packages.id = relations.from_id INNER JOIN statuses ON statuses.id = work_packages.status_id WHERE relations.to_id = 5842 AND relations.blocks = 0 AND relations.hierarchy = 0 AND relations.relates = 0 AND relations.duplicates = 0 AND relations.follows = 0 AND relations.includes = 0 AND relations.requires = 0 AND statuses.is_closed = False LIMIT 5;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'another-page%' AND wiki_id = 495 LIMIT 1;

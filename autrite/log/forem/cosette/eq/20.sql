@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT notifications.* FROM notifications WHERE notifications.organization_id = 1 AND notifications.user_id IS NULL ORDER BY notifications.notified_at DESC LIMIT 6;
+SELECT 1 AS "one" FROM comments WHERE comments.commentable_id IS NULL AND comments.user_id = 2546 LIMIT 8;
 -- Rewritten Queries
-SELECT notifications.* FROM notifications WHERE notifications.organization_id = 1 AND False ORDER BY notifications.notified_at DESC LIMIT 6;
+SELECT 1 AS "one" FROM comments WHERE False AND comments.user_id = 2546 LIMIT 8;

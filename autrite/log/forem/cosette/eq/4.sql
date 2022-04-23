@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM articles WHERE articles.slug IS NULL AND articles.user_id = 5173 LIMIT 5;
+SELECT users.* FROM users WHERE users.username IS NULL LIMIT 7;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM articles WHERE False AND articles.user_id = 5173 LIMIT 5;
+SELECT users.* FROM users WHERE False LIMIT 7;

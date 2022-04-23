@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT projects.* FROM projects INNER JOIN (SELECT projects.id, versions.id AS version_id, projects.lft, projects.rgt, versions.sharing FROM projects INNER JOIN versions ON projects.id = versions.project_id WHERE versions.id = 14) AS sharing ON True;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND wiki_id = 2345;
 -- Rewritten Queries
-SELECT projects.* FROM projects;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND wiki_id = 2345 LIMIT 1;

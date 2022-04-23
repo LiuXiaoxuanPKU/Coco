@@ -2050,6 +2050,8 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.user_id FROM articles INNER JOIN (SELECT reactions.id, reactions.reactable_id, reactions.user_id FROM reactions WHERE reactions.user_id = 5433 AND reactions.category = 'readinglist' AND reactions.status IN ('confirmed', 'valid') AND reactions.reactable_type = 'Article' ORDER BY reactions.created_at DESC) AS reactions ON reactions.reactable_id = articles.id WHERE articles.published = False AND published_at <= '2022-02-27 07:17:33.465266' LIMIT 3 OFFSET 1;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'committed_and_resolvable';
 -- Rewritten Queries
-SELECT articles.user_id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:33.465266' LIMIT 3 OFFSET 1;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'committed_and_resolvable';
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'committed_and_resolvable' LIMIT 1;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'committed_and_resolvable' LIMIT 1;

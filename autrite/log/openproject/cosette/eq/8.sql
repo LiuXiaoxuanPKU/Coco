@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM versions WHERE versions.name IS NULL AND versions.project_id = 0 LIMIT 7;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE '%' AND wiki_id = 113;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM versions WHERE False AND versions.project_id = 0 LIMIT 7;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE '%' AND wiki_id = 113 LIMIT 1;

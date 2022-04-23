@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT SUM(issues.estimated_hours) FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND projects.lft >= 1 AND projects.rgt <= 10;
+SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND LOWER(email_addresses.address) IN ('testuser@example.org');
 -- Rewritten Queries
-SELECT SUM(issues.estimated_hours) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND projects.lft >= 1 AND projects.rgt <= 10;
+SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND LOWER(email_addresses.address) IN ('testuser@example.org');
+SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND LOWER(email_addresses.address) IN ('testuser@example.org') LIMIT 1;
+SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND LOWER(email_addresses.address) IN ('testuser@example.org') LIMIT 1;

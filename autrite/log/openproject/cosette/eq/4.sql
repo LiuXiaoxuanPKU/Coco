@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM roles WHERE roles.name IS NULL AND roles.id <> 3378 LIMIT 5;
+SELECT projects.* FROM projects WHERE identifier LIKE 'project-name%';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM roles WHERE False AND roles.id <> 3378 LIMIT 5;
+SELECT projects.* FROM projects WHERE identifier LIKE 'project-name%' LIMIT 1;

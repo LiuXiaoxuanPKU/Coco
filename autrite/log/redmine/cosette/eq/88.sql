@@ -576,7 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT attachments.* FROM attachments LEFT JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id LEFT JOIN projects ON documents.project_id = projects.id WHERE attachments.author_id = 3 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL ORDER BY attachments.id DESC LIMIT 5;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id IS NULL AND workflows.old_status_id IS NULL AND workflows.role_id IN (8388, 7707, 2298, 1582);
 -- Rewritten Queries
-SELECT attachments.* FROM attachments INNER JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id LEFT JOIN projects ON documents.project_id = projects.id WHERE attachments.author_id = 3 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL ORDER BY attachments.id DESC LIMIT 5;
-SELECT attachments.* FROM attachments LEFT JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id INNER JOIN projects ON documents.project_id = projects.id WHERE attachments.author_id = 3 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL ORDER BY attachments.id DESC LIMIT 5;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id IS NULL AND False AND workflows.role_id IN (5795, 5869, 8388, 7707);
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND False AND workflows.old_status_id IS NULL AND workflows.role_id IN (5795, 5869, 8388, 7707);
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND False AND False AND workflows.role_id IN (2446, 9490, 5795, 5869);

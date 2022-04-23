@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.id = 61 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 13 AND projects.rgt <= 24 AND versions.sharing = 'tree' OR projects.lft < 18 AND projects.rgt > 19 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 18 AND projects.rgt < 19 AND versions.sharing = 'hierarchy') LIMIT 1;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 1 ORDER BY users.firstname, users.lastname, users.id;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy' LIMIT 1;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 1 ORDER BY users.firstname, users.lastname, users.id;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 1 ORDER BY users.firstname, users.lastname, users.id LIMIT 1;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 1 ORDER BY users.firstname, users.lastname, users.id LIMIT 1;

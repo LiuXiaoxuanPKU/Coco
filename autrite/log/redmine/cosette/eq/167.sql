@@ -576,6 +576,10 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE (projects.id = 1 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 1 AND projects.rgt <= 10 AND versions.sharing = 'tree' OR projects.lft < 1 AND projects.rgt > 10 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 1 AND projects.rgt < 10 AND versions.sharing = 'hierarchy')) AND versions.status = 'closed' AND versions.id = 2971 LIMIT 2;
+SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE projects.status <> 9 AND members.user_id = 65;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM versions WHERE (versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy') AND versions.status = 'closed' AND versions.id = 2971 LIMIT 2;
+SELECT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id LIMIT 1;
+SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 65 LIMIT 1;
+SELECT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE projects.status <> 9 AND members.user_id = 65;
+SELECT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE projects.status <> 9 AND members.user_id = 65 LIMIT 1;
+SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE projects.status <> 9 AND members.user_id = 65 LIMIT 1;

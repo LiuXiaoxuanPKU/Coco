@@ -576,12 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.rgt - issues.lft = 1;
+SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (89, 12));
 -- Rewritten Queries
-SELECT issues.* FROM issues INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.rgt - issues.lft = 1;
-SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.rgt - issues.lft = 1;
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.rgt - issues.lft = 1;
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.rgt - issues.lft = 1;
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.rgt - issues.lft = 1;
-SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.rgt - issues.lft = 1;
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.rgt - issues.lft = 1;
+SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (89, 12) LIMIT 1);

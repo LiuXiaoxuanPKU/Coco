@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT MAX(versions.effective_date) FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.id = 18 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 13 AND projects.rgt <= 14 AND versions.sharing = 'tree' OR projects.lft < 13 AND projects.rgt > 14 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 13 AND projects.rgt < 14 AND versions.sharing = 'hierarchy');
+SELECT projects.* FROM projects WHERE projects.lft > 1 AND projects.rgt < 10 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) ORDER BY projects.lft ASC;
 -- Rewritten Queries
-SELECT MAX(versions.effective_date) FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy';
+SELECT projects.* FROM projects WHERE projects.lft > 1 AND projects.rgt < 10 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) ORDER BY projects.lft ASC;

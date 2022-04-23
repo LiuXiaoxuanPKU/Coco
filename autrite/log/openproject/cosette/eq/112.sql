@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) LIMIT 6;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'another-page%' AND wiki_id = 501;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True) LIMIT 6;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'another-page%' AND wiki_id = 501 LIMIT 1;

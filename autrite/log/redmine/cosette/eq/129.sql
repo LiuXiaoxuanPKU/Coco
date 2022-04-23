@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT MIN(versions.effective_date) FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.id = 41 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 13 AND projects.rgt <= 14 AND versions.sharing = 'tree' OR projects.lft < 13 AND projects.rgt > 14 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 13 AND projects.rgt < 14 AND versions.sharing = 'hierarchy');
+SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.id IN (1, 5) ORDER BY projects.id ASC LIMIT 6;
 -- Rewritten Queries
-SELECT MIN(versions.effective_date) FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy';
+SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.id IN (1, 5) ORDER BY projects.id ASC LIMIT 6;

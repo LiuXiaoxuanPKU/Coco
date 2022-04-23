@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id WHERE 1 = 0 AND (journals.private_notes = False OR journals.user_id = 6 OR 1 = 0);
+SELECT issues.* FROM issues INNER JOIN watchers ON watchers.watchable_id = issues.id AND watchers.watchable_type = 'Message' WHERE watchers.user_id = 1;
 -- Rewritten Queries
-SELECT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id WHERE 1 = 0 AND (journals.private_notes = False OR journals.user_id = 6 OR 1 = 0);
-SELECT journals.* FROM journals WHERE 1 = 0 AND (journals.private_notes = False OR journals.user_id = 6 OR 1 = 0);
+SELECT issues.* FROM issues INNER JOIN watchers ON watchers.watchable_id = issues.id AND watchers.watchable_type = 'Message' WHERE watchers.user_id = 1 LIMIT 1;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM members INNER JOIN member_roles ON members.id = member_roles.member_id WHERE member_roles.role_id = 3 LIMIT 5;
+SELECT wiki_pages.title FROM wiki_pages WHERE wiki_pages.wiki_id = 1447 ORDER BY LOWER(title) ASC;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM members LIMIT 5;
+SELECT wiki_pages.title FROM wiki_pages WHERE wiki_pages.wiki_id = 1447 ORDER BY LOWER(title) ASC LIMIT 1;

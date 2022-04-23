@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM trackers INNER JOIN projects_trackers ON trackers.id = projects_trackers.tracker_id WHERE projects_trackers.project_id = 4990 AND 1 = 0 LIMIT 3;
+SELECT time_entries.* FROM time_entries WHERE time_entries.issue_id IS NULL ORDER BY time_entries.id ASC LIMIT 5;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM trackers WHERE 1 = 0 LIMIT 3;
+SELECT time_entries.* FROM time_entries WHERE False ORDER BY time_entries.id ASC LIMIT 5;

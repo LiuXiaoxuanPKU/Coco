@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT podcast_episodes.* FROM podcast_episodes INNER JOIN podcasts ON podcasts.id = podcast_episodes.podcast_id WHERE podcast_episodes.podcast_id = 3634 AND podcast_episodes.reachable = True AND podcasts.published = False AND podcast_episodes.slug = 'nvqvdjnteuvzatlftknogvmugpwpqhombzvmvecpqjvrlotesnnrgzoizievrilgrsknkstkinzlbdmblggsstuienwcxjjitmxigkzkyuk' LIMIT 6;
+SELECT devices.* FROM devices WHERE devices.user_id = 9022 AND devices.token IS NULL AND devices.platform = 'Android' AND devices.consumer_app_id = 1442 LIMIT 5;
 -- Rewritten Queries
-SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.podcast_id = 3634 AND podcast_episodes.reachable = True AND podcast_episodes.slug = 'nvqvdjnteuvzatlftknogvmugpwpqhombzvmvecpqjvrlotesnnrgzoizievrilgrsknkstkinzlbdmblggsstuienwcxjjitmxigkzkyuk' LIMIT 6;
+SELECT devices.* FROM devices WHERE devices.user_id = 9022 AND False AND devices.platform = 'Android' AND devices.consumer_app_id = 1442 LIMIT 5;

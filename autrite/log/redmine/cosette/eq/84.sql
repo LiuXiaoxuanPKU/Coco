@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT attachments.* FROM attachments LEFT JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id LEFT JOIN projects ON documents.project_id = projects.id WHERE attachments.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL;
+SELECT COUNT(DISTINCT users.id) FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND members.project_id = 1;
 -- Rewritten Queries
-SELECT attachments.* FROM attachments INNER JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id LEFT JOIN projects ON documents.project_id = projects.id WHERE attachments.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL;
-SELECT attachments.* FROM attachments LEFT JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id INNER JOIN projects ON documents.project_id = projects.id WHERE attachments.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL;
+SELECT COUNT(DISTINCT users.id) FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND members.project_id = 1 LIMIT 1;

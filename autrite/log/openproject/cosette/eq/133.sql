@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = 43 AND relations.hierarchy <> 0 AND relations.relates = 0 AND relations.duplicates = 0 AND relations.follows = 0 AND relations.blocks = 1 AND relations.includes = 0 AND relations.requires = 0 AND 1 = 0) OR work_packages.id = 3953;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-page-no-1%' AND wiki_id = 6;
 -- Rewritten Queries
-SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages WHERE 1 = 0) OR work_packages.id = 3953;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-page-no-1%' AND wiki_id = 6 LIMIT 1;

@@ -576,8 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE projects.id IN (1, 5, 6, 4);
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 6;
 -- Rewritten Queries
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE projects.id IN (1, 5, 6, 4);
-SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE projects.id IN (1, 5, 6, 4);
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE projects.id IN (1, 5, 6, 4);
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 6;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 6 LIMIT 1;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 6 LIMIT 1;

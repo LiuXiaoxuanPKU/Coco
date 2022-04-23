@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id IS NULL OR projects.is_public = True AND members.user_id = 12);
+SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL;
 -- Rewritten Queries
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (False OR projects.is_public = True AND members.user_id = 12);
+SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL;

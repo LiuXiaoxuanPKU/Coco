@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM types WHERE types.name IS NULL AND types.id <> 6956 LIMIT 1;
+SELECT projects.id FROM projects WHERE projects.identifier = 'gnzhwbrvatpfjakqxagdessoetmvxramodbmncgbjisyrrkvxixdzdtlcpbfhcekcvioplchimjghdrmsicsodsowbeddwedwdzp';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM types WHERE False AND types.id <> 6956 LIMIT 1;
+SELECT projects.id FROM projects WHERE projects.identifier = 'gnzhwbrvatpfjakqxagdessoetmvxramodbmncgbjisyrrkvxixdzdtlcpbfhcekcvioplchimjghdrmsicsodsowbeddwedwdzp' LIMIT 1;

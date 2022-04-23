@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT attachments.* FROM attachments LEFT JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id LEFT JOIN projects ON documents.project_id = projects.id WHERE attachments.author_id = 5 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL ORDER BY attachments.id DESC LIMIT 4;
+SELECT trackers.* FROM trackers INNER JOIN projects_trackers ON trackers.id = projects_trackers.tracker_id WHERE projects_trackers.project_id = 7129 AND 1 = 0 ORDER BY trackers.position ASC LIMIT 10;
 -- Rewritten Queries
-SELECT attachments.* FROM attachments INNER JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id LEFT JOIN projects ON documents.project_id = projects.id WHERE attachments.author_id = 5 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL ORDER BY attachments.id DESC LIMIT 4;
-SELECT attachments.* FROM attachments LEFT JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id INNER JOIN projects ON documents.project_id = projects.id WHERE attachments.author_id = 5 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL ORDER BY attachments.id DESC LIMIT 4;
+SELECT trackers.* FROM trackers WHERE 1 = 0 ORDER BY trackers.position ASC LIMIT 10;

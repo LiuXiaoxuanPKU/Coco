@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.root_id = 2346 AND issues.lft > 1 AND issues.rgt < 10 AND issue_statuses.is_closed = False LIMIT 9;
+SELECT users.* FROM users WHERE users.status IN (2, 2) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (5, 6, 3, 4));
 -- Rewritten Queries
-SELECT 1 AS "one" FROM issues WHERE issues.root_id = 2346 AND issues.lft > 1 AND issues.rgt < 10 LIMIT 9;
+SELECT users.* FROM users WHERE users.status IN (2, 2) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (5, 6, 3, 4));

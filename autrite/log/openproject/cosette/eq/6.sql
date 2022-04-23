@@ -1447,7 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND wiki_id IS NULL;
+SELECT projects.* FROM projects WHERE identifier LIKE 'my-new-project%';
 -- Rewritten Queries
-SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND False;
-SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND False;
+SELECT projects.* FROM projects WHERE identifier LIKE 'my-new-project%' LIMIT 1;

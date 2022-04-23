@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 4878;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 6002 AND identities.provider IN ('twitter', 'facebook');
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 4878;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 6002 AND identities.provider IN ('twitter', 'facebook') LIMIT 1;

@@ -2050,8 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 6848 AND articles.user_id = 8295 AND articles.title IS NULL LIMIT 5;
+SELECT identities.* FROM identities WHERE identities.user_id = 1825 AND identities.provider = 'facebook';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 6848 AND articles.user_id = 8295 AND articles.title IS NULL LIMIT 5;
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 6848 AND articles.user_id = 8295 AND False LIMIT 5;
-SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 6848 AND articles.user_id = 8295 AND False LIMIT 5;
+SELECT identities.* FROM identities WHERE identities.user_id = 1825 AND identities.provider = 'facebook' LIMIT 1;

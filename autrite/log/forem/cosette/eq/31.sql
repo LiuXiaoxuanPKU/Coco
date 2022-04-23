@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.organization_id = 1 AND notifications.notifiable_id = 5074 AND notifications.notifiable_type = 'Article' AND notifications.action IS NULL LIMIT 9;
+SELECT 1 AS "one" FROM reactions WHERE reactions.user_id IS NULL AND reactions.reactable_type = 'Comment' AND reactions.reactable_id = 8086 LIMIT 3;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE False AND notifications.organization_id = 1 AND notifications.notifiable_id = 5074 AND notifications.notifiable_type = 'Article' AND notifications.action IS NULL LIMIT 9;
+SELECT 1 AS "one" FROM reactions WHERE False AND reactions.reactable_type = 'Comment' AND reactions.reactable_id = 8086 LIMIT 3;

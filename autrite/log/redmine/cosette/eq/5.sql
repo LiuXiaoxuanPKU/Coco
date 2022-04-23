@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM wiki_pages WHERE wiki_pages.title IS NULL AND wiki_pages.wiki_id = 8219 LIMIT 1;
+SELECT issue_statuses.* FROM issue_statuses WHERE default_done_ratio >= 0;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM wiki_pages WHERE False AND wiki_pages.wiki_id = 8219 LIMIT 1;
+SELECT issue_statuses.* FROM issue_statuses;

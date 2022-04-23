@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.lft >= 1 AND projects.rgt <= 10 AND projects.status <> 9 LIMIT 2;
+SELECT email_addresses.address FROM email_addresses WHERE email_addresses.user_id = 3344 AND (is_default = True OR notify = True);
 -- Rewritten Queries
-SELECT 1 AS "one" FROM versions LIMIT 2;
+SELECT email_addresses.address FROM email_addresses WHERE email_addresses.user_id = 3344 AND (is_default = True OR notify = True) LIMIT 1;

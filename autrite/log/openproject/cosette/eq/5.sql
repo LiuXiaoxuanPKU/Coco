@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM users WHERE users.type = 'Group' AND users.lastname IS NULL LIMIT 9;
+SELECT projects.* FROM projects WHERE identifier LIKE '100-project-a%';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM users WHERE users.type = 'Group' AND False LIMIT 9;
+SELECT projects.* FROM projects WHERE identifier LIKE '100-project-a%' LIMIT 1;

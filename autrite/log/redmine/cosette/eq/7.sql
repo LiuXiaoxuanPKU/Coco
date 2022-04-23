@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Pzfswdexcqqhdagcndpcwotxtaudvclqdfdovuuzicxbheyfpkmvimdleouadbudtwebdmathnaefoiecchgwckbpzqpkdkcwjluzzsnuipxfwqayaxkbfmggaxjjvkbnxhaxhdpskfczgygdpcxeocaehnabaecnlohhpnxsrnravksjmqwwemnvku' AND wiki_pages.wiki_id IS NULL LIMIT 9;
+SELECT user_preferences.* FROM user_preferences WHERE user_preferences.user_id = 24;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Pzfswdexcqqhdagcndpcwotxtaudvclqdfdovuuzicxbheyfpkmvimdleouadbudtwebdmathnaefoiecchgwckbpzqpkdkcwjluzzsnuipxfwqayaxkbfmggaxjjvkbnxhaxhdpskfczgygdpcxeocaehnabaecnlohhpnxsrnravksjmqwwemnvku' AND False LIMIT 9;
+SELECT user_preferences.* FROM user_preferences WHERE user_preferences.user_id = 24 LIMIT 1;

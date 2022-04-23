@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM watchers WHERE watchers.user_id = 979 AND watchers.watchable_type = 'Message' AND watchers.watchable_id IS NULL LIMIT 8;
+SELECT 1 AS "one" FROM members WHERE members.user_id IS NULL AND members.project_id = 8673 LIMIT 7;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM watchers WHERE watchers.user_id = 979 AND watchers.watchable_type = 'Message' AND False LIMIT 8;
+SELECT 1 AS "one" FROM members WHERE False AND members.project_id = 8673 LIMIT 7;

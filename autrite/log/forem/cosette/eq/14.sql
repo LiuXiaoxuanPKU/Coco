@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT devices.* FROM devices WHERE devices.user_id = 380 AND devices.token IS NULL AND devices.platform = 'iOS' AND devices.consumer_app_id = 6599 LIMIT 3;
+SELECT users.name, users.username FROM users WHERE users.id = 5365 ORDER BY users.created_at ASC;
 -- Rewritten Queries
-SELECT devices.* FROM devices WHERE devices.user_id = 380 AND False AND devices.platform = 'iOS' AND devices.consumer_app_id = 6599 LIMIT 3;
+SELECT users.name, users.username FROM users WHERE users.id = 5365 ORDER BY users.created_at ASC LIMIT 1;

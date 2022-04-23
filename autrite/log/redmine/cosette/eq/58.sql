@@ -576,8 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN versions ON versions.id = issues.fixed_version_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id <> versions.project_id AND versions.sharing <> 'system' AND issues.fixed_version_id = 7;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id IS NULL AND workflows.old_status_id IS NULL AND workflows.role_id = 1632;
 -- Rewritten Queries
-SELECT issues.* FROM issues WHERE issues.fixed_version_id IS NOT NULL AND issues.fixed_version_id = 7;
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.fixed_version_id IS NOT NULL AND issues.fixed_version_id = 7;
-SELECT issues.* FROM issues INNER JOIN versions ON versions.id = issues.fixed_version_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id <> versions.project_id AND versions.sharing <> 'system' AND issues.fixed_version_id = 7;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id IS NULL AND False AND workflows.role_id = 1632;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND False AND workflows.old_status_id IS NULL AND workflows.role_id = 1632;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND False AND False AND workflows.role_id = 1632;

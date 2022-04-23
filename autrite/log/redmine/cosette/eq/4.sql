@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM members WHERE members.user_id IS NULL AND members.project_id = 2392 LIMIT 7;
+SELECT COUNT(*) FROM email_addresses WHERE email_addresses.user_id = 3548;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM members WHERE False AND members.project_id = 2392 LIMIT 7;
+SELECT COUNT(*) FROM email_addresses WHERE email_addresses.user_id = 3548 LIMIT 1;

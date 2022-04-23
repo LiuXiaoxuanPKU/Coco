@@ -1447,8 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id IS NULL LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 112) LIMIT 6;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'another-page%' AND wiki_id = 477;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM roles WHERE roles.id IN (SELECT roles.id FROM users INNER JOIN members ON users.id = members.user_id AND members.project_id IS NULL LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 112) LIMIT 6;
-SELECT 1 AS "one" FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id IS NULL INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 112) LIMIT 6;
-SELECT 1 AS "one" FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id IS NULL LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 112) LIMIT 6;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'another-page%' AND wiki_id = 477 LIMIT 1;

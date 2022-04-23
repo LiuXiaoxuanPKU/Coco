@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM versions WHERE LOWER(versions.name) = 'gwqqmezurcyxundokfcxhzsqojhnsznlxwszzbjphhhzuraanzybylpkcfofbcylzdmasawhyajvswcynvzcnqyprfjnmbbfvtpcruwzrlwtcxzjtteyjtgnieadroozeoqtwwbuygrodalzdbkplwchpidytswvbase' AND versions.project_id IS NULL LIMIT 6;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'help%' AND wiki_id = 91;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM versions WHERE LOWER(versions.name) = 'gwqqmezurcyxundokfcxhzsqojhnsznlxwszzbjphhhzuraanzybylpkcfofbcylzdmasawhyajvswcynvzcnqyprfjnmbbfvtpcruwzrlwtcxzjtteyjtgnieadroozeoqtwwbuygrodalzdbkplwchpidytswvbase' AND False LIMIT 6;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'help%' AND wiki_id = 91 LIMIT 1;

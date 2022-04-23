@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 6168 AND users.type = 'User' AND users.status = 1;
+SELECT 1 AS "one" FROM wiki_pages WHERE wiki_pages.title IS NULL AND wiki_pages.wiki_id = 15030 LIMIT 1;
 -- Rewritten Queries
-SELECT COUNT(*) FROM members WHERE members.project_id = 6168;
+SELECT 1 AS "one" FROM wiki_pages WHERE False AND wiki_pages.wiki_id = 15030 LIMIT 1;

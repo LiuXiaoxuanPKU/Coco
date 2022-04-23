@@ -1447,6 +1447,8 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT DISTINCT projects.* FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id IS NULL AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.identifier = 'mdazhoputjrkcmuvodbmovpvjsttfskjhonhhqnvdkhwaxkusxlxxvxipkcmtsrgmxqtbirmrmdfrqmtqzotyuwxglkaihgwkrnu' LIMIT 6;
+SELECT wiki_pages.*, wiki_contents.updated_at FROM wiki_pages LEFT JOIN wiki_contents ON wiki_contents.page_id = wiki_pages.id WHERE wiki_pages.wiki_id = 4968 ORDER BY title;
 -- Rewritten Queries
-SELECT DISTINCT projects.* FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id IS NULL AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.identifier = 'mdazhoputjrkcmuvodbmovpvjsttfskjhonhhqnvdkhwaxkusxlxxvxipkcmtsrgmxqtbirmrmdfrqmtqzotyuwxglkaihgwkrnu' LIMIT 6;
+SELECT wiki_pages.*, wiki_contents.updated_at FROM wiki_pages LEFT JOIN wiki_contents ON wiki_contents.page_id = wiki_pages.id WHERE wiki_pages.wiki_id = 4968 ORDER BY title LIMIT 1;
+SELECT wiki_pages.*, wiki_contents.updated_at FROM wiki_pages INNER JOIN wiki_contents ON wiki_contents.page_id = wiki_pages.id WHERE wiki_pages.wiki_id = 4968 ORDER BY title;
+SELECT wiki_pages.*, wiki_contents.updated_at FROM wiki_pages INNER JOIN wiki_contents ON wiki_contents.page_id = wiki_pages.id WHERE wiki_pages.wiki_id = 4968 ORDER BY title LIMIT 1;

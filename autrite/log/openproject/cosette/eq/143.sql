@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM work_packages WHERE work_packages.project_id NOT IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 4 ORDER BY projects.name ASC) AND work_packages.version_id IN (SELECT versions.id FROM versions LEFT OUTER JOIN projects ON projects.id = versions.project_id WHERE projects.active = True AND projects.id IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 4 ORDER BY projects.name ASC)) LIMIT 1;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-page-no-2%' AND wiki_id = 77;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM work_packages WHERE work_packages.project_id NOT IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 4 ORDER BY projects.name ASC) AND work_packages.version_id IN (SELECT versions.id FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.active = True AND projects.id IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 4 ORDER BY projects.name ASC)) LIMIT 1;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-page-no-2%' AND wiki_id = 77 LIMIT 1;

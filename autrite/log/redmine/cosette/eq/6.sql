@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT time_entries.* FROM time_entries WHERE time_entries.issue_id IS NULL ORDER BY time_entries.id ASC LIMIT 5;
+SELECT email_addresses.* FROM email_addresses WHERE email_addresses.address = 'btzmevcfnlsywan@yahoo.com';
 -- Rewritten Queries
-SELECT time_entries.* FROM time_entries WHERE False ORDER BY time_entries.id ASC LIMIT 5;
+SELECT email_addresses.* FROM email_addresses WHERE email_addresses.address = 'btzmevcfnlsywan@yahoo.com' LIMIT 1;

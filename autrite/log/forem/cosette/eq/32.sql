@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 7209 AND notifications.organization_id IS NULL AND notifications.notifiable_id = 5985 AND notifications.notifiable_type = 'Comment' AND notifications.action IS NULL LIMIT 1;
+SELECT COUNT(*) FROM badges INNER JOIN badge_achievements ON badges.id = badge_achievements.badge_id WHERE badge_achievements.user_id = 654;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 7209 AND False AND notifications.notifiable_id = 5985 AND notifications.notifiable_type = 'Comment' AND notifications.action IS NULL LIMIT 1;
+SELECT COUNT(*) FROM badges INNER JOIN badge_achievements ON badges.id = badge_achievements.badge_id WHERE badge_achievements.user_id = 654 LIMIT 1;

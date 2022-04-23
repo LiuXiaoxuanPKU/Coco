@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id IN ('3');
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'dot%' AND wiki_id = 114;
 -- Rewritten Queries
-SELECT COUNT(*) FROM members WHERE members.project_id IN ('3');
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'dot%' AND wiki_id = 114 LIMIT 1;

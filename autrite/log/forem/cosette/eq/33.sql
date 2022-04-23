@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 4709 AND notifications.organization_id IS NULL AND notifications.notifiable_id IS NULL AND notifications.notifiable_type = 'Comment' AND notifications.action IS NULL LIMIT 2;
+SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = 856;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 4709 AND False AND notifications.notifiable_id IS NULL AND notifications.notifiable_type = 'Comment' AND notifications.action IS NULL LIMIT 2;
+SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = 856 LIMIT 1;

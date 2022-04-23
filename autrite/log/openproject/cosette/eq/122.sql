@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT user_id FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id LEFT OUTER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.builtin = 0 AND roles.type = 'GlobalRole' AND roles.id = 1587 AND members.project_id = 1073 ORDER BY "position";
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'another-page%' AND wiki_id = 497;
 -- Rewritten Queries
-SELECT user_id FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.builtin = 0 AND roles.type = 'GlobalRole' AND roles.id = 1587 AND members.project_id = 1073 ORDER BY "position";
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'another-page%' AND wiki_id = 497 LIMIT 1;

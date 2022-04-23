@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'resolved';
+SELECT identities.provider FROM identities WHERE identities.user_id = 7044 AND identities.provider IN ('github', 'github');
 -- Rewritten Queries
-SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'resolved';
+SELECT identities.provider FROM identities WHERE identities.user_id = 7044 AND identities.provider IN ('github', 'github') LIMIT 1;

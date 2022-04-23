@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT COUNT(*) FROM changes INNER JOIN changesets ON changesets.id = changes.changeset_id WHERE changes.changeset_id IN (SELECT changesets.id FROM changesets WHERE changesets.repository_id = 8490 ORDER BY changesets.committed_on DESC, changesets.id DESC);
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'current-page%' AND wiki_id = 71;
 -- Rewritten Queries
-SELECT COUNT(*) FROM changes WHERE changes.changeset_id IN (SELECT changesets.id FROM changesets WHERE changesets.repository_id = 8490 ORDER BY changesets.committed_on DESC, changesets.id DESC);
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'current-page%' AND wiki_id = 71 LIMIT 1;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT podcasts.*, COUNT(podcast_episodes) AS episodes_count FROM podcasts LEFT OUTER JOIN podcast_episodes ON podcast_episodes.podcast_id = podcasts.id GROUP BY podcasts.id ORDER BY podcasts.created_at DESC LIMIT 1 OFFSET 1;
+SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = 7242 AND mentions.mentionable_type = 'Article' AND mentions.user_id <> 2455;
 -- Rewritten Queries
-SELECT podcasts.*, COUNT(podcast_episodes) AS episodes_count FROM podcasts INNER JOIN podcast_episodes ON podcast_episodes.podcast_id = podcasts.id GROUP BY podcasts.id ORDER BY podcasts.created_at DESC LIMIT 1 OFFSET 1;
+SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = 7242 AND mentions.mentionable_type = 'Article' AND mentions.user_id <> 2455 LIMIT 1;

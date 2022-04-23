@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 7465 AND organization_memberships.type_of_user = 'guest' AND organization_memberships.organization_id IS NULL LIMIT 6;
+SELECT 1 AS "one" FROM users_roles INNER JOIN roles ON roles.id = users_roles.role_id WHERE roles.name = 'restricted_liquid_tag' LIMIT 5;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 7465 AND organization_memberships.type_of_user = 'guest' AND False LIMIT 6;
+SELECT 1 AS "one" FROM users_roles LIMIT 5;

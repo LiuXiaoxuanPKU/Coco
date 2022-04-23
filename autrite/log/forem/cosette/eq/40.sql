@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.id, users.id, COUNT(badge_achievements.id) * 1 AS count, MAX(users.badge_achievements_count) AS badge_achievements_count FROM users LEFT JOIN badge_achievements AS badge_achievements ON users.id = badge_achievements.user_id WHERE users.id = 9786 GROUP BY users.id ORDER BY users.id ASC LIMIT 2;
+SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 5286 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 2539 AND reactions.category = 'hands';
 -- Rewritten Queries
-SELECT users.id, users.id, COUNT(badge_achievements.id) * 1 AS count, MAX(users.badge_achievements_count) AS badge_achievements_count FROM users INNER JOIN badge_achievements AS badge_achievements ON users.id = badge_achievements.user_id WHERE users.id = 9786 GROUP BY users.id ORDER BY users.id ASC LIMIT 2;
+SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 5286 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 2539 AND reactions.category = 'hands' LIMIT 1;

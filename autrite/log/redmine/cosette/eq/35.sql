@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT users.* FROM users INNER JOIN groups_users ON users.id = groups_users.group_id WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') AND groups_users.user_id = 8 ORDER BY users.id ASC LIMIT 2;
+SELECT COUNT(*) FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 3783 AND users.type = 'User' AND users.status = 1;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') ORDER BY users.id ASC LIMIT 2;
+SELECT COUNT(*) FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 3783 AND users.type = 'User' AND users.status = 1 LIMIT 1;

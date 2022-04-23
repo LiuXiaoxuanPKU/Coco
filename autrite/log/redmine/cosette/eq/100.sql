@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.id = 5 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 1 AND projects.rgt <= 10 AND versions.sharing = 'tree' OR projects.lft < 2 AND projects.rgt > 5 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 2 AND projects.rgt < 5 AND versions.sharing = 'hierarchy') LIMIT 10;
+SELECT 1 AS "one" FROM users INNER JOIN groups_users ON users.id = groups_users.group_id WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') AND groups_users.user_id = 8 LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy' LIMIT 10;
+SELECT 1 AS "one" FROM users WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') LIMIT 1;

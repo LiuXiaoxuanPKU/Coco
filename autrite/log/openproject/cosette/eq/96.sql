@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM users INNER JOIN members ON users.id = members.user_id WHERE members.project_id = 8742 AND users.type = 'Group' AND users.id = 1503 LIMIT 2;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'existingpage%' AND wiki_id = 88;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM users WHERE users.type = 'Group' AND users.id = 1503 LIMIT 2;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'existingpage%' AND wiki_id = 88 LIMIT 1;

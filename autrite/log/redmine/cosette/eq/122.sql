@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('1') AND projects.status IN ('1');
+SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND LOWER(email_addresses.address) IN ('foo@example.org') ORDER BY users.id ASC LIMIT 3;
 -- Rewritten Queries
-SELECT COUNT(*) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('1') AND projects.status IN ('1');
+SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND LOWER(email_addresses.address) IN ('foo@example.org') ORDER BY users.id ASC LIMIT 3;

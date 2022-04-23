@@ -576,6 +576,7 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) ORDER BY issues.id ASC LIMIT 2;
+SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 69 OR projects.is_public = True AND members.user_id = 12);
 -- Rewritten Queries
-SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) ORDER BY issues.id ASC LIMIT 2;
+SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = 69 OR members.user_id = 12 LIMIT 1;
+SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 69 OR projects.is_public = True AND members.user_id = 12) LIMIT 1;

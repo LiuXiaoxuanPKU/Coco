@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE (projects.id = 1 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 1 AND projects.rgt <= 10 AND versions.sharing = 'tree' OR projects.lft < 1 AND projects.rgt > 10 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 1 AND projects.rgt < 10 AND versions.sharing = 'hierarchy')) AND LOWER(versions.name) = LOWER('2.1') ORDER BY versions.id ASC LIMIT 9;
+SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.issue_id = 434 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL;
 -- Rewritten Queries
-SELECT versions.* FROM versions WHERE (versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy') AND LOWER(versions.name) = LOWER('2.1') ORDER BY versions.id ASC LIMIT 9;
+SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.issue_id = 434 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL;

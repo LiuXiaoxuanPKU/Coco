@@ -1447,8 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 38 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 115);
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-page-no-1%' AND wiki_id = 2;
 -- Rewritten Queries
-SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users INNER JOIN members ON users.id = members.user_id AND members.project_id = 38 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 115);
-SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 38 INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 115);
-SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 38 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 115);
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-page-no-1%' AND wiki_id = 2 LIMIT 1;

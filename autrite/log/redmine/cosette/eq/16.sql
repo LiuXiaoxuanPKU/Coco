@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT member_roles.* FROM member_roles INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 8 AND member_roles.inherited_from IN (87, 89);
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 1444 AND issue_relations.issue_to_id = 5411;
 -- Rewritten Queries
-SELECT member_roles.* FROM member_roles WHERE member_roles.inherited_from IN (87, 89);
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 1444 AND issue_relations.issue_to_id = 5411 LIMIT 1;

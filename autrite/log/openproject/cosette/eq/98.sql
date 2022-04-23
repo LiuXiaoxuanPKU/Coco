@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM relations WHERE relations.from_id IS NULL AND relations.to_id = 1514 AND NOT(hierarchy + relates + duplicates + follows + blocks + includes + requires > 1) LIMIT 9;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'current-page%' AND wiki_id = 17;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM relations WHERE False AND relations.to_id = 1514 AND NOT(hierarchy + relates + duplicates + follows + blocks + includes + requires > 1) LIMIT 9;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'current-page%' AND wiki_id = 17 LIMIT 1;

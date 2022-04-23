@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM relations WHERE relations.from_id IS NULL AND relations.to_id = 1371 AND relations.id IS NOT NULL LIMIT 4;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'start-page%' AND wiki_id = 494;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM relations WHERE False AND relations.to_id = 1371 AND relations.id IS NOT NULL LIMIT 4;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'start-page%' AND wiki_id = 494 LIMIT 1;

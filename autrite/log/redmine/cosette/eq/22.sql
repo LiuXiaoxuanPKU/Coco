@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 4507 AND users.type = 'User' AND users.status = 2 ORDER BY members.id ASC LIMIT 3;
+SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 2490 AND users.type IN ('User', 'User');
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.project_id = 4507 ORDER BY members.id ASC LIMIT 3;
+SELECT members.* FROM members WHERE members.project_id = 2490;
+SELECT members.* FROM members WHERE members.project_id = 2490 LIMIT 1;
+SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 2490 AND users.type IN ('User', 'User') LIMIT 1;

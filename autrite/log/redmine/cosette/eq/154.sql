@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (5607, 3018, 6748, 4619, 7584, 6598, 7439, 9713, 7196, 6888, 9081) AND (journals.private_notes = False OR journals.user_id = 2 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
+SELECT projects.* FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND projects.status IN ('1') ORDER BY projects.lft ASC LIMIT 5 OFFSET 1;
 -- Rewritten Queries
-SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (3066, 7865, 6653, 4865, 4474, 9947, 2587, 3850, 2803, 481, 7268) AND (journals.private_notes = False OR journals.user_id = 2 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
-SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals INNER JOIN issues ON issues.id = journals.journalized_id WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (3850, 2803, 481, 7268, 172, 8287, 33, 5607, 3018, 6748, 4619) AND (journals.private_notes = False OR journals.user_id = 2 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
+SELECT projects.* FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND projects.status IN ('1') ORDER BY projects.lft ASC LIMIT 5 OFFSET 1;

@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT DISTINCT projects.* FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 3450 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 2 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.identifier = 'uwuudwdggpjhlcqaewtocsbedppnigtldecpbenqdxyframptfptevkoxmaehfsbpjiihnjopdaavuhazjnqorhgjetzxfbzpkoy' LIMIT 5;
+SELECT COUNT(*) FROM changesets WHERE changesets.repository_id = 4953 AND scmid IN ('71e5c1d3dca6304805b143b9d0e6695fb3895ea4', '83ca5fd546063a3c7dc2e568ba3355661a9e2b2c');
 -- Rewritten Queries
-SELECT DISTINCT projects.* FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 3450 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 2 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.identifier = 'uwuudwdggpjhlcqaewtocsbedppnigtldecpbenqdxyframptfptevkoxmaehfsbpjiihnjopdaavuhazjnqorhgjetzxfbzpkoy' LIMIT 5;
+SELECT COUNT(*) FROM changesets WHERE changesets.repository_id = 4953 AND scmid IN ('71e5c1d3dca6304805b143b9d0e6695fb3895ea4', '83ca5fd546063a3c7dc2e568ba3355661a9e2b2c') LIMIT 1;

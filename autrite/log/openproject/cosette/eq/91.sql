@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM watchers WHERE watchers.user_id IS NULL AND watchers.watchable_type = 'WikiPage' AND watchers.watchable_id = 2 LIMIT 5;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'current-page%' AND wiki_id = 53;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM watchers WHERE False AND watchers.watchable_type = 'WikiPage' AND watchers.watchable_id = 2 LIMIT 5;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'current-page%' AND wiki_id = 53 LIMIT 1;

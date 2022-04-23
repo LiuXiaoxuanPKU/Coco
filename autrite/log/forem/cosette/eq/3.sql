@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT organizations.* FROM organizations WHERE organizations.slug IS NULL LIMIT 1;
+SELECT profiles.* FROM profiles WHERE profiles.user_id = 404;
 -- Rewritten Queries
-SELECT organizations.* FROM organizations WHERE False LIMIT 1;
+SELECT profiles.* FROM profiles WHERE profiles.user_id = 404 LIMIT 1;

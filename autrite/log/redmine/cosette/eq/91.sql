@@ -576,7 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT attachments.* FROM attachments LEFT JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id LEFT JOIN projects ON documents.project_id = projects.id WHERE attachments.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL ORDER BY attachments.id DESC LIMIT 10;
+SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.id IN (1, 5);
 -- Rewritten Queries
-SELECT attachments.* FROM attachments INNER JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id LEFT JOIN projects ON documents.project_id = projects.id WHERE attachments.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL ORDER BY attachments.id DESC LIMIT 10;
-SELECT attachments.* FROM attachments LEFT JOIN documents ON attachments.container_type = 'Document' AND documents.id = attachments.container_id INNER JOIN projects ON documents.project_id = projects.id WHERE attachments.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL ORDER BY attachments.id DESC LIMIT 10;
+SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.id IN (1, 5) LIMIT 1;
+SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL AND projects.id IN (1, 5);
+SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL AND projects.id IN (1, 5) LIMIT 1;

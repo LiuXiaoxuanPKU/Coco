@@ -1447,12 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (project_id IS NULL OR project_id = 214) LIMIT 2;
+SELECT 1 AS "one" FROM roles WHERE roles.name IS NULL AND roles.id <> 5914 LIMIT 5;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 214) LIMIT 2;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 214) LIMIT 2;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 214) LIMIT 2;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 214) LIMIT 2;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 214) LIMIT 2;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 214) LIMIT 2;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 214) LIMIT 2;
+SELECT 1 AS "one" FROM roles WHERE False AND roles.id <> 5914 LIMIT 5;

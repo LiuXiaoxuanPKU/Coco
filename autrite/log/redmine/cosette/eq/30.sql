@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.root_id = 5223 AND issues.lft < 2 AND issues.rgt > 3 AND issue_statuses.is_closed = False LIMIT 4;
+SELECT users.id FROM users INNER JOIN watchers ON users.id = watchers.user_id WHERE watchers.watchable_id = 3545 AND watchers.watchable_type = 'Message';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM issues WHERE issues.root_id = 5223 AND issues.lft < 2 AND issues.rgt > 3 LIMIT 4;
+SELECT users.id FROM users INNER JOIN watchers ON users.id = watchers.user_id WHERE watchers.watchable_id = 3545 AND watchers.watchable_type = 'Message' LIMIT 1;

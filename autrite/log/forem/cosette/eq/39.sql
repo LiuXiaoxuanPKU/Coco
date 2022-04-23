@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.id, users.username, users.comments_count, users.badge_achievements_count, users.last_comment_at FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 6251 LIMIT 3 OFFSET 1;
+SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id = 1063 AND users.id = 1063;
 -- Rewritten Queries
-SELECT users.id, users.username, users.comments_count, users.badge_achievements_count, users.last_comment_at FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 6251 LIMIT 3 OFFSET 1;
+SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id = 1063 AND users.id = 1063 LIMIT 1;

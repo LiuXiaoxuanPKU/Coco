@@ -576,8 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN versions ON versions.id = issues.fixed_version_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id <> versions.project_id AND versions.sharing <> 'system' AND (versions.project_id IN (61, 62) OR issues.project_id IN (61, 62));
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND members.project_id = 5;
 -- Rewritten Queries
-SELECT issues.* FROM issues WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id IN (61, 62);
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id IN (61, 62);
-SELECT issues.* FROM issues INNER JOIN versions ON versions.id = issues.fixed_version_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id <> versions.project_id AND versions.sharing <> 'system' AND (versions.project_id IN (61, 62) OR issues.project_id IN (61, 62));
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND members.project_id = 5;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND members.project_id = 5 LIMIT 1;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND members.project_id = 5 LIMIT 1;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 5553 AND projects.status <> 1 AND members.project_id = 5718 ORDER BY members.id ASC LIMIT 7;
+SELECT projects.* FROM projects INNER JOIN members ON projects.id = members.project_id WHERE members.user_id = 3470 AND projects.status <> 9;
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.user_id = 5553 AND members.project_id = 5718 ORDER BY members.id ASC LIMIT 7;
+SELECT projects.* FROM projects INNER JOIN members ON projects.id = members.project_id WHERE members.user_id = 3470 AND projects.status <> 9 LIMIT 1;

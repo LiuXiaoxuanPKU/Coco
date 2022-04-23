@@ -1447,7 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM types INNER JOIN projects_types ON projects_types.type_id = types.id INNER JOIN projects ON projects.id = projects_types.project_id WHERE projects.id IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 4 ORDER BY projects.name ASC) AND projects.active = True LIMIT 2;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-page-no-3%' AND wiki_id = 6;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM types LIMIT 2;
-SELECT 1 AS "one" FROM types INNER JOIN projects_types ON projects_types.type_id = types.id LIMIT 2;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-page-no-3%' AND wiki_id = 6 LIMIT 1;

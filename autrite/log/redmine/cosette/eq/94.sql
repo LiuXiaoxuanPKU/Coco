@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND projects.lft >= 1 AND projects.rgt <= 10;
+SELECT 1 AS "one" FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.root_id = 2773 AND issues.lft > 1 AND issues.rgt < 4 AND issue_statuses.is_closed = False LIMIT 8;
 -- Rewritten Queries
-SELECT COUNT(*) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND projects.lft >= 1 AND projects.rgt <= 10;
+SELECT 1 AS "one" FROM issues WHERE issues.root_id = 2773 AND issues.lft > 1 AND issues.rgt < 4 LIMIT 8;

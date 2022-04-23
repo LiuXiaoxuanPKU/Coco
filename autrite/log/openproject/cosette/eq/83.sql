@@ -1447,12 +1447,10 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 774 AND is_public = False AND (project_id IS NULL OR project_id = 275) LIMIT 10;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND wiki_id IS NULL;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 774 AND is_public = False AND (False OR project_id = 275) LIMIT 10;
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 774 AND is_public = False AND (False OR project_id = 275) LIMIT 10;
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 774 AND is_public = False AND (False OR project_id = 275) LIMIT 10;
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 774 AND is_public = False AND (False OR project_id = 275) LIMIT 10;
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 774 AND is_public = False AND (False OR project_id = 275) LIMIT 10;
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 774 AND is_public = False AND (False OR project_id = 275) LIMIT 10;
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 774 AND is_public = False AND (False OR project_id = 275) LIMIT 10;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND False;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND False;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND False LIMIT 1;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND False LIMIT 1;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND wiki_id IS NULL LIMIT 1;

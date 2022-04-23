@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE 1 = 0;
+SELECT wikis.* FROM wikis WHERE wikis.project_id IS NULL LIMIT 7;
 -- Rewritten Queries
-SELECT issues.* FROM issues WHERE 1 = 0;
+SELECT wikis.* FROM wikis WHERE False LIMIT 7;

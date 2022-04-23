@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM types WHERE types.name IS NULL LIMIT 7;
+SELECT 1 AS "one" FROM roles WHERE roles.name IS NULL LIMIT 7;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM types WHERE False LIMIT 7;
+SELECT 1 AS "one" FROM roles WHERE False LIMIT 7;

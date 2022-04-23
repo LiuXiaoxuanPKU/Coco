@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 4597 AND roles.name = 'creator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 734 AND identities.provider = 'github' AND identities.provider = 'github';
 -- Rewritten Queries
-SELECT roles.* FROM roles WHERE roles.name = 'creator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 734 AND identities.provider = 'github' AND identities.provider = 'github' LIMIT 1;

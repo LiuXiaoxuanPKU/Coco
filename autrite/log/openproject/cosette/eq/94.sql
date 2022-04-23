@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM menu_items WHERE menu_items.title IS NULL AND menu_items.navigatable_id IS NULL AND menu_items.type IS NULL LIMIT 2;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'current-page%' AND wiki_id = 20;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM menu_items WHERE False AND menu_items.navigatable_id IS NULL AND menu_items.type IS NULL LIMIT 2;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'current-page%' AND wiki_id = 20 LIMIT 1;

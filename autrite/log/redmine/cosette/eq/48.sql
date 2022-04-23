@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE projects.status <> 9 AND members.user_id = 59;
+SELECT member_roles.* FROM member_roles INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 8 AND member_roles.inherited_from IN (87, 89);
 -- Rewritten Queries
-SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 59;
+SELECT member_roles.* FROM member_roles WHERE member_roles.inherited_from IN (87, 89);

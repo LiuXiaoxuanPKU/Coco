@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM attribute_help_texts WHERE attribute_help_texts.attribute_name IS NULL AND attribute_help_texts.type = 'AttributeHelpText::WorkPackage' LIMIT 8;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND wiki_id = 2377;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM attribute_help_texts WHERE False AND attribute_help_texts.type = 'AttributeHelpText::WorkPackage' LIMIT 8;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND wiki_id = 2377 LIMIT 1;

@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.id, role_id FROM custom_fields INNER JOIN custom_fields_roles ON custom_fields_roles.custom_field_id = custom_fields.id INNER JOIN roles ON roles.id = custom_fields_roles.role_id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.visible = True;
+SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 471 AND users.type = 'User' AND users.status = 2 AND users.status = 2;
 -- Rewritten Queries
-SELECT custom_fields.id, role_id FROM custom_fields INNER JOIN custom_fields_roles ON custom_fields_roles.custom_field_id = custom_fields.id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.visible = True;
+SELECT members.* FROM members WHERE members.project_id = 471;
+SELECT members.* FROM members WHERE members.project_id = 471 LIMIT 1;
+SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 471 AND users.type = 'User' AND users.status = 2 AND users.status = 2 LIMIT 1;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN projects ON projects.id = members.project_id WHERE projects.status <> 9 AND members.user_id = 5;
+SELECT 1 AS "one" FROM trackers INNER JOIN projects_trackers ON trackers.id = projects_trackers.tracker_id WHERE projects_trackers.project_id = 1493 AND 1 = 0 LIMIT 5;
 -- Rewritten Queries
-SELECT DISTINCT roles.* FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 5;
+SELECT 1 AS "one" FROM trackers WHERE 1 = 0 LIMIT 5;

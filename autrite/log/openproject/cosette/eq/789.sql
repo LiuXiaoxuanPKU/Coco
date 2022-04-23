@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT DISTINCT projects.* FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 1326 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL ORDER BY projects.created_at DESC LIMIT 2;
+SELECT changesets.* FROM changesets WHERE changesets.repository_id = 6460 AND scmid IN ('1ca7f5ed374f3cb31a93ae5215c2e25cc6ec5127') ORDER BY changesets.committed_on DESC, changesets.id DESC, committed_on DESC;
 -- Rewritten Queries
-SELECT DISTINCT projects.* FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 1326 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL ORDER BY projects.created_at DESC LIMIT 2;
+SELECT changesets.* FROM changesets WHERE changesets.repository_id = 6460 AND scmid IN ('1ca7f5ed374f3cb31a93ae5215c2e25cc6ec5127') ORDER BY changesets.committed_on DESC, changesets.id DESC, committed_on DESC LIMIT 1;

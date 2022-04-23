@@ -2050,6 +2050,8 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 9619 AND notifications.id <> 1897 AND notifications.organization_id IS NULL AND notifications.notifiable_id = 6771 AND notifications.notifiable_type = 'Comment' AND notifications.action = 'nmgmbjbhjrgaisthnwtrnyuroeokdgzibgrjplzdxwllqafvizoznnydabxkmchemfrzvbosjhfuxqxwcitstjcpzyiietwqetxbgjggdjmyqyubsvbvhpafcaqicprejcgtxhkmfyvosswboubyeijqrhligmanqlmfvuqtcbytyxepaubbrdgxuftqlmeuvkjveuwvoagklmznuomggivttjkjyj' LIMIT 4;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 5716 AND articles.user_id = 8710 AND articles.title IS NULL LIMIT 3;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 9619 AND notifications.id <> 1897 AND False AND notifications.notifiable_id = 6771 AND notifications.notifiable_type = 'Comment' AND notifications.action = 'nmgmbjbhjrgaisthnwtrnyuroeokdgzibgrjplzdxwllqafvizoznnydabxkmchemfrzvbosjhfuxqxwcitstjcpzyiietwqetxbgjggdjmyqyubsvbvhpafcaqicprejcgtxhkmfyvosswboubyeijqrhligmanqlmfvuqtcbytyxepaubbrdgxuftqlmeuvkjveuwvoagklmznuomggivttjkjyj' LIMIT 4;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 5716 AND articles.user_id = 8710 AND False LIMIT 3;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 5716 AND articles.user_id = 8710 AND articles.title IS NULL LIMIT 3;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 5716 AND articles.user_id = 8710 AND False LIMIT 3;

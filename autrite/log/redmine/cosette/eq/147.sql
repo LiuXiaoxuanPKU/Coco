@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM queries LEFT OUTER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('IssueQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13))) AND queries.visibility = 2;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL ORDER BY news.created_on DESC LIMIT 4;
 -- Rewritten Queries
-SELECT COUNT(*) FROM queries INNER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('IssueQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13))) AND queries.visibility = 2;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL ORDER BY news.created_on DESC LIMIT 4;

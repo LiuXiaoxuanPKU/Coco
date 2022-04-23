@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM profile_fields WHERE profile_fields.label IS NULL LIMIT 7;
+SELECT users.* FROM users WHERE users.username = 'kzx';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM profile_fields WHERE False LIMIT 7;
+SELECT users.* FROM users WHERE users.username = 'kzx' LIMIT 1;

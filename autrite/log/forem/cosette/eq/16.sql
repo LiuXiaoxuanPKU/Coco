@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 477 AND organization_memberships.organization_id IS NULL LIMIT 2;
+SELECT users.id, users.name, users.profile_image, users.username FROM users WHERE users.id = 7505;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 477 AND False LIMIT 2;
+SELECT users.id, users.name, users.profile_image, users.username FROM users WHERE users.id = 7505 LIMIT 1;

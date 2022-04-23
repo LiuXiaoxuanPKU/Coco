@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT queries.* FROM queries LEFT OUTER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('IssueQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC;
+SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.id IN (1, 5);
 -- Rewritten Queries
-SELECT queries.* FROM queries INNER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('IssueQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC;
+SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.id IN (1, 5);

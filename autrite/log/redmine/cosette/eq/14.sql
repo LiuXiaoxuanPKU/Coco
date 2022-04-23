@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issue_statuses.is_closed = False ORDER BY issues.id ASC LIMIT 5;
+SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Dsolwkvvrcffzfruzyhamsdjicwlgxidsfdydne' AND wiki_pages.wiki_id IS NULL LIMIT 9;
 -- Rewritten Queries
-SELECT issues.* FROM issues ORDER BY issues.id ASC LIMIT 5;
+SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Dsolwkvvrcffzfruzyhamsdjicwlgxidsfdydne' AND False LIMIT 9;

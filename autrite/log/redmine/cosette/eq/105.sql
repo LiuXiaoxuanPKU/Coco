@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.id = 2 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 11 AND projects.rgt <= 12 AND versions.sharing = 'tree' OR projects.lft < 11 AND projects.rgt > 12 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 11 AND projects.rgt < 12 AND versions.sharing = 'hierarchy') LIMIT 4;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id IN (9246, 636, 5944, 3087, 6659, 7442) AND issue_relations.issue_to_id IN (9578, 1915, 3810, 9015, 1027, 1942) AND issue_relations.relation_type IN ('precedes', 'precedes');
 -- Rewritten Queries
-SELECT 1 AS "one" FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy' LIMIT 4;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id IN (9246, 636, 5944, 3087, 6659, 7442) AND issue_relations.issue_to_id IN (9578, 1915, 3810, 9015, 1027, 1942) AND issue_relations.relation_type IN ('precedes', 'precedes') LIMIT 1;

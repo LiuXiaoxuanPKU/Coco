@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT queries.* FROM queries LEFT OUTER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('ProjectQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13))) AND queries.visibility = 2 AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC;
+SELECT projects.* FROM projects WHERE 1 = 0 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (131, 12));
 -- Rewritten Queries
-SELECT queries.* FROM queries INNER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('ProjectQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13))) AND queries.visibility = 2 AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC;
+SELECT projects.* FROM projects WHERE 1 = 0 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (131, 12)) LIMIT 1;
+SELECT projects.* FROM projects WHERE 1 = 0 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (131, 12) LIMIT 1);
+SELECT projects.* FROM projects WHERE 1 = 0 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (131, 12) LIMIT 1) LIMIT 1;

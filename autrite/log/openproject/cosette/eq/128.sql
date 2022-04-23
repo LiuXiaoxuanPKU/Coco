@@ -1447,7 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN users ON users.id = members.user_id LEFT OUTER JOIN user_preferences ON user_preferences.user_id = users.id LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'another-page%' AND wiki_id = 491;
 -- Rewritten Queries
-SELECT COUNT(DISTINCT members.id) FROM members INNER JOIN users ON users.id = members.user_id LEFT OUTER JOIN user_preferences ON user_preferences.user_id = users.id LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id;
-SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN users ON users.id = members.user_id LEFT OUTER JOIN user_preferences ON user_preferences.user_id = users.id LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'another-page%' AND wiki_id = 491 LIMIT 1;

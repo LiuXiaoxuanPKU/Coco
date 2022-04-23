@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE (projects.id = 5 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 1 AND projects.rgt <= 10 AND versions.sharing = 'tree' OR projects.lft < 2 AND projects.rgt > 5 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 2 AND projects.rgt < 5 AND versions.sharing = 'hierarchy')) AND versions.status = 'locked' LIMIT 4;
+SELECT 1 AS "one" FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers) LIMIT 10;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM versions WHERE (versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy') AND versions.status = 'locked' LIMIT 4;
+SELECT 1 AS "one" FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.id IN (SELECT project_id FROM projects_trackers) LIMIT 10;
+SELECT 1 AS "one" FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.id IN (SELECT project_id FROM projects_trackers) LIMIT 10;
+SELECT 1 AS "one" FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers) LIMIT 10;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT trackers.* FROM trackers INNER JOIN projects_trackers ON trackers.id = projects_trackers.tracker_id WHERE projects_trackers.project_id = 2908 AND 1 = 0 ORDER BY trackers.position ASC;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 423 AND issue_relations.issue_to_id IN (2930, 4929, 3365);
 -- Rewritten Queries
-SELECT trackers.* FROM trackers WHERE 1 = 0 ORDER BY trackers.position ASC;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 423 AND issue_relations.issue_to_id IN (2930, 4929, 3365) LIMIT 1;

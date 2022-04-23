@@ -1447,6 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT DISTINCT projects.* FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 3432 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.identifier = 'dxhxsvpeqzxtkzywcpjffmyxznvkpwvqjmvxxbvr' LIMIT 1;
+SELECT users.* FROM users INNER JOIN group_users ON users.id = group_users.user_id WHERE users.type IN ('User', 'Group', 'User', 'Group') AND group_users.group_id = 29090;
 -- Rewritten Queries
-SELECT DISTINCT projects.* FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 3432 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.identifier = 'dxhxsvpeqzxtkzywcpjffmyxznvkpwvqjmvxxbvr' LIMIT 1;
+SELECT users.* FROM users INNER JOIN group_users ON users.id = group_users.user_id WHERE users.type IN ('User', 'Group', 'User', 'Group') AND group_users.group_id = 29090 LIMIT 1;

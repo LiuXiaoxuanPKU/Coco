@@ -2050,8 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT devices.* FROM devices WHERE devices.user_id = 2998 AND devices.token IS NULL AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT 2;
+SELECT badge_achievements.user_id FROM badge_achievements WHERE badge_achievements.badge_id = 3001;
 -- Rewritten Queries
-SELECT devices.* FROM devices WHERE devices.user_id = 2998 AND False AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT 2;
-SELECT devices.* FROM devices WHERE devices.user_id = 2998 AND devices.token IS NULL AND False AND devices.consumer_app_id IS NULL LIMIT 2;
-SELECT devices.* FROM devices WHERE devices.user_id = 2998 AND False AND False AND devices.consumer_app_id IS NULL LIMIT 2;
+SELECT badge_achievements.user_id FROM badge_achievements WHERE badge_achievements.badge_id = 3001 LIMIT 1;

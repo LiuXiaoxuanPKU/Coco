@@ -1447,12 +1447,6 @@ CREATE TABLE workflows (
     author boolean   NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (project_id IS NULL OR project_id = 269) LIMIT 5;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki%' AND wiki_id = 110;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 269) LIMIT 5;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 269) LIMIT 5;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 269) LIMIT 5;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 269) LIMIT 5;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 269) LIMIT 5;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 269) LIMIT 5;
-SELECT 1 AS "one" FROM cost_queries WHERE is_public = True AND (False OR project_id = 269) LIMIT 5;
+SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki%' AND wiki_id = 110 LIMIT 1;

@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id = 14631 AND workflows.old_status_id IS NULL AND workflows.role_id = 4213;
+SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 6862 AND users.status = 2;
 -- Rewritten Queries
-SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id = 14631 AND False AND workflows.role_id = 4213;
+SELECT members.* FROM members WHERE members.project_id = 6862;
+SELECT members.* FROM members WHERE members.project_id = 6862 LIMIT 1;
+SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 6862 AND users.status = 2 LIMIT 1;

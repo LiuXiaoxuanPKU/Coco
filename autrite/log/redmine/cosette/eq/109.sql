@@ -576,6 +576,7 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.id = 58 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 13 AND projects.rgt <= 18 AND versions.sharing = 'tree' OR projects.lft < 15 AND projects.rgt > 16 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 15 AND projects.rgt < 16 AND versions.sharing = 'hierarchy') LIMIT 2;
+SELECT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id WHERE 1 = 0 AND (journals.private_notes = False OR journals.user_id = 6 OR 1 = 0);
 -- Rewritten Queries
-SELECT 1 AS "one" FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy' LIMIT 2;
+SELECT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id WHERE 1 = 0 AND (journals.private_notes = False OR journals.user_id = 6 OR 1 = 0);
+SELECT journals.* FROM journals WHERE 1 = 0 AND (journals.private_notes = False OR journals.user_id = 6 OR 1 = 0);

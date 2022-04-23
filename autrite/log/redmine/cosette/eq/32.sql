@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM users INNER JOIN groups_users ON users.id = groups_users.group_id WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') AND groups_users.user_id = 8 AND users.id = 58 LIMIT 9;
+SELECT COUNT(*) FROM users INNER JOIN watchers ON users.id = watchers.user_id WHERE watchers.watchable_id = 5951 AND watchers.watchable_type = 'News';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM users WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') AND users.id = 58 LIMIT 9;
+SELECT COUNT(*) FROM users INNER JOIN watchers ON users.id = watchers.user_id WHERE watchers.watchable_id = 5951 AND watchers.watchable_type = 'News' LIMIT 1;
