@@ -238,6 +238,20 @@
     "class": "Article",
     "constraints": [
       {
+        "^o": "FormatConstraint",
+        "field_name": "main_image_background_hex_color",
+        "db": false,
+        "format": "/\A#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\z/",
+        "cond": null
+      },
+      {
+        "^o": "FormatConstraint",
+        "field_name": "main_image_background_hex_color",
+        "db": false,
+        "format": "/\A[0-9a-z\-_]*\z/",
+        "cond" : "{ if: :published? }"
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "collection",
         "db": false,
@@ -2232,6 +2246,13 @@
     "class": "Event",
     "constraints": [
       {
+        "^o": "FormatConstraint",
+        "field_name": "slug",
+        "db": false,
+        "format": "/\A[0-9a-z-]*\z/",
+        "cond": "if: :published?"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "title",
         "db": false,
@@ -2384,18 +2405,14 @@
         "type": "builtin"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "reporter_id",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
-          "reporter_id"
+          "reporter_id",
+          "reported_url",
+          "feedback_type"
         ],
         "db": false,
-        "cond": "",
+        "cond": "if: :abuse_report? && :reporter_id",
         "case_sensitive": null,
         "type": "builtin"
       },
@@ -2574,6 +2591,13 @@
     "table": "github_issues",
     "class": "GithubIssue",
     "constraints": [
+      {
+        "^o": "FormatConstraint",
+        "field_name": "url",
+        "db": false,
+        "format": null,
+        "cond": null
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "category",
@@ -3159,6 +3183,13 @@
     "class": "Listing",
     "constraints": [
       {
+        "^o": "FormatConstraint",
+        "field_name": "social_preview_color",
+        "db": false,
+        "format": "/\A#(?:[a-f0-9]{3}){1,2}\z/",
+        "cond": null
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "listing_category",
         "db": false,
@@ -3646,6 +3677,13 @@
     "table": "navigation_links",
     "class": "NavigationLink",
     "constraints": [
+      {
+        "^o": "FormatConstraint",
+        "field_name": "icon",
+        "db": false,
+        "format": null,
+        "cond": null
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
@@ -4159,6 +4197,34 @@
     "table": "organizations",
     "class": "Organization",
     "constraints": [
+      {
+        "^o": "FormatConstraint",
+        "field_name": "bg_color_hex",
+        "db": false,
+        "format": null,
+        "cond": null
+      },
+      {
+        "^o": "FormatConstraint",
+        "field_name": "company_size",
+        "db": false,
+        "format": null,
+        "cond": null
+      },
+      {
+        "^o": "FormatConstraint",
+        "field_name": "slug",
+        "db": false,
+        "format": null,
+        "cond": null
+      },
+      {
+        "^o": "FormatConstraint",
+        "field_name": "text_color_hex",
+        "db": false,
+        "format": null,
+        "cond": null
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "articles_count",
@@ -4744,6 +4810,20 @@
     "table": "podcasts",
     "class": "Podcast",
     "constraints": [
+      {
+        "^o": "FormatConstraint",
+        "field_name": "main_color_hex",
+        "db": false,
+        "format": "/\A([a-fA-F]|[0-9]){6}\Z/",
+        "cond": null
+      },
+      {
+        "^o": "FormatConstraint",
+        "field_name": "slug",
+        "db": false,
+        "format": "/\A[a-zA-Z0-9\-_]+\Z/",
+        "cond": null
+      },
       {
         "^o": "ForeignKeyConstraint",
         "field_name": "creator",
@@ -7029,6 +7109,20 @@
     "table": "users",
     "class": "User",
     "constraints": [
+      {
+        "^o": "FormatConstraint",
+        "field_name": "payment_pointer",
+        "db": false,
+        "format": null,
+        "cond": null
+      },
+      {
+        "^o": "FormatConstraint",
+        "field_name": "username",
+        "db": false,
+        "format": null,
+        "cond": null
+      },
       {
         "^o": "PresenceConstraint",
         "field_name": "articles_count",

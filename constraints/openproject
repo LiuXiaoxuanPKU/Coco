@@ -2567,7 +2567,7 @@
           "navigatable_id"
         ],
         "db": false,
-        "cond": "",
+        "cond": "class=MenuItems::QueryMenuItem",
         "case_sensitive": true,
         "type": "has_one"
       },
@@ -2944,8 +2944,8 @@
         "^o": "UniqueConstraint",
         "field_name": [
           "channel",
-          "project",
-          "user"
+          "project_id",
+          "user_id"
         ],
         "db": false,
         "cond": "",
@@ -3226,16 +3226,6 @@
         "field_name": "identifier",
         "db": false,
         "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "wikipage_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "has_one"
       },
       {
         "^o": "PresenceConstraint",
@@ -3860,16 +3850,6 @@
         "type": "class_inheritance"
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "project_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "has_one"
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "name",
         "db": true,
@@ -4176,16 +4156,6 @@
         "field_name": "user_id",
         "db": false,
         "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "user_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "has_one"
       },
       {
         "^o": "PresenceConstraint",

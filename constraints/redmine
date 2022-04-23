@@ -3196,7 +3196,17 @@
           "user_id"
         ],
         "db": false,
-        "cond": "",
+        "cond": "action='feeds'",
+        "case_sensitive": true,
+        "type": "has_one"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "user_id"
+        ],
+        "db": false,
+        "cond": "action='api'",
         "case_sensitive": true,
         "type": "has_one"
       },
@@ -3679,16 +3689,6 @@
         "db": false,
         "min": null,
         "max": 1024
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "page_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "has_one"
       },
       {
         "^o": "PresenceConstraint",
