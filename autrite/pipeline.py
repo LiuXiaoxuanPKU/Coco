@@ -14,7 +14,8 @@ from tqdm import tqdm
 import time
 from utils import generate_query_param_rewrites, exp_recorder
 
-from config import CONNECT_MAP, FileType, get_filename
+from config import CONNECT_MAP, FileType, RewriteQuery, get_filename
+from mo_sql_parsing import parse
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -33,10 +34,7 @@ if __name__ == '__main__':
     offset = 0
     query_cnt = 1000000
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
-             rule.AddLimitOne, rule.RemoveJoin, rule.ReplaceOuterJoin]
-    # does not support remove join for now, because it's too slower and not supported by the verifier 
-    # rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
-    #         rule.AddLimitOne, rule.ReplaceOuterJoin]
+             rule.RemoveJoin, rule.ReplaceOuterJoin, rule.AddLimitOne]
     constraints = Loader.load_constraints(constraint_filename)
     if args.db:
         print("========Only use DB constraints to perform optimization======")
@@ -52,20 +50,23 @@ if __name__ == '__main__':
     total_candidate_cnt = []
     dump_counter = False # only dump counter example
 
+    enumerate_cnt = 0
+    lower_cost_cnt = 0
+    lower_cost_pass_test_cnt = 0 
     for q in tqdm(queries):
         start = time.time()
         # =================Enumerate Candidates================
-        rewritten_queries = []
+        enumerate_queries = []
         try:
-            rewritten_queries = rewriter.rewrite(constraints, q)
+            enumerate_queries = rewriter.rewrite(constraints, q)
         except:
             print("[Error rewrite]", q.q_raw)
             print(traceback.format_exc())
             continue
         rewrite_time.append(time.time() - start)
-        if len(rewritten_queries) == 0:
+        if len(enumerate_queries) == 0:
             continue
-            
+        enumerate_cnt += 1
             
         # ======== Estimate cost and retain those with lower cost than original ======
         rewritten_queries_lower_cost = []
@@ -76,6 +77,8 @@ if __name__ == '__main__':
             continue
         # remove rewrites that fail to generate parameters
         rewritten_queries = [rq for rq in rewritten_queries if rq.q_raw_param is not None]
+        if len(rewritten_queries) == 0:
+            continue
         # retain rewrites with lower cost
         try:
             org_cost = Evaluator.evaluate_cost(q.q_raw_param, connect_str)
@@ -90,6 +93,7 @@ if __name__ == '__main__':
                     rq.estimate_cost = estimate_cost 
                     rewritten_queries_lower_cost.append(rq)
                 else:
+                    continue
                     print("[Error] rewrite get slower")
                     print("[Org] %f %s" % (org_cost, q.q_raw_param))
                     print("[Rewrite] %f %s" % (estimate_cost, rq.q_raw_param))
@@ -98,7 +102,7 @@ if __name__ == '__main__':
                 continue
         if len(rewritten_queries_lower_cost) == 0:
             continue
-        
+        lower_cost_cnt += 1
         
         # ======== Run test and retain those that pass =========
         rewritten_queries_lower_cost_after_test = []
@@ -115,7 +119,7 @@ if __name__ == '__main__':
          
         if len(rewritten_queries_lower_cost_after_test) == 0:
             continue
-       
+        lower_cost_pass_test_cnt += 1
        
         # ========= Sort rewrites that pass tests ============
         # Sort the list in place
@@ -128,5 +132,7 @@ if __name__ == '__main__':
    
     
     exp_recorder.record("candidate info",  total_candidate_cnt)
-    print("Rewrite Number %d" % rewrite_cnt)
     print("Average # of candidates %f" % (sum(total_candidate_cnt) / len(total_candidate_cnt)))
+    print("Enumerate count %d" % enumerate_cnt)
+    print("Lower cost cnt %d" % lower_cost_cnt)
+    print("Lower cost pass test %d" % lower_cost_pass_test_cnt)

@@ -11,20 +11,29 @@ from utils import GlobalExpRecorder, generate_query_param_single
 from tqdm import tqdm
 
 # ------------------------------------------------------------------------------
-# This script counts queries has table column with a certain type of constraints
+# This script counts queries has table column with certain type(s) of constraints
 # dump the results into logs. Here's how to run this script: 
-# run under autrite directory: python3 benchmark/extract_query.py
-# option to verbal for debug purpose: python3 benchmark/extract_query.py -v
+# Run under autrite directory: python3 benchmark/extract_query.py
+# Option to verbal for debug purpose: python3 benchmark/extract_query.py -v
 # ------------------------------------------------------------------------------
+
+#========================== static variables =========================
+app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021}
+# app_to_cnt = {"redmine": 100, "forem": 100, "openproject": 100}
+appnames = ['forem', 'redmine', 'openproject']
+name_to_type = { 
+               'inclusion': constraint.InclusionConstraint,
+               'length': constraint.LengthConstraint,
+               'format': constraint.FormatConstraint,
+               }
+#=====================================================================
+
+
+#========================== main function ============================
 def main(verbal) -> None:
     # make sure log file is clean
     recorder = GlobalExpRecorder()
     # recorder.clear(get_filename(FileType.PRECHECK_STR2INT_NUM, None))
-
-    appnames = ['forem', 'redmine', 'openproject']
-    name_to_type = {'inclusion': constraint.InclusionConstraint, 
-               'length': constraint.LengthConstraint, 
-               'format': constraint.FormatConstraint}
 
     for appname in appnames:
         # load query once for each app
@@ -35,10 +44,12 @@ def main(verbal) -> None:
         all_cs = load_cs(appname, 'all')
         all_cnt = count(all_cs, queries, verbal)
         recorder.record("queries_with_cs", all_cnt)
+
+        # count inclusion, length, format constraint query
         for type_name in name_to_type.keys():
             cs_type = name_to_type[type_name]
             filtered_cs = load_cs(appname, cs_type)
-            cnt = count(filtered_cs, queries, verbal)
+            cnt = count(filtered_cs, queries, verbal)      
             recorder.record(type_name, cnt)
         recorder.dump(get_filename(FileType.PRECHECK_STR2INT_NUM, None))
         
@@ -46,7 +57,7 @@ def main(verbal) -> None:
 #        helper functions       #
 #################################
 def get_valid_queries(queries, connect_str):
-    print("==========Get Valida Queries============")
+    print("==========Get Valid Queries============")
     valid_queries = []
     for q in tqdm(queries):
         try:
@@ -63,8 +74,6 @@ def get_valid_queries(queries, connect_str):
         
 # load queries
 def load_queries(appname) -> list:
-    app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021}
-    # app_to_cnt = {"redmine": 100, "forem": 100, "openproject": 100}
     query_filename = get_filename(FileType.RAW_QUERY, appname)
     offset = 0
     query_cnt = app_to_cnt[appname]
@@ -95,7 +104,7 @@ def count(filtered_cs, queries, verbal) -> int:
 # return True if query contains inclusion constrains
 def extracted(q) -> bool:
     # rewrite_q is a list of queries from the rewrite rules
-    return len(q) == 1
+    return len(q) >= 1
 
 # print info about errored query
 def print_error(q, verbal) -> None:
