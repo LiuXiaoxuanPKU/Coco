@@ -1,14 +1,16 @@
 import rule
+from constraint import InclusionConstraint
 
 
 class ExtractQueryRule(rule.Rule):
     def __init__(self, cs) -> None:
-        # cs is a list of all certain type constraints (e.g. a list of Inclusion constraints) 
-        # pre-filter constriants to use this function 
+        # cs is a non-empty list of constraints
+ 
         super().__init__(cs)
         self.name = "ExtractQuery"
         self.table_to_field = self.get_cs_map(cs)
         self.cs_tables = self.table_to_field.keys()
+        self.inclusion_t = self.get_inclusion_table(cs)
 
     def apply_single(self, q) -> list:
         if not 'from' in q:
@@ -58,7 +60,15 @@ class ExtractQueryRule(rule.Rule):
             
         return []
 
-    #=================== helper function ====================
+    #========================= helper function =======================
+
+    # return a set of all tables that contains inclusion constraints 
+    def get_inclusion_table(self, cs) -> set:
+        inclusion_t = set()
+        for c in cs:
+            if type(c) == InclusionConstraint:
+                inclusion_t.add(c.table)
+        return inclusion_t
 
     # return a map: table(str) -> fields(set) 
     def get_cs_map(self, cs) -> dict:
@@ -87,14 +97,15 @@ class ExtractQueryRule(rule.Rule):
     def check_select(self, clause, table=None) -> bool:
         # {'value': 1, 'name': 'one'}
         # {'value': 'attachments.*'}
-        # [{'value': 'attachments.filename', 'name': 'alias_0'}, {'value': 'projects.id'}]
         def check_value_clause(clause):
             value = clause['value']
             if isinstance(value, int):
                 return False
+            if isinstance(value, dict):
+                aggr_op = list(value.keys())[0]
+                value = value[aggr_op]
             if "*" in value:
-                return False
-                return True
+                return table in self.inclusion_t
             elif not isinstance(value, str):
                 print("[Warning] Does not handle value %s of type %s" % (value, type(value)))
                 return False
@@ -106,7 +117,8 @@ class ExtractQueryRule(rule.Rule):
                     return True
             else:
                 return False
-
+        if clause == "*":
+            return table in self.inclusion_t
         if isinstance(clause, dict):
             return check_value_clause(clause)
         if isinstance(clause, list):
@@ -128,8 +140,10 @@ class ExtractQueryRule(rule.Rule):
             return False
         else: # base case
             if op == "not":
-                clause = clause['not']
+                clause = clause[op]
                 op = list(clause.keys())[0]
+            if isinstance(clause[op][0], int):
+                return False
             if not isinstance(clause[op], list):
                 print("[Warning] 1. Does not handle predicate %s of type %s for now" % (clause[op], type(clause[op])))
                 return False
