@@ -125,7 +125,7 @@ class FormatConstraint < Constraint
   end
 
   def hash
-    return (self.field_name + self.db.to_s + self.format).hash
+    return (self.field_name + self.db.to_s + self.format.to_s).hash
   end
 end
 

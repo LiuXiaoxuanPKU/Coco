@@ -138,6 +138,11 @@ class BuiltinExtractor < Extractor
         fields.each do |field|
           constraints << NumericalConstraint.new(field, min, max, db = false)
         end
+      elsif label == 'format'
+        # TODO: extract format pattern
+        fields.each do |field|
+          constraints << FormatConstraint.new(field,  nil, db = false)
+        end
       elsif ['allow_blank', 'allow_nil'].include? label
         allow_nil = true
       else

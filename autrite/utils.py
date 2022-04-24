@@ -151,6 +151,7 @@ class GlobalExpRecorder:
         # print("Save exp results to %s" % filename)
 
     def clear(self, filename):
+        self.val_dict = OrderedDict()
         open(filename, 'w').close()
         
 

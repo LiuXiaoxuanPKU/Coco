@@ -23,6 +23,7 @@ if __name__ == '__main__':
     parser.add_argument('--prove', action='store_true')
     parser.add_argument('--db', action='store_true', \
             help='only use db constraints to perform optimization')
+    parser.add_argument('--counter', action='store_true', help="dump counter example")
     args = parser.parse_args()
     
     appname =  args.app
@@ -48,7 +49,7 @@ if __name__ == '__main__':
     rewrite_time = []
     rewrite_cnt = 0
     total_candidate_cnt = []
-    dump_counter = False # only dump counter example
+    dump_counter = args.counter # only dump counter example
 
     enumerate_cnt = 0
     lower_cost_cnt = 0
@@ -72,6 +73,7 @@ if __name__ == '__main__':
         rewritten_queries_lower_cost = []
         # replace placeholder with actual parameters for org and rewrites
         connect_str = CONNECT_MAP[appname]
+        rewritten_queries = enumerate_queries
         succ = generate_query_param_rewrites(q, rewritten_queries, connect_str)
         if not succ:
             continue
