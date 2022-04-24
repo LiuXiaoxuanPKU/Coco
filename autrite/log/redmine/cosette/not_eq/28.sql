@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM trackers INNER JOIN projects_trackers ON trackers.id = projects_trackers.tracker_id WHERE projects_trackers.project_id = 5090 AND trackers.id = 9957 AND trackers.id = 9957 LIMIT 10;
+SELECT projects.* FROM projects INNER JOIN projects_trackers ON projects.id = projects_trackers.project_id WHERE projects_trackers.tracker_id = 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM trackers WHERE trackers.id = 9957 AND trackers.id = 9957 LIMIT 10;
+SELECT projects.* FROM projects;

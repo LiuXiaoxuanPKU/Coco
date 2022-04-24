@@ -576,9 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM projects WHERE ((projects.status = 1 AND EXISTS (SELECT 1 AS "one" FROM enabled_modules em WHERE em.project_id = projects.id AND em.name='issue_tracking')) OR projects.id = 1) AND (projects.id IN (SELECT DISTINCT project_id FROM projects_trackers)) AND projects.id = 5620 LIMIT 2;
+SELECT users.* FROM users INNER JOIN watchers ON users.id = watchers.user_id WHERE watchers.watchable_id = 5884 AND watchers.watchable_type = 'News';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers LIMIT 1) AND projects.id = 5620 LIMIT 2;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers LIMIT 1) AND projects.id = 5620 LIMIT 2;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT project_id FROM projects_trackers LIMIT 1) AND projects.id = 5620 LIMIT 2;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT project_id FROM projects_trackers LIMIT 1) AND projects.id = 5620 LIMIT 2;
+SELECT users.* FROM users LIMIT 1;

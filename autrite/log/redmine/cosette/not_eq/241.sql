@@ -576,6 +576,13 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  trackers.* FROM trackers INNER JOIN projects_trackers ON trackers.id = projects_trackers.tracker_id WHERE projects_trackers.project_id = 9448 AND trackers.id IN (7519, 7252) ORDER BY trackers.position ASC LIMIT 10;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
 -- Rewritten Queries
-SELECT trackers.* FROM trackers WHERE trackers.id IN (5126, 6815) ORDER BY trackers.position ASC LIMIT 10;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);
+SELECT issues.* FROM issues WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (1, 3);

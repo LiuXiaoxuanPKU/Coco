@@ -576,9 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM projects WHERE (projects.status = 1 AND EXISTS (SELECT 1 AS "one" FROM enabled_modules em WHERE em.project_id = projects.id AND em.name='issue_tracking')) AND (projects.id IN (SELECT DISTINCT project_id FROM projects_trackers)) LIMIT 9;
+SELECT COUNT(*) FROM projects INNER JOIN projects_trackers ON projects.id = projects_trackers.project_id WHERE projects_trackers.tracker_id = 3;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers LIMIT 1) LIMIT 9;
-SELECT 1 AS "one" FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers LIMIT 1) LIMIT 9;
-SELECT 1 AS "one" FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.id IN (SELECT project_id FROM projects_trackers LIMIT 1) LIMIT 9;
-SELECT 1 AS "one" FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.id IN (SELECT project_id FROM projects_trackers LIMIT 1) LIMIT 9;
+SELECT COUNT(*) FROM projects;

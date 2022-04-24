@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  users.* FROM users WHERE users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User') AND (LOWER(users.login) LIKE LOWER('%mi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%mi%')) OR ((LOWER(users.firstname) LIKE LOWER('%mi%') OR LOWER(users.lastname) LIKE LOWER('%mi%')))) ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 2;
+SELECT versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.id = 35 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 1 AND projects.rgt <= 2 AND versions.sharing = 'tree' OR projects.lft < 1 AND projects.rgt > 2 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 1 AND projects.rgt < 2 AND versions.sharing = 'hierarchy');
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User') AND (LOWER(users.login) LIKE LOWER('%mi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%mi%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%mi%') OR LOWER(users.lastname) LIKE LOWER('%mi%')) ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 2;
+SELECT versions.* FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy';

@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE (((projects.status <> 9) AND ((projects.is_public = TRUE AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4,12))))))) AND enabled_modules.name = 'documents' LIMIT 5;
+SELECT enabled_modules.name FROM enabled_modules WHERE enabled_modules.project_id = 9691;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12)) LIMIT 1) AND enabled_modules.name = 'documents' LIMIT 5;
-SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) LIMIT 1) AND enabled_modules.name = 'documents' LIMIT 5;
+SELECT enabled_modules.name FROM enabled_modules WHERE enabled_modules.project_id = 9691 LIMIT 1;

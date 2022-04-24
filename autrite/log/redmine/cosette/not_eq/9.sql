@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE (projects.status <> 9)) AND enabled_modules.name = 'gantt' LIMIT 6;
+SELECT issue_statuses.name FROM issue_statuses WHERE issue_statuses.id IN (9443, 1446) ORDER BY issue_statuses.position ASC;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 LIMIT 1) AND enabled_modules.name = 'gantt' LIMIT 6;
+SELECT issue_statuses.name FROM issue_statuses WHERE issue_statuses.id IN (9443, 1446) ORDER BY issue_statuses.position ASC LIMIT 1;

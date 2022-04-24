@@ -576,6 +576,13 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  projects.* FROM projects INNER JOIN members ON projects.id = members.project_id WHERE members.user_id = 3684 AND projects.status != 5 ORDER BY projects.id ASC LIMIT 1;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.parent_id IS NULL;
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE projects.status <> 5 ORDER BY projects.id ASC LIMIT 1;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.parent_id IS NULL;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.parent_id IS NULL;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.parent_id IS NULL;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.parent_id IS NULL;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE issues.parent_id IS NULL;
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE issues.parent_id IS NULL;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.parent_id IS NULL;
+SELECT issues.* FROM issues WHERE issues.parent_id IS NULL;

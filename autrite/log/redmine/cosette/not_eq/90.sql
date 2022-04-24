@@ -576,6 +576,7 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  enumerations.* FROM enumerations WHERE enumerations.type IN ('IssuePriority') AND (position > 1) ORDER BY enumerations.position ASC LIMIT 1;
+SELECT projects.* FROM projects WHERE projects.lft < 18 AND projects.rgt > 19 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) ORDER BY projects.lft ASC;
 -- Rewritten Queries
-SELECT enumerations.* FROM enumerations WHERE enumerations.type IN ('IssuePriority') ORDER BY enumerations.position ASC LIMIT 1;
+SELECT projects.* FROM projects WHERE projects.lft < 18 AND projects.rgt > 19 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) ORDER BY projects.lft ASC LIMIT 1;
+SELECT projects.* FROM projects WHERE projects.lft < 18 AND projects.rgt > 19 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) ORDER BY projects.lft ASC LIMIT 1;

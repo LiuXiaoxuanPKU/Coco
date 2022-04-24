@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM custom_values INNER JOIN custom_fields ON custom_fields.id = custom_values.custom_field_id WHERE custom_values.value = '' AND custom_fields.field_format = 'date' LIMIT 7;
+SELECT COUNT(*) FROM issues WHERE issues.done_ratio = 0;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM custom_values WHERE custom_values.value = '' LIMIT 7;
+SELECT COUNT(*) FROM issues;

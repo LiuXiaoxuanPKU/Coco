@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  DISTINCT attachments.filename AS alias_0, projects.id FROM projects LEFT OUTER JOIN attachments ON attachments.container_id = projects.id AND attachments.container_type = 'es' WHERE projects.id = 5761 ORDER BY attachments.filename ASC LIMIT 2;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND members.project_id = 4;
 -- Rewritten Queries
-SELECT DISTINCT attachments.filename AS alias_0, projects.id FROM projects INNER JOIN attachments ON attachments.container_id = projects.id AND attachments.container_type = 'es' WHERE projects.id = 5761 ORDER BY attachments.filename ASC LIMIT 2;
-SELECT attachments.filename AS alias_0, projects.id FROM projects INNER JOIN attachments ON attachments.container_id = projects.id AND attachments.container_type = 'es' WHERE projects.id = 5761 ORDER BY attachments.filename ASC LIMIT 2;
+SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 LIMIT 1;

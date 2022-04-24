@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  DISTINCT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id INNER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE (projects.status <> 9) AND enabled_modules.name = 'repository' AND (projects.lft >= 1 AND projects.rgt <= 10) ORDER BY trackers.position ASC LIMIT 8;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 5;
 -- Rewritten Queries
-SELECT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id INNER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE projects.status <> 9 AND enabled_modules.name = 'repository' AND projects.lft >= 1 AND projects.rgt <= 10 ORDER BY trackers.position ASC LIMIT 8;
-SELECT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id WHERE projects.status <> 9 AND projects.lft >= 1 AND projects.rgt <= 10 ORDER BY trackers.position ASC LIMIT 8;
+SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 LIMIT 1;

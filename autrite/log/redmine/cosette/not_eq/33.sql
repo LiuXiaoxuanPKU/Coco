@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT  1 AS "one" FROM users INNER JOIN groups_users ON users.id = groups_users.user_id WHERE users.type IN ('User', 'AnonymousUser') AND groups_users.group_id = 11 LIMIT 1;
+SELECT 1 AS "one" FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 3346 AND projects.status <> 5 LIMIT 10;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM users WHERE users.type IN ('User', 'AnonymousUser') LIMIT 1;
+SELECT 1 AS "one" FROM members WHERE members.user_id = 3346 LIMIT 10;
