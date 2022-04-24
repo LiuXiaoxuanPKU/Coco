@@ -1,48 +1,5 @@
 [
   {
-    "table": null,
-    "class": "DummyRoot",
-    "constraints": [
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "type",
-        "db": false,
-        "values": [
-          "DummyRoot",
-          "ApplicationRecord",
-          "RailsSettings::Base"
-        ],
-        "type": "class_inheritance"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": null,
-    "class": "ApplicationRecord",
-    "constraints": [
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
     "table": "ahoy_events",
     "class": "Ahoy::Event",
     "constraints": [
@@ -173,12 +130,6 @@
         "polymorphic": null
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "description",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "description",
         "db": false,
@@ -241,15 +192,15 @@
         "^o": "FormatConstraint",
         "field_name": "main_image_background_hex_color",
         "db": false,
-        "format": "/\A#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\z/",
+        "format": "/A#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})z/",
         "cond": null
       },
       {
         "^o": "FormatConstraint",
         "field_name": "main_image_background_hex_color",
         "db": false,
-        "format": "/\A[0-9a-z\-_]*\z/",
-        "cond" : "{ if: :published? }"
+        "format": "/A[0-9a-z-_]*z/",
+        "cond": "{ if: :published? }"
       },
       {
         "^o": "ForeignKeyConstraint",
@@ -282,23 +233,11 @@
         "cond": ""
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "body_markdown",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "body_markdown",
         "db": false,
         "min": -1,
         "max": -1
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "body_markdown",
-        "db": false,
-        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
@@ -447,9 +386,7 @@
         "^o": "InclusionConstraint",
         "field_name": "video_state",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -674,6 +611,10 @@
         "type": "builtin"
       },
       {
+        "^o": "CaseConstraint",
+        "field_name": "title"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
         "db": true,
@@ -886,6 +827,10 @@
         "type": "builtin"
       },
       {
+        "^o": "CaseConstraint",
+        "field_name": "username"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
         "db": true,
@@ -961,27 +906,17 @@
         "cond": ""
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "type_of",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "InclusionConstraint",
         "field_name": "type_of",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "banner_style",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -1032,9 +967,7 @@
         "^o": "InclusionConstraint",
         "field_name": "channel_type",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -1047,9 +980,7 @@
         "^o": "InclusionConstraint",
         "field_name": "status",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -1061,6 +992,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "slug"
       },
       {
         "^o": "PresenceConstraint",
@@ -1168,9 +1103,7 @@
         "^o": "InclusionConstraint",
         "field_name": "role",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -1183,9 +1116,7 @@
         "^o": "InclusionConstraint",
         "field_name": "status",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -1420,9 +1351,7 @@
         "^o": "InclusionConstraint",
         "field_name": "commentable_type",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -1563,9 +1492,7 @@
         "^o": "InclusionConstraint",
         "field_name": "platform",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -1719,6 +1646,10 @@
         "type": "builtin"
       },
       {
+        "^o": "CaseConstraint",
+        "field_name": "file_name"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "status",
         "db": false,
@@ -1794,9 +1725,7 @@
         "^o": "InclusionConstraint",
         "field_name": "platform",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -2037,9 +1966,7 @@
         "^o": "InclusionConstraint",
         "field_name": "placement_area",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -2110,9 +2037,7 @@
         "^o": "InclusionConstraint",
         "field_name": "category",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -2125,9 +2050,7 @@
         "^o": "InclusionConstraint",
         "field_name": "context_type",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -2192,9 +2115,7 @@
         "^o": "InclusionConstraint",
         "field_name": "type_of",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -2249,7 +2170,7 @@
         "^o": "FormatConstraint",
         "field_name": "slug",
         "db": false,
-        "format": "/\A[0-9a-z-]*\z/",
+        "format": "/A[0-9a-z-]*z/",
         "cond": "if: :published?"
       },
       {
@@ -2384,9 +2305,7 @@
         "^o": "InclusionConstraint",
         "field_name": "category",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -2399,9 +2318,7 @@
         "^o": "InclusionConstraint",
         "field_name": "status",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -2482,9 +2399,7 @@
         "^o": "InclusionConstraint",
         "field_name": "blocked",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -2521,9 +2436,7 @@
         "^o": "InclusionConstraint",
         "field_name": "subscription_status",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -2608,9 +2521,7 @@
         "^o": "InclusionConstraint",
         "field_name": "category",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -2641,6 +2552,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "url"
       },
       {
         "^o": "PresenceConstraint",
@@ -2723,6 +2638,10 @@
         "type": "builtin"
       },
       {
+        "^o": "CaseConstraint",
+        "field_name": "url"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "github_id_code",
         "db": false,
@@ -2737,6 +2656,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "github_id_code"
       },
       {
         "^o": "PresenceConstraint",
@@ -2806,9 +2729,7 @@
         "^o": "InclusionConstraint",
         "field_name": "group",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -2832,6 +2753,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "name"
       },
       {
         "^o": "PresenceConstraint",
@@ -3035,9 +2960,7 @@
         "^o": "InclusionConstraint",
         "field_name": "provider",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -3186,7 +3109,7 @@
         "^o": "FormatConstraint",
         "field_name": "social_preview_color",
         "db": false,
-        "format": "/\A#(?:[a-f0-9]{3}){1,2}\z/",
+        "format": "/A#(?:[a-f0-9]{3}){1,2}z/",
         "cond": null
       },
       {
@@ -3357,6 +3280,10 @@
         "type": "builtin"
       },
       {
+        "^o": "CaseConstraint",
+        "field_name": "name"
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": [
           "slug"
@@ -3365,6 +3292,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "slug"
       },
       {
         "^o": "PresenceConstraint",
@@ -3735,9 +3666,7 @@
         "^o": "InclusionConstraint",
         "field_name": "display_only_when_signed_in",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -4067,9 +3996,7 @@
         "^o": "InclusionConstraint",
         "field_name": "config",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -4088,9 +4015,7 @@
         "^o": "InclusionConstraint",
         "field_name": "notifiable_type",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -4348,6 +4273,10 @@
         "type": "builtin"
       },
       {
+        "^o": "CaseConstraint",
+        "field_name": "secret"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "slug",
         "db": false,
@@ -4375,6 +4304,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "slug"
       },
       {
         "^o": "PresenceConstraint",
@@ -4563,9 +4496,7 @@
         "^o": "InclusionConstraint",
         "field_name": "type_of_user",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -4685,9 +4616,7 @@
         "^o": "InclusionConstraint",
         "field_name": "template",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -4814,14 +4743,14 @@
         "^o": "FormatConstraint",
         "field_name": "main_color_hex",
         "db": false,
-        "format": "/\A([a-fA-F]|[0-9]){6}\Z/",
+        "format": "/A([a-fA-F]|[0-9]){6}Z/",
         "cond": null
       },
       {
         "^o": "FormatConstraint",
         "field_name": "slug",
         "db": false,
-        "format": "/\A[a-zA-Z0-9\-_]+\Z/",
+        "format": "/A[a-zA-Z0-9-_]+Z/",
         "cond": null
       },
       {
@@ -4879,6 +4808,10 @@
         "type": "builtin"
       },
       {
+        "^o": "CaseConstraint",
+        "field_name": "feed_url"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "slug",
         "db": false,
@@ -4893,6 +4826,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "slug"
       },
       {
         "^o": "PresenceConstraint",
@@ -5011,6 +4948,10 @@
         "type": "builtin"
       },
       {
+        "^o": "CaseConstraint",
+        "field_name": "guid"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "media_url",
         "db": false,
@@ -5025,6 +4966,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "media_url"
       },
       {
         "^o": "PresenceConstraint",
@@ -5197,9 +5142,7 @@
         "^o": "InclusionConstraint",
         "field_name": "role",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -5954,6 +5897,10 @@
         "type": "builtin"
       },
       {
+        "^o": "CaseConstraint",
+        "field_name": "label"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "show_in_onboarding",
         "db": false,
@@ -5963,9 +5910,7 @@
         "^o": "InclusionConstraint",
         "field_name": "show_in_onboarding",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6061,6 +6006,10 @@
         "type": "builtin"
       },
       {
+        "^o": "CaseConstraint",
+        "field_name": "name"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
         "db": true,
@@ -6136,9 +6085,7 @@
         "^o": "InclusionConstraint",
         "field_name": "profile_type",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6170,9 +6117,7 @@
         "^o": "InclusionConstraint",
         "field_name": "pinnable_type",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6261,18 +6206,14 @@
         "^o": "InclusionConstraint",
         "field_name": "context",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "group",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6394,9 +6335,7 @@
         "^o": "InclusionConstraint",
         "field_name": "category",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6409,9 +6348,7 @@
         "^o": "InclusionConstraint",
         "field_name": "reactable_type",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6424,9 +6361,7 @@
         "^o": "InclusionConstraint",
         "field_name": "status",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6558,9 +6493,7 @@
         "^o": "InclusionConstraint",
         "field_name": "type_of",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6573,9 +6506,7 @@
         "^o": "InclusionConstraint",
         "field_name": "content_type",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6588,9 +6519,7 @@
         "^o": "InclusionConstraint",
         "field_name": "content_type",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6603,9 +6532,7 @@
         "^o": "InclusionConstraint",
         "field_name": "content_type",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6693,9 +6620,7 @@
         "^o": "InclusionConstraint",
         "field_name": "resource_type",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6708,9 +6633,7 @@
         "^o": "InclusionConstraint",
         "field_name": "name",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6779,9 +6702,7 @@
         "^o": "InclusionConstraint",
         "field_name": "level",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6794,9 +6715,7 @@
         "^o": "InclusionConstraint",
         "field_name": "status",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6924,9 +6843,7 @@
         "^o": "InclusionConstraint",
         "field_name": "adjustment_type",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -6939,9 +6856,7 @@
         "^o": "InclusionConstraint",
         "field_name": "status",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -7183,6 +7098,10 @@
         "type": "builtin"
       },
       {
+        "^o": "CaseConstraint",
+        "field_name": "email"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "following_orgs_count",
         "db": false,
@@ -7290,6 +7209,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "username"
       },
       {
         "^o": "PresenceConstraint",
@@ -7553,9 +7476,7 @@
         "^o": "InclusionConstraint",
         "field_name": "config",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -7768,9 +7689,7 @@
         "^o": "InclusionConstraint",
         "field_name": "user_subscription_sourceable_type",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -7783,9 +7702,7 @@
         "^o": "InclusionConstraint",
         "field_name": "user_subscription_sourceable_type",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -7909,9 +7826,7 @@
         "^o": "InclusionConstraint",
         "field_name": "email_digest_periodic",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -8097,9 +8012,7 @@
         "^o": "InclusionConstraint",
         "field_name": "feed_referential_link",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -8249,6 +8162,10 @@
         "type": "builtin"
       },
       {
+        "^o": "CaseConstraint",
+        "field_name": "username_hash"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
         "db": true,
@@ -8319,6 +8236,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "target_url"
       },
       {
         "^o": "PresenceConstraint",

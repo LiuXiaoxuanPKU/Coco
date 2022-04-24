@@ -347,6 +347,10 @@
         "type": "builtin"
       },
       {
+        "^o": "CaseConstraint",
+        "field_name": "name"
+      },
+      {
         "^o": "LengthConstraint",
         "field_name": "name",
         "db": false,
@@ -517,6 +521,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "name"
       },
       {
         "^o": "LengthConstraint",
@@ -947,9 +955,7 @@
         "^o": "InclusionConstraint",
         "field_name": "field_format",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -1474,6 +1480,14 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "name"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "type"
       },
       {
         "^o": "PresenceConstraint",
@@ -3826,6 +3840,10 @@
         "type": "builtin"
       },
       {
+        "^o": "CaseConstraint",
+        "field_name": "name"
+      },
+      {
         "^o": "LengthConstraint",
         "field_name": "name",
         "db": false,
@@ -3994,6 +4012,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "name"
       },
       {
         "^o": "LengthConstraint",
@@ -4203,6 +4225,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "name"
       },
       {
         "^o": "FormatConstraint",

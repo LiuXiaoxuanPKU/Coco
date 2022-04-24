@@ -682,9 +682,7 @@
         "^o": "InclusionConstraint",
         "field_name": "field_format",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -1039,6 +1037,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "address"
       },
       {
         "^o": "PresenceConstraint",
@@ -2636,9 +2638,7 @@
         "^o": "InclusionConstraint",
         "field_name": "visibility",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -2941,9 +2941,7 @@
         "^o": "InclusionConstraint",
         "field_name": "name",
         "db": false,
-        "values": [
-
-        ],
+        "values": [],
         "type": "builtin"
       },
       {
@@ -3837,6 +3835,10 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "CaseConstraint",
+        "field_name": "title"
       },
       {
         "^o": "PresenceConstraint",
