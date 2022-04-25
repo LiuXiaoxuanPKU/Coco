@@ -138,9 +138,11 @@ def timing(sqls, times=run_times):
     def timing_single(sql) -> float:
         timings = [Evaluator.evaluate_actual_time(sql, CONNECT_MAP[appname]) for _ in range(times)]
         return mean(timings)
+    timings = []
     for sql in sqls:
         ave_timing = timing_single(sql)
-        print(ave_timing)
+        timings.append(ave_timing)
+    return timings
         
 # load inclusion constraints as a list
 def load_inclusion_cs() -> list:
@@ -148,6 +150,18 @@ def load_inclusion_cs() -> list:
     constraints = Loader.load_constraints(constraint_filename)
     inclusion_constraints = [c for c in constraints if isinstance(c, InclusionConstraint)]
     return inclusion_constraints
+
+def record(sqls, before, after) -> None:
+    # make sure the log file is clean first
+    recorder = GlobalExpRecorder()
+    recorder.clear(get_filename(FileType.ENUM_EVAL, appname))
+
+    assert(len(sqls) == len(before) and len(sqls) == len(after))
+    for obj in zip(sqls, before, after):
+        recorder.record("sql", obj[0])
+        recorder.record("before", obj[1])
+        recorder.record("after", obj[2])
+        recorder.dump(get_filename(FileType.ENUM_EVAL, appname))
     
 # ============================= main ================================
 if __name__ == "__main__":
@@ -160,7 +174,7 @@ if __name__ == "__main__":
     run_sqls(enum_to_varchar(inclusion_cs))
     
     # run original queries, calculate time
-    timing(sqls)
+    before_timings = timing(sqls)
     
     # copy physical table
     run_sqls(create_table(inclusion_cs))
@@ -178,7 +192,10 @@ if __name__ == "__main__":
     new_sqls = generate_new_sqls(sqls, inclusion_cs)
     
     # run new queries, calculate time 
-    timing(new_sqls)
+    after_timings = timing(new_sqls)
+
+    # record sql, before & after timing, and dump to file
+    record(sqls, before_timings, after_timings)
     
     
     
