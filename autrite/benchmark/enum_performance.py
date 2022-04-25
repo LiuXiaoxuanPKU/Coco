@@ -170,31 +170,31 @@ if __name__ == "__main__":
     sqls = [q.q_raw for q in queries]
     inclusion_cs = load_inclusion_cs()
     
-    # make sure original tables has varchar as field type
+    # 0. make sure original tables has varchar as field type
     run_sqls(enum_to_varchar(inclusion_cs))
     
-    # run original queries, calculate time
+    # 1 run original queries, calculate time
     before_timings = timing(sqls)
     
-    # copy physical table
+    # 2 copy physical table
     run_sqls(create_table(inclusion_cs))
     
-    # insert values
+    # 3.a insert values
     run_sqls(insert_value(inclusion_cs))
     
-    # create enum type
+    # 3.b create enum type
     run_sqls(generate_enum_type(inclusion_cs))
     
-    # alter enum type in duplicated new table
+    # 4 alter enum type in duplicated new table
     run_sqls(alter_type(inclusion_cs))
     
-    # generate new sqls
+    # 5.a generate new sqls
     new_sqls = generate_new_sqls(sqls, inclusion_cs)
     
-    # run new queries, calculate time 
+    # 5.b run new queries, calculate time 
     after_timings = timing(new_sqls)
 
-    # record sql, before & after timing, and dump to file
+    # 6 record sql, before & after timing, and dump to file
     record(sqls, before_timings, after_timings)
     
     
