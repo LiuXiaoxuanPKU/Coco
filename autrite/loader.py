@@ -38,7 +38,7 @@ class Loader:
                     )
                 else:
                     print("[Error] Unsupport constraint type ", obj)
-                    exit(1)
+                    # exit(1)
                 constraints.append(c)
         print("======================Load %d constraints" % len(constraints))
         return constraints

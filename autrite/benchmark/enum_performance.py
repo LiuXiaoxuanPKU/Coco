@@ -1,4 +1,5 @@
 from statistics import mean
+import psycopg2
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -7,7 +8,7 @@ from config import FileType, get_filename
 from loader import Loader
 from config import CONNECT_MAP
 from constraint import InclusionConstraint
-from utils import GlobalExpRecorder
+from utils import GlobalExpRecorder, generate_query_params, generate_query_param_single, generate_query_param_rewrites
 
 # 1. run all the queries has inclusion constraints with original table
 #     input: a list of sqls with inclusion constraints in it 
@@ -30,7 +31,8 @@ from utils import GlobalExpRecorder
 # ===================== static variables ==========================
 appname = "redmine"
 offset = 0
-query_cnt = 10
+app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021}
+query_cnt = 500
 run_times = 5
 # ===================== helper functions ==========================
 # alter column from enum to VarChar. 
@@ -129,9 +131,12 @@ def generate_new_sqls(sqls, cs) -> list:
 # running a list of sql commands
 def run_sqls(sqls) -> None:
     for sql in sqls:
-        message = Evaluator.evaluate_query(sql, CONNECT_MAP[appname])
-        if len(message) != 0: 
-            print(message)
+        try:
+            message = Evaluator.evaluate_query(sql, CONNECT_MAP[appname])
+            if len(message) != 0: 
+                print(message)
+        except psycopg2.errors.DatatypeMismatch as e:
+            print(e)
      
 # check the time, and dump into the log file    
 def timing(sqls, times=run_times):
@@ -140,8 +145,12 @@ def timing(sqls, times=run_times):
         return mean(timings)
     timings = []
     for sql in sqls:
-        ave_timing = timing_single(sql)
-        timings.append(ave_timing)
+        try:
+            ave_timing = timing_single(sql)
+            timings.append(ave_timing)
+        except (TypeError, psycopg2.errors.UndefinedFunction) as e:
+            print(sql)
+            print(e)
     return timings
         
 # load inclusion constraints as a list
@@ -162,12 +171,24 @@ def record(sqls, before, after) -> None:
         recorder.record("before", obj[1])
         recorder.record("after", obj[2])
         recorder.dump(get_filename(FileType.ENUM_EVAL, appname))
+        
+# return a list od sqls with proper params
+def add_params(sqls) -> list:
+    ret = []
+    for sql in sqls:
+        add_p = generate_query_param_single(sql, CONNECT_MAP[appname], {})
+        if add_p is not None:
+            ret.append(add_p)
+        else:
+            ret.append(sql)
+    return ret
     
 # ============================= main ================================
 if __name__ == "__main__":
     query_filename = get_filename(FileType.RAW_QUERY, appname)
     queries = Loader.load_queries(query_filename, offset, query_cnt)
     sqls = [q.q_raw for q in queries]
+    sqls = add_params(sqls)
     inclusion_cs = load_inclusion_cs()
     
     # 0. make sure original tables has varchar as field type
