@@ -1,9 +1,13 @@
-from evaluator import evaluate_query, evaluate_actual_time
-from extract_rule import ExtractQueryRule
-from utils import generate_query_param_single
+from statistics import mean
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from evaluator import Evaluator
 from config import FileType, get_filename
 from loader import Loader
 from config import CONNECT_MAP
+from constraint import InclusionConstraint
+from utils import GlobalExpRecorder
 
 # 1. run all the queries has inclusion constraints with original table
 #     input: a list of sqls with inclusion constraints in it 
@@ -27,7 +31,7 @@ from config import CONNECT_MAP
 appname = "redmine"
 offset = 0
 query_cnt = 10
-
+run_times = 5
 # ===================== helper functions ==========================
 # alter column from enum to VarChar. 
 # Input: a list of constraints; Output: a list of sqls
@@ -39,39 +43,52 @@ def enum_to_varchar(cs) -> list:
     return sqls
 
 # create a copy of table schemas
-def create_table(tables) -> list:
+def create_table(cs) -> list:
+    tables = set([c.table for c in cs])
     sqls = []
     for t in tables:
-        new_t = "_test_str2int".format(t)
+        new_t = "{}_test_str2int".format(t)
+        # DROP if existed in case they duplicate
+        Evaluator.evaluate_query("DROP TABLE IF EXISTS {}".format(new_t), CONNECT_MAP[appname])
         sql = "CREATE TABLE {} ( like {} INCLUDING DEFAULTS INCLUDING CONSTRAINTS INCLUDING INDEXES );".format(new_t, t)
         sqls.append(sql)
     return sqls
 
 # insert values to the copied table
-def insert_value(tables) -> list:
+def insert_value(cs) -> list:  
+    tables = set([c.table for c in cs])
     sqls = []
     for t in tables:
         new_t = "{}_test_str2int".format(t)
-        sql = "insert into {} select * from users;".format(new_t)
+        # truncate data first 
+        Evaluator.evaluate_query("truncate {};".format(new_t), CONNECT_MAP[appname])
+        sql = "insert into {} select * from {};".format(new_t, t)
         sqls.append(sql)
     return sqls
     
 # generate a list of sqls to create new enum type
 def generate_enum_type(cs) -> list:
+    
     # create TYPE table_column_value as ENUM ('value1', 'value2', 'value3', 'value4');
-    def get_enum_value():
-        pass
+    def get_enum_value(c) -> list:
+        sql = "select distinct({}) from {}".format(c.field, c.table)
+        raw_values = Evaluator.evaluate_query(sql, CONNECT_MAP[appname])
+        return raw_values
 
     # return a str list of possible values
-    def parse_enum_value() -> list:
-        pass
+    def parse_enum_value(raw_values) -> str:
+        # raw_values format: [('AnonymousUser',), ('User',), ('GroupNonMember',), ('GroupAnonymous',), ('Group',)]
+        values = [v[0] for v in raw_values if v[0] is not None]
+        return "({})".format(str(values)[1:-1])
     
     sqls = []
     for c in cs:
         table = c.table
         field = c.field
-        values = parse_enum_value()
-        sql = "create TYPE {}_{}_values as ENUM ({});".format(table, field, values)
+        raw_values = get_enum_value(c)
+        values = parse_enum_value(raw_values)
+        # sql = "create TYPE {}_{}_values as ENUM {};".format(table, field, values)
+        sql = "DO $$ BEGIN CREATE TYPE {}_{}_values AS ENUM {}; EXCEPTION WHEN duplicate_object THEN null; END $$;".format(table, field, values)
         sqls.append(sql)
     return sqls
 
@@ -108,9 +125,60 @@ def generate_new_sqls(sqls, cs) -> list:
         new_sql = apply_single(sql, tables)
         new_sqls.append(new_sql)
     return new_sqls
-    
 
+# running a list of sql commands
+def run_sqls(sqls) -> None:
+    for sql in sqls:
+        message = Evaluator.evaluate_query(sql, CONNECT_MAP[appname])
+        if len(message) != 0: 
+            print(message)
+     
+# check the time, and dump into the log file    
+def timing(sqls, times=run_times):
+    def timing_single(sql) -> float:
+        timings = [Evaluator.evaluate_actual_time(sql, CONNECT_MAP[appname]) for _ in range(times)]
+        return mean(timings)
+    for sql in sqls:
+        ave_timing = timing_single(sql)
+        print(ave_timing)
+        
+# load inclusion constraints as a list
+def load_inclusion_cs() -> list:
+    constraint_filename = get_filename(FileType.CONSTRAINT, appname)
+    constraints = Loader.load_constraints(constraint_filename)
+    inclusion_constraints = [c for c in constraints if isinstance(c, InclusionConstraint)]
+    return inclusion_constraints
+    
 # ============================= main ================================
 if __name__ == "__main__":
     query_filename = get_filename(FileType.RAW_QUERY, appname)
-    queries = Loader.load_queries(query_filename)
+    queries = Loader.load_queries(query_filename, offset, query_cnt)
+    sqls = [q.q_raw for q in queries]
+    inclusion_cs = load_inclusion_cs()
+    
+    # make sure original tables has varchar as field type
+    run_sqls(enum_to_varchar(inclusion_cs))
+    
+    # run original queries, calculate time
+    timing(sqls)
+    
+    # copy physical table
+    run_sqls(create_table(inclusion_cs))
+    
+    # insert values
+    run_sqls(insert_value(inclusion_cs))
+    
+    # create enum type
+    run_sqls(generate_enum_type(inclusion_cs))
+    
+    # alter enum type in duplicated new table
+    run_sqls(alter_type(inclusion_cs))
+    
+    # generate new sqls
+    new_sqls = generate_new_sqls(sqls, inclusion_cs)
+    
+    # run new queries, calculate time 
+    timing(new_sqls)
+    
+    
+    
