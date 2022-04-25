@@ -57,7 +57,7 @@ def insert_value(tables) -> list:
     return sqls
     
 # generate a list of sqls to create new enum type
-def genrate_enum_type(cs) -> list:
+def generate_enum_type(cs) -> list:
     # create TYPE table_column_value as ENUM ('value1', 'value2', 'value3', 'value4');
     def get_enum_value():
         pass
