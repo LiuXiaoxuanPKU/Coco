@@ -1,4 +1,5 @@
 from curses import raw
+from inspect import trace
 from statistics import mean
 from pandas import qcut
 import psycopg2
@@ -16,6 +17,7 @@ from utils import GlobalExpRecorder, generate_query_param_single
 from tqdm import tqdm
 from extract_rule import ExtractQueryRule
 from bench_utils import get_valid_queries
+import argparse
 
 # 1. run all the queries has inclusion constraints with original table
 #     input: a list of sqls with inclusion constraints in it 
@@ -47,11 +49,19 @@ class Stage(Enum):
     AFTER = 2
 
 # ===================== static variables ==========================
-appname = "forem"
+parser = argparse.ArgumentParser()
+parser.add_argument('--app', default='openproject')
+parser.add_argument('--cnt', default='100')
+
+args = parser.parse_args()
+appname = args.app
+query_cnt = int(args.cnt)
+if query_cnt == -1:
+    app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021}
+    query_cnt = 182483
+
 offset = 0
-app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021}
-query_cnt = 183483
-run_times = 5
+run_times = 1
 # ===================== helper functions ==========================
 # alter column from enum to VarChar. 
 # Input: a list of constraints; Output: a list of sqls
@@ -85,13 +95,18 @@ def insert_value(cs) -> list:
         sql = "insert into {} select * from {};".format(new_t, t)
         sqls.append(sql)
     return sqls
-    
+   
+def add_quo(field):
+    if field in ["group"]:
+        return '"' + field + '"'
+    return field
+
 # generate a list of sqls to create new enum type
 def generate_enum_type(cs) -> list:
     
     # create TYPE table_column_value as ENUM ('value1', 'value2', 'value3', 'value4');
     def get_enum_value(c) -> list:
-        sql = "select distinct({}) from {}".format(c.field, c.table)
+        sql = "select distinct({}) from {}".format(add_quo(c.field), c.table)
         raw_values = Evaluator.evaluate_query(sql, CONNECT_MAP[appname])
         return raw_values
 
@@ -139,8 +154,13 @@ def generate_new_sqls(qs, cs) -> list:
         for t in tables:
             if t in sql:
                 new_t = "{}_test_str2int".format(t)
-                sql = sql.replace(t + ".", new_t + ".")
-                sql = sql.replace(" " + t + " ", " " + new_t + " ") 
+                if sql.endswith(t):
+                   sql = sql.replace(" " + t, " " + new_t) 
+                
+                sql = sql.replace("(" + t + ".", "(" + new_t + ".")
+                sql = sql.replace(" " + t + ".", " " + new_t + ".")
+                sql = sql.replace(" " + t + " ", " " + new_t + " ")
+                
         return sql
 
     tables = get_tables(cs)
@@ -159,6 +179,8 @@ def run_sqls(sqls) -> None:
                 print(message)
         except psycopg2.errors.DatatypeMismatch as e:
             print(e)
+        except:
+            print(traceback.format_exc())
      
 # check the time, and dump into the log file    
 def timing(qs, stage, times=run_times):
@@ -166,9 +188,11 @@ def timing(qs, stage, times=run_times):
     for q in qs:
         try:
             if stage == Stage.BEFORE:
+                # timings = [Evaluator.evaluate_actual_time(q.before_sql, CONNECT_MAP[appname]) for _ in range(times)]
                 timings = [Evaluator.evaluate_cost(q.before_sql, CONNECT_MAP[appname]) for _ in range(times)]
                 q.before_time = mean(timings)
             elif stage == Stage.AFTER:
+                # timings = [Evaluator.evaluate_actual_time(q.after_sql, CONNECT_MAP[appname]) for _ in range(times)]
                 timings = [Evaluator.evaluate_cost(q.after_sql, CONNECT_MAP[appname]) for _ in range(times)]
                 q.after_time = mean(timings)
             timing_qs.append(q)
@@ -230,9 +254,9 @@ if __name__ == "__main__":
     qs = add_params(qs)
     print("Number of optmized queries: %d" % len(qs))
     
-    # 0. make sure original tables has varchar as field type
-    print("========Change datatype to varchar==========")
-    run_sqls(enum_to_varchar(inclusion_cs))
+    ## 0. make sure original tables has varchar as field type
+    # print("========Change datatype to varchar==========")
+    # run_sqls(enum_to_varchar(inclusion_cs))
     
     # 1 run original queries, calculate time
     print("========Eval time before changing storage==========")
