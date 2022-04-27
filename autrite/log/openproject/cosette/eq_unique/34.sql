@@ -180,8 +180,8 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(repository_id,revision),
 UNIQUE(revision,repository_id),
+UNIQUE(repository_id,revision),
 UNIQUE(scmid,repository_id),
 );
 
@@ -637,9 +637,9 @@ CREATE TABLE journals (
     updated_at timestamp without time zone  ,
     data_type character varying,
 data_id bigint,
-UNIQUE(version,journable_id,journable_type),
 UNIQUE(journable_type,journable_id,version),
 UNIQUE(data_id,data_type),
+UNIQUE(version,journable_id,journable_type),
 );
 
 CREATE TABLE labor_budget_items (
@@ -783,8 +783,8 @@ CREATE TABLE menu_items (
     options character varying(255),
     navigatable_id integer,
 type character varying,
-UNIQUE(name,navigatable_id,parent_id),
 UNIQUE(title,navigatable_id,type),
+UNIQUE(name,navigatable_id,parent_id),
 );
 
 CREATE TABLE message_journals (
@@ -1480,6 +1480,6 @@ author boolean   NOT NULL,
 );
 
 -- Original Query
-SELECT COUNT(*) FROM users WHERE users.type = 'Group' AND lastname IS NULL AND id <> 915;
+SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True;
 -- Rewritten Queries
-SELECT COUNT(*) FROM users WHERE users.type = 'Group' AND False AND id <> 915;
+SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True;

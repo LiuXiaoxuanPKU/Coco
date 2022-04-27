@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,15 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 37 OR projects.is_public = True AND members.user_id = 12);
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = 1 AND users.type = 'User' AND members.project_id = 6275 AND roles.assignable = True AND roles.id IN (2, 4, 4, 5) ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
 -- Rewritten Queries
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 37 OR projects.is_public = True AND members.user_id = 12) LIMIT 1;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND users.type = 'User' AND members.project_id = 6275 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND users.type = 'User' AND members.project_id = 6275 ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND users.type = 'User' AND members.project_id = 6275 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND users.type = 'User' AND members.project_id = 6275 ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE users.status = 1 AND users.type = 'User' AND members.project_id = 6275 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE users.status = 1 AND users.type = 'User' AND members.project_id = 6275 ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE users.status = 1 AND users.type = 'User' AND members.project_id = 6275 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE users.status = 1 AND users.type = 'User' AND members.project_id = 6275 ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = 1 AND users.type = 'User' AND members.project_id = 6275 AND roles.assignable = True AND roles.id IN (5, 2, 4, 4) ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = 1 AND users.type = 'User' AND members.project_id = 6275 AND roles.assignable = True AND roles.id IN (5, 2, 4, 4) ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;

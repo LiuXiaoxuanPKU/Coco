@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,8 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 6;
+SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND LOWER(email_addresses.address) IN ('newuser@foo.bar') ORDER BY users.id ASC LIMIT 3;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 6;
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 6 LIMIT 1;
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND members.project_id = 6 LIMIT 1;
+SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND LOWER(email_addresses.address) IN ('newuser@foo.bar') ORDER BY users.id ASC LIMIT 3;

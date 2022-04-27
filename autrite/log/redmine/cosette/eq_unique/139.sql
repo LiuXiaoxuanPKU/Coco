@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,7 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers);
+SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (9, 12))) AND enabled_modules.name = 'files' LIMIT 1;
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers);
+SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (9, 12) LIMIT 1)) AND enabled_modules.name = 'files' LIMIT 1;
+SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (9, 12) LIMIT 1) LIMIT 1) AND enabled_modules.name = 'files' LIMIT 1;

@@ -180,8 +180,8 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(repository_id,revision),
 UNIQUE(revision,repository_id),
+UNIQUE(repository_id,revision),
 UNIQUE(scmid,repository_id),
 );
 
@@ -637,9 +637,9 @@ CREATE TABLE journals (
     updated_at timestamp without time zone  ,
     data_type character varying,
 data_id bigint,
-UNIQUE(version,journable_id,journable_type),
 UNIQUE(journable_type,journable_id,version),
 UNIQUE(data_id,data_type),
+UNIQUE(version,journable_id,journable_type),
 );
 
 CREATE TABLE labor_budget_items (
@@ -783,8 +783,8 @@ CREATE TABLE menu_items (
     options character varying(255),
     navigatable_id integer,
 type character varying,
-UNIQUE(name,navigatable_id,parent_id),
 UNIQUE(title,navigatable_id,type),
+UNIQUE(name,navigatable_id,parent_id),
 );
 
 CREATE TABLE message_journals (
@@ -1480,6 +1480,27 @@ author boolean   NOT NULL,
 );
 
 -- Original Query
-SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'start-page%' AND wiki_id = 480;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR project_id IS NULL) AND projects.active = True LIMIT 7;
 -- Rewritten Queries
-SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'start-page%' AND wiki_id = 480 LIMIT 1;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id INNER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR project_id IS NULL) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id INNER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id INNER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id INNER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id INNER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id INNER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id INNER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id INNER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;
+SELECT 1 AS "one" FROM projects INNER JOIN members ON projects.id = members.project_id LEFT OUTER JOIN projects AS projects_members ON projects_members.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = 29131 AND (projects.active = True OR False) AND projects.active = True LIMIT 7;

@@ -180,8 +180,8 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(repository_id,revision),
 UNIQUE(revision,repository_id),
+UNIQUE(repository_id,revision),
 UNIQUE(scmid,repository_id),
 );
 
@@ -637,9 +637,9 @@ CREATE TABLE journals (
     updated_at timestamp without time zone  ,
     data_type character varying,
 data_id bigint,
-UNIQUE(version,journable_id,journable_type),
 UNIQUE(journable_type,journable_id,version),
 UNIQUE(data_id,data_type),
+UNIQUE(version,journable_id,journable_type),
 );
 
 CREATE TABLE labor_budget_items (
@@ -783,8 +783,8 @@ CREATE TABLE menu_items (
     options character varying(255),
     navigatable_id integer,
 type character varying,
-UNIQUE(name,navigatable_id,parent_id),
 UNIQUE(title,navigatable_id,type),
+UNIQUE(name,navigatable_id,parent_id),
 );
 
 CREATE TABLE message_journals (
@@ -1480,9 +1480,11 @@ author boolean   NOT NULL,
 );
 
 -- Original Query
-SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields LEFT OUTER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id LEFT OUTER JOIN projects ON projects.id = custom_fields_projects.project_id LEFT OUTER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id LEFT OUTER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id IN (190, 191) AND types.id IN (235, 236) OR custom_fields.is_for_all = True);
+SELECT roles.id AS t0_r0, roles.name AS t0_r1, roles.position AS t0_r2, roles.assignable AS t0_r3, roles.builtin AS t0_r4, roles.type AS t0_r5, roles.created_at AS t0_r6, roles.updated_at AS t0_r7, role_permissions.id AS t1_r0, role_permissions.permission AS t1_r1, role_permissions.role_id AS t1_r2, role_permissions.created_at AS t1_r3, role_permissions.updated_at AS t1_r4 FROM roles LEFT OUTER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id OR roles.builtin = 1 WHERE users.id = 1182 GROUP BY roles.id);
 -- Rewritten Queries
-SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields INNER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id LEFT OUTER JOIN projects ON projects.id = custom_fields_projects.project_id LEFT OUTER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id LEFT OUTER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id IN (190, 191) AND types.id IN (235, 236) OR custom_fields.is_for_all = True);
-SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields LEFT OUTER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id INNER JOIN projects ON projects.id = custom_fields_projects.project_id LEFT OUTER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id LEFT OUTER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id IN (190, 191) AND types.id IN (235, 236) OR custom_fields.is_for_all = True);
-SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields LEFT OUTER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id LEFT OUTER JOIN projects ON projects.id = custom_fields_projects.project_id INNER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id LEFT OUTER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id IN (190, 191) AND types.id IN (235, 236) OR custom_fields.is_for_all = True);
-SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields LEFT OUTER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id LEFT OUTER JOIN projects ON projects.id = custom_fields_projects.project_id LEFT OUTER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id INNER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id IN (190, 191) AND types.id IN (235, 236) OR custom_fields.is_for_all = True);
+SELECT roles.id AS t0_r0, roles.name AS t0_r1, roles.position AS t0_r2, roles.assignable AS t0_r3, roles.builtin AS t0_r4, roles.type AS t0_r5, roles.created_at AS t0_r6, roles.updated_at AS t0_r7, role_permissions.id AS t1_r0, role_permissions.permission AS t1_r1, role_permissions.role_id AS t1_r2, role_permissions.created_at AS t1_r3, role_permissions.updated_at AS t1_r4 FROM roles LEFT OUTER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON roles.id = member_roles.role_id OR roles.builtin = 1 WHERE users.id = 1182 GROUP BY roles.id LIMIT 1);
+SELECT roles.id AS t0_r0, roles.name AS t0_r1, roles.position AS t0_r2, roles.assignable AS t0_r3, roles.builtin AS t0_r4, roles.type AS t0_r5, roles.created_at AS t0_r6, roles.updated_at AS t0_r7, role_permissions.id AS t1_r0, role_permissions.permission AS t1_r1, role_permissions.role_id AS t1_r2, role_permissions.created_at AS t1_r3, role_permissions.updated_at AS t1_r4 FROM roles INNER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON roles.id = member_roles.role_id OR roles.builtin = 1 WHERE users.id = 1182 GROUP BY roles.id LIMIT 1);
+SELECT roles.id AS t0_r0, roles.name AS t0_r1, roles.position AS t0_r2, roles.assignable AS t0_r3, roles.builtin AS t0_r4, roles.type AS t0_r5, roles.created_at AS t0_r6, roles.updated_at AS t0_r7, role_permissions.id AS t1_r0, role_permissions.permission AS t1_r1, role_permissions.role_id AS t1_r2, role_permissions.created_at AS t1_r3, role_permissions.updated_at AS t1_r4 FROM roles LEFT OUTER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id OR roles.builtin = 1 WHERE users.id = 1182 GROUP BY roles.id LIMIT 1);
+SELECT roles.id AS t0_r0, roles.name AS t0_r1, roles.position AS t0_r2, roles.assignable AS t0_r3, roles.builtin AS t0_r4, roles.type AS t0_r5, roles.created_at AS t0_r6, roles.updated_at AS t0_r7, role_permissions.id AS t1_r0, role_permissions.permission AS t1_r1, role_permissions.role_id AS t1_r2, role_permissions.created_at AS t1_r3, role_permissions.updated_at AS t1_r4 FROM roles INNER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id OR roles.builtin = 1 WHERE users.id = 1182 GROUP BY roles.id LIMIT 1);
+SELECT roles.id AS t0_r0, roles.name AS t0_r1, roles.position AS t0_r2, roles.assignable AS t0_r3, roles.builtin AS t0_r4, roles.type AS t0_r5, roles.created_at AS t0_r6, roles.updated_at AS t0_r7, role_permissions.id AS t1_r0, role_permissions.permission AS t1_r1, role_permissions.role_id AS t1_r2, role_permissions.created_at AS t1_r3, role_permissions.updated_at AS t1_r4 FROM roles LEFT OUTER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON roles.id = member_roles.role_id OR roles.builtin = 1 WHERE users.id = 1182 GROUP BY roles.id);
+SELECT roles.id AS t0_r0, roles.name AS t0_r1, roles.position AS t0_r2, roles.assignable AS t0_r3, roles.builtin AS t0_r4, roles.type AS t0_r5, roles.created_at AS t0_r6, roles.updated_at AS t0_r7, role_permissions.id AS t1_r0, role_permissions.permission AS t1_r1, role_permissions.role_id AS t1_r2, role_permissions.created_at AS t1_r3, role_permissions.updated_at AS t1_r4 FROM roles INNER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON roles.id = member_roles.role_id OR roles.builtin = 1 WHERE users.id = 1182 GROUP BY roles.id);

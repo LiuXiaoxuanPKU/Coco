@@ -180,8 +180,8 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(repository_id,revision),
 UNIQUE(revision,repository_id),
+UNIQUE(repository_id,revision),
 UNIQUE(scmid,repository_id),
 );
 
@@ -637,9 +637,9 @@ CREATE TABLE journals (
     updated_at timestamp without time zone  ,
     data_type character varying,
 data_id bigint,
-UNIQUE(version,journable_id,journable_type),
 UNIQUE(journable_type,journable_id,version),
 UNIQUE(data_id,data_type),
+UNIQUE(version,journable_id,journable_type),
 );
 
 CREATE TABLE labor_budget_items (
@@ -783,8 +783,8 @@ CREATE TABLE menu_items (
     options character varying(255),
     navigatable_id integer,
 type character varying,
-UNIQUE(name,navigatable_id,parent_id),
 UNIQUE(title,navigatable_id,type),
+UNIQUE(name,navigatable_id,parent_id),
 );
 
 CREATE TABLE message_journals (
@@ -1480,12 +1480,8 @@ author boolean   NOT NULL,
 );
 
 -- Original Query
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 773 AND is_public = False AND (project_id IS NULL OR project_id = 274) LIMIT 6;
+SELECT DISTINCT users.* FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 26 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON users.type = 'User' AND (roles.id = member_roles.role_id OR member_roles.role_id IS NULL AND roles.builtin = 1) OR users.type = 'AnonymousUser' AND roles.builtin = 2 LEFT OUTER JOIN role_permissions ON roles.id = role_permissions.role_id AND role_permissions.permission = 'view_work_packages' WHERE users.type IN ('Group', 'Group', 'User') AND (roles.id IS NOT NULL AND role_permissions.id IS NOT NULL OR users.admin = True);
 -- Rewritten Queries
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 773 AND is_public = False AND (False OR project_id = 274) LIMIT 6;
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 773 AND is_public = False AND (False OR project_id = 274) LIMIT 6;
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 773 AND is_public = False AND (False OR project_id = 274) LIMIT 6;
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 773 AND is_public = False AND (False OR project_id = 274) LIMIT 6;
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 773 AND is_public = False AND (False OR project_id = 274) LIMIT 6;
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 773 AND is_public = False AND (False OR project_id = 274) LIMIT 6;
-SELECT 1 AS "one" FROM cost_queries WHERE user_id = 773 AND is_public = False AND (False OR project_id = 274) LIMIT 6;
+SELECT DISTINCT users.* FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 26 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON users.type = 'User' AND (roles.id = member_roles.role_id OR member_roles.role_id IS NULL AND roles.builtin = 1) OR users.type = 'AnonymousUser' AND roles.builtin = 2 INNER JOIN role_permissions ON roles.id = role_permissions.role_id AND role_permissions.permission = 'view_work_packages' WHERE users.type IN ('User', 'Group', 'Group') AND (roles.id IS NOT NULL AND role_permissions.id IS NOT NULL OR users.admin = True);
+SELECT DISTINCT users.* FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 26 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON users.type = 'User' AND (roles.id = member_roles.role_id OR member_roles.role_id IS NULL AND roles.builtin = 1) OR users.type = 'AnonymousUser' AND roles.builtin = 2 LEFT OUTER JOIN role_permissions ON roles.id = role_permissions.role_id AND role_permissions.permission = 'view_work_packages' WHERE users.type IN ('User', 'Group', 'Group') AND (roles.id IS NOT NULL AND role_permissions.id IS NOT NULL OR users.admin = True);
+SELECT users.* FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 26 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON users.type = 'User' AND (roles.id = member_roles.role_id OR member_roles.role_id IS NULL AND roles.builtin = 1) OR users.type = 'AnonymousUser' AND roles.builtin = 2 LEFT OUTER JOIN role_permissions ON roles.id = role_permissions.role_id AND role_permissions.permission = 'view_work_packages' WHERE users.type IN ('User', 'Group', 'Group') AND (roles.id IS NOT NULL AND role_permissions.id IS NOT NULL OR users.admin = True);

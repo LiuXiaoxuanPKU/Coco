@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,8 +602,7 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND documents.id = 2878 LIMIT 6;
+SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) ORDER BY changesets.id DESC LIMIT 4;
 -- Rewritten Queries
-SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND documents.id = 2878 LIMIT 6;
-SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND documents.id = 2878 LIMIT 6;
-SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND documents.id = 2878 LIMIT 6;
+SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) ORDER BY changesets.id DESC LIMIT 4;
+SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) ORDER BY changesets.id DESC LIMIT 4;

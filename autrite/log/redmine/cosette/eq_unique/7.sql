@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT user_preferences.* FROM user_preferences WHERE user_preferences.user_id = 24;
+SELECT issue_categories.* FROM issue_categories WHERE issue_categories.project_id = 9431 ORDER BY issue_categories.name ASC;
 -- Rewritten Queries
-SELECT user_preferences.* FROM user_preferences WHERE user_preferences.user_id = 24 LIMIT 1;
+SELECT issue_categories.* FROM issue_categories WHERE issue_categories.project_id = 9431 ORDER BY issue_categories.name ASC LIMIT 1;

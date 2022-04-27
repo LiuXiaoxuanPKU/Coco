@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,7 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository') IS NOT NULL AND changesets.repository_id = 9908 AND changesets.revision = 'nhpterngttenkzoylnxldgwgbboktaeohlhvb' LIMIT 3;
+SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (9907, 5129, 8637, 8941, 7030, 7291, 2310, 3495, 3311, 5764, 8848) AND (journals.private_notes = False OR journals.user_id = 2 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
 -- Rewritten Queries
-SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository' LIMIT 1) IS NOT NULL AND changesets.repository_id = 9908 AND changesets.revision = 'nhpterngttenkzoylnxldgwgbboktaeohlhvb' LIMIT 3;
+SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (9401, 9214, 9465, 4329, 1625, 955, 3809, 788, 9307, 7344, 5615) AND (journals.private_notes = False OR journals.user_id = 2 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
+SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals INNER JOIN issues ON issues.id = journals.journalized_id WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (788, 9307, 7344, 5615, 8774, 3189, 8391, 9907, 5129, 8637, 8941) AND (journals.private_notes = False OR journals.user_id = 2 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;

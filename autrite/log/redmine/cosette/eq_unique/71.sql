@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT trackers.* FROM trackers INNER JOIN projects_trackers ON trackers.id = projects_trackers.tracker_id WHERE projects_trackers.project_id = 6716 AND 1 = 0 ORDER BY trackers.position ASC;
+SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND LOWER(email_addresses.address) IN ('jsmith@somenet.foo') ORDER BY users.id ASC LIMIT 4;
 -- Rewritten Queries
-SELECT trackers.* FROM trackers WHERE 1 = 0 ORDER BY trackers.position ASC;
+SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND LOWER(email_addresses.address) IN ('jsmith@somenet.foo') ORDER BY users.id ASC LIMIT 4;

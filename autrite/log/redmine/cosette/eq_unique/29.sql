@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,8 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT users.* FROM users INNER JOIN watchers ON users.id = watchers.user_id WHERE watchers.watchable_id = 8593 AND watchers.watchable_type = 'News';
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id IS NULL AND workflows.old_status_id IS NULL AND workflows.role_id = 7754;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN watchers ON users.id = watchers.user_id WHERE watchers.watchable_id = 8593 AND watchers.watchable_type = 'News' LIMIT 1;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND False AND workflows.old_status_id IS NULL AND workflows.role_id = 7754;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id IS NULL AND False AND workflows.role_id = 7754;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND False AND False AND workflows.role_id = 7754;

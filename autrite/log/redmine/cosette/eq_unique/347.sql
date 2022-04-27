@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,20 +602,20 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
 -- Rewritten Queries
-SELECT issues.* FROM issues WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
-SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
-SELECT issues.* FROM issues INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
-SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
-SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
-SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 9 AND issues.lft < 1 AND issues.rgt > 2;
+SELECT issues.* FROM issues WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
+SELECT issues.* FROM issues INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.assigned_to_id IN ('74', '75', '76', '78', '79');

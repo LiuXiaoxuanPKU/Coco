@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,7 +602,9 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (5637, 3241, 4406, 7943, 2801, 1308, 7784, 5781, 8779, 3212, 729) AND (journals.private_notes = False OR journals.user_id = 2 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
+SELECT SUM(issues.estimated_hours) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND (projects.id = 56 OR projects.lft > 13 AND projects.rgt < 14);
 -- Rewritten Queries
-SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (5428, 6786, 1872, 3751, 8640, 4654, 8183, 1505, 3878, 686, 1813) AND (journals.private_notes = False OR journals.user_id = 2 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
-SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals INNER JOIN issues ON issues.id = journals.journalized_id WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (1505, 3878, 686, 1813, 9973, 7714, 2883, 5637, 3241, 4406, 7943) AND (journals.private_notes = False OR journals.user_id = 2 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
+SELECT SUM(issues.estimated_hours) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND (projects.id = 56 OR projects.lft > 13 AND projects.rgt < 14);
+SELECT SUM(issues.estimated_hours) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND (projects.id = 56 OR projects.lft > 13 AND projects.rgt < 14);
+SELECT SUM(issues.estimated_hours) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND (projects.id = 56 OR projects.lft > 13 AND projects.rgt < 14) LIMIT 1;
+SELECT SUM(issues.estimated_hours) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND (projects.id = 56 OR projects.lft > 13 AND projects.rgt < 14) LIMIT 1;

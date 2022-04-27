@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,8 +602,7 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10);
+SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (3240, 5909, 8285, 1910, 5853, 4149) AND (journals.private_notes = False OR journals.user_id = 6 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
 -- Rewritten Queries
-SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) LIMIT 1;
-SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10);
-SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) LIMIT 1;
+SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (9666, 8859, 8361, 7715, 5572, 643) AND (journals.private_notes = False OR journals.user_id = 6 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;
+SELECT MAX(journals.id) AS maximum_id, journals.journalized_id AS journals_journalized_id FROM journals INNER JOIN issues ON issues.id = journals.journalized_id WHERE journals.journalized_type = 'Issue' AND journals.journalized_id IN (185, 5902, 172, 6676, 795, 607) AND (journals.private_notes = False OR journals.user_id = 6 OR 1 = 0) AND journals.notes <> '{}' GROUP BY journals.journalized_id;

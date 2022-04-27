@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 39 OR projects.is_public = True AND members.user_id = 12);
+SELECT COUNT(*) AS count_all, group_id AS group_id FROM users INNER JOIN groups_users AS users_groups_users_join ON users_groups_users_join.user_id = users.id INNER JOIN users AS groups_users ON groups_users.id = users_groups_users_join.group_id AND groups_users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') WHERE users.type IN ('User', 'AnonymousUser') GROUP BY group_id;
 -- Rewritten Queries
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 39 OR projects.is_public = True AND members.user_id = 12) LIMIT 1;
+SELECT COUNT(*) AS count_all, group_id AS group_id FROM users INNER JOIN groups_users AS users_groups_users_join ON users_groups_users_join.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') GROUP BY group_id;

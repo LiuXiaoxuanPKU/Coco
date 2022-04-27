@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,7 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 124 OR projects.is_public = True AND members.user_id = 12);
+SELECT users.* FROM users WHERE users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User') AND (LOWER(users.login) LIKE LOWER('%watch%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%watch%')) OR LOWER(users.firstname) LIKE LOWER('%watch%') OR LOWER(users.lastname) LIKE LOWER('%watch%')) ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
 -- Rewritten Queries
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = 124 OR members.user_id = 12 LIMIT 1;
-SELECT members.user_id, role_id, members.project_id FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE projects.status <> 9 AND (members.user_id = 124 OR projects.is_public = True AND members.user_id = 12) LIMIT 1;
+SELECT users.* FROM users WHERE users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User') AND (LOWER(users.login) LIKE LOWER('%watch%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%watch%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%watch%') OR LOWER(users.lastname) LIKE LOWER('%watch%')) ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;

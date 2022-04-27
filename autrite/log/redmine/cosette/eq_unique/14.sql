@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,7 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Dsolwkvvrcffzfruzyhamsdjicwlgxidsfdydne' AND wiki_pages.wiki_id IS NULL LIMIT 9;
+SELECT COUNT(*) FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 2385 AND users.type = 'User' AND users.status = 2;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Dsolwkvvrcffzfruzyhamsdjicwlgxidsfdydne' AND False LIMIT 9;
+SELECT COUNT(*) FROM members WHERE members.project_id = 2385;
+SELECT COUNT(*) FROM members WHERE members.project_id = 2385 LIMIT 1;

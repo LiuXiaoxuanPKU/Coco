@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,8 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE documents.created_on BETWEEN '2022-02-02' AND '2022-02-12' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL;
+SELECT MIN(versions.effective_date) FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.id = 28 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 13 AND projects.rgt <= 14 AND versions.sharing = 'tree' OR projects.lft < 13 AND projects.rgt > 14 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 13 AND projects.rgt < 14 AND versions.sharing = 'hierarchy');
 -- Rewritten Queries
-SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE documents.created_on BETWEEN '2022-02-02' AND '2022-02-12' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL LIMIT 1;
-SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE documents.created_on BETWEEN '2022-02-02' AND '2022-02-12' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents' LIMIT 1) IS NOT NULL;
-SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE documents.created_on BETWEEN '2022-02-02' AND '2022-02-12' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents' LIMIT 1) IS NOT NULL LIMIT 1;
+SELECT MIN(versions.effective_date) FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy';

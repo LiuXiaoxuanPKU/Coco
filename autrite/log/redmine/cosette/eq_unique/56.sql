@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id = 11204 AND workflows.old_status_id IS NULL AND workflows.role_id = 2023;
+SELECT projects.id, projects.name, projects.identifier, projects.lft, projects.rgt FROM projects INNER JOIN members ON projects.id = members.project_id WHERE members.user_id = 3629 AND projects.status <> 9 AND projects.status = 9;
 -- Rewritten Queries
-SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id = 11204 AND False AND workflows.role_id = 2023;
+SELECT projects.id, projects.name, projects.identifier, projects.lft, projects.rgt FROM projects WHERE projects.status <> 9 AND projects.status = 9 LIMIT 1;

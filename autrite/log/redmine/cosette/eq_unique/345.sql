@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,19 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE changesets.user_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository') IS NOT NULL ORDER BY changesets.id DESC LIMIT 6;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1'));
 -- Rewritten Queries
-SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE changesets.user_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository' LIMIT 1) IS NOT NULL ORDER BY changesets.id DESC LIMIT 6;
+SELECT issues.* FROM issues INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1'));
+SELECT issues.* FROM issues INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1') LIMIT 1);
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1'));
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1') LIMIT 1);
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1'));
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1') LIMIT 1);
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1'));
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1') LIMIT 1);
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1'));
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1') LIMIT 1);
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1'));
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1') LIMIT 1);
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1'));
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id NOT IN (SELECT watchers.watchable_id FROM watchers WHERE watchers.watchable_type = 'Issue' AND watchers.user_id IN ('1') LIMIT 1);

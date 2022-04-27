@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,8 +602,7 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.due_date > '2022-02-27 23:59:59.999999' AND projects.lft >= 1 AND projects.rgt <= 10;
+SELECT SUM(time_entries.hours) AS sum_hours, parent.id AS parent_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN issues ON issues.id = time_entries.issue_id JOIN issues AS parent ON parent.root_id = issues.root_id AND parent.lft <= issues.lft AND parent.rgt >= issues.rgt WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND parent.id IN (13, 7, 5, 3, 2, 1) GROUP BY parent.id;
 -- Rewritten Queries
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.due_date > '2022-02-27 23:59:59.999999' AND projects.lft >= 1 AND projects.rgt <= 10;
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.due_date > '2022-02-27 23:59:59.999999' AND projects.lft >= 1 AND projects.rgt <= 10;
-SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.due_date > '2022-02-27 23:59:59.999999' AND projects.lft >= 1 AND projects.rgt <= 10;
+SELECT SUM(time_entries.hours) AS sum_hours, parent.id AS parent_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN issues ON issues.id = time_entries.issue_id JOIN issues AS parent ON parent.root_id = issues.root_id AND parent.lft <= issues.lft AND parent.rgt >= issues.rgt WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND parent.id IN (13, 7, 5, 3, 2, 1) GROUP BY parent.id;
+SELECT SUM(time_entries.hours) AS sum_hours, parent.id AS parent_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN issues ON issues.id = time_entries.issue_id JOIN issues AS parent ON parent.root_id = issues.root_id AND parent.lft <= issues.lft AND parent.rgt >= issues.rgt WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND parent.id IN (13, 7, 5, 3, 2, 1) GROUP BY parent.id;

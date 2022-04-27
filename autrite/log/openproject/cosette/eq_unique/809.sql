@@ -180,8 +180,8 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(repository_id,revision),
 UNIQUE(revision,repository_id),
+UNIQUE(repository_id,revision),
 UNIQUE(scmid,repository_id),
 );
 
@@ -637,9 +637,9 @@ CREATE TABLE journals (
     updated_at timestamp without time zone  ,
     data_type character varying,
 data_id bigint,
-UNIQUE(version,journable_id,journable_type),
 UNIQUE(journable_type,journable_id,version),
 UNIQUE(data_id,data_type),
+UNIQUE(version,journable_id,journable_type),
 );
 
 CREATE TABLE labor_budget_items (
@@ -783,8 +783,8 @@ CREATE TABLE menu_items (
     options character varying(255),
     navigatable_id integer,
 type character varying,
-UNIQUE(name,navigatable_id,parent_id),
 UNIQUE(title,navigatable_id,type),
+UNIQUE(name,navigatable_id,parent_id),
 );
 
 CREATE TABLE message_journals (
@@ -1480,12 +1480,7 @@ author boolean   NOT NULL,
 );
 
 -- Original Query
-SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 38 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 115);
+SELECT projects.* FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%cook%' OR LOWER(projects.identifier) LIKE '%cook%' OR LOWER(projects.description) LIKE '%cook%') ORDER BY projects.created_at DESC LIMIT 4;
 -- Rewritten Queries
-SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 38 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 115) LIMIT 1;
-SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users INNER JOIN members ON users.id = members.user_id AND members.project_id = 38 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 115);
-SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 38 INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 115);
-SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 38 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 115);
-SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users INNER JOIN members ON users.id = members.user_id AND members.project_id = 38 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 115) LIMIT 1;
-SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 38 INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 115) LIMIT 1;
-SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 38 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 115) LIMIT 1;
+SELECT projects.* FROM projects WHERE id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%cook%' OR LOWER(projects.identifier) LIKE '%cook%' OR LOWER(projects.description) LIKE '%cook%') ORDER BY projects.created_at DESC LIMIT 4;
+SELECT projects.* FROM projects WHERE id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%cook%' OR LOWER(projects.identifier) LIKE '%cook%' OR LOWER(projects.description) LIKE '%cook%') ORDER BY projects.created_at DESC LIMIT 4;

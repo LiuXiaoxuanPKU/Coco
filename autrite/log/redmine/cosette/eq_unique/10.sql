@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT wiki_pages.title FROM wiki_pages WHERE wiki_pages.wiki_id = 1447 ORDER BY LOWER(title) ASC;
+SELECT 1 AS "one" FROM members INNER JOIN member_roles ON members.id = member_roles.member_id WHERE member_roles.role_id = 1 LIMIT 10;
 -- Rewritten Queries
-SELECT wiki_pages.title FROM wiki_pages WHERE wiki_pages.wiki_id = 1447 ORDER BY LOWER(title) ASC LIMIT 1;
+SELECT 1 AS "one" FROM members LIMIT 10;

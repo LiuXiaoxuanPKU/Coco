@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,12 +602,7 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers) AND projects.id = 8869 LIMIT 4;
+SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.user_id = 4 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12)) ORDER BY time_entries.id DESC LIMIT 6;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT project_id FROM projects_trackers LIMIT 1) AND projects.id = 8869 LIMIT 4;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT project_id FROM projects_trackers LIMIT 1) AND projects.id = 8869 LIMIT 4;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers LIMIT 1) AND projects.id = 8869 LIMIT 4;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers LIMIT 1) AND projects.id = 8869 LIMIT 4;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT project_id FROM projects_trackers) AND projects.id = 8869 LIMIT 4;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT project_id FROM projects_trackers) AND projects.id = 8869 LIMIT 4;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers) AND projects.id = 8869 LIMIT 4;
+SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.user_id = 4 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) ORDER BY time_entries.id DESC LIMIT 6;
+SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.user_id = 4 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) ORDER BY time_entries.id DESC LIMIT 6;

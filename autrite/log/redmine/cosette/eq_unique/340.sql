@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,8 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%smith joh%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smith joh%')) OR (LOWER(users.firstname) LIKE LOWER('%smith%') OR LOWER(users.lastname) LIKE LOWER('%smith%')) AND (LOWER(users.firstname) LIKE LOWER('%joh%') OR LOWER(users.lastname) LIKE LOWER('%joh%'));
+SELECT MAX(versions.effective_date) FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.id = 56 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 13 AND projects.rgt <= 14 AND versions.sharing = 'tree' OR projects.lft < 13 AND projects.rgt > 14 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 13 AND projects.rgt < 14 AND versions.sharing = 'hierarchy');
 -- Rewritten Queries
-SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%smith joh%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smith joh%')) OR (LOWER(users.firstname) LIKE LOWER('%smith%') OR LOWER(users.lastname) LIKE LOWER('%smith%')) AND (LOWER(users.firstname) LIKE LOWER('%joh%') OR LOWER(users.lastname) LIKE LOWER('%joh%')) LIMIT 1;
-SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%smith joh%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smith joh%') LIMIT 1) OR (LOWER(users.firstname) LIKE LOWER('%smith%') OR LOWER(users.lastname) LIKE LOWER('%smith%')) AND (LOWER(users.firstname) LIKE LOWER('%joh%') OR LOWER(users.lastname) LIKE LOWER('%joh%'));
-SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%smith joh%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smith joh%') LIMIT 1) OR (LOWER(users.firstname) LIKE LOWER('%smith%') OR LOWER(users.lastname) LIKE LOWER('%smith%')) AND (LOWER(users.firstname) LIKE LOWER('%joh%') OR LOWER(users.lastname) LIKE LOWER('%joh%')) LIMIT 1;
+SELECT MAX(versions.effective_date) FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy';

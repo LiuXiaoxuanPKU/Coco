@@ -180,8 +180,8 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(repository_id,revision),
 UNIQUE(revision,repository_id),
+UNIQUE(repository_id,revision),
 UNIQUE(scmid,repository_id),
 );
 
@@ -637,9 +637,9 @@ CREATE TABLE journals (
     updated_at timestamp without time zone  ,
     data_type character varying,
 data_id bigint,
-UNIQUE(version,journable_id,journable_type),
 UNIQUE(journable_type,journable_id,version),
 UNIQUE(data_id,data_type),
+UNIQUE(version,journable_id,journable_type),
 );
 
 CREATE TABLE labor_budget_items (
@@ -783,8 +783,8 @@ CREATE TABLE menu_items (
     options character varying(255),
     navigatable_id integer,
 type character varying,
-UNIQUE(name,navigatable_id,parent_id),
 UNIQUE(title,navigatable_id,type),
+UNIQUE(name,navigatable_id,parent_id),
 );
 
 CREATE TABLE message_journals (
@@ -1480,6 +1480,13 @@ author boolean   NOT NULL,
 );
 
 -- Original Query
-SELECT menu_items.* FROM menu_items WHERE menu_items.type = 'MenuItems::WikiMenuItem' AND menu_items.navigatable_id IS NULL AND menu_items.parent_id IS NULL ORDER BY title ASC;
+SELECT DISTINCT projects.* FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 3033 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_versions') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL;
 -- Rewritten Queries
-SELECT menu_items.* FROM menu_items WHERE menu_items.type = 'MenuItems::WikiMenuItem' AND menu_items.navigatable_id IS NULL AND menu_items.parent_id IS NULL ORDER BY title ASC LIMIT 1;
+SELECT projects.* FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 3033 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_versions') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL;
+SELECT projects.* FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 3033 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_versions') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL;
+SELECT projects.* FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 3033 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_versions') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1;
+SELECT projects.* FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 3033 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_versions') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1;
+SELECT DISTINCT projects.* FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 3033 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_versions') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL;
+SELECT DISTINCT projects.* FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 3033 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_versions') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL;
+SELECT DISTINCT projects.* FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 3033 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_versions') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1;
+SELECT DISTINCT projects.* FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 3033 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_versions') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1;

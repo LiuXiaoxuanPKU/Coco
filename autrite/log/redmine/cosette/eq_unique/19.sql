@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT email_addresses.address FROM email_addresses WHERE email_addresses.user_id = 3344 AND (is_default = True OR notify = True);
+SELECT users.* FROM users WHERE users.status IN (1, 2) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (5, 6, 3, 4)) AND users.status = 1;
 -- Rewritten Queries
-SELECT email_addresses.address FROM email_addresses WHERE email_addresses.user_id = 3344 AND (is_default = True OR notify = True) LIMIT 1;
+SELECT users.* FROM users WHERE users.status IN (1, 2) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (5, 6, 3, 4)) AND users.status = 1;

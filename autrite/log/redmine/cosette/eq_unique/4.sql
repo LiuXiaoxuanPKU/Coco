@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT COUNT(*) FROM email_addresses WHERE email_addresses.user_id = 3548;
+SELECT 1 AS "one" FROM wiki_pages WHERE wiki_pages.title IS NULL AND wiki_pages.wiki_id = 18120 LIMIT 10;
 -- Rewritten Queries
-SELECT COUNT(*) FROM email_addresses WHERE email_addresses.user_id = 3548 LIMIT 1;
+SELECT 1 AS "one" FROM wiki_pages WHERE False AND wiki_pages.wiki_id = 18120 LIMIT 10;

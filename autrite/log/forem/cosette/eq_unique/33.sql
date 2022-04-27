@@ -132,10 +132,10 @@ CREATE TABLE articles (
     video_source_url character varying,
     video_state character varying,
 video_thumbnail_url character varying,
-UNIQUE(feed_source_url,published),
-UNIQUE(body_markdown,user_id,title),
 UNIQUE(slug,user_id),
+UNIQUE(body_markdown,user_id,title),
 UNIQUE(canonical_url,published),
+UNIQUE(feed_source_url,published),
 );
 
 CREATE TABLE articles_storage (
@@ -622,8 +622,8 @@ CREATE TABLE devices (
     token character varying NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
 user_id bigint NOT NULL,
-UNIQUE(token,user_id,platform,consumer_app_id),
 UNIQUE(user_id,token,platform,consumer_app_id),
+UNIQUE(token,user_id,platform,consumer_app_id),
 );
 
 CREATE TABLE devices_storage (
@@ -901,8 +901,8 @@ CREATE TABLE github_repos (
     url character varying,
     user_id bigint,
 watchers_count integer,
-UNIQUE(url),
 UNIQUE(github_id_code),
+UNIQUE(url),
 );
 
 CREATE TABLE html_variant_successes (
@@ -974,9 +974,9 @@ CREATE TABLE identities (
     uid character varying,
     updated_at timestamp without time zone NOT NULL,
 user_id bigint,
-UNIQUE(user_id,provider),
-UNIQUE(provider,user_id),
 UNIQUE(provider,uid),
+UNIQUE(provider,user_id),
+UNIQUE(user_id,provider),
 UNIQUE(uid,provider),
 );
 
@@ -1354,8 +1354,8 @@ CREATE TABLE podcast_episodes (
     title character varying NOT NULL,
     updated_at timestamp without time zone NOT NULL,
 website_url character varying,
-UNIQUE(media_url),
 UNIQUE(guid),
+UNIQUE(media_url),
 );
 
 CREATE TABLE podcast_ownerships (
@@ -1419,8 +1419,8 @@ CREATE TABLE poll_votes (
     poll_option_id bigint NOT NULL,
     updated_at timestamp without time zone NOT NULL,
 user_id bigint NOT NULL,
-UNIQUE(poll_option_id,user_id),
 UNIQUE(poll_id,user_id),
+UNIQUE(poll_option_id,user_id),
 );
 
 CREATE TABLE polls (
@@ -2031,13 +2031,13 @@ CREATE TABLE users (
     workshop_expiration timestamp without time zone,
     youtube_url character varying,
 CONSTRAINT users_username_not_null CHECK ((username IS NOT NULL)),
-UNIQUE(reset_password_token),
+UNIQUE(email),
 UNIQUE(invitation_token),
+UNIQUE(github_username),
+UNIQUE(reset_password_token),
 UNIQUE(username),
 UNIQUE(twitter_username),
-UNIQUE(github_username),
 UNIQUE(confirmation_token),
-UNIQUE(email),
 );
 
 CREATE TABLE users_gdpr_delete_requests (
@@ -2127,6 +2127,6 @@ updated_at timestamp(6) without time zone NOT NULL,
 );
 
 -- Original Query
-SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = 856;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 1992 AND notifications.organization_id IS NULL AND notifications.notifiable_id = 1147 AND notifications.notifiable_type = 'Article' AND notifications.action IS NULL LIMIT 6;
 -- Rewritten Queries
-SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = 856 LIMIT 1;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 1992 AND False AND notifications.notifiable_id = 1147 AND notifications.notifiable_type = 'Article' AND notifications.action IS NULL LIMIT 6;

@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT users.* FROM users WHERE users.status IN (1, 1) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (5, 6, 3, 4)) AND users.status = 1;
+SELECT 1 AS "one" FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.root_id = 1912 AND issues.lft > 1 AND issues.rgt < 4 AND issue_statuses.is_closed = True LIMIT 1;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.status IN (1, 1) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (5, 6, 3, 4)) AND users.status = 1;
+SELECT 1 AS "one" FROM issues WHERE issues.root_id = 1912 AND issues.lft > 1 AND issues.rgt < 4 LIMIT 1;

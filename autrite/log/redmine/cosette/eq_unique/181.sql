@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,8 +602,11 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%Собо%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Собо%')) OR LOWER(users.firstname) LIKE LOWER('%Собо%') OR LOWER(users.lastname) LIKE LOWER('%Собо%');
+SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers) AND projects.id = 7662 LIMIT 2;
 -- Rewritten Queries
-SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%Собо%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Собо%')) OR LOWER(users.firstname) LIKE LOWER('%Собо%') OR LOWER(users.lastname) LIKE LOWER('%Собо%') LIMIT 1;
-SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%Собо%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Собо%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%Собо%') OR LOWER(users.lastname) LIKE LOWER('%Собо%');
-SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%Собо%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Собо%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%Собо%') OR LOWER(users.lastname) LIKE LOWER('%Собо%') LIMIT 1;
+SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT project_id FROM projects_trackers LIMIT 1) AND projects.id = 7662 LIMIT 2;
+SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT project_id FROM projects_trackers LIMIT 1) AND projects.id = 7662 LIMIT 2;
+SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers LIMIT 1) AND projects.id = 7662 LIMIT 2;
+SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers LIMIT 1) AND projects.id = 7662 LIMIT 2;
+SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT project_id FROM projects_trackers) AND projects.id = 7662 LIMIT 2;
+SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT project_id FROM projects_trackers) AND projects.id = 7662 LIMIT 2;

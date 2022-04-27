@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT trackers.* FROM trackers WHERE trackers.name = 'adjidbdlaifrycfxuedihhff';
+SELECT issue_statuses.* FROM issue_statuses WHERE default_done_ratio >= 0;
 -- Rewritten Queries
-SELECT trackers.* FROM trackers WHERE trackers.name = 'adjidbdlaifrycfxuedihhff' LIMIT 1;
+SELECT issue_statuses.* FROM issue_statuses;

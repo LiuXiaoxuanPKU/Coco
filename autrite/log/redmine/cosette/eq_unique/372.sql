@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,9 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT COUNT(*) AS count_all, group_id AS group_id FROM users INNER JOIN groups_users AS users_groups_users_join ON users_groups_users_join.user_id = users.id INNER JOIN users AS groups_users ON groups_users.id = users_groups_users_join.group_id AND groups_users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') WHERE users.type IN ('User', 'AnonymousUser') GROUP BY group_id;
+SELECT SUM(issues.estimated_hours) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 9304 AND issues.lft >= 8 AND issues.rgt <= 17 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False;
 -- Rewritten Queries
-SELECT COUNT(*) AS count_all, group_id AS group_id FROM users INNER JOIN groups_users AS users_groups_users_join ON users_groups_users_join.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') GROUP BY group_id;
+SELECT SUM(issues.estimated_hours) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 9304 AND issues.lft >= 8 AND issues.rgt <= 17 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False;
+SELECT SUM(issues.estimated_hours) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 9304 AND issues.lft >= 8 AND issues.rgt <= 17 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False;
+SELECT SUM(issues.estimated_hours) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 9304 AND issues.lft >= 8 AND issues.rgt <= 17 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False LIMIT 1;
+SELECT SUM(issues.estimated_hours) FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 9304 AND issues.lft >= 8 AND issues.rgt <= 17 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False LIMIT 1;

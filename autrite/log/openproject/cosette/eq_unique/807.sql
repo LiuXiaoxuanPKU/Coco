@@ -180,8 +180,8 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(repository_id,revision),
 UNIQUE(revision,repository_id),
+UNIQUE(repository_id,revision),
 UNIQUE(scmid,repository_id),
 );
 
@@ -637,9 +637,9 @@ CREATE TABLE journals (
     updated_at timestamp without time zone  ,
     data_type character varying,
 data_id bigint,
-UNIQUE(version,journable_id,journable_type),
 UNIQUE(journable_type,journable_id,version),
 UNIQUE(data_id,data_type),
+UNIQUE(version,journable_id,journable_type),
 );
 
 CREATE TABLE labor_budget_items (
@@ -783,8 +783,8 @@ CREATE TABLE menu_items (
     options character varying(255),
     navigatable_id integer,
 type character varying,
-UNIQUE(name,navigatable_id,parent_id),
 UNIQUE(title,navigatable_id,type),
+UNIQUE(name,navigatable_id,parent_id),
 );
 
 CREATE TABLE message_journals (
@@ -1480,6 +1480,7 @@ author boolean   NOT NULL,
 );
 
 -- Original Query
-SELECT changesets.* FROM changesets WHERE changesets.repository_id = 8761 AND scmid IN ('deff712f05a90d96edbd70facc47d944be5897e3', '899a15dba03a3b350b89c3f537e4bbe02a03cdc9', '7234cb2750b63f47bff735edc50a1c0a433c2518') ORDER BY changesets.committed_on DESC, changesets.id DESC, committed_on DESC;
+SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN (SELECT projects.id, versions.id AS version_id, projects.lft, projects.rgt, versions.sharing FROM projects INNER JOIN versions ON projects.id = versions.project_id WHERE versions.id = 14) AS sharing ON True LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 3043 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL;
 -- Rewritten Queries
-SELECT changesets.* FROM changesets WHERE changesets.repository_id = 8761 AND scmid IN ('deff712f05a90d96edbd70facc47d944be5897e3', '899a15dba03a3b350b89c3f537e4bbe02a03cdc9', '7234cb2750b63f47bff735edc50a1c0a433c2518') ORDER BY changesets.committed_on DESC, changesets.id DESC, committed_on DESC LIMIT 1;
+SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN (SELECT projects.id, versions.id AS version_id, projects.lft, projects.rgt, versions.sharing FROM projects INNER JOIN versions ON projects.id = versions.project_id WHERE versions.id = 14) AS sharing ON True LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 3043 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1;
+SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN (SELECT projects.id, versions.id AS version_id, projects.lft, projects.rgt, versions.sharing FROM projects INNER JOIN versions ON projects.id = versions.project_id WHERE versions.id = 14) AS sharing ON True LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 3043 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1;

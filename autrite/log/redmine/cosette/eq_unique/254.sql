@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,8 +602,7 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE documents.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL;
+SELECT versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE versions.project_id = 6664 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND versions.name = 'lxyjjutzilqcfxepougzhcqqaevajxmyulopwpziifegpcwdxerz' LIMIT 6;
 -- Rewritten Queries
-SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE documents.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL LIMIT 1;
-SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE documents.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents' LIMIT 1) IS NOT NULL;
-SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE documents.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents' LIMIT 1) IS NOT NULL LIMIT 1;
+SELECT versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE versions.project_id = 6664 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND versions.name = 'lxyjjutzilqcfxepougzhcqqaevajxmyulopwpziifegpcwdxerz' LIMIT 6;
+SELECT versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE versions.project_id = 6664 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND versions.name = 'lxyjjutzilqcfxepougzhcqqaevajxmyulopwpziifegpcwdxerz' LIMIT 6;

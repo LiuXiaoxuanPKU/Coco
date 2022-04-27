@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,12 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers) AND projects.id = 7081 LIMIT 7;
+SELECT 1 AS "one" FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.id = 10 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 11 AND projects.rgt <= 14 AND versions.sharing = 'tree' OR projects.lft < 12 AND projects.rgt > 13 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 12 AND projects.rgt < 13 AND versions.sharing = 'hierarchy') LIMIT 8;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT project_id FROM projects_trackers LIMIT 1) AND projects.id = 7081 LIMIT 7;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT project_id FROM projects_trackers LIMIT 1) AND projects.id = 7081 LIMIT 7;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers LIMIT 1) AND projects.id = 7081 LIMIT 7;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers LIMIT 1) AND projects.id = 7081 LIMIT 7;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT project_id FROM projects_trackers) AND projects.id = 7081 LIMIT 7;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT project_id FROM projects_trackers) AND projects.id = 7081 LIMIT 7;
-SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 51) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers) AND projects.id = 7081 LIMIT 7;
+SELECT 1 AS "one" FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy' LIMIT 8;

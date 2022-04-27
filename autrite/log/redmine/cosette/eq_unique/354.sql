@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,9 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND (journals.private_notes = False OR journals.user_id = 1 OR projects.status <> 9);
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.created_on BETWEEN '2022-01-14' AND '2022-02-14' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13));
 -- Rewritten Queries
-SELECT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND (journals.private_notes = False OR journals.user_id = 1 OR projects.status <> 9);
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.created_on BETWEEN '2022-01-14' AND '2022-02-14' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1);
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.created_on BETWEEN '2022-01-14' AND '2022-02-14' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1);
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.created_on BETWEEN '2022-01-14' AND '2022-02-14' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) LIMIT 1;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.created_on BETWEEN '2022-01-14' AND '2022-02-14' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) LIMIT 1;

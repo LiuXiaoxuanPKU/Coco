@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT custom_fields.id, role_id FROM custom_fields INNER JOIN custom_fields_roles ON custom_fields_roles.custom_field_id = custom_fields.id INNER JOIN roles ON roles.id = custom_fields_roles.role_id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.visible = True;
+SELECT COUNT(*) AS count_all, custom_field_id AS custom_field_id FROM custom_fields INNER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id INNER JOIN projects ON projects.id = custom_fields_projects.project_id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.is_for_all = False GROUP BY custom_field_id;
 -- Rewritten Queries
-SELECT custom_fields.id, role_id FROM custom_fields INNER JOIN custom_fields_roles ON custom_fields_roles.custom_field_id = custom_fields.id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.visible = True;
+SELECT COUNT(*) AS count_all, custom_field_id AS custom_field_id FROM custom_fields INNER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.is_for_all = False GROUP BY custom_field_id;

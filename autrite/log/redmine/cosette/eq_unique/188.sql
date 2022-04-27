@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,7 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT projects.* FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 5) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers);
+SELECT COUNT(*) FROM users WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') AND (LOWER(users.login) LIKE LOWER('%cli%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%cli%')) OR LOWER(users.firstname) LIKE LOWER('%cli%') OR LOWER(users.lastname) LIKE LOWER('%cli%'));
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 5) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers);
+SELECT COUNT(*) FROM users WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') AND (LOWER(users.login) LIKE LOWER('%cli%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%cli%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%cli%') OR LOWER(users.lastname) LIKE LOWER('%cli%'));
+SELECT COUNT(*) FROM users WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') AND (LOWER(users.login) LIKE LOWER('%cli%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%cli%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%cli%') OR LOWER(users.lastname) LIKE LOWER('%cli%')) LIMIT 1;

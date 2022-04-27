@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,8 +602,7 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 4097 AND projects.status <> 5 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (134, 12));
+SELECT SUM(time_entries.hours) AS sum_hours, time_entries.issue_id AS time_entries_issue_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND time_entries.issue_id = 4387 GROUP BY time_entries.issue_id;
 -- Rewritten Queries
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 4097 AND projects.status <> 5 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (134, 12) LIMIT 1);
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 4097 AND projects.status <> 5 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (134, 12) LIMIT 1) LIMIT 1;
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 4097 AND projects.status <> 5 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (134, 12)) LIMIT 1;
+SELECT SUM(time_entries.hours) AS sum_hours, time_entries.issue_id AS time_entries_issue_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND time_entries.issue_id = 4387 GROUP BY time_entries.issue_id LIMIT 1;
+SELECT SUM(time_entries.hours) AS sum_hours, time_entries.issue_id AS time_entries_issue_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND time_entries.issue_id = 4387 GROUP BY time_entries.issue_id LIMIT 1;

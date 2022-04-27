@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,16 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = 2 AND users.type IN ('User', 'User') AND members.project_id = 4629 AND roles.assignable = True ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
+SELECT MIN(versions.effective_date) FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.id = 40 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 13 AND projects.rgt <= 14 AND versions.sharing = 'tree' OR projects.lft < 13 AND projects.rgt > 14 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 13 AND projects.rgt < 14 AND versions.sharing = 'hierarchy');
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND users.type IN ('User', 'User') AND members.project_id = 4629 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND users.type IN ('User', 'User') AND members.project_id = 4629 ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND users.type IN ('User', 'User') AND members.project_id = 4629 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND users.type IN ('User', 'User') AND members.project_id = 4629 ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE users.status = 2 AND users.type IN ('User', 'User') AND members.project_id = 4629 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE users.status = 2 AND users.type IN ('User', 'User') AND members.project_id = 4629 ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE users.status = 2 AND users.type IN ('User', 'User') AND members.project_id = 4629 ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE users.status = 2 AND users.type IN ('User', 'User') AND members.project_id = 4629 ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = 2 AND users.type IN ('User', 'User') AND members.project_id = 4629 AND roles.assignable = True ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = 2 AND users.type IN ('User', 'User') AND members.project_id = 4629 AND roles.assignable = True ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = 2 AND users.type IN ('User', 'User') AND members.project_id = 4629 AND roles.assignable = True ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
+SELECT MIN(versions.effective_date) FROM versions WHERE versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy';

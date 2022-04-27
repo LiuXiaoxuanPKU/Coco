@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT 1 AS "one" FROM members WHERE members.user_id IS NULL AND members.project_id = 8673 LIMIT 7;
+SELECT 1 AS "one" FROM watchers WHERE watchers.user_id = 4851 AND watchers.watchable_type = 'News' AND watchers.watchable_id IS NULL LIMIT 8;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM members WHERE False AND members.project_id = 8673 LIMIT 7;
+SELECT 1 AS "one" FROM watchers WHERE watchers.user_id = 4851 AND watchers.watchable_type = 'News' AND False LIMIT 8;

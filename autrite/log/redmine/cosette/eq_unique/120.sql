@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,7 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND (users.id = 6 OR users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6))) AND users.status = 1 AND users.id = 1209 LIMIT 4;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND members.project_id = 1 AND users.status = 1 AND users.status = 1 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND (users.id = 6 OR users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6) LIMIT 1)) AND users.status = 1 AND users.id = 1209 LIMIT 4;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND members.project_id = 1 AND users.status = 1 AND users.status = 1 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND members.project_id = 1 AND users.status = 1 AND users.status = 1 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;

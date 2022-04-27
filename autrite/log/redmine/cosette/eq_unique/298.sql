@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,8 +602,9 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT DISTINCT projects.* FROM projects LEFT JOIN projects AS child ON projects.lft <= child.lft AND projects.rgt >= child.rgt WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND child.id IN (1, 3) ORDER BY projects.lft ASC;
+SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND (projects.id = 3 OR projects.lft > 6 AND projects.rgt < 7);
 -- Rewritten Queries
-SELECT DISTINCT projects.* FROM projects LEFT JOIN projects AS child ON projects.lft <= child.lft AND projects.rgt >= child.rgt WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND child.id IN (1, 3) ORDER BY projects.lft ASC;
-SELECT DISTINCT projects.* FROM projects INNER JOIN projects AS child ON projects.lft <= child.lft AND projects.rgt >= child.rgt WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND child.id IN (1, 3) ORDER BY projects.lft ASC;
-SELECT DISTINCT projects.* FROM projects INNER JOIN projects AS child ON projects.lft <= child.lft AND projects.rgt >= child.rgt WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND child.id IN (1, 3) ORDER BY projects.lft ASC;
+SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND (projects.id = 3 OR projects.lft > 6 AND projects.rgt < 7);
+SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND (projects.id = 3 OR projects.lft > 6 AND projects.rgt < 7);
+SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND (projects.id = 3 OR projects.lft > 6 AND projects.rgt < 7) LIMIT 1;
+SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND (projects.id = 3 OR projects.lft > 6 AND projects.rgt < 7) LIMIT 1;

@@ -180,8 +180,8 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(repository_id,revision),
 UNIQUE(revision,repository_id),
+UNIQUE(repository_id,revision),
 UNIQUE(scmid,repository_id),
 );
 
@@ -637,9 +637,9 @@ CREATE TABLE journals (
     updated_at timestamp without time zone  ,
     data_type character varying,
 data_id bigint,
-UNIQUE(version,journable_id,journable_type),
 UNIQUE(journable_type,journable_id,version),
 UNIQUE(data_id,data_type),
+UNIQUE(version,journable_id,journable_type),
 );
 
 CREATE TABLE labor_budget_items (
@@ -783,8 +783,8 @@ CREATE TABLE menu_items (
     options character varying(255),
     navigatable_id integer,
 type character varying,
-UNIQUE(name,navigatable_id,parent_id),
 UNIQUE(title,navigatable_id,type),
+UNIQUE(name,navigatable_id,parent_id),
 );
 
 CREATE TABLE message_journals (
@@ -1480,6 +1480,17 @@ author boolean   NOT NULL,
 );
 
 -- Original Query
-SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'start-page%' AND wiki_id = 498;
+SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = 1178 AND relations.hierarchy <> 0 AND relations.relates = 0 AND relations.duplicates = 0 AND relations.follows = 0 AND relations.blocks = 2 AND relations.includes = 0 AND relations.requires = 0 AND 1 = 0) OR work_packages.id = 6457;
 -- Rewritten Queries
-SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'start-page%' AND wiki_id = 498 LIMIT 1;
+SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = 1178 AND relations.hierarchy <> 0 AND relations.relates = 0 AND relations.duplicates = 0 AND relations.follows = 0 AND relations.blocks = 2 AND relations.includes = 0 AND relations.requires = 0 AND 1 = 0) OR work_packages.id = 6457 LIMIT 1;
+SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = 1178 AND relations.hierarchy <> 0 AND relations.relates = 0 AND relations.duplicates = 0 AND relations.follows = 0 AND relations.blocks = 2 AND relations.includes = 0 AND relations.requires = 0 AND 1 = 0 LIMIT 1) OR work_packages.id = 6457 LIMIT 1;
+SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages WHERE 1 = 0) OR work_packages.id = 6457 LIMIT 1;
+SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages WHERE 1 = 0 LIMIT 1) OR work_packages.id = 6457 LIMIT 1;
+SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = 1178 AND relations.hierarchy <> 0 AND relations.relates = 0 AND relations.duplicates = 0 AND relations.follows = 0 AND relations.blocks = 2 AND relations.includes = 0 AND relations.requires = 0 AND 1 = 0) OR work_packages.id = 6457 LIMIT 1;
+SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = 1178 AND relations.hierarchy <> 0 AND relations.relates = 0 AND relations.duplicates = 0 AND relations.follows = 0 AND relations.blocks = 2 AND relations.includes = 0 AND relations.requires = 0 AND 1 = 0 LIMIT 1) OR work_packages.id = 6457 LIMIT 1;
+SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages WHERE 1 = 0) OR work_packages.id = 6457 LIMIT 1;
+SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages WHERE 1 = 0 LIMIT 1) OR work_packages.id = 6457 LIMIT 1;
+SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = 1178 AND relations.hierarchy <> 0 AND relations.relates = 0 AND relations.duplicates = 0 AND relations.follows = 0 AND relations.blocks = 2 AND relations.includes = 0 AND relations.requires = 0 AND 1 = 0) OR work_packages.id = 6457;
+SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages WHERE 1 = 0) OR work_packages.id = 6457;
+SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = 1178 AND relations.hierarchy <> 0 AND relations.relates = 0 AND relations.duplicates = 0 AND relations.follows = 0 AND relations.blocks = 2 AND relations.includes = 0 AND relations.requires = 0 AND 1 = 0 LIMIT 1) OR work_packages.id = 6457;
+SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages WHERE 1 = 0 LIMIT 1) OR work_packages.id = 6457;

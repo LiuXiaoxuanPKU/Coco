@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,12 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT 1 AS "one" FROM issue_relations WHERE issue_relations.issue_to_id IS NULL AND issue_relations.issue_from_id = 6721 LIMIT 8;
+SELECT users.* FROM users WHERE users.status IN (1, 1) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (1, 3, 4, 6)) AND users.status = 2;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM issue_relations WHERE False AND issue_relations.issue_from_id = 6721 LIMIT 8;
+SELECT users.* FROM users WHERE users.status IN (1, 1) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6) LIMIT 1) AND users.status = 2;
+SELECT users.* FROM users WHERE users.status IN (1, 1) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6) LIMIT 1) AND users.status = 2 LIMIT 1;
+SELECT users.* FROM users WHERE users.status IN (1, 1) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (1, 3, 4, 6) LIMIT 1) AND users.status = 2;
+SELECT users.* FROM users WHERE users.status IN (1, 1) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (1, 3, 4, 6) LIMIT 1) AND users.status = 2 LIMIT 1;
+SELECT users.* FROM users WHERE users.status IN (1, 1) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6)) AND users.status = 2 LIMIT 1;
+SELECT users.* FROM users WHERE users.status IN (1, 1) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (1, 3, 4, 6)) AND users.status = 2 LIMIT 1;
+SELECT users.* FROM users WHERE users.status IN (1, 1) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6)) AND users.status = 2;

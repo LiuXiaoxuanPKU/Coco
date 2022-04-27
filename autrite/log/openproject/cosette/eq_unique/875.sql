@@ -180,8 +180,8 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(repository_id,revision),
 UNIQUE(revision,repository_id),
+UNIQUE(repository_id,revision),
 UNIQUE(scmid,repository_id),
 );
 
@@ -637,9 +637,9 @@ CREATE TABLE journals (
     updated_at timestamp without time zone  ,
     data_type character varying,
 data_id bigint,
-UNIQUE(version,journable_id,journable_type),
 UNIQUE(journable_type,journable_id,version),
 UNIQUE(data_id,data_type),
+UNIQUE(version,journable_id,journable_type),
 );
 
 CREATE TABLE labor_budget_items (
@@ -783,8 +783,8 @@ CREATE TABLE menu_items (
     options character varying(255),
     navigatable_id integer,
 type character varying,
-UNIQUE(name,navigatable_id,parent_id),
 UNIQUE(title,navigatable_id,type),
+UNIQUE(name,navigatable_id,parent_id),
 );
 
 CREATE TABLE message_journals (
@@ -1480,6 +1480,11 @@ author boolean   NOT NULL,
 );
 
 -- Original Query
-SELECT changesets.* FROM changesets WHERE changesets.repository_id = 8181 AND scmid IN ('32ae898b720c2f7eec2723d5bdd558b4cb2d3ddf', '4a07fe31bffcf2888791f3e6cbc9c4545cefe3e8', '713f4944648826f558cf548222f813dabe7cbb04', '61b685fbe55ab05b5ac68402d5720c1a6ac973d1', '899a15dba03a3b350b89c3f537e4bbe02a03cdc9', '7234cb2750b63f47bff735edc50a1c0a433c2518') ORDER BY changesets.committed_on DESC, changesets.id DESC, committed_on DESC;
+SELECT roles.id AS t0_r0, roles.name AS t0_r1, roles.position AS t0_r2, roles.assignable AS t0_r3, roles.builtin AS t0_r4, roles.type AS t0_r5, roles.created_at AS t0_r6, roles.updated_at AS t0_r7, role_permissions.id AS t1_r0, role_permissions.permission AS t1_r1, role_permissions.role_id AS t1_r2, role_permissions.created_at AS t1_r3, role_permissions.updated_at AS t1_r4 FROM roles LEFT OUTER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id OR roles.builtin = 1 WHERE users.id = 37 GROUP BY roles.id);
 -- Rewritten Queries
-SELECT changesets.* FROM changesets WHERE changesets.repository_id = 8181 AND scmid IN ('32ae898b720c2f7eec2723d5bdd558b4cb2d3ddf', '4a07fe31bffcf2888791f3e6cbc9c4545cefe3e8', '713f4944648826f558cf548222f813dabe7cbb04', '61b685fbe55ab05b5ac68402d5720c1a6ac973d1', '899a15dba03a3b350b89c3f537e4bbe02a03cdc9', '7234cb2750b63f47bff735edc50a1c0a433c2518') ORDER BY changesets.committed_on DESC, changesets.id DESC, committed_on DESC LIMIT 1;
+SELECT roles.id AS t0_r0, roles.name AS t0_r1, roles.position AS t0_r2, roles.assignable AS t0_r3, roles.builtin AS t0_r4, roles.type AS t0_r5, roles.created_at AS t0_r6, roles.updated_at AS t0_r7, role_permissions.id AS t1_r0, role_permissions.permission AS t1_r1, role_permissions.role_id AS t1_r2, role_permissions.created_at AS t1_r3, role_permissions.updated_at AS t1_r4 FROM roles LEFT OUTER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON roles.id = member_roles.role_id OR roles.builtin = 1 WHERE users.id = 37 GROUP BY roles.id LIMIT 1);
+SELECT roles.id AS t0_r0, roles.name AS t0_r1, roles.position AS t0_r2, roles.assignable AS t0_r3, roles.builtin AS t0_r4, roles.type AS t0_r5, roles.created_at AS t0_r6, roles.updated_at AS t0_r7, role_permissions.id AS t1_r0, role_permissions.permission AS t1_r1, role_permissions.role_id AS t1_r2, role_permissions.created_at AS t1_r3, role_permissions.updated_at AS t1_r4 FROM roles INNER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON roles.id = member_roles.role_id OR roles.builtin = 1 WHERE users.id = 37 GROUP BY roles.id LIMIT 1);
+SELECT roles.id AS t0_r0, roles.name AS t0_r1, roles.position AS t0_r2, roles.assignable AS t0_r3, roles.builtin AS t0_r4, roles.type AS t0_r5, roles.created_at AS t0_r6, roles.updated_at AS t0_r7, role_permissions.id AS t1_r0, role_permissions.permission AS t1_r1, role_permissions.role_id AS t1_r2, role_permissions.created_at AS t1_r3, role_permissions.updated_at AS t1_r4 FROM roles LEFT OUTER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id OR roles.builtin = 1 WHERE users.id = 37 GROUP BY roles.id LIMIT 1);
+SELECT roles.id AS t0_r0, roles.name AS t0_r1, roles.position AS t0_r2, roles.assignable AS t0_r3, roles.builtin AS t0_r4, roles.type AS t0_r5, roles.created_at AS t0_r6, roles.updated_at AS t0_r7, role_permissions.id AS t1_r0, role_permissions.permission AS t1_r1, role_permissions.role_id AS t1_r2, role_permissions.created_at AS t1_r3, role_permissions.updated_at AS t1_r4 FROM roles INNER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id OR roles.builtin = 1 WHERE users.id = 37 GROUP BY roles.id LIMIT 1);
+SELECT roles.id AS t0_r0, roles.name AS t0_r1, roles.position AS t0_r2, roles.assignable AS t0_r3, roles.builtin AS t0_r4, roles.type AS t0_r5, roles.created_at AS t0_r6, roles.updated_at AS t0_r7, role_permissions.id AS t1_r0, role_permissions.permission AS t1_r1, role_permissions.role_id AS t1_r2, role_permissions.created_at AS t1_r3, role_permissions.updated_at AS t1_r4 FROM roles LEFT OUTER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON roles.id = member_roles.role_id OR roles.builtin = 1 WHERE users.id = 37 GROUP BY roles.id);
+SELECT roles.id AS t0_r0, roles.name AS t0_r1, roles.position AS t0_r2, roles.assignable AS t0_r3, roles.builtin AS t0_r4, roles.type AS t0_r5, roles.created_at AS t0_r6, roles.updated_at AS t0_r7, role_permissions.id AS t1_r0, role_permissions.permission AS t1_r1, role_permissions.role_id AS t1_r2, role_permissions.created_at AS t1_r3, role_permissions.updated_at AS t1_r4 FROM roles INNER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON roles.id = member_roles.role_id OR roles.builtin = 1 WHERE users.id = 37 GROUP BY roles.id);

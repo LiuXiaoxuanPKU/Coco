@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT issue_statuses.* FROM issue_statuses WHERE default_done_ratio >= 0;
+SELECT time_entries.* FROM time_entries WHERE time_entries.issue_id IS NULL ORDER BY time_entries.id ASC LIMIT 5;
 -- Rewritten Queries
-SELECT issue_statuses.* FROM issue_statuses;
+SELECT time_entries.* FROM time_entries WHERE False ORDER BY time_entries.id ASC LIMIT 5;

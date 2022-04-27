@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,8 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 1026 AND projects.status <> 9 AND projects.status <> 9;
+SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 613 AND projects.status <> 1 AND members.project_id = 5294 ORDER BY members.id ASC LIMIT 3;
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.user_id = 1026;
-SELECT members.* FROM members WHERE members.user_id = 1026 LIMIT 1;
-SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 1026 AND projects.status <> 9 AND projects.status <> 9 LIMIT 1;
+SELECT members.* FROM members WHERE members.user_id = 613 AND members.project_id = 5294 ORDER BY members.id ASC LIMIT 3;

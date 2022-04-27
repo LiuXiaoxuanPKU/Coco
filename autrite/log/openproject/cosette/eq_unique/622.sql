@@ -180,8 +180,8 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(repository_id,revision),
 UNIQUE(revision,repository_id),
+UNIQUE(repository_id,revision),
 UNIQUE(scmid,repository_id),
 );
 
@@ -637,9 +637,9 @@ CREATE TABLE journals (
     updated_at timestamp without time zone  ,
     data_type character varying,
 data_id bigint,
-UNIQUE(version,journable_id,journable_type),
 UNIQUE(journable_type,journable_id,version),
 UNIQUE(data_id,data_type),
+UNIQUE(version,journable_id,journable_type),
 );
 
 CREATE TABLE labor_budget_items (
@@ -783,8 +783,8 @@ CREATE TABLE menu_items (
     options character varying(255),
     navigatable_id integer,
 type character varying,
-UNIQUE(name,navigatable_id,parent_id),
 UNIQUE(title,navigatable_id,type),
+UNIQUE(name,navigatable_id,parent_id),
 );
 
 CREATE TABLE message_journals (
@@ -1480,6 +1480,9 @@ author boolean   NOT NULL,
 );
 
 -- Original Query
-SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'leaf-page-from-same-project%' AND wiki_id = 44;
+SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields LEFT OUTER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id LEFT OUTER JOIN projects ON projects.id = custom_fields_projects.project_id LEFT OUTER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id LEFT OUTER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id = 1694 AND types.id = 1696 OR custom_fields.is_for_all = True);
 -- Rewritten Queries
-SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'leaf-page-from-same-project%' AND wiki_id = 44 LIMIT 1;
+SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields INNER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id LEFT OUTER JOIN projects ON projects.id = custom_fields_projects.project_id LEFT OUTER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id LEFT OUTER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id = 1694 AND types.id = 1696 OR custom_fields.is_for_all = True);
+SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields LEFT OUTER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id INNER JOIN projects ON projects.id = custom_fields_projects.project_id LEFT OUTER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id LEFT OUTER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id = 1694 AND types.id = 1696 OR custom_fields.is_for_all = True);
+SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields LEFT OUTER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id LEFT OUTER JOIN projects ON projects.id = custom_fields_projects.project_id INNER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id LEFT OUTER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id = 1694 AND types.id = 1696 OR custom_fields.is_for_all = True);
+SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields LEFT OUTER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id LEFT OUTER JOIN projects ON projects.id = custom_fields_projects.project_id LEFT OUTER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id INNER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id = 1694 AND types.id = 1696 OR custom_fields.is_for_all = True);

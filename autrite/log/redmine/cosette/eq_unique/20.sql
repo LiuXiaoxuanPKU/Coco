@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,8 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 6862 AND users.status = 2;
+SELECT member_roles.* FROM member_roles INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 8 AND member_roles.inherited_from IN (6, 7);
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.project_id = 6862;
-SELECT members.* FROM members WHERE members.project_id = 6862 LIMIT 1;
-SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 6862 AND users.status = 2 LIMIT 1;
+SELECT member_roles.* FROM member_roles WHERE member_roles.inherited_from IN (6, 7);

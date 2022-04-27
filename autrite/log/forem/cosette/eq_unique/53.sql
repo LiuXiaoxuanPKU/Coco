@@ -132,10 +132,10 @@ CREATE TABLE articles (
     video_source_url character varying,
     video_state character varying,
 video_thumbnail_url character varying,
-UNIQUE(feed_source_url,published),
-UNIQUE(body_markdown,user_id,title),
 UNIQUE(slug,user_id),
+UNIQUE(body_markdown,user_id,title),
 UNIQUE(canonical_url,published),
+UNIQUE(feed_source_url,published),
 );
 
 CREATE TABLE articles_storage (
@@ -622,8 +622,8 @@ CREATE TABLE devices (
     token character varying NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
 user_id bigint NOT NULL,
-UNIQUE(token,user_id,platform,consumer_app_id),
 UNIQUE(user_id,token,platform,consumer_app_id),
+UNIQUE(token,user_id,platform,consumer_app_id),
 );
 
 CREATE TABLE devices_storage (
@@ -901,8 +901,8 @@ CREATE TABLE github_repos (
     url character varying,
     user_id bigint,
 watchers_count integer,
-UNIQUE(url),
 UNIQUE(github_id_code),
+UNIQUE(url),
 );
 
 CREATE TABLE html_variant_successes (
@@ -974,9 +974,9 @@ CREATE TABLE identities (
     uid character varying,
     updated_at timestamp without time zone NOT NULL,
 user_id bigint,
-UNIQUE(user_id,provider),
-UNIQUE(provider,user_id),
 UNIQUE(provider,uid),
+UNIQUE(provider,user_id),
+UNIQUE(user_id,provider),
 UNIQUE(uid,provider),
 );
 
@@ -1354,8 +1354,8 @@ CREATE TABLE podcast_episodes (
     title character varying NOT NULL,
     updated_at timestamp without time zone NOT NULL,
 website_url character varying,
-UNIQUE(media_url),
 UNIQUE(guid),
+UNIQUE(media_url),
 );
 
 CREATE TABLE podcast_ownerships (
@@ -1419,8 +1419,8 @@ CREATE TABLE poll_votes (
     poll_option_id bigint NOT NULL,
     updated_at timestamp without time zone NOT NULL,
 user_id bigint NOT NULL,
-UNIQUE(poll_option_id,user_id),
 UNIQUE(poll_id,user_id),
+UNIQUE(poll_option_id,user_id),
 );
 
 CREATE TABLE polls (
@@ -2031,13 +2031,13 @@ CREATE TABLE users (
     workshop_expiration timestamp without time zone,
     youtube_url character varying,
 CONSTRAINT users_username_not_null CHECK ((username IS NOT NULL)),
-UNIQUE(reset_password_token),
+UNIQUE(email),
 UNIQUE(invitation_token),
+UNIQUE(github_username),
+UNIQUE(reset_password_token),
 UNIQUE(username),
 UNIQUE(twitter_username),
-UNIQUE(github_username),
 UNIQUE(confirmation_token),
-UNIQUE(email),
 );
 
 CREATE TABLE users_gdpr_delete_requests (
@@ -2127,6 +2127,6 @@ updated_at timestamp(6) without time zone NOT NULL,
 );
 
 -- Original Query
-SELECT COUNT(*) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 7639;
+SELECT articles.path, articles.title, articles.id, articles.published, articles.comments_count, articles.public_reactions_count, articles.cached_tag_list, articles.main_image, articles.main_image_background_hex_color, articles.updated_at, articles.slug, articles.video, articles.user_id, articles.organization_id, articles.video_source_url, articles.video_code, articles.video_thumbnail_url, articles.video_closed_caption_track_url, articles.experience_level_rating, articles.experience_level_rating_distribution, articles.cached_user, articles.cached_organization, articles.published_at, articles.crossposted_at, articles.description, articles.reading_time, articles.video_duration_in_seconds, articles.last_comment_at FROM articles INNER JOIN taggings ON articles.id = taggings.taggable_id WHERE taggings.tag_id = 12 AND taggings.taggable_type = 'Article' AND articles.published = False AND published_at <= '2022-02-27 07:11:43.466614' AND published_at > '2022-02-20 07:11:43.467090' ORDER BY articles.public_reactions_count DESC LIMIT 7 OFFSET 1;
 -- Rewritten Queries
-SELECT COUNT(*) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 7639 LIMIT 1;
+SELECT articles.path, articles.title, articles.id, articles.published, articles.comments_count, articles.public_reactions_count, articles.cached_tag_list, articles.main_image, articles.main_image_background_hex_color, articles.updated_at, articles.slug, articles.video, articles.user_id, articles.organization_id, articles.video_source_url, articles.video_code, articles.video_thumbnail_url, articles.video_closed_caption_track_url, articles.experience_level_rating, articles.experience_level_rating_distribution, articles.cached_user, articles.cached_organization, articles.published_at, articles.crossposted_at, articles.description, articles.reading_time, articles.video_duration_in_seconds, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:43.466614' AND published_at > '2022-02-20 07:11:43.467090' ORDER BY articles.public_reactions_count DESC LIMIT 7 OFFSET 1;

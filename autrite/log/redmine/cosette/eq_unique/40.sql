@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issue_statuses.is_closed = False ORDER BY issues.id ASC LIMIT 3;
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.project_id = 5616 AND issue_statuses.is_closed = False ORDER BY issues.id ASC LIMIT 2;
 -- Rewritten Queries
-SELECT issues.* FROM issues ORDER BY issues.id ASC LIMIT 3;
+SELECT issues.* FROM issues WHERE issues.project_id = 5616 ORDER BY issues.id ASC LIMIT 2;

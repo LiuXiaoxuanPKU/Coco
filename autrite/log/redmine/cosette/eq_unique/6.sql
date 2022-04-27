@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,6 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT email_addresses.* FROM email_addresses WHERE email_addresses.address = 'btzmevcfnlsywan@yahoo.com';
+SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Qzlijfdqgpyxgjuqryyplmwfkukvbgatueznstonwbexdkhdrcgqmtutxuyaevdukfmprjcgmapyrmduaibdkctcdxsbostmhsgqjlcwprmacglpukzhneqdvpcppyidmwbcjzytzqhxvncbdsjbxfbcpvxgulaeoxysovpzkbdiwocrpgxdtriouynnhskepaixqjjybphsoltylpvnxqmmzopgihflkxgepkabnwxbbok' AND wiki_pages.wiki_id IS NULL LIMIT 2;
 -- Rewritten Queries
-SELECT email_addresses.* FROM email_addresses WHERE email_addresses.address = 'btzmevcfnlsywan@yahoo.com' LIMIT 1;
+SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Qzlijfdqgpyxgjuqryyplmwfkukvbgatueznstonwbexdkhdrcgqmtutxuyaevdukfmprjcgmapyrmduaibdkctcdxsbostmhsgqjlcwprmacglpukzhneqdvpcppyidmwbcjzytzqhxvncbdsjbxfbcpvxgulaeoxysovpzkbdiwocrpgxdtriouynnhskepaixqjjybphsoltylpvnxqmmzopgihflkxgepkabnwxbbok' AND False LIMIT 2;

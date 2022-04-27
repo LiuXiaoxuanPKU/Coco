@@ -80,9 +80,9 @@ CREATE TABLE changesets (
     commit_date date,
     scmid character varying,
 user_id integer,
-UNIQUE(revision,repository_id),
 UNIQUE(scmid,repository_id),
 UNIQUE(repository_id,revision),
+UNIQUE(revision,repository_id),
 );
 
 CREATE TABLE changesets_issues (
@@ -602,8 +602,6 @@ rule character varying(30),
 );
 
 -- Original Query
-SELECT SUM(time_entries.hours) AS sum_hours, time_entries.issue_id AS time_entries_issue_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND time_entries.issue_id = 4107 GROUP BY time_entries.issue_id;
+SELECT 1 AS "one" FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE (projects.id = 1 OR projects.status <> 9 AND (versions.sharing = 'system' OR projects.lft >= 1 AND projects.rgt <= 10 AND versions.sharing = 'tree' OR projects.lft < 1 AND projects.rgt > 10 AND versions.sharing IN ('hierarchy', 'descendants') OR projects.lft > 1 AND projects.rgt < 10 AND versions.sharing = 'hierarchy')) AND versions.status = 'locked' LIMIT 7;
 -- Rewritten Queries
-SELECT SUM(time_entries.hours) AS sum_hours, time_entries.issue_id AS time_entries_issue_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND time_entries.issue_id = 4107 GROUP BY time_entries.issue_id LIMIT 1;
-SELECT SUM(time_entries.hours) AS sum_hours, time_entries.issue_id AS time_entries_issue_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND time_entries.issue_id = 4107 GROUP BY time_entries.issue_id LIMIT 1;
-SELECT SUM(time_entries.hours) AS sum_hours, time_entries.issue_id AS time_entries_issue_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND time_entries.issue_id = 4107 GROUP BY time_entries.issue_id;
+SELECT 1 AS "one" FROM versions WHERE (versions.sharing = 'system' OR versions.sharing = 'tree' OR versions.sharing IN ('hierarchy', 'descendants') OR versions.sharing = 'hierarchy') AND versions.status = 'locked' LIMIT 7;
