@@ -1,5 +1,6 @@
 import psycopg2
 
+JIT = "on"
 class Evaluator:
     @staticmethod
     def evaluate_query(q, connect_string):
@@ -24,6 +25,7 @@ class Evaluator:
             # Open a cursor to perform database operations
             with conn.cursor() as cur:
                 # Execute a command: explain query
+                cur.execute("set jit=%s" % JIT)
                 cur.execute("EXPLAIN ANALYZE " + q)
                 # Fetch result
                 explain_fetched = cur.fetchall()[-1]

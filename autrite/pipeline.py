@@ -7,15 +7,14 @@ import rule
 from loader import Loader
 from rewriter import Rewriter
 from evaluator import Evaluator
-from ProveVerifier import ProveVerifier
+from autrite.Provedumper import ProveDumper
 from TestVerifier import TestVerifier
-from mo_sql_parsing import format
+from mo_sql_parsing import format, parse
 from tqdm import tqdm
 import time
-from utils import generate_query_param_rewrites, exp_recorder
+from utils import generate_query_param_rewrites, generate_query_param_single
 
 from config import CONNECT_MAP, FileType, RewriteQuery, get_filename
-from mo_sql_parsing import parse
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -54,7 +53,24 @@ if __name__ == '__main__':
     enumerate_cnt = 0
     lower_cost_cnt = 0
     lower_cost_pass_test_cnt = 0 
+    connect_str = CONNECT_MAP[appname]
+    
+    enumerate_time = 0
+    get_cost_time = 0
+    run_test_time = 0
+    sort_time = 0
+    dump_time = 0
+    
     for q in tqdm(queries):
+        with open("%s_stats" % appname, "w") as f:
+            f.write("%d, %d, %d" % (enumerate_cnt, lower_cost_cnt, lower_cost_pass_test_cnt))
+        # =================Try to generate param first========
+        try:
+            q_raw = generate_query_param_single(q.q_raw, connect_str, {})
+            Evaluator.evaluate_query(q_raw, connect_str)
+        except:
+            continue 
+
         start = time.time()
         # =================Enumerate Candidates================
         enumerate_queries = []
@@ -68,11 +84,13 @@ if __name__ == '__main__':
         if len(enumerate_queries) == 0:
             continue
         enumerate_cnt += 1
-            
+        end = time.time()
+        enumerate_time = end-start
+        start = end  
+
         # ======== Estimate cost and retain those with lower cost than original ======
         rewritten_queries_lower_cost = []
         # replace placeholder with actual parameters for org and rewrites
-        connect_str = CONNECT_MAP[appname]
         rewritten_queries = enumerate_queries
         succ = generate_query_param_rewrites(q, rewritten_queries, connect_str)
         if not succ:
@@ -95,8 +113,7 @@ if __name__ == '__main__':
                     rq.estimate_cost = estimate_cost 
                     rewritten_queries_lower_cost.append(rq)
                 else:
-                    continue
-                    print("[Error] rewrite get slower")
+                    print("[Warning] rewrite get slower")
                     print("[Org] %f %s" % (org_cost, q.q_raw_param))
                     print("[Rewrite] %f %s" % (estimate_cost, rq.q_raw_param))
             except:
@@ -105,6 +122,10 @@ if __name__ == '__main__':
         if len(rewritten_queries_lower_cost) == 0:
             continue
         lower_cost_cnt += 1
+        
+        end = time.time()
+        get_cost_time = end-start
+        start = end
         
         # ======== Run test and retain those that pass =========
         rewritten_queries_lower_cost_after_test = []
@@ -115,7 +136,7 @@ if __name__ == '__main__':
             if len(not_eq_qs) == 0:
                 continue
             # dump counter examples
-            ProveVerifier().verify(appname, q, constraints, not_eq_qs, rewrite_cnt, counter=True)
+            ProveDumper().verify(appname, q, constraints, not_eq_qs, rewrite_cnt, counter=True)
             rewrite_cnt += 1
             continue
          
@@ -123,6 +144,9 @@ if __name__ == '__main__':
             continue
         lower_cost_pass_test_cnt += 1
        
+        end = time.time()
+        run_test_time = end - start
+        
         # ========= Sort rewrites that pass tests ============
         # Sort the list in place
         rewritten_queries_lower_cost_after_test.sort(key=lambda x: x.estimate_cost, reverse=False)
@@ -130,10 +154,8 @@ if __name__ == '__main__':
         # ========== Dump outputs to cosette ==========
         rewrite_cnt += 1
         total_candidate_cnt.append(len(rewritten_queries_lower_cost_after_test))
-        ProveVerifier().verify(appname, q, constraints, rewritten_queries_lower_cost_after_test, rewrite_cnt)
+        ProveDumper().verify(appname, q, constraints, rewritten_queries_lower_cost_after_test, rewrite_cnt)
    
-    
-    exp_recorder.record("candidate info",  total_candidate_cnt)
     print("Average # of candidates %f" % (sum(total_candidate_cnt) / len(total_candidate_cnt)))
     print("Enumerate count %d" % enumerate_cnt)
     print("Lower cost cnt %d" % lower_cost_cnt)

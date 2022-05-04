@@ -14,6 +14,8 @@ class FileType(Enum):
     PRECHECK_STR2INT_NUM = 11
     
     TEST_PROVE_Q =12
+    REWRITE_TIME = 13
+    VERIFIER_TIME = 14
   
 def get_filename(_type, appname):
 
@@ -33,6 +35,8 @@ def get_filename(_type, appname):
             FileType.EMPTY_RESULT_QUERY: "log/%s/empty_query" % appname,
             FileType.REWRITE : "log/%s/%s_test_rewrite"  % (appname, appname),
             FileType.PRECHECK_STR2INT_NUM : "log/precheck_strtoint_num",
+            FileType.REWRITE_TIME: "log/%s/rewrite_time" % appname,
+            FileType.VERIFIER_TIME: "log/%s/verify_time" % appname
     }
     return m[_type]
 

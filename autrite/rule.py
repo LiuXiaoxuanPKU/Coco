@@ -542,10 +542,6 @@ class AddPredicate(Rule):
                         print("[Error] Unknown key %s" % key)
                         exit(0)
 
-            def extract_join(join):
-                print(join)
-                pass
-
             conditions = []
             if 'where' in q:
                 conditions.append(extract_cond(q['where']))
@@ -630,7 +626,7 @@ class AddPredicate(Rule):
         binops, predicate_tokens_map = extract_binops(q)
         if len(predicate_tokens_map) == 0:
             return []
-        # print("predicate_tokens_map tokens", predicate_tokens_map)
+
         binops += constraint_ops
 
         binops = [op for op in binops if op is not None]

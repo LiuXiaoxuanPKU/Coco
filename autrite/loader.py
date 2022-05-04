@@ -20,6 +20,8 @@ class Loader:
                 elif obj["^o"] == "UniqueConstraint":
                     if len(obj["cond"]) > 0:
                         continue
+                    if obj['type'] == 'pk':
+                        continue
                     c = constraint.UniqueConstraint(
                         classnode['table'], obj['field_name'], obj['db'], obj["type"], cond=None)
                 elif obj["^o"] == "PresenceConstraint":
@@ -42,8 +44,9 @@ class Loader:
                     )
                 else:
                     print("[Error] Unsupport constraint type ", obj)
-                    exit(1)
+                    continue
                 constraints.append(c)
+            constraints = list(set(constraints))
         print("======================Load %d constraints" % len(constraints))
         return constraints
 
