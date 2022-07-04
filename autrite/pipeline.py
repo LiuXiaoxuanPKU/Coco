@@ -7,7 +7,7 @@ import rule
 from loader import Loader
 from rewriter import Rewriter
 from evaluator import Evaluator
-from autrite.Provedumper import ProveDumper
+from Provedumper import ProveDumper
 from TestVerifier import TestVerifier
 from mo_sql_parsing import format, parse
 from tqdm import tqdm
@@ -41,6 +41,7 @@ if __name__ == '__main__':
         print("[Before filtering DB constraints] ", len(constraints))
         constraints = [c for c in constraints if c.db == True]
         print("[After filtering DB constraints] ", len(constraints))
+    exit(0)
     queries = Loader.load_queries(query_filename, offset, query_cnt)
     rewriter = Rewriter()
     rewriter.set_rules(rules)
