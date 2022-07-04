@@ -41,7 +41,6 @@ if __name__ == '__main__':
         print("[Before filtering DB constraints] ", len(constraints))
         constraints = [c for c in constraints if c.db == True]
         print("[After filtering DB constraints] ", len(constraints))
-    exit(0)
     queries = Loader.load_queries(query_filename, offset, query_cnt)
     rewriter = Rewriter()
     rewriter.set_rules(rules)
