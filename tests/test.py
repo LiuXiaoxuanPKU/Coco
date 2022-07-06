@@ -2,8 +2,10 @@ import json
 import traceback
 from mo_sql_parsing import parse, format
 
-from constropt.query_rewriter import Rewriter
-from constropt.query_rewriter.constraint import *
+import sys
+sys.path.insert(0, '/home/ubuntu/ConstrOpt/constropt')
+from query_rewriter import Rewriter
+from query_rewriter.constraint import *
 
 
 class RewriteTestor:
