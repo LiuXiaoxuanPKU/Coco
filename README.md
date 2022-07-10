@@ -39,17 +39,17 @@ The following is the version information we use for apps in our experiments.
 ## Constraint Extractor
 Constraint extractor extracts both application constraints and database constraints automatically from the source code. Constraint extractor is under `/constropt/constr_extractor/` directory.
 ConstrOpt to extract constraints of different types as shown below.
-- Inclusion: the field value is restricted to a limited set.
-- Presence: the field value cannot be null. This is the same as the SQL NOT NULL constraint, but is only implicitly defined in the
+- **Inclusion**: the field value is restricted to a limited set.
+- **Presence**: the field value cannot be null. This is the same as the SQL NOT NULL constraint, but is only implicitly defined in the
 application code.
-- Length: the length of a string field should be in a certain range.
+- **Length**: the length of a string field should be in a certain range.
 - Uniqueness: same as the SQL uniqueness constraint, but is only
 defined in the application.
-- Format: the value of a string field must match a regular expres-
+- **Format**: the value of a string field must match a regular expres-
 sion, which is specified in the application code.
-- Numerical: the value of a numerical field must lie in the range
+- **Numerical**: the value of a numerical field must lie in the range
 specified in the application code.
-- Foreign key: same as the SQL foreign key constraint, where the
+- **Foreign key**: same as the SQL foreign key constraint, where the
 field points to the primary key of the referenced table.
 #### Run tests
 Under the root directory (`\ConstrOpt`), following the following command:
@@ -63,7 +63,7 @@ chmod +x run_test.sh                # give permisson to this script
 ## Query Rewriter
 ConstrOpt employs an enumerate-test-verify technique to automatically exploit the discovered data constraints to improve query execution. Each resulting rewrite is provably equivalent semantically to the original query. 
 #### How to run Rewriter tests
-Under root directory, run
+Under `constropt/` directory, run
 ```
-python3 tests/test.py # run all tests
+python3 query_rewriter_tests/test.py # run all tests
 ```

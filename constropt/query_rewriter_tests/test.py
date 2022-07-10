@@ -74,11 +74,11 @@ class RewriteTestor:
 
 
 if __name__ == "__main__":
-    testor = RewriteTestor("./tests/cases/add_limit_one.json")
+    testor = RewriteTestor("/home/ubuntu/ConstrOpt/constropt/query_rewriter_tests/cases/add_limit_one.json")
     testor.run_all()
 
-    testor = RewriteTestor("./tests/cases/remove_predicate_numerical.json")
+    testor = RewriteTestor("/home/ubuntu/ConstrOpt/constropt/query_rewriter_tests/cases/remove_predicate_numerical.json")
     testor.run_all()
 
-    testor = RewriteTestor("./tests/cases/remove_distinct.json")
+    testor = RewriteTestor("/home/ubuntu/ConstrOpt/constropt/query_rewriter_tests/cases/remove_distinct.json")
     testor.run_all()
