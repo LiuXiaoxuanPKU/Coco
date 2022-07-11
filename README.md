@@ -11,8 +11,6 @@ bundler insatll
 
 | Package        |
 |----------------|
-| boto           |
-| certifi        |
 | mo-dots        |
 | mo-future      |
 | mo-imports     |
