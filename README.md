@@ -23,10 +23,10 @@ bundler insatll
 | z3-solver      |
 
 ## Experiment
-All experiments we did in the paper are under `/autrite` directory. For re-run experiements on redmine, openprojects, and forem, run the following under the root directory. `/autrite/benchmark` directory contains util functions for experiment evaluation. 
+All experiments we did in the paper are under `/constropt/autrite` directory. For re-run experiements on redmine, openprojects, and forem, run the following under the root directory. `/constropt/autrite/` directory contains util functions for experiment evaluation. 
 ```
-python3 autrite/pipeline.py --app <appname>
-python3 autrite/pipline.py --app redmine  # example
+python3 pipeline.py --app <appname>
+python3 pipeline.py --app redmine  # example
 ```
 The following is the version information we use for apps in our experiments.
 | Application | Ruby Version | Release Version/Tag                             |
