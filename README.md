@@ -1,7 +1,8 @@
 # `ConstrOpt` Overview
 This is the official repository for [Leveraging Applicaton Data Constraints to Optimize Database-Backed Web Applications](https://arxiv.org/abs/2205.02954) by Xiaoxuan Liu, Shuxian Wang, Mengzhu Sun, Sharon Lee, Sicheng Pan, Joshua Wu, Cong Yan, Junwen Yang, and Alvin Chueng. 
 Here we present `ConstrOpt`, the first tool that identifies data relationships by analyzing the programs that generate and maintain the persist data. Once identified,`ConstrOpt` leverages the found constraints to optimize the application's physical design and query execution by rewriting queries. Instead of developing a fixed set of predefined rewriting rules, `ConstrOpt` employs an enumerate-test-verify technique to automatically exploit the discovered data constraints to improve query execution. 
-<img src="./figures/readme/system_architecture.png" width=380>
+<center><img src="./figures/readme/system_architecture.png" width=380></center>
+
 ## Install
 - Install third party libraries for ruby: under `constr_extractor` folder, run
 ``` 
