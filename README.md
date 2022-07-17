@@ -8,7 +8,7 @@ Here we present `ConstrOpt`, the first tool that identifies data relationships b
 ``` 
 bundler insatll
 ```
-- To install python dependencies, run `pip3 install -r requirements.txt`
+- We highly recommend install and manage python dependencies using `conda`. Run command `conda create --name <your_env_name> --file requirements.txt` for installing dependencies. 
 
 ## Experiment
 All experiments we did in the paper are under `/constropt/autrite` directory. For re-run experiements on redmine, openprojects, and forem, run the following under the root directory. `/constropt/autrite/` directory contains util functions for experiment evaluation. 
