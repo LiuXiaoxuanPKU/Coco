@@ -1,0 +1,11 @@
+boto==2.49.0
+certifi
+mo-dots==9.173.22126
+mo-future==6.2.21303
+mo-imports==7.169.22121
+mo-parsing==8.183.22158
+mo-sql-parsing==8.186.22172
+psycopg2 
+tqdm 
+z3==0.2.0
+z3-solver==4.9.1.0

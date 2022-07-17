@@ -1,26 +1,14 @@
 # `ConstrOpt` Overview
 This is the official repository for [Leveraging Applicaton Data Constraints to Optimize Database-Backed Web Applications](https://arxiv.org/abs/2205.02954) by Xiaoxuan Liu, Shuxian Wang, Mengzhu Sun, Sharon Lee, Sicheng Pan, Joshua Wu, Cong Yan, Junwen Yang, and Alvin Chueng. 
 Here we present `ConstrOpt`, the first tool that identifies data relationships by analyzing the programs that generate and maintain the persist data. Once identified,`ConstrOpt` leverages the found constraints to optimize the application's physical design and query execution by rewriting queries. Instead of developing a fixed set of predefined rewriting rules, `ConstrOpt` employs an enumerate-test-verify technique to automatically exploit the discovered data constraints to improve query execution. 
-<center><img src="./figures/readme/system_architecture.png" width=380></center>
+<img src="./figures/readme/system_architecture.png" width=380>
 
 ## Install
-- Install third party libraries for ruby: under `constr_extractor` folder, run
+- To install third party libraries for ruby, under `constr_extractor` folder, run
 ``` 
 bundler insatll
 ```
-- Install python dependencies: we use [microsoft z3](https://github.com/Z3Prover/z3) solver to prove sql equivalence. use `pip3 install <package name>` to install the following python3 dependencies. E.g., `pip3 install z3-solver`.
-
-| Package        |
-|----------------|
-| mo-dots        |
-| mo-future      |
-| mo-imports     |
-| mo-parsing     |
-| mo-sql-parsing |
-| psycopg2       |
-| tqdm           |
-| z3             |
-| z3-solver      |
+- To install python dependencies, run `pip3 install -r requirements.txt`
 
 ## Experiment
 All experiments we did in the paper are under `/constropt/autrite` directory. For re-run experiements on redmine, openprojects, and forem, run the following under the root directory. `/constropt/autrite/` directory contains util functions for experiment evaluation. 
@@ -56,7 +44,6 @@ Under the root directory (`\ConstrOpt`), following the following command:
 ```
 cd constropt/constr_extractor/      # enter directory
 bundle install                      # install ruby dependencies
-chmod +x run_test.sh                # give permisson to this script
 ./run_test.sh                       # run all tests 
 ```
 
