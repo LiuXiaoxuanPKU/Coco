@@ -5,7 +5,7 @@ Here we present `ConstrOpt`, the first tool that identifies data relationships b
 
 ## Install
 ### Ruby Dependencies
-We highly recommend use [rbenv](https://github.com/rbenv/rbenv#command-reference) or [rmv](https://rvm.io) to manage ruby environments. Note that [ConstrOpt] requires ruby version >= 3.0.0.  
+We highly recommend use [rbenv](https://github.com/rbenv/rbenv#command-reference) or [rmv](https://rvm.io) to manage ruby environments. Note that `ConstrOpt` requires ruby version >= 3.0.0.  
 To install third party libraries for ruby, under root directory, run
 ``` 
 bundler install
