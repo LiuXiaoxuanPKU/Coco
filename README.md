@@ -4,11 +4,14 @@ Here we present `ConstrOpt`, the first tool that identifies data relationships b
 <img src="./figures/readme/system_architecture.png" width=380>
 
 ## Install
-- To install third party libraries for ruby, under `constr_extractor` folder, run
+### Ruby Dependencies
+We highly recommend use [rbenv](https://github.com/rbenv/rbenv#command-reference) or [rmv](https://rvm.io) to manage ruby environments. Note that [ConstrOpt] requires ruby version >= 3.0.0.  
+To install third party libraries for ruby, under root directory, run
 ``` 
-bundler insatll
+bundler install
 ```
-- We highly recommend install and manage python dependencies using `conda`. Run command `conda create --name <your_env_name> --file requirements.txt` for installing dependencies. 
+### Python Dependencies
+We highly recommend install and manage python dependencies using `conda`. Run command `conda create --name <your_env_name> --file requirements.txt` for installing dependencies. 
 
 ## Experiment
 All experiments we did in the paper are under `/constropt/autrite` directory. For re-run experiements on redmine, openprojects, and forem, run the following under the root directory. `/constropt/autrite/` directory contains util functions for experiment evaluation. 
@@ -19,7 +22,7 @@ python3 pipeline.py --app redmine  # example
 The following is the version information we use for apps in our experiments.
 | Application | Ruby Version | Release Version/Tag                             |
 |-------------|--------------|-------------------------------------------------|
-| ConstrOpt   | 3.0.1        | NA                                              |
+| ConstrOpt   | >= 3.0.0     | NA                                              |
 | Redmine     | 3.0.0        | commit cfba76019b31e22e2de4b1a8b99b201fc31ada29 |
 | Dev.to      | 2.7.2        | commit cfba76019b31e22e2de4b1a8b99b201fc31ada29 |
 | Openproject | 2.7.4        | commit cfba76019b31e22e2de4b1a8b99b201fc31ada29 |
@@ -39,7 +42,13 @@ sion, which is specified in the application code.
 specified in the application code.
 - **Foreign key**: same as the SQL foreign key constraint, where the
 field points to the primary key of the referenced table.
-#### Run tests
+### Run Extractor
+Under the root directory (`\ConstrOpt`), run 
+```
+ruby extract.rb <appname>
+ruby extract.rb redmine    # example 
+```
+### Run tests
 Under the root directory (`\ConstrOpt`), following the following command:
 ```
 cd constropt/constr_extractor/      # enter directory
@@ -49,7 +58,7 @@ bundle install                      # install ruby dependencies
 
 ## Query Rewriter
 ConstrOpt employs an enumerate-test-verify technique to automatically exploit the discovered data constraints to improve query execution. Each resulting rewrite is provably equivalent semantically to the original query. 
-#### How to run Rewriter tests
+### How to run Rewriter tests
 Under `constropt/` directory, run
 ```
 python3 query_rewriter_tests/test.py # run all tests
