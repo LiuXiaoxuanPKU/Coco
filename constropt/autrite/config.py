@@ -1,3 +1,5 @@
+import os
+from pathlib import Path
 from enum import Enum
 
 class FileType(Enum):
@@ -18,12 +20,14 @@ class FileType(Enum):
     VERIFIER_TIME = 14
   
 def get_filename(_type, appname):
-
+    workdir = os.getcwd()
+    path = Path(workdir)
+    projectdir = path.parent.parent.absolute()
     m = {
             # input query, constraint, create table sql
             FileType.TEST_PROVE_Q : "log/%s/prove.sql" % appname,
-            FileType.RAW_QUERY : "/home/ubuntu/ConstrOpt/queries/%s/%s.pk" % (appname, appname),
-            FileType.CONSTRAINT : "/home/ubuntu/ConstrOpt/constraints/%s"  % (appname),
+            FileType.RAW_QUERY : "%s/queries/%s/%s.pk" % (projectdir, appname, appname),
+            FileType.CONSTRAINT : "%s/constraints/%s"  % (projectdir, appname),
             FileType.VERIFIER_INPUT : "log/%s/cosette/create.sql" % appname,
             # output sqls for cosette
             FileType.VERIFIER_OUTPUT : "log/%s/cosette/" % appname,   
