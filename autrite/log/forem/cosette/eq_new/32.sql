@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 3759 AND notifications.organization_id IS NULL AND notifications.notifiable_id = 2297 AND notifications.notifiable_type = 'TagAdjustment' AND notifications.action IS NULL LIMIT 2;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.organization_id = 2 AND notifications.notifiable_id = 3665 AND notifications.notifiable_type = 'Article' AND notifications.action IS NULL LIMIT 7;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 3759 AND False AND notifications.notifiable_id = 2297 AND notifications.notifiable_type = 'TagAdjustment' AND notifications.action IS NULL LIMIT 2;
+SELECT 1 AS "one" FROM notifications WHERE False AND notifications.organization_id = 2 AND notifications.notifiable_id = 3665 AND notifications.notifiable_type = 'Article' AND notifications.action IS NULL LIMIT 7;

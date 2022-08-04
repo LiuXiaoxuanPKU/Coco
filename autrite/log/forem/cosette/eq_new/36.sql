@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.id <> 1052 AND notifications.organization_id = 1 AND notifications.notifiable_id = 5921 AND notifications.notifiable_type = 'TagAdjustment' AND notifications.action = 'onarrsweapklohixublddbpqbimjznkoszpbljbcrtymgldcpnzzokhbtzmkufqwwgcogckiuha' LIMIT 6;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 6646 AND notifications.id <> 7883 AND notifications.organization_id IS NULL AND notifications.notifiable_id = 5005 AND notifications.notifiable_type = 'Comment' AND notifications.action = 'bhylohyxqwpvelbucuqgaqghfqvmdvpgtvgpgsmmrszxayhnvzsytgnmenkgsciedrutifupzrxhbsozoeyasodqcmimcjsbmalijexcdgeknsysoyseetkkyaejgflgactviaaoyhputlxrhfmrmlsfagkqexekrcfmipoazrjupwggbyevvdcgnyunteyoyvzwfspgxzorqtbjmksuaexfqomg' LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE False AND notifications.id <> 1052 AND notifications.organization_id = 1 AND notifications.notifiable_id = 5921 AND notifications.notifiable_type = 'TagAdjustment' AND notifications.action = 'onarrsweapklohixublddbpqbimjznkoszpbljbcrtymgldcpnzzokhbtzmkufqwwgcogckiuha' LIMIT 6;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 6646 AND notifications.id <> 7883 AND False AND notifications.notifiable_id = 5005 AND notifications.notifiable_type = 'Comment' AND notifications.action = 'bhylohyxqwpvelbucuqgaqghfqvmdvpgtvgpgsmmrszxayhnvzsytgnmenkgsciedrutifupzrxhbsozoeyasodqcmimcjsbmalijexcdgeknsysoyseetkkyaejgflgactviaaoyhputlxrhfmrmlsfagkqexekrcfmipoazrjupwggbyevvdcgnyunteyoyvzwfspgxzorqtbjmksuaexfqomg' LIMIT 1;

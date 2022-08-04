@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 3785 AND organization_memberships.type_of_user IN ('admin', 'admin') AND organization_memberships.organization_id IS NULL LIMIT 4;
+SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 8718 AND organization_memberships.type_of_user IN ('admin', 'guest') AND organization_memberships.organization_id IS NULL LIMIT 7;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 3785 AND organization_memberships.type_of_user IN ('admin', 'admin') AND False LIMIT 4;
+SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 8718 AND organization_memberships.type_of_user IN ('admin', 'guest') AND False LIMIT 7;

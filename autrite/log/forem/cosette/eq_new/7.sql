@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT badge_achievements.badge_id FROM badge_achievements WHERE badge_achievements.user_id = 2454;
+SELECT 1 AS "one" FROM comments WHERE comments.commentable_id IS NULL AND comments.user_id = 2265 LIMIT 9;
 -- Rewritten Queries
-SELECT badge_achievements.badge_id FROM badge_achievements WHERE badge_achievements.user_id = 2454 LIMIT 1;
+SELECT 1 AS "one" FROM comments WHERE False AND comments.user_id = 2265 LIMIT 9;

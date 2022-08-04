@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT notifications.* FROM notifications WHERE notifications.organization_id = 2 AND notifications.user_id IS NULL ORDER BY notifications.notified_at DESC LIMIT 8;
+SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 5002;
 -- Rewritten Queries
-SELECT notifications.* FROM notifications WHERE notifications.organization_id = 2 AND False ORDER BY notifications.notified_at DESC LIMIT 8;
+SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 5002;

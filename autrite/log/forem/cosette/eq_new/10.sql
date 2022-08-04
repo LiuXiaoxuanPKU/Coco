@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM users_roles INNER JOIN roles ON roles.id = users_roles.role_id WHERE roles.name = 'trusted' LIMIT 5;
+SELECT 1 AS "one" FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 1989 LIMIT 2;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM users_roles LIMIT 5;
+SELECT 1 AS "one" FROM roles LIMIT 2;

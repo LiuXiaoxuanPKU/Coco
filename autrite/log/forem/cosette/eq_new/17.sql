@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT devices.* FROM devices WHERE devices.user_id = 2307 AND devices.token IS NULL AND devices.platform = 'Android' AND devices.consumer_app_id = 471 LIMIT 5;
+SELECT devices.* FROM devices WHERE devices.user_id = 1865 AND devices.token IS NULL AND devices.platform = 'iOS' AND devices.consumer_app_id = 1446 LIMIT 10;
 -- Rewritten Queries
-SELECT devices.* FROM devices WHERE devices.user_id = 2307 AND False AND devices.platform = 'Android' AND devices.consumer_app_id = 471 LIMIT 5;
+SELECT devices.* FROM devices WHERE devices.user_id = 1865 AND False AND devices.platform = 'iOS' AND devices.consumer_app_id = 1446 LIMIT 10;

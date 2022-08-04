@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT podcast_episodes.media_url FROM podcast_episodes WHERE podcast_episodes.podcast_id = 4840;
+SELECT articles.* FROM articles WHERE articles.user_id = 3267 AND articles.slug IS NULL LIMIT 8;
 -- Rewritten Queries
-SELECT podcast_episodes.media_url FROM podcast_episodes WHERE podcast_episodes.podcast_id = 4840 LIMIT 1;
+SELECT articles.* FROM articles WHERE articles.user_id = 3267 AND False LIMIT 8;

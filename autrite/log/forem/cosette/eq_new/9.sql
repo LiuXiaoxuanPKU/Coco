@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT 1 AS "one" FROM user_blocks WHERE user_blocks.blocker_id IS NULL AND user_blocks.blocked_id = 7641 LIMIT 7;
+SELECT 1 AS "one" FROM users_roles INNER JOIN roles ON roles.id = users_roles.role_id WHERE roles.name = 'tag_moderator' LIMIT 8;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM user_blocks WHERE False AND user_blocks.blocked_id = 7641 LIMIT 7;
+SELECT 1 AS "one" FROM users_roles LIMIT 8;

@@ -2050,6 +2050,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.* FROM articles WHERE articles.user_id = 8732 AND articles.slug IS NULL LIMIT 9;
+SELECT badge_achievements.badge_id FROM badge_achievements WHERE badge_achievements.user_id = 7997;
 -- Rewritten Queries
-SELECT articles.* FROM articles WHERE articles.user_id = 8732 AND False LIMIT 9;
+SELECT badge_achievements.badge_id FROM badge_achievements WHERE badge_achievements.user_id = 7997 LIMIT 1;
