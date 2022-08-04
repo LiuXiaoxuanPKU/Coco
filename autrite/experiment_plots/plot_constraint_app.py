@@ -54,7 +54,7 @@ def plot_app(appname):
     
     width = 0.4
     ax.bar(x - width/2, model_values, width, edgecolor='black', color='#2596be', label = "Model")
-    ax.bar(x + width/2, db_values, width, edgecolor='black', color='#e28743', label = "DB")
+    ax.bar(x + width/2, db_values, width, edgecolor='black', color='#e28743', label = "Application")
     ax.set_xticks(x)
     ax.set_xticklabels([CONSTRAINT2NAME[k] for k in keys], rotation = 10)
     
@@ -62,7 +62,7 @@ def plot_app(appname):
     ax.legend(prop={'size': 15})
     fig.subplots_adjust(bottom=0.2)
     plt.yscale("log")
-    plt.savefig("/home/ubuntu/ConstrOpt/figures/7.2/%s.pdf" % appname)
+    plt.savefig("/home/ubuntu/ConstrOpt/figures/7.2/%s" % appname)
     
     
 

@@ -113,8 +113,8 @@ def test_add_limit_one_rewrite():
     assert(len(rewritten_queries) == 0)
 
 if __name__ == "__main__":
-    #test_get_constraints()
-    #test_get_rules()
-    #test_simple_enumerate()
-    #test_redmine_enumerate()
+    test_get_constraints()
+    test_get_rules()
+    test_simple_enumerate()
+    test_redmine_enumerate()
     test_add_limit_one_rewrite()

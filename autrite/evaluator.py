@@ -19,7 +19,11 @@ class Evaluator:
                 return explain_fetched
 
     @staticmethod
-    def evaluate_actual_time(q, connect_string):
+    def evaluate_actual_time(q, connect_string, jit):
+        if jit:
+            JIT = True
+        else:
+            JIT = False
         # Connect to an existing database
         with psycopg2.connect(connect_string) as conn:
             # Open a cursor to perform database operations

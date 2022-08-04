@@ -46,7 +46,7 @@ def install_constraints(constraints, appname):
         except Exception as e:
             print(install_sql)
             print(traceback.format_exc())
-            exit(0)
+            # exit(0)
     print("Install constraints success/all: %d/%d" % (len(installed_constraints), len(constraints)))
     return installed_constraints            
 

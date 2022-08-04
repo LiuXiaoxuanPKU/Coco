@@ -65,9 +65,9 @@ x = np.arange(len(labels))  # the label locations
 width = 0.4
 ax.bar(x, [0] * len(labels), hatch='//', edgecolor='black', label = "Defined both in Model and DB", color="white")
 ax.bar(x - width/2, dup_values, width, edgecolor='black', hatch='//', color='#efccc9', alpha=0.5)
-ax.bar(x - width/2, model_wo_dups, width, edgecolor='black', bottom = dup_values, color='#efccc9', label = "Model Constraints")
+ax.bar(x - width/2, model_wo_dups, width, edgecolor='black', bottom = dup_values, color='#efccc9', label = "Application")
 ax.bar(x + width/2, dup_values, width, edgecolor='black', hatch='//', color='#713b28', alpha=0.5)
-ax.bar(x + width/2, db_wo_dups, width, edgecolor='black', bottom = dup_values, color='#713b28', label = "DB Constraints")
+ax.bar(x + width/2, db_wo_dups, width, edgecolor='black', bottom = dup_values, color='#713b28', label = "DB")
 ax.set_xticks(x)
 ax.set_xticklabels(labels)
 

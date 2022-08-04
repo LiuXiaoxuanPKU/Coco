@@ -1,6 +1,9 @@
 from ast import arg
 import json
 import sys, os
+from time import time
+import traceback
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from evaluator import Evaluator
 from loader import Loader
@@ -10,7 +13,7 @@ import matplotlib.pyplot as plt
 from bench_utils import install_constraints, roll_back
 import argparse
 import seaborn as sns
-
+import numpy as np
 class EvalQuery:
     def __init__(self, before_sql, after_sql) -> None:
         self.raw = before_sql
@@ -33,7 +36,7 @@ def dump_results(queries, app):
         exp_recorder.dump(filename)
 
 def load_results(app):
-    filename = "log/%s_perf" % app
+    filename = "log/%s_cost_perf" % app
     queries = []
     with open(filename, 'r') as f:
         lines = f.readlines()
@@ -53,7 +56,7 @@ def parse_result(APP):
     first = False
     for line in output:
         file, num = line.split(":")
-        with open("{}/eq/{}.sql".format(folder, file)) as q:
+        with open("{}/eq_unique/{}.sql".format(folder, file)) as q:
             found = False
             for q_line in q:
                 if first:
@@ -85,36 +88,56 @@ def load_queries(app):
     return queries
 
 def eval_queries(queries, connect_str, stage):
-    repeat = 10
-    for i in range(repeat):
-        for q in queries:
-            if stage == "org":
-                q.t_db += Evaluator.evaluate_actual_time(q.raw, connect_str)
-            elif stage == "rewrite":
-                q.t_rewrite += Evaluator.evaluate_actual_time(q.rewrite, connect_str) 
-            elif stage == "db_constraint":
-                q.t_db_constraint += Evaluator.evaluate_actual_time(q.raw, connect_str) 
-            elif stage == "rewrite_constraint":
-                q.t_rewrite_constraint += Evaluator.evaluate_actual_time(q.rewrite, connect_str)  
-            else:
-                print("[Error] Unsupport stage %s" % stage)
-                exit(0)
+    repeat = 30
+    times = {}
+        
+    for t in range(repeat):
+        for i, q in enumerate(queries):
+            try:
+                if i not in times:
+                    times[i] = []
+                if stage in ["org", "db_constraint"]:
+                    # Evaluator.evaluate_query("set jit=off", connect_str)
+                    times[i].append(Evaluator.evaluate_actual_time(q.raw, connect_str))
+                elif stage in ["rewrite", "rewrite_constraint"]:
+                    # Evaluator.evaluate_query("set jit=off", connect_str)
+                    times[i].append(Evaluator.evaluate_actual_time(q.rewrite, connect_str))
+                else:
+                    assert(False)
+            except:
+                print(traceback.format_exc())
+    
+    for i, t in enumerate(times):
+        avg_time = np.median(times[i][1:i])
+        if stage == "org":
+            queries[i].t_db = avg_time
+        elif stage == "rewrite":
+            queries[i].t_rewrite = avg_time
+        elif stage == "db_constraint":
+            queries[i].t_db_constraint = avg_time
+        elif stage == "rewrite_constraint":
+            queries[i].t_rewrite_constraint = avg_time
+        else:
+            print(traceback.format_exc())
+            exit(0)
+    return queries 
  
+    
 def plot_speedup(queries, appname):
     f, axes = plt.subplots(3, 1)
     f.set_size_inches(8, 6)
     rewrite = {}
-    rewrite['org+rewrite'] = [q.t_db / q.t_rewrite for q in queries]
-    rewrite['constraint+db'] = [q.t_db / q.t_db_constraint for q in queries]
-    rewrite['constraint+rewrite'] = [q.t_db / q.t_rewrite_constraint for q in queries]
+    rewrite['org+rewrite'] = [q.t_db / (q.t_rewrite + 1e-5) for q in queries]
+    rewrite['constraint+db'] = [q.t_db / (q.t_db_constraint + 1e-5) for q in queries]
+    rewrite['constraint+rewrite'] = [q.t_db / (q.t_rewrite_constraint + 1e-5) for q in queries]
     
     for i, q in enumerate(queries):
-        if q.t_db / q.t_rewrite > 10:
+        if q.t_db / (q.t_rewrite + 1e-5) > 10:
             print("raw", q.raw)
             print("rewrite", q.rewrite)
-            print("org rewrite", q.t_db / q.t_rewrite)
-            print("constraint db", q.t_db / q.t_db_constraint)
-            print("constraint rewrite", q.t_db / q.t_rewrite_constraint)
+            print("org rewrite", q.t_db / (q.t_rewrite + 1e-5))
+            print("constraint db", q.t_db / (q.t_db_constraint + 1e-5))
+            print("constraint rewrite", q.t_db / (q.t_rewrite_constraint + 1e-5))
              
     def print_big(l):
         for i in range(len(l)):
@@ -126,22 +149,35 @@ def plot_speedup(queries, appname):
     print_big(rewrite["constraint+db"]) 
     print("constraint+rewrite")
     print_big(rewrite["constraint+rewrite"])
-    rewrite["org+rewrite"] = [x for x in rewrite["org+rewrite"] if x < 20]
-    rewrite["constraint+db"] = [x for x in rewrite["constraint+db"] if x < 20]
-    rewrite["constraint+rewrite"] = [x for x in rewrite["constraint+rewrite"] if x < 20]
-    sns.histplot(data=rewrite, x = "org+rewrite", kde=True, ax=axes[0], label = "No constraints,rewrite")
-    sns.histplot(data=rewrite, x = "constraint+db", kde=True, ax=axes[1], label = "Add constraints, no rewrites")
-    sns.histplot(data=rewrite, x = "constraint+rewrite", kde=True, ax=axes[2], label = "Add constraints, rewrites")
+    rewrite["org+rewrite"] = [x for x in rewrite["org+rewrite"] if x < 20 and x > 0]
+    rewrite["constraint+db"] = [x for x in rewrite["constraint+db"] if x < 20 and x > 0]
+    rewrite["constraint+rewrite"] = [x for x in rewrite["constraint+rewrite"] if x < 20 and x > 0]
+    cnt1 = len([r for r in rewrite["constraint+rewrite"] if r >0 and r < 1])
+    cnt2 = len([r for r in rewrite["constraint+rewrite"] if r >1 and r < 1.2])
+    cnt3 = len([r for r in rewrite["constraint+rewrite"] if r >1.2 and r < 10])
+    print("===========", cnt1, cnt2, cnt3)
+    cnt1 = len([r for r in rewrite["constraint+db"] if r >0 and r < 1])
+    cnt2 = len([r for r in rewrite["constraint+db"] if r >1 and r < 1.2])
+    cnt3 = len([r for r in rewrite["constraint+db"] if r >1.2 and r < 10])
+    print("===========", cnt1, cnt2, cnt3)
+    
+    print("Start plot")
+    print(rewrite)
+    sns.histplot(data=rewrite, x = "org+rewrite", bins=5000, kde=False, ax=axes[0], label = "No constraints,rewrite")
+    sns.histplot(data=rewrite, x = "constraint+db", bins=5000, kde=False, ax=axes[1], label = "Add constraints, no rewrites")
+    sns.histplot(data=rewrite, x = "constraint+rewrite", bins=5000, kde=False, ax=axes[2], label = "Add constraints, rewrites")
     for i in range(len(axes)):
         axes[i].legend(prop={'size': 12})
         axes[i].tick_params(axis='both', which='major', labelsize=10)
         axes[i].set_ylabel("Count", size=15)
-        if appname == "openproject":
-            axes[i].set_yscale('symlog')
+        axes[i].set_xlim(0.95,2)
+        # axes[i].set_xscale('symlog')
+        # if appname == "openproject":
+        axes[i].set_yscale('symlog')
     axes[2].set_xlabel("Speed Up", size=15)
     axes[0].set_title(appname, size = 18)
     
-    plt.savefig('/home/ubuntu/ConstrOpt/figures/7.3/%s_perf' % appname)
+    plt.savefig('/home/ubuntu/ConstrOpt/figures/7.4/%s_cost_perf' % appname)
      
            
 if __name__ == "__main__":
@@ -155,11 +191,13 @@ if __name__ == "__main__":
         queries = load_queries(args.app)
         print("=======Org======")
         eval_queries(queries, CONNECT_MAP[args.app], "org")
+        queries = [q for q in queries if q.t_db is not None]
         print("=======Rewrite======")
         eval_queries(queries, CONNECT_MAP[args.app], "rewrite")
         
         constraint_file = get_filename(FileType.CONSTRAINT, args.app)
         constraints = Loader.load_constraints(constraint_file)
+        constraints = [c for c in constraints if c.db is False]
         installed = install_constraints(constraints, args.app)
         print("=======DB Constriant======")
         eval_queries(queries, CONNECT_MAP[args.app], "db_constraint")
@@ -168,7 +206,7 @@ if __name__ == "__main__":
         roll_back(installed, args.app)
         dump_results(queries, args.app)
 
-    queries =  load_results(args.app)
-    plot_speedup(queries, args.app)
+    # queries =  load_results(args.app)
+    # plot_speedup(queries, args.app)
     
     
