@@ -79,4 +79,4 @@ ax.set_ylabel("Number of constraints", size = 40)
 
 ax.tick_params(axis='both', which='major', labelsize=40)
 ax.legend(prop={'size': 30})
-plt.savefig("/home/ubuntu/ConstrOpt/figures/7.2/constraint.pdf")
+plt.savefig("/home/ubuntu/ConstrOpt_str2int/figures/7.2/constraint.pdf")
