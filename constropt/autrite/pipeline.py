@@ -23,6 +23,9 @@ if __name__ == '__main__':
     parser.add_argument('--db', action='store_true', \
             help='only use db constraints to perform optimization')
     parser.add_argument('--counter', action='store_true', help="dump counter example")
+    parser.add_argument('--only_rewrite', action='store_true', help='only rewrite queries based on constraints,\
+                         does not run any tests, do not have communication with the database')
+    parser.add_argument('--cnt', type=int, default=100000, help='number of queries to rewrite')
     args = parser.parse_args()
     
     appname =  args.app
@@ -32,7 +35,7 @@ if __name__ == '__main__':
         query_filename = get_filename(FileType.RAW_QUERY, appname) 
     constraint_filename = get_filename(FileType.CONSTRAINT, appname)
     offset = 0
-    query_cnt = 1000000
+    query_cnt = args.cnt
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
              rule.RemoveJoin, rule.ReplaceOuterJoin, rule.AddLimitOne]
     constraints = Loader.load_constraints(constraint_filename)
@@ -44,119 +47,146 @@ if __name__ == '__main__':
     queries = Loader.load_queries(query_filename, offset, query_cnt)
     rewriter = Rewriter()
     rewriter.set_rules(rules)
-
-    rewrite_time = []
-    rewrite_cnt = 0
-    total_candidate_cnt = []
-    dump_counter = args.counter # only dump counter example
-
-    enumerate_cnt = 0
-    lower_cost_cnt = 0
-    lower_cost_pass_test_cnt = 0 
-    connect_str = CONNECT_MAP[appname]
-    
-    enumerate_time = 0
-    get_cost_time = 0
-    run_test_time = 0
-    sort_time = 0
-    dump_time = 0
-    
-    for q in tqdm(queries):
-        with open("%s_stats" % appname, "w") as f:
-            f.write("%d, %d, %d" % (enumerate_cnt, lower_cost_cnt, lower_cost_pass_test_cnt))
-        # =================Try to generate param first========
-        try:
-            q_raw = generate_query_param_single(q.q_raw, connect_str, {})
-            Evaluator.evaluate_query(q_raw, connect_str)
-        except:
-            continue 
-
-        start = time.time()
-        # =================Enumerate Candidates================
-        enumerate_queries = []
-        try:
-            enumerate_queries = rewriter.rewrite(constraints, q)
-        except:
-            print("[Error rewrite]", q.q_raw)
-            print(traceback.format_exc())
-            continue
-        rewrite_time.append(time.time() - start)
-        if len(enumerate_queries) == 0:
-            continue
-        enumerate_cnt += 1
-        end = time.time()
-        enumerate_time = end-start
-        start = end  
-
-        # ======== Estimate cost and retain those with lower cost than original ======
-        rewritten_queries_lower_cost = []
-        # replace placeholder with actual parameters for org and rewrites
-        rewritten_queries = enumerate_queries
-        succ = generate_query_param_rewrites(q, rewritten_queries, connect_str)
-        if not succ:
-            continue
-        # remove rewrites that fail to generate parameters
-        rewritten_queries = [rq for rq in rewritten_queries if rq.q_raw_param is not None]
-        if len(rewritten_queries) == 0:
-            continue
-        # retain rewrites with lower cost
-        try:
-            org_cost = Evaluator.evaluate_cost(q.q_raw_param, connect_str)
-        except:
-            print("[Error] Fail to evaluate %s" % q.q_raw_param)
-            continue
-        
-        for rq in rewritten_queries:
+ 
+    if args.only_rewrite:
+        enumerate_cnts = []
+        enumerate_times = []
+        for q in tqdm(queries):
+            start = time.time()
+            # =================Enumerate Candidates================
+            enumerate_queries = []
             try:
-                estimate_cost = Evaluator.evaluate_cost(rq.q_raw_param, connect_str) 
-                if estimate_cost <= org_cost:
-                    rq.estimate_cost = estimate_cost 
-                    rewritten_queries_lower_cost.append(rq)
-                else:
-                    print("[Warning] rewrite get slower")
-                    print("[Org] %f %s" % (org_cost, q.q_raw_param))
-                    print("[Rewrite] %f %s" % (estimate_cost, rq.q_raw_param))
+                enumerate_queries = rewriter.rewrite(constraints, q)
             except:
-                # rewrite might have wrong syntax
+                print("[Error rewrite]", q.q_raw)
+                print(traceback.format_exc())
                 continue
-        if len(rewritten_queries_lower_cost) == 0:
-            continue
-        lower_cost_cnt += 1
-        
-        end = time.time()
-        get_cost_time = end-start
-        start = end
-        
-        # ======== Run test and retain those that pass =========
-        rewritten_queries_lower_cost_after_test = []
-        not_eq_qs = []
-        # use tests to check equivalence
-        rewritten_queries_lower_cost_after_test, not_eq_qs = TestVerifier().verify(appname, q, constraints, rewritten_queries_lower_cost)
-        if dump_counter:
-            if len(not_eq_qs) == 0:
+            if len(enumerate_queries) == 0:
                 continue
-            # dump counter examples
-            ProveDumper().verify(appname, q, constraints, not_eq_qs, rewrite_cnt, counter=True)
+            enumerate_cnts.append(len(enumerate_queries))
+            end = time.time()
+            enumerate_time = end-start
+            enumerate_times.append(enumerate_time)
+            start = end 
+            print(q)
+            print(enumerate_queries[0]) 
+            
+            import pickle
+            with open("log/%s/enumerate_cnts" % appname, "wb") as f:
+                pickle.dump(enumerate_cnts, f)
+            with open("log/%s/enumerate_times" % appname, "wb") as f:
+                pickle.dump(enumerate_times, f)
+            continue 
+    else:
+        rewrite_cnt = 0
+        total_candidate_cnt = []
+        dump_counter = args.counter # only dump counter example
+
+        enumerate_cnt = 0
+        lower_cost_cnt = 0
+        lower_cost_pass_test_cnt = 0 
+        
+        enumerate_time = 0
+        get_cost_time = 0
+        run_test_time = 0
+        connect_str = CONNECT_MAP[appname]
+        for q in tqdm(queries):
+            with open("%s_stats" % appname, "w") as f:
+                f.write("%d, %d, %d" % (enumerate_cnt, lower_cost_cnt, lower_cost_pass_test_cnt))
+            # =================Try to generate param first========
+            try:
+                q_raw = generate_query_param_single(q.q_raw, connect_str, {})
+                Evaluator.evaluate_query(q_raw, connect_str)
+            except:
+                continue 
+
+            start = time.time()
+            # =================Enumerate Candidates================
+            enumerate_queries = []
+            try:
+                enumerate_queries = rewriter.rewrite(constraints, q)
+            except:
+                print("[Error rewrite]", q.q_raw)
+                print(traceback.format_exc())
+                continue
+            if len(enumerate_queries) == 0:
+                continue
+            end = time.time()
+            enumerate_time = end - start
+            start = end  
+
+            # ======== Estimate cost and retain those with lower cost than original ======
+            rewritten_queries_lower_cost = []
+            # replace placeholder with actual parameters for org and rewrites
+            rewritten_queries = enumerate_queries
+            succ = generate_query_param_rewrites(q, rewritten_queries, connect_str)
+            if not succ:
+                continue
+            # remove rewrites that fail to generate parameters
+            rewritten_queries = [rq for rq in rewritten_queries if rq.q_raw_param is not None]
+            if len(rewritten_queries) == 0:
+                continue
+            # retain rewrites with lower cost
+            try:
+                org_cost = Evaluator.evaluate_cost(q.q_raw_param, connect_str)
+            except:
+                print("[Error] Fail to evaluate %s" % q.q_raw_param)
+                continue
+            
+            for rq in rewritten_queries:
+                try:
+                    estimate_cost = Evaluator.evaluate_cost(rq.q_raw_param, connect_str) 
+                    if estimate_cost <= org_cost:
+                        rq.estimate_cost = estimate_cost 
+                        rewritten_queries_lower_cost.append(rq)
+                    else:
+                        print("[Warning] rewrite get slower")
+                        print("[Org] %f %s" % (org_cost, q.q_raw_param))
+                        print("[Rewrite] %f %s" % (estimate_cost, rq.q_raw_param))
+                except:
+                    # rewrite might have wrong syntax
+                    continue
+            if len(rewritten_queries_lower_cost) == 0:
+                continue
+            lower_cost_cnt += 1
+    
+            end = time.time()
+            get_cost_time = end - start
+            start = end
+            
+            # ======== Run test and retain those that pass =========
+            rewritten_queries_lower_cost_after_test = []
+            not_eq_qs = []
+            # use tests to check equivalence
+            rewritten_queries_lower_cost_after_test, not_eq_qs = TestVerifier().verify(appname, q, constraints, rewritten_queries_lower_cost)
+            if dump_counter:
+                if len(not_eq_qs) == 0:
+                    continue
+                # dump counter examples
+                ProveDumper().verify(appname, q, constraints, not_eq_qs, rewrite_cnt, counter=True)
+                rewrite_cnt += 1
+                continue
+            
+            if len(rewritten_queries_lower_cost_after_test) == 0:
+                continue
+            lower_cost_pass_test_cnt += 1
+        
+            end = time.time()
+            run_test_time = end - start
+            
+            # ========= Sort rewrites that pass tests ============
+            # Sort the list in place
+            rewritten_queries_lower_cost_after_test.sort(key=lambda x: x.estimate_cost, reverse=False)
+            
+            # ========== Dump outputs to cosette ==========
             rewrite_cnt += 1
-            continue
-         
-        if len(rewritten_queries_lower_cost_after_test) == 0:
-            continue
-        lower_cost_pass_test_cnt += 1
-       
-        end = time.time()
-        run_test_time = end - start
-        
-        # ========= Sort rewrites that pass tests ============
-        # Sort the list in place
-        rewritten_queries_lower_cost_after_test.sort(key=lambda x: x.estimate_cost, reverse=False)
-        
-        # ========== Dump outputs to cosette ==========
-        rewrite_cnt += 1
-        total_candidate_cnt.append(len(rewritten_queries_lower_cost_after_test))
-        ProveDumper().verify(appname, q, constraints, rewritten_queries_lower_cost_after_test, rewrite_cnt)
-   
-    print("Average # of candidates %f" % (sum(total_candidate_cnt) / len(total_candidate_cnt)))
-    print("Enumerate count %d" % enumerate_cnt)
-    print("Lower cost cnt %d" % lower_cost_cnt)
-    print("Lower cost pass test %d" % lower_cost_pass_test_cnt)
+            total_candidate_cnt.append(len(rewritten_queries_lower_cost_after_test))
+            ProveDumper().verify(appname, q, constraints, rewritten_queries_lower_cost_after_test, rewrite_cnt)
+    
+
+        # print(enumerate_cnts) 
+        # print(enumerate_times)
+        # print("Average # of candidates %f" % (sum(total_candidate_cnt) / len(total_candidate_cnt)))
+        # print("Enumerate count %d" % enumerate_cnt)
+        # print("Lower cost cnt %d" % lower_cost_cnt)
+        # print("Lower cost pass test %d" % lower_cost_pass_test_cnt)

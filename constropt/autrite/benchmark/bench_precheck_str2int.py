@@ -13,14 +13,15 @@ from tqdm import tqdm
 # ------------------------------------------------------------------------------
 # This script counts queries has table column with certain type(s) of constraints
 # dump the results into logs. Here's how to run this script: 
-# Run under autrite directory: python3 benchmark/extract_query.py
-# Option to verbal for debug purpose: python3 benchmark/extract_query.py -v
+# Run under autrite directory: python3 benchmark/bench_precheck_str2int.py
+# Option to verbal for debug purpose: python3 benchmark/bench_precheck_str2int.py -v
 # ------------------------------------------------------------------------------
 
 #========================== static variables =========================
-app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021}
+app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021, "mastodon": 10000}
 # app_to_cnt = {"redmine": 100, "forem": 100, "openproject": 100}
 appnames = ['forem', 'redmine', 'openproject']
+appnames = ['mastodon']
 name_to_type = { 
                'inclusion': constraint.InclusionConstraint,
                'length': constraint.LengthConstraint,
@@ -38,7 +39,8 @@ def main(verbal) -> None:
     for appname in appnames:
         # load query once for each app
         all_queries = load_queries(appname)
-        queries = get_valid_queries(all_queries, CONNECT_MAP[appname])
+        # queries = get_valid_queries(all_queries, CONNECT_MAP[appname])
+        queries = all_queries
         recorder.record("app_name", appname)
         # count the number of queries with constraints on it 
         all_cs = load_cs(appname, 'all')
@@ -92,13 +94,15 @@ def load_cs(appname, cs_type) -> list:
 # return number of queries contains filtered constraints
 def count(filtered_cs, queries, verbal) -> int:
     cnt = 0
+    rule = ExtractQueryRule(filtered_cs)
     for q in queries:
         try:
-            rewrite_q = ExtractQueryRule(filtered_cs).apply(q.q_obj)
+            rewrite_q = rule.apply(q.q_obj)
             if extracted(rewrite_q):
                 cnt += 1
         except (KeyError, TypeError, AttributeError, ValueError):
             print_error(q, verbal)
+    print("warning cnt", rule.warning_cnt)
     return cnt
 
 # return True if query contains inclusion constrains

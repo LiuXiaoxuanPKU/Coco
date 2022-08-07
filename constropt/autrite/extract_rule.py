@@ -11,6 +11,8 @@ class ExtractQueryRule(rule.Rule):
         self.table_to_field = self.get_cs_map(cs)
         self.cs_tables = self.table_to_field.keys()
         self.inclusion_t = self.get_inclusion_table(cs)
+        
+        self.warning_cnt = 0
 
     def apply_single(self, q) -> list:
         if not 'from' in q:
@@ -171,7 +173,9 @@ class ExtractQueryRule(rule.Rule):
         # base case: does not contain and/or
         else:
             if not isinstance(clause[op], list):
-                print("[Warning] Does not handle clause %s, expect list" % clause[op])
+                # print("[Warning] Does not handle clause %s of type %s, expect list" %(clause[op], type(clause[op])))
+                self.warning_cnt += 1
+                # print(clause)
                 return False
             if not isinstance(clause[op][0], str):
                 return False

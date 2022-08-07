@@ -16,6 +16,7 @@ def plot_app(appname):
     times = pickle.load(f) 
   print(cnts)
   print(max(cnts))
+  print(len(cnts))
   
   plt.yticks(fontsize=tick_size)
   plt.xticks(fontsize=tick_size)
@@ -35,4 +36,4 @@ def plot_app(appname):
 
 
 
-plot_app("redmine")
+plot_app("mastodon")
