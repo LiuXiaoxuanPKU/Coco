@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND members.project_id = 1 AND users.status = 1 AND users.status = 1 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
+SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.issue_id = 5872 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND members.project_id = 1 AND users.status = 1 AND users.status = 1 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND members.project_id = 1 AND users.status = 1 AND users.status = 1 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 1 AND members.project_id = 1 AND users.status = 1 AND users.status = 1 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
+SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.issue_id = 5872 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL;

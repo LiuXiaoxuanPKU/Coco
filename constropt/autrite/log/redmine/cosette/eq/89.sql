@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND members.project_id = 1 AND users.status = 2 AND users.type IN ('User', 'User') LIMIT 6;
+SELECT trackers.* FROM trackers INNER JOIN projects_trackers ON trackers.id = projects_trackers.tracker_id WHERE projects_trackers.project_id = 1513 AND 1 = 0 ORDER BY trackers.position ASC LIMIT 9;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND members.project_id = 1 AND users.status = 2 AND users.type IN ('User', 'User') LIMIT 6;
+SELECT trackers.* FROM trackers WHERE 1 = 0 ORDER BY trackers.position ASC LIMIT 9;

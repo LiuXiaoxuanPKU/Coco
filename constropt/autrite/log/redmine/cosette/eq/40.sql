@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issue_statuses.is_closed = False ORDER BY issues.id ASC LIMIT 3;
+SELECT 1 AS "one" FROM trackers INNER JOIN projects_trackers ON trackers.id = projects_trackers.tracker_id WHERE projects_trackers.project_id = 9419 AND 1 = 0 LIMIT 7;
 -- Rewritten Queries
-SELECT issues.* FROM issues ORDER BY issues.id ASC LIMIT 3;
+SELECT 1 AS "one" FROM trackers WHERE 1 = 0 LIMIT 7;

@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%Собо%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Собо%')) OR LOWER(users.firstname) LIKE LOWER('%Собо%') OR LOWER(users.lastname) LIKE LOWER('%Собо%');
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.author_id = 5 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL ORDER BY news.id DESC LIMIT 3;
 -- Rewritten Queries
-SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%Собо%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Собо%')) OR LOWER(users.firstname) LIKE LOWER('%Собо%') OR LOWER(users.lastname) LIKE LOWER('%Собо%') LIMIT 1;
-SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%Собо%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Собо%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%Собо%') OR LOWER(users.lastname) LIKE LOWER('%Собо%');
-SELECT COUNT(*) FROM users WHERE LOWER(users.login) LIKE LOWER('%Собо%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Собо%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%Собо%') OR LOWER(users.lastname) LIKE LOWER('%Собо%') LIMIT 1;
+SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.author_id = 5 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL ORDER BY news.id DESC LIMIT 3;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.status = 1 AND users.type IN ('User', 'User') AND (LOWER(users.login) LIKE LOWER('%rober%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%rober%')) OR LOWER(users.firstname) LIKE LOWER('%rober%') OR LOWER(users.lastname) LIKE LOWER('%rober%')) ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 2;
+SELECT DISTINCT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id INNER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE projects.status <> 9 AND enabled_modules.name = 'calendar' AND projects.lft >= 1 AND projects.rgt <= 10 ORDER BY trackers.position ASC LIMIT 5;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.status = 1 AND users.type IN ('User', 'User') AND (LOWER(users.login) LIKE LOWER('%rober%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%rober%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%rober%') OR LOWER(users.lastname) LIKE LOWER('%rober%')) ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 2;
+SELECT DISTINCT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id WHERE projects.status <> 9 AND projects.lft >= 1 AND projects.rgt <= 10 ORDER BY trackers.position ASC LIMIT 5;

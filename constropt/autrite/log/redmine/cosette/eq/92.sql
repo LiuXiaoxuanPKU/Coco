@@ -576,8 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.* FROM projects WHERE projects.id = 5404 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (7, 12));
+SELECT projects.* FROM projects WHERE projects.id = 1464 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (7, 12));
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE projects.id = 5404 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (7, 12) LIMIT 1);
-SELECT projects.* FROM projects WHERE projects.id = 5404 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (7, 12) LIMIT 1) LIMIT 1;
-SELECT projects.* FROM projects WHERE projects.id = 5404 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (7, 12)) LIMIT 1;
+SELECT projects.* FROM projects WHERE projects.id = 1464 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (7, 12) LIMIT 1);
+SELECT projects.* FROM projects WHERE projects.id = 1464 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (7, 12) LIMIT 1) LIMIT 1;
+SELECT projects.* FROM projects WHERE projects.id = 1464 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (7, 12)) LIMIT 1;

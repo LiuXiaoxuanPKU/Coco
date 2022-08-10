@@ -576,7 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.id, projects.name, projects.identifier, projects.lft, projects.rgt FROM projects INNER JOIN members ON projects.id = members.project_id WHERE members.user_id = 2934 AND projects.status <> 9 AND projects.status = 9;
+SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.id IN (1, 5) ORDER BY projects.id ASC LIMIT 3;
 -- Rewritten Queries
-SELECT projects.id, projects.name, projects.identifier, projects.lft, projects.rgt FROM projects WHERE projects.status <> 9 AND projects.status = 9 LIMIT 1;
-SELECT projects.id, projects.name, projects.identifier, projects.lft, projects.rgt FROM projects INNER JOIN members ON projects.id = members.project_id WHERE members.user_id = 2934 AND projects.status <> 9 AND projects.status = 9 LIMIT 1;
+SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL AND projects.id IN (1, 5) ORDER BY projects.id ASC LIMIT 3;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE 1 = 0;
+SELECT 1 AS "one" FROM members WHERE members.user_id IS NULL AND members.project_id = 6044 LIMIT 6;
 -- Rewritten Queries
-SELECT issues.* FROM issues WHERE 1 = 0;
+SELECT 1 AS "one" FROM members WHERE False AND members.project_id = 6044 LIMIT 6;

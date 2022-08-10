@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 3783 AND users.type = 'User' AND users.status = 1;
+SELECT 1 AS "one" FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 273 AND projects.status <> 9 LIMIT 4;
 -- Rewritten Queries
-SELECT COUNT(*) FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 3783 AND users.type = 'User' AND users.status = 1 LIMIT 1;
+SELECT 1 AS "one" FROM members WHERE members.user_id = 273 LIMIT 4;

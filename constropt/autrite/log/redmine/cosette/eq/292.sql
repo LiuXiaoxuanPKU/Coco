@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.user_id = 3 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL ORDER BY time_entries.id DESC LIMIT 5;
+SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.user_id = 5 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL ORDER BY time_entries.id DESC LIMIT 3;
 -- Rewritten Queries
-SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.user_id = 3 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL ORDER BY time_entries.id DESC LIMIT 5;
+SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.user_id = 5 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL ORDER BY time_entries.id DESC LIMIT 3;

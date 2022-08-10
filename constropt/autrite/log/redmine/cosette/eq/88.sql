@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id IS NULL AND workflows.old_status_id IS NULL AND workflows.role_id IN (8388, 7707, 2298, 1582);
+SELECT projects.* FROM projects WHERE projects.status = 1 AND projects.id IN (SELECT em.project_id FROM enabled_modules AS em WHERE em.name = 'repository') AND projects.identifier = 'heutiwfenvrwsewzqtqagwtolngfuwadsqziixjckrdbdylfytgoqvnzrfoqeovbqrappxobepctk' LIMIT 7;
 -- Rewritten Queries
-SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id IS NULL AND False AND workflows.role_id IN (5795, 5869, 8388, 7707);
-SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND False AND workflows.old_status_id IS NULL AND workflows.role_id IN (5795, 5869, 8388, 7707);
-SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND False AND False AND workflows.role_id IN (2446, 9490, 5795, 5869);
+SELECT projects.* FROM projects WHERE projects.status = 1 AND projects.id IN (SELECT em.project_id FROM enabled_modules AS em WHERE em.name = 'repository' LIMIT 1) AND projects.identifier = 'heutiwfenvrwsewzqtqagwtolngfuwadsqziixjckrdbdylfytgoqvnzrfoqeovbqrappxobepctk' LIMIT 7;

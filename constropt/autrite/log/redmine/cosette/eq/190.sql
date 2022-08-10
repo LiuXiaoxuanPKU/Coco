@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL;
+SELECT 1 AS "one" FROM users WHERE LOWER(users.login) LIKE LOWER('%smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smi%')) OR LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%') LIMIT 9;
 -- Rewritten Queries
-SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL LIMIT 1;
-SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL;
-SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL LIMIT 1;
+SELECT 1 AS "one" FROM users WHERE LOWER(users.login) LIKE LOWER('%smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smi%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%') LIMIT 9;

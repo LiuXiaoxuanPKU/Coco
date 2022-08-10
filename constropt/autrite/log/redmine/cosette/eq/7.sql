@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT user_preferences.* FROM user_preferences WHERE user_preferences.user_id = 24;
+SELECT email_addresses.address FROM email_addresses WHERE email_addresses.user_id = 2837;
 -- Rewritten Queries
-SELECT user_preferences.* FROM user_preferences WHERE user_preferences.user_id = 24 LIMIT 1;
+SELECT email_addresses.address FROM email_addresses WHERE email_addresses.user_id = 2837 LIMIT 1;

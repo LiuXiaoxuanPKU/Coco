@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT wikis.* FROM wikis WHERE wikis.project_id IS NULL LIMIT 7;
+SELECT COUNT(*) FROM email_addresses WHERE email_addresses.user_id = 1472;
 -- Rewritten Queries
-SELECT wikis.* FROM wikis WHERE False LIMIT 7;
+SELECT COUNT(*) FROM email_addresses WHERE email_addresses.user_id = 1472 LIMIT 1;

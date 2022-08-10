@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM members WHERE members.user_id IS NULL AND members.project_id = 8673 LIMIT 7;
+SELECT users.* FROM users WHERE users.id NOT IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (1, 2));
 -- Rewritten Queries
-SELECT 1 AS "one" FROM members WHERE False AND members.project_id = 8673 LIMIT 7;
+SELECT users.* FROM users WHERE users.id NOT IN (SELECT user_id FROM members WHERE project_id IN (1, 2));

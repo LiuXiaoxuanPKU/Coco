@@ -576,8 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN versions ON versions.id = issues.fixed_version_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id <> versions.project_id AND versions.sharing <> 'system' AND (versions.project_id IN (1, 5, 6, 3, 4) OR issues.project_id IN (1, 5, 6, 3, 4));
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE projects.id IN (1, 5, 6, 4);
 -- Rewritten Queries
-SELECT issues.* FROM issues WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id IN (1, 5, 6, 3, 4);
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id IN (1, 5, 6, 3, 4);
-SELECT issues.* FROM issues INNER JOIN versions ON versions.id = issues.fixed_version_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id <> versions.project_id AND versions.sharing <> 'system' AND (versions.project_id IN (1, 5, 6, 3, 4) OR issues.project_id IN (1, 5, 6, 3, 4));
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE projects.id IN (1, 5, 6, 4);
+SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE projects.id IN (1, 5, 6, 4);
+SELECT issues.* FROM issues INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE projects.id IN (1, 5, 6, 4);

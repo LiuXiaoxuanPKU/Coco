@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) AS count_all, custom_field_id AS custom_field_id FROM custom_fields INNER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id INNER JOIN projects ON projects.id = custom_fields_projects.project_id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.is_for_all = True GROUP BY custom_field_id;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.project_id = 2849 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND issues.id <> 355 AND LOWER(issues.subject) LIKE LOWER('%issue%') ORDER BY issues.id DESC LIMIT 8;
 -- Rewritten Queries
-SELECT COUNT(*) AS count_all, custom_field_id AS custom_field_id FROM custom_fields INNER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.is_for_all = True GROUP BY custom_field_id;
+SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.project_id = 2849 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND issues.id <> 355 AND LOWER(issues.subject) LIKE LOWER('%issue%') ORDER BY issues.id DESC LIMIT 8;

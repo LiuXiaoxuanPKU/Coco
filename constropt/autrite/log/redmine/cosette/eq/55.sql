@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.status = 2 AND (users.id = 6 OR users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6))) AND users.id = 2930 LIMIT 10;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id = 15224 AND workflows.old_status_id IS NULL AND workflows.role_id = 3450;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.status = 2 AND (users.id = 6 OR users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6) LIMIT 1)) AND users.id = 2930 LIMIT 10;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id = 15224 AND False AND workflows.role_id = 3450;

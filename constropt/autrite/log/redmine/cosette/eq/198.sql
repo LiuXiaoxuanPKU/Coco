@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT custom_fields.id, role_id FROM custom_fields INNER JOIN custom_fields_roles ON custom_fields_roles.custom_field_id = custom_fields.id INNER JOIN roles ON roles.id = custom_fields_roles.role_id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.visible = True;
+SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 2525 AND projects.status <> 9 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12));
 -- Rewritten Queries
-SELECT custom_fields.id, role_id FROM custom_fields INNER JOIN custom_fields_roles ON custom_fields_roles.custom_field_id = custom_fields.id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.visible = True;
+SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 2525 AND projects.status <> 9 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1);
+SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 2525 AND projects.status <> 9 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) LIMIT 1;
+SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 2525 AND projects.status <> 9 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12)) LIMIT 1;

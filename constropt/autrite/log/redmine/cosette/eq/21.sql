@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM members INNER JOIN member_roles ON members.id = member_roles.member_id WHERE member_roles.role_id = 3 LIMIT 5;
+SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 4747 AND users.type IN ('User', 'User');
 -- Rewritten Queries
-SELECT 1 AS "one" FROM members LIMIT 5;
+SELECT members.* FROM members WHERE members.project_id = 4747;
+SELECT members.* FROM members WHERE members.project_id = 4747 LIMIT 1;
+SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 4747 AND users.type IN ('User', 'User') LIMIT 1;

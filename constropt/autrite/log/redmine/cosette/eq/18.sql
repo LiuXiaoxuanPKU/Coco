@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM issue_relations WHERE issue_relations.issue_to_id IS NULL AND issue_relations.issue_from_id = 6721 LIMIT 8;
+SELECT email_addresses.address FROM email_addresses WHERE email_addresses.user_id = 4874 AND (is_default = True OR notify = True);
 -- Rewritten Queries
-SELECT 1 AS "one" FROM issue_relations WHERE False AND issue_relations.issue_from_id = 6721 LIMIT 8;
+SELECT email_addresses.address FROM email_addresses WHERE email_addresses.user_id = 4874 AND (is_default = True OR notify = True) LIMIT 1;

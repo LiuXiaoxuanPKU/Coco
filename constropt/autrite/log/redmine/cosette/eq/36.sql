@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT email_addresses.* FROM email_addresses WHERE email_addresses.user_id = 4379 AND email_addresses.is_default = False ORDER BY email_addresses.id ASC;
+SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 3590 AND users.type = 'User' AND users.status = 1;
 -- Rewritten Queries
-SELECT email_addresses.* FROM email_addresses WHERE email_addresses.user_id = 4379 AND email_addresses.is_default = False ORDER BY email_addresses.id ASC LIMIT 1;
+SELECT members.* FROM members WHERE members.project_id = 3590;
+SELECT members.* FROM members WHERE members.project_id = 3590 LIMIT 1;
+SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 3590 AND users.type = 'User' AND users.status = 1 LIMIT 1;

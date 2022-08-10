@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.status IN (2, 2) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (5, 6, 3, 4));
+SELECT users.* FROM users WHERE users.status IN (2, 1) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (5, 6, 3, 4));
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.status IN (2, 2) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (5, 6, 3, 4));
+SELECT users.* FROM users WHERE users.status IN (2, 1) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (5, 6, 3, 4));

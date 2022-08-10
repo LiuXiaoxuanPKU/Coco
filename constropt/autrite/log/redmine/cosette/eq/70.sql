@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 1755 AND users.type = 'User' AND users.status = 2 ORDER BY members.id ASC LIMIT 2;
+SELECT trackers.* FROM trackers INNER JOIN projects_trackers ON trackers.id = projects_trackers.tracker_id WHERE projects_trackers.project_id = 3254 AND 1 = 0 ORDER BY trackers.position ASC;
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.project_id = 1755 ORDER BY members.id ASC LIMIT 2;
+SELECT trackers.* FROM trackers WHERE 1 = 0 ORDER BY trackers.position ASC;

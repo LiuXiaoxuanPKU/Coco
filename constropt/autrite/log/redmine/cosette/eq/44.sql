@@ -576,12 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.status IN (2, 2) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (1, 3, 4, 6)) AND users.status = 1;
+SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 2964 AND projects.status <> 1 AND projects.status <> 9;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.status IN (2, 2) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6) LIMIT 1) AND users.status = 1;
-SELECT users.* FROM users WHERE users.status IN (2, 2) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6) LIMIT 1) AND users.status = 1 LIMIT 1;
-SELECT users.* FROM users WHERE users.status IN (2, 2) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (1, 3, 4, 6) LIMIT 1) AND users.status = 1;
-SELECT users.* FROM users WHERE users.status IN (2, 2) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (1, 3, 4, 6) LIMIT 1) AND users.status = 1 LIMIT 1;
-SELECT users.* FROM users WHERE users.status IN (2, 2) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6)) AND users.status = 1 LIMIT 1;
-SELECT users.* FROM users WHERE users.status IN (2, 2) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (1, 3, 4, 6)) AND users.status = 1 LIMIT 1;
-SELECT users.* FROM users WHERE users.status IN (2, 2) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6)) AND users.status = 1;
+SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = 2964 AND projects.status <> 1 AND projects.status <> 9 LIMIT 1;

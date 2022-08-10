@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM projects WHERE projects.status = 5 AND projects.id IN (SELECT em.project_id FROM enabled_modules AS em WHERE em.name = 'repository');
+SELECT COUNT(*) FROM projects WHERE projects.status = 1 AND projects.id IN (SELECT em.project_id FROM enabled_modules AS em WHERE em.name = 'repository');
 -- Rewritten Queries
-SELECT COUNT(*) FROM projects WHERE projects.status = 5 AND projects.id IN (SELECT em.project_id FROM enabled_modules AS em WHERE em.name = 'repository') LIMIT 1;
+SELECT COUNT(*) FROM projects WHERE projects.status = 1 AND projects.id IN (SELECT em.project_id FROM enabled_modules AS em WHERE em.name = 'repository') LIMIT 1;

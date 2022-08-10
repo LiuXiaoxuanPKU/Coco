@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 552 AND issue_relations.issue_to_id = 7175 AND issue_relations.relation_type IN ('relates', 'precedes');
+SELECT 1 AS "one" FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.lft >= 1 AND projects.rgt <= 10 AND projects.status <> 9 LIMIT 1;
 -- Rewritten Queries
-SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 552 AND issue_relations.issue_to_id = 7175 AND issue_relations.relation_type IN ('relates', 'precedes') LIMIT 1;
+SELECT 1 AS "one" FROM versions LIMIT 1;

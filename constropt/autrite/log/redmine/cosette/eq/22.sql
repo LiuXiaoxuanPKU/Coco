@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 2490 AND users.type IN ('User', 'User');
+SELECT 1 AS "one" FROM watchers WHERE watchers.user_id = 10448 AND watchers.watchable_type = 'News' AND watchers.watchable_id IS NULL LIMIT 7;
 -- Rewritten Queries
-SELECT members.* FROM members WHERE members.project_id = 2490;
-SELECT members.* FROM members WHERE members.project_id = 2490 LIMIT 1;
-SELECT members.* FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = 2490 AND users.type IN ('User', 'User') LIMIT 1;
+SELECT 1 AS "one" FROM watchers WHERE watchers.user_id = 10448 AND watchers.watchable_type = 'News' AND False LIMIT 7;

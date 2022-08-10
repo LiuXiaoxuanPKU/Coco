@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT users.* FROM users WHERE users.status IN (1, 2) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (1, 2, 3, 4, 5, 6)) AND users.status = 2;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 3969 AND issue_relations.issue_to_id = 5168 AND issue_relations.relation_type IN ('copied_to', 'copied_to');
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.status IN (1, 2) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 2, 3, 4, 5, 6)) AND users.status = 2;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 3969 AND issue_relations.issue_to_id = 5168 AND issue_relations.relation_type IN ('copied_to', 'copied_to') LIMIT 1;

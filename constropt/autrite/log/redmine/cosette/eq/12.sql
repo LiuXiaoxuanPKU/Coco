@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM wiki_pages WHERE wiki_pages.title IS NULL AND wiki_pages.wiki_id = 15030 LIMIT 1;
+SELECT time_entries.* FROM time_entries WHERE time_entries.issue_id IS NULL ORDER BY time_entries.id ASC LIMIT 3;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM wiki_pages WHERE False AND wiki_pages.wiki_id = 15030 LIMIT 1;
+SELECT time_entries.* FROM time_entries WHERE False ORDER BY time_entries.id ASC LIMIT 3;

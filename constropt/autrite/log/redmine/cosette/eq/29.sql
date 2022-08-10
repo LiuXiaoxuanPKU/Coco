@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT users.* FROM users INNER JOIN watchers ON users.id = watchers.user_id WHERE watchers.watchable_id = 8593 AND watchers.watchable_type = 'News';
+SELECT COUNT(*) FROM users INNER JOIN watchers ON users.id = watchers.user_id WHERE watchers.watchable_id = 1564 AND watchers.watchable_type = 'Message';
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN watchers ON users.id = watchers.user_id WHERE watchers.watchable_id = 8593 AND watchers.watchable_type = 'News' LIMIT 1;
+SELECT COUNT(*) FROM users INNER JOIN watchers ON users.id = watchers.user_id WHERE watchers.watchable_id = 1564 AND watchers.watchable_type = 'Message' LIMIT 1;

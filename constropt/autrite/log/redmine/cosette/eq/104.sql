@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.* FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND projects.identifier = 'nopudclgplybhwfdnzmrrtcpspxdbhcsjrftoubufaezohesfvvgbqthldcnihcflrgbzxvvgqtomstpypcr' LIMIT 10;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id IN (3629, 6478, 7236, 6074, 7269, 3718) AND issue_relations.issue_to_id IN (9174, 4555, 484, 6106, 2434, 9649) AND issue_relations.relation_type IN ('copied_to', 'copied_to');
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND projects.identifier = 'nopudclgplybhwfdnzmrrtcpspxdbhcsjrftoubufaezohesfvvgbqthldcnihcflrgbzxvvgqtomstpypcr' LIMIT 10;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id IN (3629, 6478, 7236, 6074, 7269, 3718) AND issue_relations.issue_to_id IN (9174, 4555, 484, 6106, 2434, 9649) AND issue_relations.relation_type IN ('copied_to', 'copied_to') LIMIT 1;

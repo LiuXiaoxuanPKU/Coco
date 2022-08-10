@@ -576,7 +576,7 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (9, 12))) AND enabled_modules.name = 'gantt' LIMIT 1;
+SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (9, 12))) AND enabled_modules.name = 'boards' LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (9, 12) LIMIT 1)) AND enabled_modules.name = 'gantt' LIMIT 1;
-SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (9, 12) LIMIT 1) LIMIT 1) AND enabled_modules.name = 'gantt' LIMIT 1;
+SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (9, 12) LIMIT 1)) AND enabled_modules.name = 'boards' LIMIT 1;
+SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (9, 12) LIMIT 1) LIMIT 1) AND enabled_modules.name = 'boards' LIMIT 1;

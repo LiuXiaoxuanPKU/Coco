@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT users.* FROM users WHERE LOWER(users.login) LIKE LOWER('%Собо%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Собо%')) OR LOWER(users.firstname) LIKE LOWER('%Собо%') OR LOWER(users.lastname) LIKE LOWER('%Собо%') ORDER BY users.id ASC LIMIT 4;
+SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers) AND projects.id = 2217 LIMIT 7;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE LOWER(users.login) LIKE LOWER('%Собо%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%Собо%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%Собо%') OR LOWER(users.lastname) LIKE LOWER('%Собо%') ORDER BY users.id ASC LIMIT 4;
+SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT project_id FROM projects_trackers) AND projects.id = 2217 LIMIT 7;
+SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT project_id FROM projects_trackers) AND projects.id = 2217 LIMIT 7;
+SELECT 1 AS "one" FROM projects WHERE (projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL OR projects.id = 1) AND projects.id IN (SELECT DISTINCT project_id FROM projects_trackers) AND projects.id = 2217 LIMIT 7;

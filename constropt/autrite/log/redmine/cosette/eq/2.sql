@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT trackers.* FROM trackers WHERE trackers.name = 'adjidbdlaifrycfxuedihhff';
+SELECT trackers.* FROM trackers WHERE trackers.name = 'wQhCI5wCAO';
 -- Rewritten Queries
-SELECT trackers.* FROM trackers WHERE trackers.name = 'adjidbdlaifrycfxuedihhff' LIMIT 1;
+SELECT trackers.* FROM trackers WHERE trackers.name = 'wQhCI5wCAO' LIMIT 1;

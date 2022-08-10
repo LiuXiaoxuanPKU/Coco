@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM projects WHERE projects.lft > 1 AND projects.rgt < 10 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) LIMIT 4;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND members.project_id = 1 ORDER BY users.firstname, users.lastname, users.id;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM projects WHERE projects.lft > 1 AND projects.rgt < 10 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) LIMIT 4;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND members.project_id = 1 ORDER BY users.firstname, users.lastname, users.id;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND members.project_id = 1 ORDER BY users.firstname, users.lastname, users.id LIMIT 1;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 2 AND members.project_id = 1 ORDER BY users.firstname, users.lastname, users.id LIMIT 1;

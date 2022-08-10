@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT messages.* FROM messages INNER JOIN boards ON boards.id = messages.board_id INNER JOIN projects ON projects.id = boards.project_id WHERE messages.author_id = 5 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards') IS NOT NULL ORDER BY messages.id DESC LIMIT 6;
+SELECT messages.* FROM messages INNER JOIN boards ON boards.id = messages.board_id INNER JOIN projects ON projects.id = boards.project_id WHERE messages.author_id = 3 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards') IS NOT NULL ORDER BY messages.id DESC LIMIT 8;
 -- Rewritten Queries
-SELECT messages.* FROM messages INNER JOIN boards ON boards.id = messages.board_id INNER JOIN projects ON projects.id = boards.project_id WHERE messages.author_id = 5 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards' LIMIT 1) IS NOT NULL ORDER BY messages.id DESC LIMIT 6;
+SELECT messages.* FROM messages INNER JOIN boards ON boards.id = messages.board_id INNER JOIN projects ON projects.id = boards.project_id WHERE messages.author_id = 3 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards' LIMIT 1) IS NOT NULL ORDER BY messages.id DESC LIMIT 8;

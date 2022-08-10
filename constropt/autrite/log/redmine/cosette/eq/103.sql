@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND members.project_id = 1 AND users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User') LIMIT 1;
+SELECT projects.* FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND projects.identifier = 'ihnxejmditdofybxzsrsawqcbgrweyvyewlsxvmmedn' LIMIT 6;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND members.project_id = 1 AND users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User') LIMIT 1;
+SELECT projects.* FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND projects.identifier = 'ihnxejmditdofybxzsrsawqcbgrweyvyewlsxvmmedn' LIMIT 6;

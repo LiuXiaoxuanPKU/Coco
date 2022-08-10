@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Dsolwkvvrcffzfruzyhamsdjicwlgxidsfdydne' AND wiki_pages.wiki_id IS NULL LIMIT 9;
+SELECT email_addresses.* FROM email_addresses WHERE email_addresses.is_default = False AND email_addresses.user_id = 2742;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Dsolwkvvrcffzfruzyhamsdjicwlgxidsfdydne' AND False LIMIT 9;
+SELECT email_addresses.* FROM email_addresses WHERE email_addresses.is_default = False AND email_addresses.user_id = 2742 LIMIT 1;

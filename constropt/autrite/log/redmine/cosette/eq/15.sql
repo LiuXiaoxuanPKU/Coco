@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT email_addresses.* FROM email_addresses WHERE email_addresses.is_default = False AND email_addresses.user_id = 395;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 2235 AND issue_relations.issue_to_id = 3263;
 -- Rewritten Queries
-SELECT email_addresses.* FROM email_addresses WHERE email_addresses.is_default = False AND email_addresses.user_id = 395 LIMIT 1;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 2235 AND issue_relations.issue_to_id = 3263 LIMIT 1;

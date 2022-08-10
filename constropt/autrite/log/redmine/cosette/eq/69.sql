@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (89, 12));
+SELECT projects.* FROM projects WHERE projects.status = 9 AND projects.id IN (SELECT em.project_id FROM enabled_modules AS em WHERE em.name = 'repository') AND projects.id = 8465 LIMIT 6;
 -- Rewritten Queries
-SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (89, 12) LIMIT 1);
+SELECT projects.* FROM projects WHERE projects.status = 9 AND projects.id IN (SELECT em.project_id FROM enabled_modules AS em WHERE em.name = 'repository' LIMIT 1) AND projects.id = 8465 LIMIT 6;

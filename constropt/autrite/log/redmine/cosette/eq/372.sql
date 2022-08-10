@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) AS count_all, group_id AS group_id FROM users INNER JOIN groups_users AS users_groups_users_join ON users_groups_users_join.user_id = users.id INNER JOIN users AS groups_users ON groups_users.id = users_groups_users_join.group_id AND groups_users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') WHERE users.type IN ('User', 'AnonymousUser') GROUP BY group_id;
+SELECT DISTINCT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id INNER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE projects.status <> 9 AND enabled_modules.name = 'issue_tracking' AND projects.lft >= 11 AND projects.rgt <= 12 ORDER BY trackers.position ASC;
 -- Rewritten Queries
-SELECT COUNT(*) AS count_all, group_id AS group_id FROM users INNER JOIN groups_users AS users_groups_users_join ON users_groups_users_join.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') GROUP BY group_id;
+SELECT DISTINCT trackers.* FROM trackers INNER JOIN projects_trackers ON projects_trackers.tracker_id = trackers.id INNER JOIN projects ON projects.id = projects_trackers.project_id WHERE projects.status <> 9 AND projects.lft >= 11 AND projects.rgt <= 12 ORDER BY trackers.position ASC;

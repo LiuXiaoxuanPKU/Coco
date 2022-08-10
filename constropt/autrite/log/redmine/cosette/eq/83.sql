@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.* FROM projects WHERE 1 = 0 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (124, 12));
+SELECT 1 AS "one" FROM custom_values INNER JOIN custom_fields ON custom_fields.id = custom_values.custom_field_id WHERE custom_values.value = '' AND custom_fields.field_format = 'list' LIMIT 3;
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE 1 = 0 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (124, 12)) LIMIT 1;
-SELECT projects.* FROM projects WHERE 1 = 0 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (124, 12) LIMIT 1);
-SELECT projects.* FROM projects WHERE 1 = 0 AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (124, 12) LIMIT 1) LIMIT 1;
+SELECT 1 AS "one" FROM custom_values WHERE custom_values.value = '' LIMIT 3;

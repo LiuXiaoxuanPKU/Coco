@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.issue_id = 434 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL;
+SELECT 1 AS "one" FROM users WHERE LOWER(users.login) LIKE LOWER('%jsmi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%jsmi%')) OR LOWER(users.firstname) LIKE LOWER('%jsmi%') OR LOWER(users.lastname) LIKE LOWER('%jsmi%') LIMIT 9;
 -- Rewritten Queries
-SELECT time_entries.* FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE time_entries.issue_id = 434 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL;
+SELECT 1 AS "one" FROM users WHERE LOWER(users.login) LIKE LOWER('%jsmi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%jsmi%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%jsmi%') OR LOWER(users.lastname) LIKE LOWER('%jsmi%') LIMIT 9;

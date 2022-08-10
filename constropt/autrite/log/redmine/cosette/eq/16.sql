@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 1444 AND issue_relations.issue_to_id = 5411;
+SELECT COUNT(*) FROM issue_relations WHERE issue_relations.issue_from_id = 4321 AND issue_relations.issue_to_id IN (2924, 9588, 941);
 -- Rewritten Queries
-SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 1444 AND issue_relations.issue_to_id = 5411 LIMIT 1;
+SELECT COUNT(*) FROM issue_relations WHERE issue_relations.issue_from_id = 4321 AND issue_relations.issue_to_id IN (2924, 9588, 941) LIMIT 1;

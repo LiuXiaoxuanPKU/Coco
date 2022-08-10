@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT wikis.* FROM wikis WHERE wikis.project_id = 5405;
+SELECT wikis.* FROM wikis WHERE wikis.project_id = 8555;
 -- Rewritten Queries
-SELECT wikis.* FROM wikis WHERE wikis.project_id = 5405 LIMIT 1;
+SELECT wikis.* FROM wikis WHERE wikis.project_id = 8555 LIMIT 1;

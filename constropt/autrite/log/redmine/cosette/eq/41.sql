@@ -576,6 +576,10 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM trackers INNER JOIN projects_trackers ON trackers.id = projects_trackers.tracker_id WHERE projects_trackers.project_id = 1493 AND 1 = 0 LIMIT 5;
+SELECT users.* FROM users WHERE users.status IN (2, 1) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (6, 3, 4)) AND users.status = 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM trackers WHERE 1 = 0 LIMIT 5;
+SELECT users.* FROM users WHERE users.status IN (2, 1) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (6, 3, 4) LIMIT 1) AND users.status = 1;
+SELECT users.* FROM users WHERE users.status IN (2, 1) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (6, 3, 4) LIMIT 1) AND users.status = 1 LIMIT 1;
+SELECT users.* FROM users WHERE users.status IN (2, 1) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (6, 3, 4)) AND users.status = 1;
+SELECT users.* FROM users WHERE users.status IN (2, 1) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (6, 3, 4)) AND users.status = 1 LIMIT 1;
+SELECT users.* FROM users WHERE users.status IN (2, 1) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (6, 3, 4)) AND users.status = 1 LIMIT 1;

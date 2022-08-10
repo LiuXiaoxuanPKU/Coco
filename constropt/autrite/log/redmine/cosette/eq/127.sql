@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id IN (5287, 4456, 5322, 3755, 9746, 1815, 1274, 2553) AND issue_relations.issue_to_id IN (5844, 2661, 4829, 4965, 3150, 8362, 7495, 413) AND issue_relations.relation_type IN ('copied_to', 'copied_to');
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id IN (8752, 1245, 5490, 9264, 6489, 1015, 291, 9167) AND issue_relations.issue_to_id IN (4323, 9467, 5931, 8822, 6201, 766, 6598, 4988) AND issue_relations.relation_type IN ('copied_to', 'duplicates');
 -- Rewritten Queries
-SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id IN (5287, 4456, 5322, 3755, 9746, 1815, 1274, 2553) AND issue_relations.issue_to_id IN (5844, 2661, 4829, 4965, 3150, 8362, 7495, 413) AND issue_relations.relation_type IN ('copied_to', 'copied_to') LIMIT 1;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id IN (8752, 1245, 5490, 9264, 6489, 1015, 291, 9167) AND issue_relations.issue_to_id IN (4323, 9467, 5931, 8822, 6201, 766, 6598, 4988) AND issue_relations.relation_type IN ('copied_to', 'duplicates') LIMIT 1;

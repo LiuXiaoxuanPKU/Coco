@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT 1 AS "one" FROM users WHERE LOWER(users.login) LIKE LOWER('%smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smi%')) OR LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%') LIMIT 10;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND members.project_id = 1 AND users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM users WHERE LOWER(users.login) LIKE LOWER('%smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smi%') LIMIT 1) OR LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%') LIMIT 10;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND members.project_id = 1 AND users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id;
+SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND members.project_id = 1 AND users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;
+SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id WHERE users.status = 2 AND members.project_id = 1 AND users.status = 2 AND users.status = 2 AND users.type IN ('User', 'User') ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1;

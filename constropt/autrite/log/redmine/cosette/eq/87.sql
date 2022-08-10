@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.project_id = 5055 AND issue_statuses.is_closed = False ORDER BY issues.id ASC LIMIT 2;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id IS NULL AND workflows.old_status_id IS NULL AND workflows.role_id IN (6258, 564, 7037, 6592);
 -- Rewritten Queries
-SELECT issues.* FROM issues WHERE issues.project_id = 5055 ORDER BY issues.id ASC LIMIT 2;
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND False AND workflows.old_status_id IS NULL AND workflows.role_id IN (7343, 2484, 6258, 564);
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id IS NULL AND False AND workflows.role_id IN (7343, 2484, 6258, 564);
+SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND False AND False AND workflows.role_id IN (2077, 9907, 7343, 2484);

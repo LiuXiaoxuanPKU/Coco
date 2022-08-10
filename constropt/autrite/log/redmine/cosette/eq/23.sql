@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 423 AND issue_relations.issue_to_id IN (2930, 4929, 3365);
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 4831 AND issue_relations.issue_to_id IN (5697, 4773, 8210);
 -- Rewritten Queries
-SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 423 AND issue_relations.issue_to_id IN (2930, 4929, 3365) LIMIT 1;
+SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id = 4831 AND issue_relations.issue_to_id IN (5697, 4773, 8210) LIMIT 1;

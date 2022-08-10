@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN watchers ON watchers.watchable_id = issues.id AND watchers.watchable_type = 'Message' WHERE watchers.user_id = 1;
+SELECT users.* FROM users WHERE users.status IN (1, 1) AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (1, 2, 3, 4, 5, 6));
 -- Rewritten Queries
-SELECT issues.* FROM issues INNER JOIN watchers ON watchers.watchable_id = issues.id AND watchers.watchable_type = 'Message' WHERE watchers.user_id = 1 LIMIT 1;
+SELECT users.* FROM users WHERE users.status IN (1, 1) AND users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 2, 3, 4, 5, 6));

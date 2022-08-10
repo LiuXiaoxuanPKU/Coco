@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT time_entries.* FROM time_entries WHERE time_entries.issue_id IS NULL ORDER BY time_entries.id ASC LIMIT 5;
+SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Uugcicqhybvmvcolxtijmxvnzjzjgannhkjdimyttjuyrvhejcboazyzygdtqoatsbhuzvpczgkeejwwgrzwfujwaujkekeybmzdnzzatyquraecuwil' AND wiki_pages.wiki_id IS NULL LIMIT 5;
 -- Rewritten Queries
-SELECT time_entries.* FROM time_entries WHERE False ORDER BY time_entries.id ASC LIMIT 5;
+SELECT 1 AS "one" FROM wiki_pages WHERE LOWER(wiki_pages.title) = 'Uugcicqhybvmvcolxtijmxvnzjzjgannhkjdimyttjuyrvhejcboazyzygdtqoatsbhuzvpczgkeejwwgrzwfujwaujkekeybmzdnzzatyquraecuwil' AND False LIMIT 5;

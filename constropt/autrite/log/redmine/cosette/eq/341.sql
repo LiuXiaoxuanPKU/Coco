@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE changesets.user_id = 8 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository') IS NOT NULL ORDER BY changesets.id DESC LIMIT 5;
+SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE changesets.user_id = 8 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository') IS NOT NULL ORDER BY changesets.id DESC LIMIT 7;
 -- Rewritten Queries
-SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE changesets.user_id = 8 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository' LIMIT 1) IS NOT NULL ORDER BY changesets.id DESC LIMIT 5;
+SELECT changesets.* FROM changesets INNER JOIN repositories ON repositories.id = changesets.repository_id INNER JOIN projects ON projects.id = repositories.project_id WHERE changesets.user_id = 8 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'repository' LIMIT 1) IS NOT NULL ORDER BY changesets.id DESC LIMIT 7;

@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT email_addresses.address FROM email_addresses WHERE email_addresses.user_id = 3139 AND email_addresses.is_default = False ORDER BY email_addresses.id ASC;
+SELECT email_addresses.address FROM email_addresses WHERE email_addresses.user_id = 1823 AND email_addresses.is_default = False ORDER BY email_addresses.id ASC;
 -- Rewritten Queries
-SELECT email_addresses.address FROM email_addresses WHERE email_addresses.user_id = 3139 AND email_addresses.is_default = False ORDER BY email_addresses.id ASC LIMIT 1;
+SELECT email_addresses.address FROM email_addresses WHERE email_addresses.user_id = 1823 AND email_addresses.is_default = False ORDER BY email_addresses.id ASC LIMIT 1;

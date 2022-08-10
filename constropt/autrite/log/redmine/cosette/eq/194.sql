@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL ORDER BY documents.created_on DESC LIMIT 4;
+SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents') IS NOT NULL ORDER BY documents.created_on DESC LIMIT 7;
 -- Rewritten Queries
-SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents' LIMIT 1) IS NOT NULL ORDER BY documents.created_on DESC LIMIT 4;
+SELECT documents.* FROM documents INNER JOIN projects ON projects.id = documents.project_id WHERE projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'documents' LIMIT 1) IS NOT NULL ORDER BY documents.created_on DESC LIMIT 7;

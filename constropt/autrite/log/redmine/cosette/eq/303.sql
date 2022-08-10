@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND (LOWER(users.login) LIKE LOWER('%John%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%John%')) OR LOWER(users.firstname) LIKE LOWER('%John%') OR LOWER(users.lastname) LIKE LOWER('%John%'));
+SELECT messages.* FROM messages INNER JOIN boards ON boards.id = messages.board_id INNER JOIN projects ON projects.id = boards.project_id WHERE messages.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards') IS NOT NULL ORDER BY messages.id DESC LIMIT 2;
 -- Rewritten Queries
-SELECT COUNT(*) FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status <> 0 AND (LOWER(users.login) LIKE LOWER('%John%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%John%')) OR LOWER(users.firstname) LIKE LOWER('%John%') OR LOWER(users.lastname) LIKE LOWER('%John%')) LIMIT 1;
+SELECT messages.* FROM messages INNER JOIN boards ON boards.id = messages.board_id INNER JOIN projects ON projects.id = boards.project_id WHERE messages.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards' LIMIT 1) IS NOT NULL ORDER BY messages.id DESC LIMIT 2;

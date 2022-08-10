@@ -576,6 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id IN (9246, 636, 5944, 3087, 6659, 7442) AND issue_relations.issue_to_id IN (9578, 1915, 3810, 9015, 1027, 1942) AND issue_relations.relation_type IN ('precedes', 'precedes');
+SELECT 1 AS "one" FROM users INNER JOIN groups_users ON users.id = groups_users.group_id WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') AND groups_users.user_id = 8 AND users.id = 1789 LIMIT 2;
 -- Rewritten Queries
-SELECT issue_relations.* FROM issue_relations WHERE issue_relations.issue_from_id IN (9246, 636, 5944, 3087, 6659, 7442) AND issue_relations.issue_to_id IN (9578, 1915, 3810, 9015, 1027, 1942) AND issue_relations.relation_type IN ('precedes', 'precedes') LIMIT 1;
+SELECT 1 AS "one" FROM users WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') AND users.id = 1789 LIMIT 2;

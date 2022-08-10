@@ -576,6 +576,8 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL AND projects.id IN (1, 5) ORDER BY projects.id ASC LIMIT 2;
+SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND LOWER(email_addresses.address) IN ('r@mycompanyname.com');
 -- Rewritten Queries
-SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL AND projects.id IN (1, 5) ORDER BY projects.id ASC LIMIT 2;
+SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND LOWER(email_addresses.address) IN ('r@mycompanyname.com');
+SELECT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND LOWER(email_addresses.address) IN ('r@mycompanyname.com') LIMIT 1;
+SELECT DISTINCT users.* FROM users INNER JOIN email_addresses ON email_addresses.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = 1 AND LOWER(email_addresses.address) IN ('r@mycompanyname.com') LIMIT 1;

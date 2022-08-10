@@ -576,8 +576,6 @@ CREATE TABLE workflows (
     rule character varying(30)
 );
 -- Original Query
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL;
+SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (7, 12))) AND enabled_modules.name = 'issue_tracking' LIMIT 6;
 -- Rewritten Queries
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL LIMIT 1;
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL;
-SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND projects.status <> 9 AND (SELECT 1 AS "one" FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL LIMIT 1;
+SELECT 1 AS "one" FROM enabled_modules WHERE enabled_modules.project_id IN (SELECT projects.id FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (7, 12) LIMIT 1)) AND enabled_modules.name = 'issue_tracking' LIMIT 6;
