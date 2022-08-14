@@ -9,7 +9,7 @@ class FileType(Enum):
     PARAM_QUERY = 4
     REWRITE_PERF = 5
     DB_PERF = 6
-    REWRITE_DB_PERF = 7
+
     VERIFIER_INPUT = 8
     EMPTY_RESULT_QUERY = 9
     VERIFIER_OUTPUT = 10
@@ -34,8 +34,7 @@ def get_filename(_type, appname):
             # output performance files
             FileType.PARAM_QUERY : "log/%s/all_queries" % appname,
             FileType.REWRITE_PERF : "log/%s/rewrite_perf" % appname,
-            FileType.DB_PERF : "log/%s/db_perf" % appname,
-            FileType.REWRITE_DB_PERF : "log/%s/db_rewrite_perf" % appname,    
+            FileType.DB_PERF : "log/db/%s_db_speedup" % appname,
             FileType.EMPTY_RESULT_QUERY: "log/%s/empty_query" % appname,
             FileType.REWRITE : "log/%s/%s_test_rewrite"  % (appname, appname),
             FileType.PRECHECK_STR2INT_NUM : "log/precheck_strtoint_num",
@@ -70,4 +69,5 @@ PRIORITY_MAP = {
     "UnionToUnionAll" : -1
 }
 
-REWRITE_LIMIT = 100000000
+# REWRITE_LIMIT = 100000000
+REWRITE_LIMIT = 100

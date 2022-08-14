@@ -1,37 +1,35 @@
-from mo_sql_parsing import parse, format
-import traceback
-import sys, os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from loader import Loader
-from config import CONNECT_MAP, FileType, get_filename
-import constraint 
-from evaluator import Evaluator
+import constraint
+from utils import GlobalExpRecorder
 from extract_rule import ExtractQueryRule
-from utils import GlobalExpRecorder, generate_query_param_single
-from tqdm import tqdm
-from bench_utils import get_valid_queries
+from config import FileType, get_filename
+from loader import Loader
+import traceback
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # ------------------------------------------------------------------------------
 # This script counts queries has table column with certain type(s) of constraints
-# dump the results into logs. Here's how to run this script: 
+# dump the results into logs. Here's how to run this script:
 # Run under autrite directory: python3 benchmark/bench_precheck_str2int.py
 # Option to verbal for debug purpose: python3 benchmark/bench_precheck_str2int.py -v
 # ------------------------------------------------------------------------------
 
-#========================== static variables =========================
-app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021, "mastodon": 10000}
+# ========================== static variables =========================
+app_to_cnt = {"redmine": 262462, "forem": 183483,
+              "openproject": 22021, "mastodon": 10000}
 # app_to_cnt = {"redmine": 100, "forem": 100, "openproject": 100}
 appnames = ['forem', 'redmine', 'openproject']
 appnames = ['mastodon']
-name_to_type = { 
-               'inclusion': constraint.InclusionConstraint,
-               'length': constraint.LengthConstraint,
-               'format': constraint.FormatConstraint,
-               }
-#=====================================================================
+name_to_type = {
+    'inclusion': constraint.InclusionConstraint,
+    'length': constraint.LengthConstraint,
+    'format': constraint.FormatConstraint,
+}
+# =====================================================================
 
 
-#========================== main function ============================
+# ========================== main function ============================
 def main(verbal) -> None:
     # make sure log file is clean
     recorder = GlobalExpRecorder()
@@ -43,7 +41,7 @@ def main(verbal) -> None:
         # queries = get_valid_queries(all_queries, CONNECT_MAP[appname])
         queries = all_queries
         recorder.record("app_name", appname)
-        # count the number of queries with constraints on it 
+        # count the number of queries with constraints on it
         all_cs = load_cs(appname, 'all')
         all_cnt = count(all_cs, queries, verbal)
         recorder.record("queries_with_cs", all_cnt)
@@ -52,15 +50,17 @@ def main(verbal) -> None:
         for type_name in name_to_type.keys():
             cs_type = name_to_type[type_name]
             filtered_cs = load_cs(appname, cs_type)
-            cnt = count(filtered_cs, queries, verbal)      
+            cnt = count(filtered_cs, queries, verbal)
             recorder.record(type_name, cnt)
         recorder.dump(get_filename(FileType.PRECHECK_STR2INT_NUM, None))
-        
+
 #################################
 #        helper functions       #
 #################################
-        
+
 # load queries
+
+
 def load_queries(appname) -> list:
     query_filename = get_filename(FileType.RAW_QUERY, appname)
     offset = 0
@@ -69,6 +69,8 @@ def load_queries(appname) -> list:
     return queries
 
 # return filtered constraints
+
+
 def load_cs(appname, cs_type) -> list:
     constraint_filename = get_filename(FileType.CONSTRAINT, appname)
     constraints = Loader.load_constraints(constraint_filename)
@@ -78,6 +80,8 @@ def load_cs(appname, cs_type) -> list:
     return filtered_cs
 
 # return number of queries contains filtered constraints
+
+
 def count(filtered_cs, queries, verbal) -> int:
     cnt = 0
     rule = ExtractQueryRule(filtered_cs)
@@ -92,11 +96,15 @@ def count(filtered_cs, queries, verbal) -> int:
     return cnt
 
 # return True if query contains inclusion constrains
+
+
 def extracted(q) -> bool:
     # rewrite_q is a list of queries from the rewrite rules
     return len(q) >= 1
 
 # print info about errored query
+
+
 def print_error(q, verbal) -> None:
     if verbal:
         print(q.q_raw)
@@ -106,6 +114,7 @@ def print_error(q, verbal) -> None:
     else:
         pass
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     verbal = len(sys.argv) > 1
     main(verbal)

@@ -1,12 +1,13 @@
-import sys, os
+from utils import generate_query_param_single
+import constraint
+from evaluator import Evaluator
+from config import CONNECT_MAP
+import sys
+import os
 from tqdm import tqdm
 import traceback
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config import CONNECT_MAP
-from evaluator import Evaluator
-import constraint
-from utils import generate_query_param_single
 
 def install_constraints(constraints, appname):
     installed_constraints = []
@@ -21,11 +22,13 @@ def install_constraints(constraints, appname):
             roll_back_info = (c, constraint_name)
             fields = list(c.field)
             fields = ', '.join(fields)
-            install_sql = "ALTER TABLE %s ADD CONSTRAINT %s UNIQUE (%s);" % (c.table, constraint_name, fields)
+            install_sql = "ALTER TABLE %s ADD CONSTRAINT %s UNIQUE (%s);" % (
+                c.table, constraint_name, fields)
         elif isinstance(c, constraint.PresenceConstraint):
             constraint_name = str(c)
             roll_back_info = (c, constraint_name)
-            install_sql = "ALTER TABLE %s ALTER COLUMN %s SET NOT NULL;" % (c.table, c.field)
+            install_sql = "ALTER TABLE %s ALTER COLUMN %s SET NOT NULL;" % (
+                c.table, c.field)
         elif isinstance(c, constraint.NumericalConstraint):
             constraint_name = str(c)
             roll_back_info = (c, constraint_name)
@@ -41,15 +44,17 @@ def install_constraints(constraints, appname):
         else:
             continue
         try:
-            Evaluator.evaluate_query("ALTER TABLE {} DROP CONSTRAINT IF EXISTS {}".format(c.table, constraint_name), CONNECT_MAP[appname])
+            Evaluator.evaluate_query("ALTER TABLE {} DROP CONSTRAINT IF EXISTS {}".format(
+                c.table, constraint_name), CONNECT_MAP[appname])
             Evaluator.evaluate_query(install_sql, CONNECT_MAP[appname])
             installed_constraints.append(roll_back_info)
         except Exception as e:
             print(install_sql)
             print(traceback.format_exc())
             # exit(0)
-    print("Install constraints success/all: %d/%d" % (len(installed_constraints), len(constraints)))
-    return installed_constraints            
+    print("Install constraints success/all: %d/%d" %
+          (len(installed_constraints), len(constraints)))
+    return installed_constraints
 
 # does not catch exception here, roll back shoud succeed
 def roll_back(installed_constraints, appname):
@@ -57,10 +62,13 @@ def roll_back(installed_constraints, appname):
     for roll_back_info in installed_constraints:
         c, constraint_name = roll_back_info
         if type(c) in [constraint.NumericalConstraint, constraint.UniqueConstraint]:
-            drop_sql = "ALTER TABLE %s DROP CONSTRAINT IF EXISTS %s;" % (c.table, constraint_name)
+            drop_sql = "ALTER TABLE %s DROP CONSTRAINT IF EXISTS %s;" % (
+                c.table, constraint_name)
         elif type(c) in [constraint.PresenceConstraint]:
-            drop_sql = "ALTER TABLE %s ALTER COLUMN %s DROP NOT NULL;" %(c.table, c.field)
+            drop_sql = "ALTER TABLE %s ALTER COLUMN %s DROP NOT NULL;" % (
+                c.table, c.field)
         Evaluator.evaluate_query(drop_sql, CONNECT_MAP[appname])
+
 
 def get_valid_queries(queries, connect_str):
     print("==========Get Valid Queries============")
@@ -75,5 +83,6 @@ def get_valid_queries(queries, connect_str):
         except:
             print(traceback.format_exc())
             pass
-    print("Total queries: %d, valid queries: %d" % (len(queries), len(valid_queries)))
+    print("Total queries: %d, valid queries: %d" %
+          (len(queries), len(valid_queries)))
     return valid_queries

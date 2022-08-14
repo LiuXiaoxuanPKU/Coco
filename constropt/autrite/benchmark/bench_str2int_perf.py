@@ -1,7 +1,4 @@
-from curses import raw
-from inspect import trace
 from statistics import mean
-from pandas import qcut
 import psycopg2
 import sys, os
 import traceback
@@ -14,11 +11,14 @@ from loader import Loader
 from config import CONNECT_MAP
 from constraint import InclusionConstraint
 from utils import GlobalExpRecorder, generate_query_param_single
-from tqdm import tqdm
 from extract_rule import ExtractQueryRule
 from bench_utils import get_valid_queries
 import argparse
 
+# ------------------------------------------------------------------------------
+# This script benchmarks the performance of string to enum rewrite.
+# The benchmark is performed in the following steps:
+#
 # 1. run all the queries has inclusion constraints with original table
 #     input: a list of sqls with inclusion constraints in it 
 #     output: average timing for each query
@@ -34,7 +34,7 @@ import argparse
 
 # 5. run new queries in new table (each table run 5 times get the ave time, only record ave time)
 # format: sql: ...; before: ...; after: ...; dump to log 
-# =================================================================
+# ------------------------------------------------------------------------------
 
 class EvalQuery:
     def __init__(self, raw_sql) -> None:

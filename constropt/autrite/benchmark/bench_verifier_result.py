@@ -1,7 +1,5 @@
-from ast import arg
 import json
 import sys, os
-from time import time
 import traceback
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -183,30 +181,23 @@ def plot_speedup(queries, appname):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--app', default='redmine')
-    parser.add_argument('--eval', action='store_true')
     args = parser.parse_args()
     
-    if args.eval:
-        parse_result(args.app) 
-        queries = load_queries(args.app)
-        print("=======Org======")
-        eval_queries(queries, CONNECT_MAP[args.app], "org")
-        queries = [q for q in queries if q.t_db is not None]
-        print("=======Rewrite======")
-        eval_queries(queries, CONNECT_MAP[args.app], "rewrite")
-        
-        constraint_file = get_filename(FileType.CONSTRAINT, args.app)
-        constraints = Loader.load_constraints(constraint_file)
-        constraints = [c for c in constraints if c.db is False]
-        installed = install_constraints(constraints, args.app)
-        print("=======DB Constriant======")
-        eval_queries(queries, CONNECT_MAP[args.app], "db_constraint")
-        print("=======Rewrite Constraint======")
-        eval_queries(queries, CONNECT_MAP[args.app], "rewrite_constraint")
-        roll_back(installed, args.app)
-        dump_results(queries, args.app)
-
-    # queries =  load_results(args.app)
-    # plot_speedup(queries, args.app)
+    parse_result(args.app) 
+    queries = load_queries(args.app)
+    print("=======Org======")
+    eval_queries(queries, CONNECT_MAP[args.app], "org")
+    queries = [q for q in queries if q.t_db is not None]
+    print("=======Rewrite======")
+    eval_queries(queries, CONNECT_MAP[args.app], "rewrite")
     
-    
+    constraint_file = get_filename(FileType.CONSTRAINT, args.app)
+    constraints = Loader.load_constraints(constraint_file)
+    constraints = [c for c in constraints if c.db is False]
+    installed = install_constraints(constraints, args.app)
+    print("=======DB Constriant======")
+    eval_queries(queries, CONNECT_MAP[args.app], "db_constraint")
+    print("=======Rewrite Constraint======")
+    eval_queries(queries, CONNECT_MAP[args.app], "rewrite_constraint")
+    roll_back(installed, args.app)
+    dump_results(queries, args.app)

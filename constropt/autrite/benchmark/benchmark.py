@@ -302,19 +302,11 @@ def count_rewrite(appname):
     print("DB speed up %f" % (db_speedup / db_rewrite_cnt))
     print("DB Rewrite speed up %f" % (db_rewrite_speedup / db_rewrite_cnt))
     
-
-def benchmark_rewrite(appname):
-    filename = get_filename(FileType.REWRITE_DB_PERF, appname)
-    objs = load_json_queries(filename)
-    
-
 if __name__ == "__main__":
     appname = "redmine"
     bench_slow_queries = False
     bench_all = False
     get_rewrite_cnt = True
-    get_rewrite_perf = False
-    
     
     param_q_file = get_filename(FileType.PARAM_QUERY, appname)
     if not os.path.isfile(param_q_file):
@@ -338,6 +330,3 @@ if __name__ == "__main__":
     if get_rewrite_cnt:
         count_rewrite(appname)
         
-    if get_rewrite_perf:
-        benchmark_rewrite(appname)
-    
