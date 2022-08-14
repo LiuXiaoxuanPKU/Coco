@@ -27,7 +27,7 @@ The following is the version information we use for apps in our experiments.
 | Dev.to      | 2.7.2        | commit cfba76019b31e22e2de4b1a8b99b201fc31ada29 |
 | Openproject | 2.7.4        | commit cfba76019b31e22e2de4b1a8b99b201fc31ada29 |
 | mastodon    | 3.0.2        | tag 3.5.5, commit fbcbf7898f000d9d1a21d52e8a8d3ed4602aa7db |
-| spree       | TODO         | tag 4.4.0, commit 5c9dffb84028085d044e199e6f6f8a20c02dca11 |
+| spree       | 3.0.0        | tag 4.4.0, commit 5c9dffb84028085d044e199e6f6f8a20c02dca11 |
 
 ## Constraint Extractor
 Constraint extractor extracts both application constraints and database constraints automatically from the source code. Constraint extractor is under `/constropt/constr_extractor/` directory.
