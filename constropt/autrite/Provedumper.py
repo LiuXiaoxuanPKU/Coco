@@ -25,11 +25,10 @@ class ProveDumper:
         qs += ["\n-- Rewritten Queries\n"]   
         qs += [ProveDumper.format_param(q.q_raw_param) + ";\n" for q in rewritten_queries]
 
-        path = get_filename(FileType.VERIFIER_OUTPUT, appname) 
         if counter:
-            path += '/not_eq/'
+            path = get_filename(FileType.REWRITE_OUTPUT_SQL_NOT_EQ, appname) 
         else:
-            path += '/eq/'
+            path = get_filename(FileType.REWRITE_OUTPUT_SQL_EQ, appname) 
         q_path = "%s/%d.sql" % (path, id)
         print("write to %s, length %d" % (q_path, len(qs)))
         with open (q_path, "w") as f:

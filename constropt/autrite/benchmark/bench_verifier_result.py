@@ -12,6 +12,11 @@ from bench_utils import install_constraints, roll_back
 import argparse
 import seaborn as sns
 import numpy as np
+
+# ------------------------------------------------------------------------------
+# This script benchmarks the performance of rewritten queries that pass
+# tests and the verifier
+# ------------------------------------------------------------------------------
 class EvalQuery:
     def __init__(self, before_sql, after_sql) -> None:
         self.raw = before_sql
@@ -22,7 +27,7 @@ class EvalQuery:
         self.t_rewrite_constraint = 0
      
 def dump_results(queries, app):
-    filename = "log/%s_perf" % app
+    filename = get_filename(app)
     exp_recorder.clear(filename)
     for q in queries:
         exp_recorder.record("raw", q.raw) 
@@ -47,14 +52,15 @@ def load_results(app):
     return queries
 
 def parse_result(APP):
-    folder = "log/{}/cosette".format(APP)
-    output = open("{}/verifier-result".format(folder), "r")
-    out_file = "{}/result.sql".format(folder)
+    verified_idx_filename = get_filename(FileType.VERIFIER_OUTPUT_IDX, APP)
+    verified_idx = open(verified_idx_filename, "r")
+    out_file = get_filename(FileType.VERIFIER_OUTPUT_SQL, APP)
     exp_recorder.clear(out_file)
     first = False
-    for line in output:
+    rewritten_q_foler = get_filename(FileType.REWRITE_OUTPUT_SQL_EQ, APP)
+    for line in verified_idx:
         file, num = line.split(":")
-        with open("{}/eq_unique/{}.sql".format(folder, file)) as q:
+        with open("{}/{}.sql".format(rewritten_q_foler, file)) as q:
             found = False
             for q_line in q:
                 if first:
@@ -72,11 +78,10 @@ def parse_result(APP):
                     found = True
                     num = int(num)
 
-    output.close()
+    verified_idx.close()
   
 def load_queries(app):
-    folder = "log/{}/cosette".format(app)
-    out_file = "{}/result.sql".format(folder) 
+    out_file = get_filename(app) 
     with open(out_file, 'r') as f:
         lines = f.readlines()
     queries = []

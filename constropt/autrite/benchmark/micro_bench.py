@@ -13,6 +13,12 @@ from rewriter import Rewriter
 from TestVerifier import TestVerifier
 import rule
 
+# ------------------------------------------------------------------------------
+# This script benchmarks some minor aspects of rewrite behavior
+# 1. get average number of rewrites
+# 2. get number of rewrites with empty results
+# ------------------------------------------------------------------------------
+
 # get average number of rewrites
 def get_avg_rewrite_num(appname):
     print("=========Get average number of rewrites for %s =========" % appname)

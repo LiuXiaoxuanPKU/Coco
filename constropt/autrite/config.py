@@ -3,19 +3,22 @@ from pathlib import Path
 from enum import Enum
 
 class FileType(Enum):
-    RAW_QUERY = 1
-    REWRITE = 2
+    TEST_PROVE_Q = 1
+    RAW_QUERY = 2
     CONSTRAINT = 3
-    PARAM_QUERY = 4
-    REWRITE_PERF = 5
-    DB_PERF = 6
+    VERIFIER_INPUT = 4
 
-    VERIFIER_INPUT = 8
-    EMPTY_RESULT_QUERY = 9
-    VERIFIER_OUTPUT = 10
-    PRECHECK_STR2INT_NUM = 11
+    REWRITE_OUTPUT_SQL_EQ = 5
+    REWRITE_OUTPUT_SQL_NOT_EQ = 6
+
+    VERIFIER_OUTPUT_IDX = 7
+    VERIFIER_OUTPUT_SQL = 8
+
+    REWRITE_PERF = 9
+    DB_PERF = 10
     
-    TEST_PROVE_Q =12
+    EMPTY_RESULT_QUERY = 11
+    PRECHECK_STR2INT_NUM =12
     REWRITE_TIME = 13
     VERIFIER_TIME = 14
   
@@ -29,14 +32,20 @@ def get_filename(_type, appname):
             FileType.RAW_QUERY : "%s/queries/%s/%s.pk" % (projectdir, appname, appname),
             FileType.CONSTRAINT : "%s/constraints/%s"  % (projectdir, appname),
             FileType.VERIFIER_INPUT : "log/%s/cosette/create.sql" % appname,
-            # output sqls for cosette
-            FileType.VERIFIER_OUTPUT : "log/%s/cosette/" % appname,   
-            # output performance files
-            FileType.PARAM_QUERY : "log/%s/all_queries" % appname,
-            FileType.REWRITE_PERF : "log/%s/rewrite_perf" % appname,
+            
+            # output sqls from rewrite and tests
+            FileType.REWRITE_OUTPUT_SQL_EQ: "log/%s/cosette/eq/",
+            FileType.REWRITE_OUTPUT_SQL_NOT_EQ: "log/%s/cosette/not_eq/", 
+            
+            # output sqls from cosette
+            FileType.VERIFIER_OUTPUT_IDX: "log/%s/cosette/verifier-result" % appname,
+            FileType.VERIFIER_OUTPUT_SQL : "log/%s/cosette/result.sql" % appname, 
+                      
+            # output performance file
+            FileType.REWRITE_PERF : "log/%s_perf" % appname,
             FileType.DB_PERF : "log/db/%s_db_speedup" % appname,
+            
             FileType.EMPTY_RESULT_QUERY: "log/%s/empty_query" % appname,
-            FileType.REWRITE : "log/%s/%s_test_rewrite"  % (appname, appname),
             FileType.PRECHECK_STR2INT_NUM : "log/precheck_strtoint_num",
             FileType.REWRITE_TIME: "log/%s/rewrite_time" % appname,
             FileType.VERIFIER_TIME: "log/%s/verify_time" % appname
