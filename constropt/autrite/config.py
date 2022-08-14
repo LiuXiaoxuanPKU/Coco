@@ -16,11 +16,12 @@ class FileType(Enum):
 
     REWRITE_PERF = 9
     DB_PERF = 10
+    ENUM_EVAL = 11 
     
-    EMPTY_RESULT_QUERY = 11
-    PRECHECK_STR2INT_NUM =12
-    REWRITE_TIME = 13
-    VERIFIER_TIME = 14
+    EMPTY_RESULT_QUERY = 12
+    PRECHECK_STR2INT_NUM =13
+    REWRITE_TIME = 14
+    VERIFIER_TIME = 15
   
 def get_filename(_type, appname):
     workdir = os.getcwd()
@@ -44,6 +45,7 @@ def get_filename(_type, appname):
             # output performance file
             FileType.REWRITE_PERF : "log/%s_perf" % appname,
             FileType.DB_PERF : "log/db/%s_db_speedup" % appname,
+            FileType.ENUM_EVAL : "log/%s/enum_evaluation_time" % appname,
             
             FileType.EMPTY_RESULT_QUERY: "log/%s/empty_query" % appname,
             FileType.PRECHECK_STR2INT_NUM : "log/precheck_strtoint_num",
