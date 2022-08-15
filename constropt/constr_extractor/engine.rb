@@ -37,7 +37,6 @@ class Engine
     asts.each do |ast|
       classname_parents = get_classname_and_parents(ast)
       classname_parents.each do |class_name, parent_and_classast|
-        # puts "create node #{class_name}"
         class_node = ClassNode.new(class_name)
         class_node.parent = parent_and_classast[0]
         class_node.ast = parent_and_classast[1]
@@ -76,8 +75,11 @@ class Engine
       if !application_record_node.empty?
         active_record_node = application_record_node[0]
       end
+      # sometimes we only have ApplicationRecord
+      active_record_node = root if root.name == "ApplicationRecord" 
       saved_nodes.append(root) if ["RailsSettings::Base"].include? root.name
     end
+    raise "Active Record is nil" unless !active_record_node.nil?
     dummy_root.children.append(active_record_node)
     dummy_root.children += saved_nodes
     dummy_root

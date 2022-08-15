@@ -31,6 +31,11 @@ class StateMachineExtractor < Extractor
       possible_values = possible_values.compact
       possible_values = possible_values.uniq
     end
+    # https://github.com/pluginaweek/state_machine/tree/master#additional-topics
+    # if the column is missing, state is the default column name
+    if column.nil?
+      column = "state"
+    end
     constraint = InclusionConstraint.new(column, possible_values, 'state_machine', db=false)
     constraint
   end

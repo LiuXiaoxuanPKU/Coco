@@ -91,7 +91,7 @@ if __name__ == '__main__':
         run_test_time = 0
         connect_str = CONNECT_MAP[appname]
         for q in tqdm(queries):
-            with open("%s_stats" % appname, "w") as f:
+            with open("log/%s/%s_stats" % (appname, appname), "w") as f:
                 f.write("%d, %d, %d" % (enumerate_cnt, lower_cost_cnt, lower_cost_pass_test_cnt))
             # =================Try to generate param first========
             try:

@@ -87,8 +87,10 @@ class BuiltinExtractor < Extractor
         break
       end
     end
-
     validate_node.each do |node|
+      if node.children.empty?
+        next
+      end
       node_type = node.children[0].type.to_s 
       if node_type == 'label' 
         label = handle_label_node(node.children[0])
@@ -134,6 +136,10 @@ class BuiltinExtractor < Extractor
           constraints << LengthConstraint.new(field, min, max, db = false)
         end
       elsif label == 'numericality'
+        # does not extract constraints from 'numericality: true'
+        if other.children.length == 1 && other.children[0].type == :kw
+          next
+        end
         min, max, allow_nil = extract_numerical_hash(other.children)
         fields.each do |field|
           constraints << NumericalConstraint.new(field, min, max, db = false)
@@ -389,6 +395,9 @@ class BuiltinExtractor < Extractor
       field = handle_symbol_literal_node(node)
       fields << field unless field.nil?
       node.children.each do |n|
+        if node.type == :lambda
+          next
+        end
         k, v = handle_assoc_node(n)
         fk_column_name = trim_string(v.source) if !k.nil? && (k == 'foreign_key')
         class_name = trim_string(v.source) if !k.nil? && (k == 'class_name')

@@ -1,5 +1,3 @@
-# for regex pattern matching
-import re
 # for input argument
 import sys
 # for dump into pickle format

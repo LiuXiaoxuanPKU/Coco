@@ -12,6 +12,7 @@ class Traversor
   end
 
   def traverse(root)
+    puts "Visit #{root}"
     params = {}
     dfs(root, params)
     @visitor.post_visit(root) if @visitor.class.method_defined?(:post_visit)

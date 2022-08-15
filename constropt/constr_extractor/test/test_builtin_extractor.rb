@@ -3,7 +3,7 @@ require_relative '../builtin_extractor'
 require_relative '../class_node'
 
 def test_naive
-  puts "==============Test Naive=============="
+  puts '==============Test Naive=============='
   class_def = <<-FOO
     class Test
         validates_presence_of :login, :firstname, :lastname
@@ -17,7 +17,7 @@ def test_naive
 end
 
 def test_validates
-  puts "==============Test Validates=============="
+  puts '==============Test Validates=============='
   class_def = <<-FOO
     class Test
         validates :name,
@@ -36,11 +36,12 @@ def test_validates
   builtin_extractor = BuiltinExtractor.new
   builtin_extractor.visit(node, {})
   raise "Get #{node.constraints.length} extracted constraints, expect 13" unless node.constraints.length == 13
+
   puts "extracted constraints: #{node.constraints}"
 end
 
 def test_multiple_validate
-  puts "=============Test Multiple Validate======="
+  puts '=============Test Multiple Validate======='
   class_def = <<-FOO
     class Test
       validates :estimated_hours, :numericality => {:greater_than_or_equal_to => 2, :allow_nil => true, :message => :invalid}
@@ -53,11 +54,11 @@ def test_multiple_validate
   builtin_extractor.visit(node, {})
   raise "Get #{node.constraints.length} extracted constraints, expect 4" unless node.constraints.length == 4
 
-  puts "extracted constraints: #{node.constraints}" 
+  puts "extracted constraints: #{node.constraints}"
 end
 
 def test_numerical
-  puts "==============Test Numerical=============="
+  puts '==============Test Numerical=============='
   class_def = <<-FOO
     class Test
       validates_inclusion_of :default_done_ratio, in: 0..100, allow_nil: true
@@ -72,13 +73,34 @@ def test_numerical
   node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
   builtin_extractor = BuiltinExtractor.new
   builtin_extractor.visit(node, {})
-  raise "Get #{node.constraints.length} extracted constraints, expect 7" unless node.constraints.length == 7 
+  raise "Get #{node.constraints.length} extracted constraints, expect 7" unless node.constraints.length == 7
 
-  puts "extracted constraints: #{node.constraints}" 
+  puts "extracted constraints: #{node.constraints}"
+end
+
+# validates :amount, numericality: true
+# only define numericality should not extract any numerical constraint since
+# it does not have a range
+def test_numerical_bool
+  puts '==============Test Numerical Bool=============='
+  class_def = <<-FOO
+    class Test
+      validates :amount, numericality: true
+    end
+  FOO
+  node = ClassNode.new('Test')
+  node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
+  builtin_extractor = BuiltinExtractor.new
+  builtin_extractor.visit(node, {})
+  raise "Get #{node.constraints.length} extracted constraints, expect 1" unless node.constraints.length == 1
+  raise "Get #{node.constraints.length} extracted constraints, expect 0" \
+      unless node.constraints.filter { |c| c.is_a?(NumericalConstraint) }.empty?
+
+  puts "extracted constraints: #{node.constraints}"
 end
 
 def test_redmine
-  puts "==============Test Redmine User=============="
+  puts '==============Test Redmine User=============='
   class_def = <<-FOO
     class Test
       MAIL_NOTIFICATION_OPTIONS = [
@@ -104,9 +126,9 @@ def test_redmine
   raise "Get #{node.constraints.length} extracted constraints, expect 7" unless node.constraints.length == 10
 end
 
-
 test_naive
 test_validates
 test_multiple_validate
 test_numerical
+test_numerical_bool
 test_redmine
