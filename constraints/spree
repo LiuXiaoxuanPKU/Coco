@@ -1,0 +1,5350 @@
+[
+  {
+    "table": "spree_addresses",
+    "parent": "Spree::Base",
+    "class": "Spree::Address",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "country",
+        "db": false,
+        "class_name": "Spree::Country",
+        "fk_column_name": "country_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "state",
+        "db": false,
+        "class_name": "Spree::State",
+        "fk_column_name": "state_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "class_name": "Spree.user_class.name",
+        "fk_column_name": "user_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "label",
+          "user_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_adjustments",
+    "parent": "Spree::Base",
+    "class": "Spree::Adjustment",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "order",
+        "db": false,
+        "class_name": "Spree::Order",
+        "fk_column_name": "order_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "promotion_action",
+        "db": false,
+        "class_name": "Spree::PromotionAction",
+        "fk_column_name": ":source_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "adjustable",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "order",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "label",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "amount",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "state",
+        "db": false,
+        "values": [
+          "open",
+          "closed"
+        ],
+        "type": "state_machine"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "order_id",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_assets",
+    "parent": "Spree::Base",
+    "class": "Spree::Asset",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "viewable",
+        "db": false,
+        "class_name": "Viewable",
+        "fk_column_name": "viewable_id",
+        "polymorphic": true
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "type",
+        "db": false,
+        "values": [
+          "Spree::Asset",
+          "Spree::Icon"
+        ],
+        "type": "class_inheritance"
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "viewable_type",
+        "db": false,
+        "values": [
+          "Spree::MenuItem",
+          "Spree::Taxon",
+          "Spree::Variant"
+        ],
+        "type": "polymorphic"
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "type",
+        "db": true,
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_assets",
+    "parent": "Spree::Asset",
+    "class": "Spree::Icon",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "attachment",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_calculators",
+    "parent": "Spree::Base",
+    "class": "Spree::Calculator",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "calculable",
+        "db": false,
+        "class_name": "Calculable",
+        "fk_column_name": "calculable_id",
+        "polymorphic": true
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_products_taxons",
+    "parent": "Spree::Base",
+    "class": "Spree::Classification",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "taxon",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "product",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "position",
+        "db": false,
+        "min": null,
+        "max": null
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "taxon_id",
+          "product_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "product_id",
+          "taxon_id"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_countries",
+    "parent": "Spree::Base",
+    "class": "Spree::Country",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "iso_name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "iso",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "iso3",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "iso_name"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "iso"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "iso3"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "iso",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "iso3",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "iso"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "iso3"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "iso_name"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_credit_cards",
+    "parent": "Spree::Base",
+    "class": "Spree::CreditCard",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "payment_method",
+        "db": false,
+        "class_name": "Payment_method",
+        "fk_column_name": "payment_method_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "class_name": "Spree.user_class.to_s",
+        "fk_column_name": "user_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "default",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_customer_returns",
+    "parent": "Spree::Base",
+    "class": "Spree::CustomerReturn",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "stock_location",
+        "db": false,
+        "class_name": "Stock_location",
+        "fk_column_name": "stock_location_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store",
+        "db": false,
+        "class_name": "Spree::Store",
+        "fk_column_name": "store_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "store",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "return_items",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "stock_location",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "number"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_digitals",
+    "parent": "Spree::Base",
+    "class": "Spree::Digital",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "variant",
+        "db": false,
+        "class_name": "Variant",
+        "fk_column_name": "variant_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "attachment",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "variant",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_digital_links",
+    "parent": "Spree::Base",
+    "class": "Spree::DigitalLink",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "digital",
+        "db": false,
+        "class_name": "Digital",
+        "fk_column_name": "digital_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "line_item",
+        "db": false,
+        "class_name": "Line_item",
+        "fk_column_name": "line_item_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "digital",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "line_item",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "access_counter",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "access_counter",
+        "db": false,
+        "min": 0,
+        "max": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "token"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_inventory_units",
+    "parent": "Spree::Base",
+    "class": "Spree::InventoryUnit",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "original_return_item",
+        "db": false,
+        "class_name": "Spree::ReturnItem",
+        "fk_column_name": "original_return_item_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "quantity",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "quantity",
+        "db": false,
+        "min": 0,
+        "max": null
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "state",
+        "db": false,
+        "values": [
+          "on_hand",
+          "backordered",
+          "on",
+          "fill_backorder",
+          "do",
+          "fulfill_order",
+          "shipped",
+          "returned"
+        ],
+        "type": "state_machine"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_users",
+    "parent": "Spree::Base",
+    "class": "Spree::LegacyUser",
+    "constraints": [
+      {
+        "^o": "LengthConstraint",
+        "field_name": "encrypted_password",
+        "db": true,
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "password_salt",
+        "db": true,
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "sign_in_count",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "failed_attempts",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_line_items",
+    "parent": "Spree::Base",
+    "class": "Spree::LineItem",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "tax_category",
+        "db": false,
+        "class_name": "Spree::TaxCategory",
+        "fk_column_name": "tax_category_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "variant",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "order",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "quantity",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "quantity",
+        "db": false,
+        "min": null,
+        "max": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "price",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "quantity",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "price",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "included_tax_total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "pre_tax_amount",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "taxable_adjustment_total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "non_taxable_adjustment_total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_log_entries",
+    "parent": "Spree::Base",
+    "class": "Spree::LogEntry",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "source",
+        "db": false,
+        "class_name": "Source",
+        "fk_column_name": "source_id",
+        "polymorphic": true
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_menus",
+    "parent": "Spree::Base",
+    "class": "Spree::Menu",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store",
+        "db": false,
+        "class_name": "Spree::Store",
+        "fk_column_name": "store_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "store",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "locale",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "location",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "location",
+          "store",
+          "locale"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "location",
+        "db": false,
+        "values": [
+
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "store_id",
+          "location",
+          "locale"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_menu_items",
+    "parent": "Spree::Base",
+    "class": "Spree::MenuItem",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "menu",
+        "db": false,
+        "class_name": "Menu",
+        "fk_column_name": "menu_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "linked_resource",
+        "db": false,
+        "class_name": "Linked_resource",
+        "fk_column_name": "linked_resource_id",
+        "polymorphic": true
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "menu",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "item_type",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "item_type",
+        "db": false,
+        "values": [
+
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "linked_resource_type",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "linked_resource_type",
+        "db": false,
+        "values": [
+
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "spree::menu_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "has_one"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lft",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "rgt",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "depth",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_option_types",
+    "parent": "Spree::Base",
+    "class": "Spree::OptionType",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "presentation",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "db": true,
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "presentation",
+        "db": true,
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "position",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "filterable",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_option_type_prototypes",
+    "parent": "Spree::Base",
+    "class": "Spree::OptionTypePrototype",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "option_type",
+        "db": false,
+        "class_name": "Spree::OptionType",
+        "fk_column_name": "option_type_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "prototype",
+        "db": false,
+        "class_name": "Spree::Prototype",
+        "fk_column_name": "prototype_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "prototype",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "option_type",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "prototype_id",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "prototype_id",
+          "option_type_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "prototype_id",
+          "option_type_id"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_option_values",
+    "parent": "Spree::Base",
+    "class": "Spree::OptionValue",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "option_type",
+        "db": false,
+        "class_name": "Spree::OptionType",
+        "fk_column_name": "option_type_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_option_value_variants",
+    "parent": "Spree::Base",
+    "class": "Spree::OptionValueVariant",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "option_value",
+        "db": false,
+        "class_name": "Spree::OptionValue",
+        "fk_column_name": "option_value_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "variant",
+        "db": false,
+        "class_name": "Spree::Variant",
+        "fk_column_name": "variant_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "option_value",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "variant",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "option_value_id",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "option_value_id",
+          "variant_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "variant_id",
+          "option_value_id"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_orders",
+    "parent": "Spree::Base",
+    "class": "Spree::Order",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "bill_address",
+        "db": false,
+        "class_name": "Spree::Address",
+        "fk_column_name": ":bill_address_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "ship_address",
+        "db": false,
+        "class_name": "Spree::Address",
+        "fk_column_name": ":ship_address_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store",
+        "db": false,
+        "class_name": "Spree::Store",
+        "fk_column_name": "store_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "payment_state",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "payment_state",
+        "db": false,
+        "values": [
+
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "shipment_state",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "shipment_state",
+        "db": false,
+        "values": [
+
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "item_total",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "adjustment_total",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "included_tax_total",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "additional_tax_total",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "payment_total",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "shipment_total",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "promo_total",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "total",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "number",
+        "db": true,
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "item_total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "adjustment_total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "shipment_total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "included_tax_total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "state_lock_version",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "taxable_adjustment_total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "non_taxable_adjustment_total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "number"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_order_promotions",
+    "parent": "Spree::Base",
+    "class": "Spree::OrderPromotion",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "order",
+        "db": false,
+        "class_name": "Spree::Order",
+        "fk_column_name": "order_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "promotion",
+        "db": false,
+        "class_name": "Spree::Promotion",
+        "fk_column_name": "promotion_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_payments",
+    "parent": "Spree::Base",
+    "class": "Spree::Payment",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "source",
+        "db": false,
+        "class_name": "Source",
+        "fk_column_name": "source_id",
+        "polymorphic": true
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "payment_method",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "source",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "amount",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "state",
+        "db": false,
+        "values": [
+          "checkout",
+          "pending",
+          "completed",
+          "processing",
+          "failed",
+          "do",
+          "after_completed",
+          "void",
+          "after_void",
+          "invalid"
+        ],
+        "type": "state_machine"
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "source_type",
+        "db": false,
+        "values": [
+          "Spree::CreditCard",
+          "Spree::Payment",
+          "Spree::Refund"
+        ],
+        "type": "polymorphic"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "amount",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "number"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_payment_capture_events",
+    "parent": "Spree::Base",
+    "class": "Spree::PaymentCaptureEvent",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "payment",
+        "db": false,
+        "class_name": "Spree::Payment",
+        "fk_column_name": "payment_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_payment_methods",
+    "parent": "Spree::Base",
+    "class": "Spree::PaymentMethod",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_preferences",
+    "parent": "Spree::Base",
+    "class": "Spree::Preference",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "key",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "key"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "key"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_prices",
+    "parent": "Spree::Base",
+    "class": "Spree::Price",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "variant",
+        "db": false,
+        "class_name": "Spree::Variant",
+        "fk_column_name": "variant_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "amount",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "amount",
+        "db": false,
+        "min": 0,
+        "max": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "compare_at_amount",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "compare_at_amount",
+        "db": false,
+        "min": 0,
+        "max": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "variant_id",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_products",
+    "parent": "Spree::Base",
+    "class": "Spree::Product",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "tax_category",
+        "db": false,
+        "class_name": "Spree::TaxCategory",
+        "fk_column_name": "tax_category_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "shipping_category",
+        "db": false,
+        "class_name": "Spree::ShippingCategory",
+        "fk_column_name": "shipping_category_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "slug"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "spree::wisheditem_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "has_one"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "slug"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_product_option_types",
+    "parent": "Spree::Base",
+    "class": "Spree::ProductOptionType",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "product",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "option_type",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "product_id",
+          "option_type_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_product_promotion_rules",
+    "parent": "Spree::Base",
+    "class": "Spree::ProductPromotionRule",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "product",
+        "db": false,
+        "class_name": "Spree::Product",
+        "fk_column_name": "product_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "promotion_rule",
+        "db": false,
+        "class_name": "Spree::PromotionRule",
+        "fk_column_name": "promotion_rule_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "product",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "promotion_rule",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "product_id",
+          "promotion_rule_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_product_properties",
+    "parent": "Spree::Base",
+    "class": "Spree::ProductProperty",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "property",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "property_id",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "property_id",
+          "product_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "property_id",
+          "product_id"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_promotions",
+    "parent": "Spree::Base",
+    "class": "Spree::Promotion",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "promotion_category",
+        "db": false,
+        "class_name": "Promotion_category",
+        "fk_column_name": "promotion_category_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "usage_limit",
+        "db": false,
+        "min": 0,
+        "max": null
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "description",
+        "db": false,
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "usage_limit",
+        "db": true,
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_promotion_actions",
+    "parent": "Spree::Base",
+    "class": "Spree::PromotionAction",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "promotion",
+        "db": false,
+        "class_name": "Spree::Promotion",
+        "fk_column_name": "promotion_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_promotion_action_line_items",
+    "parent": "Spree::Base",
+    "class": "Spree::PromotionActionLineItem",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "promotion_action",
+        "db": false,
+        "class_name": "Spree::Promotion::Actions::CreateLineItems",
+        "fk_column_name": "promotion_action_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "variant",
+        "db": false,
+        "class_name": "Spree::Variant",
+        "fk_column_name": "variant_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "promotion_action",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "variant",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "quantity",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "quantity",
+        "db": false,
+        "min": null,
+        "max": null
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_promotion_categories",
+    "parent": "Spree::Base",
+    "class": "Spree::PromotionCategory",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_promotion_rules",
+    "parent": "Spree::Base",
+    "class": "Spree::PromotionRule",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "promotion",
+        "db": false,
+        "class_name": "Spree::Promotion",
+        "fk_column_name": "promotion_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_promotion_rule_taxons",
+    "parent": "Spree::Base",
+    "class": "Spree::PromotionRuleTaxon",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "promotion_rule",
+        "db": false,
+        "class_name": "Spree::PromotionRule",
+        "fk_column_name": "promotion_rule_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "taxon",
+        "db": false,
+        "class_name": "Spree::Taxon",
+        "fk_column_name": "taxon_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "promotion_rule",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "taxon",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "promotion_rule_id",
+          "taxon_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_promotion_rule_users",
+    "parent": "Spree::Base",
+    "class": "Spree::PromotionRuleUser",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "promotion_rule",
+        "db": false,
+        "class_name": "Spree::PromotionRule",
+        "fk_column_name": "promotion_rule_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "class_name": "Spree.user_class.to_s",
+        "fk_column_name": "user_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "promotion_rule",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "user_id",
+          "promotion_rule_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_properties",
+    "parent": "Spree::Base",
+    "class": "Spree::Property",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "presentation",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "presentation",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "filterable",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_property_prototypes",
+    "parent": "Spree::Base",
+    "class": "Spree::PropertyPrototype",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "prototype",
+        "db": false,
+        "class_name": "Spree::Prototype",
+        "fk_column_name": "prototype_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "property",
+        "db": false,
+        "class_name": "Spree::Property",
+        "fk_column_name": "property_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "prototype",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "property",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "prototype_id",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "prototype_id",
+          "property_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "prototype_id",
+          "property_id"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_prototypes",
+    "parent": "Spree::Base",
+    "class": "Spree::Prototype",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_prototype_taxons",
+    "parent": "Spree::Base",
+    "class": "Spree::PrototypeTaxon",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "taxon",
+        "db": false,
+        "class_name": "Spree::Taxon",
+        "fk_column_name": "taxon_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "prototype",
+        "db": false,
+        "class_name": "Spree::Prototype",
+        "fk_column_name": "prototype_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "prototype",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "taxon",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "prototype_id",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "prototype_id",
+          "taxon_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_refunds",
+    "parent": "Spree::Base",
+    "class": "Spree::Refund",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "reason",
+        "db": false,
+        "class_name": "Spree::RefundReason",
+        "fk_column_name": ":refund_reason_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "amount",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_refund_reasons",
+    "parent": "Spree::Base",
+    "class": "Spree::RefundReason",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_reimbursement/credits",
+    "parent": "Spree::Base",
+    "class": "Spree::Reimbursement::Credit",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "reimbursement",
+        "db": false,
+        "class_name": "Reimbursement",
+        "fk_column_name": "reimbursement_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "creditable",
+        "db": false,
+        "class_name": "Creditable",
+        "fk_column_name": "creditable_id",
+        "polymorphic": true
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "creditable",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_reimbursements",
+    "parent": "Spree::Base",
+    "class": "Spree::Reimbursement",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "order",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "reimbursement_status",
+        "db": false,
+        "values": [
+          "errored",
+          "pending",
+          "reimbursed"
+        ],
+        "type": "state_machine"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "number"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_reimbursement_types",
+    "parent": "Spree::Base",
+    "class": "Spree::ReimbursementType",
+    "constraints": [
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "type",
+        "db": false,
+        "values": [
+          "Spree::ReimbursementType",
+          "Spree::ReimbursementType::Credit",
+          "Spree::ReimbursementType::Exchange",
+          "Spree::ReimbursementType::OriginalPayment",
+          "Spree::ReimbursementType::StoreCredit"
+        ],
+        "type": "class_inheritance"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_reimbursement_types",
+    "parent": "Spree::ReimbursementType",
+    "class": "Spree::ReimbursementType::Credit",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_reimbursement_types",
+    "parent": "Spree::ReimbursementType",
+    "class": "Spree::ReimbursementType::Exchange",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_reimbursement_types",
+    "parent": "Spree::ReimbursementType",
+    "class": "Spree::ReimbursementType::OriginalPayment",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_reimbursement_types",
+    "parent": "Spree::ReimbursementType",
+    "class": "Spree::ReimbursementType::StoreCredit",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_return_authorizations",
+    "parent": "Spree::Base",
+    "class": "Spree::ReturnAuthorization",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "order",
+        "db": false,
+        "class_name": "Spree::Order",
+        "fk_column_name": "order_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "stock_location",
+        "db": false,
+        "class_name": "Stock_location",
+        "fk_column_name": "stock_location_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "reason",
+        "db": false,
+        "class_name": "Spree::ReturnAuthorizationReason",
+        "fk_column_name": ":return_authorization_reason_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "order",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reason",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "stock_location",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "state",
+        "db": false,
+        "values": [
+          "canceled",
+          "do",
+          "cancel_return_items",
+          "authorized"
+        ],
+        "type": "state_machine"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "number"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_return_authorization_reasons",
+    "parent": "Spree::Base",
+    "class": "Spree::ReturnAuthorizationReason",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_return_items",
+    "parent": "Spree::Base",
+    "class": "Spree::ReturnItem",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "exchange_variant",
+        "db": false,
+        "class_name": "Spree::Variant",
+        "fk_column_name": "exchange_variant_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "preferred_reimbursement_type",
+        "db": false,
+        "class_name": "Spree::ReimbursementType",
+        "fk_column_name": "preferred_reimbursement_type_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "override_reimbursement_type",
+        "db": false,
+        "class_name": "Spree::ReimbursementType",
+        "fk_column_name": "override_reimbursement_type_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "inventory_unit",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "return_quantity",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "return_quantity",
+        "db": false,
+        "min": 1,
+        "max": null
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "reception_status",
+        "db": false,
+        "values": [
+          "received",
+          "do",
+          "attempt_accept",
+          "process_inventory_unit!",
+          "awaiting",
+          "cancelled",
+          "given_to_customer"
+        ],
+        "type": "state_machine"
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "acceptance_status",
+        "db": false,
+        "values": [
+          "accepted",
+          "pending",
+          "manual_intervention_required",
+          "rejected",
+          "do",
+          "persist_acceptance_status_errors"
+        ],
+        "type": "state_machine"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "pre_tax_amount",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "included_tax_total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "additional_tax_total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "resellable",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_roles",
+    "parent": "Spree::Base",
+    "class": "Spree::Role",
+    "constraints": [
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_role_users",
+    "parent": "Spree::Base",
+    "class": "Spree::RoleUser",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "role",
+        "db": false,
+        "class_name": "Spree::Role",
+        "fk_column_name": "role_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "class_name": "Spree.user_class.to_s",
+        "fk_column_name": "user_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_shipments",
+    "parent": "Spree::Base",
+    "class": "Spree::Shipment",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "stock_location",
+        "db": false,
+        "class_name": "Spree::StockLocation",
+        "fk_column_name": "stock_location_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "stock_location",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "state",
+        "db": false,
+        "values": [
+          "pending",
+          "ready",
+          "canceled",
+          "shipped",
+          "do",
+          "after_ship",
+          "after_cancel",
+          "after_resume"
+        ],
+        "type": "state_machine"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "included_tax_total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "pre_tax_amount",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "taxable_adjustment_total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "non_taxable_adjustment_total",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "number"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_shipping_categories",
+    "parent": "Spree::Base",
+    "class": "Spree::ShippingCategory",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_shipping_methods",
+    "parent": "Spree::Base",
+    "class": "Spree::ShippingMethod",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "tax_category",
+        "db": false,
+        "class_name": "Spree::TaxCategory",
+        "fk_column_name": "tax_category_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "display_on",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_shipping_method_categories",
+    "parent": "Spree::Base",
+    "class": "Spree::ShippingMethodCategory",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "shipping_method",
+        "db": false,
+        "class_name": "Spree::ShippingMethod",
+        "fk_column_name": "shipping_method_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "shipping_category",
+        "db": false,
+        "class_name": "Spree::ShippingCategory",
+        "fk_column_name": "shipping_category_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "shipping_method_id",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "shipping_category_id",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "shipping_category_id",
+          "shipping_method_id"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_shipping_method_zones",
+    "parent": "Spree::Base",
+    "class": "Spree::ShippingMethodZone",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "shipping_method",
+        "db": false,
+        "class_name": "Shipping_method",
+        "fk_column_name": "shipping_method_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "zone",
+        "db": false,
+        "class_name": "Zone",
+        "fk_column_name": "zone_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_shipping_rates",
+    "parent": "Spree::Base",
+    "class": "Spree::ShippingRate",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "shipment",
+        "db": false,
+        "class_name": "Spree::Shipment",
+        "fk_column_name": "shipment_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "tax_rate",
+        "db": false,
+        "class_name": "Spree::TaxRate",
+        "fk_column_name": "tax_rate_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "shipping_method",
+        "db": false,
+        "class_name": "Spree::ShippingMethod",
+        "fk_column_name": "shipping_method_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "shipment_id",
+          "shipping_method_id"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_states",
+    "parent": "Spree::Base",
+    "class": "Spree::State",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "country",
+        "db": false,
+        "class_name": "Spree::Country",
+        "fk_column_name": "country_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "country",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name",
+          "country_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "abbr",
+          "country_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_state_changes",
+    "parent": "Spree::Base",
+    "class": "Spree::StateChange",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "class_name": "Spree.user_class.to_s",
+        "fk_column_name": "user_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "stateful",
+        "db": false,
+        "class_name": "Stateful",
+        "fk_column_name": "stateful_id",
+        "polymorphic": true
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "stateful_type",
+        "db": false,
+        "values": [
+          "Spree::Payment"
+        ],
+        "type": "polymorphic"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_stock_items",
+    "parent": "Spree::Base",
+    "class": "Spree::StockItem",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "stock_location",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "variant",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "variant_id",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "variant_id",
+          "stock_location_id",
+          "deleted_at"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "count_on_hand",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "count_on_hand",
+        "db": false,
+        "min": 0,
+        "max": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "count_on_hand",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_stock_locations",
+    "parent": "Spree::Base",
+    "class": "Spree::StockLocation",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "state",
+        "db": false,
+        "class_name": "Spree::State",
+        "fk_column_name": "state_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "country",
+        "db": false,
+        "class_name": "Spree::Country",
+        "fk_column_name": "country_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "default",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_stock_movements",
+    "parent": "Spree::Base",
+    "class": "Spree::StockMovement",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "stock_item",
+        "db": false,
+        "class_name": "Spree::StockItem",
+        "fk_column_name": "stock_item_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "originator",
+        "db": false,
+        "class_name": "Originator",
+        "fk_column_name": "originator_id",
+        "polymorphic": true
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_stock_transfers",
+    "parent": "Spree::Base",
+    "class": "Spree::StockTransfer",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "source_location",
+        "db": false,
+        "class_name": "StockLocation",
+        "fk_column_name": "source_location_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "destination_location",
+        "db": false,
+        "class_name": "StockLocation",
+        "fk_column_name": "destination_location_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "number"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_stores",
+    "parent": "Spree::Base",
+    "class": "Spree::Store",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "default_country",
+        "db": false,
+        "class_name": "Spree::Country",
+        "fk_column_name": "default_country_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "checkout_zone",
+        "db": false,
+        "class_name": "Spree::Zone",
+        "fk_column_name": "checkout_zone_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "digital_asset_authorized_clicks",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "digital_asset_authorized_clicks",
+        "db": false,
+        "min": 0,
+        "max": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "digital_asset_authorized_days",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "digital_asset_authorized_days",
+        "db": false,
+        "min": 0,
+        "max": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "code",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "code"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail_from_address",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mailer_logo",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "favicon_image",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "default",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "code"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_store_credits",
+    "parent": "Spree::Base",
+    "class": "Spree::StoreCredit",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "class_name": "Spree.user_class.to_s",
+        "fk_column_name": "user_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "category",
+        "db": false,
+        "class_name": "Spree::StoreCreditCategory",
+        "fk_column_name": "category_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "created_by",
+        "db": false,
+        "class_name": "Spree.admin_user_class.to_s",
+        "fk_column_name": "created_by_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "credit_type",
+        "db": false,
+        "class_name": "Spree::StoreCreditType",
+        "fk_column_name": "type_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store",
+        "db": false,
+        "class_name": "Spree::Store",
+        "fk_column_name": "store_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "category",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "credit_type",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_by",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "currency",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "store",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "amount",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "amount",
+        "db": false,
+        "min": 0,
+        "max": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "amount_used",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "amount_used",
+        "db": false,
+        "min": 0,
+        "max": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "amount",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "amount_used",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "amount_authorized",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_store_credit_categories",
+    "parent": "Spree::Base",
+    "class": "Spree::StoreCreditCategory",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_store_credit_events",
+    "parent": "Spree::Base",
+    "class": "Spree::StoreCreditEvent",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store_credit",
+        "db": false,
+        "class_name": "Store_credit",
+        "fk_column_name": "store_credit_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "originator",
+        "db": false,
+        "class_name": "Originator",
+        "fk_column_name": "originator_id",
+        "polymorphic": true
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "originator_type",
+        "db": false,
+        "values": [
+          "Spree::StockTransfer"
+        ],
+        "type": "polymorphic"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "store_credit_id",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "action",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "authorization_code",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_total_amount",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_store_credit_types",
+    "parent": "Spree::Base",
+    "class": "Spree::StoreCreditType",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_payment_methods_stores",
+    "parent": "Spree::Base",
+    "class": "Spree::StorePaymentMethod",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store",
+        "db": false,
+        "class_name": "Spree::Store",
+        "fk_column_name": "store_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "payment_method",
+        "db": false,
+        "class_name": "Spree::PaymentMethod",
+        "fk_column_name": "payment_method_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "store",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "payment_method",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "store_id",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "store_id",
+          "payment_method_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "payment_method_id",
+          "store_id"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_products_stores",
+    "parent": "Spree::Base",
+    "class": "Spree::StoreProduct",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store",
+        "db": false,
+        "class_name": "Spree::Store",
+        "fk_column_name": "store_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "product",
+        "db": false,
+        "class_name": "Spree::Product",
+        "fk_column_name": "product_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "store",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "product",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "store_id",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "store_id",
+          "product_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "product_id",
+          "store_id"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_promotions_stores",
+    "parent": "Spree::Base",
+    "class": "Spree::StorePromotion",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store",
+        "db": false,
+        "class_name": "Spree::Store",
+        "fk_column_name": "store_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "promotion",
+        "db": false,
+        "class_name": "Spree::Promotion",
+        "fk_column_name": "promotion_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "store",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "promotion",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "store_id",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "store_id",
+          "promotion_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "promotion_id",
+          "store_id"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_tax_categories",
+    "parent": "Spree::Base",
+    "class": "Spree::TaxCategory",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_tax_rates",
+    "parent": "Spree::Base",
+    "class": "Spree::TaxRate",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_taxons",
+    "parent": "Spree::Base",
+    "class": "Spree::Taxon",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "taxonomy",
+        "db": false,
+        "class_name": "Spree::Taxonomy",
+        "fk_column_name": "taxonomy_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name",
+          "parent_id",
+          "taxonomy_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "taxonomy",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "permalink",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "permalink",
+          "parent_id",
+          "taxonomy_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "hide_from_nav",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "hide_from_nav",
+        "db": false,
+        "values": [
+
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "spree::taxonomy_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "has_one"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name",
+          "parent_id",
+          "taxonomy_id"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "permalink",
+          "parent_id",
+          "taxonomy_id"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_taxonomies",
+    "parent": "Spree::Base",
+    "class": "Spree::Taxonomy",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name",
+          "store_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "store",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store",
+        "db": false,
+        "class_name": "Spree::Store",
+        "fk_column_name": "store_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name",
+          "store_id"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_variants",
+    "parent": "Spree::Base",
+    "class": "Spree::Variant",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "product",
+        "db": false,
+        "class_name": "Spree::Product",
+        "fk_column_name": "product_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "tax_category",
+        "db": false,
+        "class_name": "Spree::TaxCategory",
+        "fk_column_name": "tax_category_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "option_values",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "sku",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "sku"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "spree::product_id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "has_one"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "sku",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_wished_items",
+    "parent": "Spree::Base",
+    "class": "Spree::WishedItem",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "variant",
+        "db": false,
+        "class_name": "Spree::Variant",
+        "fk_column_name": "variant_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "wishlist",
+        "db": false,
+        "class_name": "Spree::Wishlist",
+        "fk_column_name": "wishlist_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "variant",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "wishlist",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "variant",
+          "wishlist"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "quantity",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "quantity",
+        "db": false,
+        "min": 0,
+        "max": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "quantity",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "variant_id",
+          "wishlist_id"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_wishlists",
+    "parent": "Spree::Base",
+    "class": "Spree::Wishlist",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user",
+        "db": false,
+        "class_name": "Spree.user_class.name",
+        "fk_column_name": "user_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store",
+        "db": false,
+        "class_name": "Spree::Store",
+        "fk_column_name": "store_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "store",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "token",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_private",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_default",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "token"
+        ],
+        "db": true,
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_zones",
+    "parent": "Spree::Base",
+    "class": "Spree::Zone",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "spree_zone_members",
+    "parent": "Spree::Base",
+    "class": "Spree::ZoneMember",
+    "constraints": [
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "zone",
+        "db": false,
+        "class_name": "Spree::Zone",
+        "fk_column_name": "zone_id",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "zoneable",
+        "db": false,
+        "class_name": "Zoneable",
+        "fk_column_name": "zoneable_id",
+        "polymorphic": true
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "zone",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "zoneable",
+        "db": false,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "db": true,
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "db": false,
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  }
+]
