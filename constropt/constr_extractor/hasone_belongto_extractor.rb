@@ -48,8 +48,12 @@ class HasoneBelongtoExtractor < Extractor
     # generate unique constraints for has_one
     @class_constraint_map.each do |class_name, constraint|
       unless @class_node_map.include? class_name
-        class_name = class_name.split(':')[-1] # Users::Setting
-        unless @class_node_map.include? class_name
+        split_class_name = class_name.split(':')[-1] # Users::Setting
+        if @class_node_map.include? class_name 
+          class_name = class_name
+        elsif @class_node_map.include? split_class_name 
+          class_name = split_class_name
+        else
           puts "[Error] HasoneBelongtoExtractor: Does not have class #{class_name}"
           next
         end

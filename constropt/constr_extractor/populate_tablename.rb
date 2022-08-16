@@ -10,6 +10,7 @@ class PopulateTableName
       # self.table = "#{table_name_prefix}workflows#{table_name_suffix}"
       # assume table_name_prefix, table_name_suffix are all empty for now
       next unless c.type.to_s == 'assign' && c[0].source.include?('self.table')
+
       tablename = c[1].source.dup
       tablename.slice! '"' # remove leading "
       tablename.slice! ':' # remove leading :
@@ -17,9 +18,9 @@ class PopulateTableName
       tablename.slice! "\#{table_name_prefix}"
       tablename.slice! "\#{table_name_suffix}"
 
-      if c[0].source == "self.table_name_prefix"
+      if c[0].source == 'self.table_name_prefix'
         default_table_name = default_table_name.split('/')[-1]
-        tablename = tablename + default_table_name
+        tablename += default_table_name
       end
       tablename.slice! '\'' # remove leading '
       tablename.slice! '\'' # remove end '
@@ -28,10 +29,20 @@ class PopulateTableName
     nil
   end
 
-  def visit(node, params)
-    return if ['ActiveRecord::Base', 'ApplicationRecord', 'DummyRoot', 'RailsSettings::Base'].include? node.name
+  def tableize(name)
+    table_name = name.tableize
+    if name.start_with?('Spree::')
+      slash_idx = table_name.index('/')
+      table_name[slash_idx] = '_'
+    end
+    table_name
+  end
 
-    custom_tablename = get_tablename_from_ast(node.ast, node.name.tableize)
+  def visit(node, params)
+    return if ['ActiveRecord::Base', 'ApplicationRecord', \
+               'DummyRoot', 'RailsSettings::Base', 'Spree::Base'].include? node.name
+
+    custom_tablename = get_tablename_from_ast(node.ast, tableize(node.name))
     if custom_tablename
       node.table = custom_tablename
       params['table_name'] = node.table
@@ -43,7 +54,7 @@ class PopulateTableName
       return
     end
 
-    node.table = node.name.tableize
+    node.table = tableize(node.name)
     params['table_name'] = node.table
   end
 end
