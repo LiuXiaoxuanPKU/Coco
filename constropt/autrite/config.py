@@ -35,8 +35,8 @@ def get_filename(_type, appname):
             FileType.VERIFIER_INPUT : "log/%s/cosette/create.sql" % appname,
             
             # output sqls from rewrite and tests
-            FileType.REWRITE_OUTPUT_SQL_EQ: "log/%s/cosette/eq/",
-            FileType.REWRITE_OUTPUT_SQL_NOT_EQ: "log/%s/cosette/not_eq/", 
+            FileType.REWRITE_OUTPUT_SQL_EQ: "log/%s/cosette/eq/" % appname,
+            FileType.REWRITE_OUTPUT_SQL_NOT_EQ: "log/%s/cosette/not_eq/" % appname, 
             
             # output sqls from cosette
             FileType.VERIFIER_OUTPUT_IDX: "log/%s/cosette/verifier-result" % appname,
@@ -58,7 +58,9 @@ CONNECT_MAP = {
     "redmine" : "user=redmine password=my_password dbname=redmine_develop",
     "redmine_test" : "user=redmine password=my_password dbname=redmine_test",
     "forem" : "user=ubuntu password=my_password dbname=Forem_development",
-    "openproject" : "user=openproject password=my_password dbname=openproject_dev"
+    "openproject" : "user=openproject password=my_password dbname=openproject_dev",
+    "mastodon": "user=ubuntu password=my_password dbname=mastodon_development",
+    "spree": "user=ubuntu password=my_password dbname=sandbox_development"
 }
 
 class RewriteQuery:

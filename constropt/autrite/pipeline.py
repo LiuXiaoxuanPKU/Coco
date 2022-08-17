@@ -23,7 +23,7 @@ if __name__ == '__main__':
     parser.add_argument('--db', action='store_true', \
             help='only use db constraints to perform optimization')
     parser.add_argument('--counter', action='store_true', help="dump counter example")
-    parser.add_argument('--only_rewrite', action='store_true', help='only rewrite queries based on constraints,\
+    parser.add_argument('--only_rewrite', action='store_true', default=False, help='only rewrite queries based on constraints,\
                          does not run any tests, do not have communication with the database')
     parser.add_argument('--cnt', type=int, default=100000, help='number of queries to rewrite')
     args = parser.parse_args()
@@ -68,8 +68,8 @@ if __name__ == '__main__':
             enumerate_time = end-start
             enumerate_times.append(enumerate_time)
             start = end 
-            print(q)
-            print(enumerate_queries[0]) 
+            # print(q)
+            # print(enumerate_queries[0]) 
             
             import pickle
             with open("log/%s/enumerate_cnts" % appname, "wb") as f:
@@ -113,7 +113,8 @@ if __name__ == '__main__':
                 continue
             end = time.time()
             enumerate_time = end - start
-            start = end  
+            start = end
+            enumerate_cnt += 1  
 
             # ======== Estimate cost and retain those with lower cost than original ======
             rewritten_queries_lower_cost = []

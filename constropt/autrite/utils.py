@@ -3,6 +3,7 @@ import json, random, hashlib
 from collections import OrderedDict
 from constraint import UniqueConstraint
 from evaluator import Evaluator
+random.seed(0)
 
 def test_unorder_list_eq(l1, l2):
     if len(l1) != len(l2):
