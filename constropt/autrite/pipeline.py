@@ -2,6 +2,7 @@ import traceback
 import random
 random.seed(0)
 import argparse
+import pickle
 
 import rule
 from loader import Loader
@@ -12,7 +13,7 @@ from TestVerifier import TestVerifier
 from mo_sql_parsing import format, parse
 from tqdm import tqdm
 import time
-from utils import generate_query_param_rewrites, generate_query_param_single
+from utils import generate_query_param_rewrites, generate_query_param_single, get_sqlobj_table
 
 from config import CONNECT_MAP, FileType, RewriteQuery, get_filename
 
@@ -48,6 +49,7 @@ if __name__ == '__main__':
     rewriter = Rewriter()
     rewriter.set_rules(rules)
  
+    used_tables = []
     if args.only_rewrite:
         enumerate_cnts = []
         enumerate_times = []
@@ -68,15 +70,13 @@ if __name__ == '__main__':
             enumerate_time = end-start
             enumerate_times.append(enumerate_time)
             start = end 
-            # print(q)
-            # print(enumerate_queries[0]) 
-            
-            import pickle
-            with open("log/%s/enumerate_cnts" % appname, "wb") as f:
-                pickle.dump(enumerate_cnts, f)
-            with open("log/%s/enumerate_times" % appname, "wb") as f:
-                pickle.dump(enumerate_times, f)
-            continue 
+            used_tables += get_sqlobj_table(q.q_obj)
+       
+        print("Used tables %d: %s" %(len(set(used_tables)), list(set(used_tables))))
+        with open("log/%s/enumerate_cnts" % appname, "wb") as f:
+            pickle.dump(enumerate_cnts, f)
+        with open("log/%s/enumerate_times" % appname, "wb") as f:
+            pickle.dump(enumerate_times, f)
     else:
         rewrite_cnt = 0
         total_candidate_cnt = []
@@ -93,13 +93,6 @@ if __name__ == '__main__':
         for q in tqdm(queries):
             with open("log/%s/%s_stats" % (appname, appname), "w") as f:
                 f.write("%d, %d, %d" % (enumerate_cnt, lower_cost_cnt, lower_cost_pass_test_cnt))
-            # =================Try to generate param first========
-            try:
-                q_raw = generate_query_param_single(q.q_raw, connect_str, {})
-                Evaluator.evaluate_query(q_raw, connect_str)
-            except:
-                continue 
-
             start = time.time()
             # =================Enumerate Candidates================
             enumerate_queries = []
@@ -116,6 +109,13 @@ if __name__ == '__main__':
             start = end
             enumerate_cnt += 1  
 
+            # =================Try to generate param first========
+            try:
+                q_raw = generate_query_param_single(q.q_raw, connect_str, {})
+                Evaluator.evaluate_query(q_raw, connect_str)
+            except:
+                continue 
+            
             # ======== Estimate cost and retain those with lower cost than original ======
             rewritten_queries_lower_cost = []
             # replace placeholder with actual parameters for org and rewrites
@@ -141,9 +141,10 @@ if __name__ == '__main__':
                         rq.estimate_cost = estimate_cost 
                         rewritten_queries_lower_cost.append(rq)
                     else:
-                        print("[Warning] rewrite get slower")
-                        print("[Org] %f %s" % (org_cost, q.q_raw_param))
-                        print("[Rewrite] %f %s" % (estimate_cost, rq.q_raw_param))
+                        pass
+                        # print("[Warning] rewrite get slower")
+                        # print("[Org] %f %s" % (org_cost, q.q_raw_param))
+                        # print("[Rewrite] %f %s" % (estimate_cost, rq.q_raw_param))
                 except:
                     # rewrite might have wrong syntax
                     continue

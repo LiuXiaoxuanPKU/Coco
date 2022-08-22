@@ -69,7 +69,13 @@ def get_field_value(table_field, cache, connect_str, field_idx = -1):
         return cache[cache_name]
     try:
         table, field = table_field.split('.')
-        SQL = "SELECT %s FROM %s ORDER BY RANDOM() LIMIT 1" % (field, table)
+        table = table.strip()
+        field = field.strip()
+        if field.startswith('('):
+            field = field[1:]
+        if table.startswith('('):
+            table = table[1:]
+        SQL = "SELECT SETSEED(0); SELECT %s FROM %s ORDER BY RANDOM() LIMIT 1" % (field, table)
         ret =  Evaluator.evaluate_query(SQL, connect_str)
     except:
         return []
@@ -95,6 +101,7 @@ def generate_query_param_single(q, connect_str, cache):
             elif tokens[i-1] in ["=", "!=", ">", "<", "<>"]:
                 re = get_field_value(tokens[i-2], cache, connect_str)
                 if len(re) == 0 or re[0][0] is None:
+                    print("[Warning] fail to generate field %s " % (tokens[i-2]))
                     return None
                 tokens[i] = re[0][0]
                 if isinstance(tokens[i], str):
@@ -138,6 +145,29 @@ def generate_query_params(queries, connect_str, cache):
         if q_param is not None:
             param_qs.append(q_param)
     return param_qs
+
+# get tables used in sql
+def get_sqlobj_table(sql_obj):
+    if 'from' not in sql_obj:
+        return []
+    if isinstance(sql_obj['from'], str):
+        return [sql_obj['from']]
+    elif isinstance(sql_obj['from'], list):
+        from_list = sql_obj['from']
+        tables = []
+        for item in from_list:
+            if isinstance(item, str):
+                tables.append(item)
+            elif isinstance(item, dict) and 'inner join' in item:
+                tables.append(item['inner join'])
+            elif isinstance(item, dict) and 'left outer join' in item:
+                tables.append(item['left outer join'])
+            else:
+                print("[Error] cannot extract table form %s" % (sql_obj['from']) )  
+        return tables
+    else:
+        print("[Error] cannot extract table form %s" % (sql_obj['from']) )
+        return []
 
 class GlobalExpRecorder:
     def __init__(self):
