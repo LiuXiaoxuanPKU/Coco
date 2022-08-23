@@ -388,6 +388,8 @@ class RemovePredicate(Rule):
             return []
         
         def rewrite_where(clause):
+            if isinstance(clause, bool):
+                return [clause]
             op = list(clause.keys())[0]
             if op == "and" or op == "or":
                 clause_list = clause[op]

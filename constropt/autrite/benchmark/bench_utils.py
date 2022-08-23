@@ -8,6 +8,9 @@ from tqdm import tqdm
 import traceback
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# ------------------------------------------------------------------------------
+# Utility functions for benchmarks
+# ------------------------------------------------------------------------------
 
 def install_constraints(constraints, appname):
     installed_constraints = []

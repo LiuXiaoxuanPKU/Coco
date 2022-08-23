@@ -27,7 +27,7 @@ class EvalQuery:
         self.t_rewrite_constraint = 0
      
 def dump_results(queries, app):
-    filename = get_filename(app)
+    filename = get_filename(FileType.REWRITE_PERF, app)
     exp_recorder.clear(filename)
     for q in queries:
         exp_recorder.record("raw", q.raw) 
@@ -81,7 +81,7 @@ def parse_result(APP):
     verified_idx.close()
   
 def load_queries(app):
-    out_file = get_filename(app) 
+    out_file = get_filename(FileType.VERIFIER_OUTPUT_SQL, app) 
     with open(out_file, 'r') as f:
         lines = f.readlines()
     queries = []

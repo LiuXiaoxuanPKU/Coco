@@ -158,9 +158,9 @@ def get_sqlobj_table(sql_obj):
         for item in from_list:
             if isinstance(item, str):
                 tables.append(item)
-            elif isinstance(item, dict) and 'inner join' in item:
+            elif isinstance(item, dict) and 'inner join' in item and isinstance(item['inner join'], str):
                 tables.append(item['inner join'])
-            elif isinstance(item, dict) and 'left outer join' in item:
+            elif isinstance(item, dict) and 'left outer join' in item and isinstance(item['left outer join'], str):
                 tables.append(item['left outer join'])
             else:
                 print("[Error] cannot extract table form %s" % (sql_obj['from']) )  

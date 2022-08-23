@@ -19,7 +19,7 @@ class Evaluator:
                 return explain_fetched
 
     @staticmethod
-    def evaluate_actual_time(q, connect_string, jit):
+    def evaluate_actual_time(q, connect_string, jit=False):
         if jit:
             JIT = True
         else:

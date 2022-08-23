@@ -21,7 +21,8 @@ sp_cnt = 0
 APP_NAME = {
     "redmine" : "Redmine",
     "forem" : "Dev.to",
-    "openproject" : "Openproject"
+    "openproject" : "Openproject",
+    "mastodon": "Mastodon"
 }
 
 tick_size = 14
@@ -191,10 +192,12 @@ def group_by(queries, gb, for_type = True):
                 rewrite_types += [t[0]]  
                 groups += [find_group(rewrite_constraint_sp)]
             if rewrite_constraint_sp < 0.95:
+                print("-------------------------------")
                 print("db", db_sp, q.raw)
                 print("rewrite", rewrite_sp, q.rewrite)
                 print("cons + rewrite", rewrite_constraint_sp)
                 print(db_sp, find_group(db_sp))
+                print("-------------------------------")
     
     return pd.DataFrame({"sp":speedups, "type": types, "group" : groups, "sql":sqls, "rewrite_type":rewrite_types})
 
