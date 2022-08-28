@@ -13,6 +13,8 @@ def test_naive
   node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
   builtin_extractor = BuiltinExtractor.new
   builtin_extractor.visit(node, {})
+  answer = 3
+  raise "Get #{node.constraints.length} extracted constraints, expect #{answer}" unless node.constraints.length == answer
   puts "# of extracted constraints: #{node.constraints.length}"
 end
 
@@ -35,9 +37,10 @@ def test_validates
   node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
   builtin_extractor = BuiltinExtractor.new
   builtin_extractor.visit(node, {})
-  raise "Get #{node.constraints.length} extracted constraints, expect 13" unless node.constraints.length == 13
+  answer = 12
+  raise "Get #{node.constraints.length} extracted constraints, expect #{answer}" unless node.constraints.length == answer
 
-  puts "extracted constraints: #{node.constraints}"
+  # puts "extracted constraints: #{node.constraints}"
 end
 
 def test_multiple_validate
@@ -52,9 +55,10 @@ def test_multiple_validate
   node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
   builtin_extractor = BuiltinExtractor.new
   builtin_extractor.visit(node, {})
-  raise "Get #{node.constraints.length} extracted constraints, expect 4" unless node.constraints.length == 4
+  answer = 4
+  raise "Get #{node.constraints.length} extracted constraints, expect #{answer}" unless node.constraints.length == answer
 
-  puts "extracted constraints: #{node.constraints}"
+  # puts "extracted constraints: #{node.constraints}"
 end
 
 def test_numerical
@@ -73,7 +77,8 @@ def test_numerical
   node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
   builtin_extractor = BuiltinExtractor.new
   builtin_extractor.visit(node, {})
-  raise "Get #{node.constraints.length} extracted constraints, expect 7" unless node.constraints.length == 7
+  answer = 7
+  raise "Get #{node.constraints.length} extracted constraints, expect #{answer}" unless node.constraints.length == answer
 
   puts "extracted constraints: #{node.constraints}"
 end
@@ -123,7 +128,8 @@ def test_redmine
   node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
   builtin_extractor = BuiltinExtractor.new
   builtin_extractor.visit(node, {})
-  raise "Get #{node.constraints.length} extracted constraints, expect 7" unless node.constraints.length == 10
+  answer = 10
+  raise "Get #{node.constraints.length} extracted constraints, expect #{answer}" unless node.constraints.length == answer
 end
 
 test_naive
