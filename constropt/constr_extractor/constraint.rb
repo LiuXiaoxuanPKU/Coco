@@ -222,6 +222,6 @@ class HasOneManyConstraint < Constraint
 
   def hash
     return (self.field_name + self.db.to_s + self.class_name.to_s \
-      + self.foreign_key.to_s + self.as_field + self.type).hash
+      + self.foreign_key.to_s + self.type).hash
   end
 end

@@ -61,21 +61,37 @@ class BuiltinExtractor < Extractor
   end
 
   def extract_with_option(ast)
-    []
-    # create_presence = false
-    # common_options_ast = ast.children[1]
-    # create_presence = true if common_options_ast.source == 'presence: true'
+    all_fields = []
+    constraints = []
+    is_validate = false
 
-    # do_block = ast.jump(:do_block)
-    # constraints = []
-    # do_block.children[0].each do |cmd|
-    #   constraints += extract_bultin_validator(cmd)
-    # rescue Exception => e
-    #   puts "#{create_presence}"
-    #   puts "#{ast.source}"
-    #   puts "#{e}"
-    # end
-    # constraints
+    do_block = ast.jump(:do_block)
+    do_block.children[0].each do |cmd|
+      label = cmd.children[0]
+      case label.source
+      when 'belongs_to'
+        constraints += extract_builtin_foreign(cmd)
+      when 'has_many', 'has_one'
+        constraints += extract_builtin_has_one_many(cmd, label.source)
+      when 'validates'
+        is_validate = true
+        content = cmd[1].children
+        opt_start_idx, fields = extract_validates_constraint_fields(content)
+        if opt_start_idx <= content.length - 1
+          constraints, fields = extract_validates_constraint_options(fields, content[opt_start_idx])
+        end
+        all_fields += fields
+      else
+        puts "[Error] With Option: Does not handle #{cmd.source}"
+      end
+    end
+
+    if is_validate
+      common_options_ast = ast.children[1]
+      tmp_constraints, valid_fields = extract_validates_constraint_options(all_fields, common_options_ast[0], false)
+      constraints += tmp_constraints
+    end
+    constraints.uniq
   end
 
   def extract_bultin_validator(ast)
@@ -106,7 +122,7 @@ class BuiltinExtractor < Extractor
 
   def extract_validates_constraint_fields(tokens)
     fields = []
-    next_idx = -1
+    next_idx = tokens.length
     tokens.each_with_index do |c, index|
       if c.type.to_s == 'symbol_literal'
         fields << handle_symbol_literal_node(c)
@@ -118,10 +134,11 @@ class BuiltinExtractor < Extractor
     [next_idx, fields]
   end
 
-  def extract_validates_constraint_options(fields, validate_node)
+  def extract_validates_constraint_options(fields, validate_node, add_presence=true)
     constraints = []
     presence_fields = []
     allow_nil = false
+    valid_fields = fields
     validate_node.each do |node|
       next if node.children.empty?
 
@@ -132,7 +149,7 @@ class BuiltinExtractor < Extractor
       when 'symbol_literal'
         label = handle_symbol_literal_node(node.children[0])
       else
-        puts "[Warning] Does not handle node #{node.source} of type #{node_type}, #{ast.source}"
+        puts "[Warning] Does not handle node #{node.source} of type #{node_type}"
         next
       end
 
@@ -190,23 +207,25 @@ class BuiltinExtractor < Extractor
       when 'allow_blank', 'allow_nil'
         allow_nil = true
       else
-        puts "[Warning] Does not handle complex validates: #{other.children}"
+        puts "[Warning] Does not handle complex validates: #{label}, #{other.source}"
+        valid_fields = []
         constraints = []
         next
       end
     end
 
-    return constraints if allow_nil
+    return [constraints, valid_fields] if allow_nil
+    return [constraints, valid_fields] if !add_presence
     
     # add corresponding presence constraints
     all_constraints = []
-    fields.each do |field|
+    valid_fields.each do |field|
       if !allow_nil && !(presence_fields.include? field)
         all_constraints << PresenceConstraint.new(field, cond = nil, db = false)
       end
     end
     all_constraints += constraints
-    all_constraints
+    [all_constraints, valid_fields]
   end
 
   def extract_validates(ast)
@@ -215,7 +234,7 @@ class BuiltinExtractor < Extractor
     opt_start_idx, fields = extract_validates_constraint_fields(content)
 
     # extract constraint options
-    constraints = extract_validates_constraint_options(fields, content[opt_start_idx])
+    constraints, fields = extract_validates_constraint_options(fields, content[opt_start_idx])
     constraints
     # # set constraint fields
     # constraints = extract_validates_set_fields(fields, constraints)
