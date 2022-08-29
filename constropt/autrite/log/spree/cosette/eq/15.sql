@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_option_types.* FROM spree_option_types WHERE 1 = 1 AND spree_option_types.position IS NOT NULL ORDER BY spree_option_types.position DESC LIMIT 10;
+SELECT COUNT(*) FROM spree_taxons INNER JOIN spree_products_taxons ON spree_taxons.id = spree_products_taxons.taxon_id WHERE spree_products_taxons.product_id = 10325;
 -- Rewritten Queries
-SELECT spree_option_types.* FROM spree_option_types WHERE 1 = 1 AND True ORDER BY spree_option_types.position DESC LIMIT 10;
+SELECT COUNT(*) FROM spree_taxons INNER JOIN spree_products_taxons ON spree_taxons.id = spree_products_taxons.taxon_id WHERE spree_products_taxons.product_id = 10325 LIMIT 1;

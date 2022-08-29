@@ -51,6 +51,12 @@ def test_add_limit_one_select_from():
     for q in q_afters:
         print(format(q))
 
+def test_add_limit_one_union():
+    q_before_str = "SELECT * FROM R1 UNION ALL SELECT * FROM R2"
+    q_before = parse(q_before_str)
+    q_afters = AddLimitOne(None).apply(q_before)
+    assert(len(q_afters) == 0)
+
 def test_add_limit_one_where_having():
     print("--------------")
     q_before_str = "select * from R1 where a in (select a from R2) and a > 1"
@@ -394,9 +400,10 @@ def test_removenull_predicate():
     print(len(q_afters))
     
 if __name__ == "__main__":
-    test_add_limit_one_select_from()
-    test_remove_distinct_select_from()
-    test_add_limit_one_where_having()
+    # test_add_limit_one_select_from()
+    # test_remove_distinct_select_from()
+    # test_add_limit_one_where_having()
+    test_add_limit_one_union()
     #test_add_predicate_simple()
     #test_add_predicate_validate()
     #test_add_predicate_join()

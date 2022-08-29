@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'Alpha' AND spree_properties.id = 5252;
+SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_option_types ON spree_product_option_types.product_id = spree_products.id INNER JOIN spree_option_types ON spree_option_types.id = spree_product_option_types.option_type_id WHERE spree_products.deleted_at IS NULL AND spree_option_types.name = 'pbxzqrem';
 -- Rewritten Queries
-SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'Alpha' AND spree_properties.id = 5252 LIMIT 1;
+SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_option_types ON spree_product_option_types.product_id = spree_products.id INNER JOIN spree_option_types ON spree_option_types.id = spree_product_option_types.option_type_id WHERE spree_products.deleted_at IS NULL AND spree_option_types.name = 'pbxzqrem' LIMIT 1;

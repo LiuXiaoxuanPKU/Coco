@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_product_properties.* FROM spree_product_properties INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.id = spree_product_properties.product_id WHERE spree_product_properties.id IN (183, 183) AND spree_properties.filterable = False AND spree_products.deleted_at IS NULL ORDER BY spree_product_properties.position ASC;
+SELECT spree_product_properties.* FROM spree_product_properties INNER JOIN spree_products ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id WHERE spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 6513 ORDER BY spree_product_properties.position ASC;
 -- Rewritten Queries
-SELECT spree_product_properties.* FROM spree_product_properties INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.id = spree_product_properties.product_id WHERE spree_product_properties.id IN (183, 183) AND spree_properties.filterable = False AND spree_products.deleted_at IS NULL ORDER BY spree_product_properties.position ASC LIMIT 1;
+SELECT spree_product_properties.* FROM spree_product_properties INNER JOIN spree_products ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id WHERE spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 6513 ORDER BY spree_product_properties.position ASC LIMIT 1;

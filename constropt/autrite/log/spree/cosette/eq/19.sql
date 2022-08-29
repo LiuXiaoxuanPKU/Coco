@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_prototype_taxons ON spree_taxons.id = spree_prototype_taxons.taxon_id WHERE spree_prototype_taxons.prototype_id = 6114;
+SELECT COUNT(*) FROM spree_properties INNER JOIN spree_product_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_product_properties.product_id = 5144;
 -- Rewritten Queries
-SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_prototype_taxons ON spree_taxons.id = spree_prototype_taxons.taxon_id WHERE spree_prototype_taxons.prototype_id = 6114 LIMIT 1;
+SELECT COUNT(*) FROM spree_properties INNER JOIN spree_product_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_product_properties.product_id = 5144 LIMIT 1;

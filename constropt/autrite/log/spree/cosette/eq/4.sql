@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_states.id FROM spree_states WHERE spree_states.country_id = 3994 ORDER BY spree_states.name ASC;
+SELECT spree_product_option_types.option_type_id FROM spree_product_option_types WHERE spree_product_option_types.product_id = 12707;
 -- Rewritten Queries
-SELECT spree_states.id FROM spree_states WHERE spree_states.country_id = 3994 ORDER BY spree_states.name ASC LIMIT 1;
+SELECT spree_product_option_types.option_type_id FROM spree_product_option_types WHERE spree_product_option_types.product_id = 12707 LIMIT 1;

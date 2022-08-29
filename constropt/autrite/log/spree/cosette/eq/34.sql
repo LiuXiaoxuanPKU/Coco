@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_products INNER JOIN friendly_id_slugs ON friendly_id_slugs.deleted_at IS NULL AND friendly_id_slugs.sluggable_type = 'Spree::Product' AND friendly_id_slugs.sluggable_id = spree_products.id WHERE spree_products.id IS NOT NULL AND spree_products.slug = 'kyyxrmazhguioqieouyyukjrc' LIMIT 10;
+SELECT spree_stores.id FROM spree_stores INNER JOIN spree_payment_methods_stores ON spree_stores.id = spree_payment_methods_stores.store_id WHERE spree_stores.deleted_at IS NULL AND spree_payment_methods_stores.payment_method_id = 9394 ORDER BY spree_stores.created_at ASC;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_products WHERE spree_products.id IS NOT NULL AND spree_products.slug = 'kyyxrmazhguioqieouyyukjrc' LIMIT 10;
+SELECT spree_stores.id FROM spree_stores INNER JOIN spree_payment_methods_stores ON spree_stores.id = spree_payment_methods_stores.store_id WHERE spree_stores.deleted_at IS NULL AND spree_payment_methods_stores.payment_method_id = 9394 ORDER BY spree_stores.created_at ASC LIMIT 1;

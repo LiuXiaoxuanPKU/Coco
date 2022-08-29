@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_payments WHERE spree_payments.order_id = 7122 AND source_type = 'Spree::Payment' AND amount < 0 AND state = 'completed' LIMIT 3;
+SELECT COUNT(*) FROM spree_adjustments WHERE spree_adjustments.adjustable_id = 2961 AND spree_adjustments.adjustable_type = 'Spree::LineItem' AND spree_adjustments.amount >= 0;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_payments WHERE spree_payments.order_id = 7122 AND source_type = 'Spree::Payment' AND state = 'completed' LIMIT 3;
+SELECT COUNT(*) FROM spree_adjustments WHERE spree_adjustments.adjustable_id = 2961 AND spree_adjustments.adjustable_type = 'Spree::LineItem';

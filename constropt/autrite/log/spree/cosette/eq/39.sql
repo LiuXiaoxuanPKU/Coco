@@ -1243,8 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = True AND spree_stock_items.variant_id IN (1, 1);
+SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_products_taxons ON spree_taxons.id = spree_products_taxons.taxon_id INNER JOIN spree_taxonomies ON spree_taxonomies.id = spree_taxons.taxonomy_id WHERE spree_products_taxons.product_id = 7894 AND spree_taxonomies.store_id = 7666;
 -- Rewritten Queries
-SELECT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.active = True;
-SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.active = True;
-SELECT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = True AND spree_stock_items.variant_id IN (1, 1);
+SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_products_taxons ON spree_taxons.id = spree_products_taxons.taxon_id INNER JOIN spree_taxonomies ON spree_taxonomies.id = spree_taxons.taxonomy_id WHERE spree_products_taxons.product_id = 7894 AND spree_taxonomies.store_id = 7666 LIMIT 1;

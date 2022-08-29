@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.name = 'ippefyqrsjyisipknusml' AND spree_product_properties.value = 'Nike' AND spree_products.id = 5988 LIMIT 2;
+SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'fake' AND spree_properties.name = 'sdqvlzcgnotsowvvsmecpudzqwmsovihuhhzmwktpsyfgkiqwkwnhmnwbxibrrbqmbutf';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'Nike' AND spree_products.id = 5988 LIMIT 2;
+SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'fake' AND spree_properties.name = 'sdqvlzcgnotsowvvsmecpudzqwmsovihuhhzmwktpsyfgkiqwkwnhmnwbxibrrbqmbutf' LIMIT 1;

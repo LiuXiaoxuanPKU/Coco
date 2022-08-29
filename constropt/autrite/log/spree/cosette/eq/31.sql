@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_stores.id FROM spree_stores INNER JOIN spree_payment_methods_stores ON spree_stores.id = spree_payment_methods_stores.store_id WHERE spree_stores.deleted_at IS NULL AND spree_payment_methods_stores.payment_method_id = 56 ORDER BY spree_stores.created_at ASC;
+SELECT spree_option_types.* FROM spree_option_types INNER JOIN spree_option_type_prototypes ON spree_option_types.id = spree_option_type_prototypes.option_type_id WHERE spree_option_type_prototypes.prototype_id = 4613 ORDER BY spree_option_types.position ASC;
 -- Rewritten Queries
-SELECT spree_stores.id FROM spree_stores INNER JOIN spree_payment_methods_stores ON spree_stores.id = spree_payment_methods_stores.store_id WHERE spree_stores.deleted_at IS NULL AND spree_payment_methods_stores.payment_method_id = 56 ORDER BY spree_stores.created_at ASC LIMIT 1;
+SELECT spree_option_types.* FROM spree_option_types INNER JOIN spree_option_type_prototypes ON spree_option_types.id = spree_option_type_prototypes.option_type_id WHERE spree_option_type_prototypes.prototype_id = 4613 ORDER BY spree_option_types.position ASC LIMIT 1;

@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_states.* FROM spree_states WHERE spree_states.country_id = 3994 ORDER BY spree_states.name ASC;
+SELECT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.name IS NULL LIMIT 5;
 -- Rewritten Queries
-SELECT spree_states.* FROM spree_states WHERE spree_states.country_id = 3994 ORDER BY spree_states.name ASC LIMIT 1;
+SELECT spree_stock_locations.* FROM spree_stock_locations WHERE False LIMIT 5;

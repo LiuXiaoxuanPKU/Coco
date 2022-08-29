@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_products.* FROM spree_products INNER JOIN spree_product_promotion_rules ON spree_products.id = spree_product_promotion_rules.product_id WHERE spree_products.deleted_at IS NULL AND spree_product_promotion_rules.promotion_rule_id = 2645;
+SELECT spree_products.* FROM spree_products INNER JOIN spree_product_promotion_rules ON spree_products.id = spree_product_promotion_rules.product_id WHERE spree_products.deleted_at IS NULL AND spree_product_promotion_rules.promotion_rule_id = 6976;
 -- Rewritten Queries
-SELECT spree_products.* FROM spree_products INNER JOIN spree_product_promotion_rules ON spree_products.id = spree_product_promotion_rules.product_id WHERE spree_products.deleted_at IS NULL AND spree_product_promotion_rules.promotion_rule_id = 2645 LIMIT 1;
+SELECT spree_products.* FROM spree_products INNER JOIN spree_product_promotion_rules ON spree_products.id = spree_product_promotion_rules.product_id WHERE spree_products.deleted_at IS NULL AND spree_product_promotion_rules.promotion_rule_id = 6976 LIMIT 1;

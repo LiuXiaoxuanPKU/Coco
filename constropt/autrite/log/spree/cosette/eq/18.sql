@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_option_value_variants.* FROM spree_option_value_variants WHERE spree_option_value_variants.variant_id = 4322 AND spree_option_value_variants.option_value_id = 2404;
+SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_prototype_taxons ON spree_taxons.id = spree_prototype_taxons.taxon_id WHERE spree_prototype_taxons.prototype_id = 5338;
 -- Rewritten Queries
-SELECT spree_option_value_variants.* FROM spree_option_value_variants WHERE spree_option_value_variants.variant_id = 4322 AND spree_option_value_variants.option_value_id = 2404 LIMIT 1;
+SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_prototype_taxons ON spree_taxons.id = spree_prototype_taxons.taxon_id WHERE spree_prototype_taxons.prototype_id = 5338 LIMIT 1;

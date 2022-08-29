@@ -1243,6 +1243,7 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_option_types ON spree_product_option_types.product_id = spree_products.id INNER JOIN spree_option_types ON spree_option_types.id = spree_product_option_types.option_type_id WHERE spree_products.deleted_at IS NULL AND spree_option_types.id = 1033;
+SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = True AND spree_stock_items.variant_id IN (7, 3981, 4923);
 -- Rewritten Queries
-SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_option_types ON spree_product_option_types.product_id = spree_products.id INNER JOIN spree_option_types ON spree_option_types.id = spree_product_option_types.option_type_id WHERE spree_products.deleted_at IS NULL AND spree_option_types.id = 1033 LIMIT 1;
+SELECT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.active = True;
+SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.active = True;

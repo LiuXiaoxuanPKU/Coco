@@ -183,6 +183,8 @@ class AddLimitOne(Rule):
         self.name = "AddLimitOne"
         
     def apply_single(self, q):
+        if 'union_all' in q or 'union' in q:
+            return []
         if 'limit' not in q:
             rewritten_q =  copy.deepcopy(q)
             rewritten_q['limit'] = 1

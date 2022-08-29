@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_products_taxons.* FROM spree_products_taxons WHERE spree_products_taxons.product_id = 9862 AND spree_products_taxons.taxon_id = 8956;
+SELECT spree_products_taxons.* FROM spree_products_taxons WHERE spree_products_taxons.product_id = 5883 AND spree_products_taxons.taxon_id = 5512;
 -- Rewritten Queries
-SELECT spree_products_taxons.* FROM spree_products_taxons WHERE spree_products_taxons.product_id = 9862 AND spree_products_taxons.taxon_id = 8956 LIMIT 1;
+SELECT spree_products_taxons.* FROM spree_products_taxons WHERE spree_products_taxons.product_id = 5883 AND spree_products_taxons.taxon_id = 5512 LIMIT 1;

@@ -1,3 +1,4 @@
+import traceback
 import os
 import json, random, hashlib
 from collections import OrderedDict
@@ -5,6 +6,7 @@ from constraint import UniqueConstraint
 from evaluator import Evaluator
 random.seed(0)
 
+db_seed = 0
 def test_unorder_list_eq(l1, l2):
     if len(l1) != len(l2):
         return False
@@ -57,6 +59,7 @@ def test_query_result_equivalence(r1, r2):
     return True
         
 def get_field_value(table_field, cache, connect_str, field_idx = -1):
+    global db_seed
     if table_field.startswith("LOWER"):
         table_field = table_field[6:-1]
     
@@ -75,8 +78,12 @@ def get_field_value(table_field, cache, connect_str, field_idx = -1):
             field = field[1:]
         if table.startswith('('):
             table = table[1:]
-        SQL = "SELECT SETSEED(0); SELECT %s FROM %s ORDER BY RANDOM() LIMIT 1" % (field, table)
+        SQL = "SELECT SETSEED(%f); SELECT %s FROM %s ORDER BY RANDOM() LIMIT 1" % (db_seed/100000, field, table)
+        db_seed += 1
         ret =  Evaluator.evaluate_query(SQL, connect_str)
+        if len(ret) == 0 or ret[0][0] is None:
+            print(SQL)
+            print(ret)
     except:
         return []
     cache[cache_name] = ret

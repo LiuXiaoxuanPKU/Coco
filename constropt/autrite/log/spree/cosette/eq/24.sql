@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT COUNT(*) FROM spree_option_values INNER JOIN spree_option_value_variants ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_option_value_variants.variant_id = 4322;
+SELECT COUNT(*) FROM spree_option_values INNER JOIN spree_option_value_variants ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_option_value_variants.variant_id = 4096;
 -- Rewritten Queries
-SELECT COUNT(*) FROM spree_option_values INNER JOIN spree_option_value_variants ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_option_value_variants.variant_id = 4322 LIMIT 1;
+SELECT COUNT(*) FROM spree_option_values INNER JOIN spree_option_value_variants ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_option_value_variants.variant_id = 4096 LIMIT 1;

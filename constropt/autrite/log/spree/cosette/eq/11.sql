@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_product_properties WHERE spree_product_properties.property_id IS NULL AND spree_product_properties.product_id = 3856 LIMIT 4;
+SELECT 1 AS "one" FROM spree_payments WHERE spree_payments.order_id = 2806 AND source_type = 'Spree::Payment' AND amount < 0 AND state = 'completed' LIMIT 3;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_product_properties WHERE False AND spree_product_properties.product_id = 3856 LIMIT 4;
+SELECT 1 AS "one" FROM spree_payments WHERE spree_payments.order_id = 2806 AND source_type = 'Spree::Payment' AND state = 'completed' LIMIT 3;
