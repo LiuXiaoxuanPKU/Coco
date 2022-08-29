@@ -60,7 +60,7 @@ CONNECT_MAP = {
     "forem" : "user=ubuntu password=my_password dbname=Forem_development",
     "openproject" : "user=openproject password=my_password dbname=openproject_dev",
     "mastodon": "user=ubuntu password=my_password dbname=mastodon_development",
-    "spree": "user=ubuntu password=my_password dbname=sandbox_development"
+    "spree": "user=ubuntu password=my_password dbname=spree_core_spree_test"
 }
 
 class RewriteQuery:
