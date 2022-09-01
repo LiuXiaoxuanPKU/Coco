@@ -26,7 +26,7 @@ class FileType(Enum):
 def get_filename(_type, appname):
     workdir = os.getcwd()
     path = Path(workdir)
-    projectdir = path.parent.parent.parent.absolute()
+    projectdir = path.parent.absolute()
     m = {
             # input query, constraint, create table sql
             FileType.TEST_PROVE_Q : "log/%s/prove.sql" % appname,
@@ -48,7 +48,7 @@ def get_filename(_type, appname):
             FileType.ENUM_EVAL : "log/%s/enum_evaluation_time" % appname,
             
             FileType.EMPTY_RESULT_QUERY: "log/%s/empty_query" % appname,
-            FileType.PRECHECK_STR2INT_NUM : "../log/precheck_strtoint_num",
+            FileType.PRECHECK_STR2INT_NUM : "log/precheck_strtoint_num",
             FileType.REWRITE_TIME: "log/%s/rewrite_time" % appname,
             FileType.VERIFIER_TIME: "log/%s/verify_time" % appname
     }
