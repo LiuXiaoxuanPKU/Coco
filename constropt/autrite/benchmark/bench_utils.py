@@ -84,7 +84,7 @@ def get_valid_queries(queries, connect_str):
             Evaluator.evaluate_query(q_param, connect_str)
             valid_queries.append(q)
         except:
-            print(traceback.format_exc())
+            # print(traceback.format_exc())
             pass
     print("Total queries: %d, valid queries: %d" %
           (len(queries), len(valid_queries)))

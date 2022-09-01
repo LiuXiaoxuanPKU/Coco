@@ -58,7 +58,7 @@ appname = args.app
 query_cnt = int(args.cnt)
 if query_cnt == -1:
     app_to_cnt = {"redmine": 262462, "forem": 183483, "openproject": 22021}
-    query_cnt = 182483
+    query_cnt = app_to_cnt[appname]
 
 offset = 0
 run_times = 1
@@ -188,12 +188,12 @@ def timing(qs, stage, times=run_times):
     for q in qs:
         try:
             if stage == Stage.BEFORE:
-                # timings = [Evaluator.evaluate_actual_time(q.before_sql, CONNECT_MAP[appname]) for _ in range(times)]
-                timings = [Evaluator.evaluate_cost(q.before_sql, CONNECT_MAP[appname]) for _ in range(times)]
+                timings = [Evaluator.evaluate_actual_time(q.before_sql, CONNECT_MAP[appname]) for _ in range(times)]
+                # timings = [Evaluator.evaluate_cost(q.before_sql, CONNECT_MAP[appname]) for _ in range(times)]
                 q.before_time = mean(timings)
             elif stage == Stage.AFTER:
-                # timings = [Evaluator.evaluate_actual_time(q.after_sql, CONNECT_MAP[appname]) for _ in range(times)]
-                timings = [Evaluator.evaluate_cost(q.after_sql, CONNECT_MAP[appname]) for _ in range(times)]
+                timings = [Evaluator.evaluate_actual_time(q.after_sql, CONNECT_MAP[appname]) for _ in range(times)]
+                # timings = [Evaluator.evaluate_cost(q.after_sql, CONNECT_MAP[appname]) for _ in range(times)]
                 q.after_time = mean(timings)
             timing_qs.append(q)
         except (TypeError, psycopg2.errors.UndefinedFunction) as e:
