@@ -148,7 +148,7 @@ class FormatConstraintQuery(unittest.TestCase):
 
 
 class GeneralCase(unittest.TestCase):
-
+    
     def test_more_them_one_extarction(self):
         cs = [
              UniqueConstraint("projects", "id", False, "builtin", None),
@@ -158,6 +158,13 @@ class GeneralCase(unittest.TestCase):
              UniqueConstraint("projects", "name", False, "builtin", None)
              ]
         q = "SELECT projects.* FROM projects WHERE projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND (identifier = 'subproject1' OR LOWER(name) = 'subproject1') ORDER BY projects.id ASC LIMIT 6" 
+        q = parse(q)
+        extracted = ExtractQueryRule(cs).apply(q)
+        self.assertEqual(len(extracted), 1)
+    
+    def test_subquery_in_where_with_op_not(self):
+        cs = [UniqueConstraint("statuses", "id", False, "builtin", None)]
+        q = "SELECT statuses.id FROM statuses WHERE statuses.account_id = 1 AND statuses.id <= 108695304470528000 AND statuses.deleted_at IS NULL AND NOT((SELECT * FROM media_attachments AS media WHERE media.status_id = statuses.id) IS NOT NULL) ORDER BY statuses.id ASC LIMIT 2"
         q = parse(q)
         extracted = ExtractQueryRule(cs).apply(q)
         self.assertEqual(len(extracted), 1)
