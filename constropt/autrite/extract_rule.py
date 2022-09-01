@@ -25,7 +25,7 @@ class ExtractQueryRule(rule.Rule):
         if not self.contain_join(q):
             table = from_clause
             if isinstance(table, dict):
-                # print("[Warning] Does not handle dict table (alias) %s for now" % table)
+                print("[Warning] Does not handle dict table (alias) %s for now" % table)
                 return []
             if not table in self.cs_tables:
                 return []
@@ -107,9 +107,9 @@ class ExtractQueryRule(rule.Rule):
                 aggr_op = list(value.keys())[0]
                 value = value[aggr_op]
             if "*" in value:
+                return False
                 return table in self.inclusion_t
             if not isinstance(value, str):
-                print("[Warning] Does not handle value %s of type %s" % (value, type(value)))
                 return False
             elif table is not None and value in self.table_to_field[table]:
                 return True
@@ -144,20 +144,50 @@ class ExtractQueryRule(rule.Rule):
             if op == "not":
                 clause = clause[op]
                 op = list(clause.keys())[0]
+            
+            if isinstance(clause[op], dict):
+                keys = list(clause[op].keys())
+                if len(keys) == 1:
+                    key = keys[0]
+                    value = clause[op][key]
+                    table, field = value.split('.')
+                    return field in self.table_to_field[table]
+                else:
+                    print("[Warning] 1. Does not handle predicate %s of type %s for now" % (clause[op], type(clause[op])))
+                    return False
+            if isinstance(clause[op], str):
+                items = clause[op].split('.')
+                if len(items) == 1:
+                    return items[0] in self.table_to_field[table]
+                elif len(items) == 2:
+                    t, f = items
+                    return f in self.table_to_field[t]
+                else:
+                    print("[Error] Unidentified field %s" % clause[op])
+                    return False
             if not isinstance(clause[op], list):
-                print("[Warning] 1. Does not handle predicate %s of type %s for now" % (clause[op], type(clause[op])))
+                print("[Warning] 2. Does not handle predicate %s of type %s for now" % (clause[op], type(clause[op])))
                 return False
             if isinstance(clause[op][0], int):
                 return False
+            if isinstance(clause[op][0], dict):
+                keys = list(clause[op][0].keys())
+                if len(keys) == 1:
+                    key = keys[0]
+                    value = clause[op][0][key]
+                    table, field = value.split('.')
+                    return field in self.table_to_field[table]
             if not isinstance(clause[op][0], str):
-                print("[Warning] 2. Does not handle predicate %s of type %s for now" % (clause[op][0], type(clause[op][0])))
+                print("[Warning] 3. Does not handle predicate %s of type %s for now" % (clause[op][0], type(clause[op][0])))
                 return False
             return clause[op][0] in self.table_to_field[table]
 
     # check on_clause inside from_clause
     def check_join_from(self, clause) -> bool:
         if not isinstance(clause, dict):
-            print("[Warning] Cannot handle join of %s, expect dict" % clause)
+            # We assume there are no 
+            # inclusion/format/length constraint fields
+            # in the join predicate
             return False
         if "on" in clause[1].keys():
             on_clause = clause[1]["on"]
@@ -167,6 +197,14 @@ class ExtractQueryRule(rule.Rule):
 
     # check where clauses, return true if where clause contain inclusion constraints, otherwise false
     def check_where(self, clause) -> bool:
+        def check_field(s):
+            items = s.split(".")
+            if len(items) == 1:
+                print("[Warning] Does not handle field %s without table name" % s)
+                return False
+            t, f = items
+            return t in self.cs_tables and f in self.table_to_field[t]
+            
         if not isinstance(clause, dict):
             print("[Warning] Cannot handle clause of %s, expect dict" % clause)
             return False
@@ -178,20 +216,17 @@ class ExtractQueryRule(rule.Rule):
                     return True
         # base case: does not contain and/or
         else:
+            if isinstance(clause[op], str):
+                return check_field(clause[op])
+        
             if not isinstance(clause[op], list):
-                # print("[Warning] Does not handle clause %s of type %s, expect list" %(clause[op], type(clause[op])))
+                print("[Warning] Does not handle clause %s of type %s, expect list" %(clause[op], type(clause[op])))
                 self.warning_cnt += 1
                 # print(clause)
                 return False
+            
             if not isinstance(clause[op][0], str):
                 return False
-            l = clause[op][0].split(".")
-            if len(l) == 1:
-                print("[Warning] Does not handle field %s without table name" % clause[op][0])
-                return False
-            t, f = l
-            if isinstance(f, str):
-                return t in self.cs_tables and f in self.table_to_field[t]
-            else: 
-                return False
+            
+            return check_field(clause[op][0])
         

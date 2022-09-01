@@ -1,12 +1,12 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import constraint
 from utils import GlobalExpRecorder
 from extract_rule import ExtractQueryRule
 from config import FileType, get_filename
 from loader import Loader
 import traceback
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # ------------------------------------------------------------------------------
 # This script counts queries has table column with certain type(s) of constraints
@@ -17,7 +17,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # ========================== static variables =========================
 app_to_cnt = {"redmine": 262462, "forem": 183483,
-              "openproject": 22021, "mastodon": 10000}
+              "openproject": 22021, "mastodon": 1000000, "spree": 1000000}
 # app_to_cnt = {"redmine": 100, "forem": 100, "openproject": 100}
 appnames = ['forem', 'redmine', 'openproject']
 appnames = ['mastodon']
