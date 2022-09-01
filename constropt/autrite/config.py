@@ -26,7 +26,7 @@ class FileType(Enum):
 def get_filename(_type, appname):
     workdir = os.getcwd()
     path = Path(workdir)
-    projectdir = path.parent.absolute()
+    projectdir = path.parent.parent.absolute()
     m = {
             # input query, constraint, create table sql
             FileType.TEST_PROVE_Q : "log/%s/prove.sql" % appname,
