@@ -163,8 +163,8 @@ class GeneralCase(unittest.TestCase):
         self.assertEqual(len(extracted), 1)
     
     def test_subquery_in_where_with_op_not(self):
-        cs = [UniqueConstraint("statuses", "id", False, "builtin", None)]
-        q = "SELECT statuses.id FROM statuses WHERE statuses.account_id = 1 AND statuses.id <= 108695304470528000 AND statuses.deleted_at IS NULL AND NOT((SELECT * FROM media_attachments AS media WHERE media.status_id = statuses.id) IS NOT NULL) ORDER BY statuses.id ASC LIMIT 2"
+        cs = [UniqueConstraint("media_attachments", "status_id", False, "builtin", None)]
+        q = "SELECT statuses.id FROM statuses WHERE statuses.account_id = 1 AND statuses.id <= 108695304470528000 AND statuses.deleted_at IS NULL AND NOT((SELECT * FROM media_attachments WHERE media_attachments.status_id = statuses.id) IS NOT NULL) ORDER BY statuses.id ASC LIMIT 2"
         q = parse(q)
         extracted = ExtractQueryRule(cs).apply(q)
         self.assertEqual(len(extracted), 1)
