@@ -137,7 +137,6 @@ def test_rewrite_types():
     assert(rewritten_queries[2].rewrites == [rule.RewriteNullPredicate(c1), rule.RewriteNullPredicate(c2)] or
            rewritten_queries[2].rewrites == [rule.RewriteNullPredicate(c2), rule.RewriteNullPredicate(c1)])
 
-
 if __name__ == "__main__":
     test_get_constraints()
     test_get_rules()

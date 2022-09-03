@@ -3,6 +3,7 @@ from pathlib import Path
 from enum import IntEnum
 from dataclasses import dataclass
 from typing import List
+from mo_sql_parsing import format
 
 class FileType(IntEnum):
     TEST_PROVE_Q = 1

@@ -1,21 +1,23 @@
 {
     "org": {
-        "sql": "SELECT mentions.id, mentions.account_id FROM mentions INNER JOIN accounts ON accounts.id = mentions.account_id INNER JOIN users ON users.account_id = accounts.id INNER JOIN follows ON accounts.id = follows.account_id WHERE mentions.status_id = \"$1\" AND follows.target_account_id = \"$2\" AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:41:06.925285' ORDER BY mentions.id ASC LIMIT \"$3\"",
-        "cost": 29.33
+        "sql": "SELECT DISTINCT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = \"$1\" ORDER BY follow_requests.id DESC LIMIT \"$2\"",
+        "cost": 291.94,
+        "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT mentions.id, mentions.account_id FROM mentions INNER JOIN accounts ON accounts.id = mentions.account_id INNER JOIN follows ON accounts.id = follows.account_id WHERE mentions.status_id = \"$1\" AND follows.target_account_id = \"$2\" AND accounts.domain IS NULL ORDER BY mentions.id ASC LIMIT \"$3\"",
-            "cost": 28.75,
+            "sql": "SELECT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = \"$1\" ORDER BY follow_requests.id DESC LIMIT \"$2\"",
+            "cost": 291.93,
             "rewrite_types": [
-                "RemoveJoin"
+                "RemoveDistinct"
             ]
         },
         {
-            "sql": "SELECT mentions.id, mentions.account_id FROM mentions INNER JOIN accounts ON accounts.id = mentions.account_id INNER JOIN users ON users.account_id = accounts.id WHERE mentions.status_id = \"$1\" AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:41:06.925285' ORDER BY mentions.id ASC LIMIT \"$3\"",
-            "cost": 29.24,
+            "sql": "SELECT follow_requests.id AS alias_0, accounts.id FROM accounts INNER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = \"$1\" ORDER BY follow_requests.id DESC LIMIT \"$2\"",
+            "cost": 291.93,
             "rewrite_types": [
-                "RemoveJoin"
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
             ]
         }
     ]

@@ -1,22 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
-        "cost": 16.63
+        "sql": "SELECT custom_emojis.* FROM custom_emojis LEFT OUTER JOIN custom_emoji_categories ON custom_emoji_categories.id = custom_emojis.category_id WHERE custom_emojis.domain IS NULL ORDER BY custom_emoji_categories.name ASC, custom_emojis.shortcode ASC",
+        "cost": 471.2,
+        "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
-            "cost": 16.62,
+            "sql": "SELECT custom_emojis.* FROM custom_emojis INNER JOIN custom_emoji_categories ON custom_emoji_categories.id = custom_emojis.category_id WHERE custom_emojis.domain IS NULL ORDER BY custom_emoji_categories.name ASC, custom_emojis.shortcode ASC LIMIT 1",
+            "cost": 396.28,
             "rewrite_types": [
-                "RemoveDistinct",
-                "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
-            "cost": 16.62,
-            "rewrite_types": [
-                "RemoveDistinct",
+                "AddLimitOne",
                 "ReplaceOuterJoin"
             ]
         }

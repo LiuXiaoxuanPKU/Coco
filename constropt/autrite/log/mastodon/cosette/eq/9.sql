@@ -1,14 +1,30 @@
 {
     "org": {
-        "sql": "SELECT mentions.status_id, mentions.account_id FROM mentions WHERE mentions.silent = \"$1\" AND mentions.status_id IN (\"$2\", \"$3\")",
-        "cost": 19.03
+        "sql": "SELECT 1 AS one FROM follows WHERE follows.account_id IS NULL AND follows.target_account_id IS NULL LIMIT \"$1\"",
+        "cost": 4.3,
+        "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT mentions.status_id, mentions.account_id FROM mentions WHERE mentions.silent = \"$1\" AND mentions.status_id IN (\"$2\", \"$3\") LIMIT 1",
-            "cost": 10.46,
+            "sql": "SELECT 1 AS one FROM follows WHERE follows.account_id IS NULL AND False LIMIT \"$1\"",
+            "cost": 0.0,
             "rewrite_types": [
-                "AddLimitOne"
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM follows WHERE False AND follows.target_account_id IS NULL LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM follows WHERE False AND False LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RewriteNullPredicate"
             ]
         }
     ]

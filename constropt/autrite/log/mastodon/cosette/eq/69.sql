@@ -1,12 +1,28 @@
 {
     "org": {
-        "sql": "SELECT name, custom_emoji_id, COUNT(*) AS count, (SELECT 1 FROM announcement_reactions AS r WHERE r.account_id = 108774566504673364 AND r.announcement_id = announcement_reactions.announcement_id AND r.name = announcement_reactions.name) IS NOT NULL AS me FROM announcement_reactions WHERE announcement_reactions.announcement_id = \"$1\" GROUP BY announcement_reactions.announcement_id, announcement_reactions.name, announcement_reactions.custom_emoji_id ORDER BY MIN(created_at) ASC",
-        "cost": 20.18
+        "sql": "SELECT follows.id FROM follows WHERE follows.target_account_id = \"$1\" AND follows.account_id IN (SELECT accounts.id FROM accounts WHERE accounts.domain IS NULL) AND follows.account_id NOT IN (SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = \"$2\" AND accounts.domain IS NULL ORDER BY follows.id DESC) AND follows.account_id <> \"$3\" ORDER BY follows.id ASC LIMIT \"$4\"",
+        "cost": 48.28,
+        "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT name, custom_emoji_id, COUNT(*) AS count, (SELECT 1 FROM announcement_reactions AS r WHERE r.account_id = 108774566504673364 AND r.announcement_id = announcement_reactions.announcement_id AND r.name = announcement_reactions.name) IS NOT NULL AS me FROM announcement_reactions WHERE announcement_reactions.announcement_id = \"$1\" GROUP BY announcement_reactions.announcement_id, announcement_reactions.name, announcement_reactions.custom_emoji_id ORDER BY MIN(created_at) ASC LIMIT 1",
-            "cost": 15.88,
+            "sql": "SELECT follows.id FROM follows WHERE follows.target_account_id = \"$1\" AND follows.account_id IN (SELECT accounts.id FROM accounts WHERE accounts.domain IS NULL LIMIT 1) AND follows.account_id NOT IN (SELECT accounts.id FROM accounts WHERE accounts.domain IS NULL ORDER BY follows.id DESC LIMIT 1) AND follows.account_id <> \"$3\" ORDER BY follows.id ASC LIMIT \"$4\"",
+            "cost": 12.07,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT follows.id FROM follows WHERE follows.target_account_id = \"$1\" AND follows.account_id IN (SELECT accounts.id FROM accounts WHERE accounts.domain IS NULL LIMIT 1) AND follows.account_id NOT IN (SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = \"$2\" AND accounts.domain IS NULL ORDER BY follows.id DESC) AND follows.account_id <> \"$3\" ORDER BY follows.id ASC LIMIT \"$4\"",
+            "cost": 40.18,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT follows.id FROM follows WHERE follows.target_account_id = \"$1\" AND follows.account_id IN (SELECT accounts.id FROM accounts WHERE accounts.domain IS NULL LIMIT 1) AND follows.account_id NOT IN (SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = \"$2\" AND accounts.domain IS NULL ORDER BY follows.id DESC LIMIT 1) AND follows.account_id <> \"$3\" ORDER BY follows.id ASC LIMIT \"$4\"",
+            "cost": 40.18,
             "rewrite_types": [
                 "AddLimitOne"
             ]

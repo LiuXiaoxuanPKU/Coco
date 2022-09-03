@@ -1,14 +1,30 @@
 {
     "org": {
-        "sql": "SELECT account_domain_blocks.domain FROM account_domain_blocks WHERE account_domain_blocks.account_id = \"$1\"",
-        "cost": 4.32
+        "sql": "SELECT 1 AS one FROM blocks WHERE blocks.account_id IS NULL AND blocks.target_account_id IS NULL LIMIT \"$1\"",
+        "cost": 4.3,
+        "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT account_domain_blocks.domain FROM account_domain_blocks WHERE account_domain_blocks.account_id = \"$1\" LIMIT 1",
-            "cost": 2.3,
+            "sql": "SELECT 1 AS one FROM blocks WHERE blocks.account_id IS NULL AND False LIMIT \"$1\"",
+            "cost": 0.0,
             "rewrite_types": [
-                "AddLimitOne"
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM blocks WHERE False AND blocks.target_account_id IS NULL LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM blocks WHERE False AND False LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RewriteNullPredicate"
             ]
         }
     ]

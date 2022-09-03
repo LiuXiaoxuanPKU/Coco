@@ -1,7 +1,8 @@
 {
     "org": {
         "sql": "SELECT favourites.account_id FROM favourites WHERE favourites.status_id = \"$1\"",
-        "cost": 11.4
+        "cost": 11.4,
+        "rewrite_types": []
     },
     "rewrites": [
         {
