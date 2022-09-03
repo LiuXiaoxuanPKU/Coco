@@ -1,5 +1,5 @@
 import pickle
-import queue
+import traceback
 from mo_sql_parsing import parse, format
 import json
 import constraint
@@ -86,7 +86,7 @@ class Loader:
                 q_obj = parse(line)
                 q = RewriteQuery(format(q_obj), q_obj)
                 rewrite_qs.append(q)
-            except:
+            except Exception as e:
                 fail_raw_queries.append(line)
         print("======================[Success] Parse unique queries %d" % len(rewrite_qs))
         print("======================[Fail]    Parse %d queries" % len(fail_raw_queries))

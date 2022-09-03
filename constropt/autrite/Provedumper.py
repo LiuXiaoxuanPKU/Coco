@@ -1,3 +1,4 @@
+import json
 from config import get_filename, FileType
 
 class ProveDumper:
@@ -11,10 +12,10 @@ class ProveDumper:
                 tokens[i] = '"' + t + '"'
         q = ' '.join(tokens)
         return q 
-        
-    def verify(self, appname, org_q, constraints, rewritten_queries, id, counter = False):
-        if len(rewritten_queries) == 0:
-            return []
+    
+    @staticmethod
+    def dump_param_rewrite(appname, org_q, constraints, rewritten_queries, id, counter = False):
+        assert(len(rewritten_queries) > 0)
         # Dump SQLs
         sql_create_path = get_filename(FileType.VERIFIER_INPUT, appname)
         with open(sql_create_path, "r") as f:
@@ -28,11 +29,19 @@ class ProveDumper:
         if counter:
             path = get_filename(FileType.REWRITE_OUTPUT_SQL_NOT_EQ, appname) 
         else:
-            path = get_filename(FileType.REWRITE_OUTPUT_SQL_EQ, appname) 
+            path = get_filename(FileType.REWRITE_OUTPUT_SQL_EQ, appname)
+        
+        
+        result =  {
+            "org" : org_q.to_dict(),
+            "rewrites" : [q.to_dict() for q in rewritten_queries]
+        }
+        
         q_path = "%s/%d.sql" % (path, id)
         print("write to %s, length %d" % (q_path, len(qs)))
         with open (q_path, "w") as f:
-            f.writelines(qs)
+            f.write(json.dumps(result, indent=4))
+            # f.writelines(qs)
         
         equivalent_queries = rewritten_queries
         return equivalent_queries

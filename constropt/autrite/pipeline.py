@@ -130,6 +130,7 @@ if __name__ == '__main__':
             # retain rewrites with lower cost
             try:
                 org_cost = Evaluator.evaluate_cost(q.q_raw_param, connect_str)
+                q.estimate_cost = org_cost
             except:
                 print("[Error] Fail to evaluate %s" % q.q_raw_param)
                 continue
@@ -137,7 +138,7 @@ if __name__ == '__main__':
             for rq in rewritten_queries:
                 try:
                     estimate_cost = Evaluator.evaluate_cost(rq.q_raw_param, connect_str) 
-                    if estimate_cost <= org_cost:
+                    if estimate_cost < org_cost:
                         rq.estimate_cost = estimate_cost 
                         rewritten_queries_lower_cost.append(rq)
                     else:
@@ -165,7 +166,7 @@ if __name__ == '__main__':
                 if len(not_eq_qs) == 0:
                     continue
                 # dump counter examples
-                ProveDumper().verify(appname, q, constraints, not_eq_qs, rewrite_cnt, counter=True)
+                ProveDumper.dump_param_rewrite(appname, q, constraints, not_eq_qs, rewrite_cnt, counter=True)
                 rewrite_cnt += 1
                 continue
             
@@ -183,7 +184,7 @@ if __name__ == '__main__':
             # ========== Dump outputs to cosette ==========
             rewrite_cnt += 1
             total_candidate_cnt.append(len(rewritten_queries_lower_cost_after_test))
-            ProveDumper().verify(appname, q, constraints, rewritten_queries_lower_cost_after_test, rewrite_cnt)
+            ProveDumper.dump_param_rewrite(appname, q, constraints, rewritten_queries_lower_cost_after_test, rewrite_cnt)
     
 
         # print(enumerate_cnts) 

@@ -1,32 +1,37 @@
 import os
 from pathlib import Path
-from enum import Enum
+from enum import IntEnum
+from dataclasses import dataclass
+from typing import List
 
-class FileType(Enum):
+from rule import *
+
+class FileType(IntEnum):
     TEST_PROVE_Q = 1
     RAW_QUERY = 2
     CONSTRAINT = 3
     VERIFIER_INPUT = 4
+   
+    REWRITE_OUTPUT_SQL_EQ = 6
+    REWRITE_OUTPUT_SQL_NOT_EQ = 7
 
-    REWRITE_OUTPUT_SQL_EQ = 5
-    REWRITE_OUTPUT_SQL_NOT_EQ = 6
+    VERIFIER_OUTPUT_IDX = 8
+    VERIFIER_OUTPUT_SQL = 9
 
-    VERIFIER_OUTPUT_IDX = 7
-    VERIFIER_OUTPUT_SQL = 8
-
-    REWRITE_PERF = 9
-    DB_PERF = 10
-    ENUM_EVAL = 11 
+    REWRITE_PERF = 10
+    DB_PERF = 11
+    ENUM_EVAL = 12 
     
-    EMPTY_RESULT_QUERY = 12
-    PRECHECK_STR2INT_NUM =13
-    REWRITE_TIME = 14
-    VERIFIER_TIME = 15
+    EMPTY_RESULT_QUERY = 13
+    PRECHECK_STR2INT_NUM =14
+    REWRITE_TIME = 15
+    VERIFIER_TIME = 16
   
-def get_filename(_type, appname):
+def get_filename(_type, appname, rewrite_types=None):
     workdir = os.getcwd()
     path = Path(workdir)
     projectdir = path.parent.parent.absolute()
+      
     m = {
             # input query, constraint, create table sql
             FileType.TEST_PROVE_Q : "log/%s/prove.sql" % appname,
@@ -63,25 +68,36 @@ CONNECT_MAP = {
     "spree": "user=ubuntu password=my_password dbname=spree_core_spree_test",
     "openstreetmap": "user=ubuntu password=my_password dbname=openstreetmap"
 }
-
+   
+class RewriteType(IntEnum):
+    AddPredicate = 6
+    RewriteNullPredicate = 5
+    RemovePredicate = 4
+    RemoveJoin = 3
+    RemoveDistinct = 2
+    AddLimitOne = 1
+    ReplaceOuterJoin = 0
+    UnionToUnionAll = -1
+    
+@dataclass
 class RewriteQuery:
-    def __init__(self, q_raw, q_obj) -> None:
-        self.q_raw = q_raw
-        self.q_obj = q_obj # json representation of the query
-        self.rewrites = []
-        self.q_raw_param = None
-        self.estimate_cost = None # cost estimated by the verifier
-        
-PRIORITY_MAP = {
-    "AddPredicate" : 6,
-    "RewriteNullPredicate" : 5,
-    "RemovePredicate" : 4,
-    "RemoveJoin" : 3,
-    "RemoveDistinct" : 2,
-    "AddLimitOne" : 1,
-    "ReplaceOuterJoin": 0,
-    "UnionToUnionAll" : -1
-}
+    q_raw: str
+    q_obj: dict# json representation of the query
+    rewrites:List[str] = None
+    q_raw_param: str = ""
+    estimate_cost: int = -1 # cost estimated by the verifier
 
+    def to_dict(self):
+        if self.rewrites is None:
+            return {
+                "sql" : format(self.q_obj),
+                "cost" : self.estimate_cost,
+            }
+        return {
+            "sql" : format(self.q_obj),
+            "cost" : self.estimate_cost,
+            "rewrite_types" : [r.__class__.__name__.split('.')[-1] for r in self.rewrites]
+        }
+        
 # REWRITE_LIMIT = 100000000
 REWRITE_LIMIT = 100

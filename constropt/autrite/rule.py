@@ -2,7 +2,7 @@ import copy
 import z3
 from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
-from config import PRIORITY_MAP, REWRITE_LIMIT
+from config import RewriteType, REWRITE_LIMIT
 
 class Rule:
     def __init__(self, cs) -> None:
@@ -15,7 +15,7 @@ class Rule:
         return self.__hash__() == __o.__hash__()
     
     def __gt__(self, other):
-        return PRIORITY_MAP[self.name] < PRIORITY_MAP[other.name]
+        return RewriteType[self.name] < RewriteType[other.name]
         
     def __hash__(self) -> int:
         if type(self) in [AddPredicate, RewriteNullPredicate]:
