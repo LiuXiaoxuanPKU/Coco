@@ -4,8 +4,6 @@ from enum import IntEnum
 from dataclasses import dataclass
 from typing import List
 
-from rule import *
-
 class FileType(IntEnum):
     TEST_PROVE_Q = 1
     RAW_QUERY = 2
@@ -87,6 +85,10 @@ class RewriteQuery:
     q_raw_param: str = ""
     estimate_cost: int = -1 # cost estimated by the verifier
 
+    def __post_init__(self):
+        if self.rewrites is None:
+            self.rewrites = []
+            
     def to_dict(self):
         if self.rewrites is None:
             return {

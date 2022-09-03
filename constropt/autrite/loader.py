@@ -78,10 +78,12 @@ class Loader:
 
     @staticmethod
     def load_queries(filename, offset=0, cnt=500):
+        from tqdm import tqdm
         lines = Loader.load_queries_raw(filename, offset, cnt)
+        lines = [l for l in lines if len(l) < 25000]
         rewrite_qs = []
         fail_raw_queries = []
-        for line in lines:
+        for line in tqdm(lines):
             try:
                 q_obj = parse(line)
                 q = RewriteQuery(format(q_obj), q_obj)
