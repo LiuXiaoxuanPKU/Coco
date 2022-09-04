@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT SUM(account_stats.statuses_count) FROM accounts INNER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.domain IS NULL",
+        "cost": 2201.26,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT SUM(account_stats.statuses_count) FROM accounts INNER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.domain IS NULL LIMIT 1",
+            "cost": 2201.26,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

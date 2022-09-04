@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT changesets.* FROM changesets WHERE changesets.id = \"$1\"",
+        "cost": 8.3,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT changesets.* FROM changesets WHERE changesets.id = \"$1\" LIMIT 1",
+            "cost": 8.3,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

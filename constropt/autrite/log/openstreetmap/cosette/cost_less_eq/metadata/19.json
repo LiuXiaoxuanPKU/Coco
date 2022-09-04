@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT relation_tags.* FROM relation_tags WHERE relation_tags.relation_id = \"$1\" AND relation_tags.version = \"$2\" ORDER BY relation_tags.k ASC",
+        "cost": 8.3,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT relation_tags.* FROM relation_tags WHERE relation_tags.relation_id = \"$1\" AND relation_tags.version = \"$2\" ORDER BY relation_tags.k ASC LIMIT 1",
+            "cost": 8.3,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

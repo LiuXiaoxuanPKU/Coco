@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT changesets.* FROM changesets WHERE num_changes > 0 AND min_lon < 55000000 AND max_lon > 45000000 AND min_lat < 55000000 AND max_lat > 45000000 ORDER BY changesets.id DESC LIMIT \"$1\"",
+        "cost": 8.19,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT changesets.* FROM changesets WHERE min_lon < 55000000 AND max_lon > 45000000 AND min_lat < 55000000 AND max_lat > 45000000 ORDER BY changesets.id DESC LIMIT \"$1\"",
+            "cost": 8.19,
+            "rewrite_types": [
+                "RemovePredicate"
+            ]
+        }
+    ]
+}

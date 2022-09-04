@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT mentions.account_id FROM mentions WHERE mentions.status_id = \"$1\" AND mentions.silent = \"$2\"",
+        "cost": 11.45,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT mentions.account_id FROM mentions WHERE mentions.status_id = \"$1\" AND mentions.silent = \"$2\" LIMIT 1",
+            "cost": 11.45,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

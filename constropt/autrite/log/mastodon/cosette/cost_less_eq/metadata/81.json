@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM accounts INNER JOIN follows ON accounts.id = follows.account_id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = \"$1\" LIMIT \"$2\" OFFSET \"$3\"",
+        "cost": 24.27,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM accounts INNER JOIN follows ON accounts.id = follows.account_id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = \"$1\" LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 24.27,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

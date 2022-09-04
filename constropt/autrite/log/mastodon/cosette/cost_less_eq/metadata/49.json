@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM follow_requests WHERE follow_requests.target_account_id = \"$1\" AND follow_requests.account_id = \"$2\"",
+        "cost": 8.32,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM follow_requests WHERE follow_requests.target_account_id = \"$1\" AND follow_requests.account_id = \"$2\" LIMIT 1",
+            "cost": 8.32,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

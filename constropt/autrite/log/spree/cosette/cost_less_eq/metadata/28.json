@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT active_storage_attachments.* FROM active_storage_attachments WHERE active_storage_attachments.record_type = \"$1\" AND active_storage_attachments.name = \"$2\" AND active_storage_attachments.record_id = \"$3\"",
+        "cost": 8.31,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT active_storage_attachments.* FROM active_storage_attachments WHERE active_storage_attachments.record_type = \"$1\" AND active_storage_attachments.name = \"$2\" AND active_storage_attachments.record_id = \"$3\" LIMIT 1",
+            "cost": 8.31,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT mutes.target_account_id FROM mutes WHERE mutes.account_id = \"$1\" AND mutes.target_account_id = \"$2\"",
+        "cost": 8.3,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT mutes.target_account_id FROM mutes WHERE mutes.account_id = \"$1\" AND mutes.target_account_id = \"$2\" LIMIT 1",
+            "cost": 8.3,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

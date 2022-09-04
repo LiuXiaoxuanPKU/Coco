@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT unavailable_domains.* FROM unavailable_domains WHERE unavailable_domains.domain = \"$1\"",
+        "cost": 8.43,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT unavailable_domains.* FROM unavailable_domains WHERE unavailable_domains.domain = \"$1\" LIMIT 1",
+            "cost": 8.43,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

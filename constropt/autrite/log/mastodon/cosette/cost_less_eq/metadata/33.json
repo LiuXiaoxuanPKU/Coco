@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT list_accounts.* FROM list_accounts WHERE list_accounts.list_id = \"$1\" AND list_accounts.account_id = \"$2\"",
+        "cost": 8.3,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT list_accounts.* FROM list_accounts WHERE list_accounts.list_id = \"$1\" AND list_accounts.account_id = \"$2\" LIMIT 1",
+            "cost": 8.3,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

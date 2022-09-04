@@ -1,0 +1,46 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN users ON users.id = diary_entries.user_id LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code WHERE users.status IN (\"$1\", \"$2\") AND diary_entries.language_code = \"$3\" AND diary_entries.visible = \"$4\" LIMIT \"$5\" OFFSET \"$6\"",
+        "cost": 35.88,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM diary_entries LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code WHERE diary_entries.language_code = \"$3\" AND diary_entries.visible = \"$4\" LIMIT \"$5\" OFFSET \"$6\"",
+            "cost": 19.27,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM diary_entries LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code WHERE diary_entries.language_code = \"$3\" AND diary_entries.visible = \"$4\" LIMIT \"$5\" OFFSET \"$6\"",
+            "cost": 19.27,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN languages ON languages.code = diary_entries.language_code WHERE diary_entries.language_code = \"$3\" AND diary_entries.visible = \"$4\" LIMIT \"$5\" OFFSET \"$6\"",
+            "cost": 23.59,
+            "rewrite_types": [
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN languages ON languages.code = diary_entries.language_code WHERE diary_entries.language_code = \"$3\" AND diary_entries.visible = \"$4\" LIMIT \"$5\" OFFSET \"$6\"",
+            "cost": 23.59,
+            "rewrite_types": [
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN users ON users.id = diary_entries.user_id LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code WHERE users.status IN (\"$1\", \"$2\") AND diary_entries.language_code = \"$3\" AND diary_entries.visible = \"$4\" LIMIT \"$5\" OFFSET \"$6\"",
+            "cost": 35.88,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}
