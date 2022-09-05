@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.name IS NULL LIMIT 5;
+SELECT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.name IS NULL LIMIT 7;
 -- Rewritten Queries
-SELECT spree_stock_locations.* FROM spree_stock_locations WHERE False LIMIT 5;
+SELECT spree_stock_locations.* FROM spree_stock_locations WHERE False LIMIT 7;

@@ -1243,7 +1243,8 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = True AND spree_stock_items.variant_id IN (4366, 4501);
+SELECT SUM(spree_stock_items.count_on_hand) FROM spree_stock_items INNER JOIN spree_stock_locations ON spree_stock_locations.id = spree_stock_items.stock_location_id WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = 3944 AND spree_stock_locations.active = True;
 -- Rewritten Queries
-SELECT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.active = True;
-SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.active = True;
+SELECT SUM(spree_stock_items.count_on_hand) FROM spree_stock_items WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = 3944;
+SELECT SUM(spree_stock_items.count_on_hand) FROM spree_stock_items WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = 3944 LIMIT 1;
+SELECT SUM(spree_stock_items.count_on_hand) FROM spree_stock_items INNER JOIN spree_stock_locations ON spree_stock_locations.id = spree_stock_items.stock_location_id WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = 3944 AND spree_stock_locations.active = True LIMIT 1;

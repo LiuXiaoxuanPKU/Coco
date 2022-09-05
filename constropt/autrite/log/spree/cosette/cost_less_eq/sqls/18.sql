@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_option_type_prototypes WHERE spree_option_type_prototypes.prototype_id IS NULL AND spree_option_type_prototypes.option_type_id = 2765 LIMIT 3;
+SELECT 1 AS "one" FROM spree_option_type_prototypes WHERE spree_option_type_prototypes.prototype_id IS NULL AND spree_option_type_prototypes.option_type_id = 2765 LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_option_type_prototypes WHERE False AND spree_option_type_prototypes.option_type_id = 2765 LIMIT 3;
+SELECT 1 AS "one" FROM spree_option_type_prototypes WHERE False AND spree_option_type_prototypes.option_type_id = 2765 LIMIT 1;

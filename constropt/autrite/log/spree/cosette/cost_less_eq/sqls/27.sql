@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT COUNT(*) FROM spree_option_values INNER JOIN spree_option_value_variants ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_option_value_variants.variant_id = 4017;
+SELECT active_storage_attachments.* FROM active_storage_attachments WHERE active_storage_attachments.record_type = 'Spree::Asset' AND active_storage_attachments.name = 'attachment' AND active_storage_attachments.record_id = 18332;
 -- Rewritten Queries
-SELECT COUNT(*) FROM spree_option_values INNER JOIN spree_option_value_variants ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_option_value_variants.variant_id = 4017 LIMIT 1;
+SELECT active_storage_attachments.* FROM active_storage_attachments WHERE active_storage_attachments.record_type = 'Spree::Asset' AND active_storage_attachments.name = 'attachment' AND active_storage_attachments.record_id = 18332 LIMIT 1;

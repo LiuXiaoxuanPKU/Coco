@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT COUNT(*) FROM spree_adjustments WHERE spree_adjustments.adjustable_id = 3338 AND spree_adjustments.adjustable_type = 'Spree::LineItem' AND spree_adjustments.amount < 0;
+SELECT 1 AS "one" FROM spree_property_prototypes WHERE spree_property_prototypes.prototype_id IS NULL AND spree_property_prototypes.property_id = 9601 LIMIT 1;
 -- Rewritten Queries
-SELECT COUNT(*) FROM spree_adjustments WHERE spree_adjustments.adjustable_id = 3338 AND spree_adjustments.adjustable_type = 'Spree::LineItem';
+SELECT 1 AS "one" FROM spree_property_prototypes WHERE False AND spree_property_prototypes.property_id = 9601 LIMIT 1;

@@ -1243,6 +1243,7 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.id = 1784;
+SELECT spree_products.id FROM spree_products INNER JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_products_taxons.taxon_id IN (1581, 10107) GROUP BY spree_products.id HAVING COUNT(spree_products.id) = 2;
 -- Rewritten Queries
-SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.id = 1784 LIMIT 1;
+SELECT spree_products.id FROM spree_products WHERE spree_products.deleted_at IS NULL GROUP BY spree_products.id HAVING COUNT(spree_products.id) = 2 LIMIT 1;
+SELECT spree_products.id FROM spree_products INNER JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_products_taxons.taxon_id IN (1581, 10107) GROUP BY spree_products.id HAVING COUNT(spree_products.id) = 2 LIMIT 1;

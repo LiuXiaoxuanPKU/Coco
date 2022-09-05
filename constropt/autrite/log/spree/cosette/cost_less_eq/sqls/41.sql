@@ -1243,7 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_products.id FROM spree_products INNER JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_products_taxons.taxon_id IN (5726, 1269) GROUP BY spree_products.id HAVING COUNT(spree_products.id) = 2;
+SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_products_taxons ON spree_taxons.id = spree_products_taxons.taxon_id INNER JOIN spree_taxonomies ON spree_taxonomies.id = spree_taxons.taxonomy_id WHERE spree_products_taxons.product_id = 8869 AND spree_taxonomies.store_id = 13801;
 -- Rewritten Queries
-SELECT spree_products.id FROM spree_products WHERE spree_products.deleted_at IS NULL GROUP BY spree_products.id HAVING COUNT(spree_products.id) = 2 LIMIT 1;
-SELECT spree_products.id FROM spree_products INNER JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_products_taxons.taxon_id IN (5726, 1269) GROUP BY spree_products.id HAVING COUNT(spree_products.id) = 2 LIMIT 1;
+SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_products_taxons ON spree_taxons.id = spree_products_taxons.taxon_id INNER JOIN spree_taxonomies ON spree_taxonomies.id = spree_taxons.taxonomy_id WHERE spree_products_taxons.product_id = 8869 AND spree_taxonomies.store_id = 13801 LIMIT 1;

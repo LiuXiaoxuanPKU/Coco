@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_variants.* FROM spree_variants INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_stock_items.count_on_hand > 0 OR spree_variants.track_inventory = False);
+SELECT spree_products.id FROM spree_products INNER JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_products_taxons.taxon_id IN (1581, 10107) GROUP BY spree_products.id HAVING COUNT(spree_products.id) = 2;
 -- Rewritten Queries
-SELECT spree_variants.* FROM spree_variants WHERE spree_variants.deleted_at IS NULL AND spree_variants.track_inventory = False;
+SELECT spree_products.id FROM spree_products WHERE spree_products.deleted_at IS NULL GROUP BY spree_products.id HAVING COUNT(spree_products.id) = 2 LIMIT 1;

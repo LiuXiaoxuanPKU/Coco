@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_property_prototypes WHERE spree_property_prototypes.prototype_id IS NULL AND spree_property_prototypes.property_id = 3102 LIMIT 3;
+SELECT 1 AS "one" FROM spree_product_properties WHERE spree_product_properties.property_id IS NULL AND spree_product_properties.product_id = 5076 LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_property_prototypes WHERE False AND spree_property_prototypes.property_id = 3102 LIMIT 3;
+SELECT 1 AS "one" FROM spree_product_properties WHERE False AND spree_product_properties.product_id = 5076 LIMIT 1;

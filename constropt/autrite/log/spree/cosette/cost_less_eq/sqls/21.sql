@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT COUNT(*) FROM spree_properties INNER JOIN spree_product_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_product_properties.product_id = 5144;
+SELECT COUNT(*) FROM spree_properties INNER JOIN spree_product_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_product_properties.product_id = 6530;
 -- Rewritten Queries
-SELECT COUNT(*) FROM spree_properties INNER JOIN spree_product_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_product_properties.product_id = 5144 LIMIT 1;
+SELECT COUNT(*) FROM spree_properties INNER JOIN spree_product_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_product_properties.product_id = 6530 LIMIT 1;

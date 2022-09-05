@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_stores WHERE spree_stores.code IS NULL LIMIT 7;
+SELECT 1 AS "one" FROM spree_stores WHERE spree_stores.code IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_stores WHERE False LIMIT 7;
+SELECT 1 AS "one" FROM spree_stores WHERE False LIMIT 1;
