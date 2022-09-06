@@ -78,12 +78,20 @@ class Loader:
 
     @staticmethod
     def load_queries(filename, offset=0, cnt=500):
+        def find_token_after_limit(line):
+            tokens = line.split(' ')
+            idx = tokens.index('LIMIT')
+            return tokens[idx + 1]
+            
         from tqdm import tqdm
         lines = Loader.load_queries_raw(filename, offset, cnt)
         lines = [l for l in lines if len(l) < 25000]
         rewrite_qs = []
         fail_raw_queries = []
         for line in tqdm(lines):
+            if 'SELECT 1 AS one' in line and 'LIMIT' in line:
+                token = find_token_after_limit(line)
+                line = line.replace(token, '1')
             try:
                 q_obj = parse(line)
                 q = RewriteQuery(format(q_obj), q_obj)

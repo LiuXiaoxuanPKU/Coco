@@ -1,30 +1,22 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = \"$1\" AND spree_stock_items.variant_id = \"$2\"",
-        "cost": 1247.4,
+        "sql": "SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND spree_prices.amount IS NOT NULL",
+        "cost": 229.82,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.active = \"$1\"",
-            "cost": 225.0,
+            "sql": "SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND True",
+            "cost": 229.82,
             "rewrite_types": [
-                "RemoveJoin",
-                "RemoveDistinct"
+                "RewriteNullPredicate"
             ]
         },
         {
-            "sql": "SELECT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = \"$1\" AND spree_stock_items.variant_id = \"$2\"",
-            "cost": 704.55,
+            "sql": "SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR'",
+            "cost": 229.82,
             "rewrite_types": [
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.active = \"$1\"",
-            "cost": 750.0,
-            "rewrite_types": [
-                "RemoveJoin"
+                "RemovePredicate"
             ]
         }
     ]

@@ -1,30 +1,166 @@
 {
     "org": {
-        "sql": "SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones LEFT OUTER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 784 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 582 ORDER BY spree_zones.zone_members_count, spree_zones.created_at",
-        "cost": 32.42,
+        "sql": "SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND spree_prices.currency = \"$1\" AND spree_prices.amount IS NOT NULL ORDER BY spree_products.name DESC",
+        "cost": 17.42,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones LEFT OUTER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 784 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 582 ORDER BY spree_zones.zone_members_count, spree_zones.created_at LIMIT 1",
-            "cost": 32.42,
+            "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND True ORDER BY spree_products.name DESC",
+            "cost": 16.63,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' ORDER BY spree_products.name DESC",
+            "cost": 16.63,
+            "rewrite_types": [
+                "RemovePredicate",
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND True ORDER BY spree_products.name DESC LIMIT 1",
+            "cost": 16.63,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' ORDER BY spree_products.name DESC LIMIT 1",
+            "cost": 16.63,
+            "rewrite_types": [
+                "RemovePredicate",
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND True ORDER BY spree_products.name DESC",
+            "cost": 16.67,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' ORDER BY spree_products.name DESC",
+            "cost": 16.67,
+            "rewrite_types": [
+                "RemovePredicate",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND True ORDER BY spree_products.name DESC LIMIT 1",
+            "cost": 16.67,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' ORDER BY spree_products.name DESC LIMIT 1",
+            "cost": 16.67,
+            "rewrite_types": [
+                "RemovePredicate",
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND spree_prices.currency = \"$1\" AND spree_prices.amount IS NOT NULL ORDER BY spree_products.name DESC",
+            "cost": 17.38,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND spree_prices.currency = \"$1\" AND True ORDER BY spree_products.name DESC",
+            "cost": 17.38,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND spree_prices.currency = \"$1\" ORDER BY spree_products.name DESC",
+            "cost": 17.38,
+            "rewrite_types": [
+                "RemovePredicate",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND spree_prices.currency = \"$1\" AND spree_prices.amount IS NOT NULL ORDER BY spree_products.name DESC LIMIT 1",
+            "cost": 17.38,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND spree_prices.currency = \"$1\" AND True ORDER BY spree_products.name DESC LIMIT 1",
+            "cost": 17.38,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND spree_prices.currency = \"$1\" ORDER BY spree_products.name DESC LIMIT 1",
+            "cost": 17.38,
+            "rewrite_types": [
+                "RemovePredicate",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND spree_prices.currency = \"$1\" AND True ORDER BY spree_products.name DESC",
+            "cost": 17.42,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND spree_prices.currency = \"$1\" ORDER BY spree_products.name DESC",
+            "cost": 17.42,
+            "rewrite_types": [
+                "RemovePredicate"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND spree_prices.currency = \"$1\" AND spree_prices.amount IS NOT NULL ORDER BY spree_products.name DESC LIMIT 1",
+            "cost": 17.42,
             "rewrite_types": [
                 "AddLimitOne"
             ]
         },
         {
-            "sql": "SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 784 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 582 ORDER BY spree_zones.zone_members_count, spree_zones.created_at",
-            "cost": 32.42,
+            "sql": "SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND spree_prices.currency = \"$1\" AND True ORDER BY spree_products.name DESC LIMIT 1",
+            "cost": 17.42,
             "rewrite_types": [
-                "ReplaceOuterJoin"
+                "RewriteNullPredicate",
+                "AddLimitOne"
             ]
         },
         {
-            "sql": "SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 784 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 582 ORDER BY spree_zones.zone_members_count, spree_zones.created_at LIMIT 1",
-            "cost": 32.42,
+            "sql": "SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:54.101040') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:54.101192') AND spree_products.available_on <= '2022-08-14 05:28:54.101187' AND spree_prices.currency = \"$1\" ORDER BY spree_products.name DESC LIMIT 1",
+            "cost": 17.42,
             "rewrite_types": [
-                "AddLimitOne",
-                "ReplaceOuterJoin"
+                "RemovePredicate",
+                "AddLimitOne"
             ]
         }
     ]

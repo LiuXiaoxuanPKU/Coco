@@ -1,22 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:49.885916') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
-        "cost": 14.55,
+        "sql": "SELECT spree_product_properties.* FROM spree_product_properties INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.id = spree_product_properties.product_id WHERE spree_properties.filterable = \"$1\" AND spree_products.deleted_at IS NULL AND spree_products.id IN (\"$2\", \"$3\", \"$4\") ORDER BY spree_product_properties.position ASC",
+        "cost": 58.34,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:49.885916') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND True AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
-            "cost": 14.55,
+            "sql": "SELECT spree_product_properties.* FROM spree_product_properties INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.id = spree_product_properties.product_id WHERE spree_properties.filterable = \"$1\" AND spree_products.deleted_at IS NULL AND spree_products.id IN (\"$2\", \"$3\", \"$4\") ORDER BY spree_product_properties.position ASC LIMIT 1",
+            "cost": 58.34,
             "rewrite_types": [
-                "RewriteNullPredicate"
-            ]
-        },
-        {
-            "sql": "SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:49.885916') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
-            "cost": 14.55,
-            "rewrite_types": [
-                "RemovePredicate"
+                "AddLimitOne"
             ]
         }
     ]

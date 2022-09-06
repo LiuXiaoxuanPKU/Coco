@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT spree_product_properties.* FROM spree_product_properties INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.id = spree_product_properties.product_id WHERE spree_product_properties.id IN (\"$1\", \"$2\") AND spree_properties.filterable = \"$3\" AND spree_products.deleted_at IS NULL ORDER BY spree_product_properties.position ASC",
-        "cost": 37.53,
+        "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.filter_param = \"$1\" AND spree_product_properties.filter_param IN (\"$2\", \"$3\", \"$4\")",
+        "cost": 28.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_product_properties.* FROM spree_product_properties INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.id = spree_product_properties.product_id WHERE spree_product_properties.id IN (\"$1\", \"$2\") AND spree_properties.filterable = \"$3\" AND spree_products.deleted_at IS NULL ORDER BY spree_product_properties.position ASC LIMIT 1",
-            "cost": 37.53,
+            "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.filter_param = \"$1\" AND spree_product_properties.filter_param IN (\"$2\", \"$3\", \"$4\") LIMIT 1",
+            "cost": 28.31,
             "rewrite_types": [
                 "AddLimitOne"
             ]

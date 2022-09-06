@@ -1,22 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND spree_prices.amount IS NOT NULL",
-        "cost": 229.82,
+        "sql": "SELECT spree_stock_items.* FROM spree_stock_items INNER JOIN spree_stock_locations ON spree_stock_locations.id = spree_stock_items.stock_location_id WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = \"$1\" AND spree_stock_locations.active = \"$2\"",
+        "cost": 704.55,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND True",
-            "cost": 229.82,
+            "sql": "SELECT spree_stock_items.* FROM spree_stock_items WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = \"$1\"",
+            "cost": 327.39,
             "rewrite_types": [
-                "RewriteNullPredicate"
-            ]
-        },
-        {
-            "sql": "SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR'",
-            "cost": 229.82,
-            "rewrite_types": [
-                "RemovePredicate"
+                "RemoveJoin"
             ]
         }
     ]

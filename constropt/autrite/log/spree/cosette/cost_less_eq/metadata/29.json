@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_products_stores ON spree_products_stores.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_products_stores.store_id = \"$1\"",
-        "cost": 28.01,
+        "sql": "SELECT 1 AS one FROM spree_users INNER JOIN spree_role_users ON spree_role_users.user_id = spree_users.id INNER JOIN spree_roles ON spree_roles.id = spree_role_users.role_id WHERE spree_roles.name = \"$1\" LIMIT 1",
+        "cost": 20.32,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_products_stores ON spree_products_stores.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_products_stores.store_id = \"$1\" LIMIT 1",
-            "cost": 14.75,
+            "sql": "SELECT 1 AS one FROM spree_users INNER JOIN spree_role_users ON spree_role_users.user_id = spree_users.id LIMIT 1",
+            "cost": 0.64,
             "rewrite_types": [
-                "AddLimitOne"
+                "RemoveJoin"
             ]
         }
     ]

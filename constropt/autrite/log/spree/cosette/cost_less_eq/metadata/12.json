@@ -1,12 +1,12 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM spree_payments WHERE spree_payments.order_id = \"$1\" AND source_type = 'Spree::Payment' AND amount < 0 AND state = 'completed' LIMIT \"$2\"",
+        "sql": "SELECT 1 AS one FROM spree_payments WHERE spree_payments.order_id = \"$1\" AND source_type = 'Spree::Payment' AND amount < 0 AND state = 'completed' LIMIT 1",
         "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM spree_payments WHERE spree_payments.order_id = \"$1\" AND source_type = 'Spree::Payment' AND state = 'completed' LIMIT \"$2\"",
+            "sql": "SELECT 1 AS one FROM spree_payments WHERE spree_payments.order_id = \"$1\" AND source_type = 'Spree::Payment' AND state = 'completed' LIMIT 1",
             "cost": 8.3,
             "rewrite_types": [
                 "RemovePredicate"

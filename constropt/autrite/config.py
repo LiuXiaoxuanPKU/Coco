@@ -11,6 +11,7 @@ class FileType(IntEnum):
     CONSTRAINT = 3
     VERIFIER_INPUT = 4
    
+    REWRITE_OUTPUT_META = 5
     REWRITE_OUTPUT_SQL_EQ = 6
     REWRITE_OUTPUT_SQL_NOT_EQ = 7
 
@@ -26,11 +27,16 @@ class FileType(IntEnum):
     REWRITE_TIME = 15
     VERIFIER_TIME = 16
   
-def get_filename(_type, appname, rewrite_types=None):
+def get_filename(_type, appname, cost_include_eq=True):
     workdir = os.getcwd()
     path = Path(workdir)
     projectdir = path.parent.parent.absolute()
       
+    if cost_include_eq:
+        cost_path = "cost_less_eq"
+    else:
+        cost_path = "cost_less"
+        
     m = {
             # input query, constraint, create table sql
             FileType.TEST_PROVE_Q : "log/%s/prove.sql" % appname,
@@ -39,11 +45,13 @@ def get_filename(_type, appname, rewrite_types=None):
             FileType.VERIFIER_INPUT : "log/%s/cosette/create.sql" % appname,
             
             # output sqls from rewrite and tests
-            FileType.REWRITE_OUTPUT_SQL_EQ: "log/%s/cosette/eq/" % appname,
+            FileType.REWRITE_OUTPUT_SQL_EQ: "log/%s/cosette/%s/sqls/" % (appname, cost_path),
+            FileType.REWRITE_OUTPUT_META: "log/%s/cosette/%s/metadata/" % (appname, cost_path),
             FileType.REWRITE_OUTPUT_SQL_NOT_EQ: "log/%s/cosette/not_eq/" % appname, 
             
             # output sqls from cosette
-            FileType.VERIFIER_OUTPUT_IDX: "log/%s/cosette/verifier-result" % appname,
+            FileType.VERIFIER_OUTPUT_IDX: "log/%s/cosette/verifier-result-leq" % appname,
+            # FileType.VERIFIER_OUTPUT_LESS_IDX: "log/%s/cosette/verifier-result-leq" % appname,
             FileType.VERIFIER_OUTPUT_SQL : "log/%s/cosette/result.sql" % appname, 
                       
             # output performance file

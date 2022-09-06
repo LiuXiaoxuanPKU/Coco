@@ -1,8 +1,7 @@
 import traceback
-import random
-random.seed(0)
 import argparse
 import pickle
+import operator
 
 import rule
 from loader import Loader
@@ -27,6 +26,8 @@ if __name__ == '__main__':
     parser.add_argument('--only_rewrite', action='store_true', default=False, help='only rewrite queries based on constraints,\
                          does not run any tests, do not have communication with the database')
     parser.add_argument('--cnt', type=int, default=100000, help='number of queries to rewrite')
+    parser.add_argument('--include_eq',  action='store_true', default=False,  help='when filtering rewrites, include rewrites, \
+                        with the same cost as the original sql' )
     args = parser.parse_args()
     
     appname =  args.app
@@ -118,6 +119,11 @@ if __name__ == '__main__':
             
             # ======== Estimate cost and retain those with lower cost than original ======
             rewritten_queries_lower_cost = []
+            if args.include_eq:
+                cmp_op = operator.le
+            else:
+                cmp_op = operator.lt
+            
             # replace placeholder with actual parameters for org and rewrites
             rewritten_queries = enumerate_queries
             succ = generate_query_param_rewrites(q, rewritten_queries, connect_str)
@@ -138,7 +144,7 @@ if __name__ == '__main__':
             for rq in rewritten_queries:
                 try:
                     estimate_cost = Evaluator.evaluate_cost(rq.q_raw_param, connect_str) 
-                    if estimate_cost < org_cost:
+                    if cmp_op(estimate_cost, org_cost):
                         rq.estimate_cost = estimate_cost 
                         rewritten_queries_lower_cost.append(rq)
                     else:
@@ -166,7 +172,7 @@ if __name__ == '__main__':
                 if len(not_eq_qs) == 0:
                     continue
                 # dump counter examples
-                ProveDumper.dump_param_rewrite(appname, q, constraints, not_eq_qs, rewrite_cnt, counter=True)
+                ProveDumper.dump_param_rewrite(appname, q, not_eq_qs, rewrite_cnt,  args.include_eq, counter=True)
                 rewrite_cnt += 1
                 continue
             
@@ -184,8 +190,8 @@ if __name__ == '__main__':
             # ========== Dump outputs to cosette ==========
             rewrite_cnt += 1
             total_candidate_cnt.append(len(rewritten_queries_lower_cost_after_test))
-            ProveDumper.dump_param_rewrite(appname, q, constraints, rewritten_queries_lower_cost_after_test, rewrite_cnt)
-    
+            ProveDumper.dump_param_rewrite(appname, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, args.include_eq)
+            ProveDumper.dump_metadaba(appname, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, args.include_eq)
 
         # print(enumerate_cnts) 
         # print(enumerate_times)

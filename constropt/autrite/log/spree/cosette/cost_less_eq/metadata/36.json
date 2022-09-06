@@ -1,22 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM spree_line_items INNER JOIN spree_variants ON spree_variants.id = spree_line_items.variant_id INNER JOIN spree_products ON spree_products.id = spree_variants.product_id WHERE spree_line_items.order_id = \"$1\" AND spree_products.promotionable = \"$2\" LIMIT \"$3\"",
-        "cost": 32.15,
+        "sql": "SELECT spree_stores.id FROM spree_stores INNER JOIN spree_payment_methods_stores ON spree_stores.id = spree_payment_methods_stores.store_id WHERE spree_stores.deleted_at IS NULL AND spree_payment_methods_stores.payment_method_id = \"$1\" ORDER BY spree_stores.created_at ASC",
+        "cost": 16.68,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM spree_line_items WHERE spree_line_items.order_id = \"$1\" LIMIT \"$3\"",
-            "cost": 11.88,
+            "sql": "SELECT spree_stores.id FROM spree_stores INNER JOIN spree_payment_methods_stores ON spree_stores.id = spree_payment_methods_stores.store_id WHERE spree_stores.deleted_at IS NULL AND spree_payment_methods_stores.payment_method_id = \"$1\" ORDER BY spree_stores.created_at ASC LIMIT 1",
+            "cost": 16.68,
             "rewrite_types": [
-                "RemoveJoin"
-            ]
-        },
-        {
-            "sql": "SELECT 1 AS one FROM spree_line_items INNER JOIN spree_variants ON spree_variants.id = spree_line_items.variant_id WHERE spree_line_items.order_id = \"$1\" LIMIT \"$3\"",
-            "cost": 17.29,
-            "rewrite_types": [
-                "RemoveJoin"
+                "AddLimitOne"
             ]
         }
     ]

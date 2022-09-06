@@ -224,16 +224,22 @@ class RemoveJoin(Rule):
         # TODO: handle outer join
         from_clause = q['from']
         inner_joins = []
+        join_type = None
         for token in from_clause:
             if isinstance(token, dict) and 'inner join' in token.keys():
-                inner_joins.append(token['inner join'])
+                join_type = 'inner join'
             elif isinstance(token, str):
                 pass
+            elif isinstance(token, dict) and 'left outer join' in token.keys():
+                join_type = 'left outer join'
             else:
                 # Does not handle left outer join for now
                 print('[Error] unsupport data type in from clause %s' % token)
                 return []
 
+        if join_type is not None:
+            inner_joins.append(token[join_type])
+            
         if len(inner_joins) == 0:
             return []
 
@@ -252,8 +258,8 @@ class RemoveJoin(Rule):
         def rewrite_from(drop_tables, from_clause):
             rewritten_from_clause = []
             for token in from_clause:
-                if isinstance(token, dict) and "inner join" in token:
-                    table = token["inner join"]
+                if isinstance(token, dict) and join_type in token:
+                    table = token[join_type]
                     if not table in drop_tables:
                         rewritten_from_clause.append(token)
                 else:

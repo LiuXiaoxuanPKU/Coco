@@ -137,10 +137,16 @@ def test_rewrite_types():
     assert(rewritten_queries[2].rewrites == [rule.RewriteNullPredicate(c1), rule.RewriteNullPredicate(c2)] or
            rewritten_queries[2].rewrites == [rule.RewriteNullPredicate(c2), rule.RewriteNullPredicate(c1)])
 
+def test_rewrite_spree():
+    constraints = Loader.load_constraints("../../constraints/spree")
+    sql = 'SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = \"$1\" AND spree_stock_items.variant_id IN (\"$2\", \"$3\")'
+    test_rewrite_helper(constraints, sql)
+    
 if __name__ == "__main__":
-    test_get_constraints()
-    test_get_rules()
-    test_simple_enumerate()
-    test_redmine_enumerate()
-    test_add_limit_one_rewrite()
-    test_rewrite_types()
+    # test_get_constraints()
+    # test_get_rules()
+    # test_simple_enumerate()
+    # test_redmine_enumerate()
+    # test_add_limit_one_rewrite()
+    # test_rewrite_types()
+    test_rewrite_spree()

@@ -1,40 +1,23 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT spree_products.id FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:56.705234') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:56.705387') AND spree_products.available_on <= '2022-08-14 05:28:56.705381' AND spree_prices.currency = \"$1\" AND spree_prices.amount IS NOT NULL",
-        "cost": 17.38,
+        "sql": "SELECT DISTINCT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_option_types.filterable = \"$1\" AND spree_variants.product_id IN (\"$2\", \"$3\", \"$4\") ORDER BY option_type_position, spree_option_values.position",
+        "cost": 160.66,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT DISTINCT spree_products.id FROM spree_products WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:56.705234') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:56.705387') AND spree_products.available_on <= '2022-08-14 05:28:56.705381' AND True",
-            "cost": 8.33,
+            "sql": "SELECT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_option_types.filterable = \"$1\" AND spree_variants.product_id IN (\"$2\", \"$3\", \"$4\") ORDER BY option_type_position, spree_option_values.position",
+            "cost": 160.34,
             "rewrite_types": [
-                "RewriteNullPredicate",
-                "RemoveJoin"
+                "RemoveDistinct"
             ]
         },
         {
-            "sql": "SELECT DISTINCT spree_products.id FROM spree_products WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:56.705234') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:56.705387') AND spree_products.available_on <= '2022-08-14 05:28:56.705381'",
-            "cost": 8.33,
+            "sql": "SELECT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_option_types.filterable = \"$1\" AND spree_variants.product_id IN (\"$2\", \"$3\", \"$4\") ORDER BY option_type_position, spree_option_values.position LIMIT 1",
+            "cost": 160.59,
             "rewrite_types": [
-                "RemovePredicate",
-                "RemoveJoin"
-            ]
-        },
-        {
-            "sql": "SELECT DISTINCT spree_products.id FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:56.705234') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:56.705387') AND spree_products.available_on <= '2022-08-14 05:28:56.705381' AND True",
-            "cost": 16.63,
-            "rewrite_types": [
-                "RewriteNullPredicate",
-                "RemoveJoin"
-            ]
-        },
-        {
-            "sql": "SELECT DISTINCT spree_products.id FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:28:56.705234') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:56.705387') AND spree_products.available_on <= '2022-08-14 05:28:56.705381'",
-            "cost": 16.63,
-            "rewrite_types": [
-                "RemovePredicate",
-                "RemoveJoin"
+                "RemoveDistinct",
+                "AddLimitOne"
             ]
         }
     ]

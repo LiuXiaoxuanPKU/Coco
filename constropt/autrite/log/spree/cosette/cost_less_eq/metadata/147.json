@@ -1,30 +1,30 @@
 {
     "org": {
-        "sql": "SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones LEFT OUTER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 786 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 586 ORDER BY spree_zones.zone_members_count, spree_zones.created_at",
-        "cost": 32.42,
+        "sql": "SELECT DISTINCT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_option_values.id IN (\"$1\", \"$2\", \"$3\") AND spree_option_types.filterable = \"$4\" AND spree_variants.product_id IN (\"$5\", \"$6\", \"$7\") ORDER BY option_type_position, spree_option_values.position",
+        "cost": 62.15,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones LEFT OUTER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 786 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 586 ORDER BY spree_zones.zone_members_count, spree_zones.created_at LIMIT 1",
-            "cost": 32.42,
+            "sql": "SELECT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_option_values.id IN (\"$1\", \"$2\", \"$3\") AND spree_option_types.filterable = \"$4\" AND spree_variants.product_id IN (\"$5\", \"$6\", \"$7\") ORDER BY option_type_position, spree_option_values.position",
+            "cost": 62.08,
             "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_option_values.id IN (\"$1\", \"$2\", \"$3\") AND spree_option_types.filterable = \"$4\" AND spree_variants.product_id IN (\"$5\", \"$6\", \"$7\") ORDER BY option_type_position, spree_option_values.position LIMIT 1",
+            "cost": 62.08,
+            "rewrite_types": [
+                "RemoveDistinct",
                 "AddLimitOne"
             ]
         },
         {
-            "sql": "SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 786 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 586 ORDER BY spree_zones.zone_members_count, spree_zones.created_at",
-            "cost": 32.42,
+            "sql": "SELECT DISTINCT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_option_values.id IN (\"$1\", \"$2\", \"$3\") AND spree_option_types.filterable = \"$4\" AND spree_variants.product_id IN (\"$5\", \"$6\", \"$7\") ORDER BY option_type_position, spree_option_values.position LIMIT 1",
+            "cost": 62.15,
             "rewrite_types": [
-                "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 786 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 586 ORDER BY spree_zones.zone_members_count, spree_zones.created_at LIMIT 1",
-            "cost": 32.42,
-            "rewrite_types": [
-                "AddLimitOne",
-                "ReplaceOuterJoin"
+                "AddLimitOne"
             ]
         }
     ]

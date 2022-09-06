@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT spree_promotions.* FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id WHERE spree_promotions_stores.store_id = \"$1\"",
-        "cost": 28.01,
+        "sql": "SELECT spree_line_items.* FROM spree_line_items INNER JOIN spree_orders ON spree_line_items.order_id = spree_orders.id WHERE spree_orders.store_id = \"$1\" ORDER BY spree_line_items.created_at ASC",
+        "cost": 1891.65,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_promotions.* FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id WHERE spree_promotions_stores.store_id = \"$1\" LIMIT 1",
-            "cost": 14.75,
+            "sql": "SELECT spree_line_items.* FROM spree_line_items ORDER BY spree_line_items.created_at ASC",
+            "cost": 1157.39,
             "rewrite_types": [
-                "AddLimitOne"
+                "RemoveJoin"
             ]
         }
     ]

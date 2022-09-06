@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT COUNT(*) FROM spree_adjustments WHERE spree_adjustments.adjustable_id = \"$1\" AND spree_adjustments.adjustable_type = \"$2\" AND spree_adjustments.amount < 0",
-        "cost": 8.32,
+        "sql": "SELECT 1 AS one FROM spree_property_prototypes WHERE spree_property_prototypes.prototype_id IS NULL AND spree_property_prototypes.property_id = \"$1\" LIMIT 1",
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT COUNT(*) FROM spree_adjustments WHERE spree_adjustments.adjustable_id = \"$1\" AND spree_adjustments.adjustable_type = \"$2\"",
-            "cost": 4.32,
+            "sql": "SELECT 1 AS one FROM spree_property_prototypes WHERE False AND spree_property_prototypes.property_id = \"$1\" LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "RemovePredicate"
+                "RewriteNullPredicate"
             ]
         }
     ]

@@ -62,6 +62,22 @@ def get_field_value(table_field, cache, connect_str, field_idx = -1):
     global db_seed
     if table_field.startswith("LOWER"):
         table_field = table_field[6:-1]
+        
+    # hack for spree
+    # =============== Start Hack =====================
+    if table_field.startswith('zone_members_spree_countries_join.'):
+        table_field = table_field.replace('zone_members_spree_countries_join.', 'spree_zone_members.')
+    
+    if table_field.startswith('masters_spree_products.'):
+        table_field = table_field.replace('masters_spree_products.', 'spree_variants.')
+    
+    if table_field.startswith('masters_spree_products.'):
+        table_field = table_field.replace('masters_spree_products.', 'spree_variants.')
+    
+    if table_field.startswith('default_prices_spree_variants.'):
+        table_field = table_field.replace('default_prices_spree_variants.', 'spree_prices.')
+
+    # =============== Finish Hack =====================    
     
     if field_idx != -1:
         cache_name = table_field + "_%d" % field_idx
