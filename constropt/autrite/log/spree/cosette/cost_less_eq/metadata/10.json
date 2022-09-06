@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM spree_option_types LEFT OUTER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id LIMIT 1",
+        "cost": 1.45,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM spree_option_types LIMIT 1",
+            "cost": 0.97,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

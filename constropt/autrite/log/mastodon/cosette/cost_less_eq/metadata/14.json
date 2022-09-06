@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT session_activations.* FROM session_activations WHERE session_activations.session_id = \"$1\"",
+        "cost": 8.43,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT session_activations.* FROM session_activations WHERE session_activations.session_id = \"$1\" LIMIT 1",
+            "cost": 8.43,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

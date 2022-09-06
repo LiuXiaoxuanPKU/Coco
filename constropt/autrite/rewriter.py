@@ -32,11 +32,24 @@ class Rewriter:
     @staticmethod
     def get_q_constraints(constraints, q):
         def extract_q_field(q):
-            # TODO: extract all the fields insteaf of all the tokens
             q_str = format(q)
+            def table_in_field():
+                for t in q_str.split(' '):
+                    if len(t.split('.')) > 1:
+                        return True
+                return False
+            
+            # TODO: extract all the fields insteaf of all the tokens
             tokens = [t.lower().split('.')[-1] for t in q_str.split(' ')]
-            tables = [t.lower().split('.')[0] for t in q_str.split(' ')]
+            #if there are table names in the field
+            if table_in_field():
+                tables = [t.lower().split('.')[0] for t in q_str.split(' ')]
+            else: # does not have join
+                assert(isinstance(q['from'], str))
+                tables = [q['from'].lower()]
             return tokens, tables
+                
+                
 
         def get_field_constraint(field, constraints, all_used_fields, tables):
             field_constraints = []
@@ -79,23 +92,17 @@ class Rewriter:
 
     def bfs(self, rules, q):
         rewritten_queries = [q]
-        applied_rules = []
         for rule in rules:
             if len(rewritten_queries) > REWRITE_LIMIT:
                 break
-            applied_rules.append(rule)
-            rule_rewritten_qs = []
-            for rq in rewritten_queries:
-                rule_rewritten_qs += rule.apply(rq.q_obj)
-            
             rule_rewritten_q_objs = []
-            for q in rule_rewritten_qs:
-                rq = RewriteQuery(format(q), q) 
-                rq.rewrites = applied_rules
-                rule_rewritten_q_objs.append(rq)
-            
-            if len(rule_rewritten_q_objs) == 0:
-                applied_rules.pop()
+            for rq in rewritten_queries:
+                rule_rewrites = rule.apply(rq.q_obj)
+                for rule_rewrite in rule_rewrites:
+                    rewrite_q = RewriteQuery(format(rule_rewrite), rule_rewrite)
+                    rewrite_q.rewrites = rq.rewrites + [rule]
+                    rule_rewritten_q_objs.append(rewrite_q)
+                    
             rewritten_queries += rule_rewritten_q_objs
     
         return rewritten_queries[1:]

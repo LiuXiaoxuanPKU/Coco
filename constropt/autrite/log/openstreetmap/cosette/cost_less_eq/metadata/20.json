@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT current_relation_tags.* FROM current_relation_tags WHERE current_relation_tags.relation_id = \"$1\" ORDER BY current_relation_tags.k ASC",
+        "cost": 8.3,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT current_relation_tags.* FROM current_relation_tags WHERE current_relation_tags.relation_id = \"$1\" ORDER BY current_relation_tags.k ASC LIMIT 1",
+            "cost": 8.3,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

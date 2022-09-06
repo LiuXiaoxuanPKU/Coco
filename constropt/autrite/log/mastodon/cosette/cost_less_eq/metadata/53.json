@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM accounts INNER JOIN blocks ON accounts.id = blocks.target_account_id WHERE blocks.account_id = \"$1\"",
+        "cost": 16.94,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM accounts INNER JOIN blocks ON accounts.id = blocks.target_account_id WHERE blocks.account_id = \"$1\" LIMIT 1",
+            "cost": 16.94,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

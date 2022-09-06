@@ -1,5 +1,5 @@
 import pickle
-import queue
+import traceback
 from mo_sql_parsing import parse, format
 import json
 import constraint
@@ -78,15 +78,25 @@ class Loader:
 
     @staticmethod
     def load_queries(filename, offset=0, cnt=500):
+        def find_token_after_limit(line):
+            tokens = line.split(' ')
+            idx = tokens.index('LIMIT')
+            return tokens[idx + 1]
+            
+        from tqdm import tqdm
         lines = Loader.load_queries_raw(filename, offset, cnt)
+        lines = [l for l in lines if len(l) < 25000]
         rewrite_qs = []
         fail_raw_queries = []
-        for line in lines:
+        for line in tqdm(lines):
+            if 'SELECT 1 AS one' in line and 'LIMIT' in line:
+                token = find_token_after_limit(line)
+                line = line.replace(token, '1')
             try:
                 q_obj = parse(line)
                 q = RewriteQuery(format(q_obj), q_obj)
                 rewrite_qs.append(q)
-            except:
+            except Exception as e:
                 fail_raw_queries.append(line)
         print("======================[Success] Parse unique queries %d" % len(rewrite_qs))
         print("======================[Fail]    Parse %d queries" % len(fail_raw_queries))

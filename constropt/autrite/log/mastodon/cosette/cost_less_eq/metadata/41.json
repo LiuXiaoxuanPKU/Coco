@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT blocks.account_id FROM blocks WHERE blocks.account_id IN (\"$1\", \"$2\", \"$3\") AND blocks.target_account_id = \"$4\"",
+        "cost": 11.67,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT blocks.account_id FROM blocks WHERE blocks.account_id IN (\"$1\", \"$2\", \"$3\") AND blocks.target_account_id = \"$4\" LIMIT 1",
+            "cost": 11.67,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

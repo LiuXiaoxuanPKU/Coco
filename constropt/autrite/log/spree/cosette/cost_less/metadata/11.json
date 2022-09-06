@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM spree_adjustments WHERE spree_adjustments.adjustable_id = \"$1\" AND spree_adjustments.adjustable_type = \"$2\" AND spree_adjustments.amount < 0",
+        "cost": 8.32,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM spree_adjustments WHERE spree_adjustments.adjustable_id = \"$1\" AND spree_adjustments.adjustable_type = \"$2\"",
+            "cost": 4.32,
+            "rewrite_types": [
+                "RemovePredicate"
+            ]
+        }
+    ]
+}

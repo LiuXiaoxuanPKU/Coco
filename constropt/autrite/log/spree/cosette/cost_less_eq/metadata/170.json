@@ -1,0 +1,193 @@
+{
+    "org": {
+        "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT DISTINCT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL) ORDER BY spree_option_values.position ASC",
+        "cost": 32.85,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL) ORDER BY spree_option_values.position ASC LIMIT 1",
+            "cost": 20.46,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND True) ORDER BY spree_option_values.position ASC LIMIT 1",
+            "cost": 20.46,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD') ORDER BY spree_option_values.position ASC LIMIT 1",
+            "cost": 20.46,
+            "rewrite_types": [
+                "RemovePredicate",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL) ORDER BY spree_option_values.position ASC",
+            "cost": 20.58,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND True) ORDER BY spree_option_values.position ASC",
+            "cost": 20.58,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD') ORDER BY spree_option_values.position ASC",
+            "cost": 20.58,
+            "rewrite_types": [
+                "RemovePredicate",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT DISTINCT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL) ORDER BY spree_option_values.position ASC LIMIT 1",
+            "cost": 32.39,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT DISTINCT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL LIMIT 1) ORDER BY spree_option_values.position ASC LIMIT 1",
+            "cost": 32.39,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT DISTINCT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND True) ORDER BY spree_option_values.position ASC LIMIT 1",
+            "cost": 32.39,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT DISTINCT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND True LIMIT 1) ORDER BY spree_option_values.position ASC LIMIT 1",
+            "cost": 32.39,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT DISTINCT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD') ORDER BY spree_option_values.position ASC LIMIT 1",
+            "cost": 32.39,
+            "rewrite_types": [
+                "RemovePredicate",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT DISTINCT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' LIMIT 1) ORDER BY spree_option_values.position ASC LIMIT 1",
+            "cost": 32.39,
+            "rewrite_types": [
+                "RemovePredicate",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL LIMIT 1) ORDER BY spree_option_values.position ASC LIMIT 1",
+            "cost": 32.39,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND True LIMIT 1) ORDER BY spree_option_values.position ASC LIMIT 1",
+            "cost": 32.39,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' LIMIT 1) ORDER BY spree_option_values.position ASC LIMIT 1",
+            "cost": 32.39,
+            "rewrite_types": [
+                "RemovePredicate",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT DISTINCT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND True) ORDER BY spree_option_values.position ASC",
+            "cost": 32.85,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT DISTINCT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD') ORDER BY spree_option_values.position ASC",
+            "cost": 32.85,
+            "rewrite_types": [
+                "RemovePredicate"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT DISTINCT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL LIMIT 1) ORDER BY spree_option_values.position ASC",
+            "cost": 32.85,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT DISTINCT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND True LIMIT 1) ORDER BY spree_option_values.position ASC",
+            "cost": 32.85,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT DISTINCT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' LIMIT 1) ORDER BY spree_option_values.position ASC",
+            "cost": 32.85,
+            "rewrite_types": [
+                "RemovePredicate",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL LIMIT 1) ORDER BY spree_option_values.position ASC",
+            "cost": 32.85,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND True LIMIT 1) ORDER BY spree_option_values.position ASC",
+            "cost": 32.85,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (SELECT spree_variants.id FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.product_id = \"$1\" AND spree_variants.is_master = \"$2\" AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:38:54.371957') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' LIMIT 1) ORDER BY spree_option_values.position ASC",
+            "cost": 32.85,
+            "rewrite_types": [
+                "RemovePredicate",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT account_stats.id, account_stats.account_id, account_stats.statuses_count, account_stats.following_count, account_stats.followers_count, account_stats.created_at, account_stats.updated_at, account_stats.last_status_at FROM account_stats WHERE account_stats.account_id = \"$1\"",
+        "cost": 8.3,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT account_stats.id, account_stats.account_id, account_stats.statuses_count, account_stats.following_count, account_stats.followers_count, account_stats.created_at, account_stats.updated_at, account_stats.last_status_at FROM account_stats WHERE account_stats.account_id = \"$1\" LIMIT 1",
+            "cost": 8.3,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

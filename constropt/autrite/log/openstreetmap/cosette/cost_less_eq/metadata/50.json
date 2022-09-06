@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" AND (users.status IN (\"$2\", \"$3\") OR users.status IS NULL) ORDER BY note_comments.created_at ASC",
+        "cost": 28.1,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" AND users.status IS NULL ORDER BY note_comments.created_at ASC",
+            "cost": 28.09,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

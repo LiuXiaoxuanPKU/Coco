@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM spree_refunds INNER JOIN spree_payments ON spree_refunds.payment_id = spree_payments.id WHERE spree_payments.order_id = \"$1\" AND spree_refunds.reimbursement_id IS NULL LIMIT 1",
+        "cost": 17.82,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM spree_refunds WHERE spree_refunds.reimbursement_id IS NULL LIMIT 1",
+            "cost": 6.17,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

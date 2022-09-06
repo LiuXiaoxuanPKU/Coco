@@ -70,7 +70,10 @@ def roll_back(installed_constraints, appname):
         elif type(c) in [constraint.PresenceConstraint]:
             drop_sql = "ALTER TABLE %s ALTER COLUMN %s DROP NOT NULL;" % (
                 c.table, c.field)
-        Evaluator.evaluate_query(drop_sql, CONNECT_MAP[appname])
+        try:
+            Evaluator.evaluate_query(drop_sql, CONNECT_MAP[appname])
+        except:
+            print("Fail to exec %s" % drop_sql)
 
 
 def get_valid_queries(queries, connect_str):

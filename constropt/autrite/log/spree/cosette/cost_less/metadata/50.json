@@ -1,0 +1,24 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_option_types.filterable = \"$1\" AND spree_variants.product_id IN (\"$2\", \"$3\", \"$4\") ORDER BY option_type_position, spree_option_values.position",
+        "cost": 160.66,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_option_types.filterable = \"$1\" AND spree_variants.product_id IN (\"$2\", \"$3\", \"$4\") ORDER BY option_type_position, spree_option_values.position",
+            "cost": 160.34,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_option_types.filterable = \"$1\" AND spree_variants.product_id IN (\"$2\", \"$3\", \"$4\") ORDER BY option_type_position, spree_option_values.position LIMIT 1",
+            "cost": 160.59,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

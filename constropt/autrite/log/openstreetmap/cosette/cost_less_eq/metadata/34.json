@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" ORDER BY note_comments.created_at DESC LIMIT \"$2\"",
+        "cost": 11.47,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" ORDER BY note_comments.created_at DESC LIMIT \"$2\"",
+            "cost": 11.47,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}
