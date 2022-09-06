@@ -187,12 +187,10 @@ class ExtractQueryRule(rule.Rule):
 
     # check on_clause inside from_clause
     def check_join_from(self, clause) -> bool:
-        if not isinstance(clause, dict):
-            # We assume there are no 
-            # inclusion/format/length constraint fields
-            # in the join predicate
-            return False
-        if "on" in clause[1].keys():
+        # We assume there are no 
+        # inclusion/format/length constraint fields
+        # in the join predicate
+        if isinstance(clause, dict) and "on" in clause[1].keys():
             on_clause = clause[1]["on"]
             if self.check_where(on_clause):
                 return True
