@@ -25,7 +25,7 @@ class ExtractQueryRule(rule.Rule):
         if not self.contain_join(q):
             table = from_clause
             if isinstance(table, dict):
-                print("[Warning] Does not handle dict table (alias) %s for now" % table)
+                # print("[Warning] Does not handle dict table (alias) %s for now" % table)
                 return []
             if not table in self.cs_tables:
                 return []
@@ -39,7 +39,7 @@ class ExtractQueryRule(rule.Rule):
             if not 'where' in q: # can stop here
                 return []
             where_clause = q['where'] 
-            if self.check_where_simple(where_clause, table):
+            if self.check_where_simple(where_clause, table) or self.check_where(where_clause):
                 return [q]
             return []
 

@@ -14,7 +14,7 @@ bundler install
 We highly recommend install and manage python dependencies using `conda`. Run command `conda create --name <your_env_name> --file requirements.txt` for installing dependencies. 
 
 ## Experiment
-All experiments we did in the paper are under `/constropt/autrite` directory. For re-run experiements on redmine, openprojects, and forem, run the following under the root directory. `/constropt/autrite/` directory contains util functions for experiment evaluation. 
+All experiments we did in the paper are under `/constropt/autrite` directory. For re-run experiements on redmine, openprojects, and forem, run the following under the `/constropt/autrite` directory. `/constropt/autrite/` directory contains util functions for experiment evaluation. 
 ```
 python3 pipeline.py --app <appname>
 python3 pipeline.py --app redmine  # example
