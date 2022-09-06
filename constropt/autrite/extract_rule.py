@@ -39,7 +39,7 @@ class ExtractQueryRule(rule.Rule):
             if not 'where' in q: # can stop here
                 return []
             where_clause = q['where'] 
-            if self.check_where_simple(where_clause, table):
+            if self.check_where_simple(where_clause, table) or self.check_where(where_clause):
                 return [q]
             return []
 
