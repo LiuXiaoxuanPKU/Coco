@@ -120,6 +120,9 @@ class Rule:
                 return rewritten_cond
             elif op in ["exists", "missing", "not"]:
                 v = cond[op]
+                if isinstance(v, dict) and set({'exists', 'missing', 'not'}).intersection(v):
+                    op = list(v.keys())[0]
+                    v = v[op]
                 # nested query
                 if isinstance(v, dict) and ('select' in v):
                     rewritten_vs = self.apply(v)
