@@ -80,7 +80,7 @@ class InclusionConstraintQuery(unittest.TestCase):
 
     def test_aggregation(self):
         cs = [InclusionConstraint("follows", "anycolumn", False, [])]
-        q = "SELECT COUNT(*) FROM follows"
+        q = "SELECT COUNT(anycolumn) FROM follows"
         q = parse(q)
         extracted = ExtractQueryRule(cs).apply(q)
         self.assertEqual(len(extracted), 1)
