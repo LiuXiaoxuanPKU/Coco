@@ -7,6 +7,7 @@ from extract_rule import ExtractQueryRule
 from config import FileType, get_filename
 from loader import Loader
 import traceback
+from mo_sql_parsing import format
 
 # ------------------------------------------------------------------------------
 # This script counts queries has table column with certain type(s) of constraints
@@ -17,10 +18,12 @@ import traceback
 
 # ========================== static variables =========================
 app_to_cnt = {"redmine": 262462, "forem": 183483,
-              "openproject": 22021, "mastodon": 1000000, "spree": 1000000}
+              "openproject": 22021, "mastodon": 100000, "spree": 1000000,
+              "openstreetmap": 100000}
+offset = 0
 # app_to_cnt = {"redmine": 100, "forem": 100, "openproject": 100}
 appnames = ['forem', 'redmine', 'openproject']
-appnames = ['mastodon']
+appnames = ['mastodon', 'spree',  'openstreetmap']
 name_to_type = {
     'inclusion': constraint.InclusionConstraint,
     'length': constraint.LengthConstraint,
@@ -37,7 +40,7 @@ def main(verbal) -> None:
 
     for appname in appnames:
         # load query once for each app
-        all_queries = load_queries(appname)
+        all_queries = load_queries(appname, offset)
         # queries = get_valid_queries(all_queries, CONNECT_MAP[appname])
         queries = all_queries
         recorder.record("app_name", appname)
@@ -61,9 +64,8 @@ def main(verbal) -> None:
 # load queries
 
 
-def load_queries(appname) -> list:
+def load_queries(appname, offset=0) -> list:
     query_filename = get_filename(FileType.RAW_QUERY, appname)
-    offset = 0
     query_cnt = app_to_cnt[appname]
     queries = Loader.load_queries(query_filename, offset, query_cnt)
     return queries
@@ -89,6 +91,7 @@ def count(filtered_cs, queries, verbal) -> int:
         try:
             rewrite_q = rule.apply(q.q_obj)
             if extracted(rewrite_q):
+                # print(format(rewrite_q[0]))
                 cnt += 1
         except (KeyError, TypeError, AttributeError, ValueError):
             print_error(q, verbal)

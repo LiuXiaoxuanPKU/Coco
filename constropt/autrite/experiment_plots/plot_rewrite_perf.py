@@ -14,7 +14,7 @@ from matplotlib.offsetbox import AnchoredText
 parser = argparse.ArgumentParser()
 parser.add_argument('--app', default='openproject')
 args = parser.parse_args()
-suffix = "png"
+suffix = "pdf"
 
 rm_cnt = 0
 sp_cnt = 0
@@ -22,7 +22,9 @@ APP_NAME = {
     "redmine" : "Redmine",
     "forem" : "Dev.to",
     "openproject" : "Openproject",
-    "mastodon": "Mastodon"
+    "mastodon": "Mastodon",
+    "spree" : "Spree",
+    "openstreetmap": "Openstreetmap"
 }
 
 tick_size = 14
@@ -43,6 +45,7 @@ class RewriteType(Enum):
     PREDICATE = 4
     EMPTY_SET = 5
     CHANGE_JOIN = 6
+    ERROR = 7
 
 TYPE_TO_NAME = {
    RewriteType.ADD_LIMIT_1 : "AL",
@@ -50,7 +53,8 @@ TYPE_TO_NAME = {
    RewriteType.REMOVE_JOIN : "JI/E",
    RewriteType.PREDICATE : "PI/E",
    RewriteType.EMPTY_SET : "ES",
-   RewriteType.CHANGE_JOIN : "JI/E"
+   RewriteType.CHANGE_JOIN : "JI/E",
+   RewriteType.ERROR: "Error"
 }      
 def load_results(app):
     filename = "log/%s_perf" % app
@@ -83,12 +87,21 @@ def get_type(before, after):
            types.append(RewriteType.PREDICATE)
     if before.lower().count("inner") != after.lower().count("inner"):
         types.append(RewriteType.CHANGE_JOIN)
+        # print('---------')
+        # print(before)
+        # print(after)
+        # print('---------')
     if before.lower().count("null") != after.lower().count("null"):
         types.append(RewriteType.EMPTY_SET)
     if len(types) == 0:
+        print("[Error] Same rewrite!!!!============")
         print(before)
         print(after)
-        assert(False)
+        print("=======================")
+        types.append("ERROR")
+        return types
+        # assert(False)
+        
     if len(types) > 1:
         types = [TYPE_TO_NAME[t] for t in types] 
         types.append("MIX")
@@ -164,7 +177,14 @@ def group_by(queries, gb, for_type = True):
     else:
         for q in queries:
             db_sp = q.t_db / q.t_db_constraint
+            t = get_type(q.raw, q.rewrite)
+            if t[0] == 'JI/E':
+                continue
+            if t[0] is None:
+                continue
             if within_range(db_sp):
+                # if db_sp <= 1.05:
+                #     continue
                 types += ["install constraints"]
                 speedups += [db_sp]
                 sqls += [q.raw] 
@@ -173,6 +193,8 @@ def group_by(queries, gb, for_type = True):
                         
             rewrite_sp = q.t_db / q.t_rewrite
             if within_range(rewrite_sp):
+                # if rewrite_sp <= 1.05:
+                #     continue
                 t = get_type(q.raw, q.rewrite)
                 types += ["rewrite"]
                 speedups += [rewrite_sp]
@@ -185,13 +207,15 @@ def group_by(queries, gb, for_type = True):
                 global sp_cnt
                 sp_cnt += 1 
             if within_range(rewrite_constraint_sp):
+                # if rewrite_constraint_sp <= 1.05:
+                #     continue
                 t = get_type(q.raw, q.rewrite)
                 types += ["install constraints + rewrite"]
                 speedups += [rewrite_constraint_sp]
                 sqls += [q.rewrite] 
                 rewrite_types += [t[0]]  
                 groups += [find_group(rewrite_constraint_sp)]
-            if rewrite_constraint_sp < 0.95:
+            if rewrite_sp < 0.98 or rewrite_constraint_sp < 0.98:
                 print("-------------------------------")
                 print("db", db_sp, q.raw)
                 print("rewrite", rewrite_sp, q.rewrite)
@@ -206,8 +230,14 @@ def plot_speedup(data, appname):
     at = AnchoredText(
     APP_NAME[appname], prop=dict(size=18), frameon=False, loc='upper center')
     ax.add_artist(at)
-    group_boundaries = [0.95, 1.05, 1.1, 2]
+    group_boundaries = [0.98, 1.02, 1.1, 2]
     data = group_by(queries, group_boundaries, for_type=False)
+    # print(list(data["rewrite_type"]))
+    # print(data.head)
+    # print(data.shape)
+    data = data[data['rewrite_type'] != 'JI/E']
+    # print(data.shape)
+    # exit(0)
     # data = data[data["group"] != -1]
     # print(data)
     # print(data[data['group'] == 2])
@@ -243,6 +273,7 @@ def plot_rewrite_type(data, app):
     f, ax = plt.subplots()
     group_boundaries = [1, 1.1, 2]
     data = group_by(queries, group_boundaries, for_type=True)
+    # print(list(data["rewrite_type"]))
     # data = data[data["group"] != -1]
     data = data[data["sql"] != "none"]
     data = data[data["type"] != "install constraints"]
