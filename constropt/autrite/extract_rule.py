@@ -1,3 +1,4 @@
+import re
 import rule
 from constraint import InclusionConstraint
 
@@ -177,7 +178,12 @@ class ExtractQueryRule(rule.Rule):
                 if len(keys) == 1:
                     key = keys[0]
                     value = clause[op][0][key]
-                    table, field = value.split('.')
+                    if not isinstance(value, str):
+                        return False
+                    tokens = value.split('.')
+                    if len(tokens) == 1:
+                        return False # does not handle field without table name
+                    table, field = tokens
                     return field in self.table_to_field[table]
             if not isinstance(clause[op][0], str):
                 print("[Warning] 3. Does not handle predicate %s of type %s for now" % (clause[op][0], type(clause[op][0])))
@@ -201,7 +207,7 @@ class ExtractQueryRule(rule.Rule):
         def check_field(s):
             items = s.split(".")
             if len(items) == 1:
-                print("[Warning] Does not handle field %s without table name" % s)
+                # print("[Warning] Does not handle field %s without table name" % s)
                 self.warning_cnt += 1
                 return False
             t, f = items

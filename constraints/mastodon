@@ -906,15 +906,6 @@
         "cond": ""
       },
       {
-        "^o": "InclusionConstraint",
-        "field_name": "min_status_age",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
-      },
-      {
         "^o": "NumericalConstraint",
         "field_name": "min_favs",
         "db": false,
@@ -1168,7 +1159,7 @@
     ]
   },
   {
-    "table": "admin/action_logs",
+    "table": "admin_action_logs",
     "parent": "ApplicationRecord",
     "class": "Admin::ActionLog",
     "constraints": [
@@ -6370,7 +6361,7 @@
     ]
   },
   {
-    "table": "web/push_subscriptions",
+    "table": "web_push_subscriptions",
     "parent": "ApplicationRecord",
     "class": "Web::PushSubscription",
     "constraints": [
@@ -6421,7 +6412,7 @@
     ]
   },
   {
-    "table": "web/settings",
+    "table": "web_settings",
     "parent": "ApplicationRecord",
     "class": "Web::Setting",
     "constraints": [

@@ -51,7 +51,7 @@ class Stage(Enum):
 # ===================== static variables ==========================
 parser = argparse.ArgumentParser()
 parser.add_argument('--app', default='openproject')
-parser.add_argument('--cnt', default='100')
+parser.add_argument('--cnt', default='100000')
 
 args = parser.parse_args()
 appname = args.app
@@ -61,7 +61,7 @@ if query_cnt == -1:
     query_cnt = app_to_cnt[appname]
 
 offset = 0
-run_times = 1
+run_times = 10
 # ===================== helper functions ==========================
 # alter column from enum to VarChar. 
 # Input: a list of constraints; Output: a list of sqls
@@ -239,7 +239,6 @@ def add_params(qs) -> list:
 if __name__ == "__main__":
     query_filename = get_filename(FileType.RAW_QUERY, appname)
     queries = Loader.load_queries(query_filename, offset, query_cnt)
-    queries = get_valid_queries(queries, CONNECT_MAP[appname])
     inclusion_cs = load_inclusion_cs()
     rule = ExtractQueryRule(inclusion_cs)
 
@@ -249,6 +248,8 @@ if __name__ == "__main__":
         if len(rule.apply(q.q_obj)) > 0:
             rewrite_qs.append(q)
     print("Number of rewrite queries: %d" % len(rewrite_qs))
+    rewrite_qs = get_valid_queries(rewrite_qs, CONNECT_MAP[appname])
+    
     qs = [EvalQuery(q.q_raw) for q in rewrite_qs]
     print("========Add SQL param==================")
     qs = add_params(qs)

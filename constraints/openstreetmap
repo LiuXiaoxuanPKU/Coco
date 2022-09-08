@@ -223,15 +223,6 @@
         "cond": ""
       },
       {
-        "^o": "InclusionConstraint",
-        "field_name": "visible",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "changeset_id",
         "db": true,
@@ -916,15 +907,6 @@
         "cond": ""
       },
       {
-        "^o": "InclusionConstraint",
-        "field_name": "assigned_role",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "reportable_type",
         "db": true,
@@ -1308,15 +1290,6 @@
         "cond": ""
       },
       {
-        "^o": "InclusionConstraint",
-        "field_name": "visible",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "latitude",
         "db": true,
@@ -1612,15 +1585,6 @@
         "field_name": "visible",
         "db": false,
         "cond": ""
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "visible",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
@@ -2038,15 +2002,6 @@
         "cond": ""
       },
       {
-        "^o": "InclusionConstraint",
-        "field_name": "visible",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
-      },
-      {
         "^o": "ForeignKeyConstraint",
         "field_name": "changeset",
         "db": false,
@@ -2261,15 +2216,6 @@
         "field_name": "visible",
         "db": false,
         "cond": ""
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "visible",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
@@ -2523,15 +2469,6 @@
         "cond": ""
       },
       {
-        "^o": "InclusionConstraint",
-        "field_name": "visible",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "way_id",
         "db": true,
@@ -2757,15 +2694,6 @@
         "cond": ""
       },
       {
-        "^o": "InclusionConstraint",
-        "field_name": "description_format",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
         "db": true,
@@ -2857,15 +2785,6 @@
         "field_name": "visible",
         "db": false,
         "cond": ""
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "visible",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
@@ -3178,15 +3097,6 @@
         "cond": ""
       },
       {
-        "^o": "InclusionConstraint",
-        "field_name": "visibility",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
         "db": true,
@@ -3426,24 +3336,6 @@
         "db": false,
         "min": -1,
         "max": -1
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "home_lat",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "home_lon",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
@@ -3995,15 +3887,6 @@
         "field_name": "visible",
         "db": false,
         "cond": ""
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "visible",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
