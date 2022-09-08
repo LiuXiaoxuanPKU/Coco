@@ -62,7 +62,7 @@ class InclusionConstraintQuery(unittest.TestCase):
         q = "SELECT DISTINCT attachments.filename AS alias_0, projects.id FROM projects LEFT OUTER JOIN attachments ON attachments.container_id = projects.id AND attachments.container_type = 1 WHERE projects.id = 2 ORDER BY attachments.filename ASC LIMIT 3"
         q = parse(q)
         extracted = ExtractQueryRule(cs).apply(q)
-        self.assertEqual(len(extracted), 1)
+        self.assertEqual(len(extracted), 0)
 
     def test_order_by(self):
         cs = [InclusionConstraint("attachments", "butterfly", False, [])]
@@ -80,7 +80,7 @@ class InclusionConstraintQuery(unittest.TestCase):
 
     def test_aggregation(self):
         cs = [InclusionConstraint("follows", "anycolumn", False, [])]
-        q = "SELECT COUNT(*) FROM follows"
+        q = "SELECT COUNT(anycolumn) FROM follows"
         q = parse(q)
         extracted = ExtractQueryRule(cs).apply(q)
         self.assertEqual(len(extracted), 1)

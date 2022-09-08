@@ -36,7 +36,7 @@ name_to_type = {
 def main(verbal) -> None:
     # make sure log file is clean
     recorder = GlobalExpRecorder()
-    # recorder.clear(get_filename(FileType.PRECHECK_STR2INT_NUM, None))
+    recorder.clear(get_filename(FileType.PRECHECK_STR2INT_NUM, None))
 
     for appname in appnames:
         # load query once for each app
@@ -46,14 +46,15 @@ def main(verbal) -> None:
         recorder.record("app_name", appname)
         # count the number of queries with constraints on it
         all_cs = load_cs(appname, 'all')
-        all_cnt = count(all_cs, queries, verbal)
+        all_cnt, warning_cnt = count(all_cs, queries, verbal)
         recorder.record("queries_with_cs", all_cnt)
+        recorder.record("warning cnt", warning_cnt)
 
         # count inclusion, length, format constraint query
         for type_name in name_to_type.keys():
             cs_type = name_to_type[type_name]
             filtered_cs = load_cs(appname, cs_type)
-            cnt = count(filtered_cs, queries, verbal)
+            cnt, _ = count(filtered_cs, queries, verbal)
             recorder.record(type_name, cnt)
         recorder.dump(get_filename(FileType.PRECHECK_STR2INT_NUM, None))
 
@@ -84,7 +85,7 @@ def load_cs(appname, cs_type) -> list:
 # return number of queries contains filtered constraints
 
 
-def count(filtered_cs, queries, verbal) -> int:
+def count(filtered_cs, queries, verbal) -> tuple:
     cnt = 0
     rule = ExtractQueryRule(filtered_cs)
     for q in queries:
@@ -95,8 +96,7 @@ def count(filtered_cs, queries, verbal) -> int:
                 cnt += 1
         except (KeyError, TypeError, AttributeError, ValueError):
             print_error(q, verbal)
-    print("warning cnt", rule.warning_cnt)
-    return cnt
+    return (cnt, rule.warning_cnt)
 
 # return True if query contains inclusion constrains
 
