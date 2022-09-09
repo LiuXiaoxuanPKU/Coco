@@ -155,6 +155,7 @@ class ExtractQueryRule(rule.Rule):
                     return field in self.table_to_field[table]
                 else:
                     print("[Warning] 1. Does not handle predicate %s of type %s for now" % (clause[op], type(clause[op])))
+                    self.warning_cnt += 1
                     return False
             if isinstance(clause[op], str):
                 items = clause[op].split('.')
@@ -168,6 +169,7 @@ class ExtractQueryRule(rule.Rule):
                     return False
             if not isinstance(clause[op], list):
                 print("[Warning] 2. Does not handle predicate %s of type %s for now" % (clause[op], type(clause[op])))
+                self.warning_cnt += 1
                 return False
             if isinstance(clause[op][0], int):
                 return False
@@ -185,17 +187,16 @@ class ExtractQueryRule(rule.Rule):
                     return field in self.table_to_field[table]
             if not isinstance(clause[op][0], str):
                 print("[Warning] 3. Does not handle predicate %s of type %s for now" % (clause[op][0], type(clause[op][0])))
+                self.warning_cnt += 1
                 return False
             return clause[op][0] in self.table_to_field[table]
 
     # check on_clause inside from_clause
     def check_join_from(self, clause) -> bool:
-        if not isinstance(clause, dict):
-            # We assume there are no 
-            # inclusion/format/length constraint fields
-            # in the join predicate
-            return False
-        if "on" in clause[1].keys():
+        # We assume there are no 
+        # inclusion/format/length constraint fields
+        # in the join predicate
+        if isinstance(clause, dict) and "on" in clause[1].keys():
             on_clause = clause[1]["on"]
             if self.check_where(on_clause):
                 return True
@@ -214,6 +215,7 @@ class ExtractQueryRule(rule.Rule):
             
         if not isinstance(clause, dict):
             print("[Warning] Cannot handle clause of %s, expect dict" % clause)
+            self.warning_cnt += 1
             return False
         op = list(clause.keys())[0]
         if op == "and" or op == "or":
@@ -229,7 +231,6 @@ class ExtractQueryRule(rule.Rule):
             if not isinstance(clause[op], list):
                 print("[Warning] Does not handle clause %s of type %s, expect list" %(clause[op], type(clause[op])))
                 self.warning_cnt += 1
-                # print(clause)
                 return False
             
             if not isinstance(clause[op][0], str):
