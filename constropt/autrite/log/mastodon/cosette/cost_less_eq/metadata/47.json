@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT COUNT(*) FROM accounts INNER JOIN mutes ON accounts.id = mutes.target_account_id WHERE mutes.account_id = \"$1\"",
-        "cost": 12.62,
+        "sql": "SELECT mentions.status_id, mentions.account_id FROM mentions WHERE mentions.silent = \"$1\" AND mentions.status_id = \"$2\"",
+        "cost": 11.45,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT COUNT(*) FROM accounts INNER JOIN mutes ON accounts.id = mutes.target_account_id WHERE mutes.account_id = \"$1\" LIMIT 1",
-            "cost": 12.62,
+            "sql": "SELECT mentions.status_id, mentions.account_id FROM mentions WHERE mentions.silent = \"$1\" AND mentions.status_id = \"$2\" LIMIT 1",
+            "cost": 11.45,
             "rewrite_types": [
                 "AddLimitOne"
             ]

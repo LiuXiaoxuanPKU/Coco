@@ -166,7 +166,8 @@ CREATE TABLE statuses (
     poll_id bigint,
     deleted_at timestamp without time zone,
     edited_at timestamp without time zone,
-    trendable boolean
+    trendable boolean,
+    ordered_media_attachment_ids character varying
 );
 
 CREATE TABLE account_warning_presets (
@@ -478,7 +479,7 @@ CREATE TABLE users (
     sign_in_token character varying,
     sign_in_token_sent_at timestamp without time zone,
     webauthn_id character varying,
-    sign_up_ip inet,
+    sign_up_ip character varying,
     skip_sign_in_token boolean
 );
 
@@ -534,7 +535,7 @@ CREATE TABLE ip_blocks (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     expires_at timestamp without time zone,
-    ip inet   NOT NULL,
+    ip character varying   NOT NULL,
     severity integer   NOT NULL,
     comment character varying(255)   NOT NULL
 );
@@ -562,7 +563,7 @@ CREATE TABLE login_activities (
     provider character varying,
     success boolean,
     failure_reason character varying,
-    ip inet,
+    ip character varying,
     user_agent character varying,
     created_at timestamp without time zone
 );
@@ -589,7 +590,7 @@ CREATE TABLE media_attachments (
     updated_at timestamp without time zone NOT NULL,
     shortcode character varying,
     type integer   NOT NULL,
-    file_meta json,
+    file_meta character varying,
     account_id bigint,
     description character varying(255),
     scheduled_status_id bigint,
@@ -656,7 +657,7 @@ CREATE TABLE oauth_access_tokens (
     application_id bigint,
     resource_owner_id bigint,
     last_used_at timestamp without time zone,
-    last_used_ip inet
+    last_used_ip character varying
 );
 
 CREATE TABLE oauth_applications (
@@ -827,7 +828,7 @@ CREATE TABLE session_activations (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     user_agent character varying    NOT NULL,
-    ip inet,
+    ip character varying,
     access_token_id bigint,
     user_id bigint NOT NULL,
     web_push_subscription_id bigint
@@ -850,7 +851,7 @@ CREATE TABLE site_uploads (
     file_content_type character varying,
     file_file_size integer,
     file_updated_at timestamp without time zone,
-    meta json,
+    meta character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -930,7 +931,7 @@ CREATE TABLE web_push_subscriptions (
     endpoint character varying NOT NULL,
     key_p256dh character varying NOT NULL,
     key_auth character varying NOT NULL,
-    data json,
+    data character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     access_token_id bigint,
@@ -939,7 +940,7 @@ CREATE TABLE web_push_subscriptions (
 
 CREATE TABLE web_settings (
     id bigint NOT NULL,
-    data json,
+    data character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint NOT NULL
@@ -958,10 +959,11 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT DISTINCT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102841589915182270 AND statuses.visibility IN (2, 0) ORDER BY statuses.id DESC LIMIT 3;
+SELECT DISTINCT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND 1 = 1 AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 103790092905389009 AND statuses.visibility IN (1, 2) ORDER BY statuses.id DESC LIMIT 9;
 -- Rewritten Queries
-SELECT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102841589915182270 AND statuses.visibility IN (0, 2) ORDER BY statuses.id DESC LIMIT 3;
-SELECT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102841589915182270 AND statuses.visibility IN (0, 2) ORDER BY statuses.id DESC LIMIT 3;
-SELECT statuses.id AS alias_0, accounts.id FROM accounts INNER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102841589915182270 AND statuses.visibility IN (2, 0) ORDER BY statuses.id DESC LIMIT 3;
-SELECT DISTINCT statuses.id AS alias_0, accounts.id FROM accounts INNER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102841589915182270 AND statuses.visibility IN (0, 2) ORDER BY statuses.id DESC LIMIT 3;
-SELECT DISTINCT statuses.id AS alias_0, accounts.id FROM accounts INNER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102841589915182270 AND statuses.visibility IN (0, 2) ORDER BY statuses.id DESC LIMIT 3;
+SELECT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND 1 = 1 AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 103790092905389009 AND statuses.visibility IN (2, 1) ORDER BY statuses.id DESC LIMIT 9;
+SELECT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND 1 = 1 AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 103790092905389009 AND statuses.visibility IN (2, 1) ORDER BY statuses.id DESC LIMIT 9;
+SELECT statuses.id AS alias_0, accounts.id FROM accounts INNER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND 1 = 1 AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 103790092905389009 AND statuses.visibility IN (1, 2) ORDER BY statuses.id DESC LIMIT 9;
+SELECT DISTINCT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND 1 = 1 AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 103790092905389009 AND statuses.visibility IN (1, 2) ORDER BY statuses.id DESC LIMIT 9;
+SELECT DISTINCT statuses.id AS alias_0, accounts.id FROM accounts INNER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND 1 = 1 AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 103790092905389009 AND statuses.visibility IN (2, 1) ORDER BY statuses.id DESC LIMIT 9;
+SELECT DISTINCT statuses.id AS alias_0, accounts.id FROM accounts INNER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND 1 = 1 AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 103790092905389009 AND statuses.visibility IN (2, 1) ORDER BY statuses.id DESC LIMIT 9;
