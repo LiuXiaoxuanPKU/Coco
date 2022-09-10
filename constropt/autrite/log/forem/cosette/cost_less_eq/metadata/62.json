@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\"",
-        "cost": 16.61,
+        "sql": "SELECT 1 AS one FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = \"$1\" LIMIT 1 OFFSET \"$3\"",
+        "cost": 196.93,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\" LIMIT 1",
-            "cost": 16.61,
+            "sql": "SELECT 1 AS one FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = \"$1\" LIMIT 1 OFFSET \"$3\"",
+            "cost": 192.61,
             "rewrite_types": [
-                "AddLimitOne"
+                "RemoveJoin"
             ]
         }
     ]

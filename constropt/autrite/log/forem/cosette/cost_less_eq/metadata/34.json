@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = \"$1\" AND mentions.mentionable_type = \"$2\" AND mentions.user_id <> \"$3\"",
-        "cost": 269.0,
+        "sql": "SELECT 1 AS one FROM articles WHERE articles.body_markdown = \"$1\" AND articles.user_id = \"$2\" AND articles.title IS NULL LIMIT 1",
+        "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = \"$1\" AND mentions.mentionable_type = \"$2\" AND mentions.user_id <> \"$3\" LIMIT 1",
-            "cost": 269.0,
+            "sql": "SELECT 1 AS one FROM articles WHERE articles.body_markdown = \"$1\" AND articles.user_id = \"$2\" AND False LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "AddLimitOne"
+                "RewriteNullPredicate"
             ]
         }
     ]

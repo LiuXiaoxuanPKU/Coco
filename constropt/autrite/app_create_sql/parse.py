@@ -37,15 +37,22 @@ def remove_default(stmts):
     for stmt in stmts:
         lines = stmt.split("\n")
         remove_stmt = []
+        skip_line = False
         for line in lines:
+            if skip_line:
+                skip_line = False
+                continue
             tokens = line.split(" ")
             if "DEFAULT" in tokens:
                 default_idx = tokens.index("DEFAULT")
-                tokens[default_idx] = ''
-                if tokens[default_idx + 1].endswith(","):
-                    tokens[default_idx + 1] = ","
+                comma_idx = default_idx
+                while comma_idx < len(tokens) and not tokens[comma_idx].endswith(','):
+                    tokens[comma_idx] = ''
+                    comma_idx += 1
+                if comma_idx == len(tokens):
+                    skip_line = True
                 else:
-                    tokens[default_idx + 1] = ''
+                    tokens[comma_idx] = ','
                 if default_idx + 2 < len(tokens):
                     if tokens[default_idx + 2].startswith('varying'):
                         tokens[default_idx + 2] = tokens[default_idx + 2][len('varying'):]
@@ -58,8 +65,13 @@ def remove_default(stmts):
       
 
 def replace_keyword(stmts):
-    keywords = {"text": "character varying(255)",
-                "bytea": "binary(255)"}
+    keywords = {"varying[]": "varying",
+                "bigint[]": "character varying",
+                "text": "character varying",
+                "bytea": "binary(255)",
+                "inet": "character varying",
+                "jsonb": "character varying"}
+    fuzzy_keywords = ["public."]
     replace_stmts = []
     for stmt in stmts:
         lines = stmt.split("\n")
@@ -73,6 +85,12 @@ def replace_keyword(stmts):
                 elif keyword + ',' in  tokens:
                     keyword_id = tokens.index(keyword + ",")
                     tokens[keyword_id] = keywords[keyword] + ","
+                else:
+                    for token in tokens:
+                        for fz in fuzzy_keywords:
+                            if token.startswith(fz):
+                                keyword_id = tokens.index(token)
+                                tokens[keyword_id] = "character varying"
             line = " ".join(tokens)
             replace_stmt.append(line)
         replace_stmt = "\n".join(replace_stmt)
@@ -80,7 +98,8 @@ def replace_keyword(stmts):
     return replace_stmts
 
 def add_quote_keyword(stmts):
-    keywords = ["language", "filter", "value", "default_value"]
+    keywords = ["language", "filter", "value", "default_value", "sensitive",
+                "month", "path"]
     comment_stmts = []
     for stmt in stmts:
         lines = stmt.split("\n")
@@ -104,7 +123,7 @@ def dump_stmts(appname, stmts):
             f.write(stmt)
 
 if __name__ == "__main__":
-    appname = "redmine"
+    appname = "forem"
     with open(appname, "r") as f: 
         lines = f.readlines()
     create_stmts = extract_create_stmt(lines)

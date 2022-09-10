@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT COUNT(*) FROM badges INNER JOIN badge_achievements ON badges.id = badge_achievements.badge_id WHERE badge_achievements.user_id = \"$1\"",
-        "cost": 20.94,
+        "sql": "SELECT 1 AS one FROM reactions WHERE reactions.user_id IS NULL AND reactions.reactable_type = \"$1\" AND reactions.reactable_id = \"$2\" LIMIT 1",
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT COUNT(*) FROM badges INNER JOIN badge_achievements ON badges.id = badge_achievements.badge_id WHERE badge_achievements.user_id = \"$1\" LIMIT 1",
-            "cost": 20.94,
+            "sql": "SELECT 1 AS one FROM reactions WHERE False AND reactions.reactable_type = \"$1\" AND reactions.reactable_id = \"$2\" LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "AddLimitOne"
+                "RewriteNullPredicate"
             ]
         }
     ]

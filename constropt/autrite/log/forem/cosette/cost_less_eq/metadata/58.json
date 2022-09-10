@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT collections.* FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = \"$1\" ORDER BY collections.created_at DESC",
-        "cost": 24.73,
+        "sql": "SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.type_of_user IN (\"$2\", \"$3\")",
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT collections.* FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = \"$1\" ORDER BY collections.created_at DESC",
-            "cost": 24.68,
+            "sql": "SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.type_of_user IN (\"$2\", \"$3\") LIMIT 1",
+            "cost": 8.3,
             "rewrite_types": [
-                "RemoveDistinct"
+                "AddLimitOne"
             ]
         }
     ]
