@@ -1,6 +1,6 @@
 CREATE TABLE acls (
     id bigint NOT NULL,
-    address inet,
+    address character varying,
     k character varying NOT NULL,
     v character varying,
     domain character varying,
@@ -173,7 +173,7 @@ CREATE TABLE diary_comments (
     body character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    visible boolean   NOT NULL,
+    visible boolean   NOT NULL
 );
 
 CREATE TABLE diary_entries (
@@ -186,7 +186,7 @@ CREATE TABLE diary_entries (
     latitude double precision,
     longitude double precision,
     language_code character varying    NOT NULL,
-    visible boolean   NOT NULL,
+    visible boolean   NOT NULL
 );
 
 CREATE TABLE diary_entry_subscriptions (
@@ -227,7 +227,7 @@ CREATE TABLE gpx_files (
     longitude double precision,
     "timestamp" timestamp without time zone NOT NULL,
     description character varying    NOT NULL,
-    inserted boolean NOT NULL,
+    inserted boolean NOT NULL
 );
 
 CREATE TABLE issue_comments (
@@ -268,6 +268,7 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
+    body_format public.format_character varying   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -294,9 +295,9 @@ CREATE TABLE note_comments (
     note_id bigint NOT NULL,
     visible boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    author_ip inet,
+    author_ip character varying,
     author_id bigint,
-    body character varying(255),
+    body character varying(255)
 );
 
 CREATE TABLE notes (
@@ -388,7 +389,7 @@ CREATE TABLE redactions (
     description character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    user_id bigint NOT NULL,
+    user_id bigint NOT NULL
 );
 
 CREATE TABLE relation_members (
@@ -438,7 +439,7 @@ CREATE TABLE user_blocks (
     needs_view boolean   NOT NULL,
     revoker_id bigint,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 CREATE TABLE user_preferences (
@@ -518,6 +519,6 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM changeset_tags WHERE changeset_tags.k = 'sobiyzuzjtbgdniubkyrdnpefutrddasppugofjkucuvoy' AND NOT(changeset_tags.changeset_id = 734 AND changeset_tags.k = 'Key 2') AND changeset_tags.changeset_id IS NULL LIMIT 1;
+SELECT COUNT(*) FROM friends INNER JOIN users ON users.id = friends.friend_user_id WHERE friends.user_id = 3781 AND users.status IN ('pending', 'pending') AND created_at >= '2022-08-29 20:22:41.603262';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM changeset_tags WHERE changeset_tags.k = 'sobiyzuzjtbgdniubkyrdnpefutrddasppugofjkucuvoy' AND NOT(changeset_tags.changeset_id = 734 AND changeset_tags.k = 'Key 2') AND False LIMIT 1;
+SELECT COUNT(*) FROM friends WHERE friends.user_id = 3781 AND created_at >= '2022-08-29 20:22:41.603262';

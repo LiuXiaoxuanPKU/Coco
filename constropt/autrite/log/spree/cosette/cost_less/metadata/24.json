@@ -1,31 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND spree_prices.amount IS NOT NULL",
-        "cost": 229.82,
+        "sql": "SELECT 1 AS one FROM spree_stock_items INNER JOIN spree_stock_locations ON spree_stock_locations.id = spree_stock_items.stock_location_id WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_locations.active = \"$1\" AND spree_stock_items.id = \"$2\" LIMIT 1",
+        "cost": 16.76,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND spree_prices.amount IS NOT NULL",
-            "cost": 229.76,
+            "sql": "SELECT 1 AS one FROM spree_stock_items WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.id = \"$2\" LIMIT 1",
+            "cost": 8.45,
             "rewrite_types": [
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND True",
-            "cost": 229.76,
-            "rewrite_types": [
-                "RewriteNullPredicate",
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR'",
-            "cost": 229.76,
-            "rewrite_types": [
-                "RemovePredicate",
-                "RemoveDistinct"
+                "RemoveJoin"
             ]
         }
     ]

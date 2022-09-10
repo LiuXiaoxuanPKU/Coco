@@ -84,8 +84,8 @@ CREATE TABLE spree_addresses (
     user_id bigint,
     deleted_at timestamp without time zone,
     label character varying,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_adjustments (
@@ -120,8 +120,8 @@ CREATE TABLE spree_assets (
     alt character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_calculators (
@@ -200,7 +200,7 @@ CREATE TABLE spree_countries (
 
 CREATE TABLE spree_credit_cards (
     id bigint NOT NULL,
-    month character varying,
+    "month" character varying,
     year character varying,
     cc_type character varying,
     last_digits character varying,
@@ -214,8 +214,8 @@ CREATE TABLE spree_credit_cards (
     payment_method_id bigint,
     "default" boolean   NOT NULL,
     deleted_at timestamp without time zone,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_customer_returns (
@@ -225,8 +225,8 @@ CREATE TABLE spree_customer_returns (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     store_id bigint,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_digital_links (
@@ -292,8 +292,8 @@ CREATE TABLE spree_line_items (
     pre_tax_amount numeric(12,4)   NOT NULL,
     taxable_adjustment_total numeric(10,2)   NOT NULL,
     non_taxable_adjustment_total numeric(10,2)   NOT NULL,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_log_entries (
@@ -389,8 +389,8 @@ CREATE TABLE spree_option_types (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     filterable boolean   NOT NULL,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_option_value_variants (
@@ -409,8 +409,8 @@ CREATE TABLE spree_option_values (
     option_type_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_order_promotions (
@@ -460,8 +460,8 @@ CREATE TABLE spree_orders (
     taxable_adjustment_total numeric(10,2)   NOT NULL,
     non_taxable_adjustment_total numeric(10,2)   NOT NULL,
     store_owner_notification_delivered boolean,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_payment_capture_events (
@@ -485,8 +485,8 @@ CREATE TABLE spree_payment_methods (
     auto_capture boolean,
     preferences character varying(255),
     "position" integer  ,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_payment_methods_stores (
@@ -509,8 +509,8 @@ CREATE TABLE spree_payments (
     number character varying,
     cvv_response_code character varying,
     cvv_response_message character varying,
-    public_metadata jsonb,
-    private_metadata jsonb,
+    public_metadata character varying,
+    private_metadata character varying,
     intent_client_key character varying
 );
 
@@ -578,8 +578,8 @@ CREATE TABLE spree_products (
     promotionable boolean  ,
     meta_title character varying,
     discontinue_on timestamp without time zone,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_products_stores (
@@ -669,8 +669,8 @@ CREATE TABLE spree_promotions (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     promotion_category_id bigint,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_promotions_stores (
@@ -689,8 +689,8 @@ CREATE TABLE spree_properties (
     updated_at timestamp(6) without time zone NOT NULL,
     filterable boolean   NOT NULL,
     filter_param character varying,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_property_prototypes (
@@ -714,8 +714,8 @@ CREATE TABLE spree_prototypes (
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_refund_reasons (
@@ -736,8 +736,8 @@ CREATE TABLE spree_refunds (
     updated_at timestamp(6) without time zone NOT NULL,
     refund_reason_id bigint,
     reimbursement_id bigint,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_reimbursement_credits (
@@ -846,8 +846,8 @@ CREATE TABLE spree_shipments (
     pre_tax_amount numeric(12,4)   NOT NULL,
     taxable_adjustment_total numeric(10,2)   NOT NULL,
     non_taxable_adjustment_total numeric(10,2)   NOT NULL,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_shipping_categories (
@@ -884,8 +884,8 @@ CREATE TABLE spree_shipping_methods (
     admin_name character varying,
     tax_category_id bigint,
     code character varying,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_shipping_rates (
@@ -971,8 +971,8 @@ CREATE TABLE spree_stock_transfers (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     number character varying,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_store_credit_categories (
@@ -1021,8 +1021,8 @@ CREATE TABLE spree_store_credits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     store_id bigint,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_stores (
@@ -1053,7 +1053,7 @@ CREATE TABLE spree_stores (
     seo_robots character varying,
     supported_locales character varying,
     deleted_at timestamp without time zone,
-    settings jsonb
+    settings character varying
 );
 
 CREATE TABLE spree_tax_categories (
@@ -1087,8 +1087,8 @@ CREATE TABLE spree_taxonomies (
     updated_at timestamp(6) without time zone NOT NULL,
     "position" integer  ,
     store_id bigint,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_taxons (
@@ -1108,8 +1108,8 @@ CREATE TABLE spree_taxons (
     meta_keywords character varying,
     depth integer,
     hide_from_nav boolean  ,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_trackers (
@@ -1146,8 +1146,8 @@ CREATE TABLE spree_users (
     reset_password_sent_at timestamp without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    public_metadata jsonb,
-    private_metadata jsonb,
+    public_metadata character varying,
+    private_metadata character varying,
     spree_api_key character varying(48),
     remember_created_at timestamp without time zone,
     deleted_at timestamp without time zone,
@@ -1174,8 +1174,8 @@ CREATE TABLE spree_variants (
     updated_at timestamp without time zone NOT NULL,
     discontinue_on timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_webhooks_events (
@@ -1195,7 +1195,7 @@ CREATE TABLE spree_webhooks_subscribers (
     id bigint NOT NULL,
     url character varying NOT NULL,
     active boolean  ,
-    subscriptions jsonb,
+    subscriptions character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -1243,12 +1243,10 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_option_types.id AS t0_r0, spree_option_types.name AS t0_r1, spree_option_types.presentation AS t0_r2, spree_option_types.position AS t0_r3, spree_option_types.created_at AS t0_r4, spree_option_types.updated_at AS t0_r5, spree_option_types.filterable AS t0_r6, spree_option_types.public_metadata AS t0_r7, spree_option_types.private_metadata AS t0_r8, spree_option_values.id AS t1_r0, spree_option_values.position AS t1_r1, spree_option_values.name AS t1_r2, spree_option_values.presentation AS t1_r3, spree_option_values.option_type_id AS t1_r4, spree_option_values.created_at AS t1_r5, spree_option_values.updated_at AS t1_r6, spree_option_values.public_metadata AS t1_r7, spree_option_values.private_metadata AS t1_r8, spree_variants.id AS t2_r0, spree_variants.sku AS t2_r1, spree_variants.weight AS t2_r2, spree_variants.height AS t2_r3, spree_variants.width AS t2_r4, spree_variants.depth AS t2_r5, spree_variants.deleted_at AS t2_r6, spree_variants.is_master AS t2_r7, spree_variants.product_id AS t2_r8, spree_variants.cost_price AS t2_r9, spree_variants.position AS t2_r10, spree_variants.cost_currency AS t2_r11, spree_variants.track_inventory AS t2_r12, spree_variants.tax_category_id AS t2_r13, spree_variants.updated_at AS t2_r14, spree_variants.discontinue_on AS t2_r15, spree_variants.created_at AS t2_r16, spree_variants.public_metadata AS t2_r17, spree_variants.private_metadata AS t2_r18 FROM spree_option_types LEFT OUTER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id LEFT OUTER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id LEFT OUTER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_variants.id IN (4939, 4599) ORDER BY spree_option_types.position ASC, spree_option_values.position ASC;
+SELECT spree_inventory_units.id AS t0_r0, spree_inventory_units.state AS t0_r1, spree_inventory_units.variant_id AS t0_r2, spree_inventory_units.order_id AS t0_r3, spree_inventory_units.shipment_id AS t0_r4, spree_inventory_units.created_at AS t0_r5, spree_inventory_units.updated_at AS t0_r6, spree_inventory_units.pending AS t0_r7, spree_inventory_units.line_item_id AS t0_r8, spree_inventory_units.quantity AS t0_r9, spree_inventory_units.original_return_item_id AS t0_r10, spree_shipments.id AS t1_r0, spree_shipments.tracking AS t1_r1, spree_shipments.number AS t1_r2, spree_shipments.cost AS t1_r3, spree_shipments.shipped_at AS t1_r4, spree_shipments.order_id AS t1_r5, spree_shipments.address_id AS t1_r6, spree_shipments.state AS t1_r7, spree_shipments.created_at AS t1_r8, spree_shipments.updated_at AS t1_r9, spree_shipments.stock_location_id AS t1_r10, spree_shipments.adjustment_total AS t1_r11, spree_shipments.additional_tax_total AS t1_r12, spree_shipments.promo_total AS t1_r13, spree_shipments.included_tax_total AS t1_r14, spree_shipments.pre_tax_amount AS t1_r15, spree_shipments.taxable_adjustment_total AS t1_r16, spree_shipments.non_taxable_adjustment_total AS t1_r17, spree_shipments.public_metadata AS t1_r18, spree_shipments.private_metadata AS t1_r19, spree_orders.id AS t2_r0, spree_orders.number AS t2_r1, spree_orders.item_total AS t2_r2, spree_orders.total AS t2_r3, spree_orders.state AS t2_r4, spree_orders.adjustment_total AS t2_r5, spree_orders.user_id AS t2_r6, spree_orders.completed_at AS t2_r7, spree_orders.bill_address_id AS t2_r8, spree_orders.ship_address_id AS t2_r9, spree_orders.payment_total AS t2_r10, spree_orders.shipment_state AS t2_r11, spree_orders.payment_state AS t2_r12, spree_orders.email AS t2_r13, spree_orders.special_instructions AS t2_r14, spree_orders.created_at AS t2_r15, spree_orders.updated_at AS t2_r16, spree_orders.currency AS t2_r17, spree_orders.last_ip_address AS t2_r18, spree_orders.created_by_id AS t2_r19, spree_orders.shipment_total AS t2_r20, spree_orders.additional_tax_total AS t2_r21, spree_orders.promo_total AS t2_r22, spree_orders.channel AS t2_r23, spree_orders.included_tax_total AS t2_r24, spree_orders.item_count AS t2_r25, spree_orders.approver_id AS t2_r26, spree_orders.approved_at AS t2_r27, spree_orders.confirmation_delivered AS t2_r28, spree_orders.considered_risky AS t2_r29, spree_orders.token AS t2_r30, spree_orders.canceled_at AS t2_r31, spree_orders.canceler_id AS t2_r32, spree_orders.store_id AS t2_r33, spree_orders.state_lock_version AS t2_r34, spree_orders.taxable_adjustment_total AS t2_r35, spree_orders.non_taxable_adjustment_total AS t2_r36, spree_orders.store_owner_notification_delivered AS t2_r37, spree_orders.public_metadata AS t2_r38, spree_orders.private_metadata AS t2_r39 FROM spree_inventory_units LEFT OUTER JOIN spree_shipments ON spree_shipments.id = spree_inventory_units.shipment_id LEFT OUTER JOIN spree_orders ON spree_orders.id = spree_inventory_units.order_id WHERE spree_shipments.state <> 'pending' AND spree_inventory_units.variant_id = 4991 AND spree_orders.completed_at IS NOT NULL AND spree_inventory_units.state = 'on_hand' ORDER BY spree_orders.completed_at ASC;
 -- Rewritten Queries
-SELECT spree_option_types.id AS t0_r0, spree_option_types.name AS t0_r1, spree_option_types.presentation AS t0_r2, spree_option_types.position AS t0_r3, spree_option_types.created_at AS t0_r4, spree_option_types.updated_at AS t0_r5, spree_option_types.filterable AS t0_r6, spree_option_types.public_metadata AS t0_r7, spree_option_types.private_metadata AS t0_r8, spree_option_values.id AS t1_r0, spree_option_values.position AS t1_r1, spree_option_values.name AS t1_r2, spree_option_values.presentation AS t1_r3, spree_option_values.option_type_id AS t1_r4, spree_option_values.created_at AS t1_r5, spree_option_values.updated_at AS t1_r6, spree_option_values.public_metadata AS t1_r7, spree_option_values.private_metadata AS t1_r8, spree_variants.id AS t2_r0, spree_variants.sku AS t2_r1, spree_variants.weight AS t2_r2, spree_variants.height AS t2_r3, spree_variants.width AS t2_r4, spree_variants.depth AS t2_r5, spree_variants.deleted_at AS t2_r6, spree_variants.is_master AS t2_r7, spree_variants.product_id AS t2_r8, spree_variants.cost_price AS t2_r9, spree_variants.position AS t2_r10, spree_variants.cost_currency AS t2_r11, spree_variants.track_inventory AS t2_r12, spree_variants.tax_category_id AS t2_r13, spree_variants.updated_at AS t2_r14, spree_variants.discontinue_on AS t2_r15, spree_variants.created_at AS t2_r16, spree_variants.public_metadata AS t2_r17, spree_variants.private_metadata AS t2_r18 FROM spree_option_types LEFT OUTER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id LEFT OUTER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id LEFT OUTER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_variants.id IN (4939, 4599) ORDER BY spree_option_types.position ASC, spree_option_values.position ASC LIMIT 1;
-SELECT spree_option_types.id AS t0_r0, spree_option_types.name AS t0_r1, spree_option_types.presentation AS t0_r2, spree_option_types.position AS t0_r3, spree_option_types.created_at AS t0_r4, spree_option_types.updated_at AS t0_r5, spree_option_types.filterable AS t0_r6, spree_option_types.public_metadata AS t0_r7, spree_option_types.private_metadata AS t0_r8, spree_option_values.id AS t1_r0, spree_option_values.position AS t1_r1, spree_option_values.name AS t1_r2, spree_option_values.presentation AS t1_r3, spree_option_values.option_type_id AS t1_r4, spree_option_values.created_at AS t1_r5, spree_option_values.updated_at AS t1_r6, spree_option_values.public_metadata AS t1_r7, spree_option_values.private_metadata AS t1_r8, spree_variants.id AS t2_r0, spree_variants.sku AS t2_r1, spree_variants.weight AS t2_r2, spree_variants.height AS t2_r3, spree_variants.width AS t2_r4, spree_variants.depth AS t2_r5, spree_variants.deleted_at AS t2_r6, spree_variants.is_master AS t2_r7, spree_variants.product_id AS t2_r8, spree_variants.cost_price AS t2_r9, spree_variants.position AS t2_r10, spree_variants.cost_currency AS t2_r11, spree_variants.track_inventory AS t2_r12, spree_variants.tax_category_id AS t2_r13, spree_variants.updated_at AS t2_r14, spree_variants.discontinue_on AS t2_r15, spree_variants.created_at AS t2_r16, spree_variants.public_metadata AS t2_r17, spree_variants.private_metadata AS t2_r18 FROM spree_option_types INNER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id LEFT OUTER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id LEFT OUTER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_variants.id IN (4710, 4939) ORDER BY spree_option_types.position ASC, spree_option_values.position ASC LIMIT 1;
-SELECT spree_option_types.id AS t0_r0, spree_option_types.name AS t0_r1, spree_option_types.presentation AS t0_r2, spree_option_types.position AS t0_r3, spree_option_types.created_at AS t0_r4, spree_option_types.updated_at AS t0_r5, spree_option_types.filterable AS t0_r6, spree_option_types.public_metadata AS t0_r7, spree_option_types.private_metadata AS t0_r8, spree_option_values.id AS t1_r0, spree_option_values.position AS t1_r1, spree_option_values.name AS t1_r2, spree_option_values.presentation AS t1_r3, spree_option_values.option_type_id AS t1_r4, spree_option_values.created_at AS t1_r5, spree_option_values.updated_at AS t1_r6, spree_option_values.public_metadata AS t1_r7, spree_option_values.private_metadata AS t1_r8, spree_variants.id AS t2_r0, spree_variants.sku AS t2_r1, spree_variants.weight AS t2_r2, spree_variants.height AS t2_r3, spree_variants.width AS t2_r4, spree_variants.depth AS t2_r5, spree_variants.deleted_at AS t2_r6, spree_variants.is_master AS t2_r7, spree_variants.product_id AS t2_r8, spree_variants.cost_price AS t2_r9, spree_variants.position AS t2_r10, spree_variants.cost_currency AS t2_r11, spree_variants.track_inventory AS t2_r12, spree_variants.tax_category_id AS t2_r13, spree_variants.updated_at AS t2_r14, spree_variants.discontinue_on AS t2_r15, spree_variants.created_at AS t2_r16, spree_variants.public_metadata AS t2_r17, spree_variants.private_metadata AS t2_r18 FROM spree_option_types LEFT OUTER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id LEFT OUTER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_variants.id IN (4710, 4939) ORDER BY spree_option_types.position ASC, spree_option_values.position ASC LIMIT 1;
-SELECT spree_option_types.id AS t0_r0, spree_option_types.name AS t0_r1, spree_option_types.presentation AS t0_r2, spree_option_types.position AS t0_r3, spree_option_types.created_at AS t0_r4, spree_option_types.updated_at AS t0_r5, spree_option_types.filterable AS t0_r6, spree_option_types.public_metadata AS t0_r7, spree_option_types.private_metadata AS t0_r8, spree_option_values.id AS t1_r0, spree_option_values.position AS t1_r1, spree_option_values.name AS t1_r2, spree_option_values.presentation AS t1_r3, spree_option_values.option_type_id AS t1_r4, spree_option_values.created_at AS t1_r5, spree_option_values.updated_at AS t1_r6, spree_option_values.public_metadata AS t1_r7, spree_option_values.private_metadata AS t1_r8, spree_variants.id AS t2_r0, spree_variants.sku AS t2_r1, spree_variants.weight AS t2_r2, spree_variants.height AS t2_r3, spree_variants.width AS t2_r4, spree_variants.depth AS t2_r5, spree_variants.deleted_at AS t2_r6, spree_variants.is_master AS t2_r7, spree_variants.product_id AS t2_r8, spree_variants.cost_price AS t2_r9, spree_variants.position AS t2_r10, spree_variants.cost_currency AS t2_r11, spree_variants.track_inventory AS t2_r12, spree_variants.tax_category_id AS t2_r13, spree_variants.updated_at AS t2_r14, spree_variants.discontinue_on AS t2_r15, spree_variants.created_at AS t2_r16, spree_variants.public_metadata AS t2_r17, spree_variants.private_metadata AS t2_r18 FROM spree_option_types LEFT OUTER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id LEFT OUTER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_variants.id IN (4710, 4939) ORDER BY spree_option_types.position ASC, spree_option_values.position ASC LIMIT 1;
-SELECT spree_option_types.id AS t0_r0, spree_option_types.name AS t0_r1, spree_option_types.presentation AS t0_r2, spree_option_types.position AS t0_r3, spree_option_types.created_at AS t0_r4, spree_option_types.updated_at AS t0_r5, spree_option_types.filterable AS t0_r6, spree_option_types.public_metadata AS t0_r7, spree_option_types.private_metadata AS t0_r8, spree_option_values.id AS t1_r0, spree_option_values.position AS t1_r1, spree_option_values.name AS t1_r2, spree_option_values.presentation AS t1_r3, spree_option_values.option_type_id AS t1_r4, spree_option_values.created_at AS t1_r5, spree_option_values.updated_at AS t1_r6, spree_option_values.public_metadata AS t1_r7, spree_option_values.private_metadata AS t1_r8, spree_variants.id AS t2_r0, spree_variants.sku AS t2_r1, spree_variants.weight AS t2_r2, spree_variants.height AS t2_r3, spree_variants.width AS t2_r4, spree_variants.depth AS t2_r5, spree_variants.deleted_at AS t2_r6, spree_variants.is_master AS t2_r7, spree_variants.product_id AS t2_r8, spree_variants.cost_price AS t2_r9, spree_variants.position AS t2_r10, spree_variants.cost_currency AS t2_r11, spree_variants.track_inventory AS t2_r12, spree_variants.tax_category_id AS t2_r13, spree_variants.updated_at AS t2_r14, spree_variants.discontinue_on AS t2_r15, spree_variants.created_at AS t2_r16, spree_variants.public_metadata AS t2_r17, spree_variants.private_metadata AS t2_r18 FROM spree_option_types INNER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id LEFT OUTER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id LEFT OUTER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_variants.id IN (4710, 4939) ORDER BY spree_option_types.position ASC, spree_option_values.position ASC;
-SELECT spree_option_types.id AS t0_r0, spree_option_types.name AS t0_r1, spree_option_types.presentation AS t0_r2, spree_option_types.position AS t0_r3, spree_option_types.created_at AS t0_r4, spree_option_types.updated_at AS t0_r5, spree_option_types.filterable AS t0_r6, spree_option_types.public_metadata AS t0_r7, spree_option_types.private_metadata AS t0_r8, spree_option_values.id AS t1_r0, spree_option_values.position AS t1_r1, spree_option_values.name AS t1_r2, spree_option_values.presentation AS t1_r3, spree_option_values.option_type_id AS t1_r4, spree_option_values.created_at AS t1_r5, spree_option_values.updated_at AS t1_r6, spree_option_values.public_metadata AS t1_r7, spree_option_values.private_metadata AS t1_r8, spree_variants.id AS t2_r0, spree_variants.sku AS t2_r1, spree_variants.weight AS t2_r2, spree_variants.height AS t2_r3, spree_variants.width AS t2_r4, spree_variants.depth AS t2_r5, spree_variants.deleted_at AS t2_r6, spree_variants.is_master AS t2_r7, spree_variants.product_id AS t2_r8, spree_variants.cost_price AS t2_r9, spree_variants.position AS t2_r10, spree_variants.cost_currency AS t2_r11, spree_variants.track_inventory AS t2_r12, spree_variants.tax_category_id AS t2_r13, spree_variants.updated_at AS t2_r14, spree_variants.discontinue_on AS t2_r15, spree_variants.created_at AS t2_r16, spree_variants.public_metadata AS t2_r17, spree_variants.private_metadata AS t2_r18 FROM spree_option_types LEFT OUTER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id LEFT OUTER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_variants.id IN (4710, 4939) ORDER BY spree_option_types.position ASC, spree_option_values.position ASC;
-SELECT spree_option_types.id AS t0_r0, spree_option_types.name AS t0_r1, spree_option_types.presentation AS t0_r2, spree_option_types.position AS t0_r3, spree_option_types.created_at AS t0_r4, spree_option_types.updated_at AS t0_r5, spree_option_types.filterable AS t0_r6, spree_option_types.public_metadata AS t0_r7, spree_option_types.private_metadata AS t0_r8, spree_option_values.id AS t1_r0, spree_option_values.position AS t1_r1, spree_option_values.name AS t1_r2, spree_option_values.presentation AS t1_r3, spree_option_values.option_type_id AS t1_r4, spree_option_values.created_at AS t1_r5, spree_option_values.updated_at AS t1_r6, spree_option_values.public_metadata AS t1_r7, spree_option_values.private_metadata AS t1_r8, spree_variants.id AS t2_r0, spree_variants.sku AS t2_r1, spree_variants.weight AS t2_r2, spree_variants.height AS t2_r3, spree_variants.width AS t2_r4, spree_variants.depth AS t2_r5, spree_variants.deleted_at AS t2_r6, spree_variants.is_master AS t2_r7, spree_variants.product_id AS t2_r8, spree_variants.cost_price AS t2_r9, spree_variants.position AS t2_r10, spree_variants.cost_currency AS t2_r11, spree_variants.track_inventory AS t2_r12, spree_variants.tax_category_id AS t2_r13, spree_variants.updated_at AS t2_r14, spree_variants.discontinue_on AS t2_r15, spree_variants.created_at AS t2_r16, spree_variants.public_metadata AS t2_r17, spree_variants.private_metadata AS t2_r18 FROM spree_option_types LEFT OUTER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id LEFT OUTER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_variants.id IN (4710, 4939) ORDER BY spree_option_types.position ASC, spree_option_values.position ASC;
+SELECT spree_inventory_units.id AS t0_r0, spree_inventory_units.state AS t0_r1, spree_inventory_units.variant_id AS t0_r2, spree_inventory_units.order_id AS t0_r3, spree_inventory_units.shipment_id AS t0_r4, spree_inventory_units.created_at AS t0_r5, spree_inventory_units.updated_at AS t0_r6, spree_inventory_units.pending AS t0_r7, spree_inventory_units.line_item_id AS t0_r8, spree_inventory_units.quantity AS t0_r9, spree_inventory_units.original_return_item_id AS t0_r10, spree_shipments.id AS t1_r0, spree_shipments.tracking AS t1_r1, spree_shipments.number AS t1_r2, spree_shipments.cost AS t1_r3, spree_shipments.shipped_at AS t1_r4, spree_shipments.order_id AS t1_r5, spree_shipments.address_id AS t1_r6, spree_shipments.state AS t1_r7, spree_shipments.created_at AS t1_r8, spree_shipments.updated_at AS t1_r9, spree_shipments.stock_location_id AS t1_r10, spree_shipments.adjustment_total AS t1_r11, spree_shipments.additional_tax_total AS t1_r12, spree_shipments.promo_total AS t1_r13, spree_shipments.included_tax_total AS t1_r14, spree_shipments.pre_tax_amount AS t1_r15, spree_shipments.taxable_adjustment_total AS t1_r16, spree_shipments.non_taxable_adjustment_total AS t1_r17, spree_shipments.public_metadata AS t1_r18, spree_shipments.private_metadata AS t1_r19, spree_orders.id AS t2_r0, spree_orders.number AS t2_r1, spree_orders.item_total AS t2_r2, spree_orders.total AS t2_r3, spree_orders.state AS t2_r4, spree_orders.adjustment_total AS t2_r5, spree_orders.user_id AS t2_r6, spree_orders.completed_at AS t2_r7, spree_orders.bill_address_id AS t2_r8, spree_orders.ship_address_id AS t2_r9, spree_orders.payment_total AS t2_r10, spree_orders.shipment_state AS t2_r11, spree_orders.payment_state AS t2_r12, spree_orders.email AS t2_r13, spree_orders.special_instructions AS t2_r14, spree_orders.created_at AS t2_r15, spree_orders.updated_at AS t2_r16, spree_orders.currency AS t2_r17, spree_orders.last_ip_address AS t2_r18, spree_orders.created_by_id AS t2_r19, spree_orders.shipment_total AS t2_r20, spree_orders.additional_tax_total AS t2_r21, spree_orders.promo_total AS t2_r22, spree_orders.channel AS t2_r23, spree_orders.included_tax_total AS t2_r24, spree_orders.item_count AS t2_r25, spree_orders.approver_id AS t2_r26, spree_orders.approved_at AS t2_r27, spree_orders.confirmation_delivered AS t2_r28, spree_orders.considered_risky AS t2_r29, spree_orders.token AS t2_r30, spree_orders.canceled_at AS t2_r31, spree_orders.canceler_id AS t2_r32, spree_orders.store_id AS t2_r33, spree_orders.state_lock_version AS t2_r34, spree_orders.taxable_adjustment_total AS t2_r35, spree_orders.non_taxable_adjustment_total AS t2_r36, spree_orders.store_owner_notification_delivered AS t2_r37, spree_orders.public_metadata AS t2_r38, spree_orders.private_metadata AS t2_r39 FROM spree_inventory_units LEFT OUTER JOIN spree_shipments ON spree_shipments.id = spree_inventory_units.shipment_id LEFT OUTER JOIN spree_orders ON spree_orders.id = spree_inventory_units.order_id WHERE spree_shipments.state <> 'pending' AND spree_inventory_units.variant_id = 4991 AND spree_orders.completed_at IS NOT NULL AND spree_inventory_units.state = 'on_hand' ORDER BY spree_orders.completed_at ASC LIMIT 1;
+SELECT spree_inventory_units.id AS t0_r0, spree_inventory_units.state AS t0_r1, spree_inventory_units.variant_id AS t0_r2, spree_inventory_units.order_id AS t0_r3, spree_inventory_units.shipment_id AS t0_r4, spree_inventory_units.created_at AS t0_r5, spree_inventory_units.updated_at AS t0_r6, spree_inventory_units.pending AS t0_r7, spree_inventory_units.line_item_id AS t0_r8, spree_inventory_units.quantity AS t0_r9, spree_inventory_units.original_return_item_id AS t0_r10, spree_shipments.id AS t1_r0, spree_shipments.tracking AS t1_r1, spree_shipments.number AS t1_r2, spree_shipments.cost AS t1_r3, spree_shipments.shipped_at AS t1_r4, spree_shipments.order_id AS t1_r5, spree_shipments.address_id AS t1_r6, spree_shipments.state AS t1_r7, spree_shipments.created_at AS t1_r8, spree_shipments.updated_at AS t1_r9, spree_shipments.stock_location_id AS t1_r10, spree_shipments.adjustment_total AS t1_r11, spree_shipments.additional_tax_total AS t1_r12, spree_shipments.promo_total AS t1_r13, spree_shipments.included_tax_total AS t1_r14, spree_shipments.pre_tax_amount AS t1_r15, spree_shipments.taxable_adjustment_total AS t1_r16, spree_shipments.non_taxable_adjustment_total AS t1_r17, spree_shipments.public_metadata AS t1_r18, spree_shipments.private_metadata AS t1_r19, spree_orders.id AS t2_r0, spree_orders.number AS t2_r1, spree_orders.item_total AS t2_r2, spree_orders.total AS t2_r3, spree_orders.state AS t2_r4, spree_orders.adjustment_total AS t2_r5, spree_orders.user_id AS t2_r6, spree_orders.completed_at AS t2_r7, spree_orders.bill_address_id AS t2_r8, spree_orders.ship_address_id AS t2_r9, spree_orders.payment_total AS t2_r10, spree_orders.shipment_state AS t2_r11, spree_orders.payment_state AS t2_r12, spree_orders.email AS t2_r13, spree_orders.special_instructions AS t2_r14, spree_orders.created_at AS t2_r15, spree_orders.updated_at AS t2_r16, spree_orders.currency AS t2_r17, spree_orders.last_ip_address AS t2_r18, spree_orders.created_by_id AS t2_r19, spree_orders.shipment_total AS t2_r20, spree_orders.additional_tax_total AS t2_r21, spree_orders.promo_total AS t2_r22, spree_orders.channel AS t2_r23, spree_orders.included_tax_total AS t2_r24, spree_orders.item_count AS t2_r25, spree_orders.approver_id AS t2_r26, spree_orders.approved_at AS t2_r27, spree_orders.confirmation_delivered AS t2_r28, spree_orders.considered_risky AS t2_r29, spree_orders.token AS t2_r30, spree_orders.canceled_at AS t2_r31, spree_orders.canceler_id AS t2_r32, spree_orders.store_id AS t2_r33, spree_orders.state_lock_version AS t2_r34, spree_orders.taxable_adjustment_total AS t2_r35, spree_orders.non_taxable_adjustment_total AS t2_r36, spree_orders.store_owner_notification_delivered AS t2_r37, spree_orders.public_metadata AS t2_r38, spree_orders.private_metadata AS t2_r39 FROM spree_inventory_units INNER JOIN spree_shipments ON spree_shipments.id = spree_inventory_units.shipment_id LEFT OUTER JOIN spree_orders ON spree_orders.id = spree_inventory_units.order_id WHERE spree_shipments.state <> 'pending' AND spree_inventory_units.variant_id = 4991 AND spree_orders.completed_at IS NOT NULL AND spree_inventory_units.state = 'on_hand' ORDER BY spree_orders.completed_at ASC;
+SELECT spree_inventory_units.id AS t0_r0, spree_inventory_units.state AS t0_r1, spree_inventory_units.variant_id AS t0_r2, spree_inventory_units.order_id AS t0_r3, spree_inventory_units.shipment_id AS t0_r4, spree_inventory_units.created_at AS t0_r5, spree_inventory_units.updated_at AS t0_r6, spree_inventory_units.pending AS t0_r7, spree_inventory_units.line_item_id AS t0_r8, spree_inventory_units.quantity AS t0_r9, spree_inventory_units.original_return_item_id AS t0_r10, spree_shipments.id AS t1_r0, spree_shipments.tracking AS t1_r1, spree_shipments.number AS t1_r2, spree_shipments.cost AS t1_r3, spree_shipments.shipped_at AS t1_r4, spree_shipments.order_id AS t1_r5, spree_shipments.address_id AS t1_r6, spree_shipments.state AS t1_r7, spree_shipments.created_at AS t1_r8, spree_shipments.updated_at AS t1_r9, spree_shipments.stock_location_id AS t1_r10, spree_shipments.adjustment_total AS t1_r11, spree_shipments.additional_tax_total AS t1_r12, spree_shipments.promo_total AS t1_r13, spree_shipments.included_tax_total AS t1_r14, spree_shipments.pre_tax_amount AS t1_r15, spree_shipments.taxable_adjustment_total AS t1_r16, spree_shipments.non_taxable_adjustment_total AS t1_r17, spree_shipments.public_metadata AS t1_r18, spree_shipments.private_metadata AS t1_r19, spree_orders.id AS t2_r0, spree_orders.number AS t2_r1, spree_orders.item_total AS t2_r2, spree_orders.total AS t2_r3, spree_orders.state AS t2_r4, spree_orders.adjustment_total AS t2_r5, spree_orders.user_id AS t2_r6, spree_orders.completed_at AS t2_r7, spree_orders.bill_address_id AS t2_r8, spree_orders.ship_address_id AS t2_r9, spree_orders.payment_total AS t2_r10, spree_orders.shipment_state AS t2_r11, spree_orders.payment_state AS t2_r12, spree_orders.email AS t2_r13, spree_orders.special_instructions AS t2_r14, spree_orders.created_at AS t2_r15, spree_orders.updated_at AS t2_r16, spree_orders.currency AS t2_r17, spree_orders.last_ip_address AS t2_r18, spree_orders.created_by_id AS t2_r19, spree_orders.shipment_total AS t2_r20, spree_orders.additional_tax_total AS t2_r21, spree_orders.promo_total AS t2_r22, spree_orders.channel AS t2_r23, spree_orders.included_tax_total AS t2_r24, spree_orders.item_count AS t2_r25, spree_orders.approver_id AS t2_r26, spree_orders.approved_at AS t2_r27, spree_orders.confirmation_delivered AS t2_r28, spree_orders.considered_risky AS t2_r29, spree_orders.token AS t2_r30, spree_orders.canceled_at AS t2_r31, spree_orders.canceler_id AS t2_r32, spree_orders.store_id AS t2_r33, spree_orders.state_lock_version AS t2_r34, spree_orders.taxable_adjustment_total AS t2_r35, spree_orders.non_taxable_adjustment_total AS t2_r36, spree_orders.store_owner_notification_delivered AS t2_r37, spree_orders.public_metadata AS t2_r38, spree_orders.private_metadata AS t2_r39 FROM spree_inventory_units LEFT OUTER JOIN spree_shipments ON spree_shipments.id = spree_inventory_units.shipment_id INNER JOIN spree_orders ON spree_orders.id = spree_inventory_units.order_id WHERE spree_shipments.state <> 'pending' AND spree_inventory_units.variant_id = 4991 AND spree_orders.completed_at IS NOT NULL AND spree_inventory_units.state = 'on_hand' ORDER BY spree_orders.completed_at ASC;
+SELECT spree_inventory_units.id AS t0_r0, spree_inventory_units.state AS t0_r1, spree_inventory_units.variant_id AS t0_r2, spree_inventory_units.order_id AS t0_r3, spree_inventory_units.shipment_id AS t0_r4, spree_inventory_units.created_at AS t0_r5, spree_inventory_units.updated_at AS t0_r6, spree_inventory_units.pending AS t0_r7, spree_inventory_units.line_item_id AS t0_r8, spree_inventory_units.quantity AS t0_r9, spree_inventory_units.original_return_item_id AS t0_r10, spree_shipments.id AS t1_r0, spree_shipments.tracking AS t1_r1, spree_shipments.number AS t1_r2, spree_shipments.cost AS t1_r3, spree_shipments.shipped_at AS t1_r4, spree_shipments.order_id AS t1_r5, spree_shipments.address_id AS t1_r6, spree_shipments.state AS t1_r7, spree_shipments.created_at AS t1_r8, spree_shipments.updated_at AS t1_r9, spree_shipments.stock_location_id AS t1_r10, spree_shipments.adjustment_total AS t1_r11, spree_shipments.additional_tax_total AS t1_r12, spree_shipments.promo_total AS t1_r13, spree_shipments.included_tax_total AS t1_r14, spree_shipments.pre_tax_amount AS t1_r15, spree_shipments.taxable_adjustment_total AS t1_r16, spree_shipments.non_taxable_adjustment_total AS t1_r17, spree_shipments.public_metadata AS t1_r18, spree_shipments.private_metadata AS t1_r19, spree_orders.id AS t2_r0, spree_orders.number AS t2_r1, spree_orders.item_total AS t2_r2, spree_orders.total AS t2_r3, spree_orders.state AS t2_r4, spree_orders.adjustment_total AS t2_r5, spree_orders.user_id AS t2_r6, spree_orders.completed_at AS t2_r7, spree_orders.bill_address_id AS t2_r8, spree_orders.ship_address_id AS t2_r9, spree_orders.payment_total AS t2_r10, spree_orders.shipment_state AS t2_r11, spree_orders.payment_state AS t2_r12, spree_orders.email AS t2_r13, spree_orders.special_instructions AS t2_r14, spree_orders.created_at AS t2_r15, spree_orders.updated_at AS t2_r16, spree_orders.currency AS t2_r17, spree_orders.last_ip_address AS t2_r18, spree_orders.created_by_id AS t2_r19, spree_orders.shipment_total AS t2_r20, spree_orders.additional_tax_total AS t2_r21, spree_orders.promo_total AS t2_r22, spree_orders.channel AS t2_r23, spree_orders.included_tax_total AS t2_r24, spree_orders.item_count AS t2_r25, spree_orders.approver_id AS t2_r26, spree_orders.approved_at AS t2_r27, spree_orders.confirmation_delivered AS t2_r28, spree_orders.considered_risky AS t2_r29, spree_orders.token AS t2_r30, spree_orders.canceled_at AS t2_r31, spree_orders.canceler_id AS t2_r32, spree_orders.store_id AS t2_r33, spree_orders.state_lock_version AS t2_r34, spree_orders.taxable_adjustment_total AS t2_r35, spree_orders.non_taxable_adjustment_total AS t2_r36, spree_orders.store_owner_notification_delivered AS t2_r37, spree_orders.public_metadata AS t2_r38, spree_orders.private_metadata AS t2_r39 FROM spree_inventory_units INNER JOIN spree_shipments ON spree_shipments.id = spree_inventory_units.shipment_id LEFT OUTER JOIN spree_orders ON spree_orders.id = spree_inventory_units.order_id WHERE spree_shipments.state <> 'pending' AND spree_inventory_units.variant_id = 4991 AND spree_orders.completed_at IS NOT NULL AND spree_inventory_units.state = 'on_hand' ORDER BY spree_orders.completed_at ASC LIMIT 1;
+SELECT spree_inventory_units.id AS t0_r0, spree_inventory_units.state AS t0_r1, spree_inventory_units.variant_id AS t0_r2, spree_inventory_units.order_id AS t0_r3, spree_inventory_units.shipment_id AS t0_r4, spree_inventory_units.created_at AS t0_r5, spree_inventory_units.updated_at AS t0_r6, spree_inventory_units.pending AS t0_r7, spree_inventory_units.line_item_id AS t0_r8, spree_inventory_units.quantity AS t0_r9, spree_inventory_units.original_return_item_id AS t0_r10, spree_shipments.id AS t1_r0, spree_shipments.tracking AS t1_r1, spree_shipments.number AS t1_r2, spree_shipments.cost AS t1_r3, spree_shipments.shipped_at AS t1_r4, spree_shipments.order_id AS t1_r5, spree_shipments.address_id AS t1_r6, spree_shipments.state AS t1_r7, spree_shipments.created_at AS t1_r8, spree_shipments.updated_at AS t1_r9, spree_shipments.stock_location_id AS t1_r10, spree_shipments.adjustment_total AS t1_r11, spree_shipments.additional_tax_total AS t1_r12, spree_shipments.promo_total AS t1_r13, spree_shipments.included_tax_total AS t1_r14, spree_shipments.pre_tax_amount AS t1_r15, spree_shipments.taxable_adjustment_total AS t1_r16, spree_shipments.non_taxable_adjustment_total AS t1_r17, spree_shipments.public_metadata AS t1_r18, spree_shipments.private_metadata AS t1_r19, spree_orders.id AS t2_r0, spree_orders.number AS t2_r1, spree_orders.item_total AS t2_r2, spree_orders.total AS t2_r3, spree_orders.state AS t2_r4, spree_orders.adjustment_total AS t2_r5, spree_orders.user_id AS t2_r6, spree_orders.completed_at AS t2_r7, spree_orders.bill_address_id AS t2_r8, spree_orders.ship_address_id AS t2_r9, spree_orders.payment_total AS t2_r10, spree_orders.shipment_state AS t2_r11, spree_orders.payment_state AS t2_r12, spree_orders.email AS t2_r13, spree_orders.special_instructions AS t2_r14, spree_orders.created_at AS t2_r15, spree_orders.updated_at AS t2_r16, spree_orders.currency AS t2_r17, spree_orders.last_ip_address AS t2_r18, spree_orders.created_by_id AS t2_r19, spree_orders.shipment_total AS t2_r20, spree_orders.additional_tax_total AS t2_r21, spree_orders.promo_total AS t2_r22, spree_orders.channel AS t2_r23, spree_orders.included_tax_total AS t2_r24, spree_orders.item_count AS t2_r25, spree_orders.approver_id AS t2_r26, spree_orders.approved_at AS t2_r27, spree_orders.confirmation_delivered AS t2_r28, spree_orders.considered_risky AS t2_r29, spree_orders.token AS t2_r30, spree_orders.canceled_at AS t2_r31, spree_orders.canceler_id AS t2_r32, spree_orders.store_id AS t2_r33, spree_orders.state_lock_version AS t2_r34, spree_orders.taxable_adjustment_total AS t2_r35, spree_orders.non_taxable_adjustment_total AS t2_r36, spree_orders.store_owner_notification_delivered AS t2_r37, spree_orders.public_metadata AS t2_r38, spree_orders.private_metadata AS t2_r39 FROM spree_inventory_units LEFT OUTER JOIN spree_shipments ON spree_shipments.id = spree_inventory_units.shipment_id INNER JOIN spree_orders ON spree_orders.id = spree_inventory_units.order_id WHERE spree_shipments.state <> 'pending' AND spree_inventory_units.variant_id = 4991 AND spree_orders.completed_at IS NOT NULL AND spree_inventory_units.state = 'on_hand' ORDER BY spree_orders.completed_at ASC LIMIT 1;

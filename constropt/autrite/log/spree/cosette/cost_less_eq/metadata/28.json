@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT active_storage_attachments.* FROM active_storage_attachments WHERE active_storage_attachments.record_type = \"$1\" AND active_storage_attachments.name = \"$2\" AND active_storage_attachments.record_id = \"$3\"",
-        "cost": 8.31,
+        "sql": "SELECT 1 AS one FROM spree_stores INNER JOIN spree_products_stores ON spree_stores.id = spree_products_stores.store_id WHERE spree_stores.deleted_at IS NULL AND spree_products_stores.product_id = \"$1\" LIMIT 1",
+        "cost": 16.66,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT active_storage_attachments.* FROM active_storage_attachments WHERE active_storage_attachments.record_type = \"$1\" AND active_storage_attachments.name = \"$2\" AND active_storage_attachments.record_id = \"$3\" LIMIT 1",
-            "cost": 8.31,
+            "sql": "SELECT 1 AS one FROM spree_stores WHERE spree_stores.deleted_at IS NULL LIMIT 1",
+            "cost": 0.44,
             "rewrite_types": [
-                "AddLimitOne"
+                "RemoveJoin"
             ]
         }
     ]

@@ -1,55 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_option_values.id IN (\"$1\", \"$2\", \"$3\") AND spree_option_types.filterable = \"$4\" AND spree_variants.product_id IN (\"$5\", \"$6\", \"$7\") ORDER BY option_type_position, spree_option_values.position",
-        "cost": 62.11,
+        "sql": "SELECT 1 AS one FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = \"$1\" AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = \"$2\" AND zone_members_spree_countries_join.zoneable_id = spree_countries.id INNER JOIN spree_zones AS zones_spree_countries ON zones_spree_countries.id = zone_members_spree_countries_join.zone_id WHERE zone_members_spree_countries_join.zone_id = 994 AND spree_zones.id = \"$3\" LIMIT 1",
+        "cost": 36.81,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id WHERE spree_option_values.id IN (\"$1\", \"$2\", \"$3\") AND spree_option_types.filterable = \"$4\" ORDER BY option_type_position, spree_option_values.position",
-            "cost": 50.91,
-            "rewrite_types": [
-                "RemoveJoin",
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id WHERE spree_option_values.id IN (\"$1\", \"$2\", \"$3\") AND spree_option_types.filterable = \"$4\" ORDER BY option_type_position, spree_option_values.position LIMIT 1",
-            "cost": 50.91,
-            "rewrite_types": [
-                "RemoveJoin",
-                "RemoveDistinct",
-                "AddLimitOne"
-            ]
-        },
-        {
-            "sql": "SELECT DISTINCT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id WHERE spree_option_values.id IN (\"$1\", \"$2\", \"$3\") AND spree_option_types.filterable = \"$4\" ORDER BY option_type_position, spree_option_values.position LIMIT 1",
-            "cost": 50.94,
-            "rewrite_types": [
-                "RemoveJoin",
-                "AddLimitOne"
-            ]
-        },
-        {
-            "sql": "SELECT DISTINCT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id WHERE spree_option_values.id IN (\"$1\", \"$2\", \"$3\") AND spree_option_types.filterable = \"$4\" ORDER BY option_type_position, spree_option_values.position",
-            "cost": 50.96,
+            "sql": "SELECT 1 AS one FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = \"$1\" AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = \"$2\" AND zone_members_spree_countries_join.zoneable_id = spree_countries.id WHERE zone_members_spree_countries_join.zone_id = 994 AND spree_zones.id = \"$3\" LIMIT 1",
+            "cost": 28.5,
             "rewrite_types": [
                 "RemoveJoin"
-            ]
-        },
-        {
-            "sql": "SELECT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_option_values.id IN (\"$1\", \"$2\", \"$3\") AND spree_option_types.filterable = \"$4\" AND spree_variants.product_id IN (\"$5\", \"$6\", \"$7\") ORDER BY option_type_position, spree_option_values.position",
-            "cost": 62.08,
-            "rewrite_types": [
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT spree_option_values.*, spree_option_types.position AS option_type_position FROM spree_option_values INNER JOIN spree_option_types ON spree_option_types.id = spree_option_values.option_type_id INNER JOIN spree_option_value_variants ON spree_option_value_variants.option_value_id = spree_option_values.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.id = spree_option_value_variants.variant_id WHERE spree_option_values.id IN (\"$1\", \"$2\", \"$3\") AND spree_option_types.filterable = \"$4\" AND spree_variants.product_id IN (\"$5\", \"$6\", \"$7\") ORDER BY option_type_position, spree_option_values.position LIMIT 1",
-            "cost": 62.08,
-            "rewrite_types": [
-                "RemoveDistinct",
-                "AddLimitOne"
             ]
         }
     ]

@@ -84,8 +84,8 @@ CREATE TABLE spree_addresses (
     user_id bigint,
     deleted_at timestamp without time zone,
     label character varying,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_adjustments (
@@ -120,8 +120,8 @@ CREATE TABLE spree_assets (
     alt character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_calculators (
@@ -200,7 +200,7 @@ CREATE TABLE spree_countries (
 
 CREATE TABLE spree_credit_cards (
     id bigint NOT NULL,
-    month character varying,
+    "month" character varying,
     year character varying,
     cc_type character varying,
     last_digits character varying,
@@ -214,8 +214,8 @@ CREATE TABLE spree_credit_cards (
     payment_method_id bigint,
     "default" boolean   NOT NULL,
     deleted_at timestamp without time zone,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_customer_returns (
@@ -225,8 +225,8 @@ CREATE TABLE spree_customer_returns (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     store_id bigint,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_digital_links (
@@ -292,8 +292,8 @@ CREATE TABLE spree_line_items (
     pre_tax_amount numeric(12,4)   NOT NULL,
     taxable_adjustment_total numeric(10,2)   NOT NULL,
     non_taxable_adjustment_total numeric(10,2)   NOT NULL,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_log_entries (
@@ -389,8 +389,8 @@ CREATE TABLE spree_option_types (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     filterable boolean   NOT NULL,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_option_value_variants (
@@ -409,8 +409,8 @@ CREATE TABLE spree_option_values (
     option_type_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_order_promotions (
@@ -460,8 +460,8 @@ CREATE TABLE spree_orders (
     taxable_adjustment_total numeric(10,2)   NOT NULL,
     non_taxable_adjustment_total numeric(10,2)   NOT NULL,
     store_owner_notification_delivered boolean,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_payment_capture_events (
@@ -485,8 +485,8 @@ CREATE TABLE spree_payment_methods (
     auto_capture boolean,
     preferences character varying(255),
     "position" integer  ,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_payment_methods_stores (
@@ -509,8 +509,8 @@ CREATE TABLE spree_payments (
     number character varying,
     cvv_response_code character varying,
     cvv_response_message character varying,
-    public_metadata jsonb,
-    private_metadata jsonb,
+    public_metadata character varying,
+    private_metadata character varying,
     intent_client_key character varying
 );
 
@@ -578,8 +578,8 @@ CREATE TABLE spree_products (
     promotionable boolean  ,
     meta_title character varying,
     discontinue_on timestamp without time zone,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_products_stores (
@@ -669,8 +669,8 @@ CREATE TABLE spree_promotions (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     promotion_category_id bigint,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_promotions_stores (
@@ -689,8 +689,8 @@ CREATE TABLE spree_properties (
     updated_at timestamp(6) without time zone NOT NULL,
     filterable boolean   NOT NULL,
     filter_param character varying,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_property_prototypes (
@@ -714,8 +714,8 @@ CREATE TABLE spree_prototypes (
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_refund_reasons (
@@ -736,8 +736,8 @@ CREATE TABLE spree_refunds (
     updated_at timestamp(6) without time zone NOT NULL,
     refund_reason_id bigint,
     reimbursement_id bigint,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_reimbursement_credits (
@@ -846,8 +846,8 @@ CREATE TABLE spree_shipments (
     pre_tax_amount numeric(12,4)   NOT NULL,
     taxable_adjustment_total numeric(10,2)   NOT NULL,
     non_taxable_adjustment_total numeric(10,2)   NOT NULL,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_shipping_categories (
@@ -884,8 +884,8 @@ CREATE TABLE spree_shipping_methods (
     admin_name character varying,
     tax_category_id bigint,
     code character varying,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_shipping_rates (
@@ -971,8 +971,8 @@ CREATE TABLE spree_stock_transfers (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     number character varying,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_store_credit_categories (
@@ -1021,8 +1021,8 @@ CREATE TABLE spree_store_credits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     store_id bigint,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_stores (
@@ -1053,7 +1053,7 @@ CREATE TABLE spree_stores (
     seo_robots character varying,
     supported_locales character varying,
     deleted_at timestamp without time zone,
-    settings jsonb
+    settings character varying
 );
 
 CREATE TABLE spree_tax_categories (
@@ -1087,8 +1087,8 @@ CREATE TABLE spree_taxonomies (
     updated_at timestamp(6) without time zone NOT NULL,
     "position" integer  ,
     store_id bigint,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_taxons (
@@ -1108,8 +1108,8 @@ CREATE TABLE spree_taxons (
     meta_keywords character varying,
     depth integer,
     hide_from_nav boolean  ,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_trackers (
@@ -1146,8 +1146,8 @@ CREATE TABLE spree_users (
     reset_password_sent_at timestamp without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    public_metadata jsonb,
-    private_metadata jsonb,
+    public_metadata character varying,
+    private_metadata character varying,
     spree_api_key character varying(48),
     remember_created_at timestamp without time zone,
     deleted_at timestamp without time zone,
@@ -1174,8 +1174,8 @@ CREATE TABLE spree_variants (
     updated_at timestamp without time zone NOT NULL,
     discontinue_on timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
-    public_metadata jsonb,
-    private_metadata jsonb
+    public_metadata character varying,
+    private_metadata character varying
 );
 
 CREATE TABLE spree_webhooks_events (
@@ -1195,7 +1195,7 @@ CREATE TABLE spree_webhooks_subscribers (
     id bigint NOT NULL,
     url character varying NOT NULL,
     active boolean  ,
-    subscriptions jsonb,
+    subscriptions character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -1243,18 +1243,9 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND spree_prices.currency = 'usd' AND spree_prices.amount IS NOT NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:00.108684') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:00.108830') AND spree_products.available_on <= '2022-08-14 05:29:00.108824' AND spree_prices.currency = 'usd' AND spree_prices.amount IS NOT NULL;
+SELECT 1 AS "one" FROM spree_products INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 9846 AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:11.408979') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:11.409087') AND spree_products.available_on <= '2022-08-14 05:29:11.409081' AND spree_prices.currency = 'usd' AND spree_prices.amount IS NOT NULL LIMIT 1;
 -- Rewritten Queries
-SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND True AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:00.108684') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:00.108830') AND spree_products.available_on <= '2022-08-14 05:29:00.108824' AND True;
-SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:00.108684') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:00.108830') AND spree_products.available_on <= '2022-08-14 05:29:00.108824';
-SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND True AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:00.108684') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:00.108830') AND spree_products.available_on <= '2022-08-14 05:29:00.108824' AND True;
-SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:00.108684') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:00.108830') AND spree_products.available_on <= '2022-08-14 05:29:00.108824';
-SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND spree_prices.currency = 'usd' AND spree_prices.amount IS NOT NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:00.108684') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:00.108830') AND spree_products.available_on <= '2022-08-14 05:29:00.108824' AND spree_prices.currency = 'usd' AND spree_prices.amount IS NOT NULL;
-SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND spree_prices.currency = 'usd' AND True AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:00.108684') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:00.108830') AND spree_products.available_on <= '2022-08-14 05:29:00.108824' AND spree_prices.currency = 'usd' AND True;
-SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND spree_prices.currency = 'usd' AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:00.108684') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:00.108830') AND spree_products.available_on <= '2022-08-14 05:29:00.108824' AND spree_prices.currency = 'usd';
-SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND spree_prices.currency = 'usd' AND spree_prices.amount IS NOT NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:00.108684') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:00.108830') AND spree_products.available_on <= '2022-08-14 05:29:00.108824' AND spree_prices.currency = 'usd';
-SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND spree_prices.currency = 'usd' AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:00.108684') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:00.108830') AND spree_products.available_on <= '2022-08-14 05:29:00.108824' AND spree_prices.currency = 'usd' AND spree_prices.amount IS NOT NULL;
-SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND spree_prices.currency = 'usd' AND True AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:00.108684') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:00.108830') AND spree_products.available_on <= '2022-08-14 05:29:00.108824' AND spree_prices.currency = 'usd' AND True;
-SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND spree_prices.currency = 'usd' AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:00.108684') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:00.108830') AND spree_products.available_on <= '2022-08-14 05:29:00.108824' AND spree_prices.currency = 'usd';
-SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND spree_prices.currency = 'usd' AND spree_prices.amount IS NOT NULL AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:00.108684') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:00.108830') AND spree_products.available_on <= '2022-08-14 05:29:00.108824' AND spree_prices.currency = 'usd';
-SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND spree_prices.currency = 'usd' AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:00.108684') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:00.108830') AND spree_products.available_on <= '2022-08-14 05:29:00.108824' AND spree_prices.currency = 'usd' AND spree_prices.amount IS NOT NULL;
+SELECT 1 AS "one" FROM spree_products INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 9846 AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:11.408979') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:11.409087') AND spree_products.available_on <= '2022-08-14 05:29:11.409081' AND True LIMIT 1;
+SELECT 1 AS "one" FROM spree_products INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 9846 AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:11.408979') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:11.409087') AND spree_products.available_on <= '2022-08-14 05:29:11.409081' LIMIT 1;
+SELECT 1 AS "one" FROM spree_products INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 9846 AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:11.408979') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:11.409087') AND spree_products.available_on <= '2022-08-14 05:29:11.409081' AND spree_prices.currency = 'usd' AND True LIMIT 1;
+SELECT 1 AS "one" FROM spree_products INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 9846 AND (spree_products.deleted_at IS NULL OR spree_products.deleted_at >= '2022-08-14 05:29:11.408979') AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:29:11.409087') AND spree_products.available_on <= '2022-08-14 05:29:11.409081' AND spree_prices.currency = 'usd' LIMIT 1;

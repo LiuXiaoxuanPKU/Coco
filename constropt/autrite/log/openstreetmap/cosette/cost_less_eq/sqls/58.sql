@@ -1,6 +1,6 @@
 CREATE TABLE acls (
     id bigint NOT NULL,
-    address inet,
+    address character varying,
     k character varying NOT NULL,
     v character varying,
     domain character varying,
@@ -173,7 +173,7 @@ CREATE TABLE diary_comments (
     body character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    visible boolean   NOT NULL,
+    visible boolean   NOT NULL
 );
 
 CREATE TABLE diary_entries (
@@ -186,7 +186,7 @@ CREATE TABLE diary_entries (
     latitude double precision,
     longitude double precision,
     language_code character varying    NOT NULL,
-    visible boolean   NOT NULL,
+    visible boolean   NOT NULL
 );
 
 CREATE TABLE diary_entry_subscriptions (
@@ -227,7 +227,7 @@ CREATE TABLE gpx_files (
     longitude double precision,
     "timestamp" timestamp without time zone NOT NULL,
     description character varying    NOT NULL,
-    inserted boolean NOT NULL,
+    inserted boolean NOT NULL
 );
 
 CREATE TABLE issue_comments (
@@ -268,6 +268,7 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
+    body_format public.format_character varying   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -294,9 +295,9 @@ CREATE TABLE note_comments (
     note_id bigint NOT NULL,
     visible boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    author_ip inet,
+    author_ip character varying,
     author_id bigint,
-    body character varying(255),
+    body character varying(255)
 );
 
 CREATE TABLE notes (
@@ -388,7 +389,7 @@ CREATE TABLE redactions (
     description character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    user_id bigint NOT NULL,
+    user_id bigint NOT NULL
 );
 
 CREATE TABLE relation_members (
@@ -438,7 +439,7 @@ CREATE TABLE user_blocks (
     needs_view boolean   NOT NULL,
     revoker_id bigint,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 CREATE TABLE user_preferences (
@@ -518,12 +519,14 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR users.status IS NULL) ORDER BY note_comments.created_at ASC;
+SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR users.status IS NULL) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC;
 -- Rewritten Queries
-SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR False) ORDER BY note_comments.created_at ASC;
-SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR False) ORDER BY note_comments.created_at ASC LIMIT 1;
-SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR users.status IS NULL) ORDER BY note_comments.created_at ASC;
-SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR False) ORDER BY note_comments.created_at ASC;
-SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR users.status IS NULL) ORDER BY note_comments.created_at ASC LIMIT 1;
-SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR False) ORDER BY note_comments.created_at ASC LIMIT 1;
-SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR users.status IS NULL) ORDER BY note_comments.created_at ASC LIMIT 1;
+SELECT note_comments.* FROM note_comments WHERE note_comments.visible = False AND False AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC;
+SELECT note_comments.* FROM note_comments WHERE note_comments.visible = False AND False AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC LIMIT 1;
+SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR False) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC;
+SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR False) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC LIMIT 1;
+SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR users.status IS NULL) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC;
+SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR False) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC;
+SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR users.status IS NULL) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC LIMIT 1;
+SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR False) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC LIMIT 1;
+SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR users.status IS NULL) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC LIMIT 1;

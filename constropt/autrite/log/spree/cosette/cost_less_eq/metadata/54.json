@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT spree_variants.id FROM spree_variants INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (\"$1\", \"$2\") AND (spree_stock_items.count_on_hand > 0 OR spree_variants.track_inventory = False)",
-        "cost": 1487.06,
+        "sql": "SELECT DISTINCT spree_return_items.* FROM spree_return_items INNER JOIN spree_inventory_units ON spree_inventory_units.original_return_item_id = spree_return_items.id WHERE spree_return_items.reception_status = \"$1\" AND spree_inventory_units.created_at < '2022-07-31 05:42:21.425699' AND spree_inventory_units.state = 'shipped'",
+        "cost": 275.38,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_variants.id FROM spree_variants WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (\"$1\", \"$2\") AND spree_variants.track_inventory = False",
-            "cost": 4.3,
+            "sql": "SELECT spree_return_items.* FROM spree_return_items INNER JOIN spree_inventory_units ON spree_inventory_units.original_return_item_id = spree_return_items.id WHERE spree_return_items.reception_status = \"$1\" AND spree_inventory_units.created_at < '2022-07-31 05:42:21.425699' AND spree_inventory_units.state = 'shipped'",
+            "cost": 275.32,
             "rewrite_types": [
-                "RemoveJoin"
+                "RemoveDistinct"
             ]
         }
     ]

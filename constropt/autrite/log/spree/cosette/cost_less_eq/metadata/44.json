@@ -1,21 +1,13 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = \"$1\" AND spree_stock_items.variant_id IN (\"$2\", \"$3\")",
-        "cost": 6297.03,
+        "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_stock_items.count_on_hand > 0 OR spree_variants.track_inventory = False)",
+        "cost": 180872.87,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.active = \"$1\"",
-            "cost": 225.0,
-            "rewrite_types": [
-                "RemoveJoin",
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.active = \"$1\"",
-            "cost": 750.0,
+            "sql": "SELECT spree_variants.* FROM spree_variants WHERE spree_variants.deleted_at IS NULL AND spree_variants.track_inventory = False",
+            "cost": 4.29,
             "rewrite_types": [
                 "RemoveJoin"
             ]

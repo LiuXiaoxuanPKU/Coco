@@ -1,6 +1,6 @@
 CREATE TABLE acls (
     id bigint NOT NULL,
-    address inet,
+    address character varying,
     k character varying NOT NULL,
     v character varying,
     domain character varying,
@@ -173,7 +173,7 @@ CREATE TABLE diary_comments (
     body character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    visible boolean   NOT NULL,
+    visible boolean   NOT NULL
 );
 
 CREATE TABLE diary_entries (
@@ -186,7 +186,7 @@ CREATE TABLE diary_entries (
     latitude double precision,
     longitude double precision,
     language_code character varying    NOT NULL,
-    visible boolean   NOT NULL,
+    visible boolean   NOT NULL
 );
 
 CREATE TABLE diary_entry_subscriptions (
@@ -227,7 +227,7 @@ CREATE TABLE gpx_files (
     longitude double precision,
     "timestamp" timestamp without time zone NOT NULL,
     description character varying    NOT NULL,
-    inserted boolean NOT NULL,
+    inserted boolean NOT NULL
 );
 
 CREATE TABLE issue_comments (
@@ -268,6 +268,7 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
+    body_format public.format_character varying   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -294,9 +295,9 @@ CREATE TABLE note_comments (
     note_id bigint NOT NULL,
     visible boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    author_ip inet,
+    author_ip character varying,
     author_id bigint,
-    body character varying(255),
+    body character varying(255)
 );
 
 CREATE TABLE notes (
@@ -388,7 +389,7 @@ CREATE TABLE redactions (
     description character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    user_id bigint NOT NULL,
+    user_id bigint NOT NULL
 );
 
 CREATE TABLE relation_members (
@@ -438,7 +439,7 @@ CREATE TABLE user_blocks (
     needs_view boolean   NOT NULL,
     revoker_id bigint,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 CREATE TABLE user_preferences (
@@ -518,7 +519,7 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT DISTINCT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False LEFT OUTER JOIN users ON users.id = note_comments.author_id AND (users.status IN ('pending', 'pending') OR users.status IS NULL) WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:21:59.933822') AND note_comments.author_id = 5819 ORDER BY updated_at DESC LIMIT 3;
+SELECT DISTINCT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False LEFT OUTER JOIN users ON users.id = note_comments.author_id AND (users.status IN ('pending', 'pending') OR users.status IS NULL) WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.539509') AND note_comments.author_id = 5819 ORDER BY updated_at DESC LIMIT 3;
 -- Rewritten Queries
-SELECT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False LEFT OUTER JOIN users ON users.id = note_comments.author_id AND (users.status IN ('pending', 'pending') OR users.status IS NULL) WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:21:59.933822') AND note_comments.author_id = 5819 ORDER BY updated_at DESC LIMIT 3;
-SELECT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:21:59.933822') AND note_comments.author_id = 5819 ORDER BY updated_at DESC LIMIT 3;
+SELECT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False LEFT OUTER JOIN users ON users.id = note_comments.author_id AND (users.status IN ('pending', 'pending') OR users.status IS NULL) WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.539509') AND note_comments.author_id = 5819 ORDER BY updated_at DESC LIMIT 3;
+SELECT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.539509') AND note_comments.author_id = 5819 ORDER BY updated_at DESC LIMIT 3;
