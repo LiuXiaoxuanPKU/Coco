@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,9 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id INNER JOIN users ON users.account_id = accounts.id WHERE follows.target_account_id = 108847829759797832 AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:41:05.652496' ORDER BY accounts.id ASC LIMIT 2;
+SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847826821086576 AND follows.target_account_id = 108847832896090056 ORDER BY follows.id DESC LIMIT 3;
 -- Rewritten Queries
-SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 108847829759797832 AND accounts.domain IS NULL ORDER BY accounts.id ASC LIMIT 2;
+SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847826821086576 AND follows.target_account_id = 108847832896090056 ORDER BY follows.id DESC LIMIT 3;
+SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id WHERE accounts.id <> 108847826821086576 AND follows.target_account_id = 108847832896090056 ORDER BY follows.id DESC LIMIT 3;
+SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847826821086576 AND follows.target_account_id = 108847832896090056 ORDER BY follows.id DESC LIMIT 3;
+SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id WHERE accounts.id <> 108847826821086576 AND follows.target_account_id = 108847832896090056 ORDER BY follows.id DESC LIMIT 3;

@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.shortcode = 'bxaons' AND custom_emojis.domain IS NULL AND custom_emojis.disabled = False;
+SELECT account_domain_blocks.domain FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847831411928495 AND account_domain_blocks.domain = 'gfmszisvliubusobbfghrnrucidiuklobuferorrrsoxskfsaiyioousmpmzxudysoifgpygxppdh';
 -- Rewritten Queries
-SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.shortcode = 'bxaons' AND custom_emojis.domain IS NULL AND custom_emojis.disabled = False LIMIT 1;
+SELECT account_domain_blocks.domain FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847831411928495 AND account_domain_blocks.domain = 'gfmszisvliubusobbfghrnrucidiuklobuferorrrsoxskfsaiyioousmpmzxudysoifgpygxppdh' LIMIT 1;

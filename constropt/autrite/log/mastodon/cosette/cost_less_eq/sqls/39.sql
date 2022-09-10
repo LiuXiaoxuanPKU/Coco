@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT follows.target_account_id FROM follows WHERE follows.account_id = 108847829770520157 AND follows.target_account_id = 108847824079585460;
+SELECT follows.target_account_id FROM follows WHERE follows.account_id = 108847821902587938 AND follows.target_account_id = 108847823348347193;
 -- Rewritten Queries
-SELECT follows.target_account_id FROM follows WHERE follows.account_id = 108847829770520157 AND follows.target_account_id = 108847824079585460 LIMIT 1;
+SELECT follows.target_account_id FROM follows WHERE follows.account_id = 108847821902587938 AND follows.target_account_id = 108847823348347193 LIMIT 1;

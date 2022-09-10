@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT status_stats.* FROM status_stats WHERE status_stats.status_id = 108292798817907551;
+SELECT domain_blocks.* FROM domain_blocks WHERE domain_blocks.domain = 'vzpbwhyhaidjmpcnlhxlznfkexoclwuyfuuurtitemofxdnwfmueekkzlrgnsuvruhqdndchnmpavufayymrnmkoytriyfexfgbrjrjbucqgswbhoylbnyzooiyesrigxfozuoouioscejdjmbfuqznpfqjlzbkmplxipfynkyyqviitlgyvnlvnyqduwxndhvlcwud';
 -- Rewritten Queries
-SELECT status_stats.* FROM status_stats WHERE status_stats.status_id = 108292798817907551 LIMIT 1;
+SELECT domain_blocks.* FROM domain_blocks WHERE domain_blocks.domain = 'vzpbwhyhaidjmpcnlhxlznfkexoclwuyfuuurtitemofxdnwfmueekkzlrgnsuvruhqdndchnmpavufayymrnmkoytriyfexfgbrjrjbucqgswbhoylbnyzooiyesrigxfozuoouioscejdjmbfuqznpfqjlzbkmplxipfynkyyqviitlgyvnlvnyqduwxndhvlcwud' LIMIT 1;

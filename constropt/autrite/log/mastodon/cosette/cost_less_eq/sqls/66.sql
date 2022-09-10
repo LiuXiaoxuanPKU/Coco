@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.domain = 'mqsfhglmbbkterjxajmrbaqqdbhaxwgemffntfbpnzzxisztrppopznjmnebradlynlcpatcvliejnqghbbhtoffggzidcgwqwmolsxbhzpfszaneyxyuarfqjfwyzwfjekhryrhxnryalneldbfsczazuvalztqfnccfwbehrawatkpjopwrrpzxshxzufuzyazmemiqzudtaqylkkwzkyioecfwzgucony' ORDER BY custom_emojis.domain ASC, custom_emojis.shortcode ASC;
+SELECT 1 AS "one" FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847827699038761 AND account_domain_blocks.domain IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.domain = 'mqsfhglmbbkterjxajmrbaqqdbhaxwgemffntfbpnzzxisztrppopznjmnebradlynlcpatcvliejnqghbbhtoffggzidcgwqwmolsxbhzpfszaneyxyuarfqjfwyzwfjekhryrhxnryalneldbfsczazuvalztqfnccfwbehrawatkpjopwrrpzxshxzufuzyazmemiqzudtaqylkkwzkyioecfwzgucony' ORDER BY custom_emojis.domain ASC, custom_emojis.shortcode ASC LIMIT 1;
+SELECT 1 AS "one" FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847827699038761 AND False LIMIT 1;

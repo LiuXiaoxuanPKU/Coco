@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT conversation_mutes.conversation_id FROM conversation_mutes WHERE conversation_mutes.conversation_id IN (\"$1\", \"$2\") AND conversation_mutes.account_id = \"$3\"",
-        "cost": 8.33,
+        "sql": "SELECT accounts.username, accounts.domain FROM accounts INNER JOIN blocks ON accounts.id = blocks.target_account_id WHERE blocks.account_id = \"$1\" ORDER BY blocks.id DESC",
+        "cost": 28.28,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT conversation_mutes.conversation_id FROM conversation_mutes WHERE conversation_mutes.conversation_id IN (\"$1\", \"$2\") AND conversation_mutes.account_id = \"$3\" LIMIT 1",
-            "cost": 8.33,
+            "sql": "SELECT accounts.username, accounts.domain FROM accounts INNER JOIN blocks ON accounts.id = blocks.target_account_id WHERE blocks.account_id = \"$1\" ORDER BY blocks.id DESC LIMIT 1",
+            "cost": 28.28,
             "rewrite_types": [
                 "AddLimitOne"
             ]

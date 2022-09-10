@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT mutes.* FROM mutes WHERE mutes.target_account_id IN (108847830348164522, 108847831265136744, 108847823675817293) AND mutes.account_id = 108847827396059649;
+SELECT 1 AS "one" FROM webauthn_credentials WHERE webauthn_credentials.external_id IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT mutes.* FROM mutes WHERE mutes.target_account_id IN (108847830348164522, 108847831265136744, 108847823675817293) AND mutes.account_id = 108847827396059649 LIMIT 1;
+SELECT 1 AS "one" FROM webauthn_credentials WHERE False LIMIT 1;

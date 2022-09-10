@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT account_domain_blocks.domain FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847831411928495 AND account_domain_blocks.domain = 'gfmszisvliubusobbfghrnrucidiuklobuferorrrsoxskfsaiyioousmpmzxudysoifgpygxppdh';
+SELECT lists.* FROM lists INNER JOIN list_accounts ON lists.id = list_accounts.list_id WHERE list_accounts.account_id = 108847822022100414 AND lists.account_id = 108847825684122885;
 -- Rewritten Queries
-SELECT account_domain_blocks.domain FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847831411928495 AND account_domain_blocks.domain = 'gfmszisvliubusobbfghrnrucidiuklobuferorrrsoxskfsaiyioousmpmzxudysoifgpygxppdh' LIMIT 1;
+SELECT lists.* FROM lists INNER JOIN list_accounts ON lists.id = list_accounts.list_id WHERE list_accounts.account_id = 108847822022100414 AND lists.account_id = 108847825684122885 LIMIT 1;

@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT mentions.status_id FROM mentions WHERE mentions.silent = False AND mentions.status_id IN (105095372573997709, 106850058391786086, 107479333725730676, 107143075940319734, 108519481873071023, 104209383550240967, 107693047439660364) AND mentions.account_id = 108847801508209384;
+SELECT mentions.status_id FROM mentions WHERE mentions.silent = False AND mentions.status_id IN (108519481873071023, 104209383550240967, 107693047439660364, 103478975516933439, 103084977951385738, 107849836654788837, 103145033002709284) AND mentions.account_id = 108847828040749435;
 -- Rewritten Queries
-SELECT mentions.status_id FROM mentions WHERE mentions.silent = False AND mentions.status_id IN (105095372573997709, 106850058391786086, 107479333725730676, 107143075940319734, 108519481873071023, 104209383550240967, 107693047439660364) AND mentions.account_id = 108847801508209384 LIMIT 1;
+SELECT mentions.status_id FROM mentions WHERE mentions.silent = False AND mentions.status_id IN (108519481873071023, 104209383550240967, 107693047439660364, 103478975516933439, 103084977951385738, 107849836654788837, 103145033002709284) AND mentions.account_id = 108847828040749435 LIMIT 1;

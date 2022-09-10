@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT accounts.username, accounts.domain FROM accounts INNER JOIN blocks ON accounts.id = blocks.target_account_id WHERE blocks.account_id = 108847820353804144 ORDER BY blocks.id DESC;
+SELECT 1 AS "one" FROM accounts INNER JOIN follows ON accounts.id = follows.account_id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = 108847832091765381 LIMIT 1 OFFSET 1;
 -- Rewritten Queries
-SELECT accounts.username, accounts.domain FROM accounts INNER JOIN blocks ON accounts.id = blocks.target_account_id WHERE blocks.account_id = 108847820353804144 ORDER BY blocks.id DESC LIMIT 1;
+SELECT 1 AS "one" FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 108847832091765381 LIMIT 1 OFFSET 1;

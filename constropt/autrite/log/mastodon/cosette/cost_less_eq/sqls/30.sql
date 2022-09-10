@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT account_domain_blocks.domain FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847820971123808;
+SELECT blocks.account_id FROM blocks WHERE blocks.account_id IN (108847832508723091, 108847820063739493) AND blocks.target_account_id = 108847820309143957;
 -- Rewritten Queries
-SELECT account_domain_blocks.domain FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847820971123808 LIMIT 1;
+SELECT blocks.account_id FROM blocks WHERE blocks.account_id IN (108847832508723091, 108847820063739493) AND blocks.target_account_id = 108847820309143957 LIMIT 1;

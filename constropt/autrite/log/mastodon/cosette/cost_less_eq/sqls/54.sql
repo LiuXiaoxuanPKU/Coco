@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT COUNT(*) FROM accounts INNER JOIN follows ON accounts.id = follows.target_account_id WHERE follows.account_id = 108847832716467624;
+SELECT COUNT(*) FROM accounts INNER JOIN follows ON accounts.id = follows.target_account_id WHERE follows.account_id = 108847824071970473;
 -- Rewritten Queries
-SELECT COUNT(*) FROM accounts INNER JOIN follows ON accounts.id = follows.target_account_id WHERE follows.account_id = 108847832716467624 LIMIT 1;
+SELECT COUNT(*) FROM accounts INNER JOIN follows ON accounts.id = follows.target_account_id WHERE follows.account_id = 108847824071970473 LIMIT 1;

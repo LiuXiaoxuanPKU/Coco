@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT COUNT(*) FROM follow_requests WHERE follow_requests.target_account_id = 108847794538342937 AND follow_requests.account_id = 108847821030172821;
+SELECT blocks.target_account_id FROM blocks WHERE blocks.target_account_id IN (108847831162179294, 108847827838984959, 108847831823840027) AND blocks.account_id = 108847822942438095;
 -- Rewritten Queries
-SELECT COUNT(*) FROM follow_requests WHERE follow_requests.target_account_id = 108847794538342937 AND follow_requests.account_id = 108847821030172821 LIMIT 1;
+SELECT blocks.target_account_id FROM blocks WHERE blocks.target_account_id IN (108847831162179294, 108847827838984959, 108847831823840027) AND blocks.account_id = 108847822942438095 LIMIT 1;

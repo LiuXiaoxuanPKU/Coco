@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT domain_blocks.* FROM domain_blocks WHERE domain_blocks.domain = 'keiis';
+SELECT domain_allows.* FROM domain_allows WHERE domain_allows.domain = 'gkkonwqtvdqihtrnksrirwdcmhasrypzhoqnmmaoxknbdruvhmdlyqhqxqvnozejxrgwsyqkfjdeqsgwrcjomvbaieprnatstjxkwctkqbgtimvylahnrkuupyomgtwmppctdvkxyqkbsttcweioplkhbifavjmjrtqhoyqwvewqvwxuijncm';
 -- Rewritten Queries
-SELECT domain_blocks.* FROM domain_blocks WHERE domain_blocks.domain = 'keiis' LIMIT 1;
+SELECT domain_allows.* FROM domain_allows WHERE domain_allows.domain = 'gkkonwqtvdqihtrnksrirwdcmhasrypzhoqnmmaoxknbdruvhmdlyqhqxqvnozejxrgwsyqkfjdeqsgwrcjomvbaieprnatstjxkwctkqbgtimvylahnrkuupyomgtwmppctdvkxyqkbsttcweioplkhbifavjmjrtqhoyqwvewqvwxuijncm' LIMIT 1;

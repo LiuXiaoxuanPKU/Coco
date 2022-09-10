@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.shortcode = \"$1\" AND custom_emojis.domain IS NULL AND custom_emojis.disabled = \"$2\"",
-        "cost": 8.3,
+        "sql": "SELECT account_domain_blocks.domain FROM account_domain_blocks WHERE account_domain_blocks.account_id = \"$1\" AND account_domain_blocks.domain = \"$2\"",
+        "cost": 4.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.shortcode = \"$1\" AND custom_emojis.domain IS NULL AND custom_emojis.disabled = \"$2\" LIMIT 1",
-            "cost": 8.3,
+            "sql": "SELECT account_domain_blocks.domain FROM account_domain_blocks WHERE account_domain_blocks.account_id = \"$1\" AND account_domain_blocks.domain = \"$2\" LIMIT 1",
+            "cost": 4.3,
             "rewrite_types": [
                 "AddLimitOne"
             ]

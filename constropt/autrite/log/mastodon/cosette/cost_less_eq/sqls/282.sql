@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN media_attachments ON media_attachments.status_id = statuses.id WHERE statuses.account_id = 108847830673882347 AND statuses.visibility IN (2, 1) AND media_attachments.account_id = 108847832314858843 AND statuses.deleted_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT 1;
+SELECT follows.id FROM follows WHERE follows.target_account_id = 108847831379858024 AND follows.account_id IN (SELECT accounts.id FROM accounts WHERE accounts.domain IS NULL) AND follows.account_id NOT IN (SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 108847831379858024 AND accounts.domain IS NULL ORDER BY follows.id DESC) AND follows.account_id <> 108847827490989489 ORDER BY follows.id ASC LIMIT 7;
 -- Rewritten Queries
-SELECT statuses.id, statuses.updated_at FROM statuses WHERE statuses.account_id = 108847830673882347 AND statuses.visibility IN (2, 2) AND statuses.deleted_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT 1;
+SELECT follows.id FROM follows WHERE follows.target_account_id = 108847831379858024 AND follows.account_id IN (SELECT accounts.id FROM accounts WHERE accounts.domain IS NULL) AND follows.account_id NOT IN (SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 108847831379858024 AND accounts.domain IS NULL ORDER BY follows.id DESC LIMIT 1) AND follows.account_id <> 108847827490989489 ORDER BY follows.id ASC LIMIT 7;

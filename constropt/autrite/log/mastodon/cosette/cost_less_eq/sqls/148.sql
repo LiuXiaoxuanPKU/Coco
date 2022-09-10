@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id INNER JOIN users ON users.account_id = accounts.id WHERE follows.target_account_id = 108847832676437961 AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:41:07.985920' ORDER BY accounts.id ASC LIMIT 5;
+SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id INNER JOIN users ON users.account_id = accounts.id WHERE follows.target_account_id = 108847832676437961 AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:42:28.607149' ORDER BY accounts.id ASC LIMIT 5;
 -- Rewritten Queries
 SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 108847832676437961 AND accounts.domain IS NULL ORDER BY accounts.id ASC LIMIT 5;

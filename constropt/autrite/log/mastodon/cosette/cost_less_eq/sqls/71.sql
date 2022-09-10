@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.shortcode = 'wgtnn' AND custom_emojis.domain = 'vomfazaosjpjlyedghtuxrjslhwijqneqganstxauolwgxzpdufzitswdaxgfxuijyfmcsxqrybfovbpolrlrrwmjzchjxqibfxptqhbygwplogqxwwmkcvmdfvmjxykwjsigsrqnimpvbzrd' AND custom_emojis.disabled = False;
+SELECT follows.target_account_id FROM follows WHERE follows.account_id = 108847831352649480 AND follows.target_account_id = 108847823594129398 AND follows.show_reblogs = True;
 -- Rewritten Queries
-SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.shortcode = 'wgtnn' AND custom_emojis.domain = 'vomfazaosjpjlyedghtuxrjslhwijqneqganstxauolwgxzpdufzitswdaxgfxuijyfmcsxqrybfovbpolrlrrwmjzchjxqibfxptqhbygwplogqxwwmkcvmdfvmjxykwjsigsrqnimpvbzrd' AND custom_emojis.disabled = False LIMIT 1;
+SELECT follows.target_account_id FROM follows WHERE follows.account_id = 108847831352649480 AND follows.target_account_id = 108847823594129398 AND follows.show_reblogs = True LIMIT 1;

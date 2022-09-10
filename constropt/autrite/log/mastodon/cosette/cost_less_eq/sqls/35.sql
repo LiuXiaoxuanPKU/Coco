@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT list_accounts.* FROM list_accounts WHERE list_accounts.list_id = 1800 AND list_accounts.account_id = 108847821830881520;
+SELECT bookmarks.status_id FROM bookmarks WHERE bookmarks.status_id IN (106850058391786086, 107289935707569693) AND bookmarks.account_id = 108847830618303125;
 -- Rewritten Queries
-SELECT list_accounts.* FROM list_accounts WHERE list_accounts.list_id = 1800 AND list_accounts.account_id = 108847821830881520 LIMIT 1;
+SELECT bookmarks.status_id FROM bookmarks WHERE bookmarks.status_id IN (106850058391786086, 107289935707569693) AND bookmarks.account_id = 108847830618303125 LIMIT 1;

@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT conversation_mutes.conversation_id FROM conversation_mutes WHERE conversation_mutes.conversation_id = \"$1\" AND conversation_mutes.account_id = \"$2\"",
-        "cost": 8.3,
+        "sql": "SELECT SUM(account_stats.statuses_count) FROM accounts INNER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.domain IS NULL",
+        "cost": 2169.32,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT conversation_mutes.conversation_id FROM conversation_mutes WHERE conversation_mutes.conversation_id = \"$1\" AND conversation_mutes.account_id = \"$2\" LIMIT 1",
-            "cost": 8.3,
+            "sql": "SELECT SUM(account_stats.statuses_count) FROM accounts INNER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.domain IS NULL LIMIT 1",
+            "cost": 2169.32,
             "rewrite_types": [
                 "AddLimitOne"
             ]

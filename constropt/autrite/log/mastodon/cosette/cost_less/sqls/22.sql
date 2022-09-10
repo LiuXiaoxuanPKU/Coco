@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,9 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847832288251331 AND follows.account_id = 108847819882613432 ORDER BY follows.id DESC LIMIT 4;
+SELECT 1 AS "one" FROM statuses INNER JOIN media_attachments ON media_attachments.status_id = statuses.id WHERE statuses.account_id = 108847827886835491 AND statuses.visibility IN (1, 2) AND statuses.deleted_at IS NULL AND media_attachments.account_id = 108847814260308554 GROUP BY statuses.id LIMIT 1 OFFSET 1;
 -- Rewritten Queries
-SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847832288251331 AND follows.account_id = 108847819882613432 ORDER BY follows.id DESC LIMIT 4;
-SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id WHERE accounts.id <> 108847832288251331 AND follows.account_id = 108847819882613432 ORDER BY follows.id DESC LIMIT 4;
-SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847832288251331 AND follows.account_id = 108847819882613432 ORDER BY follows.id DESC LIMIT 4;
-SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.target_account_id = accounts.id WHERE accounts.id <> 108847832288251331 AND follows.account_id = 108847819882613432 ORDER BY follows.id DESC LIMIT 4;
+SELECT 1 AS "one" FROM statuses WHERE statuses.account_id = 108847827886835491 AND statuses.visibility IN (1, 2) AND statuses.deleted_at IS NULL GROUP BY statuses.id LIMIT 1 OFFSET 1;

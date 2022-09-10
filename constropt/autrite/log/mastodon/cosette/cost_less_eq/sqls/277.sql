@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,12 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT statuses.* FROM statuses INNER JOIN media_attachments ON media_attachments.status_id = statuses.id WHERE statuses.account_id = 108847816195928101 AND statuses.visibility IN (1, 2) AND media_attachments.account_id = 108847831550801751 AND statuses.deleted_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT 9;
+SELECT DISTINCT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
 -- Rewritten Queries
-SELECT statuses.* FROM statuses WHERE statuses.account_id = 108847816195928101 AND statuses.visibility IN (2, 2) AND statuses.deleted_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT 9;
+SELECT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
+SELECT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
+SELECT follow_requests.id AS alias_0, accounts.id FROM accounts INNER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
+SELECT follow_requests.id AS alias_0, accounts.id FROM accounts INNER JOIN follow_requests ON follow_requests.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
+SELECT DISTINCT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
+SELECT DISTINCT follow_requests.id AS alias_0, accounts.id FROM accounts INNER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
+SELECT DISTINCT follow_requests.id AS alias_0, accounts.id FROM accounts INNER JOIN follow_requests ON follow_requests.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;

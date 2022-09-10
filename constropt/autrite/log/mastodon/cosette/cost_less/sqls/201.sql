@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT statuses.* FROM statuses INNER JOIN media_attachments ON media_attachments.status_id = statuses.id WHERE statuses.account_id = 108847821092999619 AND statuses.visibility IN (2, 0) AND statuses.deleted_at IS NULL AND media_attachments.account_id = 108847804802882140 GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT 4 OFFSET 1;
+SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id INNER JOIN users ON users.account_id = accounts.id WHERE follows.target_account_id = 108847830281708215 AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:39:55.971442' ORDER BY accounts.id ASC LIMIT 10;
 -- Rewritten Queries
-SELECT statuses.* FROM statuses WHERE statuses.account_id = 108847821092999619 AND statuses.visibility IN (0, 2) AND statuses.deleted_at IS NULL GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT 4 OFFSET 1;
+SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 108847830281708215 AND accounts.domain IS NULL ORDER BY accounts.id ASC LIMIT 10;

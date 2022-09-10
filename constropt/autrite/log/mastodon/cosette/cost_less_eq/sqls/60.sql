@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT COUNT(*) FROM accounts INNER JOIN list_accounts ON accounts.id = list_accounts.account_id WHERE list_accounts.list_id = 8612;
+SELECT mentions.status_id FROM mentions WHERE mentions.silent = True AND mentions.status_id IN (107209607691077391, 108098561824026030) AND mentions.account_id = 108847814509746542;
 -- Rewritten Queries
-SELECT COUNT(*) FROM accounts INNER JOIN list_accounts ON accounts.id = list_accounts.account_id WHERE list_accounts.list_id = 8612 LIMIT 1;
+SELECT mentions.status_id FROM mentions WHERE mentions.silent = True AND mentions.status_id IN (107209607691077391, 108098561824026030) AND mentions.account_id = 108847814509746542 LIMIT 1;

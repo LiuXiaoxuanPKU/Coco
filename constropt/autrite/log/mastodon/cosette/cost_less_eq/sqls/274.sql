@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,12 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT DISTINCT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 108098893367592620 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 9;
+SELECT follows.* FROM follows WHERE follows.target_account_id IN (108847820882755641, 108847822019504913) AND follows.account_id IN (SELECT follows.target_account_id FROM follows INNER JOIN accounts ON accounts.id = follows.target_account_id WHERE follows.account_id = 108847814311977488 AND (accounts.hide_collections = True OR accounts.hide_collections IS NULL));
 -- Rewritten Queries
-SELECT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 108098893367592620 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 9;
-SELECT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 108098893367592620 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 9;
-SELECT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 108098893367592620 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 9;
-SELECT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 108098893367592620 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 9;
-SELECT DISTINCT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 108098893367592620 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 9;
-SELECT DISTINCT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 108098893367592620 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 9;
-SELECT DISTINCT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 108098893367592620 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 9;
+SELECT follows.* FROM follows WHERE follows.target_account_id IN (108847820882755641, 108847822019504913) AND follows.account_id IN (SELECT follows.target_account_id FROM follows INNER JOIN accounts ON accounts.id = follows.target_account_id WHERE follows.account_id = 108847814311977488 AND (accounts.hide_collections = True OR accounts.hide_collections IS NULL)) LIMIT 1;

@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM webauthn_credentials WHERE webauthn_credentials.nickname IS NULL AND webauthn_credentials.user_id IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM favourites WHERE favourites.status_id IS NULL AND favourites.id <> 88 AND favourites.account_id = 108847820837451928 LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM webauthn_credentials WHERE False AND webauthn_credentials.user_id IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM favourites WHERE False AND favourites.id <> 88 AND favourites.account_id = 108847820837451928 LIMIT 1;

@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM webauthn_credentials WHERE webauthn_credentials.nickname IS NULL AND webauthn_credentials.user_id IS NULL LIMIT 1",
-        "cost": 8.3,
+        "sql": "SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.domain = \"$1\" ORDER BY custom_emojis.domain ASC, custom_emojis.shortcode ASC",
+        "cost": 480.01,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM webauthn_credentials WHERE False AND webauthn_credentials.user_id IS NULL LIMIT 1",
-            "cost": 0.0,
+            "sql": "SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.domain = \"$1\" ORDER BY custom_emojis.domain ASC, custom_emojis.shortcode ASC LIMIT 1",
+            "cost": 480.01,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "AddLimitOne"
             ]
         }
     ]

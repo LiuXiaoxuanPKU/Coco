@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM custom_emojis LEFT OUTER JOIN custom_emojis AS local_counterparts_custom_emojis ON local_counterparts_custom_emojis.domain IS NULL AND local_counterparts_custom_emojis.shortcode = custom_emojis.shortcode LIMIT 1 OFFSET 1;
+SELECT 1 AS "one" FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847798327370519 AND account_domain_blocks.domain IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM custom_emojis LIMIT 1 OFFSET 1;
+SELECT 1 AS "one" FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847798327370519 AND False LIMIT 1;

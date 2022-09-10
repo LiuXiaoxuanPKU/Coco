@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT follows.id FROM follows WHERE follows.target_account_id = 108847831100466510 AND follows.account_id IN (SELECT accounts.id FROM accounts WHERE accounts.domain IS NULL) AND follows.account_id NOT IN (SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 108847831100466510 AND accounts.domain IS NULL ORDER BY follows.id DESC) AND follows.account_id <> 108847832255177913 ORDER BY follows.id ASC LIMIT 7;
+SELECT DISTINCT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND accounts.id <> 108847831141975282 AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 103514385228991918 AND statuses.visibility IN (2, 2) ORDER BY statuses.id DESC LIMIT 8;
 -- Rewritten Queries
-SELECT follows.id FROM follows WHERE follows.target_account_id = 108847831100466510 AND follows.account_id IN (SELECT accounts.id FROM accounts WHERE accounts.domain IS NULL) AND follows.account_id NOT IN (SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 108847831100466510 AND accounts.domain IS NULL ORDER BY follows.id DESC LIMIT 1) AND follows.account_id <> 108847832255177913 ORDER BY follows.id ASC LIMIT 7;
+SELECT DISTINCT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND accounts.id <> 108847831141975282 AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 103514385228991918 AND statuses.visibility IN (2, 2) ORDER BY statuses.id DESC LIMIT 8;

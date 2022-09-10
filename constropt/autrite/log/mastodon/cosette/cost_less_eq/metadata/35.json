@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT list_accounts.* FROM list_accounts WHERE list_accounts.list_id = \"$1\" AND list_accounts.account_id = \"$2\"",
-        "cost": 8.3,
+        "sql": "SELECT bookmarks.status_id FROM bookmarks WHERE bookmarks.status_id IN (\"$1\", \"$2\") AND bookmarks.account_id = \"$3\"",
+        "cost": 4.38,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT list_accounts.* FROM list_accounts WHERE list_accounts.list_id = \"$1\" AND list_accounts.account_id = \"$2\" LIMIT 1",
-            "cost": 8.3,
+            "sql": "SELECT bookmarks.status_id FROM bookmarks WHERE bookmarks.status_id IN (\"$1\", \"$2\") AND bookmarks.account_id = \"$3\" LIMIT 1",
+            "cost": 4.38,
             "rewrite_types": [
                 "AddLimitOne"
             ]

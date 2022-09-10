@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT SUM(account_stats.statuses_count) FROM accounts INNER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.domain IS NULL;
+SELECT conversation_mutes.conversation_id FROM conversation_mutes WHERE conversation_mutes.conversation_id IN (1619, 2008) AND conversation_mutes.account_id = 108847823579588927;
 -- Rewritten Queries
-SELECT SUM(account_stats.statuses_count) FROM accounts INNER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.domain IS NULL LIMIT 1;
+SELECT conversation_mutes.conversation_id FROM conversation_mutes WHERE conversation_mutes.conversation_id IN (1619, 2008) AND conversation_mutes.account_id = 108847823579588927 LIMIT 1;

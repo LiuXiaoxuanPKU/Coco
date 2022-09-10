@@ -130,6 +130,7 @@ CREATE TABLE accounts (
     fields character varying,
     actor_type character varying,
     discoverable boolean,
+    also_known_as character varying,
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -957,6 +958,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT lists.* FROM lists INNER JOIN list_accounts ON lists.id = list_accounts.list_id WHERE list_accounts.account_id = 108847822022100414 AND lists.account_id = 108847825684122885;
+SELECT conversation_mutes.conversation_id FROM conversation_mutes WHERE conversation_mutes.conversation_id = 6034 AND conversation_mutes.account_id = 108847825184791357;
 -- Rewritten Queries
-SELECT lists.* FROM lists INNER JOIN list_accounts ON lists.id = list_accounts.list_id WHERE list_accounts.account_id = 108847822022100414 AND lists.account_id = 108847825684122885 LIMIT 1;
+SELECT conversation_mutes.conversation_id FROM conversation_mutes WHERE conversation_mutes.conversation_id = 6034 AND conversation_mutes.account_id = 108847825184791357 LIMIT 1;
