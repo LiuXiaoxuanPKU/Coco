@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,8 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = 6611 AND organization_memberships.type_of_user = 'member';
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'committed';
 -- Rewritten Queries
-SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = 6611 AND organization_memberships.type_of_user = 'member' LIMIT 1;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'committed';
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'committed' LIMIT 1;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'committed' LIMIT 1;

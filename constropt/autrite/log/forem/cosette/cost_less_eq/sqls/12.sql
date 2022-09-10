@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,

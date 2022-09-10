@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 7284 AND notification_subscriptions.notifiable_type = 'Comment' AND notification_subscriptions.config = 'all_comments';
+SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 5849 ORDER BY organizations.name ASC;
 -- Rewritten Queries
-SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 7284 AND notification_subscriptions.notifiable_type = 'Comment' AND notification_subscriptions.config = 'all_comments' LIMIT 1;
+SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 5849 ORDER BY organizations.name ASC LIMIT 1;

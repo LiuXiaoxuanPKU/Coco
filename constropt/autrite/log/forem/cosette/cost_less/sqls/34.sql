@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,7 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'User' AND reactions.reactable_id = articles.id WHERE articles.id = 2973 ORDER BY articles.id ASC LIMIT 10;
+SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 821 AND roles.name = 'creator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL;
 -- Rewritten Queries
-SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = 2973 ORDER BY articles.id ASC LIMIT 10;
-SELECT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = 2973 ORDER BY articles.id ASC LIMIT 10;
+SELECT roles.* FROM roles WHERE roles.name = 'creator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL;

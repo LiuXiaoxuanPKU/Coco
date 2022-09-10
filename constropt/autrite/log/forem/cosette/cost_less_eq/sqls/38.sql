@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 9216 AND articles.user_id = 2063 AND articles.title = 'njeapjqaynqfoiicaeqsqgweegfmzdwggkilutxyevtrdzvudizjdhqiacwydpwnwwfidwdhsblcsfmptrzizwgzq' LIMIT 1;
+SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = 134;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 9216 AND articles.user_id = 2063 AND articles.title = 'njeapjqaynqfoiicaeqsqgweegfmzdwggkilutxyevtrdzvudizjdhqiacwydpwnwwfidwdhsblcsfmptrzizwgzq' LIMIT 1;
+SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = 134 LIMIT 1;

@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,7 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT profile_field_groups.id AS t0_r0, profile_field_groups.created_at AS t0_r1, profile_field_groups.description AS t0_r2, profile_field_groups.name AS t0_r3, profile_field_groups.updated_at AS t0_r4, profile_fields.id AS t1_r0, profile_fields.attribute_name AS t1_r1, profile_fields.created_at AS t1_r2, profile_fields.description AS t1_r3, profile_fields.display_area AS t1_r4, profile_fields.input_type AS t1_r5, profile_fields.label AS t1_r6, profile_fields.placeholder_text AS t1_r7, profile_fields.profile_field_group_id AS t1_r8, profile_fields.show_in_onboarding AS t1_r9, profile_fields.updated_at AS t1_r10 FROM profile_field_groups LEFT OUTER JOIN profile_fields ON profile_fields.profile_field_group_id = profile_field_groups.id WHERE profile_fields.show_in_onboarding = True;
+SELECT articles.user_id FROM articles INNER JOIN (SELECT reactions.id, reactions.reactable_id, reactions.user_id FROM reactions WHERE reactions.user_id = 5375 AND reactions.category = 'readinglist' AND reactions.status IN ('confirmed', 'valid') AND reactions.reactable_type = 'Article' ORDER BY reactions.created_at DESC) AS reactions ON reactions.reactable_id = articles.id WHERE articles.published = False AND published_at <= '2022-02-27 07:17:29.404302' LIMIT 4 OFFSET 1;
 -- Rewritten Queries
-SELECT profile_field_groups.id AS t0_r0, profile_field_groups.created_at AS t0_r1, profile_field_groups.description AS t0_r2, profile_field_groups.name AS t0_r3, profile_field_groups.updated_at AS t0_r4, profile_fields.id AS t1_r0, profile_fields.attribute_name AS t1_r1, profile_fields.created_at AS t1_r2, profile_fields.description AS t1_r3, profile_fields.display_area AS t1_r4, profile_fields.input_type AS t1_r5, profile_fields.label AS t1_r6, profile_fields.placeholder_text AS t1_r7, profile_fields.profile_field_group_id AS t1_r8, profile_fields.show_in_onboarding AS t1_r9, profile_fields.updated_at AS t1_r10 FROM profile_field_groups LEFT OUTER JOIN profile_fields ON profile_fields.profile_field_group_id = profile_field_groups.id WHERE profile_fields.show_in_onboarding = True LIMIT 1;
-SELECT profile_field_groups.id AS t0_r0, profile_field_groups.created_at AS t0_r1, profile_field_groups.description AS t0_r2, profile_field_groups.name AS t0_r3, profile_field_groups.updated_at AS t0_r4, profile_fields.id AS t1_r0, profile_fields.attribute_name AS t1_r1, profile_fields.created_at AS t1_r2, profile_fields.description AS t1_r3, profile_fields.display_area AS t1_r4, profile_fields.input_type AS t1_r5, profile_fields.label AS t1_r6, profile_fields.placeholder_text AS t1_r7, profile_fields.profile_field_group_id AS t1_r8, profile_fields.show_in_onboarding AS t1_r9, profile_fields.updated_at AS t1_r10 FROM profile_field_groups INNER JOIN profile_fields ON profile_fields.profile_field_group_id = profile_field_groups.id WHERE profile_fields.show_in_onboarding = True LIMIT 1;
+SELECT articles.user_id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:29.404302' LIMIT 4 OFFSET 1;

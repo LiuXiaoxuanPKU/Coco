@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM reactions WHERE reactions.user_id IS NULL AND reactions.reactable_type = 'Comment' AND reactions.reactable_id = 3924 LIMIT 1;
+SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = 5615 AND mentions.mentionable_type = 'Comment' AND mentions.user_id <> 1504;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM reactions WHERE False AND reactions.reactable_type = 'Comment' AND reactions.reactable_id = 3924 LIMIT 1;
+SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = 5615 AND mentions.mentionable_type = 'Comment' AND mentions.user_id <> 1504 LIMIT 1;

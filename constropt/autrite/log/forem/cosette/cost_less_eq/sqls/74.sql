@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,8 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.organization_id = 1 AND notifications.notifiable_id = 4726 AND notifications.notifiable_type = 'Article' AND notifications.action = 'rbbevwvgffblhjqzrfbuadqxcyttxrmfoxryhtnevdlzdftfjuivbnjffkdzeclhhmglcknqldjcbpgjcmrrzn' LIMIT 1;
+SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 5522 ORDER BY articles.id ASC LIMIT 10;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE False AND notifications.organization_id = 1 AND notifications.notifiable_id = 4726 AND notifications.notifiable_type = 'Article' AND notifications.action = 'rbbevwvgffblhjqzrfbuadqxcyttxrmfoxryhtnevdlzdftfjuivbnjffkdzeclhhmglcknqldjcbpgjcmrrzn' LIMIT 1;
+SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = 5522 ORDER BY articles.id ASC LIMIT 10;
+SELECT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = 5522 ORDER BY articles.id ASC LIMIT 10;
+SELECT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 5522 ORDER BY articles.id ASC LIMIT 10;

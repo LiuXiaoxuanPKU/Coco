@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM users_roles INNER JOIN roles ON roles.id = users_roles.role_id WHERE roles.name = 'podcast_admin' LIMIT 1;
+SELECT DISTINCT github_repos.* FROM github_repos WHERE github_repos.user_id = 7552 AND github_repos.featured = False;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM users_roles LIMIT 1;
+SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = 7552 AND github_repos.featured = False;

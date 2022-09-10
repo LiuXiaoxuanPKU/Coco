@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,8 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 5522 ORDER BY articles.id ASC LIMIT 10;
+SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 7284 AND notification_subscriptions.notifiable_type = 'Comment' AND notification_subscriptions.config = 'all_comments';
 -- Rewritten Queries
-SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = 5522 ORDER BY articles.id ASC LIMIT 10;
-SELECT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = 5522 ORDER BY articles.id ASC LIMIT 10;
-SELECT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 5522 ORDER BY articles.id ASC LIMIT 10;
+SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 7284 AND notification_subscriptions.notifiable_type = 'Comment' AND notification_subscriptions.config = 'all_comments' LIMIT 1;

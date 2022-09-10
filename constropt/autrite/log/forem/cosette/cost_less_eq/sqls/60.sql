@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT COUNT(*) FROM follows WHERE follows.blocked = 'false' AND follows.follower_id = 3561 AND follows.follower_type = 'User' AND follows.followable_id = 3343 AND follows.followable_type = 'Organization';
+SELECT COUNT(*) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 4170;
 -- Rewritten Queries
-SELECT COUNT(*) FROM follows WHERE follows.blocked = 'false' AND follows.follower_id = 3561 AND follows.follower_type = 'User' AND follows.followable_id = 3343 AND follows.followable_type = 'Organization' LIMIT 1;
+SELECT COUNT(*) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 4170 LIMIT 1;

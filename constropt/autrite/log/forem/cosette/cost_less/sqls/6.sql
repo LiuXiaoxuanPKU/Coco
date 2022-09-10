@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT podcast_episodes.media_url FROM podcast_episodes WHERE podcast_episodes.podcast_id = 5201;
+SELECT articles.* FROM articles WHERE articles.user_id = 8550 AND articles.slug IS NULL LIMIT 8;
 -- Rewritten Queries
-SELECT podcast_episodes.media_url FROM podcast_episodes WHERE podcast_episodes.podcast_id = 5201 LIMIT 1;
+SELECT articles.* FROM articles WHERE articles.user_id = 8550 AND False LIMIT 8;

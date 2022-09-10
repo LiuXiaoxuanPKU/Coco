@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.organization_id = 2 AND notifications.notifiable_id = 624 AND notifications.notifiable_type = 'Broadcast' AND notifications.action IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 6821 AND notifications.organization_id IS NULL AND notifications.notifiable_id = 5755 AND notifications.notifiable_type = 'Article' AND notifications.action = 'rjgkxnktnyzieptkeiuzlpvklguwqwxesujqpxxtskatojyrndbgqbulxtyuzbfrkxidsjglsecyvvdrw' LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE False AND notifications.organization_id = 2 AND notifications.notifiable_id = 624 AND notifications.notifiable_type = 'Broadcast' AND notifications.action IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 6821 AND False AND notifications.notifiable_id = 5755 AND notifications.notifiable_type = 'Article' AND notifications.action = 'rjgkxnktnyzieptkeiuzlpvklguwqwxesujqpxxtskatojyrndbgqbulxtyuzbfrkxidsjglsecyvvdrw' LIMIT 1;

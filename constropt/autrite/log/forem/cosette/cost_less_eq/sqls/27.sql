@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT identities.* FROM identities WHERE identities.user_id = 3449 AND identities.provider IN ('github', 'twitter', 'facebook', 'twitter', 'apple', 'apple');
+SELECT 1 AS "one" FROM users_roles INNER JOIN roles ON roles.id = users_roles.role_id WHERE roles.name = 'codeland_admin' LIMIT 1;
 -- Rewritten Queries
-SELECT identities.* FROM identities WHERE identities.user_id = 3449 AND identities.provider IN ('github', 'twitter', 'facebook', 'twitter', 'apple', 'apple') LIMIT 1;
+SELECT 1 AS "one" FROM users_roles LIMIT 1;

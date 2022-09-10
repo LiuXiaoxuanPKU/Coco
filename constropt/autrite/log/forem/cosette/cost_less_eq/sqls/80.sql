@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT users.* FROM users INNER JOIN follows ON follows.followable_type = 'User' AND follows.followable_id = users.id WHERE follows.blocked = 'true' AND follows.follower_id = 7760 AND follows.follower_type = 'User' AND follows.followable_type = 'User';
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 6766 AND notifications.organization_id IS NULL AND notifications.notifiable_id IS NULL AND notifications.notifiable_type = 'Comment' AND notifications.action IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN follows ON follows.followable_type = 'User' AND follows.followable_id = users.id WHERE follows.blocked = 'true' AND follows.follower_id = 7760 AND follows.follower_type = 'User' AND follows.followable_type = 'User' LIMIT 1;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 6766 AND False AND notifications.notifiable_id IS NULL AND notifications.notifiable_type = 'Comment' AND notifications.action IS NULL LIMIT 1;

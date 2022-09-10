@@ -1,14 +1,29 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM articles WHERE articles.body_markdown = \"$1\" AND articles.user_id = \"$2\" AND articles.title IS NULL LIMIT 1",
-        "cost": 8.31,
+        "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle IS NULL AND consumer_apps.platform IS NULL LIMIT \"$1\"",
+        "cost": 8.43,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM articles WHERE articles.body_markdown = \"$1\" AND articles.user_id = \"$2\" AND False LIMIT 1",
+            "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE False AND consumer_apps.platform IS NULL LIMIT \"$1\"",
             "cost": 0.0,
             "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle IS NULL AND False LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE False AND False LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
                 "RewriteNullPredicate"
             ]
         }

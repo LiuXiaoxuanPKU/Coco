@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 5122 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 1122 AND reactions.category IN ('thinking', 'thinking');
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id = 9962 AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'resolved';
 -- Rewritten Queries
-SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 5122 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 1122 AND reactions.category IN ('thinking', 'thinking') LIMIT 1;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id = 9962 AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'resolved' LIMIT 1;

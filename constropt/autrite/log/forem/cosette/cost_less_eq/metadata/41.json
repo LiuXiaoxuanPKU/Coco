@@ -6,14 +6,14 @@
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> \"$1\" AND articles.user_id = \"$2\" AND False LIMIT 1",
+            "sql": "SELECT 1 AS one FROM articles WHERE False AND articles.id <> \"$1\" AND articles.user_id = \"$2\" AND articles.title IS NULL LIMIT 1",
             "cost": 0.0,
             "rewrite_types": [
                 "RewriteNullPredicate"
             ]
         },
         {
-            "sql": "SELECT 1 AS one FROM articles WHERE False AND articles.id <> \"$1\" AND articles.user_id = \"$2\" AND articles.title IS NULL LIMIT 1",
+            "sql": "SELECT 1 AS one FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> \"$1\" AND articles.user_id = \"$2\" AND False LIMIT 1",
             "cost": 0.0,
             "rewrite_types": [
                 "RewriteNullPredicate"

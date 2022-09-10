@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT identities.provider FROM identities WHERE identities.user_id = 6509 AND identities.provider IN ('twitter', 'twitter');
+SELECT 1 AS "one" FROM comments WHERE comments.commentable_id IS NULL AND comments.user_id = 5377 LIMIT 1;
 -- Rewritten Queries
-SELECT identities.provider FROM identities WHERE identities.user_id = 6509 AND identities.provider IN ('twitter', 'twitter') LIMIT 1;
+SELECT 1 AS "one" FROM comments WHERE False AND comments.user_id = 5377 LIMIT 1;

@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT users.name, users.username FROM users WHERE users.id = \"$1\" ORDER BY users.created_at ASC",
-        "cost": 8.32,
+        "sql": "SELECT identities.* FROM identities WHERE identities.user_id = \"$1\" AND identities.provider = \"$2\"",
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT users.name, users.username FROM users WHERE users.id = \"$1\" ORDER BY users.created_at ASC LIMIT 1",
-            "cost": 8.32,
+            "sql": "SELECT identities.* FROM identities WHERE identities.user_id = \"$1\" AND identities.provider = \"$2\" LIMIT 1",
+            "cost": 8.3,
             "rewrite_types": [
                 "AddLimitOne"
             ]

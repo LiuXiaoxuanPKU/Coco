@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM reactions WHERE reactions.user_id IS NULL AND reactions.reactable_type = \"$1\" AND reactions.reactable_id = \"$2\" LIMIT 1",
-        "cost": 8.3,
+        "sql": "SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = \"$1\" AND mentions.mentionable_type = \"$2\" AND mentions.user_id <> \"$3\"",
+        "cost": 269.0,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM reactions WHERE False AND reactions.reactable_type = \"$1\" AND reactions.reactable_id = \"$2\" LIMIT 1",
-            "cost": 0.0,
+            "sql": "SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = \"$1\" AND mentions.mentionable_type = \"$2\" AND mentions.user_id <> \"$3\" LIMIT 1",
+            "cost": 269.0,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "AddLimitOne"
             ]
         }
     ]

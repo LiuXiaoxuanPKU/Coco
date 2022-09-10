@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.unspent_credits_count) AS unspent_credits_count FROM users LEFT JOIN credits AS credits ON users.id = credits.user_id AND credits.spent = False GROUP BY users.id ORDER BY users.id ASC LIMIT 4;
+SELECT podcast_episodes.* FROM podcast_episodes INNER JOIN podcasts ON podcasts.id = podcast_episodes.podcast_id WHERE podcast_episodes.podcast_id = 4709 AND podcast_episodes.reachable = True AND podcasts.published = False AND podcast_episodes.slug = 'tdnqrmhmymuczivpxxechvfiqidnfgvtrdgudfspjivaugmphpwnjtnwewaqalgrcesuijrradvrjxdzvvawlbbzecigvfwfywnrhsxdoubtvszzvjqsccotxyzjpafcrliroqllobkzzbjefaivajyubenrnpjdijnqnjrvybipdqccneinmzr' LIMIT 1;
 -- Rewritten Queries
-SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.unspent_credits_count) AS unspent_credits_count FROM users INNER JOIN credits AS credits ON users.id = credits.user_id AND credits.spent = False GROUP BY users.id ORDER BY users.id ASC LIMIT 4;
+SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.podcast_id = 4709 AND podcast_episodes.reachable = True AND podcast_episodes.slug = 'tdnqrmhmymuczivpxxechvfiqidnfgvtrdgudfspjivaugmphpwnjtnwewaqalgrcesuijrradvrjxdzvvawlbbzecigvfwfywnrhsxdoubtvszzvjqsccotxyzjpafcrliroqllobkzzbjefaivajyubenrnpjdijnqnjrvybipdqccneinmzr' LIMIT 1;

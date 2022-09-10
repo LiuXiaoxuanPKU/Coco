@@ -1,23 +1,15 @@
 {
     "org": {
-        "sql": "SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = \"$1\" AND tag_adjustments.status = \"$2\"",
-        "cost": 542.83,
+        "sql": "SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = \"$1\"",
+        "cost": 196.94,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = \"$1\" AND tag_adjustments.status = \"$2\"",
-            "cost": 0.0,
+            "sql": "SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = \"$1\"",
+            "cost": 192.62,
             "rewrite_types": [
-                "RewriteNullPredicate"
-            ]
-        },
-        {
-            "sql": "SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = \"$1\" AND tag_adjustments.status = \"$2\" LIMIT 1",
-            "cost": 0.0,
-            "rewrite_types": [
-                "RewriteNullPredicate",
-                "AddLimitOne"
+                "RemoveJoin"
             ]
         }
     ]

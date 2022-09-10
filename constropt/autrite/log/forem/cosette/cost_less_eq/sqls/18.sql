@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT badge_achievements.user_id FROM badge_achievements WHERE badge_achievements.badge_id = 5738;
+SELECT badge_achievements.badge_id FROM badge_achievements WHERE badge_achievements.user_id = 6974;
 -- Rewritten Queries
-SELECT badge_achievements.user_id FROM badge_achievements WHERE badge_achievements.badge_id = 5738 LIMIT 1;
+SELECT badge_achievements.badge_id FROM badge_achievements WHERE badge_achievements.user_id = 6974 LIMIT 1;

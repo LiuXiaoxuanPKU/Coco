@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM user_blocks WHERE user_blocks.blocker_id IS NULL AND user_blocks.blocked_id = \"$1\" LIMIT 1",
-        "cost": 8.3,
+        "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = \"$1\" AND consumer_apps.platform = \"$2\"",
+        "cost": 8.43,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM user_blocks WHERE False AND user_blocks.blocked_id = \"$1\" LIMIT 1",
-            "cost": 0.0,
+            "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = \"$1\" AND consumer_apps.platform = \"$2\" LIMIT 1",
+            "cost": 8.43,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "AddLimitOne"
             ]
         }
     ]

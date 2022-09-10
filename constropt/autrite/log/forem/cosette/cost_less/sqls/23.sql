@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,8 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 6794;
+SELECT devices.* FROM devices WHERE devices.user_id = 5838 AND devices.token IS NULL AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT 9;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 6794;
+SELECT devices.* FROM devices WHERE devices.user_id = 5838 AND False AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT 9;
+SELECT devices.* FROM devices WHERE devices.user_id = 5838 AND devices.token IS NULL AND False AND devices.consumer_app_id IS NULL LIMIT 9;
+SELECT devices.* FROM devices WHERE devices.user_id = 5838 AND False AND False AND devices.consumer_app_id IS NULL LIMIT 9;

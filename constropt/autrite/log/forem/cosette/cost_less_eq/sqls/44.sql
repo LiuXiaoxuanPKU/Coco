@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,8 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT devices.* FROM devices WHERE devices.user_id = 9024 AND devices.token IS NULL AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT 9;
+SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id = 8280 AND users.id = 8280;
 -- Rewritten Queries
-SELECT devices.* FROM devices WHERE devices.user_id = 9024 AND False AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT 9;
-SELECT devices.* FROM devices WHERE devices.user_id = 9024 AND devices.token IS NULL AND False AND devices.consumer_app_id IS NULL LIMIT 9;
-SELECT devices.* FROM devices WHERE devices.user_id = 9024 AND False AND False AND devices.consumer_app_id IS NULL LIMIT 9;
+SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id = 8280 AND users.id = 8280 LIMIT 1;

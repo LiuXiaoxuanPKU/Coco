@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT identities.provider FROM identities WHERE identities.user_id = 6819 AND identities.provider = 'apple';
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 7322 AND identities.provider IN ('twitter', 'twitter');
 -- Rewritten Queries
-SELECT identities.provider FROM identities WHERE identities.user_id = 6819 AND identities.provider = 'apple' LIMIT 1;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 7322 AND identities.provider IN ('twitter', 'twitter') LIMIT 1;

@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 2609 AND notifications.id <> 3842 AND notifications.organization_id IS NULL AND notifications.notifiable_id = 973 AND notifications.notifiable_type = 'Article' AND notifications.action = 'qpsdjcxzhvxwukehnsqtwhekeqzzqrgrmqhpqsyrwumhpqpmceoqtpvfjanknhutrdcrguiznhogheistkrpjjcjnriarpuknopozyojchfzavobmjqxhbnpniiwlzbedvxrzqvorqclefwtjzdenwsuyslfjpfsvngnmvmxledouuhrobdafavrdgphehosfsflgpojcflvjqiukllxreghpgdq' LIMIT 1;
+SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.credits_count) AS credits_count FROM users LEFT JOIN credits AS credits ON users.id = credits.user_id AND credits.id > 0 GROUP BY users.id ORDER BY users.id ASC LIMIT 5;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 2609 AND notifications.id <> 3842 AND False AND notifications.notifiable_id = 973 AND notifications.notifiable_type = 'Article' AND notifications.action = 'qpsdjcxzhvxwukehnsqtwhekeqzzqrgrmqhpqsyrwumhpqpmceoqtpvfjanknhutrdcrguiznhogheistkrpjjcjnriarpuknopozyojchfzavobmjqxhbnpniiwlzbedvxrzqvorqclefwtjzdenwsuyslfjpfsvngnmvmxledouuhrobdafavrdgphehosfsflgpojcflvjqiukllxreghpgdq' LIMIT 1;
+SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.credits_count) AS credits_count FROM users INNER JOIN credits AS credits ON users.id = credits.user_id AND credits.id > 0 GROUP BY users.id ORDER BY users.id ASC LIMIT 5;

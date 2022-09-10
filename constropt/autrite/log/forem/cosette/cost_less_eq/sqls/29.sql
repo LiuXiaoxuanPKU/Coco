@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 120 LIMIT 1;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 1857 AND identities.provider = 'twitter' AND identities.provider = 'twitter';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM roles LIMIT 1;
+SELECT COUNT(*) FROM identities WHERE identities.user_id = 1857 AND identities.provider = 'twitter' AND identities.provider = 'twitter' LIMIT 1;

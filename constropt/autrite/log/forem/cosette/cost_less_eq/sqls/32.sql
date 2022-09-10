@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,8 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown = 'vfvwepzmydxezjxzuxnheiihwkugvkjlqqlmrinytixyijaaokszwwmjycozczofmvarctygjralownfgxrewd' AND articles.user_id = 5727 AND articles.title IS NULL LIMIT 1;
+SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle IS NULL AND consumer_apps.platform IS NULL LIMIT 5;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown = 'vfvwepzmydxezjxzuxnheiihwkugvkjlqqlmrinytixyijaaokszwwmjycozczofmvarctygjralownfgxrewd' AND articles.user_id = 5727 AND False LIMIT 1;
+SELECT consumer_apps.* FROM consumer_apps WHERE False AND consumer_apps.platform IS NULL LIMIT 5;
+SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle IS NULL AND False LIMIT 5;
+SELECT consumer_apps.* FROM consumer_apps WHERE False AND False LIMIT 5;

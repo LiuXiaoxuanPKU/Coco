@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT notifications.* FROM notifications WHERE notifications.organization_id = 3 AND notifications.user_id IS NULL ORDER BY notifications.notified_at DESC LIMIT 3;
+SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 4795;
 -- Rewritten Queries
-SELECT notifications.* FROM notifications WHERE notifications.organization_id = 3 AND False ORDER BY notifications.notified_at DESC LIMIT 3;
+SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 4795;

@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = 821 AND roles.name = 'creator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL;
+SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 7270 AND organization_memberships.type_of_user IN ('admin', 'guest') AND organization_memberships.organization_id IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT roles.* FROM roles WHERE roles.name = 'creator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL;
+SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 7270 AND organization_memberships.type_of_user IN ('admin', 'guest') AND False LIMIT 1;

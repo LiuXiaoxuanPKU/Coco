@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id = \"$1\" AND tag_adjustments.adjustment_type = \"$2\" AND tag_adjustments.status = \"$3\"",
-        "cost": 564.96,
+        "sql": "SELECT users.* FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = \"$1\"",
+        "cost": 287.61,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id = \"$1\" AND tag_adjustments.adjustment_type = \"$2\" AND tag_adjustments.status = \"$3\" LIMIT 1",
-            "cost": 564.96,
+            "sql": "SELECT users.* FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = \"$1\" LIMIT 1",
+            "cost": 287.61,
             "rewrite_types": [
                 "AddLimitOne"
             ]

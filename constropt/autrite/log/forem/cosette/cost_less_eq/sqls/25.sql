@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT DISTINCT github_repos.* FROM github_repos WHERE github_repos.user_id = 7552 AND github_repos.featured = False;
+SELECT 1 AS "one" FROM user_blocks WHERE user_blocks.blocker_id IS NULL AND user_blocks.blocked_id = 9609 LIMIT 1;
 -- Rewritten Queries
-SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = 7552 AND github_repos.featured = False;
+SELECT 1 AS "one" FROM user_blocks WHERE False AND user_blocks.blocked_id = 9609 LIMIT 1;

@@ -1806,7 +1806,7 @@ CREATE TABLE tweets (
     quoted_tweet_id_code character varying,
     retweet_count integer,
     source character varying,
-    character varying character varying,
+    text character varying,
     tweeted_at timestamp without time zone,
     twitter_id_code character varying,
     twitter_name character varying,
@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM user_blocks WHERE user_blocks.blocker_id IS NULL AND user_blocks.blocked_id = 9609 LIMIT 1;
+SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = 'mrvsnupaomuummrjapdjoijeffghpnakkyughgiaywwrnnjzirtqullvuaetulahzlofgqafiphwphjgbvscmeecarqmivacklawygsbosevmxgrzkkespllqarfrmjjpfqwjwyzebbxbqmyscddmlicjdqicegqticwzjnlrxfktnjrhmasxnjdapqtoxktfyolaawcbbeijoywlynfktslb' AND consumer_apps.platform = 'Android';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM user_blocks WHERE False AND user_blocks.blocked_id = 9609 LIMIT 1;
+SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = 'mrvsnupaomuummrjapdjoijeffghpnakkyughgiaywwrnnjzirtqullvuaetulahzlofgqafiphwphjgbvscmeecarqmivacklawygsbosevmxgrzkkespllqarfrmjjpfqwjwyzebbxbqmyscddmlicjdqicegqticwzjnlrxfktnjrhmasxnjdapqtoxktfyolaawcbbeijoywlynfktslb' AND consumer_apps.platform = 'Android' LIMIT 1;

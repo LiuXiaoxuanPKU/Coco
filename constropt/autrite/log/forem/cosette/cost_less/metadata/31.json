@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.type_of_user = \"$2\" AND organization_memberships.organization_id IS NULL LIMIT 1",
-        "cost": 8.31,
+        "sql": "SELECT articles.* FROM articles WHERE articles.published = \"$1\" AND published_at <= '2022-02-27 07:10:54.765698' AND articles.user_id IS NULL ORDER BY articles.published_at DESC LIMIT \"$2\"",
+        "cost": 8.32,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.type_of_user = \"$2\" AND False LIMIT 1",
-            "cost": 0.0,
+            "sql": "SELECT articles.* FROM articles WHERE articles.published = \"$1\" AND published_at <= '2022-02-27 07:10:54.765698' AND False ORDER BY articles.published_at DESC LIMIT \"$2\"",
+            "cost": 0.02,
             "rewrite_types": [
                 "RewriteNullPredicate"
             ]
