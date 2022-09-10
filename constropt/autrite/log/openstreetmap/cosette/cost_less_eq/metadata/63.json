@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT current_relations.* FROM current_relations INNER JOIN current_relation_members ON current_relation_members.relation_id = current_relations.id WHERE current_relation_members.member_type = \"$1\" AND current_relation_members.member_id IN (\"$2\", \"$3\") AND current_relations.visible = \"$4\"",
-        "cost": 20.91,
+        "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN users ON users.id = diary_entries.user_id LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code WHERE users.status IN (\"$1\", \"$2\") AND diary_entries.language_code = \"$3\" AND diary_entries.visible = \"$4\" LIMIT 1 OFFSET \"$6\"",
+        "cost": 35.9,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT current_relations.* FROM current_relations INNER JOIN current_relation_members ON current_relation_members.relation_id = current_relations.id WHERE current_relation_members.member_type = \"$1\" AND current_relation_members.member_id IN (\"$2\", \"$3\") AND current_relations.visible = \"$4\" LIMIT 1",
-            "cost": 20.91,
+            "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN users ON users.id = diary_entries.user_id WHERE users.status IN (\"$1\", \"$2\") AND diary_entries.language_code = \"$3\" AND diary_entries.visible = \"$4\" LIMIT 1 OFFSET \"$6\"",
+            "cost": 35.9,
             "rewrite_types": [
-                "AddLimitOne"
+                "RemoveJoin"
             ]
         }
     ]

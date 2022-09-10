@@ -18,10 +18,10 @@ CREATE TABLE active_storage_attachments (
 
 CREATE TABLE active_storage_blobs (
     id bigint NOT NULL,
-    key character varying NOT NULL,
+    "key" character varying NOT NULL,
     filename character varying NOT NULL,
     content_type character varying,
-    metadata character varying(255),
+    metadata character varying,
     byte_size bigint NOT NULL,
     checksum character varying,
     created_at timestamp without time zone NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE active_storage_variant_records (
 );
 
 CREATE TABLE ar_internal_metadata (
-    key character varying NOT NULL,
+    "key" character varying NOT NULL,
     "value" character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -45,15 +45,15 @@ CREATE TABLE changeset_comments (
     id integer NOT NULL,
     changeset_id bigint NOT NULL,
     author_id bigint NOT NULL,
-    body character varying(255) NOT NULL,
+    body character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     visible boolean NOT NULL
 );
 
 CREATE TABLE changeset_tags (
     changeset_id bigint NOT NULL,
-    k character varying    NOT NULL,
-    v character varying    NOT NULL
+    k character varying     ,
+    v character varying     
 );
 
 CREATE TABLE changesets (
@@ -65,7 +65,7 @@ CREATE TABLE changesets (
     min_lon integer,
     max_lon integer,
     closed_at timestamp without time zone NOT NULL,
-    num_changes integer   NOT NULL
+    num_changes integer    
 );
 
 CREATE TABLE changesets_subscribers (
@@ -79,24 +79,24 @@ CREATE TABLE client_applications (
     url character varying,
     support_url character varying,
     callback_url character varying,
-    key character varying(50),
+    "key" character varying(50),
     secret character varying(50),
     user_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    allow_read_prefs boolean   NOT NULL,
-    allow_write_prefs boolean   NOT NULL,
-    allow_write_diary boolean   NOT NULL,
-    allow_write_api boolean   NOT NULL,
-    allow_read_gpx boolean   NOT NULL,
-    allow_write_gpx boolean   NOT NULL,
-    allow_write_notes boolean   NOT NULL
+    allow_read_prefs boolean    ,
+    allow_write_prefs boolean    ,
+    allow_write_diary boolean    ,
+    allow_write_api boolean    ,
+    allow_read_gpx boolean    ,
+    allow_write_gpx boolean    ,
+    allow_write_notes boolean    
 );
 
 CREATE TABLE current_node_tags (
     node_id bigint NOT NULL,
-    k character varying    NOT NULL,
-    v character varying    NOT NULL
+    k character varying     ,
+    v character varying     
 );
 
 CREATE TABLE current_nodes (
@@ -112,15 +112,16 @@ CREATE TABLE current_nodes (
 
 CREATE TABLE current_relation_members (
     relation_id bigint NOT NULL,
+    member_type character varying NOT NULL,
     member_id bigint NOT NULL,
     member_role character varying NOT NULL,
-    sequence_id integer   NOT NULL
+    sequence_id integer    
 );
 
 CREATE TABLE current_relation_tags (
     relation_id bigint NOT NULL,
-    k character varying    NOT NULL,
-    v character varying    NOT NULL
+    k character varying     ,
+    v character varying     
 );
 
 CREATE TABLE current_relations (
@@ -139,8 +140,8 @@ CREATE TABLE current_way_nodes (
 
 CREATE TABLE current_way_tags (
     way_id bigint NOT NULL,
-    k character varying    NOT NULL,
-    v character varying    NOT NULL
+    k character varying     ,
+    v character varying     
 );
 
 CREATE TABLE current_ways (
@@ -153,10 +154,10 @@ CREATE TABLE current_ways (
 
 CREATE TABLE delayed_jobs (
     id bigint NOT NULL,
-    priority integer   NOT NULL,
-    attempts integer   NOT NULL,
-    handler character varying(255) NOT NULL,
-    last_error character varying(255),
+    priority integer    ,
+    attempts integer    ,
+    handler character varying NOT NULL,
+    last_error character varying,
     run_at timestamp without time zone,
     locked_at timestamp without time zone,
     failed_at timestamp without time zone,
@@ -170,23 +171,25 @@ CREATE TABLE diary_comments (
     id bigint NOT NULL,
     diary_entry_id bigint NOT NULL,
     user_id bigint NOT NULL,
-    body character varying(255) NOT NULL,
+    body character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    visible boolean   NOT NULL
+    visible boolean    ,
+    body_format character varying    
 );
 
 CREATE TABLE diary_entries (
     id bigint NOT NULL,
     user_id bigint NOT NULL,
     title character varying NOT NULL,
-    body character varying(255) NOT NULL,
+    body character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     latitude double precision,
     longitude double precision,
-    language_code character varying    NOT NULL,
-    visible boolean   NOT NULL
+    language_code character varying     ,
+    visible boolean    ,
+    body_format character varying    
 );
 
 CREATE TABLE diary_entry_subscriptions (
@@ -220,21 +223,22 @@ CREATE TABLE gpx_file_tags (
 CREATE TABLE gpx_files (
     id bigint NOT NULL,
     user_id bigint NOT NULL,
-    visible boolean   NOT NULL,
-    name character varying    NOT NULL,
+    visible boolean    ,
+    name character varying     ,
     size bigint,
     latitude double precision,
     longitude double precision,
     "timestamp" timestamp without time zone NOT NULL,
-    description character varying    NOT NULL,
-    inserted boolean NOT NULL
+    description character varying     ,
+    inserted boolean NOT NULL,
+    visibility character varying    
 );
 
 CREATE TABLE issue_comments (
     id integer NOT NULL,
     issue_id integer NOT NULL,
     user_id integer NOT NULL,
-    body character varying(255) NOT NULL,
+    body character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -244,6 +248,8 @@ CREATE TABLE issues (
     reportable_type character varying NOT NULL,
     reportable_id integer NOT NULL,
     reported_user_id integer,
+    status character varying    ,
+    assigned_role character varying NOT NULL,
     resolved_at timestamp without time zone,
     resolved_by integer,
     updated_by integer,
@@ -262,20 +268,20 @@ CREATE TABLE messages (
     id bigint NOT NULL,
     from_user_id bigint NOT NULL,
     title character varying NOT NULL,
-    body character varying(255) NOT NULL,
+    body character varying NOT NULL,
     sent_on timestamp without time zone NOT NULL,
-    message_read boolean   NOT NULL,
+    message_read boolean    ,
     to_user_id bigint NOT NULL,
-    to_user_visible boolean   NOT NULL,
-    from_user_visible boolean   NOT NULL,
-    body_format character varying   NOT NULL
+    to_user_visible boolean    ,
+    from_user_visible boolean    ,
+    body_format character varying    
 );
 
 CREATE TABLE node_tags (
     node_id bigint NOT NULL,
     version bigint NOT NULL,
-    k character varying    NOT NULL,
-    v character varying    NOT NULL
+    k character varying     ,
+    v character varying     
 );
 
 CREATE TABLE nodes (
@@ -297,7 +303,8 @@ CREATE TABLE note_comments (
     created_at timestamp without time zone NOT NULL,
     author_ip character varying,
     author_id bigint,
-    body character varying(255)
+    body character varying,
+    event character varying
 );
 
 CREATE TABLE notes (
@@ -307,6 +314,7 @@ CREATE TABLE notes (
     tile bigint NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     created_at timestamp without time zone NOT NULL,
+    status character varying NOT NULL,
     closed_at timestamp without time zone
 );
 
@@ -316,10 +324,10 @@ CREATE TABLE oauth_access_grants (
     application_id bigint NOT NULL,
     token character varying NOT NULL,
     expires_in integer NOT NULL,
-    redirect_uri character varying(255) NOT NULL,
+    redirect_uri character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     revoked_at timestamp without time zone,
-    scopes character varying    NOT NULL,
+    scopes character varying     ,
     code_challenge character varying,
     code_challenge_method character varying
 );
@@ -334,7 +342,7 @@ CREATE TABLE oauth_access_tokens (
     revoked_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     scopes character varying,
-    previous_refresh_token character varying    NOT NULL
+    previous_refresh_token character varying     
 );
 
 CREATE TABLE oauth_applications (
@@ -344,9 +352,9 @@ CREATE TABLE oauth_applications (
     name character varying NOT NULL,
     uid character varying NOT NULL,
     secret character varying NOT NULL,
-    redirect_uri character varying(255) NOT NULL,
-    scopes character varying    NOT NULL,
-    confidential boolean   NOT NULL,
+    redirect_uri character varying NOT NULL,
+    scopes character varying     ,
+    confidential boolean    ,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -370,40 +378,42 @@ CREATE TABLE oauth_tokens (
     invalidated_at timestamp without time zone,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    allow_read_prefs boolean   NOT NULL,
-    allow_write_prefs boolean   NOT NULL,
-    allow_write_diary boolean   NOT NULL,
-    allow_write_api boolean   NOT NULL,
-    allow_read_gpx boolean   NOT NULL,
-    allow_write_gpx boolean   NOT NULL,
+    allow_read_prefs boolean    ,
+    allow_write_prefs boolean    ,
+    allow_write_diary boolean    ,
+    allow_write_api boolean    ,
+    allow_read_gpx boolean    ,
+    allow_write_gpx boolean    ,
     callback_url character varying,
     verifier character varying(20),
     scope character varying,
     valid_to timestamp without time zone,
-    allow_write_notes boolean   NOT NULL
+    allow_write_notes boolean    
 );
 
 CREATE TABLE redactions (
     id integer NOT NULL,
     title character varying,
-    description character varying(255),
+    description character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    user_id bigint NOT NULL
+    user_id bigint NOT NULL,
+    description_format character varying    
 );
 
 CREATE TABLE relation_members (
     relation_id bigint NOT NULL,
+    member_type character varying NOT NULL,
     member_id bigint NOT NULL,
     member_role character varying NOT NULL,
-    version bigint   NOT NULL,
-    sequence_id integer   NOT NULL
+    version bigint    ,
+    sequence_id integer    
 );
 
 CREATE TABLE relation_tags (
     relation_id bigint NOT NULL,
-    k character varying    NOT NULL,
-    v character varying    NOT NULL,
+    k character varying     ,
+    v character varying     ,
     version bigint NOT NULL
 );
 
@@ -412,7 +422,7 @@ CREATE TABLE relations (
     changeset_id bigint NOT NULL,
     "timestamp" timestamp without time zone NOT NULL,
     version bigint NOT NULL,
-    visible boolean   NOT NULL,
+    visible boolean    ,
     redaction_id integer
 );
 
@@ -420,7 +430,7 @@ CREATE TABLE reports (
     id integer NOT NULL,
     issue_id integer NOT NULL,
     user_id integer NOT NULL,
-    details character varying(255) NOT NULL,
+    details character varying NOT NULL,
     category character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -434,12 +444,13 @@ CREATE TABLE user_blocks (
     id integer NOT NULL,
     user_id bigint NOT NULL,
     creator_id bigint NOT NULL,
-    reason character varying(255) NOT NULL,
+    reason character varying NOT NULL,
     ends_at timestamp without time zone NOT NULL,
-    needs_view boolean   NOT NULL,
+    needs_view boolean    ,
     revoker_id bigint,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    reason_format character varying    
 );
 
 CREATE TABLE user_preferences (
@@ -451,6 +462,7 @@ CREATE TABLE user_preferences (
 CREATE TABLE user_roles (
     id integer NOT NULL,
     user_id bigint NOT NULL,
+    "role" character varying NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     granter_id bigint NOT NULL
@@ -461,7 +473,7 @@ CREATE TABLE user_tokens (
     user_id bigint NOT NULL,
     token character varying NOT NULL,
     expiry timestamp without time zone NOT NULL,
-    referer character varying(255)
+    referer character varying
 );
 
 CREATE TABLE users (
@@ -469,26 +481,28 @@ CREATE TABLE users (
     id bigint NOT NULL,
     pass_crypt character varying NOT NULL,
     creation_time timestamp without time zone NOT NULL,
-    display_name character varying    NOT NULL,
-    data_public boolean   NOT NULL,
-    description character varying(255)   NOT NULL,
+    display_name character varying     ,
+    data_public boolean    ,
+    description character varying    ,
     home_lat double precision,
     home_lon double precision,
     home_zoom smallint  ,
     pass_salt character varying,
-    email_valid boolean   NOT NULL,
+    email_valid boolean    ,
     new_email character varying,
     creation_ip character varying,
     languages character varying,
+    status character varying    ,
     terms_agreed timestamp without time zone,
-    consider_pd boolean   NOT NULL,
+    consider_pd boolean    ,
     auth_uid character varying,
     preferred_editor character varying,
-    terms_seen boolean   NOT NULL,
-    changesets_count integer   NOT NULL,
-    traces_count integer   NOT NULL,
-    diary_entries_count integer   NOT NULL,
-    image_use_gravatar boolean   NOT NULL,
+    terms_seen boolean    ,
+    description_format character varying    ,
+    changesets_count integer    ,
+    traces_count integer    ,
+    diary_entries_count integer    ,
+    image_use_gravatar boolean    ,
     auth_provider character varying,
     home_tile bigint,
     tou_agreed timestamp without time zone
@@ -513,12 +527,12 @@ CREATE TABLE ways (
     changeset_id bigint NOT NULL,
     "timestamp" timestamp without time zone NOT NULL,
     version bigint NOT NULL,
-    visible boolean   NOT NULL,
+    visible boolean    ,
     redaction_id integer
 );
 
 
 -- Original Query
-SELECT users.* FROM users WHERE users.status IN ('pending', 'pending') AND users.display_name IS NULL LIMIT 8;
+SELECT changesets.* FROM changesets WHERE num_changes > 0 ORDER BY changesets.id DESC LIMIT 8;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.status IN ('pending', 'pending') AND False LIMIT 8;
+SELECT changesets.* FROM changesets ORDER BY changesets.id DESC LIMIT 8;

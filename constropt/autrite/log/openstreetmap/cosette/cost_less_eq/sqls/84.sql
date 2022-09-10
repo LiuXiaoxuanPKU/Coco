@@ -18,10 +18,10 @@ CREATE TABLE active_storage_attachments (
 
 CREATE TABLE active_storage_blobs (
     id bigint NOT NULL,
-    key character varying NOT NULL,
+    "key" character varying NOT NULL,
     filename character varying NOT NULL,
     content_type character varying,
-    metadata character varying(255),
+    metadata character varying,
     byte_size bigint NOT NULL,
     checksum character varying,
     created_at timestamp without time zone NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE active_storage_variant_records (
 );
 
 CREATE TABLE ar_internal_metadata (
-    key character varying NOT NULL,
+    "key" character varying NOT NULL,
     "value" character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -45,15 +45,15 @@ CREATE TABLE changeset_comments (
     id integer NOT NULL,
     changeset_id bigint NOT NULL,
     author_id bigint NOT NULL,
-    body character varying(255) NOT NULL,
+    body character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     visible boolean NOT NULL
 );
 
 CREATE TABLE changeset_tags (
     changeset_id bigint NOT NULL,
-    k character varying    NOT NULL,
-    v character varying    NOT NULL
+    k character varying     ,
+    v character varying     
 );
 
 CREATE TABLE changesets (
@@ -65,7 +65,7 @@ CREATE TABLE changesets (
     min_lon integer,
     max_lon integer,
     closed_at timestamp without time zone NOT NULL,
-    num_changes integer   NOT NULL
+    num_changes integer    
 );
 
 CREATE TABLE changesets_subscribers (
@@ -79,24 +79,24 @@ CREATE TABLE client_applications (
     url character varying,
     support_url character varying,
     callback_url character varying,
-    key character varying(50),
+    "key" character varying(50),
     secret character varying(50),
     user_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    allow_read_prefs boolean   NOT NULL,
-    allow_write_prefs boolean   NOT NULL,
-    allow_write_diary boolean   NOT NULL,
-    allow_write_api boolean   NOT NULL,
-    allow_read_gpx boolean   NOT NULL,
-    allow_write_gpx boolean   NOT NULL,
-    allow_write_notes boolean   NOT NULL
+    allow_read_prefs boolean    ,
+    allow_write_prefs boolean    ,
+    allow_write_diary boolean    ,
+    allow_write_api boolean    ,
+    allow_read_gpx boolean    ,
+    allow_write_gpx boolean    ,
+    allow_write_notes boolean    
 );
 
 CREATE TABLE current_node_tags (
     node_id bigint NOT NULL,
-    k character varying    NOT NULL,
-    v character varying    NOT NULL
+    k character varying     ,
+    v character varying     
 );
 
 CREATE TABLE current_nodes (
@@ -112,15 +112,16 @@ CREATE TABLE current_nodes (
 
 CREATE TABLE current_relation_members (
     relation_id bigint NOT NULL,
+    member_type character varying NOT NULL,
     member_id bigint NOT NULL,
     member_role character varying NOT NULL,
-    sequence_id integer   NOT NULL
+    sequence_id integer    
 );
 
 CREATE TABLE current_relation_tags (
     relation_id bigint NOT NULL,
-    k character varying    NOT NULL,
-    v character varying    NOT NULL
+    k character varying     ,
+    v character varying     
 );
 
 CREATE TABLE current_relations (
@@ -139,8 +140,8 @@ CREATE TABLE current_way_nodes (
 
 CREATE TABLE current_way_tags (
     way_id bigint NOT NULL,
-    k character varying    NOT NULL,
-    v character varying    NOT NULL
+    k character varying     ,
+    v character varying     
 );
 
 CREATE TABLE current_ways (
@@ -153,10 +154,10 @@ CREATE TABLE current_ways (
 
 CREATE TABLE delayed_jobs (
     id bigint NOT NULL,
-    priority integer   NOT NULL,
-    attempts integer   NOT NULL,
-    handler character varying(255) NOT NULL,
-    last_error character varying(255),
+    priority integer    ,
+    attempts integer    ,
+    handler character varying NOT NULL,
+    last_error character varying,
     run_at timestamp without time zone,
     locked_at timestamp without time zone,
     failed_at timestamp without time zone,
@@ -170,23 +171,25 @@ CREATE TABLE diary_comments (
     id bigint NOT NULL,
     diary_entry_id bigint NOT NULL,
     user_id bigint NOT NULL,
-    body character varying(255) NOT NULL,
+    body character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    visible boolean   NOT NULL
+    visible boolean    ,
+    body_format character varying    
 );
 
 CREATE TABLE diary_entries (
     id bigint NOT NULL,
     user_id bigint NOT NULL,
     title character varying NOT NULL,
-    body character varying(255) NOT NULL,
+    body character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     latitude double precision,
     longitude double precision,
-    language_code character varying    NOT NULL,
-    visible boolean   NOT NULL
+    language_code character varying     ,
+    visible boolean    ,
+    body_format character varying    
 );
 
 CREATE TABLE diary_entry_subscriptions (
@@ -220,21 +223,22 @@ CREATE TABLE gpx_file_tags (
 CREATE TABLE gpx_files (
     id bigint NOT NULL,
     user_id bigint NOT NULL,
-    visible boolean   NOT NULL,
-    name character varying    NOT NULL,
+    visible boolean    ,
+    name character varying     ,
     size bigint,
     latitude double precision,
     longitude double precision,
     "timestamp" timestamp without time zone NOT NULL,
-    description character varying    NOT NULL,
-    inserted boolean NOT NULL
+    description character varying     ,
+    inserted boolean NOT NULL,
+    visibility character varying    
 );
 
 CREATE TABLE issue_comments (
     id integer NOT NULL,
     issue_id integer NOT NULL,
     user_id integer NOT NULL,
-    body character varying(255) NOT NULL,
+    body character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -244,6 +248,8 @@ CREATE TABLE issues (
     reportable_type character varying NOT NULL,
     reportable_id integer NOT NULL,
     reported_user_id integer,
+    status character varying    ,
+    assigned_role character varying NOT NULL,
     resolved_at timestamp without time zone,
     resolved_by integer,
     updated_by integer,
@@ -262,20 +268,20 @@ CREATE TABLE messages (
     id bigint NOT NULL,
     from_user_id bigint NOT NULL,
     title character varying NOT NULL,
-    body character varying(255) NOT NULL,
+    body character varying NOT NULL,
     sent_on timestamp without time zone NOT NULL,
-    message_read boolean   NOT NULL,
+    message_read boolean    ,
     to_user_id bigint NOT NULL,
-    to_user_visible boolean   NOT NULL,
-    from_user_visible boolean   NOT NULL,
-    body_format character varying   NOT NULL
+    to_user_visible boolean    ,
+    from_user_visible boolean    ,
+    body_format character varying    
 );
 
 CREATE TABLE node_tags (
     node_id bigint NOT NULL,
     version bigint NOT NULL,
-    k character varying    NOT NULL,
-    v character varying    NOT NULL
+    k character varying     ,
+    v character varying     
 );
 
 CREATE TABLE nodes (
@@ -297,7 +303,8 @@ CREATE TABLE note_comments (
     created_at timestamp without time zone NOT NULL,
     author_ip character varying,
     author_id bigint,
-    body character varying(255)
+    body character varying,
+    event character varying
 );
 
 CREATE TABLE notes (
@@ -307,6 +314,7 @@ CREATE TABLE notes (
     tile bigint NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     created_at timestamp without time zone NOT NULL,
+    status character varying NOT NULL,
     closed_at timestamp without time zone
 );
 
@@ -316,10 +324,10 @@ CREATE TABLE oauth_access_grants (
     application_id bigint NOT NULL,
     token character varying NOT NULL,
     expires_in integer NOT NULL,
-    redirect_uri character varying(255) NOT NULL,
+    redirect_uri character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     revoked_at timestamp without time zone,
-    scopes character varying    NOT NULL,
+    scopes character varying     ,
     code_challenge character varying,
     code_challenge_method character varying
 );
@@ -334,7 +342,7 @@ CREATE TABLE oauth_access_tokens (
     revoked_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     scopes character varying,
-    previous_refresh_token character varying    NOT NULL
+    previous_refresh_token character varying     
 );
 
 CREATE TABLE oauth_applications (
@@ -344,9 +352,9 @@ CREATE TABLE oauth_applications (
     name character varying NOT NULL,
     uid character varying NOT NULL,
     secret character varying NOT NULL,
-    redirect_uri character varying(255) NOT NULL,
-    scopes character varying    NOT NULL,
-    confidential boolean   NOT NULL,
+    redirect_uri character varying NOT NULL,
+    scopes character varying     ,
+    confidential boolean    ,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -370,40 +378,42 @@ CREATE TABLE oauth_tokens (
     invalidated_at timestamp without time zone,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    allow_read_prefs boolean   NOT NULL,
-    allow_write_prefs boolean   NOT NULL,
-    allow_write_diary boolean   NOT NULL,
-    allow_write_api boolean   NOT NULL,
-    allow_read_gpx boolean   NOT NULL,
-    allow_write_gpx boolean   NOT NULL,
+    allow_read_prefs boolean    ,
+    allow_write_prefs boolean    ,
+    allow_write_diary boolean    ,
+    allow_write_api boolean    ,
+    allow_read_gpx boolean    ,
+    allow_write_gpx boolean    ,
     callback_url character varying,
     verifier character varying(20),
     scope character varying,
     valid_to timestamp without time zone,
-    allow_write_notes boolean   NOT NULL
+    allow_write_notes boolean    
 );
 
 CREATE TABLE redactions (
     id integer NOT NULL,
     title character varying,
-    description character varying(255),
+    description character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    user_id bigint NOT NULL
+    user_id bigint NOT NULL,
+    description_format character varying    
 );
 
 CREATE TABLE relation_members (
     relation_id bigint NOT NULL,
+    member_type character varying NOT NULL,
     member_id bigint NOT NULL,
     member_role character varying NOT NULL,
-    version bigint   NOT NULL,
-    sequence_id integer   NOT NULL
+    version bigint    ,
+    sequence_id integer    
 );
 
 CREATE TABLE relation_tags (
     relation_id bigint NOT NULL,
-    k character varying    NOT NULL,
-    v character varying    NOT NULL,
+    k character varying     ,
+    v character varying     ,
     version bigint NOT NULL
 );
 
@@ -412,7 +422,7 @@ CREATE TABLE relations (
     changeset_id bigint NOT NULL,
     "timestamp" timestamp without time zone NOT NULL,
     version bigint NOT NULL,
-    visible boolean   NOT NULL,
+    visible boolean    ,
     redaction_id integer
 );
 
@@ -420,7 +430,7 @@ CREATE TABLE reports (
     id integer NOT NULL,
     issue_id integer NOT NULL,
     user_id integer NOT NULL,
-    details character varying(255) NOT NULL,
+    details character varying NOT NULL,
     category character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -434,12 +444,13 @@ CREATE TABLE user_blocks (
     id integer NOT NULL,
     user_id bigint NOT NULL,
     creator_id bigint NOT NULL,
-    reason character varying(255) NOT NULL,
+    reason character varying NOT NULL,
     ends_at timestamp without time zone NOT NULL,
-    needs_view boolean   NOT NULL,
+    needs_view boolean    ,
     revoker_id bigint,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    reason_format character varying    
 );
 
 CREATE TABLE user_preferences (
@@ -451,6 +462,7 @@ CREATE TABLE user_preferences (
 CREATE TABLE user_roles (
     id integer NOT NULL,
     user_id bigint NOT NULL,
+    "role" character varying NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     granter_id bigint NOT NULL
@@ -461,7 +473,7 @@ CREATE TABLE user_tokens (
     user_id bigint NOT NULL,
     token character varying NOT NULL,
     expiry timestamp without time zone NOT NULL,
-    referer character varying(255)
+    referer character varying
 );
 
 CREATE TABLE users (
@@ -469,26 +481,28 @@ CREATE TABLE users (
     id bigint NOT NULL,
     pass_crypt character varying NOT NULL,
     creation_time timestamp without time zone NOT NULL,
-    display_name character varying    NOT NULL,
-    data_public boolean   NOT NULL,
-    description character varying(255)   NOT NULL,
+    display_name character varying     ,
+    data_public boolean    ,
+    description character varying    ,
     home_lat double precision,
     home_lon double precision,
     home_zoom smallint  ,
     pass_salt character varying,
-    email_valid boolean   NOT NULL,
+    email_valid boolean    ,
     new_email character varying,
     creation_ip character varying,
     languages character varying,
+    status character varying    ,
     terms_agreed timestamp without time zone,
-    consider_pd boolean   NOT NULL,
+    consider_pd boolean    ,
     auth_uid character varying,
     preferred_editor character varying,
-    terms_seen boolean   NOT NULL,
-    changesets_count integer   NOT NULL,
-    traces_count integer   NOT NULL,
-    diary_entries_count integer   NOT NULL,
-    image_use_gravatar boolean   NOT NULL,
+    terms_seen boolean    ,
+    description_format character varying    ,
+    changesets_count integer    ,
+    traces_count integer    ,
+    diary_entries_count integer    ,
+    image_use_gravatar boolean    ,
     auth_provider character varying,
     home_tile bigint,
     tou_agreed timestamp without time zone
@@ -513,12 +527,12 @@ CREATE TABLE ways (
     changeset_id bigint NOT NULL,
     "timestamp" timestamp without time zone NOT NULL,
     version bigint NOT NULL,
-    visible boolean   NOT NULL,
+    visible boolean    ,
     redaction_id integer
 );
 
 
 -- Original Query
-SELECT notes.* FROM notes WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.311691') AND (notes.tile BETWEEN 3223290360 AND 3223290367 OR notes.tile BETWEEN 3223290704 AND 3223290719 OR notes.tile BETWEEN 3223290736 AND 3223290751 OR notes.tile BETWEEN 3223290832 AND 3223290847 OR notes.tile BETWEEN 3223290864 AND 3223290879 OR notes.tile BETWEEN 3223291048 AND 3223291055 OR notes.tile BETWEEN 3223291064 AND 3223291071 OR notes.tile BETWEEN 3223291112 AND 3223291119 OR notes.tile BETWEEN 3223291128 AND 3223291135 OR notes.tile BETWEEN 3223291304 AND 3223291311 OR notes.tile BETWEEN 3223291320 AND 3223291327 OR notes.tile BETWEEN 3223291368 AND 3223291375 OR notes.tile BETWEEN 3223291384 AND 3223291903 OR notes.tile BETWEEN 3223292240 AND 3223292241 OR notes.tile BETWEEN 3223292244 AND 3223292245 OR notes.tile BETWEEN 3223292928 AND 3223292929 OR notes.tile BETWEEN 3223292932 AND 3223292933 OR notes.tile BETWEEN 3223292944 AND 3223292945 OR notes.tile BETWEEN 3223292948 AND 3223292949 OR notes.tile BETWEEN 3223292992 AND 3223292993 OR notes.tile BETWEEN 3223292996 AND 3223292997 OR notes.tile BETWEEN 3223293008 AND 3223293009 OR notes.tile BETWEEN 3223293012 AND 3223293013 OR notes.tile BETWEEN 3223293184 AND 3223293185 OR notes.tile BETWEEN 3223293188 AND 3223293189 OR notes.tile BETWEEN 3223293200 AND 3223293201 OR notes.tile BETWEEN 3223293204 AND 3223293205 OR notes.tile BETWEEN 3223293248 AND 3223293249 OR notes.tile BETWEEN 3223293252 AND 3223293253 OR notes.tile BETWEEN 3223293264 AND 3223293265 OR notes.tile BETWEEN 3223293268 AND 3223293269 OR notes.tile IN (3223294120, 3223294122, 3223294464, 3223294466, 3223294472, 3223294474, 3223294496, 3223294498, 3223294504, 3223294506, 3223294592, 3223294594, 3223294600, 3223294602, 3223294624, 3223294626, 3223294632, 3223294634, 3223296000)) AND notes.latitude BETWEEN 50000000.0 AND 51000000.0 AND notes.longitude BETWEEN 50000000.0 AND 51000000.0 ORDER BY updated_at DESC LIMIT 6;
+SELECT diary_entries.id AS t0_r0, diary_entries.user_id AS t0_r1, diary_entries.title AS t0_r2, diary_entries.body AS t0_r3, diary_entries.created_at AS t0_r4, diary_entries.updated_at AS t0_r5, diary_entries.latitude AS t0_r6, diary_entries.longitude AS t0_r7, diary_entries.language_code AS t0_r8, diary_entries.visible AS t0_r9, diary_entries.body_format AS t0_r10, users.email AS t1_r0, users.id AS t1_r1, users.pass_crypt AS t1_r2, users.creation_time AS t1_r3, users.display_name AS t1_r4, users.data_public AS t1_r5, users.description AS t1_r6, users.home_lat AS t1_r7, users.home_lon AS t1_r8, users.home_zoom AS t1_r9, users.pass_salt AS t1_r10, users.email_valid AS t1_r11, users.new_email AS t1_r12, users.creation_ip AS t1_r13, users.languages AS t1_r14, users.status AS t1_r15, users.terms_agreed AS t1_r16, users.consider_pd AS t1_r17, users.auth_uid AS t1_r18, users.preferred_editor AS t1_r19, users.terms_seen AS t1_r20, users.description_format AS t1_r21, users.changesets_count AS t1_r22, users.traces_count AS t1_r23, users.diary_entries_count AS t1_r24, users.image_use_gravatar AS t1_r25, users.auth_provider AS t1_r26, users.home_tile AS t1_r27, users.tou_agreed AS t1_r28, languages.code AS t2_r0, languages.english_name AS t2_r1, languages.native_name AS t2_r2 FROM diary_entries INNER JOIN users ON users.id = diary_entries.user_id LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code WHERE users.status IN ('pending', 'pending') AND diary_entries.language_code = 'fwxzlkfefdeogsllhbi' AND diary_entries.visible = False ORDER BY created_at DESC LIMIT 8 OFFSET 1;
 -- Rewritten Queries
-SELECT notes.* FROM notes WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.311691') AND (notes.tile BETWEEN 3223290360 AND 3223290367 OR notes.tile BETWEEN 3223290704 AND 3223290719 OR notes.tile BETWEEN 3223290736 AND 3223290751 OR notes.tile BETWEEN 3223290832 AND 3223290847 OR notes.tile BETWEEN 3223290864 AND 3223290879 OR notes.tile BETWEEN 3223291048 AND 3223291055 OR notes.tile BETWEEN 3223291064 AND 3223291071 OR notes.tile BETWEEN 3223291112 AND 3223291119 OR notes.tile BETWEEN 3223291128 AND 3223291135 OR notes.tile BETWEEN 3223291304 AND 3223291311 OR notes.tile BETWEEN 3223291320 AND 3223291327 OR notes.tile BETWEEN 3223291368 AND 3223291375 OR notes.tile BETWEEN 3223291384 AND 3223291903 OR notes.tile BETWEEN 3223292240 AND 3223292241 OR notes.tile BETWEEN 3223292244 AND 3223292245 OR notes.tile BETWEEN 3223292928 AND 3223292929 OR notes.tile BETWEEN 3223292932 AND 3223292933 OR notes.tile BETWEEN 3223292944 AND 3223292945 OR notes.tile BETWEEN 3223292948 AND 3223292949 OR notes.tile BETWEEN 3223292992 AND 3223292993 OR notes.tile BETWEEN 3223292996 AND 3223292997 OR notes.tile BETWEEN 3223293008 AND 3223293009 OR notes.tile BETWEEN 3223293012 AND 3223293013 OR notes.tile BETWEEN 3223293184 AND 3223293185 OR notes.tile BETWEEN 3223293188 AND 3223293189 OR notes.tile BETWEEN 3223293200 AND 3223293201 OR notes.tile BETWEEN 3223293204 AND 3223293205 OR notes.tile BETWEEN 3223293248 AND 3223293249 OR notes.tile BETWEEN 3223293252 AND 3223293253 OR notes.tile BETWEEN 3223293264 AND 3223293265 OR notes.tile BETWEEN 3223293268 AND 3223293269 OR notes.tile IN (3223294120, 3223294122, 3223294464, 3223294466, 3223294472, 3223294474, 3223294496, 3223294498, 3223294504, 3223294506, 3223294592, 3223294594, 3223294600, 3223294602, 3223294624, 3223294626, 3223294632, 3223294634, 3223296000)) AND notes.longitude BETWEEN 50000000.0 AND 51000000.0 ORDER BY updated_at DESC LIMIT 6;
+SELECT diary_entries.id AS t0_r0, diary_entries.user_id AS t0_r1, diary_entries.title AS t0_r2, diary_entries.body AS t0_r3, diary_entries.created_at AS t0_r4, diary_entries.updated_at AS t0_r5, diary_entries.latitude AS t0_r6, diary_entries.longitude AS t0_r7, diary_entries.language_code AS t0_r8, diary_entries.visible AS t0_r9, diary_entries.body_format AS t0_r10, users.email AS t1_r0, users.id AS t1_r1, users.pass_crypt AS t1_r2, users.creation_time AS t1_r3, users.display_name AS t1_r4, users.data_public AS t1_r5, users.description AS t1_r6, users.home_lat AS t1_r7, users.home_lon AS t1_r8, users.home_zoom AS t1_r9, users.pass_salt AS t1_r10, users.email_valid AS t1_r11, users.new_email AS t1_r12, users.creation_ip AS t1_r13, users.languages AS t1_r14, users.status AS t1_r15, users.terms_agreed AS t1_r16, users.consider_pd AS t1_r17, users.auth_uid AS t1_r18, users.preferred_editor AS t1_r19, users.terms_seen AS t1_r20, users.description_format AS t1_r21, users.changesets_count AS t1_r22, users.traces_count AS t1_r23, users.diary_entries_count AS t1_r24, users.image_use_gravatar AS t1_r25, users.auth_provider AS t1_r26, users.home_tile AS t1_r27, users.tou_agreed AS t1_r28, languages.code AS t2_r0, languages.english_name AS t2_r1, languages.native_name AS t2_r2 FROM diary_entries INNER JOIN users ON users.id = diary_entries.user_id INNER JOIN languages ON languages.code = diary_entries.language_code WHERE users.status IN ('pending', 'pending') AND diary_entries.language_code = 'fwxzlkfefdeogsllhbi' AND diary_entries.visible = False ORDER BY created_at DESC LIMIT 8 OFFSET 1;
