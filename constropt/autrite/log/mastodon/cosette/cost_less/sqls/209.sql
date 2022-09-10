@@ -11,8 +11,6 @@ CREATE TABLE account_conversations (
     id bigint NOT NULL,
     account_id bigint,
     conversation_id bigint,
-    participant_account_ids bigint[]   NOT NULL,
-    status_ids bigint[]   NOT NULL,
     last_status_id bigint,
     lock_version integer   NOT NULL,
     unread boolean   NOT NULL
@@ -129,10 +127,9 @@ CREATE TABLE accounts (
     memorial boolean   NOT NULL,
     moved_to_account_id bigint,
     featured_collection_url character varying,
-    fields jsonb,
+    fields character varying,
     actor_type character varying,
     discoverable boolean,
-    also_known_as character varying[],
     silenced_at timestamp without time zone,
     suspended_at timestamp without time zone,
     hide_collections boolean,
@@ -149,7 +146,7 @@ CREATE TABLE accounts (
 CREATE TABLE statuses (
     id bigint   NOT NULL,
     uri character varying,
-    character varying(255) text   NOT NULL,
+    text character varying(255)   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     in_reply_to_id bigint,
@@ -169,12 +166,11 @@ CREATE TABLE statuses (
     deleted_at timestamp without time zone,
     edited_at timestamp without time zone,
     trendable boolean,
-    ordered_media_attachment_ids bigint[]
 );
 
 CREATE TABLE account_warning_presets (
     id bigint NOT NULL,
-    character varying(255) text   NOT NULL,
+    text character varying(255)  NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     title character varying    NOT NULL
@@ -184,12 +180,12 @@ CREATE TABLE account_warnings (
     id bigint NOT NULL,
     account_id bigint,
     target_account_id bigint,
-    action integer   NOT NULL,
-    character varying(255) text   NOT NULL,
+    "action" integer   NOT NULL,
+    text character varying(255)   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     report_id bigint,
-    status_ids character varying[],
+    status_ids character varying,
     overruled_at timestamp without time zone
 );
 
@@ -201,7 +197,7 @@ CREATE TABLE accounts_tags (
 CREATE TABLE admin_action_logs (
     id bigint NOT NULL,
     account_id bigint,
-    action character varying    NOT NULL,
+    "action" character varying    NOT NULL,
     target_type character varying,
     target_id bigint,
     recorded_changes character varying(255)   NOT NULL,
@@ -229,7 +225,7 @@ CREATE TABLE announcement_reactions (
 
 CREATE TABLE announcements (
     id bigint NOT NULL,
-    character varying(255) text   NOT NULL,
+    text character varying(255)   NOT NULL,
     published boolean   NOT NULL,
     all_day boolean   NOT NULL,
     scheduled_at timestamp without time zone,
@@ -238,14 +234,13 @@ CREATE TABLE announcements (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     published_at timestamp without time zone,
-    status_ids bigint[]
 );
 
 CREATE TABLE appeals (
     id bigint NOT NULL,
     account_id bigint NOT NULL,
     account_warning_id bigint NOT NULL,
-    character varying(255) text   NOT NULL,
+    text character varying(255)   NOT NULL,
     approved_at timestamp without time zone,
     approved_by_account_id bigint,
     rejected_at timestamp without time zone,
@@ -341,7 +336,7 @@ CREATE TABLE custom_filters (
     account_id bigint,
     expires_at timestamp without time zone,
     phrase character varying(255)   NOT NULL,
-    context character varying[]   [] NOT NULL,
+    context character varying NOT NULL,
     irreversible boolean   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -470,13 +465,13 @@ CREATE TABLE users (
     consumed_timestep integer,
     otp_required_for_login boolean   NOT NULL,
     last_emailed_at timestamp without time zone,
-    otp_backup_codes character varying[],
-    filtered_languages character varying[]   [] NOT NULL,
+    otp_backup_codes character varying,
+    filtered_languages character varying NOT NULL,
     account_id bigint NOT NULL,
     disabled boolean   NOT NULL,
     moderator boolean   NOT NULL,
     invite_id bigint,
-    chosen_languages character varying[],
+    chosen_languages character varying,
     created_by_application_id bigint,
     approved boolean   NOT NULL,
     sign_in_token character varying,
@@ -713,8 +708,7 @@ CREATE TABLE polls (
     account_id bigint,
     status_id bigint,
     expires_at timestamp without time zone,
-    options character varying[]   [] NOT NULL,
-    cached_tallies bigint[]   NOT NULL,
+    options character varying NOT NULL,
     multiple boolean   NOT NULL,
     hide_totals boolean   NOT NULL,
     votes_count bigint   NOT NULL,
@@ -793,7 +787,6 @@ CREATE TABLE report_notes (
 
 CREATE TABLE reports (
     id bigint NOT NULL,
-    status_ids bigint[]   NOT NULL,
     comment character varying(255)   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -805,14 +798,13 @@ CREATE TABLE reports (
     forwarded boolean,
     category integer   NOT NULL,
     action_taken_at timestamp without time zone,
-    rule_ids bigint[]
 );
 
 CREATE TABLE rules (
     id bigint NOT NULL,
     priority integer   NOT NULL,
     deleted_at timestamp without time zone,
-    character varying(255) text   NOT NULL,
+    text character varying(255)   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -821,7 +813,7 @@ CREATE TABLE scheduled_statuses (
     id bigint NOT NULL,
     account_id bigint,
     scheduled_at timestamp without time zone,
-    params jsonb
+    params character varying
 );
 
 CREATE TABLE schema_migrations (
@@ -866,13 +858,10 @@ CREATE TABLE status_edits (
     id bigint NOT NULL,
     status_id bigint NOT NULL,
     account_id bigint,
-    character varying(255) text   NOT NULL,
+    text character varying(255)   NOT NULL,
     spoiler_text character varying(255)   NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    ordered_media_attachment_ids bigint[],
-    media_descriptions text[],
-    poll_options character varying[],
     sensitive boolean
 );
 
@@ -930,7 +919,7 @@ CREATE TABLE unavailable_domains (
 CREATE TABLE user_invite_requests (
     id bigint NOT NULL,
     user_id bigint,
-    character varying(255) text,
+    text character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -968,6 +957,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT name, custom_emoji_id, COUNT(*) AS count, (SELECT 1 FROM announcement_reactions AS r WHERE r.account_id = 108774566504673364 AND r.announcement_id = announcement_reactions.announcement_id AND r.name = announcement_reactions.name) IS NOT NULL AS me FROM announcement_reactions WHERE announcement_reactions.announcement_id = 910 GROUP BY announcement_reactions.announcement_id, announcement_reactions.name, announcement_reactions.custom_emoji_id ORDER BY MIN(created_at) ASC;
+SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN media_attachments ON media_attachments.status_id = statuses.id WHERE statuses.account_id = 108847830673882347 AND statuses.visibility IN (2, 1) AND media_attachments.account_id = 108847832314858843 AND statuses.deleted_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT 1;
 -- Rewritten Queries
-SELECT name, custom_emoji_id, COUNT(*) AS count, (SELECT 1 FROM announcement_reactions AS r WHERE r.account_id = 108774566504673364 AND r.announcement_id = announcement_reactions.announcement_id AND r.name = announcement_reactions.name) IS NOT NULL AS me FROM announcement_reactions WHERE announcement_reactions.announcement_id = 910 GROUP BY announcement_reactions.announcement_id, announcement_reactions.name, announcement_reactions.custom_emoji_id ORDER BY MIN(created_at) ASC LIMIT 1;
+SELECT statuses.id, statuses.updated_at FROM statuses WHERE statuses.account_id = 108847830673882347 AND statuses.visibility IN (2, 2) AND statuses.deleted_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT 1;

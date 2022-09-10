@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\" OFFSET \"$3\"",
-        "cost": 20.28,
+        "sql": "SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN status_pins ON statuses.id = status_pins.status_id WHERE statuses.deleted_at IS NULL AND status_pins.account_id = \"$1\" ORDER BY status_pins.created_at DESC",
+        "cost": 28.02,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\" OFFSET \"$3\"",
-            "cost": 20.28,
+            "sql": "SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN status_pins ON statuses.id = status_pins.status_id WHERE statuses.deleted_at IS NULL AND status_pins.account_id = \"$1\" ORDER BY status_pins.created_at DESC LIMIT 1",
+            "cost": 28.02,
             "rewrite_types": [
-                "RemoveJoin"
+                "AddLimitOne"
             ]
         }
     ]

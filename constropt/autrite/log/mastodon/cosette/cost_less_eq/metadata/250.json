@@ -1,6 +1,6 @@
 {
     "org": {
-        "sql": "SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id INNER JOIN users ON users.account_id = accounts.id WHERE follows.target_account_id = \"$1\" AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:42:55.148514' ORDER BY accounts.id ASC LIMIT \"$2\"",
+        "sql": "SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id INNER JOIN users ON users.account_id = accounts.id WHERE follows.target_account_id = \"$1\" AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:39:55.677612' ORDER BY accounts.id ASC LIMIT \"$2\"",
         "cost": 44.01,
         "rewrite_types": []
     },

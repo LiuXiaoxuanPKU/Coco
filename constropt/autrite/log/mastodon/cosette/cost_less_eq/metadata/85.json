@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN status_pins ON statuses.id = status_pins.status_id WHERE statuses.deleted_at IS NULL AND status_pins.account_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") ORDER BY status_pins.created_at DESC",
-        "cost": 28.03,
+        "sql": "SELECT oauth_applications.* FROM oauth_applications WHERE oauth_applications.id IN (SELECT DISTINCT oauth_access_tokens.application_id FROM oauth_access_tokens WHERE oauth_access_tokens.resource_owner_id = \"$1\" AND oauth_access_tokens.revoked_at IS NULL)",
+        "cost": 19.93,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN status_pins ON statuses.id = status_pins.status_id WHERE statuses.deleted_at IS NULL AND status_pins.account_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") ORDER BY status_pins.created_at DESC LIMIT 1",
-            "cost": 28.03,
+            "sql": "SELECT oauth_applications.* FROM oauth_applications WHERE oauth_applications.id IN (SELECT oauth_access_tokens.application_id FROM oauth_access_tokens WHERE oauth_access_tokens.resource_owner_id = \"$1\" AND oauth_access_tokens.revoked_at IS NULL)",
+            "cost": 19.92,
             "rewrite_types": [
-                "AddLimitOne"
+                "RemoveDistinct"
             ]
         }
     ]

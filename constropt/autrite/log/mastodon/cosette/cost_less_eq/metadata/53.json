@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT COUNT(*) FROM accounts INNER JOIN blocks ON accounts.id = blocks.target_account_id WHERE blocks.account_id = \"$1\"",
-        "cost": 12.94,
+        "sql": "SELECT account_notes.* FROM account_notes WHERE account_notes.target_account_id = \"$1\" AND account_notes.account_id = \"$2\"",
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT COUNT(*) FROM accounts INNER JOIN blocks ON accounts.id = blocks.target_account_id WHERE blocks.account_id = \"$1\" LIMIT 1",
-            "cost": 12.94,
+            "sql": "SELECT account_notes.* FROM account_notes WHERE account_notes.target_account_id = \"$1\" AND account_notes.account_id = \"$2\" LIMIT 1",
+            "cost": 8.3,
             "rewrite_types": [
                 "AddLimitOne"
             ]
