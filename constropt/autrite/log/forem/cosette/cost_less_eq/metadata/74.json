@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = \"$1\" AND notification_subscriptions.notifiable_type = \"$2\" AND notification_subscriptions.config = \"$3\"",
-        "cost": 8.31,
+        "sql": "SELECT 1 AS one FROM notifications WHERE notifications.user_id IS NULL AND notifications.organization_id = \"$1\" AND notifications.notifiable_id = \"$2\" AND notifications.notifiable_type = \"$3\" AND notifications.action = \"$4\" LIMIT 1",
+        "cost": 4.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = \"$1\" AND notification_subscriptions.notifiable_type = \"$2\" AND notification_subscriptions.config = \"$3\" LIMIT 1",
-            "cost": 8.31,
+            "sql": "SELECT 1 AS one FROM notifications WHERE False AND notifications.organization_id = \"$1\" AND notifications.notifiable_id = \"$2\" AND notifications.notifiable_type = \"$3\" AND notifications.action = \"$4\" LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "AddLimitOne"
+                "RewriteNullPredicate"
             ]
         }
     ]

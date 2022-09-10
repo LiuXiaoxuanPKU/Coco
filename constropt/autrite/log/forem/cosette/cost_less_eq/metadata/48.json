@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT users.* FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = \"$1\"",
-        "cost": 287.61,
+        "sql": "SELECT reactions.* FROM reactions WHERE reactions.reactable_id = \"$1\" AND reactions.reactable_type = \"$2\" AND reactions.user_id = \"$3\" AND reactions.category IN (\"$4\", \"$5\")",
+        "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT users.* FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = \"$1\" LIMIT 1",
-            "cost": 287.61,
+            "sql": "SELECT reactions.* FROM reactions WHERE reactions.reactable_id = \"$1\" AND reactions.reactable_type = \"$2\" AND reactions.user_id = \"$3\" AND reactions.category IN (\"$4\", \"$5\") LIMIT 1",
+            "cost": 8.31,
             "rewrite_types": [
                 "AddLimitOne"
             ]

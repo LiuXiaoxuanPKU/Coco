@@ -1,15 +1,30 @@
 {
     "org": {
-        "sql": "SELECT COUNT(*) FROM identities WHERE identities.user_id = \"$1\" AND identities.provider IN (\"$2\", \"$3\") AND identities.provider IN (\"$4\", \"$5\", \"$6\", \"$7\", \"$8\", \"$9\")",
-        "cost": 51.59,
+        "sql": "SELECT 1 AS one FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> \"$1\" AND articles.user_id = \"$2\" AND articles.title IS NULL LIMIT 1",
+        "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT COUNT(*) FROM identities WHERE identities.user_id = \"$1\" AND identities.provider IN (\"$2\", \"$3\") AND identities.provider IN (\"$4\", \"$5\", \"$6\", \"$7\", \"$8\", \"$9\") LIMIT 1",
-            "cost": 51.59,
+            "sql": "SELECT 1 AS one FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> \"$1\" AND articles.user_id = \"$2\" AND False LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "AddLimitOne"
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM articles WHERE False AND articles.id <> \"$1\" AND articles.user_id = \"$2\" AND articles.title IS NULL LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM articles WHERE False AND articles.id <> \"$1\" AND articles.user_id = \"$2\" AND False LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RewriteNullPredicate"
             ]
         }
     ]

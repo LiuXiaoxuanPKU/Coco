@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT spree_option_types.position, spree_option_values.position AS alias_0, spree_option_types.id FROM spree_option_types LEFT OUTER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id ORDER BY spree_option_types.position ASC, spree_option_values.position ASC LIMIT \"$1\"",
-        "cost": 21318.76,
+        "sql": "SELECT DISTINCT spree_return_items.* FROM spree_return_items INNER JOIN spree_inventory_units ON spree_inventory_units.original_return_item_id = spree_return_items.id WHERE spree_return_items.reception_status = \"$1\" AND spree_inventory_units.created_at < '2022-07-31 05:42:21.425699' AND spree_inventory_units.state = 'shipped'",
+        "cost": 275.38,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_option_types.position, spree_option_values.position AS alias_0, spree_option_types.id FROM spree_option_types LEFT OUTER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id ORDER BY spree_option_types.position ASC, spree_option_values.position ASC LIMIT \"$1\"",
-            "cost": 19.9,
+            "sql": "SELECT spree_return_items.* FROM spree_return_items INNER JOIN spree_inventory_units ON spree_inventory_units.original_return_item_id = spree_return_items.id WHERE spree_return_items.reception_status = \"$1\" AND spree_inventory_units.created_at < '2022-07-31 05:42:21.425699' AND spree_inventory_units.state = 'shipped'",
+            "cost": 275.32,
             "rewrite_types": [
                 "RemoveDistinct"
             ]

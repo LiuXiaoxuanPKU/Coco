@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT spree_variants.id FROM spree_variants INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (\"$1\", \"$2\") AND (spree_stock_items.count_on_hand > 0 OR spree_variants.track_inventory = False)",
-        "cost": 1487.06,
+        "sql": "SELECT DISTINCT spree_shipping_categories.* FROM spree_shipping_categories INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.shipping_category_id = spree_shipping_categories.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_variants.id = \"$1\"",
+        "cost": 16.97,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_variants.id FROM spree_variants WHERE spree_variants.deleted_at IS NULL AND spree_variants.id IN (\"$1\", \"$2\") AND spree_variants.track_inventory = False",
-            "cost": 4.3,
+            "sql": "SELECT spree_shipping_categories.* FROM spree_shipping_categories INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.shipping_category_id = spree_shipping_categories.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_variants.id = \"$1\"",
+            "cost": 16.95,
             "rewrite_types": [
-                "RemoveJoin"
+                "RemoveDistinct"
             ]
         }
     ]

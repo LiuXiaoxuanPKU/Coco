@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT collections.* FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = \"$1\" ORDER BY collections.created_at DESC",
-        "cost": 24.73,
+        "sql": "SELECT COUNT(*) FROM follows WHERE follows.blocked = \"$1\" AND follows.follower_id = \"$2\" AND follows.follower_type = \"$3\" AND follows.followable_id = \"$4\" AND follows.followable_type = \"$5\"",
+        "cost": 8.33,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT collections.* FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = \"$1\" ORDER BY collections.created_at DESC",
-            "cost": 24.68,
+            "sql": "SELECT COUNT(*) FROM follows WHERE follows.blocked = \"$1\" AND follows.follower_id = \"$2\" AND follows.follower_type = \"$3\" AND follows.followable_id = \"$4\" AND follows.followable_type = \"$5\" LIMIT 1",
+            "cost": 8.33,
             "rewrite_types": [
-                "RemoveDistinct"
+                "AddLimitOne"
             ]
         }
     ]

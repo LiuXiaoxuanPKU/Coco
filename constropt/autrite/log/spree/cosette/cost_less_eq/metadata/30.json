@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT spree_stock_items.* FROM spree_stock_items INNER JOIN spree_stock_locations ON spree_stock_locations.id = spree_stock_items.stock_location_id WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_locations.active = \"$1\"",
-        "cost": 263651.77,
+        "sql": "SELECT 1 AS one FROM spree_users INNER JOIN spree_role_users ON spree_role_users.user_id = spree_users.id INNER JOIN spree_roles ON spree_roles.id = spree_role_users.role_id WHERE spree_roles.name = \"$1\" LIMIT 1",
+        "cost": 20.32,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_stock_items.* FROM spree_stock_items WHERE spree_stock_items.deleted_at IS NULL",
-            "cost": 233154.0,
+            "sql": "SELECT 1 AS one FROM spree_users INNER JOIN spree_role_users ON spree_role_users.user_id = spree_users.id LIMIT 1",
+            "cost": 0.64,
             "rewrite_types": [
                 "RemoveJoin"
             ]

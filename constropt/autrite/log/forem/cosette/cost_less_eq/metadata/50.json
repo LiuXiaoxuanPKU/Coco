@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT reactions.* FROM reactions WHERE reactions.reactable_id = \"$1\" AND reactions.reactable_type = \"$2\" AND reactions.user_id = \"$3\" AND reactions.category IN (\"$4\", \"$5\")",
-        "cost": 8.31,
+        "sql": "SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = \"$1\"",
+        "cost": 196.94,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT reactions.* FROM reactions WHERE reactions.reactable_id = \"$1\" AND reactions.reactable_type = \"$2\" AND reactions.user_id = \"$3\" AND reactions.category IN (\"$4\", \"$5\") LIMIT 1",
-            "cost": 8.31,
+            "sql": "SELECT COUNT(*) FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = \"$1\"",
+            "cost": 192.62,
             "rewrite_types": [
-                "AddLimitOne"
+                "RemoveJoin"
             ]
         }
     ]

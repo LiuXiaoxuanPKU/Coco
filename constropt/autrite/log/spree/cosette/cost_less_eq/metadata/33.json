@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM spree_stock_items INNER JOIN spree_stock_locations ON spree_stock_locations.id = spree_stock_items.stock_location_id WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_locations.active = \"$1\" AND spree_stock_items.id = \"$2\" LIMIT 1",
-        "cost": 16.76,
+        "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_product_promotion_rules ON spree_products.id = spree_product_promotion_rules.product_id WHERE spree_products.deleted_at IS NULL AND spree_product_promotion_rules.promotion_rule_id = \"$1\"",
+        "cost": 24.93,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM spree_stock_items WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.id = \"$2\" LIMIT 1",
-            "cost": 8.45,
+            "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_product_promotion_rules ON spree_products.id = spree_product_promotion_rules.product_id WHERE spree_products.deleted_at IS NULL AND spree_product_promotion_rules.promotion_rule_id = \"$1\" LIMIT 1",
+            "cost": 12.75,
             "rewrite_types": [
-                "RemoveJoin"
+                "AddLimitOne"
             ]
         }
     ]

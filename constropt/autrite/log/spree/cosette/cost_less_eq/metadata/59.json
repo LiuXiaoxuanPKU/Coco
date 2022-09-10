@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT spree_shipping_categories.* FROM spree_shipping_categories INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.shipping_category_id = spree_shipping_categories.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_variants.id = \"$1\"",
-        "cost": 16.97,
+        "sql": "SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'fake' AND spree_properties.name = \"$1\"",
+        "cost": 28.32,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_shipping_categories.* FROM spree_shipping_categories INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.shipping_category_id = spree_shipping_categories.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_variants.id = \"$1\"",
-            "cost": 16.95,
+            "sql": "SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'fake' AND spree_properties.name = \"$1\" LIMIT 1",
+            "cost": 28.32,
             "rewrite_types": [
-                "RemoveDistinct"
+                "AddLimitOne"
             ]
         }
     ]

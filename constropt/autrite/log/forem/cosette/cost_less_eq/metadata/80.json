@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM notifications WHERE notifications.user_id = \"$1\" AND notifications.organization_id IS NULL AND notifications.notifiable_id = \"$2\" AND notifications.notifiable_type = \"$3\" AND notifications.action IS NULL LIMIT 1",
-        "cost": 4.31,
+        "sql": "SELECT users.* FROM users INNER JOIN follows ON follows.followable_type = \"$1\" AND follows.followable_id = users.id WHERE follows.blocked = \"$2\" AND follows.follower_id = \"$3\" AND follows.follower_type = \"$4\" AND follows.followable_type = \"$5\"",
+        "cost": 20.18,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM notifications WHERE notifications.user_id = \"$1\" AND False AND notifications.notifiable_id = \"$2\" AND notifications.notifiable_type = \"$3\" AND notifications.action IS NULL LIMIT 1",
-            "cost": 0.0,
+            "sql": "SELECT users.* FROM users INNER JOIN follows ON follows.followable_type = \"$1\" AND follows.followable_id = users.id WHERE follows.blocked = \"$2\" AND follows.follower_id = \"$3\" AND follows.follower_type = \"$4\" AND follows.followable_type = \"$5\" LIMIT 1",
+            "cost": 20.18,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "AddLimitOne"
             ]
         }
     ]

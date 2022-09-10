@@ -1,31 +1,23 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:50.110823') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
-        "cost": 14.55,
+        "sql": "SELECT DISTINCT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id LEFT OUTER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = \"$1\" AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT \"$2\"",
+        "cost": 28.45,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:50.110823') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
-            "cost": 14.49,
+            "sql": "SELECT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id LEFT OUTER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = \"$1\" AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT \"$2\"",
+            "cost": 28.44,
             "rewrite_types": [
                 "RemoveDistinct"
             ]
         },
         {
-            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:50.110823') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND True AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
-            "cost": 14.49,
+            "sql": "SELECT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id INNER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = \"$1\" AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT \"$2\"",
+            "cost": 28.44,
             "rewrite_types": [
-                "RewriteNullPredicate",
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:50.110823') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
-            "cost": 14.49,
-            "rewrite_types": [
-                "RemovePredicate",
-                "RemoveDistinct"
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
             ]
         }
     ]

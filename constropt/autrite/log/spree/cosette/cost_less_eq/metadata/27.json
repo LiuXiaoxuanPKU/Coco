@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT active_storage_attachments.* FROM active_storage_attachments WHERE active_storage_attachments.record_type = \"$1\" AND active_storage_attachments.name = \"$2\" AND active_storage_attachments.record_id = \"$3\"",
-        "cost": 8.31,
+        "sql": "SELECT COUNT(*) FROM spree_option_values INNER JOIN spree_option_value_variants ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_option_value_variants.variant_id = \"$1\"",
+        "cost": 123.58,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT active_storage_attachments.* FROM active_storage_attachments WHERE active_storage_attachments.record_type = \"$1\" AND active_storage_attachments.name = \"$2\" AND active_storage_attachments.record_id = \"$3\" LIMIT 1",
-            "cost": 8.31,
+            "sql": "SELECT COUNT(*) FROM spree_option_values INNER JOIN spree_option_value_variants ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_option_value_variants.variant_id = \"$1\" LIMIT 1",
+            "cost": 123.58,
             "rewrite_types": [
                 "AddLimitOne"
             ]

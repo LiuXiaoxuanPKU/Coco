@@ -10,7 +10,7 @@ CREATE TABLE action_mailbox_inbound_emails (
 CREATE TABLE action_text_rich_texts (
     id bigint NOT NULL,
     name character varying NOT NULL,
-    body character varying(255),
+    body character varying,
     record_type character varying NOT NULL,
     record_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -28,10 +28,10 @@ CREATE TABLE active_storage_attachments (
 
 CREATE TABLE active_storage_blobs (
     id bigint NOT NULL,
-    key character varying NOT NULL,
+    "key" character varying NOT NULL,
     filename character varying NOT NULL,
     content_type character varying,
-    metadata character varying(255),
+    metadata character varying,
     service_name character varying NOT NULL,
     byte_size bigint NOT NULL,
     checksum character varying NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE active_storage_variant_records (
 );
 
 CREATE TABLE ar_internal_metadata (
-    key character varying NOT NULL,
+    "key" character varying NOT NULL,
     "value" character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -117,7 +117,7 @@ CREATE TABLE spree_assets (
     attachment_file_name character varying,
     type character varying(75),
     attachment_updated_at timestamp without time zone,
-    alt character varying(255),
+    alt character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     public_metadata character varying,
@@ -131,7 +131,7 @@ CREATE TABLE spree_calculators (
     calculable_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    preferences character varying(255),
+    preferences character varying,
     deleted_at timestamp without time zone
 );
 
@@ -157,8 +157,8 @@ CREATE TABLE spree_cms_pages (
     id bigint NOT NULL,
     title character varying NOT NULL,
     meta_title character varying,
-    content character varying(255),
-    meta_description character varying(255),
+    content character varying,
+    meta_description character varying,
     visible boolean  ,
     slug character varying,
     type character varying,
@@ -172,8 +172,8 @@ CREATE TABLE spree_cms_pages (
 CREATE TABLE spree_cms_sections (
     id bigint NOT NULL,
     name character varying NOT NULL,
-    content character varying(255),
-    settings character varying(255),
+    content character varying,
+    settings character varying,
     fit character varying,
     destination character varying,
     type character varying,
@@ -250,14 +250,14 @@ CREATE TABLE spree_gateways (
     id bigint NOT NULL,
     type character varying,
     name character varying,
-    description character varying(255),
+    description character varying,
     active boolean  ,
     environment character varying   ,
     server character varying   ,
     test_mode boolean  ,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    preferences character varying(255)
+    preferences character varying
 );
 
 CREATE TABLE spree_inventory_units (
@@ -300,7 +300,7 @@ CREATE TABLE spree_log_entries (
     id bigint NOT NULL,
     source_type character varying,
     source_id bigint,
-    details character varying(255),
+    details character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -340,7 +340,7 @@ CREATE TABLE spree_oauth_access_grants (
     application_id bigint NOT NULL,
     token character varying NOT NULL,
     expires_in integer NOT NULL,
-    redirect_uri character varying(255) NOT NULL,
+    redirect_uri character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     revoked_at timestamp without time zone,
     scopes character varying,
@@ -366,7 +366,7 @@ CREATE TABLE spree_oauth_applications (
     name character varying NOT NULL,
     uid character varying NOT NULL,
     secret character varying NOT NULL,
-    redirect_uri character varying(255) NOT NULL,
+    redirect_uri character varying NOT NULL,
     scopes character varying    NOT NULL,
     confidential boolean   NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -436,7 +436,7 @@ CREATE TABLE spree_orders (
     shipment_state character varying,
     payment_state character varying,
     email character varying,
-    special_instructions character varying(255),
+    special_instructions character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     currency character varying,
@@ -476,14 +476,14 @@ CREATE TABLE spree_payment_methods (
     id bigint NOT NULL,
     type character varying,
     name character varying,
-    description character varying(255),
+    description character varying,
     active boolean  ,
     deleted_at timestamp without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     display_on character varying   ,
     auto_capture boolean,
-    preferences character varying(255),
+    preferences character varying,
     "position" integer  ,
     public_metadata character varying,
     private_metadata character varying
@@ -516,8 +516,8 @@ CREATE TABLE spree_payments (
 
 CREATE TABLE spree_preferences (
     id bigint NOT NULL,
-    "value" character varying(255),
-    key character varying,
+    "value" character varying,
+    "key" character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -565,11 +565,11 @@ CREATE TABLE spree_product_properties (
 CREATE TABLE spree_products (
     id bigint NOT NULL,
     name character varying    NOT NULL,
-    description character varying(255),
+    description character varying,
     available_on timestamp without time zone,
     deleted_at timestamp without time zone,
     slug character varying,
-    meta_description character varying(255),
+    meta_description character varying,
     meta_keywords character varying,
     tax_category_id bigint,
     shipping_category_id bigint,
@@ -651,7 +651,7 @@ CREATE TABLE spree_promotion_rules (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     code character varying,
-    preferences character varying(255)
+    preferences character varying
 );
 
 CREATE TABLE spree_promotions (
@@ -665,7 +665,7 @@ CREATE TABLE spree_promotions (
     match_policy character varying   ,
     code character varying,
     advertise boolean  ,
-    path character varying,
+    "path" character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     promotion_category_id bigint,
@@ -785,7 +785,7 @@ CREATE TABLE spree_return_authorizations (
     number character varying,
     state character varying,
     order_id bigint,
-    memo character varying(255),
+    memo character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     stock_location_id bigint,
@@ -806,7 +806,7 @@ CREATE TABLE spree_return_items (
     acceptance_status character varying,
     customer_return_id bigint,
     reimbursement_id bigint,
-    acceptance_status_errors character varying(255),
+    acceptance_status_errors character varying,
     preferred_reimbursement_type_id bigint,
     override_reimbursement_type_id bigint,
     resellable boolean   NOT NULL
@@ -1011,7 +1011,7 @@ CREATE TABLE spree_store_credits (
     created_by_id bigint,
     amount numeric(8,2)   NOT NULL,
     amount_used numeric(8,2)   NOT NULL,
-    memo character varying(255),
+    memo character varying,
     deleted_at timestamp without time zone,
     currency character varying,
     amount_authorized numeric(8,2)   NOT NULL,
@@ -1029,8 +1029,8 @@ CREATE TABLE spree_stores (
     id bigint NOT NULL,
     name character varying,
     url character varying,
-    meta_description character varying(255),
-    meta_keywords character varying(255),
+    meta_description character varying,
+    meta_keywords character varying,
     seo_title character varying,
     mail_from_address character varying,
     default_currency character varying,
@@ -1045,8 +1045,8 @@ CREATE TABLE spree_stores (
     default_locale character varying,
     customer_support_email character varying,
     default_country_id bigint,
-    description character varying(255),
-    address character varying(255),
+    description character varying,
+    address character varying,
     contact_phone character varying,
     new_order_notifications_email character varying,
     checkout_zone_id bigint,
@@ -1100,7 +1100,7 @@ CREATE TABLE spree_taxons (
     taxonomy_id bigint,
     lft bigint,
     rgt bigint,
-    description character varying(255),
+    description character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     meta_title character varying,
@@ -1243,8 +1243,8 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones LEFT OUTER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 834 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 699 ORDER BY spree_zones.zone_members_count, spree_zones.created_at;
+SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones LEFT OUTER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 836 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 703 ORDER BY spree_zones.zone_members_count, spree_zones.created_at;
 -- Rewritten Queries
-SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones LEFT OUTER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 834 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 699 ORDER BY spree_zones.zone_members_count, spree_zones.created_at LIMIT 1;
-SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 834 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 699 ORDER BY spree_zones.zone_members_count, spree_zones.created_at;
-SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 834 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 699 ORDER BY spree_zones.zone_members_count, spree_zones.created_at LIMIT 1;
+SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones LEFT OUTER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 836 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 703 ORDER BY spree_zones.zone_members_count, spree_zones.created_at LIMIT 1;
+SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 836 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 703 ORDER BY spree_zones.zone_members_count, spree_zones.created_at;
+SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 836 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 703 ORDER BY spree_zones.zone_members_count, spree_zones.created_at LIMIT 1;

@@ -51,7 +51,7 @@ CREATE TABLE api_secrets (
 );
 
 CREATE TABLE ar_internal_metadata (
-    key character varying NOT NULL,
+    "key" character varying NOT NULL,
     "value" character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -64,7 +64,7 @@ CREATE TABLE articles (
     archived boolean  ,
     body_html character varying,
     body_markdown character varying,
-    boost_states character varying    ,
+    boost_states character varying   NOT NULL,
     cached_organization character varying,
     cached_tag_list character varying,
     cached_user character varying,
@@ -75,7 +75,7 @@ CREATE TABLE articles (
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
-    comments_count integer    ,
+    comments_count integer   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     crossposted_at timestamp without time zone,
     description character varying,
@@ -100,16 +100,16 @@ CREATE TABLE articles (
     page_views_count integer  ,
     password character varying,
     "path" character varying,
-    positive_reactions_count integer    ,
+    positive_reactions_count integer   NOT NULL,
     previous_positive_reactions_count integer  ,
-    previous_public_reactions_count integer    ,
+    previous_public_reactions_count integer   NOT NULL,
     processed_html character varying,
-    public_reactions_count integer    ,
+    public_reactions_count integer   NOT NULL,
     published boolean  ,
     published_at timestamp without time zone,
     published_from_feed boolean  ,
-    rating_votes_count integer    ,
-    reactions_count integer    ,
+    rating_votes_count integer   NOT NULL,
+    reactions_count integer   NOT NULL,
     reading_list_document tsvector,
     reading_time integer  ,
     receive_notifications boolean  ,
@@ -123,7 +123,7 @@ CREATE TABLE articles (
     title character varying,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint,
-    user_subscriptions_count integer    ,
+    user_subscriptions_count integer   NOT NULL,
     video character varying,
     video_closed_caption_track_url character varying,
     video_code character varying,
@@ -134,13 +134,13 @@ CREATE TABLE articles (
 );
 
 CREATE TABLE articles_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     any_comments_hidden boolean  ,
     approved boolean  ,
     archived boolean  ,
     body_html character varying,
     body_markdown character varying,
-    boost_states character varying    ,
+    boost_states character varying   NOT NULL,
     cached_organization character varying,
     cached_tag_list character varying,
     cached_user character varying,
@@ -151,7 +151,7 @@ CREATE TABLE articles_storage (
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
-    comments_count integer    ,
+    comments_count integer   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     crossposted_at timestamp without time zone,
     description character varying,
@@ -176,16 +176,16 @@ CREATE TABLE articles_storage (
     page_views_count integer  ,
     password character varying,
     "path" character varying,
-    positive_reactions_count integer    ,
+    positive_reactions_count integer   NOT NULL,
     previous_positive_reactions_count integer  ,
-    previous_public_reactions_count integer    ,
+    previous_public_reactions_count integer   NOT NULL,
     processed_html character varying,
-    public_reactions_count integer    ,
+    public_reactions_count integer   NOT NULL,
     published boolean  ,
     published_at timestamp without time zone,
     published_from_feed boolean  ,
-    rating_votes_count integer    ,
-    reactions_count integer    ,
+    rating_votes_count integer   NOT NULL,
+    reactions_count integer   NOT NULL,
     reading_list_document tsvector,
     reading_time integer  ,
     receive_notifications boolean  ,
@@ -199,7 +199,7 @@ CREATE TABLE articles_storage (
     title character varying,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint,
-    user_subscriptions_count integer    ,
+    user_subscriptions_count integer   NOT NULL,
     video character varying,
     video_closed_caption_track_url character varying,
     video_code character varying,
@@ -213,7 +213,7 @@ CREATE TABLE audit_logs (
     id bigint NOT NULL,
     category character varying,
     created_at timestamp without time zone NOT NULL,
-    data character varying    ,
+    data character varying   NOT NULL,
     roles character varying,
     slug character varying,
     updated_at timestamp without time zone NOT NULL,
@@ -235,7 +235,7 @@ CREATE TABLE badges (
     id bigint NOT NULL,
     badge_image character varying,
     created_at timestamp without time zone NOT NULL,
-    credits_awarded integer    ,
+    credits_awarded integer   NOT NULL,
     description character varying NOT NULL,
     slug character varying NOT NULL,
     title character varying NOT NULL,
@@ -318,7 +318,7 @@ CREATE TABLE broadcasts (
 );
 
 CREATE TABLE broadcasts_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     active boolean  ,
     active_status_updated_at timestamp without time zone,
     banner_style character varying,
@@ -333,7 +333,7 @@ CREATE TABLE broadcasts_new (
 );
 
 CREATE TABLE broadcasts_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     active boolean  ,
     active_status_updated_at timestamp without time zone,
     banner_style character varying,
@@ -353,7 +353,7 @@ CREATE TABLE chat_channel_memberships (
     created_at timestamp without time zone NOT NULL,
     has_unopened_messages boolean  ,
     last_opened_at timestamp without time zone      ,
-    role character varying   ,
+    "role" character varying   ,
     show_global_badge_notification boolean  ,
     status character varying   ,
     updated_at timestamp without time zone NOT NULL,
@@ -361,12 +361,12 @@ CREATE TABLE chat_channel_memberships (
 );
 
 CREATE TABLE chat_channel_memberships_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     chat_channel_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
     has_unopened_messages boolean  ,
     last_opened_at timestamp without time zone      ,
-    role character varying   ,
+    "role" character varying   ,
     show_global_badge_notification boolean  ,
     status_int character varying,
     updated_at timestamp without time zone NOT NULL,
@@ -374,12 +374,12 @@ CREATE TABLE chat_channel_memberships_new (
 );
 
 CREATE TABLE chat_channel_memberships_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     chat_channel_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
     has_unopened_messages boolean  ,
     last_opened_at timestamp without time zone      ,
-    role character varying,
+    "role" character varying,
     show_global_badge_notification boolean  ,
     status character varying,
     updated_at timestamp without time zone NOT NULL,
@@ -400,7 +400,7 @@ CREATE TABLE chat_channels (
 );
 
 CREATE TABLE chat_channels_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     channel_name character varying,
     channel_type character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -472,10 +472,10 @@ CREATE TABLE comments (
     hidden_by_commentable_user boolean  ,
     id_code character varying,
     markdown_character_count integer,
-    positive_reactions_count integer    ,
+    positive_reactions_count integer   NOT NULL,
     processed_html character varying,
-    public_reactions_count integer    ,
-    reactions_count integer    ,
+    public_reactions_count integer   NOT NULL,
+    reactions_count integer   NOT NULL,
     receive_notifications boolean  ,
     score integer  ,
     spaminess_rating integer  ,
@@ -484,7 +484,7 @@ CREATE TABLE comments (
 );
 
 CREATE TABLE comments_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     ancestry character varying,
     body_html character varying,
     body_markdown character varying,
@@ -497,10 +497,10 @@ CREATE TABLE comments_new (
     hidden_by_commentable_user boolean  ,
     id_code character varying,
     markdown_character_count integer,
-    positive_reactions_count integer    ,
+    positive_reactions_count integer   NOT NULL,
     processed_html character varying,
-    public_reactions_count integer    ,
-    reactions_count integer    ,
+    public_reactions_count integer   NOT NULL,
+    reactions_count integer   NOT NULL,
     receive_notifications boolean  ,
     score integer  ,
     spaminess_rating integer  ,
@@ -509,7 +509,7 @@ CREATE TABLE comments_new (
 );
 
 CREATE TABLE comments_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     ancestry character varying,
     body_html character varying,
     body_markdown character varying,
@@ -522,10 +522,10 @@ CREATE TABLE comments_storage (
     hidden_by_commentable_user boolean  ,
     id_code character varying,
     markdown_character_count integer,
-    positive_reactions_count integer    ,
+    positive_reactions_count integer   NOT NULL,
     processed_html character varying,
-    public_reactions_count integer    ,
-    reactions_count integer    ,
+    public_reactions_count integer   NOT NULL,
+    reactions_count integer   NOT NULL,
     receive_notifications boolean  ,
     score integer  ,
     spaminess_rating integer  ,
@@ -535,7 +535,7 @@ CREATE TABLE comments_storage (
 
 CREATE TABLE consumer_apps (
     id bigint NOT NULL,
-    active boolean    ,
+    active boolean   NOT NULL,
     app_bundle character varying NOT NULL,
     auth_key character varying,
     created_at timestamp(6) without time zone NOT NULL,
@@ -546,8 +546,8 @@ CREATE TABLE consumer_apps (
 );
 
 CREATE TABLE consumer_apps_storage (
-    id bigint    ,
-    active boolean    ,
+    id bigint   NOT NULL,
+    active boolean   NOT NULL,
     app_bundle character varying NOT NULL,
     auth_key character varying,
     created_at timestamp(6) without time zone NOT NULL,
@@ -571,7 +571,7 @@ CREATE TABLE credits (
 );
 
 CREATE TABLE credits_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     cost double precision  ,
     created_at timestamp without time zone NOT NULL,
     organization_id bigint,
@@ -590,7 +590,7 @@ CREATE TABLE data_update_scripts (
     file_name character varying,
     finished_at timestamp without time zone,
     run_at timestamp without time zone,
-    status integer    ,
+    status integer   NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
@@ -606,7 +606,7 @@ CREATE TABLE devices (
 );
 
 CREATE TABLE devices_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     app_bundle character varying,
     consumer_app_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
@@ -637,7 +637,7 @@ CREATE TABLE display_ad_events (
 );
 
 CREATE TABLE display_ad_events_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     category character varying,
     context_type character varying,
     created_at timestamp without time zone NOT NULL,
@@ -662,7 +662,7 @@ CREATE TABLE display_ads (
 );
 
 CREATE TABLE display_ads_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     approved boolean  ,
     body_markdown character varying,
     clicks_count integer  ,
@@ -677,7 +677,7 @@ CREATE TABLE display_ads_new (
 );
 
 CREATE TABLE display_ads_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     approved boolean  ,
     body_markdown character varying,
     clicks_count integer  ,
@@ -695,7 +695,7 @@ CREATE TABLE email_authorizations (
     id bigint NOT NULL,
     confirmation_token character varying,
     created_at timestamp without time zone NOT NULL,
-    json_data character varying    ,
+    json_data character varying   NOT NULL,
     type_of character varying NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint,
@@ -703,10 +703,10 @@ CREATE TABLE email_authorizations (
 );
 
 CREATE TABLE email_authorizations_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     confirmation_token character varying,
     created_at timestamp without time zone NOT NULL,
-    json_data character varying    ,
+    json_data character varying   NOT NULL,
     type_of character varying NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint,
@@ -748,7 +748,7 @@ CREATE TABLE feedback_messages (
 );
 
 CREATE TABLE feedback_messages_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     affected_id bigint,
     category character varying,
     created_at timestamp without time zone,
@@ -781,7 +781,7 @@ CREATE TABLE field_test_memberships (
 CREATE TABLE flipper_features (
     id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    key character varying NOT NULL,
+    "key" character varying NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
@@ -789,14 +789,14 @@ CREATE TABLE flipper_gates (
     id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
     feature_key character varying NOT NULL,
-    key character varying NOT NULL,
+    "key" character varying NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     "value" character varying
 );
 
 CREATE TABLE follows (
     id bigint NOT NULL,
-    blocked boolean    ,
+    blocked boolean   NOT NULL,
     created_at timestamp without time zone,
     explicit_points double precision  ,
     followable_id bigint NOT NULL,
@@ -805,13 +805,13 @@ CREATE TABLE follows (
     follower_type character varying NOT NULL,
     implicit_points double precision  ,
     points double precision  ,
-    subscription_status character varying     ,
+    subscription_status character varying    NOT NULL,
     updated_at timestamp without time zone
 );
 
 CREATE TABLE follows_new (
-    id bigint    ,
-    blocked boolean    ,
+    id bigint   NOT NULL,
+    blocked boolean   NOT NULL,
     created_at timestamp without time zone,
     explicit_points double precision  ,
     followable_id bigint NOT NULL,
@@ -825,7 +825,7 @@ CREATE TABLE follows_new (
 );
 
 CREATE TABLE follows_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     blocked boolean NOT NULL,
     created_at timestamp without time zone,
     explicit_points double precision  ,
@@ -835,7 +835,7 @@ CREATE TABLE follows_storage (
     follower_type character varying NOT NULL,
     implicit_points double precision  ,
     points double precision  ,
-    subscription_status character varying     ,
+    subscription_status character varying    NOT NULL,
     updated_at timestamp without time zone
 );
 
@@ -843,17 +843,17 @@ CREATE TABLE github_issues (
     id bigint NOT NULL,
     category character varying,
     created_at timestamp without time zone NOT NULL,
-    issue_serialized character varying   
+    issue_serialized character varying   ,
     processed_html character varying,
     updated_at timestamp without time zone NOT NULL,
     url character varying
 );
 
 CREATE TABLE github_issues_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     category character varying,
     created_at timestamp without time zone NOT NULL,
-    issue_serialized character varying   
+    issue_serialized character varying   ,
     processed_html character varying,
     updated_at timestamp without time zone NOT NULL,
     url character varying
@@ -868,7 +868,7 @@ CREATE TABLE github_repos (
     featured boolean  ,
     fork boolean  ,
     github_id_code bigint,
-    info_hash character varying   
+    info_hash character varying   ,
     "language" character varying,
     name character varying,
     priority integer  ,
@@ -910,7 +910,7 @@ CREATE TABLE html_variants (
 );
 
 CREATE TABLE html_variants_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     approved boolean  ,
     created_at timestamp without time zone NOT NULL,
     group_int character varying,
@@ -924,7 +924,7 @@ CREATE TABLE html_variants_new (
 );
 
 CREATE TABLE html_variants_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     approved boolean  ,
     created_at timestamp without time zone NOT NULL,
     "group" character varying,
@@ -950,7 +950,7 @@ CREATE TABLE identities (
 );
 
 CREATE TABLE identities_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     auth_data_dump character varying,
     created_at timestamp without time zone NOT NULL,
     provider_int character varying,
@@ -962,7 +962,7 @@ CREATE TABLE identities_new (
 );
 
 CREATE TABLE identities_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     auth_data_dump character varying,
     created_at timestamp without time zone NOT NULL,
     provider character varying,
@@ -983,7 +983,7 @@ CREATE TABLE mentions (
 );
 
 CREATE TABLE mentions_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     mentionable_id bigint,
     mentionable_type_int character varying,
@@ -992,7 +992,7 @@ CREATE TABLE mentions_new (
 );
 
 CREATE TABLE mentions_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     mentionable_id bigint,
     mentionable_type character varying,
@@ -1019,19 +1019,19 @@ CREATE TABLE navigation_links (
     icon character varying NOT NULL,
     name character varying NOT NULL,
     "position" integer,
-    section integer    ,
+    section integer   NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     url character varying NOT NULL
 );
 
 CREATE TABLE navigation_links_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     display_only_when_signed_in boolean,
     icon character varying NOT NULL,
     name character varying NOT NULL,
     "position" integer,
-    section integer    ,
+    section integer   NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     url character varying NOT NULL
 );
@@ -1048,7 +1048,7 @@ CREATE TABLE notes (
 );
 
 CREATE TABLE notes_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     author_id bigint,
     content character varying,
     created_at timestamp without time zone NOT NULL,
@@ -1059,7 +1059,7 @@ CREATE TABLE notes_new (
 );
 
 CREATE TABLE notes_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     author_id bigint,
     content character varying,
     created_at timestamp without time zone NOT NULL,
@@ -1071,7 +1071,7 @@ CREATE TABLE notes_storage (
 
 CREATE TABLE notification_subscriptions (
     id bigint NOT NULL,
-    config character varying    ,
+    config character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     notifiable_id bigint NOT NULL,
     notifiable_type character varying NOT NULL,
@@ -1080,8 +1080,8 @@ CREATE TABLE notification_subscriptions (
 );
 
 CREATE TABLE notification_subscriptions_new (
-    id bigint    ,
-    config character varying    ,
+    id bigint   NOT NULL,
+    config character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     notifiable_id bigint NOT NULL,
     notifiable_type_int character varying NOT NULL,
@@ -1090,7 +1090,7 @@ CREATE TABLE notification_subscriptions_new (
 );
 
 CREATE TABLE notification_subscriptions_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     config character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     notifiable_id bigint NOT NULL,
@@ -1130,7 +1130,7 @@ CREATE TABLE oauth_access_tokens (
     application_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
     expires_in integer,
-    previous_refresh_token character varying     ,
+    previous_refresh_token character varying    NOT NULL,
     refresh_token character varying,
     resource_owner_id bigint,
     revoked_at timestamp without time zone,
@@ -1140,11 +1140,11 @@ CREATE TABLE oauth_access_tokens (
 
 CREATE TABLE oauth_applications (
     id bigint NOT NULL,
-    confidential boolean    ,
+    confidential boolean   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     name character varying NOT NULL,
     redirect_uri character varying NOT NULL,
-    scopes character varying     ,
+    scopes character varying    NOT NULL,
     secret character varying NOT NULL,
     uid character varying NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -1161,7 +1161,7 @@ CREATE TABLE organization_memberships (
 );
 
 CREATE TABLE organization_memberships_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     organization_id bigint NOT NULL,
     type_of_user_int character varying NOT NULL,
@@ -1171,7 +1171,7 @@ CREATE TABLE organization_memberships_new (
 );
 
 CREATE TABLE organization_memberships_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     organization_id bigint NOT NULL,
     type_of_user character varying NOT NULL,
@@ -1182,11 +1182,11 @@ CREATE TABLE organization_memberships_storage (
 
 CREATE TABLE organizations (
     id bigint NOT NULL,
-    articles_count integer    ,
+    articles_count integer   NOT NULL,
     bg_color_hex character varying,
     company_size character varying,
     created_at timestamp without time zone NOT NULL,
-    credits_count integer    ,
+    credits_count integer   NOT NULL,
     cta_body_markdown character varying,
     cta_button_text character varying,
     cta_button_url character varying,
@@ -1206,14 +1206,14 @@ CREATE TABLE organizations (
     proof character varying,
     secret character varying,
     slug character varying,
-    spent_credits_count integer    ,
+    spent_credits_count integer   NOT NULL,
     story character varying,
     summary character varying,
     tag_line character varying,
     tech_stack character varying,
     text_color_hex character varying,
     twitter_username character varying,
-    unspent_credits_count integer    ,
+    unspent_credits_count integer   NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     url character varying
 );
@@ -1240,7 +1240,7 @@ CREATE TABLE pages (
     created_at timestamp without time zone NOT NULL,
     description character varying,
     is_top_level_path boolean  ,
-    landing_page boolean    ,
+    landing_page boolean   NOT NULL,
     processed_html character varying,
     slug character varying,
     social_image character varying,
@@ -1250,14 +1250,14 @@ CREATE TABLE pages (
 );
 
 CREATE TABLE pages_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     body_html character varying,
     body_json character varying,
     body_markdown character varying,
     created_at timestamp without time zone NOT NULL,
     description character varying,
     is_top_level_path boolean  ,
-    landing_page boolean    ,
+    landing_page boolean   NOT NULL,
     processed_html character varying,
     slug character varying,
     social_image character varying,
@@ -1268,22 +1268,22 @@ CREATE TABLE pages_storage (
 
 CREATE TABLE podcast_episode_appearances (
     id bigint NOT NULL,
-    approved boolean    ,
+    approved boolean   NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    featured_on_user_profile boolean    ,
+    featured_on_user_profile boolean   NOT NULL,
     podcast_episode_id bigint NOT NULL,
-    role character varying     ,
+    "role" character varying    NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     user_id bigint NOT NULL
 );
 
 CREATE TABLE podcast_episode_appearances_storage (
-    id bigint    ,
-    approved boolean    ,
+    id bigint   NOT NULL,
+    approved boolean   NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    featured_on_user_profile boolean    ,
+    featured_on_user_profile boolean   NOT NULL,
     podcast_episode_id bigint NOT NULL,
-    role character varying NOT NULL,
+    "role" character varying NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     user_id bigint NOT NULL
 );
@@ -1292,7 +1292,7 @@ CREATE TABLE podcast_episodes (
     id bigint NOT NULL,
     any_comments_hidden boolean  ,
     body character varying,
-    comments_count integer    ,
+    comments_count integer   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     duration_in_seconds integer,
     guid character varying NOT NULL,
@@ -1305,7 +1305,7 @@ CREATE TABLE podcast_episodes (
     published_at timestamp without time zone,
     quote character varying,
     reachable boolean  ,
-    reactions_count integer    ,
+    reactions_count integer   NOT NULL,
     slug character varying NOT NULL,
     social_image character varying,
     status_notice character varying,
@@ -1353,7 +1353,7 @@ CREATE TABLE poll_options (
     created_at timestamp without time zone NOT NULL,
     markdown character varying,
     poll_id bigint,
-    poll_votes_count integer    ,
+    poll_votes_count integer   NOT NULL,
     processed_html character varying,
     updated_at timestamp without time zone NOT NULL
 );
@@ -1379,9 +1379,9 @@ CREATE TABLE polls (
     id bigint NOT NULL,
     article_id bigint,
     created_at timestamp without time zone NOT NULL,
-    poll_options_count integer    ,
-    poll_skips_count integer    ,
-    poll_votes_count integer    ,
+    poll_options_count integer   NOT NULL,
+    poll_skips_count integer   NOT NULL,
+    poll_votes_count integer   NOT NULL,
     prompt_html character varying,
     prompt_markdown character varying,
     updated_at timestamp without time zone NOT NULL
@@ -1400,22 +1400,22 @@ CREATE TABLE profile_fields (
     attribute_name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     description character varying,
-    display_area integer    ,
-    input_type integer    ,
+    display_area integer   NOT NULL,
+    input_type integer   NOT NULL,
     label character varying NOT NULL,
     placeholder_text character varying,
     profile_field_group_id bigint,
-    show_in_onboarding boolean    ,
+    show_in_onboarding boolean   NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
 
 CREATE TABLE profile_fields_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     attribute_name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     description character varying,
-    display_area integer    ,
-    input_type integer    ,
+    display_area integer   NOT NULL,
+    input_type integer   NOT NULL,
     label character varying NOT NULL,
     placeholder_text character varying,
     profile_field_group_id bigint,
@@ -1434,7 +1434,7 @@ CREATE TABLE profile_pins (
 );
 
 CREATE TABLE profile_pins_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     pinnable_id bigint,
     pinnable_type_int character varying,
@@ -1444,7 +1444,7 @@ CREATE TABLE profile_pins_new (
 );
 
 CREATE TABLE profile_pins_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     pinnable_id bigint,
     pinnable_type character varying,
@@ -1456,7 +1456,7 @@ CREATE TABLE profile_pins_storage (
 CREATE TABLE profiles (
     id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    data character varying    ,
+    data character varying   NOT NULL,
     location character varying,
     summary character varying,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -1476,7 +1476,7 @@ CREATE TABLE rating_votes (
 );
 
 CREATE TABLE rating_votes_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     article_id bigint,
     context_int character varying,
     created_at timestamp without time zone NOT NULL,
@@ -1487,7 +1487,7 @@ CREATE TABLE rating_votes_new (
 );
 
 CREATE TABLE rating_votes_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     article_id bigint,
     context character varying,
     created_at timestamp without time zone NOT NULL,
@@ -1510,7 +1510,7 @@ CREATE TABLE reactions (
 );
 
 CREATE TABLE reactions_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     category character varying,
     created_at timestamp without time zone NOT NULL,
     points double precision  ,
@@ -1522,7 +1522,7 @@ CREATE TABLE reactions_new (
 );
 
 CREATE TABLE reactions_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     category character varying,
     created_at timestamp without time zone NOT NULL,
     points double precision  ,
@@ -1545,7 +1545,7 @@ CREATE TABLE response_templates (
 );
 
 CREATE TABLE response_templates_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     content character varying NOT NULL,
     content_type_int character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -1556,7 +1556,7 @@ CREATE TABLE response_templates_new (
 );
 
 CREATE TABLE response_templates_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     content character varying NOT NULL,
     content_type character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -1576,7 +1576,7 @@ CREATE TABLE roles (
 );
 
 CREATE TABLE roles_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     created_at timestamp without time zone,
     name_int character varying,
     resource_id bigint,
@@ -1585,7 +1585,7 @@ CREATE TABLE roles_new (
 );
 
 CREATE TABLE roles_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     created_at timestamp without time zone,
     name character varying,
     resource_id bigint,
@@ -1658,14 +1658,14 @@ CREATE TABLE sponsorships (
     blurb_html character varying,
     created_at timestamp without time zone NOT NULL,
     expires_at timestamp without time zone,
-    featured_number integer    ,
+    featured_number integer   NOT NULL,
     instructions character varying,
     instructions_updated_at timestamp without time zone,
     level character varying NOT NULL,
     organization_id bigint,
     sponsorable_id bigint,
     sponsorable_type character varying,
-    status character varying     ,
+    status character varying    NOT NULL,
     tagline character varying,
     updated_at timestamp without time zone NOT NULL,
     url character varying,
@@ -1673,18 +1673,18 @@ CREATE TABLE sponsorships (
 );
 
 CREATE TABLE sponsorships_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     blurb_html character varying,
     created_at timestamp without time zone NOT NULL,
     expires_at timestamp without time zone,
-    featured_number integer    ,
+    featured_number integer   NOT NULL,
     instructions character varying,
     instructions_updated_at timestamp without time zone,
     level_int character varying NOT NULL,
     organization_id bigint,
     sponsorable_id bigint,
     sponsorable_type character varying,
-    status character varying     ,
+    status character varying    NOT NULL,
     tagline character varying,
     updated_at timestamp without time zone NOT NULL,
     url character varying,
@@ -1692,11 +1692,11 @@ CREATE TABLE sponsorships_new (
 );
 
 CREATE TABLE sponsorships_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     blurb_html character varying,
     created_at timestamp without time zone NOT NULL,
     expires_at timestamp without time zone,
-    featured_number integer    ,
+    featured_number integer   NOT NULL,
     instructions character varying,
     instructions_updated_at timestamp without time zone,
     level character varying NOT NULL,
@@ -1724,7 +1724,7 @@ CREATE TABLE tag_adjustments (
 );
 
 CREATE TABLE tag_adjustments_new (
-    id bigint    ,
+    id bigint   NOT NULL,
     adjustment_type character varying,
     article_id bigint,
     created_at timestamp without time zone NOT NULL,
@@ -1737,7 +1737,7 @@ CREATE TABLE tag_adjustments_new (
 );
 
 CREATE TABLE tag_adjustments_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     adjustment_type character varying,
     article_id bigint,
     created_at timestamp without time zone NOT NULL,
@@ -1765,7 +1765,7 @@ CREATE TABLE tags (
     alias_for character varying,
     badge_id bigint,
     bg_color_hex character varying,
-    category character varying     ,
+    category character varying    NOT NULL,
     created_at timestamp without time zone,
     hotness_score integer  ,
     keywords_for_search character varying,
@@ -1791,17 +1791,17 @@ CREATE TABLE tags (
 CREATE TABLE tweets (
     id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    extended_entities_serialized character varying   
+    extended_entities_serialized character varying   ,
     favorite_count integer,
-    full_fetched_object_serialized character varying   
-    hashtags_serialized character varying   
+    full_fetched_object_serialized character varying   ,
+    hashtags_serialized character varying   ,
     in_reply_to_status_id_code character varying,
     in_reply_to_user_id_code character varying,
     in_reply_to_username character varying,
     is_quote_status boolean,
     last_fetched_at timestamp without time zone,
-    media_serialized character varying   
-    mentioned_usernames_serialized character varying   
+    media_serialized character varying   ,
+    mentioned_usernames_serialized character varying   ,
     profile_image character varying,
     quoted_tweet_id_code character varying,
     retweet_count integer,
@@ -1815,7 +1815,7 @@ CREATE TABLE tweets (
     twitter_user_following_count integer,
     twitter_username character varying,
     updated_at timestamp without time zone NOT NULL,
-    urls_serialized character varying   
+    urls_serialized character varying   ,
     user_id bigint,
     user_is_verified boolean
 );
@@ -1824,13 +1824,13 @@ CREATE TABLE user_blocks (
     id bigint NOT NULL,
     blocked_id bigint NOT NULL,
     blocker_id bigint NOT NULL,
-    config character varying     ,
+    config character varying    NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 CREATE TABLE user_blocks_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     blocked_id bigint NOT NULL,
     blocker_id bigint NOT NULL,
     config character varying NOT NULL,
@@ -1850,7 +1850,7 @@ CREATE TABLE user_subscriptions (
 );
 
 CREATE TABLE user_subscriptions_storage (
-    id bigint    ,
+    id bigint   NOT NULL,
     author_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     subscriber_email character varying NOT NULL,
@@ -1863,21 +1863,21 @@ CREATE TABLE user_subscriptions_storage (
 CREATE TABLE users (
     id bigint NOT NULL,
     apple_username character varying,
-    articles_count integer    ,
+    articles_count integer   NOT NULL,
     available_for character varying,
-    badge_achievements_count integer    ,
+    badge_achievements_count integer   NOT NULL,
     behance_url character varying,
     bg_color_hex character varying,
-    blocked_by_count bigint    ,
-    blocking_others_count bigint    ,
+    blocked_by_count bigint   NOT NULL,
+    blocking_others_count bigint   NOT NULL,
     checked_code_of_conduct boolean  ,
     checked_terms_and_conditions boolean  ,
-    comments_count integer    ,
+    comments_count integer   NOT NULL,
     confirmation_sent_at timestamp without time zone,
     confirmation_token character varying,
     confirmed_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
-    credits_count integer    ,
+    credits_count integer   NOT NULL,
     current_sign_in_at timestamp without time zone,
     current_sign_in_ip character varying,
     currently_hacking_on character varying,
@@ -1889,16 +1889,16 @@ CREATE TABLE users (
     employer_name character varying,
     employer_url character varying,
     employment_title character varying,
-    encrypted_password character varying     ,
+    encrypted_password character varying    NOT NULL,
     export_requested boolean  ,
     exported_at timestamp without time zone,
     facebook_url character varying,
     facebook_username character varying,
     failed_attempts integer  ,
     feed_fetched_at timestamp without time zone      ,
-    following_orgs_count integer    ,
-    following_tags_count integer    ,
-    following_users_count integer    ,
+    following_orgs_count integer   NOT NULL,
+    following_tags_count integer   NOT NULL,
+    following_users_count integer   NOT NULL,
     github_repos_updated_at timestamp without time zone      ,
     github_username character varying,
     gitlab_url character varying,
@@ -1936,8 +1936,8 @@ CREATE TABLE users (
     payment_pointer character varying,
     profile_image character varying,
     profile_updated_at timestamp without time zone      ,
-    rating_votes_count integer    ,
-    reactions_count integer    ,
+    rating_votes_count integer   NOT NULL,
+    reactions_count integer   NOT NULL,
     registered boolean  ,
     registered_at timestamp without time zone,
     remember_created_at timestamp without time zone,
@@ -1948,19 +1948,19 @@ CREATE TABLE users (
     saw_onboarding boolean  ,
     score integer  ,
     secret character varying,
-    sign_in_count integer    ,
+    sign_in_count integer   NOT NULL,
     signup_cta_variant character varying,
-    spent_credits_count integer    ,
+    spent_credits_count integer   NOT NULL,
     stackoverflow_url character varying,
     stripe_id_code character varying,
-    subscribed_to_user_subscriptions_count integer    ,
+    subscribed_to_user_subscriptions_count integer   NOT NULL,
     summary character varying,
     text_color_hex character varying,
     twitch_url character varying,
     twitter_username character varying,
     unconfirmed_email character varying,
     unlock_token character varying,
-    unspent_credits_count integer    ,
+    unspent_credits_count integer   NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     username character varying,
     website_url character varying,
@@ -1981,23 +1981,24 @@ CREATE TABLE users_gdpr_delete_requests (
 CREATE TABLE users_notification_settings (
     id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    email_badge_notifications boolean    ,
-    email_comment_notifications boolean    ,
-    email_community_mod_newsletter boolean    ,
-    email_connect_messages boolean    ,
-    email_digest_periodic boolean    ,
-    email_follower_notifications boolean    ,
-    email_membership_newsletter boolean    ,
-    email_mention_notifications boolean    ,
-    email_newsletter boolean    ,
-    email_tag_mod_newsletter boolean    ,
-    email_unread_notifications boolean    ,
-    mobile_comment_notifications boolean    ,
-    mod_roundrobin_notifications boolean    ,
-    reaction_notifications boolean    ,
+    email_badge_notifications boolean   NOT NULL,
+    email_comment_notifications boolean   NOT NULL,
+    email_community_mod_newsletter boolean   NOT NULL,
+    email_connect_messages boolean   NOT NULL,
+    email_digest_periodic boolean   NOT NULL,
+    email_follower_notifications boolean   NOT NULL,
+    email_membership_newsletter boolean   NOT NULL,
+    email_mention_notifications boolean   NOT NULL,
+    email_newsletter boolean   NOT NULL,
+    email_tag_mod_newsletter boolean   NOT NULL,
+    email_unread_notifications boolean   NOT NULL,
+    mobile_comment_notifications boolean   NOT NULL,
+    mod_roundrobin_notifications boolean   NOT NULL,
+    reaction_notifications boolean   NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     user_id bigint NOT NULL,
-    welcome_notifications boolean    
+    welcome_notifications boolean   NOT NULL
+);
 
 CREATE TABLE users_roles (
     role_id bigint,
@@ -2008,20 +2009,20 @@ CREATE TABLE users_settings (
     id bigint NOT NULL,
     brand_color1 character varying   ,
     brand_color2 character varying   ,
-    config_font integer    ,
-    config_navbar integer    ,
-    config_theme integer    ,
+    config_font integer   NOT NULL,
+    config_navbar integer   NOT NULL,
+    config_theme integer   NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    display_announcements boolean    ,
-    display_email_on_profile boolean    ,
-    display_sponsors boolean    ,
-    editor_version integer    ,
+    display_announcements boolean   NOT NULL,
+    display_email_on_profile boolean   NOT NULL,
+    display_sponsors boolean   NOT NULL,
+    editor_version integer   NOT NULL,
     experience_level integer,
-    feed_mark_canonical boolean    ,
-    feed_referential_link boolean    ,
+    feed_mark_canonical boolean   NOT NULL,
+    feed_referential_link boolean   NOT NULL,
     feed_url character varying,
     inbox_guidelines character varying,
-    inbox_type integer    ,
+    inbox_type integer   NOT NULL,
     permit_adjacent_sponsors boolean  ,
     updated_at timestamp(6) without time zone NOT NULL,
     user_id bigint NOT NULL
@@ -2052,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT articles.user_id FROM articles INNER JOIN (SELECT reactions.id, reactions.reactable_id, reactions.user_id FROM reactions WHERE reactions.user_id = 5429 AND reactions.category = 'readinglist' AND reactions.status IN ('confirmed', 'valid') AND reactions.reactable_type = 'Article' ORDER BY reactions.created_at DESC) AS reactions ON reactions.reactable_id = articles.id WHERE articles.published = False AND published_at <= '2022-02-27 07:17:33.188689' LIMIT 1 OFFSET 1;
+SELECT articles.user_id FROM articles INNER JOIN (SELECT reactions.id, reactions.reactable_id, reactions.user_id FROM reactions WHERE reactions.user_id = 5425 AND reactions.category = 'readinglist' AND reactions.status IN ('confirmed', 'valid') AND reactions.reactable_type = 'Article' ORDER BY reactions.created_at DESC) AS reactions ON reactions.reactable_id = articles.id WHERE articles.published = False AND published_at <= '2022-02-27 07:17:32.905569' LIMIT 1 OFFSET 1;
 -- Rewritten Queries
-SELECT articles.user_id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:33.188689' LIMIT 1 OFFSET 1;
+SELECT articles.user_id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:32.905569' LIMIT 1 OFFSET 1;

@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'Alpha' AND spree_properties.id = \"$1\"",
-        "cost": 28.2,
+        "sql": "SELECT DISTINCT spree_return_items.* FROM spree_return_items INNER JOIN spree_inventory_units ON spree_inventory_units.original_return_item_id = spree_return_items.id WHERE spree_return_items.reception_status = \"$1\" AND spree_inventory_units.created_at < '2022-07-31 05:42:21.425699' AND spree_inventory_units.state = 'shipped'",
+        "cost": 275.38,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'Alpha' AND spree_properties.id = \"$1\" LIMIT 1",
-            "cost": 28.2,
+            "sql": "SELECT spree_return_items.* FROM spree_return_items INNER JOIN spree_inventory_units ON spree_inventory_units.original_return_item_id = spree_return_items.id WHERE spree_return_items.reception_status = \"$1\" AND spree_inventory_units.created_at < '2022-07-31 05:42:21.425699' AND spree_inventory_units.state = 'shipped'",
+            "cost": 275.32,
             "rewrite_types": [
-                "AddLimitOne"
+                "RemoveDistinct"
             ]
         }
     ]

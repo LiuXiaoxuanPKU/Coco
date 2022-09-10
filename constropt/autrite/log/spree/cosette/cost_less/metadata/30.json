@@ -1,23 +1,23 @@
 {
     "org": {
-        "sql": "SELECT SUM(spree_stock_items.count_on_hand) FROM spree_stock_items INNER JOIN spree_stock_locations ON spree_stock_locations.id = spree_stock_items.stock_location_id WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = \"$1\" AND spree_stock_locations.active = \"$2\"",
-        "cost": 730.41,
+        "sql": "SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = \"$1\" AND spree_stock_items.variant_id IN (\"$2\", \"$3\")",
+        "cost": 6297.03,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT SUM(spree_stock_items.count_on_hand) FROM spree_stock_items WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = \"$1\"",
-            "cost": 353.25,
+            "sql": "SELECT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.active = \"$1\"",
+            "cost": 225.0,
             "rewrite_types": [
-                "RemoveJoin"
+                "RemoveJoin",
+                "RemoveDistinct"
             ]
         },
         {
-            "sql": "SELECT SUM(spree_stock_items.count_on_hand) FROM spree_stock_items WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = \"$1\" LIMIT 1",
-            "cost": 353.25,
+            "sql": "SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.active = \"$1\"",
+            "cost": 750.0,
             "rewrite_types": [
-                "RemoveJoin",
-                "AddLimitOne"
+                "RemoveJoin"
             ]
         }
     ]

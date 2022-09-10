@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.credits_count) AS credits_count FROM users LEFT JOIN credits AS credits ON users.id = credits.user_id AND credits.id > 0 GROUP BY users.id ORDER BY users.id ASC LIMIT \"$1\"",
-        "cost": 20964.22,
+        "sql": "SELECT 1 AS one FROM notifications WHERE notifications.user_id = \"$1\" AND notifications.id <> \"$2\" AND notifications.organization_id IS NULL AND notifications.notifiable_id = \"$3\" AND notifications.notifiable_type = \"$4\" AND notifications.action = \"$5\" LIMIT 1",
+        "cost": 8.18,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.credits_count) AS credits_count FROM users INNER JOIN credits AS credits ON users.id = credits.user_id AND credits.id > 0 GROUP BY users.id ORDER BY users.id ASC LIMIT \"$1\"",
-            "cost": 15763.09,
+            "sql": "SELECT 1 AS one FROM notifications WHERE notifications.user_id = \"$1\" AND notifications.id <> \"$2\" AND False AND notifications.notifiable_id = \"$3\" AND notifications.notifiable_type = \"$4\" AND notifications.action = \"$5\" LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "ReplaceOuterJoin"
+                "RewriteNullPredicate"
             ]
         }
     ]

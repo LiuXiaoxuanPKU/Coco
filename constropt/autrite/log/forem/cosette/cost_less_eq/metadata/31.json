@@ -1,15 +1,30 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = \"$1\" LIMIT 1",
-        "cost": 6.75,
+        "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle IS NULL AND consumer_apps.platform IS NULL LIMIT \"$1\"",
+        "cost": 8.43,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM roles LIMIT 1",
-            "cost": 0.02,
+            "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE False AND consumer_apps.platform IS NULL LIMIT \"$1\"",
+            "cost": 0.0,
             "rewrite_types": [
-                "RemoveJoin"
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle IS NULL AND False LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE False AND False LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RewriteNullPredicate"
             ]
         }
     ]
