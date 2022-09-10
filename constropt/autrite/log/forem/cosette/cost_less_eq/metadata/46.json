@@ -1,30 +1,15 @@
 {
     "org": {
-        "sql": "SELECT devices.* FROM devices WHERE devices.user_id = \"$1\" AND devices.token IS NULL AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT \"$2\"",
-        "cost": 8.3,
+        "sql": "SELECT reactions.* FROM reactions WHERE reactions.reactable_id = \"$1\" AND reactions.reactable_type = \"$2\" AND reactions.user_id = \"$3\" AND reactions.category = \"$4\"",
+        "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT devices.* FROM devices WHERE devices.user_id = \"$1\" AND devices.token IS NULL AND False AND devices.consumer_app_id IS NULL LIMIT \"$2\"",
-            "cost": 0.0,
+            "sql": "SELECT reactions.* FROM reactions WHERE reactions.reactable_id = \"$1\" AND reactions.reactable_type = \"$2\" AND reactions.user_id = \"$3\" AND reactions.category = \"$4\" LIMIT 1",
+            "cost": 8.31,
             "rewrite_types": [
-                "RewriteNullPredicate"
-            ]
-        },
-        {
-            "sql": "SELECT devices.* FROM devices WHERE devices.user_id = \"$1\" AND False AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT \"$2\"",
-            "cost": 0.0,
-            "rewrite_types": [
-                "RewriteNullPredicate"
-            ]
-        },
-        {
-            "sql": "SELECT devices.* FROM devices WHERE devices.user_id = \"$1\" AND False AND False AND devices.consumer_app_id IS NULL LIMIT \"$2\"",
-            "cost": 0.0,
-            "rewrite_types": [
-                "RewriteNullPredicate",
-                "RewriteNullPredicate"
+                "AddLimitOne"
             ]
         }
     ]

@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT articles.* FROM articles WHERE articles.user_id = \"$1\" AND articles.slug IS NULL LIMIT \"$2\"",
-        "cost": 8.43,
+        "sql": "SELECT badge_achievements.badge_id FROM badge_achievements WHERE badge_achievements.user_id = \"$1\"",
+        "cost": 8.32,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT articles.* FROM articles WHERE articles.user_id = \"$1\" AND False LIMIT \"$2\"",
-            "cost": 0.0,
+            "sql": "SELECT badge_achievements.badge_id FROM badge_achievements WHERE badge_achievements.user_id = \"$1\" LIMIT 1",
+            "cost": 4.3,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "AddLimitOne"
             ]
         }
     ]

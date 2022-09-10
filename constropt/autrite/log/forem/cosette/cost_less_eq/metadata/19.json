@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT badge_achievements.user_id FROM badge_achievements WHERE badge_achievements.badge_id = \"$1\"",
-        "cost": 8.3,
+        "sql": "SELECT badge_achievements.badge_id FROM badge_achievements WHERE badge_achievements.user_id = \"$1\"",
+        "cost": 8.32,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT badge_achievements.user_id FROM badge_achievements WHERE badge_achievements.badge_id = \"$1\" LIMIT 1",
-            "cost": 8.3,
+            "sql": "SELECT badge_achievements.badge_id FROM badge_achievements WHERE badge_achievements.user_id = \"$1\" LIMIT 1",
+            "cost": 4.3,
             "rewrite_types": [
                 "AddLimitOne"
             ]

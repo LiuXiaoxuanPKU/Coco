@@ -205,7 +205,7 @@ CREATE TABLE articles_storage (
     video_code character varying,
     video_duration_in_seconds double precision  ,
     video_source_url character varying,
-    video_state character varying
+    video_state character varying,
     video_thumbnail_url character varying
 );
 
@@ -328,7 +328,7 @@ CREATE TABLE broadcasts_new (
     created_at timestamp without time zone,
     processed_html character varying,
     title character varying,
-    type_of_int character varying
+    type_of_int character varying,
     updated_at timestamp without time zone
 );
 
@@ -336,14 +336,14 @@ CREATE TABLE broadcasts_storage (
     id bigint    ,
     active boolean  ,
     active_status_updated_at timestamp without time zone,
-    banner_style character varying
+    banner_style character varying,
     body_markdown character varying,
     broadcastable_id bigint,
     broadcastable_type character varying,
     created_at timestamp without time zone,
     processed_html character varying,
     title character varying,
-    type_of character varying
+    type_of character varying,
     updated_at timestamp without time zone
 );
 
@@ -368,7 +368,7 @@ CREATE TABLE chat_channel_memberships_new (
     last_opened_at timestamp without time zone      ,
     role character varying   ,
     show_global_badge_notification boolean  ,
-    status_int character varying
+    status_int character varying,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint NOT NULL
 );
@@ -379,9 +379,9 @@ CREATE TABLE chat_channel_memberships_storage (
     created_at timestamp without time zone NOT NULL,
     has_unopened_messages boolean  ,
     last_opened_at timestamp without time zone      ,
-    role character varying
+    role character varying,
     show_global_badge_notification boolean  ,
-    status character varying
+    status character varying,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint NOT NULL
 );
@@ -408,7 +408,7 @@ CREATE TABLE chat_channels_storage (
     discoverable boolean  ,
     last_message_at timestamp without time zone      ,
     slug character varying,
-    status character varying
+    status character varying,
     updated_at timestamp without time zone NOT NULL
 );
 
@@ -489,7 +489,7 @@ CREATE TABLE comments_new (
     body_html character varying,
     body_markdown character varying,
     commentable_id bigint,
-    commentable_type_int character varying
+    commentable_type_int character varying,
     created_at timestamp without time zone NOT NULL,
     deleted boolean  ,
     edited boolean  ,
@@ -514,7 +514,7 @@ CREATE TABLE comments_storage (
     body_html character varying,
     body_markdown character varying,
     commentable_id bigint,
-    commentable_type character varying
+    commentable_type character varying,
     created_at timestamp without time zone NOT NULL,
     deleted boolean  ,
     edited boolean  ,
@@ -576,7 +576,7 @@ CREATE TABLE credits_storage (
     created_at timestamp without time zone NOT NULL,
     organization_id bigint,
     purchase_id bigint,
-    purchase_type character varying
+    purchase_type character varying,
     spent boolean  ,
     spent_at timestamp without time zone,
     updated_at timestamp without time zone NOT NULL,
@@ -638,8 +638,8 @@ CREATE TABLE display_ad_events (
 
 CREATE TABLE display_ad_events_storage (
     id bigint    ,
-    category character varying
-    context_type character varying
+    category character varying,
+    context_type character varying,
     created_at timestamp without time zone NOT NULL,
     display_ad_id bigint,
     updated_at timestamp without time zone NOT NULL,
@@ -669,7 +669,7 @@ CREATE TABLE display_ads_new (
     created_at timestamp without time zone NOT NULL,
     impressions_count integer  ,
     organization_id bigint,
-    placement_area_int character varying
+    placement_area_int character varying,
     processed_html character varying,
     published boolean  ,
     success_rate double precision  ,
@@ -684,7 +684,7 @@ CREATE TABLE display_ads_storage (
     created_at timestamp without time zone NOT NULL,
     impressions_count integer  ,
     organization_id bigint,
-    placement_area character varying
+    placement_area character varying,
     processed_html character varying,
     published boolean  ,
     success_rate double precision  ,
@@ -750,14 +750,14 @@ CREATE TABLE feedback_messages (
 CREATE TABLE feedback_messages_storage (
     id bigint    ,
     affected_id bigint,
-    category character varying
+    category character varying,
     created_at timestamp without time zone,
     feedback_type character varying,
     message character varying,
     offender_id bigint,
     reported_url character varying,
     reporter_id bigint,
-    status character varying
+    status character varying,
     updated_at timestamp without time zone
 );
 
@@ -851,7 +851,7 @@ CREATE TABLE github_issues (
 
 CREATE TABLE github_issues_storage (
     id bigint    ,
-    category character varying
+    category character varying,
     created_at timestamp without time zone NOT NULL,
     issue_serialized character varying   
     processed_html character varying,
@@ -913,7 +913,7 @@ CREATE TABLE html_variants_new (
     id bigint    ,
     approved boolean  ,
     created_at timestamp without time zone NOT NULL,
-    group_int character varying
+    group_int character varying,
     html character varying,
     name character varying,
     published boolean  ,
@@ -927,7 +927,7 @@ CREATE TABLE html_variants_storage (
     id bigint    ,
     approved boolean  ,
     created_at timestamp without time zone NOT NULL,
-    "group" character varying
+    "group" character varying,
     html character varying,
     name character varying,
     published boolean  ,
@@ -953,7 +953,7 @@ CREATE TABLE identities_new (
     id bigint    ,
     auth_data_dump character varying,
     created_at timestamp without time zone NOT NULL,
-    provider_int character varying
+    provider_int character varying,
     secret character varying,
     token character varying,
     uid character varying,
@@ -965,7 +965,7 @@ CREATE TABLE identities_storage (
     id bigint    ,
     auth_data_dump character varying,
     created_at timestamp without time zone NOT NULL,
-    provider character varying
+    provider character varying,
     secret character varying,
     token character varying,
     uid character varying,
@@ -986,7 +986,7 @@ CREATE TABLE mentions_new (
     id bigint    ,
     created_at timestamp without time zone NOT NULL,
     mentionable_id bigint,
-    mentionable_type_int character varying
+    mentionable_type_int character varying,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint
 );
@@ -995,7 +995,7 @@ CREATE TABLE mentions_storage (
     id bigint    ,
     created_at timestamp without time zone NOT NULL,
     mentionable_id bigint,
-    mentionable_type character varying
+    mentionable_type character varying,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint
 );
@@ -1053,7 +1053,7 @@ CREATE TABLE notes_new (
     content character varying,
     created_at timestamp without time zone NOT NULL,
     noteable_id bigint,
-    noteable_type_int character varying
+    noteable_type_int character varying,
     reason character varying,
     updated_at timestamp without time zone NOT NULL
 );
@@ -1064,7 +1064,7 @@ CREATE TABLE notes_storage (
     content character varying,
     created_at timestamp without time zone NOT NULL,
     noteable_id bigint,
-    noteable_type character varying
+    noteable_type character varying,
     reason character varying,
     updated_at timestamp without time zone NOT NULL
 );
@@ -1261,7 +1261,7 @@ CREATE TABLE pages_storage (
     processed_html character varying,
     slug character varying,
     social_image character varying,
-    template character varying
+    template character varying,
     title character varying,
     updated_at timestamp without time zone NOT NULL
 );
@@ -1437,7 +1437,7 @@ CREATE TABLE profile_pins_new (
     id bigint    ,
     created_at timestamp without time zone NOT NULL,
     pinnable_id bigint,
-    pinnable_type_int character varying
+    pinnable_type_int character varying,
     profile_id bigint,
     profile_type character varying,
     updated_at timestamp without time zone NOT NULL
@@ -1447,9 +1447,9 @@ CREATE TABLE profile_pins_storage (
     id bigint    ,
     created_at timestamp without time zone NOT NULL,
     pinnable_id bigint,
-    pinnable_type character varying
+    pinnable_type character varying,
     profile_id bigint,
-    profile_type character varying
+    profile_type character varying,
     updated_at timestamp without time zone NOT NULL
 );
 
@@ -1478,7 +1478,7 @@ CREATE TABLE rating_votes (
 CREATE TABLE rating_votes_new (
     id bigint    ,
     article_id bigint,
-    context_int character varying
+    context_int character varying,
     created_at timestamp without time zone NOT NULL,
     "group" character varying,
     rating double precision,
@@ -1489,9 +1489,9 @@ CREATE TABLE rating_votes_new (
 CREATE TABLE rating_votes_storage (
     id bigint    ,
     article_id bigint,
-    context character varying
+    context character varying,
     created_at timestamp without time zone NOT NULL,
-    "group" character varying
+    "group" character varying,
     rating double precision,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint
@@ -1515,7 +1515,7 @@ CREATE TABLE reactions_new (
     created_at timestamp without time zone NOT NULL,
     points double precision  ,
     reactable_id bigint,
-    reactable_type_int character varying
+    reactable_type_int character varying,
     status character varying   ,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint
@@ -1523,12 +1523,12 @@ CREATE TABLE reactions_new (
 
 CREATE TABLE reactions_storage (
     id bigint    ,
-    category character varying
+    category character varying,
     created_at timestamp without time zone NOT NULL,
     points double precision  ,
     reactable_id bigint,
-    reactable_type character varying
-    status character varying
+    reactable_type character varying,
+    status character varying,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint
 );
@@ -1578,7 +1578,7 @@ CREATE TABLE roles (
 CREATE TABLE roles_new (
     id bigint    ,
     created_at timestamp without time zone,
-    name_int character varying
+    name_int character varying,
     resource_id bigint,
     resource_type character varying,
     updated_at timestamp without time zone
@@ -1587,9 +1587,9 @@ CREATE TABLE roles_new (
 CREATE TABLE roles_storage (
     id bigint    ,
     created_at timestamp without time zone,
-    name character varying
+    name character varying,
     resource_id bigint,
-    resource_type character varying
+    resource_type character varying,
     updated_at timestamp without time zone
 );
 
@@ -1729,7 +1729,7 @@ CREATE TABLE tag_adjustments_new (
     article_id bigint,
     created_at timestamp without time zone NOT NULL,
     reason_for_adjustment character varying,
-    status_int character varying
+    status_int character varying,
     tag_id bigint,
     tag_name character varying,
     updated_at timestamp without time zone NOT NULL,
@@ -1738,11 +1738,11 @@ CREATE TABLE tag_adjustments_new (
 
 CREATE TABLE tag_adjustments_storage (
     id bigint    ,
-    adjustment_type character varying
+    adjustment_type character varying,
     article_id bigint,
     created_at timestamp without time zone NOT NULL,
     reason_for_adjustment character varying,
-    status character varying
+    status character varying,
     tag_id bigint,
     tag_name character varying,
     updated_at timestamp without time zone NOT NULL,
@@ -2052,6 +2052,8 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = 6611 AND organization_memberships.type_of_user = 'member';
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'committed';
 -- Rewritten Queries
-SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = 6611 AND organization_memberships.type_of_user = 'member' LIMIT 1;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'committed';
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'committed' LIMIT 1;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'committed' LIMIT 1;

@@ -91,6 +91,8 @@ def replace_keyword(stmts):
                             if token.startswith(fz):
                                 keyword_id = tokens.index(token)
                                 tokens[keyword_id] = "character varying"
+                                if token.strip().endswith(","):
+                                    tokens[keyword_id] += ","
             line = " ".join(tokens)
             replace_stmt.append(line)
         replace_stmt = "\n".join(replace_stmt)

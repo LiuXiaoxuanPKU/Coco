@@ -7,7 +7,7 @@
     "rewrites": [
         {
             "sql": "SELECT articles.user_id FROM articles WHERE articles.published = \"$1\" AND published_at <= '2022-02-27 07:17:28.805015' LIMIT \"$2\" OFFSET \"$3\"",
-            "cost": 8.6,
+            "cost": 16.92,
             "rewrite_types": [
                 "RemoveJoin"
             ]

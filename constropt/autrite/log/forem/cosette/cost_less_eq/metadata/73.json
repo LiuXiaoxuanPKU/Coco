@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = \"$1\" AND notification_subscriptions.notifiable_type = \"$2\" AND notification_subscriptions.config = \"$3\"",
-        "cost": 8.31,
+        "sql": "SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\" ORDER BY organizations.name ASC",
+        "cost": 16.62,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = \"$1\" AND notification_subscriptions.notifiable_type = \"$2\" AND notification_subscriptions.config = \"$3\" LIMIT 1",
-            "cost": 8.31,
+            "sql": "SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\" ORDER BY organizations.name ASC LIMIT 1",
+            "cost": 16.62,
             "rewrite_types": [
                 "AddLimitOne"
             ]

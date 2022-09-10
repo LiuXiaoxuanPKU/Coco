@@ -1,12 +1,12 @@
 {
     "org": {
-        "sql": "SELECT users.* FROM users WHERE users.registered = \"$1\" AND users.username = \"$2\"",
+        "sql": "SELECT users_settings.* FROM users_settings WHERE users_settings.user_id = \"$1\"",
         "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT users.* FROM users WHERE users.registered = \"$1\" AND users.username = \"$2\" LIMIT 1",
+            "sql": "SELECT users_settings.* FROM users_settings WHERE users_settings.user_id = \"$1\" LIMIT 1",
             "cost": 8.3,
             "rewrite_types": [
                 "AddLimitOne"
