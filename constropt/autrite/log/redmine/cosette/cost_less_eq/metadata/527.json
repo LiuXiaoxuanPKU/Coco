@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) AS count_all, issues.tracker_id AS issues_tracker_id FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) GROUP BY issues.tracker_id",
+        "cost": 94.43,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) AS count_all, issues.tracker_id AS issues_tracker_id FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) GROUP BY issues.tracker_id",
+            "cost": 94.43,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

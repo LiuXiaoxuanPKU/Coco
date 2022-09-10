@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM custom_values INNER JOIN custom_fields ON custom_fields.id = custom_values.custom_field_id WHERE custom_values.value = \"$1\" AND custom_fields.field_format = \"$2\" LIMIT \"$3\"",
+        "cost": 2.17,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM custom_values WHERE custom_values.value = \"$1\" LIMIT \"$3\"",
+            "cost": 0.06,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

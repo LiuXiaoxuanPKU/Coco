@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id IN (SELECT customized_id FROM custom_values WHERE customized_type = 'Issue' AND custom_field_id = 29 AND CAST(CASE WHEN value = '' THEN '0' ELSE value END AS DECIMAL(30, 0)) IN (SELECT id FROM versions WHERE versions.effective_date > '2017-01-13 23:59:59.999999' AND versions.effective_date <= '2017-01-14 23:59:59.999999'))",
+        "cost": 406.07,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.id IN (SELECT customized_id FROM custom_values WHERE customized_type = 'Issue' AND custom_field_id = 29 AND CAST(CASE WHEN value = '' THEN '0' ELSE value END AS DECIMAL(30, 0)) IN (SELECT id FROM versions WHERE versions.effective_date > '2017-01-13 23:59:59.999999' AND versions.effective_date <= '2017-01-14 23:59:59.999999'))",
+            "cost": 405.73,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

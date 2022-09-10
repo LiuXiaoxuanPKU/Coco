@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT domain_blocks.* FROM domain_blocks WHERE domain_blocks.domain = 'vzpbwhyhaidjmpcnlhxlznfkexoclwuyfuuurtitemofxdnwfmueekkzlrgnsuvruhqdndchnmpavufayymrnmkoytriyfexfgbrjrjbucqgswbhoylbnyzooiyesrigxfozuoouioscejdjmbfuqznpfqjlzbkmplxipfynkyyqviitlgyvnlvnyqduwxndhvlcwud';
+SELECT status_stats.* FROM status_stats WHERE status_stats.status_id = 108292798817907551;
 -- Rewritten Queries
-SELECT domain_blocks.* FROM domain_blocks WHERE domain_blocks.domain = 'vzpbwhyhaidjmpcnlhxlznfkexoclwuyfuuurtitemofxdnwfmueekkzlrgnsuvruhqdndchnmpavufayymrnmkoytriyfexfgbrjrjbucqgswbhoylbnyzooiyesrigxfozuoouioscejdjmbfuqznpfqjlzbkmplxipfynkyyqviitlgyvnlvnyqduwxndhvlcwud' LIMIT 1;
+SELECT status_stats.* FROM status_stats WHERE status_stats.status_id = 108292798817907551 LIMIT 1;

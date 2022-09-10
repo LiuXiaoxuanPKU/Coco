@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT changesets.* FROM changesets WHERE num_changes > 0 AND changesets.id <= '744' ORDER BY changesets.id DESC LIMIT \"$1\"",
-        "cost": 0.76,
+        "sql": "SELECT changesets.* FROM changesets WHERE closed_at < '2022-08-29 21:22:12.547375' OR num_changes > 10000 ORDER BY created_at DESC LIMIT \"$1\"",
+        "cost": 0.54,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT changesets.* FROM changesets WHERE changesets.id <= '744' ORDER BY changesets.id DESC LIMIT \"$1\"",
-            "cost": 0.73,
+            "sql": "SELECT changesets.* FROM changesets WHERE closed_at < '2022-08-29 21:22:12.547375' ORDER BY created_at DESC LIMIT \"$1\"",
+            "cost": 0.53,
             "rewrite_types": [
                 "RemovePredicate"
             ]

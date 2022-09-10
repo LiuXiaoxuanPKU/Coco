@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT projects.* FROM projects INNER JOIN members ON projects.id = members.project_id WHERE members.user_id = \"$1\" AND projects.status <> \"$2\"",
+        "cost": 16.61,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT projects.* FROM projects INNER JOIN members ON projects.id = members.project_id WHERE members.user_id = \"$1\" AND projects.status <> \"$2\" LIMIT 1",
+            "cost": 16.61,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT domain_allows.* FROM domain_allows WHERE domain_allows.domain = 'gkkonwqtvdqihtrnksrirwdcmhasrypzhoqnmmaoxknbdruvhmdlyqhqxqvnozejxrgwsyqkfjdeqsgwrcjomvbaieprnatstjxkwctkqbgtimvylahnrkuupyomgtwmppctdvkxyqkbsttcweioplkhbifavjmjrtqhoyqwvewqvwxuijncm';
+SELECT domain_blocks.* FROM domain_blocks WHERE domain_blocks.domain = 'keiis';
 -- Rewritten Queries
-SELECT domain_allows.* FROM domain_allows WHERE domain_allows.domain = 'gkkonwqtvdqihtrnksrirwdcmhasrypzhoqnmmaoxknbdruvhmdlyqhqxqvnozejxrgwsyqkfjdeqsgwrcjomvbaieprnatstjxkwctkqbgtimvylahnrkuupyomgtwmppctdvkxyqkbsttcweioplkhbifavjmjrtqhoyqwvewqvwxuijncm' LIMIT 1;
+SELECT domain_blocks.* FROM domain_blocks WHERE domain_blocks.domain = 'keiis' LIMIT 1;

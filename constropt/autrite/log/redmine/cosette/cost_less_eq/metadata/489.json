@@ -1,0 +1,30 @@
+{
+    "org": {
+        "sql": "SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.created_on BETWEEN '2022-02-02' AND '2022-02-12' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL",
+        "cost": 33.42,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.created_on BETWEEN '2022-02-02' AND '2022-02-12' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL LIMIT 1",
+            "cost": 33.42,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.created_on BETWEEN '2022-02-02' AND '2022-02-12' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL",
+            "cost": 33.42,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.created_on BETWEEN '2022-02-02' AND '2022-02-12' AND (projects.id = 1 OR projects.lft > 1 AND projects.rgt < 10) AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL LIMIT 1",
+            "cost": 33.42,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

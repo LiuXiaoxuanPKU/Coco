@@ -1,20 +1,13 @@
 {
     "org": {
-        "sql": "SELECT mentions.id, mentions.account_id FROM mentions INNER JOIN accounts ON accounts.id = mentions.account_id INNER JOIN users ON users.account_id = accounts.id INNER JOIN follows ON accounts.id = follows.account_id WHERE mentions.status_id = \"$1\" AND follows.target_account_id = \"$2\" AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:45:58.066968' ORDER BY mentions.id ASC LIMIT \"$3\"",
-        "cost": 29.33,
+        "sql": "SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id INNER JOIN users ON users.account_id = accounts.id WHERE follows.target_account_id = \"$1\" AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:45:55.558211' ORDER BY accounts.id ASC LIMIT \"$2\"",
+        "cost": 44.01,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT mentions.id, mentions.account_id FROM mentions INNER JOIN accounts ON accounts.id = mentions.account_id INNER JOIN follows ON accounts.id = follows.account_id WHERE mentions.status_id = \"$1\" AND follows.target_account_id = \"$2\" AND accounts.domain IS NULL ORDER BY mentions.id ASC LIMIT \"$3\"",
-            "cost": 28.75,
-            "rewrite_types": [
-                "RemoveJoin"
-            ]
-        },
-        {
-            "sql": "SELECT mentions.id, mentions.account_id FROM mentions INNER JOIN accounts ON accounts.id = mentions.account_id INNER JOIN users ON users.account_id = accounts.id WHERE mentions.status_id = \"$1\" AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:45:58.066968' ORDER BY mentions.id ASC LIMIT \"$3\"",
-            "cost": 29.24,
+            "sql": "SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = \"$1\" AND accounts.domain IS NULL ORDER BY accounts.id ASC LIMIT \"$2\"",
+            "cost": 36.3,
             "rewrite_types": [
                 "RemoveJoin"
             ]

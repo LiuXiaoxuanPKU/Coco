@@ -1,13 +1,13 @@
 {
     "org": {
         "sql": "SELECT COUNT(*) FROM accounts INNER JOIN list_accounts ON accounts.id = list_accounts.account_id WHERE list_accounts.list_id = \"$1\"",
-        "cost": 16.62,
+        "cost": 12.62,
         "rewrite_types": []
     },
     "rewrites": [
         {
             "sql": "SELECT COUNT(*) FROM accounts INNER JOIN list_accounts ON accounts.id = list_accounts.account_id WHERE list_accounts.list_id = \"$1\" LIMIT 1",
-            "cost": 16.62,
+            "cost": 12.62,
             "rewrite_types": [
                 "AddLimitOne"
             ]

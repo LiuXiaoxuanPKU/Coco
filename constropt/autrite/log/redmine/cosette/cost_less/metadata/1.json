@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT issue_statuses.* FROM issue_statuses WHERE default_done_ratio >= 0",
+        "cost": 201.0,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issue_statuses.* FROM issue_statuses",
+            "cost": 176.0,
+            "rewrite_types": [
+                "RemovePredicate"
+            ]
+        }
+    ]
+}

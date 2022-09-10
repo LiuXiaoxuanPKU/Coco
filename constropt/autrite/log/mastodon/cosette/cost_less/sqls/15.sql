@@ -968,9 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.account_id = 108847827782550460 ORDER BY follows.id DESC LIMIT 8;
+SELECT oauth_applications.* FROM oauth_applications WHERE oauth_applications.id IN (SELECT DISTINCT oauth_access_tokens.application_id FROM oauth_access_tokens WHERE oauth_access_tokens.resource_owner_id = 4800 AND oauth_access_tokens.revoked_at IS NULL);
 -- Rewritten Queries
-SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.account_id = 108847827782550460 ORDER BY follows.id DESC LIMIT 8;
-SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.account_id = 108847827782550460 ORDER BY follows.id DESC LIMIT 8;
-SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.account_id = 108847827782550460 ORDER BY follows.id DESC LIMIT 8;
-SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.account_id = 108847827782550460 ORDER BY follows.id DESC LIMIT 8;
+SELECT oauth_applications.* FROM oauth_applications WHERE oauth_applications.id IN (SELECT oauth_access_tokens.application_id FROM oauth_access_tokens WHERE oauth_access_tokens.resource_owner_id = 4800 AND oauth_access_tokens.revoked_at IS NULL);

@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847798327370519 AND account_domain_blocks.domain IS NULL LIMIT 10;
+SELECT 1 AS "one" FROM webauthn_credentials WHERE webauthn_credentials.nickname IS NULL AND webauthn_credentials.user_id IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847798327370519 AND False LIMIT 10;
+SELECT 1 AS "one" FROM webauthn_credentials WHERE False AND webauthn_credentials.user_id IS NULL LIMIT 1;

@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT webauthn_credentials.external_id FROM webauthn_credentials WHERE webauthn_credentials.user_id = 714;
+SELECT 1 AS "one" FROM follows WHERE follows.account_id = 108847814321453711 AND follows.target_account_id IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT webauthn_credentials.external_id FROM webauthn_credentials WHERE webauthn_credentials.user_id = 714 LIMIT 1;
+SELECT 1 AS "one" FROM follows WHERE follows.account_id = 108847814321453711 AND False LIMIT 1;

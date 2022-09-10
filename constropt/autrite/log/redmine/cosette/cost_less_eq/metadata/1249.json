@@ -1,0 +1,61 @@
+{
+    "org": {
+        "sql": "SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id LEFT OUTER JOIN versions ON versions.id = issues.fixed_version_id LEFT OUTER JOIN enumerations ON enumerations.id = issues.priority_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND projects.lft >= 1 AND projects.rgt <= 10 ORDER BY (CASE WHEN versions.effective_date IS NULL THEN 1 ELSE 0 END) ASC, versions.effective_date ASC, versions.name ASC, versions.id ASC, enumerations.position DESC, issues.id ASC LIMIT 1",
+        "cost": 84.51,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id LEFT OUTER JOIN versions ON versions.id = issues.fixed_version_id LEFT OUTER JOIN enumerations ON enumerations.id = issues.priority_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND projects.lft >= 1 AND projects.rgt <= 10 ORDER BY (CASE WHEN versions.effective_date IS NULL THEN 1 ELSE 0 END) ASC, versions.effective_date ASC, versions.name ASC, versions.id ASC, enumerations.position DESC, issues.id ASC LIMIT 1",
+            "cost": 76.35,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id LEFT OUTER JOIN versions ON versions.id = issues.fixed_version_id LEFT OUTER JOIN enumerations ON enumerations.id = issues.priority_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND projects.lft >= 1 AND projects.rgt <= 10 ORDER BY (CASE WHEN versions.effective_date IS NULL THEN 1 ELSE 0 END) ASC, versions.effective_date ASC, versions.name ASC, versions.id ASC, enumerations.position DESC, issues.id ASC LIMIT 1",
+            "cost": 76.35,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN versions ON versions.id = issues.fixed_version_id LEFT OUTER JOIN enumerations ON enumerations.id = issues.priority_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND projects.lft >= 1 AND projects.rgt <= 10 ORDER BY (CASE WHEN versions.effective_date IS NULL THEN 1 ELSE 0 END) ASC, versions.effective_date ASC, versions.name ASC, versions.id ASC, enumerations.position DESC, issues.id ASC LIMIT 1",
+            "cost": 76.35,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN versions ON versions.id = issues.fixed_version_id LEFT OUTER JOIN enumerations ON enumerations.id = issues.priority_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND projects.lft >= 1 AND projects.rgt <= 10 ORDER BY (CASE WHEN versions.effective_date IS NULL THEN 1 ELSE 0 END) ASC, versions.effective_date ASC, versions.name ASC, versions.id ASC, enumerations.position DESC, issues.id ASC LIMIT 1",
+            "cost": 76.35,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id LEFT OUTER JOIN versions ON versions.id = issues.fixed_version_id LEFT OUTER JOIN enumerations ON enumerations.id = issues.priority_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND projects.lft >= 1 AND projects.rgt <= 10 ORDER BY (CASE WHEN versions.effective_date IS NULL THEN 1 ELSE 0 END) ASC, versions.effective_date ASC, versions.name ASC, versions.id ASC, enumerations.position DESC, issues.id ASC LIMIT 1",
+            "cost": 84.51,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN versions ON versions.id = issues.fixed_version_id LEFT OUTER JOIN enumerations ON enumerations.id = issues.priority_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND projects.lft >= 1 AND projects.rgt <= 10 ORDER BY (CASE WHEN versions.effective_date IS NULL THEN 1 ELSE 0 END) ASC, versions.effective_date ASC, versions.name ASC, versions.id ASC, enumerations.position DESC, issues.id ASC LIMIT 1",
+            "cost": 84.51,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN versions ON versions.id = issues.fixed_version_id LEFT OUTER JOIN enumerations ON enumerations.id = issues.priority_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND projects.lft >= 1 AND projects.rgt <= 10 ORDER BY (CASE WHEN versions.effective_date IS NULL THEN 1 ELSE 0 END) ASC, versions.effective_date ASC, versions.name ASC, versions.id ASC, enumerations.position DESC, issues.id ASC LIMIT 1",
+            "cost": 84.51,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

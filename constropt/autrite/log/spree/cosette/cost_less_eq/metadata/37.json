@@ -7,7 +7,7 @@
     "rewrites": [
         {
             "sql": "SELECT 1 AS one FROM spree_line_items INNER JOIN spree_variants ON spree_variants.id = spree_line_items.variant_id WHERE spree_line_items.order_id = \"$1\" LIMIT 1",
-            "cost": 10.74,
+            "cost": 12.74,
             "rewrite_types": [
                 "RemoveJoin"
             ]

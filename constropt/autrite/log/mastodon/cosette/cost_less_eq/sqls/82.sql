@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN status_pins ON statuses.id = status_pins.status_id WHERE statuses.deleted_at IS NULL AND status_pins.account_id = 108847827746836748 ORDER BY status_pins.created_at DESC;
+SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = 62 ORDER BY follows.id DESC LIMIT 6 OFFSET 1;
 -- Rewritten Queries
-SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN status_pins ON statuses.id = status_pins.status_id WHERE statuses.deleted_at IS NULL AND status_pins.account_id = 108847827746836748 ORDER BY status_pins.created_at DESC LIMIT 1;
+SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 62 ORDER BY follows.id DESC LIMIT 6 OFFSET 1;

@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id = \"$1\" AND workflows.old_status_id IS NULL AND workflows.role_id = \"$2\"",
+        "cost": 4.31,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT workflows.* FROM workflows WHERE workflows.type IN ('WorkflowPermission') AND workflows.tracker_id = \"$1\" AND False AND workflows.role_id = \"$2\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

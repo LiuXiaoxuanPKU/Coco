@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4",
+        "cost": 21.82,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.root_id = 71 AND issues.lft < 3 AND issues.rgt > 4",
+            "cost": 17.51,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

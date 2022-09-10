@@ -1,0 +1,23 @@
+{
+    "org": {
+        "sql": "SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = \"$1\" AND projects.status <> \"$2\" AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (35, 12))",
+        "cost": 33.23,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = \"$1\" AND projects.status <> \"$2\" AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (35, 12) LIMIT 1)",
+            "cost": 25.07,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = \"$1\" AND projects.status <> \"$2\" AND projects.status <> 9 AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (35, 12) LIMIT 1) LIMIT 1",
+            "cost": 25.07,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

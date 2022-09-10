@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(DISTINCT users.id) FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = \"$1\" AND members.project_id = 1",
+        "cost": 138.66,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(DISTINCT users.id) FROM users INNER JOIN members ON members.user_id = users.id WHERE users.type IN ('User', 'AnonymousUser') AND users.status = \"$1\" AND members.project_id = 1 LIMIT 1",
+            "cost": 138.66,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

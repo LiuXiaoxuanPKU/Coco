@@ -1,45 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN users ON users.id = diary_entries.user_id LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code WHERE users.status IN (\"$1\", \"$2\") LIMIT \"$3\" OFFSET \"$4\"",
-        "cost": 1.91,
+        "sql": "SELECT current_ways.* FROM current_ways INNER JOIN current_way_nodes ON current_way_nodes.way_id = current_ways.id WHERE current_ways.visible = \"$1\" AND current_way_nodes.node_id = \"$2\" ORDER BY current_ways.id ASC",
+        "cost": 27.89,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM diary_entries LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code LIMIT \"$3\" OFFSET \"$4\"",
-            "cost": 0.17,
+            "sql": "SELECT current_ways.* FROM current_ways INNER JOIN current_way_nodes ON current_way_nodes.way_id = current_ways.id WHERE current_ways.visible = \"$1\" AND current_way_nodes.node_id = \"$2\" ORDER BY current_ways.id ASC LIMIT 1",
+            "cost": 27.89,
             "rewrite_types": [
-                "RemoveJoin"
-            ]
-        },
-        {
-            "sql": "SELECT 1 AS one FROM diary_entries LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code LIMIT \"$3\" OFFSET \"$4\"",
-            "cost": 0.17,
-            "rewrite_types": [
-                "RemoveJoin"
-            ]
-        },
-        {
-            "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN languages ON languages.code = diary_entries.language_code LIMIT \"$3\" OFFSET \"$4\"",
-            "cost": 1.47,
-            "rewrite_types": [
-                "RemoveJoin",
-                "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN languages ON languages.code = diary_entries.language_code LIMIT \"$3\" OFFSET \"$4\"",
-            "cost": 1.47,
-            "rewrite_types": [
-                "RemoveJoin",
-                "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN users ON users.id = diary_entries.user_id LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code WHERE users.status IN (\"$1\", \"$2\") LIMIT \"$3\" OFFSET \"$4\"",
-            "cost": 1.91,
-            "rewrite_types": [
-                "RemoveJoin"
+                "AddLimitOne"
             ]
         }
     ]

@@ -968,8 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM blocks WHERE blocks.account_id IS NULL AND blocks.target_account_id IS NULL LIMIT 5;
+SELECT 1 AS "one" FROM follows WHERE follows.account_id = 108847814321453711 AND follows.target_account_id IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM blocks WHERE blocks.account_id IS NULL AND False LIMIT 5;
-SELECT 1 AS "one" FROM blocks WHERE False AND blocks.target_account_id IS NULL LIMIT 5;
-SELECT 1 AS "one" FROM blocks WHERE False AND False LIMIT 5;
+SELECT 1 AS "one" FROM follows WHERE follows.account_id = 108847814321453711 AND False LIMIT 1;

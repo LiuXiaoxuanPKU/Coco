@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT mentions.account_id FROM mentions WHERE mentions.status_id = 105516675222270602 AND mentions.silent = False;
+SELECT user_invite_requests.* FROM user_invite_requests WHERE user_invite_requests.user_id = 3525;
 -- Rewritten Queries
-SELECT mentions.account_id FROM mentions WHERE mentions.status_id = 105516675222270602 AND mentions.silent = False LIMIT 1;
+SELECT user_invite_requests.* FROM user_invite_requests WHERE user_invite_requests.user_id = 3525 LIMIT 1;

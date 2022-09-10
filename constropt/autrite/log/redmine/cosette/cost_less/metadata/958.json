@@ -1,0 +1,471 @@
+{
+    "org": {
+        "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51))",
+        "cost": 2228.24,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 18.24,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 18.24,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 18.24,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 18.24,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 18.25,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 18.25,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 18.25,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 18.25,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 18.26,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 18.26,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 18.26,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 18.26,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 18.26,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 18.26,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 18.26,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 18.26,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 19.8,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 19.8,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 19.8,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 19.8,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 19.8,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 19.8,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 19.8,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 19.8,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 19.82,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 19.82,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 19.82,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 19.82,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 19.82,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51)) LIMIT 1",
+            "cost": 19.82,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 19.82,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1)) LIMIT 1",
+            "cost": 19.82,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51))",
+            "cost": 2185.67,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51))",
+            "cost": 2185.67,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51))",
+            "cost": 2185.67,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1))",
+            "cost": 2185.67,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1))",
+            "cost": 2185.67,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51))",
+            "cost": 2185.67,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1))",
+            "cost": 2185.67,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1))",
+            "cost": 2185.67,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51))",
+            "cost": 2185.69,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51))",
+            "cost": 2185.69,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51))",
+            "cost": 2185.69,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1))",
+            "cost": 2185.69,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1))",
+            "cost": 2185.69,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51))",
+            "cost": 2185.69,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1))",
+            "cost": 2185.69,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1))",
+            "cost": 2185.69,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51))",
+            "cost": 2228.22,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51))",
+            "cost": 2228.22,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51))",
+            "cost": 2228.22,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1))",
+            "cost": 2228.22,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1))",
+            "cost": 2228.22,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51))",
+            "cost": 2228.22,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1))",
+            "cost": 2228.22,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN ('1') AND (issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_to_id = 51 LIMIT 1) OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates' AND issue_relations.issue_from_id = 51 LIMIT 1))",
+            "cost": 2228.22,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

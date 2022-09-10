@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT users.* FROM users WHERE users.registered = \"$1\" AND users.username = \"$2\"",
+        "cost": 8.3,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT users.* FROM users WHERE users.registered = \"$1\" AND users.username = \"$2\" LIMIT 1",
+            "cost": 8.3,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

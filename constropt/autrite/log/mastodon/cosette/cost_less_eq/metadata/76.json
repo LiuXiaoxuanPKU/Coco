@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT conversation_mutes.conversation_id FROM conversation_mutes WHERE conversation_mutes.conversation_id = \"$1\" AND conversation_mutes.account_id = \"$2\"",
-        "cost": 8.3,
+        "sql": "SELECT mentions.status_id FROM mentions WHERE mentions.silent = \"$1\" AND mentions.status_id IN (\"$2\", \"$3\", \"$4\", \"$5\", \"$6\", \"$7\", \"$8\") AND mentions.account_id = \"$9\"",
+        "cost": 17.92,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT conversation_mutes.conversation_id FROM conversation_mutes WHERE conversation_mutes.conversation_id = \"$1\" AND conversation_mutes.account_id = \"$2\" LIMIT 1",
-            "cost": 8.3,
+            "sql": "SELECT mentions.status_id FROM mentions WHERE mentions.silent = \"$1\" AND mentions.status_id IN (\"$2\", \"$3\", \"$4\", \"$5\", \"$6\", \"$7\", \"$8\") AND mentions.account_id = \"$9\" LIMIT 1",
+            "cost": 17.92,
             "rewrite_types": [
                 "AddLimitOne"
             ]

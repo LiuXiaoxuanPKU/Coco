@@ -968,7 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT mentions.id, mentions.account_id FROM mentions INNER JOIN accounts ON accounts.id = mentions.account_id INNER JOIN users ON users.account_id = accounts.id INNER JOIN follows ON accounts.id = follows.account_id WHERE mentions.status_id = 107299520714125243 AND follows.target_account_id = 108847819940094837 AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:41:04.569599' ORDER BY mentions.id ASC LIMIT 1;
+SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id INNER JOIN users ON users.account_id = accounts.id WHERE follows.target_account_id = 108847798832726645 AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:45:51.261649' ORDER BY accounts.id ASC LIMIT 8;
 -- Rewritten Queries
-SELECT mentions.id, mentions.account_id FROM mentions INNER JOIN accounts ON accounts.id = mentions.account_id INNER JOIN follows ON accounts.id = follows.account_id WHERE mentions.status_id = 107299520714125243 AND follows.target_account_id = 108847819940094837 AND accounts.domain IS NULL ORDER BY mentions.id ASC LIMIT 1;
-SELECT mentions.id, mentions.account_id FROM mentions INNER JOIN accounts ON accounts.id = mentions.account_id INNER JOIN users ON users.account_id = accounts.id WHERE mentions.status_id = 107299520714125243 AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:41:04.569599' ORDER BY mentions.id ASC LIMIT 1;
+SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 108847798832726645 AND accounts.domain IS NULL ORDER BY accounts.id ASC LIMIT 8;

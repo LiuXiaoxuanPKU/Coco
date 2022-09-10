@@ -1,0 +1,45 @@
+{
+    "org": {
+        "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (SELECT issues.id FROM issues LEFT OUTER JOIN custom_values ON custom_values.customized_type = 'Issue' AND custom_values.customized_id = issues.id AND custom_values.custom_field_id = 19 WHERE custom_values.value IN ('value1') AND 1 = 1 AND issues.tracker_id IN (SELECT tracker_id FROM custom_fields_trackers WHERE custom_field_id = 19) AND ((SELECT 1 FROM custom_fields AS ifa WHERE ifa.is_for_all = True AND ifa.id = 19) IS NOT NULL OR issues.project_id IN (SELECT project_id FROM custom_fields_projects WHERE custom_field_id = 19)))",
+        "cost": 1977.78,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (SELECT issues.id FROM issues LEFT OUTER JOIN custom_values ON custom_values.customized_type = 'Issue' AND custom_values.customized_id = issues.id AND custom_values.custom_field_id = 19 WHERE custom_values.value IN ('value1') AND 1 = 1 AND issues.tracker_id IN (SELECT tracker_id FROM custom_fields_trackers WHERE custom_field_id = 19) AND ((SELECT 1 FROM custom_fields AS ifa WHERE ifa.is_for_all = True AND ifa.id = 19) IS NOT NULL OR issues.project_id IN (SELECT project_id FROM custom_fields_projects WHERE custom_field_id = 19)))",
+            "cost": 54.33,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (SELECT issues.id FROM issues INNER JOIN custom_values ON custom_values.customized_type = 'Issue' AND custom_values.customized_id = issues.id AND custom_values.custom_field_id = 19 WHERE custom_values.value IN ('value1') AND 1 = 1 AND issues.tracker_id IN (SELECT tracker_id FROM custom_fields_trackers WHERE custom_field_id = 19) AND ((SELECT 1 FROM custom_fields AS ifa WHERE ifa.is_for_all = True AND ifa.id = 19) IS NOT NULL OR issues.project_id IN (SELECT project_id FROM custom_fields_projects WHERE custom_field_id = 19)))",
+            "cost": 54.33,
+            "rewrite_types": [
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (SELECT issues.id FROM issues WHERE 1 = 1 AND issues.tracker_id IN (SELECT tracker_id FROM custom_fields_trackers WHERE custom_field_id = 19) AND ((SELECT 1 FROM custom_fields AS ifa WHERE ifa.is_for_all = True AND ifa.id = 19) IS NOT NULL OR issues.project_id IN (SELECT project_id FROM custom_fields_projects WHERE custom_field_id = 19)))",
+            "cost": 1067.74,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (SELECT issues.id FROM issues WHERE 1 = 1 AND issues.tracker_id IN (SELECT tracker_id FROM custom_fields_trackers WHERE custom_field_id = 19) AND ((SELECT 1 FROM custom_fields AS ifa WHERE ifa.is_for_all = True AND ifa.id = 19) IS NOT NULL OR issues.project_id IN (SELECT project_id FROM custom_fields_projects WHERE custom_field_id = 19)))",
+            "cost": 1073.67,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.status_id IN (SELECT id FROM issue_statuses WHERE is_closed = False) AND issues.id IN (SELECT issues.id FROM issues INNER JOIN custom_values ON custom_values.customized_type = 'Issue' AND custom_values.customized_id = issues.id AND custom_values.custom_field_id = 19 WHERE custom_values.value IN ('value1') AND 1 = 1 AND issues.tracker_id IN (SELECT tracker_id FROM custom_fields_trackers WHERE custom_field_id = 19) AND ((SELECT 1 FROM custom_fields AS ifa WHERE ifa.is_for_all = True AND ifa.id = 19) IS NOT NULL OR issues.project_id IN (SELECT project_id FROM custom_fields_projects WHERE custom_field_id = 19)))",
+            "cost": 1977.78,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

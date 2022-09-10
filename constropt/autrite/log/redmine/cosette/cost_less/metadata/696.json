@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM projects LEFT OUTER JOIN custom_values AS cf_3 ON cf_3.customized_type = 'Project' AND cf_3.customized_id = projects.id AND cf_3.custom_field_id = 3 AND 1 = 1 AND cf_3.value <> '' AND cf_3.id = (SELECT MAX(cf_3_2.id) FROM custom_values AS cf_3_2 WHERE cf_3_2.customized_type = cf_3.customized_type AND cf_3_2.customized_id = cf_3.customized_id AND cf_3_2.custom_field_id = cf_3.custom_field_id) WHERE projects.status <> 9 AND projects.status IN ('1')",
+        "cost": 74441.11,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE projects.status <> 9 AND projects.status IN ('1')",
+            "cost": 11683.5,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

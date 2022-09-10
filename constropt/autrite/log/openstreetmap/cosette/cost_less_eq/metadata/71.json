@@ -1,62 +1,30 @@
 {
     "org": {
-        "sql": "SELECT gpx_files.id AS t0_r0, gpx_files.user_id AS t0_r1, gpx_files.visible AS t0_r2, gpx_files.name AS t0_r3, gpx_files.size AS t0_r4, gpx_files.latitude AS t0_r5, gpx_files.longitude AS t0_r6, gpx_files.timestamp AS t0_r7, gpx_files.description AS t0_r8, gpx_files.inserted AS t0_r9, gpx_files.visibility AS t0_r10, users.email AS t1_r0, users.id AS t1_r1, users.pass_crypt AS t1_r2, users.creation_time AS t1_r3, users.display_name AS t1_r4, users.data_public AS t1_r5, users.description AS t1_r6, users.home_lat AS t1_r7, users.home_lon AS t1_r8, users.home_zoom AS t1_r9, users.pass_salt AS t1_r10, users.email_valid AS t1_r11, users.new_email AS t1_r12, users.creation_ip AS t1_r13, users.languages AS t1_r14, users.status AS t1_r15, users.terms_agreed AS t1_r16, users.consider_pd AS t1_r17, users.auth_uid AS t1_r18, users.preferred_editor AS t1_r19, users.terms_seen AS t1_r20, users.description_format AS t1_r21, users.changesets_count AS t1_r22, users.traces_count AS t1_r23, users.diary_entries_count AS t1_r24, users.image_use_gravatar AS t1_r25, users.auth_provider AS t1_r26, users.home_tile AS t1_r27, users.tou_agreed AS t1_r28, gpx_file_tags.gpx_id AS t2_r0, gpx_file_tags.tag AS t2_r1, gpx_file_tags.id AS t2_r2 FROM gpx_files INNER JOIN gpx_file_tags ON gpx_file_tags.gpx_id = gpx_files.id LEFT OUTER JOIN users ON users.id = gpx_files.user_id WHERE gpx_files.visibility IN (\"$1\", \"$2\") AND gpx_file_tags.tag = \"$3\" AND gpx_files.visible = \"$4\" AND gpx_files.id = \"$5\" ORDER BY gpx_files.id DESC",
-        "cost": 25.05,
+        "sql": "SELECT DISTINCT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = \"$1\" LEFT OUTER JOIN users ON users.id = note_comments.author_id AND (users.status IN (\"$2\", \"$3\") OR users.status IS NULL) WHERE (notes.status = \"$4\" OR notes.status = \"$5\" AND notes.closed_at > '2022-08-22 21:21:59.854078') AND note_comments.author_id = \"$6\" ORDER BY updated_at DESC LIMIT \"$7\"",
+        "cost": 16.64,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT gpx_files.id AS t0_r0, gpx_files.user_id AS t0_r1, gpx_files.visible AS t0_r2, gpx_files.name AS t0_r3, gpx_files.size AS t0_r4, gpx_files.latitude AS t0_r5, gpx_files.longitude AS t0_r6, gpx_files.timestamp AS t0_r7, gpx_files.description AS t0_r8, gpx_files.inserted AS t0_r9, gpx_files.visibility AS t0_r10, users.email AS t1_r0, users.id AS t1_r1, users.pass_crypt AS t1_r2, users.creation_time AS t1_r3, users.display_name AS t1_r4, users.data_public AS t1_r5, users.description AS t1_r6, users.home_lat AS t1_r7, users.home_lon AS t1_r8, users.home_zoom AS t1_r9, users.pass_salt AS t1_r10, users.email_valid AS t1_r11, users.new_email AS t1_r12, users.creation_ip AS t1_r13, users.languages AS t1_r14, users.status AS t1_r15, users.terms_agreed AS t1_r16, users.consider_pd AS t1_r17, users.auth_uid AS t1_r18, users.preferred_editor AS t1_r19, users.terms_seen AS t1_r20, users.description_format AS t1_r21, users.changesets_count AS t1_r22, users.traces_count AS t1_r23, users.diary_entries_count AS t1_r24, users.image_use_gravatar AS t1_r25, users.auth_provider AS t1_r26, users.home_tile AS t1_r27, users.tou_agreed AS t1_r28, gpx_file_tags.gpx_id AS t2_r0, gpx_file_tags.tag AS t2_r1, gpx_file_tags.id AS t2_r2 FROM gpx_files INNER JOIN gpx_file_tags ON gpx_file_tags.gpx_id = gpx_files.id LEFT OUTER JOIN users ON users.id = gpx_files.user_id WHERE gpx_files.visibility IN (\"$1\", \"$2\") AND gpx_file_tags.tag = \"$3\" AND gpx_files.visible = \"$4\" AND gpx_files.id = \"$5\" ORDER BY gpx_files.id DESC",
-            "cost": 25.05,
+            "sql": "SELECT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = \"$1\" LEFT OUTER JOIN users ON users.id = note_comments.author_id AND (users.status IN (\"$2\", \"$3\") OR users.status IS NULL) WHERE (notes.status = \"$4\" OR notes.status = \"$5\" AND notes.closed_at > '2022-08-22 21:21:59.854078') AND note_comments.author_id = \"$6\" ORDER BY updated_at DESC LIMIT \"$7\"",
+            "cost": 16.62,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = \"$1\" WHERE (notes.status = \"$4\" OR notes.status = \"$5\" AND notes.closed_at > '2022-08-22 21:21:59.854078') AND note_comments.author_id = \"$6\" ORDER BY updated_at DESC LIMIT \"$7\"",
+            "cost": 16.62,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = \"$1\" WHERE (notes.status = \"$4\" OR notes.status = \"$5\" AND notes.closed_at > '2022-08-22 21:21:59.854078') AND note_comments.author_id = \"$6\" ORDER BY updated_at DESC LIMIT \"$7\"",
+            "cost": 16.64,
             "rewrite_types": [
                 "RemoveJoin"
-            ]
-        },
-        {
-            "sql": "SELECT gpx_files.id AS t0_r0, gpx_files.user_id AS t0_r1, gpx_files.visible AS t0_r2, gpx_files.name AS t0_r3, gpx_files.size AS t0_r4, gpx_files.latitude AS t0_r5, gpx_files.longitude AS t0_r6, gpx_files.timestamp AS t0_r7, gpx_files.description AS t0_r8, gpx_files.inserted AS t0_r9, gpx_files.visibility AS t0_r10, users.email AS t1_r0, users.id AS t1_r1, users.pass_crypt AS t1_r2, users.creation_time AS t1_r3, users.display_name AS t1_r4, users.data_public AS t1_r5, users.description AS t1_r6, users.home_lat AS t1_r7, users.home_lon AS t1_r8, users.home_zoom AS t1_r9, users.pass_salt AS t1_r10, users.email_valid AS t1_r11, users.new_email AS t1_r12, users.creation_ip AS t1_r13, users.languages AS t1_r14, users.status AS t1_r15, users.terms_agreed AS t1_r16, users.consider_pd AS t1_r17, users.auth_uid AS t1_r18, users.preferred_editor AS t1_r19, users.terms_seen AS t1_r20, users.description_format AS t1_r21, users.changesets_count AS t1_r22, users.traces_count AS t1_r23, users.diary_entries_count AS t1_r24, users.image_use_gravatar AS t1_r25, users.auth_provider AS t1_r26, users.home_tile AS t1_r27, users.tou_agreed AS t1_r28, gpx_file_tags.gpx_id AS t2_r0, gpx_file_tags.tag AS t2_r1, gpx_file_tags.id AS t2_r2 FROM gpx_files INNER JOIN gpx_file_tags ON gpx_file_tags.gpx_id = gpx_files.id LEFT OUTER JOIN users ON users.id = gpx_files.user_id WHERE gpx_files.visibility IN (\"$1\", \"$2\") AND gpx_file_tags.tag = \"$3\" AND gpx_files.visible = \"$4\" AND gpx_files.id = \"$5\" ORDER BY gpx_files.id DESC LIMIT 1",
-            "cost": 25.05,
-            "rewrite_types": [
-                "AddLimitOne"
-            ]
-        },
-        {
-            "sql": "SELECT gpx_files.id AS t0_r0, gpx_files.user_id AS t0_r1, gpx_files.visible AS t0_r2, gpx_files.name AS t0_r3, gpx_files.size AS t0_r4, gpx_files.latitude AS t0_r5, gpx_files.longitude AS t0_r6, gpx_files.timestamp AS t0_r7, gpx_files.description AS t0_r8, gpx_files.inserted AS t0_r9, gpx_files.visibility AS t0_r10, users.email AS t1_r0, users.id AS t1_r1, users.pass_crypt AS t1_r2, users.creation_time AS t1_r3, users.display_name AS t1_r4, users.data_public AS t1_r5, users.description AS t1_r6, users.home_lat AS t1_r7, users.home_lon AS t1_r8, users.home_zoom AS t1_r9, users.pass_salt AS t1_r10, users.email_valid AS t1_r11, users.new_email AS t1_r12, users.creation_ip AS t1_r13, users.languages AS t1_r14, users.status AS t1_r15, users.terms_agreed AS t1_r16, users.consider_pd AS t1_r17, users.auth_uid AS t1_r18, users.preferred_editor AS t1_r19, users.terms_seen AS t1_r20, users.description_format AS t1_r21, users.changesets_count AS t1_r22, users.traces_count AS t1_r23, users.diary_entries_count AS t1_r24, users.image_use_gravatar AS t1_r25, users.auth_provider AS t1_r26, users.home_tile AS t1_r27, users.tou_agreed AS t1_r28, gpx_file_tags.gpx_id AS t2_r0, gpx_file_tags.tag AS t2_r1, gpx_file_tags.id AS t2_r2 FROM gpx_files INNER JOIN gpx_file_tags ON gpx_file_tags.gpx_id = gpx_files.id LEFT OUTER JOIN users ON users.id = gpx_files.user_id WHERE gpx_files.visibility IN (\"$1\", \"$2\") AND gpx_file_tags.tag = \"$3\" AND gpx_files.visible = \"$4\" AND gpx_files.id = \"$5\" ORDER BY gpx_files.id DESC LIMIT 1",
-            "cost": 25.05,
-            "rewrite_types": [
-                "RemoveJoin",
-                "AddLimitOne"
-            ]
-        },
-        {
-            "sql": "SELECT gpx_files.id AS t0_r0, gpx_files.user_id AS t0_r1, gpx_files.visible AS t0_r2, gpx_files.name AS t0_r3, gpx_files.size AS t0_r4, gpx_files.latitude AS t0_r5, gpx_files.longitude AS t0_r6, gpx_files.timestamp AS t0_r7, gpx_files.description AS t0_r8, gpx_files.inserted AS t0_r9, gpx_files.visibility AS t0_r10, users.email AS t1_r0, users.id AS t1_r1, users.pass_crypt AS t1_r2, users.creation_time AS t1_r3, users.display_name AS t1_r4, users.data_public AS t1_r5, users.description AS t1_r6, users.home_lat AS t1_r7, users.home_lon AS t1_r8, users.home_zoom AS t1_r9, users.pass_salt AS t1_r10, users.email_valid AS t1_r11, users.new_email AS t1_r12, users.creation_ip AS t1_r13, users.languages AS t1_r14, users.status AS t1_r15, users.terms_agreed AS t1_r16, users.consider_pd AS t1_r17, users.auth_uid AS t1_r18, users.preferred_editor AS t1_r19, users.terms_seen AS t1_r20, users.description_format AS t1_r21, users.changesets_count AS t1_r22, users.traces_count AS t1_r23, users.diary_entries_count AS t1_r24, users.image_use_gravatar AS t1_r25, users.auth_provider AS t1_r26, users.home_tile AS t1_r27, users.tou_agreed AS t1_r28, gpx_file_tags.gpx_id AS t2_r0, gpx_file_tags.tag AS t2_r1, gpx_file_tags.id AS t2_r2 FROM gpx_files INNER JOIN gpx_file_tags ON gpx_file_tags.gpx_id = gpx_files.id INNER JOIN users ON users.id = gpx_files.user_id WHERE gpx_files.visibility IN (\"$1\", \"$2\") AND gpx_file_tags.tag = \"$3\" AND gpx_files.visible = \"$4\" AND gpx_files.id = \"$5\" ORDER BY gpx_files.id DESC",
-            "cost": 25.05,
-            "rewrite_types": [
-                "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT gpx_files.id AS t0_r0, gpx_files.user_id AS t0_r1, gpx_files.visible AS t0_r2, gpx_files.name AS t0_r3, gpx_files.size AS t0_r4, gpx_files.latitude AS t0_r5, gpx_files.longitude AS t0_r6, gpx_files.timestamp AS t0_r7, gpx_files.description AS t0_r8, gpx_files.inserted AS t0_r9, gpx_files.visibility AS t0_r10, users.email AS t1_r0, users.id AS t1_r1, users.pass_crypt AS t1_r2, users.creation_time AS t1_r3, users.display_name AS t1_r4, users.data_public AS t1_r5, users.description AS t1_r6, users.home_lat AS t1_r7, users.home_lon AS t1_r8, users.home_zoom AS t1_r9, users.pass_salt AS t1_r10, users.email_valid AS t1_r11, users.new_email AS t1_r12, users.creation_ip AS t1_r13, users.languages AS t1_r14, users.status AS t1_r15, users.terms_agreed AS t1_r16, users.consider_pd AS t1_r17, users.auth_uid AS t1_r18, users.preferred_editor AS t1_r19, users.terms_seen AS t1_r20, users.description_format AS t1_r21, users.changesets_count AS t1_r22, users.traces_count AS t1_r23, users.diary_entries_count AS t1_r24, users.image_use_gravatar AS t1_r25, users.auth_provider AS t1_r26, users.home_tile AS t1_r27, users.tou_agreed AS t1_r28, gpx_file_tags.gpx_id AS t2_r0, gpx_file_tags.tag AS t2_r1, gpx_file_tags.id AS t2_r2 FROM gpx_files INNER JOIN gpx_file_tags ON gpx_file_tags.gpx_id = gpx_files.id INNER JOIN users ON users.id = gpx_files.user_id WHERE gpx_files.visibility IN (\"$1\", \"$2\") AND gpx_file_tags.tag = \"$3\" AND gpx_files.visible = \"$4\" AND gpx_files.id = \"$5\" ORDER BY gpx_files.id DESC",
-            "cost": 25.05,
-            "rewrite_types": [
-                "RemoveJoin",
-                "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT gpx_files.id AS t0_r0, gpx_files.user_id AS t0_r1, gpx_files.visible AS t0_r2, gpx_files.name AS t0_r3, gpx_files.size AS t0_r4, gpx_files.latitude AS t0_r5, gpx_files.longitude AS t0_r6, gpx_files.timestamp AS t0_r7, gpx_files.description AS t0_r8, gpx_files.inserted AS t0_r9, gpx_files.visibility AS t0_r10, users.email AS t1_r0, users.id AS t1_r1, users.pass_crypt AS t1_r2, users.creation_time AS t1_r3, users.display_name AS t1_r4, users.data_public AS t1_r5, users.description AS t1_r6, users.home_lat AS t1_r7, users.home_lon AS t1_r8, users.home_zoom AS t1_r9, users.pass_salt AS t1_r10, users.email_valid AS t1_r11, users.new_email AS t1_r12, users.creation_ip AS t1_r13, users.languages AS t1_r14, users.status AS t1_r15, users.terms_agreed AS t1_r16, users.consider_pd AS t1_r17, users.auth_uid AS t1_r18, users.preferred_editor AS t1_r19, users.terms_seen AS t1_r20, users.description_format AS t1_r21, users.changesets_count AS t1_r22, users.traces_count AS t1_r23, users.diary_entries_count AS t1_r24, users.image_use_gravatar AS t1_r25, users.auth_provider AS t1_r26, users.home_tile AS t1_r27, users.tou_agreed AS t1_r28, gpx_file_tags.gpx_id AS t2_r0, gpx_file_tags.tag AS t2_r1, gpx_file_tags.id AS t2_r2 FROM gpx_files INNER JOIN gpx_file_tags ON gpx_file_tags.gpx_id = gpx_files.id INNER JOIN users ON users.id = gpx_files.user_id WHERE gpx_files.visibility IN (\"$1\", \"$2\") AND gpx_file_tags.tag = \"$3\" AND gpx_files.visible = \"$4\" AND gpx_files.id = \"$5\" ORDER BY gpx_files.id DESC LIMIT 1",
-            "cost": 25.05,
-            "rewrite_types": [
-                "AddLimitOne",
-                "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT gpx_files.id AS t0_r0, gpx_files.user_id AS t0_r1, gpx_files.visible AS t0_r2, gpx_files.name AS t0_r3, gpx_files.size AS t0_r4, gpx_files.latitude AS t0_r5, gpx_files.longitude AS t0_r6, gpx_files.timestamp AS t0_r7, gpx_files.description AS t0_r8, gpx_files.inserted AS t0_r9, gpx_files.visibility AS t0_r10, users.email AS t1_r0, users.id AS t1_r1, users.pass_crypt AS t1_r2, users.creation_time AS t1_r3, users.display_name AS t1_r4, users.data_public AS t1_r5, users.description AS t1_r6, users.home_lat AS t1_r7, users.home_lon AS t1_r8, users.home_zoom AS t1_r9, users.pass_salt AS t1_r10, users.email_valid AS t1_r11, users.new_email AS t1_r12, users.creation_ip AS t1_r13, users.languages AS t1_r14, users.status AS t1_r15, users.terms_agreed AS t1_r16, users.consider_pd AS t1_r17, users.auth_uid AS t1_r18, users.preferred_editor AS t1_r19, users.terms_seen AS t1_r20, users.description_format AS t1_r21, users.changesets_count AS t1_r22, users.traces_count AS t1_r23, users.diary_entries_count AS t1_r24, users.image_use_gravatar AS t1_r25, users.auth_provider AS t1_r26, users.home_tile AS t1_r27, users.tou_agreed AS t1_r28, gpx_file_tags.gpx_id AS t2_r0, gpx_file_tags.tag AS t2_r1, gpx_file_tags.id AS t2_r2 FROM gpx_files INNER JOIN gpx_file_tags ON gpx_file_tags.gpx_id = gpx_files.id INNER JOIN users ON users.id = gpx_files.user_id WHERE gpx_files.visibility IN (\"$1\", \"$2\") AND gpx_file_tags.tag = \"$3\" AND gpx_files.visible = \"$4\" AND gpx_files.id = \"$5\" ORDER BY gpx_files.id DESC LIMIT 1",
-            "cost": 25.05,
-            "rewrite_types": [
-                "RemoveJoin",
-                "AddLimitOne",
-                "ReplaceOuterJoin"
             ]
         }
     ]

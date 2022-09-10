@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND projects.status <> \"$2\" AND member_roles.role_id IN (\"$3\", \"$4\") LIMIT \"$5\"",
+        "cost": 24.92,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = \"$1\" AND projects.status <> \"$2\" LIMIT \"$5\"",
+            "cost": 16.61,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

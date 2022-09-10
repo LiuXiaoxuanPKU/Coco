@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM current_nodes INNER JOIN current_way_nodes ON current_nodes.id = current_way_nodes.node_id WHERE current_way_nodes.way_id = \"$1\" LIMIT \"$2\"",
-        "cost": 23.87,
+        "sql": "SELECT changesets.* FROM changesets WHERE changesets.user_id = \"$1\" AND (closed_at < '2022-08-29 21:22:12.724623' OR num_changes > 10000) ORDER BY created_at DESC LIMIT \"$2\"",
+        "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM current_nodes LIMIT \"$2\"",
-            "cost": 0.09,
+            "sql": "SELECT changesets.* FROM changesets WHERE changesets.user_id = \"$1\" AND closed_at < '2022-08-29 21:22:12.724623' ORDER BY created_at DESC LIMIT \"$2\"",
+            "cost": 8.3,
             "rewrite_types": [
-                "RemoveJoin"
+                "RemovePredicate"
             ]
         }
     ]

@@ -968,6 +968,12 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT account_stats.id, account_stats.account_id, account_stats.statuses_count, account_stats.following_count, account_stats.followers_count, account_stats.created_at, account_stats.updated_at, account_stats.last_status_at FROM account_stats WHERE account_stats.account_id = 108847828961669951;
+SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE 1 = 1 AND follows.account_id = 108847828073028560 ORDER BY follows.id DESC LIMIT 6;
 -- Rewritten Queries
-SELECT account_stats.id, account_stats.account_id, account_stats.statuses_count, account_stats.following_count, account_stats.followers_count, account_stats.created_at, account_stats.updated_at, account_stats.last_status_at FROM account_stats WHERE account_stats.account_id = 108847828961669951 LIMIT 1;
+SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE 1 = 1 AND follows.account_id = 108847828073028560 ORDER BY follows.id DESC LIMIT 6;
+SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id WHERE 1 = 1 AND follows.account_id = 108847828073028560 ORDER BY follows.id DESC LIMIT 6;
+SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE 1 = 1 AND follows.account_id = 108847828073028560 ORDER BY follows.id DESC LIMIT 6;
+SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.target_account_id = accounts.id WHERE 1 = 1 AND follows.account_id = 108847828073028560 ORDER BY follows.id DESC LIMIT 6;
+SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id WHERE 1 = 1 AND follows.account_id = 108847828073028560 ORDER BY follows.id DESC LIMIT 6;
+SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE 1 = 1 AND follows.account_id = 108847828073028560 ORDER BY follows.id DESC LIMIT 6;
+SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.target_account_id = accounts.id WHERE 1 = 1 AND follows.account_id = 108847828073028560 ORDER BY follows.id DESC LIMIT 6;

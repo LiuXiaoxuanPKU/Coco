@@ -112,7 +112,6 @@ CREATE TABLE current_nodes (
 
 CREATE TABLE current_relation_members (
     relation_id bigint NOT NULL,
-    member_type public.nwr_enum NOT NULL,
     member_id bigint NOT NULL,
     member_role character varying NOT NULL,
     sequence_id integer   NOT NULL
@@ -175,7 +174,6 @@ CREATE TABLE diary_comments (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     visible boolean   NOT NULL,
-    body_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE diary_entries (
@@ -189,7 +187,6 @@ CREATE TABLE diary_entries (
     longitude double precision,
     language_code character varying    NOT NULL,
     visible boolean   NOT NULL,
-    body_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE diary_entry_subscriptions (
@@ -231,7 +228,6 @@ CREATE TABLE gpx_files (
     "timestamp" timestamp without time zone NOT NULL,
     description character varying    NOT NULL,
     inserted boolean NOT NULL,
-    visibility public.gpx_visibility_enum   NOT NULL
 );
 
 CREATE TABLE issue_comments (
@@ -248,8 +244,6 @@ CREATE TABLE issues (
     reportable_type character varying NOT NULL,
     reportable_id integer NOT NULL,
     reported_user_id integer,
-    status public.issue_status_enum   NOT NULL,
-    assigned_role public.user_role_enum NOT NULL,
     resolved_at timestamp without time zone,
     resolved_by integer,
     updated_by integer,
@@ -274,7 +268,6 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
-    body_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -304,7 +297,6 @@ CREATE TABLE note_comments (
     author_ip inet,
     author_id bigint,
     body character varying(255),
-    event public.note_event_enum
 );
 
 CREATE TABLE notes (
@@ -314,7 +306,6 @@ CREATE TABLE notes (
     tile bigint NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    status public.note_status_enum NOT NULL,
     closed_at timestamp without time zone
 );
 
@@ -398,12 +389,10 @@ CREATE TABLE redactions (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     user_id bigint NOT NULL,
-    description_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE relation_members (
     relation_id bigint NOT NULL,
-    member_type public.nwr_enum NOT NULL,
     member_id bigint NOT NULL,
     member_role character varying NOT NULL,
     version bigint   NOT NULL,
@@ -450,7 +439,6 @@ CREATE TABLE user_blocks (
     revoker_id bigint,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    reason_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE user_preferences (
@@ -462,7 +450,6 @@ CREATE TABLE user_preferences (
 CREATE TABLE user_roles (
     id integer NOT NULL,
     user_id bigint NOT NULL,
-    role public.user_role_enum NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     granter_id bigint NOT NULL
@@ -492,13 +479,11 @@ CREATE TABLE users (
     new_email character varying,
     creation_ip character varying,
     languages character varying,
-    status public.user_status_enum   NOT NULL,
     terms_agreed timestamp without time zone,
     consider_pd boolean   NOT NULL,
     auth_uid character varying,
     preferred_editor character varying,
     terms_seen boolean   NOT NULL,
-    description_format public.format_enum   NOT NULL,
     changesets_count integer   NOT NULL,
     traces_count integer   NOT NULL,
     diary_entries_count integer   NOT NULL,
@@ -533,6 +518,6 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT COUNT(*) FROM friends INNER JOIN users ON users.id = friends.friend_user_id WHERE friends.user_id = 8708 AND users.status IN ('pending', 'pending') AND created_at >= '2022-08-29 20:22:41.603262';
+SELECT COUNT(*) FROM friends INNER JOIN users ON users.id = friends.friend_user_id WHERE friends.user_id = 2217 AND users.status IN ('pending', 'pending') AND created_at >= '2022-08-29 20:22:41.603262';
 -- Rewritten Queries
-SELECT COUNT(*) FROM friends WHERE friends.user_id = 8708 AND created_at >= '2022-08-29 20:22:41.603262';
+SELECT COUNT(*) FROM friends WHERE friends.user_id = 2217 AND created_at >= '2022-08-29 20:22:41.603262';

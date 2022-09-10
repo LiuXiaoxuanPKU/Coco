@@ -1,45 +1,30 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN users ON users.id = diary_entries.user_id LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code WHERE users.status IN (\"$1\", \"$2\") AND diary_entries.visible = \"$3\" LIMIT \"$4\" OFFSET \"$5\"",
-        "cost": 2.33,
+        "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" AND (users.status IN (\"$2\", \"$3\") OR users.status IS NULL) ORDER BY note_comments.created_at ASC LIMIT \"$4\"",
+        "cost": 28.16,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM diary_entries LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code WHERE diary_entries.visible = \"$3\" LIMIT \"$4\" OFFSET \"$5\"",
-            "cost": 0.23,
+            "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" AND (users.status IN (\"$2\", \"$3\") OR False) ORDER BY note_comments.created_at ASC LIMIT \"$4\"",
+            "cost": 28.14,
             "rewrite_types": [
-                "RemoveJoin"
+                "RewriteNullPredicate"
             ]
         },
         {
-            "sql": "SELECT 1 AS one FROM diary_entries LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code WHERE diary_entries.visible = \"$3\" LIMIT \"$4\" OFFSET \"$5\"",
-            "cost": 0.23,
+            "sql": "SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" AND (users.status IN (\"$2\", \"$3\") OR users.status IS NULL) ORDER BY note_comments.created_at ASC LIMIT \"$4\"",
+            "cost": 28.14,
             "rewrite_types": [
-                "RemoveJoin"
-            ]
-        },
-        {
-            "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN languages ON languages.code = diary_entries.language_code WHERE diary_entries.visible = \"$3\" LIMIT \"$4\" OFFSET \"$5\"",
-            "cost": 1.26,
-            "rewrite_types": [
-                "RemoveJoin",
                 "ReplaceOuterJoin"
             ]
         },
         {
-            "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN languages ON languages.code = diary_entries.language_code WHERE diary_entries.visible = \"$3\" LIMIT \"$4\" OFFSET \"$5\"",
-            "cost": 1.26,
+            "sql": "SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" AND (users.status IN (\"$2\", \"$3\") OR False) ORDER BY note_comments.created_at ASC LIMIT \"$4\"",
+            "cost": 28.14,
             "rewrite_types": [
-                "RemoveJoin",
+                "RewriteNullPredicate",
                 "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN users ON users.id = diary_entries.user_id LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code WHERE users.status IN (\"$1\", \"$2\") AND diary_entries.visible = \"$3\" LIMIT \"$4\" OFFSET \"$5\"",
-            "cost": 2.33,
-            "rewrite_types": [
-                "RemoveJoin"
             ]
         }
     ]

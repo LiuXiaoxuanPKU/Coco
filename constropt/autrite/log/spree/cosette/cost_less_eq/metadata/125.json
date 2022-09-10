@@ -1,15 +1,30 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT spree_zones.id FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = \"$1\" AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = \"$2\" AND zone_members_spree_countries_join.zoneable_id = spree_countries.id INNER JOIN spree_zones AS zones_spree_countries ON zones_spree_countries.id = zone_members_spree_countries_join.zone_id WHERE zone_members_spree_countries_join.zone_id = 52",
+        "sql": "SELECT DISTINCT spree_zones.id FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = \"$1\" AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = \"$2\" AND zone_members_spree_countries_join.zoneable_id = spree_countries.id INNER JOIN spree_zones AS zones_spree_countries ON zones_spree_countries.id = zone_members_spree_countries_join.zone_id WHERE zone_members_spree_countries_join.zone_id = 55",
         "cost": 29.05,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT DISTINCT spree_zones.id FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = \"$1\" AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = \"$2\" AND zone_members_spree_countries_join.zoneable_id = spree_countries.id WHERE zone_members_spree_countries_join.zone_id = 52",
+            "sql": "SELECT spree_zones.id FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = \"$1\" AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = \"$2\" AND zone_members_spree_countries_join.zoneable_id = spree_countries.id WHERE zone_members_spree_countries_join.zone_id = 55",
+            "cost": 20.72,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT spree_zones.id FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = \"$1\" AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = \"$2\" AND zone_members_spree_countries_join.zoneable_id = spree_countries.id WHERE zone_members_spree_countries_join.zone_id = 55",
             "cost": 20.73,
             "rewrite_types": [
                 "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT spree_zones.id FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = \"$1\" AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = \"$2\" AND zone_members_spree_countries_join.zoneable_id = spree_countries.id INNER JOIN spree_zones AS zones_spree_countries ON zones_spree_countries.id = zone_members_spree_countries_join.zone_id WHERE zone_members_spree_countries_join.zone_id = 55",
+            "cost": 29.03,
+            "rewrite_types": [
+                "RemoveDistinct"
             ]
         }
     ]

@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM favourites WHERE favourites.status_id IS NULL AND favourites.id <> 88 AND favourites.account_id = 108847820837451928 LIMIT 3;
+SELECT 1 AS "one" FROM follow_requests WHERE follow_requests.account_id = 108847828090834342 AND follow_requests.target_account_id IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM favourites WHERE False AND favourites.id <> 88 AND favourites.account_id = 108847820837451928 LIMIT 3;
+SELECT 1 AS "one" FROM follow_requests WHERE follow_requests.account_id = 108847828090834342 AND False LIMIT 1;

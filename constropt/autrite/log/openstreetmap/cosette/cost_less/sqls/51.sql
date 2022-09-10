@@ -112,7 +112,6 @@ CREATE TABLE current_nodes (
 
 CREATE TABLE current_relation_members (
     relation_id bigint NOT NULL,
-    member_type public.nwr_enum NOT NULL,
     member_id bigint NOT NULL,
     member_role character varying NOT NULL,
     sequence_id integer   NOT NULL
@@ -175,7 +174,6 @@ CREATE TABLE diary_comments (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     visible boolean   NOT NULL,
-    body_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE diary_entries (
@@ -189,7 +187,6 @@ CREATE TABLE diary_entries (
     longitude double precision,
     language_code character varying    NOT NULL,
     visible boolean   NOT NULL,
-    body_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE diary_entry_subscriptions (
@@ -231,7 +228,6 @@ CREATE TABLE gpx_files (
     "timestamp" timestamp without time zone NOT NULL,
     description character varying    NOT NULL,
     inserted boolean NOT NULL,
-    visibility public.gpx_visibility_enum   NOT NULL
 );
 
 CREATE TABLE issue_comments (
@@ -248,8 +244,6 @@ CREATE TABLE issues (
     reportable_type character varying NOT NULL,
     reportable_id integer NOT NULL,
     reported_user_id integer,
-    status public.issue_status_enum   NOT NULL,
-    assigned_role public.user_role_enum NOT NULL,
     resolved_at timestamp without time zone,
     resolved_by integer,
     updated_by integer,
@@ -274,7 +268,6 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
-    body_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -304,7 +297,6 @@ CREATE TABLE note_comments (
     author_ip inet,
     author_id bigint,
     body character varying(255),
-    event public.note_event_enum
 );
 
 CREATE TABLE notes (
@@ -314,7 +306,6 @@ CREATE TABLE notes (
     tile bigint NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    status public.note_status_enum NOT NULL,
     closed_at timestamp without time zone
 );
 
@@ -398,12 +389,10 @@ CREATE TABLE redactions (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     user_id bigint NOT NULL,
-    description_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE relation_members (
     relation_id bigint NOT NULL,
-    member_type public.nwr_enum NOT NULL,
     member_id bigint NOT NULL,
     member_role character varying NOT NULL,
     version bigint   NOT NULL,
@@ -450,7 +439,6 @@ CREATE TABLE user_blocks (
     revoker_id bigint,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    reason_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE user_preferences (
@@ -462,7 +450,6 @@ CREATE TABLE user_preferences (
 CREATE TABLE user_roles (
     id integer NOT NULL,
     user_id bigint NOT NULL,
-    role public.user_role_enum NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     granter_id bigint NOT NULL
@@ -492,13 +479,11 @@ CREATE TABLE users (
     new_email character varying,
     creation_ip character varying,
     languages character varying,
-    status public.user_status_enum   NOT NULL,
     terms_agreed timestamp without time zone,
     consider_pd boolean   NOT NULL,
     auth_uid character varying,
     preferred_editor character varying,
     terms_seen boolean   NOT NULL,
-    description_format public.format_enum   NOT NULL,
     changesets_count integer   NOT NULL,
     traces_count integer   NOT NULL,
     diary_entries_count integer   NOT NULL,
@@ -533,6 +518,7 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT notes.* FROM notes WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.328604') AND (notes.tile BETWEEN 3223290360 AND 3223290367 OR notes.tile BETWEEN 3223290704 AND 3223290719 OR notes.tile BETWEEN 3223290736 AND 3223290751 OR notes.tile BETWEEN 3223290832 AND 3223290847 OR notes.tile BETWEEN 3223290864 AND 3223290879 OR notes.tile BETWEEN 3223291048 AND 3223291055 OR notes.tile BETWEEN 3223291064 AND 3223291071 OR notes.tile BETWEEN 3223291112 AND 3223291119 OR notes.tile BETWEEN 3223291128 AND 3223291135 OR notes.tile BETWEEN 3223291304 AND 3223291311 OR notes.tile BETWEEN 3223291320 AND 3223291327 OR notes.tile BETWEEN 3223291368 AND 3223291375 OR notes.tile BETWEEN 3223291384 AND 3223291903 OR notes.tile BETWEEN 3223292240 AND 3223292241 OR notes.tile BETWEEN 3223292244 AND 3223292245 OR notes.tile BETWEEN 3223292928 AND 3223292929 OR notes.tile BETWEEN 3223292932 AND 3223292933 OR notes.tile BETWEEN 3223292944 AND 3223292945 OR notes.tile BETWEEN 3223292948 AND 3223292949 OR notes.tile BETWEEN 3223292992 AND 3223292993 OR notes.tile BETWEEN 3223292996 AND 3223292997 OR notes.tile BETWEEN 3223293008 AND 3223293009 OR notes.tile BETWEEN 3223293012 AND 3223293013 OR notes.tile BETWEEN 3223293184 AND 3223293185 OR notes.tile BETWEEN 3223293188 AND 3223293189 OR notes.tile BETWEEN 3223293200 AND 3223293201 OR notes.tile BETWEEN 3223293204 AND 3223293205 OR notes.tile BETWEEN 3223293248 AND 3223293249 OR notes.tile BETWEEN 3223293252 AND 3223293253 OR notes.tile BETWEEN 3223293264 AND 3223293265 OR notes.tile BETWEEN 3223293268 AND 3223293269 OR notes.tile IN (3223294120, 3223294122, 3223294464, 3223294466, 3223294472, 3223294474, 3223294496, 3223294498, 3223294504, 3223294506, 3223294592, 3223294594, 3223294600, 3223294602, 3223294624, 3223294626, 3223294632, 3223294634, 3223296000)) AND notes.latitude BETWEEN 50000000.0 AND 51000000.0 AND notes.longitude BETWEEN 50000000.0 AND 51000000.0 ORDER BY updated_at DESC LIMIT 2;
+SELECT DISTINCT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False LEFT OUTER JOIN users ON users.id = note_comments.author_id AND (users.status IN ('pending', 'pending') OR users.status IS NULL) WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.473653') AND note_comments.author_id = 4062 ORDER BY updated_at DESC LIMIT 2;
 -- Rewritten Queries
-SELECT notes.* FROM notes WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.328604') AND (notes.tile BETWEEN 3223290360 AND 3223290367 OR notes.tile BETWEEN 3223290704 AND 3223290719 OR notes.tile BETWEEN 3223290736 AND 3223290751 OR notes.tile BETWEEN 3223290832 AND 3223290847 OR notes.tile BETWEEN 3223290864 AND 3223290879 OR notes.tile BETWEEN 3223291048 AND 3223291055 OR notes.tile BETWEEN 3223291064 AND 3223291071 OR notes.tile BETWEEN 3223291112 AND 3223291119 OR notes.tile BETWEEN 3223291128 AND 3223291135 OR notes.tile BETWEEN 3223291304 AND 3223291311 OR notes.tile BETWEEN 3223291320 AND 3223291327 OR notes.tile BETWEEN 3223291368 AND 3223291375 OR notes.tile BETWEEN 3223291384 AND 3223291903 OR notes.tile BETWEEN 3223292240 AND 3223292241 OR notes.tile BETWEEN 3223292244 AND 3223292245 OR notes.tile BETWEEN 3223292928 AND 3223292929 OR notes.tile BETWEEN 3223292932 AND 3223292933 OR notes.tile BETWEEN 3223292944 AND 3223292945 OR notes.tile BETWEEN 3223292948 AND 3223292949 OR notes.tile BETWEEN 3223292992 AND 3223292993 OR notes.tile BETWEEN 3223292996 AND 3223292997 OR notes.tile BETWEEN 3223293008 AND 3223293009 OR notes.tile BETWEEN 3223293012 AND 3223293013 OR notes.tile BETWEEN 3223293184 AND 3223293185 OR notes.tile BETWEEN 3223293188 AND 3223293189 OR notes.tile BETWEEN 3223293200 AND 3223293201 OR notes.tile BETWEEN 3223293204 AND 3223293205 OR notes.tile BETWEEN 3223293248 AND 3223293249 OR notes.tile BETWEEN 3223293252 AND 3223293253 OR notes.tile BETWEEN 3223293264 AND 3223293265 OR notes.tile BETWEEN 3223293268 AND 3223293269 OR notes.tile IN (3223294120, 3223294122, 3223294464, 3223294466, 3223294472, 3223294474, 3223294496, 3223294498, 3223294504, 3223294506, 3223294592, 3223294594, 3223294600, 3223294602, 3223294624, 3223294626, 3223294632, 3223294634, 3223296000)) AND notes.latitude BETWEEN 50000000.0 AND 51000000.0 ORDER BY updated_at DESC LIMIT 2;
+SELECT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False LEFT OUTER JOIN users ON users.id = note_comments.author_id AND (users.status IN ('pending', 'pending') OR users.status IS NULL) WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.473653') AND note_comments.author_id = 4062 ORDER BY updated_at DESC LIMIT 2;
+SELECT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.473653') AND note_comments.author_id = 4062 ORDER BY updated_at DESC LIMIT 2;

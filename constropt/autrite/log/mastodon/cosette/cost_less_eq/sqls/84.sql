@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = 108847797459098515 ORDER BY follows.id DESC LIMIT 6 OFFSET 1;
+SELECT oauth_applications.* FROM oauth_applications WHERE oauth_applications.id IN (SELECT DISTINCT oauth_access_tokens.application_id FROM oauth_access_tokens WHERE oauth_access_tokens.resource_owner_id = 8022 AND oauth_access_tokens.revoked_at IS NULL);
 -- Rewritten Queries
-SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = 108847797459098515 ORDER BY follows.id DESC LIMIT 6 OFFSET 1;
+SELECT oauth_applications.* FROM oauth_applications WHERE oauth_applications.id IN (SELECT oauth_access_tokens.application_id FROM oauth_access_tokens WHERE oauth_access_tokens.resource_owner_id = 8022 AND oauth_access_tokens.revoked_at IS NULL);

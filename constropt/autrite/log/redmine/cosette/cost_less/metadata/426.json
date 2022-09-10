@@ -1,0 +1,37 @@
+{
+    "org": {
+        "sql": "SELECT versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.lft >= 6 AND projects.rgt <= 7 AND projects.status <> 9 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13))",
+        "cost": 427.6,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.lft >= 6 AND projects.rgt <= 7 AND projects.status <> 9 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1)",
+            "cost": 419.44,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.lft >= 6 AND projects.rgt <= 7 AND projects.status <> 9 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1)",
+            "cost": 419.44,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.lft >= 6 AND projects.rgt <= 7 AND projects.status <> 9 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) LIMIT 1",
+            "cost": 419.44,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT versions.* FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.lft >= 6 AND projects.rgt <= 7 AND projects.status <> 9 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) LIMIT 1",
+            "cost": 419.44,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

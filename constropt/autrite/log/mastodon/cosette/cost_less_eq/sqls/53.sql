@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT COUNT(*) FROM accounts INNER JOIN blocks ON accounts.id = blocks.target_account_id WHERE blocks.account_id = 108847828787260860;
+SELECT COUNT(*) FROM accounts INNER JOIN blocks ON accounts.id = blocks.target_account_id WHERE blocks.account_id = 108847814174634587;
 -- Rewritten Queries
-SELECT COUNT(*) FROM accounts INNER JOIN blocks ON accounts.id = blocks.target_account_id WHERE blocks.account_id = 108847828787260860 LIMIT 1;
+SELECT COUNT(*) FROM accounts INNER JOIN blocks ON accounts.id = blocks.target_account_id WHERE blocks.account_id = 108847814174634587 LIMIT 1;

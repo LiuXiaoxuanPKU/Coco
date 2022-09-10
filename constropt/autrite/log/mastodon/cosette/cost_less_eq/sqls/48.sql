@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT mentions.status_id, mentions.account_id FROM mentions WHERE mentions.silent = False AND mentions.status_id = 104782663943516798;
+SELECT COUNT(*) FROM accounts INNER JOIN mutes ON accounts.id = mutes.target_account_id WHERE mutes.account_id = 108847814140295176;
 -- Rewritten Queries
-SELECT mentions.status_id, mentions.account_id FROM mentions WHERE mentions.silent = False AND mentions.status_id = 104782663943516798 LIMIT 1;
+SELECT COUNT(*) FROM accounts INNER JOIN mutes ON accounts.id = mutes.target_account_id WHERE mutes.account_id = 108847814140295176 LIMIT 1;

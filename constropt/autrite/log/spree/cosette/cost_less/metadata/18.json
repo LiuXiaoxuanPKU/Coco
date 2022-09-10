@@ -7,7 +7,7 @@
     "rewrites": [
         {
             "sql": "SELECT 1 AS one FROM spree_stores WHERE spree_stores.deleted_at IS NULL LIMIT 1",
-            "cost": 0.64,
+            "cost": 0.44,
             "rewrite_types": [
                 "RemoveJoin"
             ]

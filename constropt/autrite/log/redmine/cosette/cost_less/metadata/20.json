@@ -1,0 +1,24 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id = \"$1\" AND users.type = \"$2\" AND users.status = \"$3\"",
+        "cost": 122.56,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM members WHERE members.project_id = \"$1\"",
+            "cost": 113.19,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM members WHERE members.project_id = \"$1\" LIMIT 1",
+            "cost": 113.19,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_products_taxons ON spree_taxons.id = spree_products_taxons.taxon_id INNER JOIN spree_taxonomies ON spree_taxonomies.id = spree_taxons.taxonomy_id WHERE spree_products_taxons.product_id = 8869 AND spree_taxonomies.store_id = 13801;
+SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_products_taxons ON spree_taxons.id = spree_products_taxons.taxon_id INNER JOIN spree_taxonomies ON spree_taxonomies.id = spree_taxons.taxonomy_id WHERE spree_products_taxons.product_id = 8859 AND spree_taxonomies.store_id = 7044;
 -- Rewritten Queries
-SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_products_taxons ON spree_taxons.id = spree_products_taxons.taxon_id INNER JOIN spree_taxonomies ON spree_taxonomies.id = spree_taxons.taxonomy_id WHERE spree_products_taxons.product_id = 8869 AND spree_taxonomies.store_id = 13801 LIMIT 1;
+SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_products_taxons ON spree_taxons.id = spree_products_taxons.taxon_id INNER JOIN spree_taxonomies ON spree_taxonomies.id = spree_taxons.taxonomy_id WHERE spree_products_taxons.product_id = 8859 AND spree_taxonomies.store_id = 7044 LIMIT 1;

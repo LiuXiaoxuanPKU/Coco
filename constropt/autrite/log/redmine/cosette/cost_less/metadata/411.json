@@ -1,0 +1,24 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = \"$1\" AND users.type IN (\"$2\", \"$3\") AND members.project_id = \"$4\" AND roles.assignable = \"$5\" AND roles.id IN (\"$6\", \"$7\", \"$8\", \"$9\", \"$10\") ORDER BY users.type DESC, users.firstname, users.lastname, users.id",
+        "cost": 133.09,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = \"$1\" AND users.type IN (\"$2\", \"$3\") AND members.project_id = \"$4\" AND roles.assignable = \"$5\" AND roles.id IN (\"$6\", \"$7\", \"$8\", \"$9\", \"$10\") ORDER BY users.type DESC, users.firstname, users.lastname, users.id",
+            "cost": 133.04,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users INNER JOIN members ON members.user_id = users.id INNER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.status = \"$1\" AND users.type IN (\"$2\", \"$3\") AND members.project_id = \"$4\" AND roles.assignable = \"$5\" AND roles.id IN (\"$6\", \"$7\", \"$8\", \"$9\", \"$10\") ORDER BY users.type DESC, users.firstname, users.lastname, users.id LIMIT 1",
+            "cost": 133.04,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

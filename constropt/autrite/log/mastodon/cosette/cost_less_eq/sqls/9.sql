@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT COUNT(*) FROM mentions WHERE mentions.account_id = 108847830852045347 AND mentions.status_id = 105319405060337352;
+SELECT COUNT(*) FROM mentions WHERE mentions.account_id = 108847815195281072 AND mentions.status_id = 103275356684701609;
 -- Rewritten Queries
-SELECT COUNT(*) FROM mentions WHERE mentions.account_id = 108847830852045347 AND mentions.status_id = 105319405060337352 LIMIT 1;
+SELECT COUNT(*) FROM mentions WHERE mentions.account_id = 108847815195281072 AND mentions.status_id = 103275356684701609 LIMIT 1;

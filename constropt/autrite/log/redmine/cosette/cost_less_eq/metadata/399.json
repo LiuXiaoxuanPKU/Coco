@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT issue_statuses.* FROM issue_statuses INNER JOIN workflows ON workflows.new_status_id = issue_statuses.id AND workflows.type IN ('WorkflowTransition') WHERE workflows.old_status_id = \"$1\" AND workflows.role_id = \"$2\" AND workflows.tracker_id = \"$3\" AND author = False AND assignee = False",
+        "cost": 16.64,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issue_statuses.* FROM issue_statuses INNER JOIN workflows ON workflows.new_status_id = issue_statuses.id AND workflows.type IN ('WorkflowTransition') WHERE workflows.old_status_id = \"$1\" AND workflows.role_id = \"$2\" AND workflows.tracker_id = \"$3\" AND author = False AND assignee = False",
+            "cost": 16.61,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        }
+    ]
+}

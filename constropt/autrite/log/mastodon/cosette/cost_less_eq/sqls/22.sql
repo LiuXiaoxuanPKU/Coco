@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT bookmarks.status_id FROM bookmarks WHERE bookmarks.status_id = 106856009884767954 AND bookmarks.account_id = 108847825341673767;
+SELECT mutes.target_account_id FROM mutes WHERE mutes.account_id = 108847822016215056 AND mutes.target_account_id = 108847831017388431;
 -- Rewritten Queries
-SELECT bookmarks.status_id FROM bookmarks WHERE bookmarks.status_id = 106856009884767954 AND bookmarks.account_id = 108847825341673767 LIMIT 1;
+SELECT mutes.target_account_id FROM mutes WHERE mutes.account_id = 108847822016215056 AND mutes.target_account_id = 108847831017388431 LIMIT 1;

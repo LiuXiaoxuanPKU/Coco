@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT versions.id AS t0_r0, versions.project_id AS t0_r1, versions.name AS t0_r2, versions.description AS t0_r3, versions.effective_date AS t0_r4, versions.created_on AS t0_r5, versions.updated_on AS t0_r6, versions.wiki_page_title AS t0_r7, versions.status AS t0_r8, versions.sharing AS t0_r9, attachments.id AS t1_r0, attachments.container_id AS t1_r1, attachments.container_type AS t1_r2, attachments.filename AS t1_r3, attachments.disk_filename AS t1_r4, attachments.filesize AS t1_r5, attachments.content_type AS t1_r6, attachments.digest AS t1_r7, attachments.downloads AS t1_r8, attachments.author_id AS t1_r9, attachments.created_on AS t1_r10, attachments.description AS t1_r11, attachments.disk_directory AS t1_r12 FROM versions LEFT OUTER JOIN attachments ON attachments.container_id = versions.id AND attachments.container_type = \"$1\" WHERE versions.project_id = \"$2\" ORDER BY attachments.filename ASC",
+        "cost": 376.63,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT versions.id AS t0_r0, versions.project_id AS t0_r1, versions.name AS t0_r2, versions.description AS t0_r3, versions.effective_date AS t0_r4, versions.created_on AS t0_r5, versions.updated_on AS t0_r6, versions.wiki_page_title AS t0_r7, versions.status AS t0_r8, versions.sharing AS t0_r9, attachments.id AS t1_r0, attachments.container_id AS t1_r1, attachments.container_type AS t1_r2, attachments.filename AS t1_r3, attachments.disk_filename AS t1_r4, attachments.filesize AS t1_r5, attachments.content_type AS t1_r6, attachments.digest AS t1_r7, attachments.downloads AS t1_r8, attachments.author_id AS t1_r9, attachments.created_on AS t1_r10, attachments.description AS t1_r11, attachments.disk_directory AS t1_r12 FROM versions LEFT OUTER JOIN attachments ON attachments.container_id = versions.id AND attachments.container_type = \"$1\" WHERE versions.project_id = \"$2\" ORDER BY attachments.filename ASC LIMIT 1",
+            "cost": 376.63,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

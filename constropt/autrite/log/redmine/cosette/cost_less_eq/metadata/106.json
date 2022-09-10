@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id WHERE issues.root_id = \"$1\" AND issues.lft > 1 AND issues.rgt < 4 AND issue_statuses.is_closed = \"$2\" LIMIT \"$3\"",
+        "cost": 8.84,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM issues WHERE issues.root_id = \"$1\" AND issues.lft > 1 AND issues.rgt < 4 LIMIT \"$3\"",
+            "cost": 8.31,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = \"$1\" AND mentions.mentionable_type = \"$2\" AND mentions.user_id <> \"$3\"",
+        "cost": 269.0,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT mentions.* FROM mentions WHERE mentions.mentionable_id = \"$1\" AND mentions.mentionable_type = \"$2\" AND mentions.user_id <> \"$3\" LIMIT 1",
+            "cost": 269.0,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

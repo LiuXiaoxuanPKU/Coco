@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM accounts INNER JOIN follows ON accounts.id = follows.account_id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = 108847832091765381 LIMIT 9 OFFSET 1;
+SELECT 1 AS "one" FROM accounts INNER JOIN follows ON accounts.id = follows.account_id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = 108847832091765381 LIMIT 1 OFFSET 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM accounts INNER JOIN follows ON accounts.id = follows.account_id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = 108847832091765381 LIMIT 9 OFFSET 1;
+SELECT 1 AS "one" FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 108847832091765381 LIMIT 1 OFFSET 1;

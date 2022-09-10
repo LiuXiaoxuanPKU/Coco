@@ -968,7 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT custom_emojis.* FROM custom_emojis LEFT OUTER JOIN custom_emoji_categories ON custom_emoji_categories.id = custom_emojis.category_id WHERE custom_emojis.domain IS NULL ORDER BY custom_emoji_categories.name ASC, custom_emojis.shortcode ASC;
+SELECT 1 AS "one" FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847798327370519 AND account_domain_blocks.domain IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT custom_emojis.* FROM custom_emojis INNER JOIN custom_emoji_categories ON custom_emoji_categories.id = custom_emojis.category_id WHERE custom_emojis.domain IS NULL ORDER BY custom_emoji_categories.name ASC, custom_emojis.shortcode ASC LIMIT 1;
-SELECT custom_emojis.* FROM custom_emojis INNER JOIN custom_emoji_categories ON custom_emoji_categories.id = custom_emojis.category_id WHERE custom_emojis.domain IS NULL ORDER BY custom_emoji_categories.name ASC, custom_emojis.shortcode ASC LIMIT 1;
+SELECT 1 AS "one" FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847798327370519 AND False LIMIT 1;

@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE 1 = 0",
+        "cost": 0.0,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issues.* FROM issues WHERE 1 = 0",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

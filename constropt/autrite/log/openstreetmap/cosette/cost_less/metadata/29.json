@@ -1,15 +1,30 @@
 {
     "org": {
-        "sql": "SELECT current_nodes.id FROM current_nodes INNER JOIN current_way_nodes ON current_nodes.id = current_way_nodes.node_id WHERE current_way_nodes.way_id = \"$1\" ORDER BY current_way_nodes.sequence_id ASC",
-        "cost": 23.89,
+        "sql": "SELECT 1 AS one FROM way_tags WHERE way_tags.k = \"$1\" AND NOT(way_tags.way_id = 145 AND way_tags.version = 1 AND way_tags.k = 'Key 2') AND way_tags.way_id IS NULL AND way_tags.version IS NULL LIMIT 1",
+        "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT current_nodes.id FROM current_nodes INNER JOIN current_way_nodes ON current_nodes.id = current_way_nodes.node_id WHERE current_way_nodes.way_id = \"$1\" ORDER BY current_way_nodes.sequence_id ASC LIMIT 1",
-            "cost": 12.75,
+            "sql": "SELECT 1 AS one FROM way_tags WHERE way_tags.k = \"$1\" AND NOT(way_tags.way_id = 145 AND way_tags.version = 1 AND way_tags.k = 'Key 2') AND False AND way_tags.version IS NULL LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "AddLimitOne"
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM way_tags WHERE way_tags.k = \"$1\" AND NOT(way_tags.way_id = 145 AND way_tags.version = 1 AND way_tags.k = 'Key 2') AND way_tags.way_id IS NULL AND False LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM way_tags WHERE way_tags.k = \"$1\" AND NOT(way_tags.way_id = 145 AND way_tags.version = 1 AND way_tags.k = 'Key 2') AND False AND False LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RewriteNullPredicate"
             ]
         }
     ]

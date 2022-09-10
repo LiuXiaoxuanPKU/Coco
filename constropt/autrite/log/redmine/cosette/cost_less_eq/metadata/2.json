@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT trackers.* FROM trackers WHERE trackers.name = \"$1\"",
+        "cost": 1939.2,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT trackers.* FROM trackers WHERE trackers.name = \"$1\" LIMIT 1",
+            "cost": 1939.2,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

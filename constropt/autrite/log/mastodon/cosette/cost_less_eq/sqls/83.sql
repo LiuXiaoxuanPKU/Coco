@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM custom_emojis LEFT OUTER JOIN custom_emojis AS local_counterparts_custom_emojis ON local_counterparts_custom_emojis.domain IS NULL AND local_counterparts_custom_emojis.shortcode = custom_emojis.shortcode LIMIT 6 OFFSET 1;
+SELECT 1 AS "one" FROM custom_emojis LEFT OUTER JOIN custom_emojis AS local_counterparts_custom_emojis ON local_counterparts_custom_emojis.domain IS NULL AND local_counterparts_custom_emojis.shortcode = custom_emojis.shortcode LIMIT 1 OFFSET 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM custom_emojis LEFT OUTER JOIN custom_emojis AS local_counterparts_custom_emojis ON local_counterparts_custom_emojis.domain IS NULL AND local_counterparts_custom_emojis.shortcode = custom_emojis.shortcode LIMIT 6 OFFSET 1;
+SELECT 1 AS "one" FROM custom_emojis LIMIT 1 OFFSET 1;

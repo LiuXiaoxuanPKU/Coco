@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT mentions.status_id FROM mentions WHERE mentions.silent = False AND mentions.status_id IN (104245522913850418, 108769118791628487) AND mentions.account_id = 108847822871300460;
+SELECT 1 AS "one" FROM favourites WHERE favourites.status_id IS NULL AND favourites.id <> 4944 AND favourites.account_id = 108847823435935171 LIMIT 1;
 -- Rewritten Queries
-SELECT mentions.status_id FROM mentions WHERE mentions.silent = False AND mentions.status_id IN (104245522913850418, 108769118791628487) AND mentions.account_id = 108847822871300460 LIMIT 1;
+SELECT 1 AS "one" FROM favourites WHERE False AND favourites.id <> 4944 AND favourites.account_id = 108847823435935171 LIMIT 1;

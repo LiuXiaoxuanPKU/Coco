@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT changesets.* FROM changesets WHERE changesets.user_id = \"$1\" AND closed_at >= '2022-08-29 21:22:12.457259' AND num_changes <= 10000 ORDER BY created_at DESC LIMIT \"$2\"",
-        "cost": 11.56,
+        "sql": "SELECT DISTINCT notes.* FROM notes INNER JOIN note_comments ON notes.id = note_comments.note_id WHERE note_comments.author_id = \"$1\" ORDER BY updated_at DESC, id LIMIT \"$2\" OFFSET \"$3\"",
+        "cost": 16.67,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT changesets.* FROM changesets WHERE changesets.user_id = \"$1\" AND closed_at >= '2022-08-29 21:22:12.457259' ORDER BY created_at DESC LIMIT \"$2\"",
-            "cost": 11.55,
+            "sql": "SELECT notes.* FROM notes INNER JOIN note_comments ON notes.id = note_comments.note_id WHERE note_comments.author_id = \"$1\" ORDER BY updated_at DESC, id LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 16.63,
             "rewrite_types": [
-                "RemovePredicate"
+                "RemoveDistinct"
             ]
         }
     ]

@@ -1,0 +1,169 @@
+{
+    "org": {
+        "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') LEFT OUTER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\"",
+        "cost": 576.54,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') LEFT OUTER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\"",
+            "cost": 568.38,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') LEFT OUTER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\"",
+            "cost": 568.38,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') LEFT OUTER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\" LIMIT 1",
+            "cost": 568.38,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') LEFT OUTER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\" LIMIT 1",
+            "cost": 568.38,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\"",
+            "cost": 568.38,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\"",
+            "cost": 568.38,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\" LIMIT 1",
+            "cost": 568.38,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\" LIMIT 1",
+            "cost": 568.38,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" INNER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') LEFT OUTER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\"",
+            "cost": 568.43,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" INNER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') LEFT OUTER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\"",
+            "cost": 568.43,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" INNER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') LEFT OUTER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\" LIMIT 1",
+            "cost": 568.43,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" INNER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') LEFT OUTER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\" LIMIT 1",
+            "cost": 568.43,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" INNER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\"",
+            "cost": 568.43,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" INNER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\"",
+            "cost": 568.43,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" INNER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\" LIMIT 1",
+            "cost": 568.43,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" INNER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\" LIMIT 1",
+            "cost": 568.43,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') INNER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\"",
+            "cost": 568.81,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') INNER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\"",
+            "cost": 568.81,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') INNER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\" LIMIT 1",
+            "cost": 568.81,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(CAST(custom_values.value AS DECIMAL(30, 3))) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN users ON users.id = time_entries.user_id AND users.type IN ('User', 'AnonymousUser') INNER JOIN custom_values ON custom_values.customized_id = time_entries.id AND custom_values.customized_type = \"$1\" LEFT OUTER JOIN enumerations ON enumerations.id = time_entries.activity_id AND enumerations.type IN ('TimeEntryActivity') INNER JOIN issues ON issues.id = time_entries.issue_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND custom_values.custom_field_id = \"$2\" AND custom_values.value <> \"$3\" LIMIT 1",
+            "cost": 568.81,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

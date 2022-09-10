@@ -1,0 +1,61 @@
+{
+    "org": {
+        "sql": "SELECT projects.* FROM projects INNER JOIN wikis ON wikis.project_id = projects.id WHERE projects.status = 1 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'wiki') IS NOT NULL AND projects.id IN (1, 5)",
+        "cost": 41.97,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'wiki') IS NOT NULL AND projects.id IN (1, 5)",
+            "cost": 33.66,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'wiki') IS NOT NULL AND projects.id IN (1, 5) LIMIT 1",
+            "cost": 33.66,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'wiki' LIMIT 1) IS NOT NULL AND projects.id IN (1, 5)",
+            "cost": 33.66,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT projects.* FROM projects WHERE projects.status = 1 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'wiki' LIMIT 1) IS NOT NULL AND projects.id IN (1, 5) LIMIT 1",
+            "cost": 33.66,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT projects.* FROM projects INNER JOIN wikis ON wikis.project_id = projects.id WHERE projects.status = 1 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'wiki') IS NOT NULL AND projects.id IN (1, 5) LIMIT 1",
+            "cost": 41.97,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT projects.* FROM projects INNER JOIN wikis ON wikis.project_id = projects.id WHERE projects.status = 1 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'wiki' LIMIT 1) IS NOT NULL AND projects.id IN (1, 5)",
+            "cost": 41.97,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT projects.* FROM projects INNER JOIN wikis ON wikis.project_id = projects.id WHERE projects.status = 1 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'wiki' LIMIT 1) IS NOT NULL AND projects.id IN (1, 5) LIMIT 1",
+            "cost": 41.97,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

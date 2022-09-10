@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = \"$1\" AND (users.id = 6 OR users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6))) AND users.status = \"$2\" AND users.id = \"$3\" LIMIT \"$4\"",
+        "cost": 135.73,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = \"$1\" AND (users.id = 6 OR users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 3, 4, 6) LIMIT 1)) AND users.status = \"$2\" AND users.id = \"$3\" LIMIT \"$4\"",
+            "cost": 29.55,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_products INNER JOIN friendly_id_slugs ON friendly_id_slugs.deleted_at IS NULL AND friendly_id_slugs.sluggable_type = 'Spree::Taxon' AND friendly_id_slugs.sluggable_id = spree_products.id WHERE spree_products.id IS NOT NULL AND spree_products.slug = 'wmoeenxentpogbdgofpow' LIMIT 1;
+SELECT 1 AS "one" FROM spree_products INNER JOIN friendly_id_slugs ON friendly_id_slugs.deleted_at IS NULL AND friendly_id_slugs.sluggable_type = 'Spree::Taxon' AND friendly_id_slugs.sluggable_id = spree_products.id WHERE spree_products.id IS NOT NULL AND spree_products.slug = 'dehpaatgy' LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_products WHERE spree_products.id IS NOT NULL AND spree_products.slug = 'wmoeenxentpogbdgofpow' LIMIT 1;
+SELECT 1 AS "one" FROM spree_products WHERE spree_products.id IS NOT NULL AND spree_products.slug = 'dehpaatgy' LIMIT 1;

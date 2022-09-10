@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT webauthn_credentials.external_id FROM webauthn_credentials WHERE webauthn_credentials.user_id = \"$1\"",
-        "cost": 11.97,
+        "sql": "SELECT 1 AS one FROM follows WHERE follows.account_id = \"$1\" AND follows.target_account_id IS NULL LIMIT 1",
+        "cost": 4.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT webauthn_credentials.external_id FROM webauthn_credentials WHERE webauthn_credentials.user_id = \"$1\" LIMIT 1",
-            "cost": 6.3,
+            "sql": "SELECT 1 AS one FROM follows WHERE follows.account_id = \"$1\" AND False LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "AddLimitOne"
+                "RewriteNullPredicate"
             ]
         }
     ]

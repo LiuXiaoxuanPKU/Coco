@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT roles.id FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = \"$1\"",
+        "cost": 45.93,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT roles.id FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = \"$1\"",
+            "cost": 45.91,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        }
+    ]
+}

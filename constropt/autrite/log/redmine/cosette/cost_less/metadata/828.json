@@ -1,0 +1,54 @@
+{
+    "org": {
+        "sql": "SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR (SELECT 1 FROM custom_fields_projects AS cfp JOIN projects AS p ON p.id = cfp.project_id WHERE cfp.custom_field_id = custom_fields.id AND p.lft >= 1 AND p.rgt <= 10) IS NOT NULL) AND (custom_fields.visible = True OR custom_fields.id IN (SELECT DISTINCT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 55)) ORDER BY custom_fields.position ASC",
+        "cost": 1675.81,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR (SELECT 1 FROM custom_fields_projects AS cfp JOIN projects AS p ON p.id = cfp.project_id WHERE cfp.custom_field_id = custom_fields.id AND p.lft >= 1 AND p.rgt <= 10) IS NOT NULL) AND (custom_fields.visible = True OR custom_fields.id IN (SELECT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 55 LIMIT 1)) ORDER BY custom_fields.position ASC",
+            "cost": 307.88,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR (SELECT 1 FROM custom_fields_projects AS cfp JOIN projects AS p ON p.id = cfp.project_id WHERE cfp.custom_field_id = custom_fields.id AND p.lft >= 1 AND p.rgt <= 10 LIMIT 1) IS NOT NULL) AND (custom_fields.visible = True OR custom_fields.id IN (SELECT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 55 LIMIT 1)) ORDER BY custom_fields.position ASC",
+            "cost": 307.88,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR (SELECT 1 FROM custom_fields_projects AS cfp JOIN projects AS p ON p.id = cfp.project_id WHERE cfp.custom_field_id = custom_fields.id AND p.lft >= 1 AND p.rgt <= 10) IS NOT NULL) AND (custom_fields.visible = True OR custom_fields.id IN (SELECT DISTINCT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 55 LIMIT 1)) ORDER BY custom_fields.position ASC",
+            "cost": 308.76,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR (SELECT 1 FROM custom_fields_projects AS cfp JOIN projects AS p ON p.id = cfp.project_id WHERE cfp.custom_field_id = custom_fields.id AND p.lft >= 1 AND p.rgt <= 10 LIMIT 1) IS NOT NULL) AND (custom_fields.visible = True OR custom_fields.id IN (SELECT DISTINCT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 55 LIMIT 1)) ORDER BY custom_fields.position ASC",
+            "cost": 308.76,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR (SELECT 1 FROM custom_fields_projects AS cfp JOIN projects AS p ON p.id = cfp.project_id WHERE cfp.custom_field_id = custom_fields.id AND p.lft >= 1 AND p.rgt <= 10) IS NOT NULL) AND (custom_fields.visible = True OR custom_fields.id IN (SELECT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 55)) ORDER BY custom_fields.position ASC",
+            "cost": 995.02,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT custom_fields.* FROM custom_fields WHERE custom_fields.type IN ('IssueCustomField') AND (is_for_all = True OR (SELECT 1 FROM custom_fields_projects AS cfp JOIN projects AS p ON p.id = cfp.project_id WHERE cfp.custom_field_id = custom_fields.id AND p.lft >= 1 AND p.rgt <= 10 LIMIT 1) IS NOT NULL) AND (custom_fields.visible = True OR custom_fields.id IN (SELECT cfr.custom_field_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 55)) ORDER BY custom_fields.position ASC",
+            "cost": 995.02,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

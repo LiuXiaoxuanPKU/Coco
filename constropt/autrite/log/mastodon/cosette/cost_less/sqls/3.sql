@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM domain_blocks WHERE domain_blocks.domain IS NULL LIMIT 7;
+SELECT 1 AS "one" FROM domain_blocks WHERE domain_blocks.domain IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM domain_blocks WHERE False LIMIT 7;
+SELECT 1 AS "one" FROM domain_blocks WHERE False LIMIT 1;

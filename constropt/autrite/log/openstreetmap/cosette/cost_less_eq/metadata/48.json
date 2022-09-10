@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT users.* FROM users INNER JOIN friends ON users.id = friends.friend_user_id INNER JOIN users AS befriendees_friends ON befriendees_friends.id = friends.friend_user_id WHERE friends.user_id = \"$1\" AND users.status IN (\"$2\", \"$3\")",
-        "cost": 29.21,
+        "sql": "SELECT 1 AS one FROM current_relation_tags WHERE current_relation_tags.k = \"$1\" AND NOT(current_relation_tags.relation_id = 110 AND current_relation_tags.k = 'Key 1') AND current_relation_tags.relation_id IS NULL LIMIT 1",
+        "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT users.* FROM users INNER JOIN friends ON users.id = friends.friend_user_id WHERE friends.user_id = \"$1\" AND users.status IN (\"$2\", \"$3\")",
-            "cost": 27.95,
+            "sql": "SELECT 1 AS one FROM current_relation_tags WHERE current_relation_tags.k = \"$1\" AND NOT(current_relation_tags.relation_id = 110 AND current_relation_tags.k = 'Key 1') AND False LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "RemoveJoin"
+                "RewriteNullPredicate"
             ]
         }
     ]

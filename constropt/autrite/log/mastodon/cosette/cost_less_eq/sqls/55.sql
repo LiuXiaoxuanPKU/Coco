@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT status_pins.status_id FROM status_pins WHERE status_pins.status_id IN (104598010406015559, 105609875698239831, 102839874634264929) AND status_pins.account_id = 108847803314632135;
+SELECT COUNT(*) FROM accounts INNER JOIN follows ON accounts.id = follows.target_account_id WHERE follows.account_id = 108847824071970473;
 -- Rewritten Queries
-SELECT status_pins.status_id FROM status_pins WHERE status_pins.status_id IN (104598010406015559, 105609875698239831, 102839874634264929) AND status_pins.account_id = 108847803314632135 LIMIT 1;
+SELECT COUNT(*) FROM accounts INNER JOIN follows ON accounts.id = follows.target_account_id WHERE follows.account_id = 108847824071970473 LIMIT 1;

@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM trackers INNER JOIN projects_trackers ON trackers.id = projects_trackers.tracker_id WHERE projects_trackers.project_id = \"$1\" AND 1 = 0 LIMIT \"$2\"",
+        "cost": 0.0,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM trackers WHERE 1 = 0 LIMIT \"$2\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

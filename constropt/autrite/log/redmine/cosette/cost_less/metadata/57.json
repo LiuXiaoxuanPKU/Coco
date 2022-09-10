@@ -1,0 +1,31 @@
+{
+    "org": {
+        "sql": "SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = \"$1\" AND projects.status <> \"$2\" AND members.project_id IS NULL ORDER BY members.id ASC LIMIT \"$3\"",
+        "cost": 16.62,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT members.* FROM members INNER JOIN projects ON projects.id = members.project_id WHERE members.user_id = \"$1\" AND projects.status <> \"$2\" AND False ORDER BY members.id ASC LIMIT \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT members.* FROM members WHERE members.user_id = \"$1\" AND False ORDER BY members.id ASC LIMIT \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT members.* FROM members WHERE members.user_id = \"$1\" AND members.project_id IS NULL ORDER BY members.id ASC LIMIT \"$3\"",
+            "cost": 8.32,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

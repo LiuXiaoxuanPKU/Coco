@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN accounts ON accounts.id = statuses.account_id WHERE statuses.visibility = \"$1\" AND accounts.suspended_at IS NULL AND accounts.silenced_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL AND statuses.deleted_at IS NULL AND (statuses.local = \"$2\" OR statuses.uri IS NULL) ORDER BY statuses.id DESC LIMIT \"$3\"",
+        "cost": 67.26,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN accounts ON accounts.id = statuses.account_id WHERE statuses.visibility = \"$1\" AND accounts.suspended_at IS NULL AND accounts.silenced_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL AND statuses.deleted_at IS NULL AND (statuses.local = \"$2\" OR False) ORDER BY statuses.id DESC LIMIT \"$3\"",
+            "cost": 67.26,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

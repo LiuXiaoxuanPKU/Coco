@@ -1,0 +1,30 @@
+{
+    "org": {
+        "sql": "SELECT SUM(time_entries.hours) AS sum_hours, parent.id AS parent_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN issues ON issues.id = time_entries.issue_id JOIN issues AS parent ON parent.root_id = issues.root_id AND parent.lft <= issues.lft AND parent.rgt >= issues.rgt WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND parent.id IN (13, 7, 5, 3, 2, 1) GROUP BY parent.id",
+        "cost": 123.13,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT SUM(time_entries.hours) AS sum_hours, parent.id AS parent_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN issues ON issues.id = time_entries.issue_id JOIN issues AS parent ON parent.root_id = issues.root_id AND parent.lft <= issues.lft AND parent.rgt >= issues.rgt WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND parent.id IN (13, 7, 5, 3, 2, 1) GROUP BY parent.id",
+            "cost": 114.97,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(time_entries.hours) AS sum_hours, parent.id AS parent_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN issues ON issues.id = time_entries.issue_id JOIN issues AS parent ON parent.root_id = issues.root_id AND parent.lft <= issues.lft AND parent.rgt >= issues.rgt WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND parent.id IN (13, 7, 5, 3, 2, 1) GROUP BY parent.id",
+            "cost": 114.97,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(time_entries.hours) AS sum_hours, parent.id AS parent_id FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id INNER JOIN issues ON issues.id = time_entries.issue_id JOIN issues AS parent ON parent.root_id = issues.root_id AND parent.lft <= issues.lft AND parent.rgt >= issues.rgt WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND parent.id IN (13, 7, 5, 3, 2, 1) GROUP BY parent.id",
+            "cost": 123.13,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

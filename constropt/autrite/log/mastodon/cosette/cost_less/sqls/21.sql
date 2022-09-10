@@ -968,9 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT DISTINCT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 103084977951385738 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 4;
+SELECT 1 AS "one" FROM statuses INNER JOIN media_attachments ON media_attachments.status_id = statuses.id WHERE statuses.account_id = 108847827886835491 AND statuses.visibility IN (1, 2) AND statuses.deleted_at IS NULL AND media_attachments.account_id = 108847814260308554 GROUP BY statuses.id LIMIT 1 OFFSET 1;
 -- Rewritten Queries
-SELECT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 103084977951385738 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 4;
-SELECT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 103084977951385738 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 4;
-SELECT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 103084977951385738 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 4;
-SELECT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 103084977951385738 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 4;
+SELECT 1 AS "one" FROM statuses WHERE statuses.account_id = 108847827886835491 AND statuses.visibility IN (1, 2) AND statuses.deleted_at IS NULL GROUP BY statuses.id LIMIT 1 OFFSET 1;

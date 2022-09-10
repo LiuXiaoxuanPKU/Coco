@@ -1,0 +1,30 @@
+{
+    "org": {
+        "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates') OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates')",
+        "cost": 2720.67,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates') OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates')",
+            "cost": 2717.35,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id IN (SELECT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates') OR issues.id IN (SELECT DISTINCT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates')",
+            "cost": 2719.01,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.id IN (SELECT DISTINCT issue_relations.issue_from_id FROM issue_relations WHERE issue_relations.relation_type = 'relates') OR issues.id IN (SELECT issue_relations.issue_to_id FROM issue_relations WHERE issue_relations.relation_type = 'relates')",
+            "cost": 2719.01,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        }
+    ]
+}

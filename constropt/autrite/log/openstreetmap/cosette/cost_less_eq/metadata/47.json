@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM current_relation_tags WHERE current_relation_tags.k = \"$1\" AND NOT(current_relation_tags.relation_id = 110 AND current_relation_tags.k = 'Key 1') AND current_relation_tags.relation_id IS NULL LIMIT \"$2\"",
-        "cost": 8.31,
+        "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN users ON users.id = diary_entries.user_id LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code WHERE users.status IN (\"$1\", \"$2\") LIMIT 1 OFFSET \"$4\"",
+        "cost": 1.58,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM current_relation_tags WHERE current_relation_tags.k = \"$1\" AND NOT(current_relation_tags.relation_id = 110 AND current_relation_tags.k = 'Key 1') AND False LIMIT \"$2\"",
-            "cost": 0.0,
+            "sql": "SELECT 1 AS one FROM diary_entries INNER JOIN users ON users.id = diary_entries.user_id WHERE users.status IN (\"$1\", \"$2\") LIMIT 1 OFFSET \"$4\"",
+            "cost": 1.29,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "RemoveJoin"
             ]
         }
     ]

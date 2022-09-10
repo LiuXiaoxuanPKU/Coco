@@ -1,0 +1,92 @@
+{
+    "org": {
+        "sql": "SELECT attachments.* FROM attachments LEFT JOIN versions ON attachments.container_type = 'Version' AND versions.id = attachments.container_id LEFT JOIN projects ON versions.project_id = projects.id OR attachments.container_type = 'Project' AND attachments.container_id = projects.id WHERE attachments.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'files') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12)) ORDER BY attachments.id DESC LIMIT 1",
+        "cost": 63.73,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT attachments.* FROM attachments INNER JOIN versions ON attachments.container_type = 'Version' AND versions.id = attachments.container_id LEFT JOIN projects ON versions.project_id = projects.id OR attachments.container_type = 'Project' AND attachments.container_id = projects.id WHERE attachments.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'files') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) ORDER BY attachments.id DESC LIMIT 1",
+            "cost": 55.56,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT attachments.* FROM attachments INNER JOIN versions ON attachments.container_type = 'Version' AND versions.id = attachments.container_id LEFT JOIN projects ON versions.project_id = projects.id OR attachments.container_type = 'Project' AND attachments.container_id = projects.id WHERE attachments.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'files' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) ORDER BY attachments.id DESC LIMIT 1",
+            "cost": 55.56,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT attachments.* FROM attachments LEFT JOIN versions ON attachments.container_type = 'Version' AND versions.id = attachments.container_id LEFT JOIN projects ON versions.project_id = projects.id OR attachments.container_type = 'Project' AND attachments.container_id = projects.id WHERE attachments.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'files') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) ORDER BY attachments.id DESC LIMIT 1",
+            "cost": 55.57,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT attachments.* FROM attachments LEFT JOIN versions ON attachments.container_type = 'Version' AND versions.id = attachments.container_id LEFT JOIN projects ON versions.project_id = projects.id OR attachments.container_type = 'Project' AND attachments.container_id = projects.id WHERE attachments.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'files' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) ORDER BY attachments.id DESC LIMIT 1",
+            "cost": 55.57,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT attachments.* FROM attachments LEFT JOIN versions ON attachments.container_type = 'Version' AND versions.id = attachments.container_id INNER JOIN projects ON versions.project_id = projects.id OR attachments.container_type = 'Project' AND attachments.container_id = projects.id WHERE attachments.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'files') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) ORDER BY attachments.id DESC LIMIT 1",
+            "cost": 55.57,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT attachments.* FROM attachments LEFT JOIN versions ON attachments.container_type = 'Version' AND versions.id = attachments.container_id INNER JOIN projects ON versions.project_id = projects.id OR attachments.container_type = 'Project' AND attachments.container_id = projects.id WHERE attachments.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'files' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12) LIMIT 1) ORDER BY attachments.id DESC LIMIT 1",
+            "cost": 55.57,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT attachments.* FROM attachments INNER JOIN versions ON attachments.container_type = 'Version' AND versions.id = attachments.container_id LEFT JOIN projects ON versions.project_id = projects.id OR attachments.container_type = 'Project' AND attachments.container_id = projects.id WHERE attachments.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'files') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12)) ORDER BY attachments.id DESC LIMIT 1",
+            "cost": 63.72,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT attachments.* FROM attachments INNER JOIN versions ON attachments.container_type = 'Version' AND versions.id = attachments.container_id LEFT JOIN projects ON versions.project_id = projects.id OR attachments.container_type = 'Project' AND attachments.container_id = projects.id WHERE attachments.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'files' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12)) ORDER BY attachments.id DESC LIMIT 1",
+            "cost": 63.72,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT attachments.* FROM attachments LEFT JOIN versions ON attachments.container_type = 'Version' AND versions.id = attachments.container_id LEFT JOIN projects ON versions.project_id = projects.id OR attachments.container_type = 'Project' AND attachments.container_id = projects.id WHERE attachments.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'files' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12)) ORDER BY attachments.id DESC LIMIT 1",
+            "cost": 63.73,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT attachments.* FROM attachments LEFT JOIN versions ON attachments.container_type = 'Version' AND versions.id = attachments.container_id INNER JOIN projects ON versions.project_id = projects.id OR attachments.container_type = 'Project' AND attachments.container_id = projects.id WHERE attachments.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'files') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12)) ORDER BY attachments.id DESC LIMIT 1",
+            "cost": 63.73,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT attachments.* FROM attachments LEFT JOIN versions ON attachments.container_type = 'Version' AND versions.id = attachments.container_id INNER JOIN projects ON versions.project_id = projects.id OR attachments.container_type = 'Project' AND attachments.container_id = projects.id WHERE attachments.author_id = 4 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'files' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (4, 12)) ORDER BY attachments.id DESC LIMIT 1",
+            "cost": 63.73,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

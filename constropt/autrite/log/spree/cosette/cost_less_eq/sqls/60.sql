@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_products.id FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.filter_param = 'mkoejqrvpkvrccsxzrrobcrcyouxkyqxlqznalfmsksobdmprslzmdilkiwnikqjskamzigoiovwxqmcgmusbmkydgzfvkhzhte' AND spree_product_properties.filter_param IN ('zn', 'fivbrdyr', 'yraqiazmbsmyr');
+SELECT DISTINCT spree_shipping_categories.* FROM spree_shipping_categories INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.shipping_category_id = spree_shipping_categories.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_variants.id = 4017;
 -- Rewritten Queries
-SELECT spree_products.id FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.filter_param = 'mkoejqrvpkvrccsxzrrobcrcyouxkyqxlqznalfmsksobdmprslzmdilkiwnikqjskamzigoiovwxqmcgmusbmkydgzfvkhzhte' AND spree_product_properties.filter_param IN ('zn', 'fivbrdyr', 'yraqiazmbsmyr') LIMIT 1;
+SELECT spree_shipping_categories.* FROM spree_shipping_categories INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.shipping_category_id = spree_shipping_categories.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_variants.id = 4017;

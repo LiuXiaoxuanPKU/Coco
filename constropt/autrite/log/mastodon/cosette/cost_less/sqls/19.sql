@@ -968,9 +968,9 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847818346068406 AND follows.target_account_id = 108847823912494407 ORDER BY follows.id DESC LIMIT 10;
+SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = 108847831946918529 ORDER BY follows.id DESC LIMIT 10;
 -- Rewritten Queries
-SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847818346068406 AND follows.target_account_id = 108847823912494407 ORDER BY follows.id DESC LIMIT 10;
-SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847818346068406 AND follows.target_account_id = 108847823912494407 ORDER BY follows.id DESC LIMIT 10;
-SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847818346068406 AND follows.target_account_id = 108847823912494407 ORDER BY follows.id DESC LIMIT 10;
-SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847818346068406 AND follows.target_account_id = 108847823912494407 ORDER BY follows.id DESC LIMIT 10;
+SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = 108847831946918529 ORDER BY follows.id DESC LIMIT 10;
+SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = 108847831946918529 ORDER BY follows.id DESC LIMIT 10;
+SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = 108847831946918529 ORDER BY follows.id DESC LIMIT 10;
+SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = 108847831946918529 ORDER BY follows.id DESC LIMIT 10;

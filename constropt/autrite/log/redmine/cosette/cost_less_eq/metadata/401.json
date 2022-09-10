@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN versions ON versions.id = issues.fixed_version_id WHERE issues.fixed_version_id IS NOT NULL AND issues.project_id <> versions.project_id AND versions.sharing <> 'system' AND issues.fixed_version_id = 7",
+        "cost": 24.92,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id WHERE issues.fixed_version_id IS NOT NULL AND issues.fixed_version_id = 7",
+            "cost": 16.61,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "org": {
+        "sql": "SELECT messages.* FROM messages INNER JOIN boards ON boards.id = messages.board_id INNER JOIN projects ON projects.id = boards.project_id WHERE messages.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND messages.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards') IS NOT NULL",
+        "cost": 28.28,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT messages.* FROM messages INNER JOIN boards ON boards.id = messages.board_id INNER JOIN projects ON projects.id = boards.project_id WHERE messages.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND messages.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards') IS NOT NULL LIMIT 1",
+            "cost": 28.28,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT messages.* FROM messages INNER JOIN boards ON boards.id = messages.board_id INNER JOIN projects ON projects.id = boards.project_id WHERE messages.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND messages.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards' LIMIT 1) IS NOT NULL",
+            "cost": 28.28,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT messages.* FROM messages INNER JOIN boards ON boards.id = messages.board_id INNER JOIN projects ON projects.id = boards.project_id WHERE messages.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND messages.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'boards' LIMIT 1) IS NOT NULL LIMIT 1",
+            "cost": 28.28,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

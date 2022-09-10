@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT issues.* FROM issues INNER JOIN watchers ON watchers.watchable_id = issues.id AND watchers.watchable_type = \"$1\" WHERE watchers.user_id = 1",
+        "cost": 16.61,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN watchers ON watchers.watchable_id = issues.id AND watchers.watchable_type = \"$1\" WHERE watchers.user_id = 1 LIMIT 1",
+            "cost": 16.61,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

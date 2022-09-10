@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM users INNER JOIN groups_users ON users.id = groups_users.group_id WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') AND groups_users.user_id = \"$1\" AND users.id = \"$2\" LIMIT \"$3\"",
+        "cost": 16.49,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM users WHERE users.type IN ('Group', 'GroupBuiltin', 'GroupAnonymous', 'GroupNonMember') AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 8.31,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

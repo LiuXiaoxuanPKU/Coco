@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.type_of_user = \"$2\" AND organization_memberships.organization_id IS NULL LIMIT 1",
+        "cost": 8.31,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.type_of_user = \"$2\" AND False LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM webauthn_credentials WHERE webauthn_credentials.external_id IS NULL LIMIT 5;
+SELECT mutes.* FROM mutes WHERE mutes.target_account_id IN (108847830348164522, 108847831265136744, 108847823675817293) AND mutes.account_id = 108847827396059649;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM webauthn_credentials WHERE False LIMIT 5;
+SELECT mutes.* FROM mutes WHERE mutes.target_account_id IN (108847830348164522, 108847831265136744, 108847823675817293) AND mutes.account_id = 108847827396059649 LIMIT 1;

@@ -1,0 +1,51 @@
+{
+    "org": {
+        "sql": "SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN custom_values ON custom_values.customized_id = issues.id AND custom_values.customized_type = \"$1\" WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND custom_values.custom_field_id = \"$2\" AND custom_values.value = \"$3\"",
+        "cost": 98234.65,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN custom_values ON custom_values.customized_id = issues.id AND custom_values.customized_type = \"$1\" WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND custom_values.custom_field_id = \"$2\" AND custom_values.value = \"$3\" LIMIT 1",
+            "cost": 137.29,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN custom_values ON custom_values.customized_id = issues.id AND custom_values.customized_type = \"$1\" WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND custom_values.custom_field_id = \"$2\" AND custom_values.value = \"$3\" LIMIT 1",
+            "cost": 137.29,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN custom_values ON custom_values.customized_id = issues.id AND custom_values.customized_type = \"$1\" WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND custom_values.custom_field_id = \"$2\" AND custom_values.value = \"$3\" LIMIT 1",
+            "cost": 150.76,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN custom_values ON custom_values.customized_id = issues.id AND custom_values.customized_type = \"$1\" WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False AND custom_values.custom_field_id = \"$2\" AND custom_values.value = \"$3\" LIMIT 1",
+            "cost": 150.76,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN custom_values ON custom_values.customized_id = issues.id AND custom_values.customized_type = \"$1\" WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND custom_values.custom_field_id = \"$2\" AND custom_values.value = \"$3\"",
+            "cost": 98226.49,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN custom_values ON custom_values.customized_id = issues.id AND custom_values.customized_type = \"$1\" WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False AND custom_values.custom_field_id = \"$2\" AND custom_values.value = \"$3\"",
+            "cost": 98226.49,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

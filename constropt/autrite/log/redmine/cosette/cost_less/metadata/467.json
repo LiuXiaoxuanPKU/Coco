@@ -1,0 +1,37 @@
+{
+    "org": {
+        "sql": "SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND (projects.id = 10 OR projects.lft > 12 AND projects.rgt < 13)",
+        "cost": 151.66,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND (projects.id = 10 OR projects.lft > 12 AND projects.rgt < 13)",
+            "cost": 143.5,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND (projects.id = 10 OR projects.lft > 12 AND projects.rgt < 13)",
+            "cost": 143.5,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND (projects.id = 10 OR projects.lft > 12 AND projects.rgt < 13) LIMIT 1",
+            "cost": 143.5,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT SUM(time_entries.hours) FROM time_entries INNER JOIN projects ON projects.id = time_entries.project_id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'time_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND (projects.id = 10 OR projects.lft > 12 AND projects.rgt < 13) LIMIT 1",
+            "cost": 143.5,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

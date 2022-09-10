@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id INNER JOIN projects ON projects.id = issues.project_id WHERE 1 = 0 AND (journals.private_notes = False OR journals.user_id = 9 OR 1 = 0)",
+        "cost": 0.0,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT journals.* FROM journals INNER JOIN issues ON issues.id = journals.journalized_id WHERE 1 = 0 AND (journals.private_notes = False OR journals.user_id = 9 OR 1 = 0)",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

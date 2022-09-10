@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT status_pins.status_id FROM status_pins WHERE status_pins.status_id IN (105998079881700283, 105692534350095176) AND status_pins.account_id = 108847829218269424;
+SELECT blocks.target_account_id FROM blocks WHERE blocks.target_account_id IN (108847831162179294, 108847827838984959, 108847831823840027) AND blocks.account_id = 108847822942438095;
 -- Rewritten Queries
-SELECT status_pins.status_id FROM status_pins WHERE status_pins.status_id IN (105998079881700283, 105692534350095176) AND status_pins.account_id = 108847829218269424 LIMIT 1;
+SELECT blocks.target_account_id FROM blocks WHERE blocks.target_account_id IN (108847831162179294, 108847827838984959, 108847831823840027) AND blocks.account_id = 108847822942438095 LIMIT 1;

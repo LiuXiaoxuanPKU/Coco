@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT member_roles.* FROM member_roles INNER JOIN members ON members.id = member_roles.member_id WHERE members.user_id = 9 AND member_roles.inherited_from IN (87, 89)",
+        "cost": 16.61,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT member_roles.* FROM member_roles WHERE member_roles.inherited_from IN (87, 89)",
+            "cost": 12.6,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

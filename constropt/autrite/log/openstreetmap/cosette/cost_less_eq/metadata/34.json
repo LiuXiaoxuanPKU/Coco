@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" ORDER BY note_comments.created_at DESC LIMIT \"$2\"",
-        "cost": 11.47,
+        "sql": "SELECT 1 AS one FROM friends INNER JOIN users ON users.id = friends.friend_user_id WHERE friends.user_id = \"$1\" AND users.status IN (\"$2\", \"$3\") AND friends.friend_user_id = \"$4\" LIMIT 1",
+        "cost": 19.66,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" ORDER BY note_comments.created_at DESC LIMIT \"$2\"",
-            "cost": 11.47,
+            "sql": "SELECT 1 AS one FROM friends WHERE friends.user_id = \"$1\" AND friends.friend_user_id = \"$4\" LIMIT 1",
+            "cost": 11.34,
             "rewrite_types": [
                 "RemoveJoin"
             ]

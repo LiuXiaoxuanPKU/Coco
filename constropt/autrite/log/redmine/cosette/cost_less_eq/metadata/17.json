@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT issue_categories.* FROM issue_categories WHERE issue_categories.project_id = \"$1\" ORDER BY issue_categories.name ASC",
+        "cost": 11.44,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issue_categories.* FROM issue_categories WHERE issue_categories.project_id = \"$1\" ORDER BY issue_categories.name ASC LIMIT 1",
+            "cost": 11.43,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

@@ -968,8 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM follows WHERE follows.account_id IS NULL AND follows.target_account_id IS NULL LIMIT 6;
+SELECT COUNT(*) FROM account_pins WHERE account_pins.account_id = 108847829045442243 AND account_pins.target_account_id = 108847814431063806;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM follows WHERE follows.account_id IS NULL AND False LIMIT 6;
-SELECT 1 AS "one" FROM follows WHERE False AND follows.target_account_id IS NULL LIMIT 6;
-SELECT 1 AS "one" FROM follows WHERE False AND False LIMIT 6;
+SELECT COUNT(*) FROM account_pins WHERE account_pins.account_id = 108847829045442243 AND account_pins.target_account_id = 108847814431063806 LIMIT 1;

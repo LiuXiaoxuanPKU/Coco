@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM email_addresses WHERE email_addresses.user_id = \"$1\"",
+        "cost": 8.31,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM email_addresses WHERE email_addresses.user_id = \"$1\" LIMIT 1",
+            "cost": 8.31,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

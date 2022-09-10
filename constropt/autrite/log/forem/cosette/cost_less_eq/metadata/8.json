@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT users_settings.* FROM users_settings WHERE users_settings.user_id = \"$1\"",
+        "cost": 8.3,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT users_settings.* FROM users_settings WHERE users_settings.user_id = \"$1\" LIMIT 1",
+            "cost": 8.3,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

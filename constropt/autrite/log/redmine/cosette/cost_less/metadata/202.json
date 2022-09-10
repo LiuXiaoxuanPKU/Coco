@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT custom_fields.id, role_id FROM custom_fields INNER JOIN custom_fields_roles ON custom_fields_roles.custom_field_id = custom_fields.id INNER JOIN roles ON roles.id = custom_fields_roles.role_id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.visible = \"$1\"",
+        "cost": 273.23,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT custom_fields.id, role_id FROM custom_fields INNER JOIN custom_fields_roles ON custom_fields_roles.custom_field_id = custom_fields.id WHERE custom_fields.type IN ('IssueCustomField') AND custom_fields.visible = \"$1\"",
+            "cost": 272.94,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

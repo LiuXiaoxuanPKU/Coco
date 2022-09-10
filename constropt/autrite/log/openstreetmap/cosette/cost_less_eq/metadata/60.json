@@ -1,32 +1,30 @@
 {
     "org": {
         "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" AND note_comments.visible = \"$2\" AND (users.status IN (\"$3\", \"$4\") OR users.status IS NULL) ORDER BY note_comments.created_at ASC LIMIT \"$5\"",
-        "cost": 19.78,
+        "cost": 19.84,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" AND note_comments.visible = \"$2\" AND False ORDER BY note_comments.created_at ASC LIMIT \"$5\"",
-            "cost": 0.02,
+            "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" AND note_comments.visible = \"$2\" AND (users.status IN (\"$3\", \"$4\") OR False) ORDER BY note_comments.created_at ASC LIMIT \"$5\"",
+            "cost": 19.83,
             "rewrite_types": [
-                "RewriteNullPredicate",
-                "RemoveJoin"
+                "RewriteNullPredicate"
             ]
         },
         {
-            "sql": "SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" AND note_comments.visible = \"$2\" AND False ORDER BY note_comments.created_at ASC LIMIT \"$5\"",
-            "cost": 0.02,
+            "sql": "SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" AND note_comments.visible = \"$2\" AND (users.status IN (\"$3\", \"$4\") OR users.status IS NULL) ORDER BY note_comments.created_at ASC LIMIT \"$5\"",
+            "cost": 19.83,
             "rewrite_types": [
-                "RewriteNullPredicate",
-                "RemoveJoin",
                 "ReplaceOuterJoin"
             ]
         },
         {
-            "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" AND note_comments.visible = \"$2\" AND users.status IS NULL ORDER BY note_comments.created_at ASC LIMIT \"$5\"",
-            "cost": 19.78,
+            "sql": "SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = \"$1\" AND note_comments.visible = \"$2\" AND (users.status IN (\"$3\", \"$4\") OR False) ORDER BY note_comments.created_at ASC LIMIT \"$5\"",
+            "cost": 19.83,
             "rewrite_types": [
-                "RemoveJoin"
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
             ]
         }
     ]

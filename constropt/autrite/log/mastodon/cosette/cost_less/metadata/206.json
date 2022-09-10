@@ -1,0 +1,32 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") ORDER BY statuses.id DESC LIMIT \"$4\"",
+        "cost": 70.52,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") ORDER BY statuses.id DESC LIMIT \"$4\"",
+            "cost": 70.5,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") ORDER BY statuses.id DESC LIMIT \"$4\"",
+            "cost": 70.5,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT statuses.id AS alias_0, accounts.id FROM accounts INNER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") ORDER BY statuses.id DESC LIMIT \"$4\"",
+            "cost": 70.5,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

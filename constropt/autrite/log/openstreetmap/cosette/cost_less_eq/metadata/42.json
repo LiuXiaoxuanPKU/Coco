@@ -1,13 +1,28 @@
 {
     "org": {
-        "sql": "SELECT current_nodes.* FROM current_nodes INNER JOIN current_way_nodes ON current_nodes.id = current_way_nodes.node_id WHERE current_way_nodes.way_id = \"$1\" ORDER BY current_way_nodes.sequence_id ASC",
-        "cost": 27.89,
+        "sql": "SELECT COUNT(*) FROM diary_comments INNER JOIN users ON users.id = diary_comments.user_id WHERE diary_comments.diary_entry_id = \"$1\" AND diary_comments.visible = \"$2\" AND users.status IN (\"$3\", \"$4\")",
+        "cost": 1505.68,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT current_nodes.* FROM current_nodes INNER JOIN current_way_nodes ON current_nodes.id = current_way_nodes.node_id WHERE current_way_nodes.way_id = \"$1\" ORDER BY current_way_nodes.sequence_id ASC LIMIT 1",
-            "cost": 14.75,
+            "sql": "SELECT COUNT(*) FROM diary_comments WHERE diary_comments.diary_entry_id = \"$1\" AND diary_comments.visible = \"$2\"",
+            "cost": 397.71,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM diary_comments WHERE diary_comments.diary_entry_id = \"$1\" AND diary_comments.visible = \"$2\" LIMIT 1",
+            "cost": 397.71,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM diary_comments INNER JOIN users ON users.id = diary_comments.user_id WHERE diary_comments.diary_entry_id = \"$1\" AND diary_comments.visible = \"$2\" AND users.status IN (\"$3\", \"$4\") LIMIT 1",
+            "cost": 1505.68,
             "rewrite_types": [
                 "AddLimitOne"
             ]

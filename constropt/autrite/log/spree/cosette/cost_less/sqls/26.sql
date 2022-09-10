@@ -1243,8 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = True AND spree_stock_items.variant_id = 4800;
+SELECT 1 AS "one" FROM spree_products INNER JOIN friendly_id_slugs ON friendly_id_slugs.deleted_at IS NULL AND friendly_id_slugs.sluggable_type = 'Spree::Taxon' AND friendly_id_slugs.sluggable_id = spree_products.id WHERE spree_products.id IS NOT NULL AND spree_products.slug = 'dehpaatgy' LIMIT 1;
 -- Rewritten Queries
-SELECT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.active = True;
-SELECT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = True AND spree_stock_items.variant_id = 4800;
-SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.active = True;
+SELECT 1 AS "one" FROM spree_products WHERE spree_products.id IS NOT NULL AND spree_products.slug = 'dehpaatgy' LIMIT 1;

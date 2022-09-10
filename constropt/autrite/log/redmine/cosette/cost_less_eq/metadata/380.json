@@ -1,0 +1,30 @@
+{
+    "org": {
+        "sql": "SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND news.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL",
+        "cost": 41.68,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND news.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news') IS NOT NULL LIMIT 1",
+            "cost": 41.68,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND news.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL",
+            "cost": 41.68,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT news.* FROM news INNER JOIN projects ON projects.id = news.project_id WHERE news.created_on BETWEEN '2022-02-04' AND '2022-02-14' AND news.author_id = 2 AND projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'news' LIMIT 1) IS NOT NULL LIMIT 1",
+            "cost": 41.68,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

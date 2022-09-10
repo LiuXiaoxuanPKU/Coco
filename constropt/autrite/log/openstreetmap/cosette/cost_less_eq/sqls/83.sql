@@ -112,7 +112,6 @@ CREATE TABLE current_nodes (
 
 CREATE TABLE current_relation_members (
     relation_id bigint NOT NULL,
-    member_type public.nwr_enum NOT NULL,
     member_id bigint NOT NULL,
     member_role character varying NOT NULL,
     sequence_id integer   NOT NULL
@@ -175,7 +174,6 @@ CREATE TABLE diary_comments (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     visible boolean   NOT NULL,
-    body_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE diary_entries (
@@ -189,7 +187,6 @@ CREATE TABLE diary_entries (
     longitude double precision,
     language_code character varying    NOT NULL,
     visible boolean   NOT NULL,
-    body_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE diary_entry_subscriptions (
@@ -231,7 +228,6 @@ CREATE TABLE gpx_files (
     "timestamp" timestamp without time zone NOT NULL,
     description character varying    NOT NULL,
     inserted boolean NOT NULL,
-    visibility public.gpx_visibility_enum   NOT NULL
 );
 
 CREATE TABLE issue_comments (
@@ -248,8 +244,6 @@ CREATE TABLE issues (
     reportable_type character varying NOT NULL,
     reportable_id integer NOT NULL,
     reported_user_id integer,
-    status public.issue_status_enum   NOT NULL,
-    assigned_role public.user_role_enum NOT NULL,
     resolved_at timestamp without time zone,
     resolved_by integer,
     updated_by integer,
@@ -274,7 +268,6 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
-    body_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -304,7 +297,6 @@ CREATE TABLE note_comments (
     author_ip inet,
     author_id bigint,
     body character varying(255),
-    event public.note_event_enum
 );
 
 CREATE TABLE notes (
@@ -314,7 +306,6 @@ CREATE TABLE notes (
     tile bigint NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    status public.note_status_enum NOT NULL,
     closed_at timestamp without time zone
 );
 
@@ -398,12 +389,10 @@ CREATE TABLE redactions (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     user_id bigint NOT NULL,
-    description_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE relation_members (
     relation_id bigint NOT NULL,
-    member_type public.nwr_enum NOT NULL,
     member_id bigint NOT NULL,
     member_role character varying NOT NULL,
     version bigint   NOT NULL,
@@ -450,7 +439,6 @@ CREATE TABLE user_blocks (
     revoker_id bigint,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    reason_format public.format_enum   NOT NULL
 );
 
 CREATE TABLE user_preferences (
@@ -462,7 +450,6 @@ CREATE TABLE user_preferences (
 CREATE TABLE user_roles (
     id integer NOT NULL,
     user_id bigint NOT NULL,
-    role public.user_role_enum NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     granter_id bigint NOT NULL
@@ -492,13 +479,11 @@ CREATE TABLE users (
     new_email character varying,
     creation_ip character varying,
     languages character varying,
-    status public.user_status_enum   NOT NULL,
     terms_agreed timestamp without time zone,
     consider_pd boolean   NOT NULL,
     auth_uid character varying,
     preferred_editor character varying,
     terms_seen boolean   NOT NULL,
-    description_format public.format_enum   NOT NULL,
     changesets_count integer   NOT NULL,
     traces_count integer   NOT NULL,
     diary_entries_count integer   NOT NULL,
@@ -533,6 +518,6 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT notes.* FROM notes WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.544729') AND (notes.tile BETWEEN 3221331576 AND 3221331583 OR notes.tile BETWEEN 3221331664 AND 3221331679 OR notes.tile BETWEEN 3221331696 AND 3221331711 OR notes.tile BETWEEN 3221331752 AND 3221331759 OR notes.tile BETWEEN 3221331768 AND 3221331775 OR notes.tile BETWEEN 3221331816 AND 3221331823 OR notes.tile BETWEEN 3221331832 AND 3221331967 OR notes.tile BETWEEN 3221337168 AND 3221337183 OR notes.tile BETWEEN 3221337200 AND 3221337215 OR notes.tile BETWEEN 3221337296 AND 3221337311 OR notes.tile BETWEEN 3221337328 AND 3221337599 OR notes.tile BETWEEN 3221337680 AND 3221337695 OR notes.tile BETWEEN 3221337712 AND 3221337727 OR notes.tile BETWEEN 3221337808 AND 3221337817 OR notes.tile BETWEEN 3221337820 AND 3221337821 OR notes.tile BETWEEN 3221337856 AND 3221337993 OR notes.tile BETWEEN 3221337996 AND 3221337997 OR notes.tile BETWEEN 3221338000 AND 3221338009 OR notes.tile BETWEEN 3221338012 AND 3221338013 OR notes.tile BETWEEN 3221338048 AND 3221338057 OR notes.tile BETWEEN 3221338060 AND 3221338061 OR notes.tile BETWEEN 3221338064 AND 3221338073 OR notes.tile BETWEEN 3221338076 AND 3221338077 OR notes.tile BETWEEN 3221342760 AND 3221342767 OR notes.tile BETWEEN 3221342776 AND 3221342783 OR notes.tile BETWEEN 3221342824 AND 3221342831 OR notes.tile BETWEEN 3221342840 AND 3221342975 OR notes.tile BETWEEN 3221343016 AND 3221343023 OR notes.tile BETWEEN 3221343032 AND 3221343039 OR notes.tile BETWEEN 3221343080 AND 3221343087 OR notes.tile BETWEEN 3221343096 AND 3221343231 OR notes.tile BETWEEN 3221343784 AND 3221343791 OR notes.tile BETWEEN 3221343800 AND 3221343807 OR notes.tile BETWEEN 3221343848 AND 3221343855 OR notes.tile BETWEEN 3221343864 AND 3221343999 OR notes.tile BETWEEN 3221344040 AND 3221344047 OR notes.tile BETWEEN 3221344128 AND 3221344144 OR notes.tile BETWEEN 3221344160 AND 3221344176 OR notes.tile BETWEEN 3221348352 AND 3221349001 OR notes.tile BETWEEN 3221349004 AND 3221349005 OR notes.tile BETWEEN 3221349008 AND 3221349017 OR notes.tile BETWEEN 3221349020 AND 3221349021 OR notes.tile BETWEEN 3221349056 AND 3221349065 OR notes.tile BETWEEN 3221349068 AND 3221349069 OR notes.tile BETWEEN 3221349072 AND 3221349081 OR notes.tile BETWEEN 3221349084 AND 3221349085 OR notes.tile BETWEEN 3221349120 AND 3221349257 OR notes.tile BETWEEN 3221349260 AND 3221349261 OR notes.tile BETWEEN 3221349264 AND 3221349273 OR notes.tile BETWEEN 3221349276 AND 3221349277 OR notes.tile BETWEEN 3221349312 AND 3221349321 OR notes.tile BETWEEN 3221349324 AND 3221349325 OR notes.tile BETWEEN 3221349328 AND 3221349337 OR notes.tile BETWEEN 3221349340 AND 3221349341 OR notes.tile BETWEEN 3221349376 AND 3221349648 OR notes.tile BETWEEN 3221349664 AND 3221349680 OR notes.tile BETWEEN 3221349760 AND 3221349776 OR notes.tile BETWEEN 3221349792 AND 3221349808 OR notes.tile BETWEEN 3221349888 AND 3221350025 OR notes.tile BETWEEN 3221350028 AND 3221350029 OR notes.tile BETWEEN 3221350032 AND 3221350041 OR notes.tile BETWEEN 3221350044 AND 3221350045 OR notes.tile BETWEEN 3221350080 AND 3221350089 OR notes.tile BETWEEN 3221350092 AND 3221350093 OR notes.tile BETWEEN 3221350096 AND 3221350105 OR notes.tile BETWEEN 3221350108 AND 3221350109 OR notes.tile BETWEEN 3221350144 AND 3221350160 OR notes.tile BETWEEN 3221350176 AND 3221350192 OR notes.tile BETWEEN 3221350272 AND 3221350281 OR notes.tile BETWEEN 3221350284 AND 3221350285 OR notes.tile IN (3221344056, 3221344058, 3221344146, 3221344152, 3221344154, 3221344178, 3221344184, 3221344186, 3221349650, 3221349656, 3221349658, 3221349682, 3221349688, 3221349690, 3221349778, 3221349784, 3221349786, 3221349810, 3221349816, 3221349818, 3221350162, 3221350168, 3221350170, 3221350194, 3221350200, 3221350202, 3221350288, 3221350290, 3221350296)) AND notes.latitude BETWEEN 10000000.0 AND 12000000.0 AND notes.longitude BETWEEN 10000000.0 AND 12000000.0 ORDER BY updated_at DESC LIMIT 2;
+SELECT diary_entries.id AS t0_r0, diary_entries.user_id AS t0_r1, diary_entries.title AS t0_r2, diary_entries.body AS t0_r3, diary_entries.created_at AS t0_r4, diary_entries.updated_at AS t0_r5, diary_entries.latitude AS t0_r6, diary_entries.longitude AS t0_r7, diary_entries.language_code AS t0_r8, diary_entries.visible AS t0_r9, diary_entries.body_format AS t0_r10, users.email AS t1_r0, users.id AS t1_r1, users.pass_crypt AS t1_r2, users.creation_time AS t1_r3, users.display_name AS t1_r4, users.data_public AS t1_r5, users.description AS t1_r6, users.home_lat AS t1_r7, users.home_lon AS t1_r8, users.home_zoom AS t1_r9, users.pass_salt AS t1_r10, users.email_valid AS t1_r11, users.new_email AS t1_r12, users.creation_ip AS t1_r13, users.languages AS t1_r14, users.status AS t1_r15, users.terms_agreed AS t1_r16, users.consider_pd AS t1_r17, users.auth_uid AS t1_r18, users.preferred_editor AS t1_r19, users.terms_seen AS t1_r20, users.description_format AS t1_r21, users.changesets_count AS t1_r22, users.traces_count AS t1_r23, users.diary_entries_count AS t1_r24, users.image_use_gravatar AS t1_r25, users.auth_provider AS t1_r26, users.home_tile AS t1_r27, users.tou_agreed AS t1_r28, languages.code AS t2_r0, languages.english_name AS t2_r1, languages.native_name AS t2_r2 FROM diary_entries INNER JOIN users ON users.id = diary_entries.user_id LEFT OUTER JOIN languages ON languages.code = diary_entries.language_code WHERE users.status IN ('pending', 'pending') AND diary_entries.language_code = 'fwxzlkfefdeogsllhbi' AND diary_entries.visible = False ORDER BY created_at DESC LIMIT 8 OFFSET 1;
 -- Rewritten Queries
-SELECT notes.* FROM notes WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.544729') AND (notes.tile BETWEEN 3221331576 AND 3221331583 OR notes.tile BETWEEN 3221331664 AND 3221331679 OR notes.tile BETWEEN 3221331696 AND 3221331711 OR notes.tile BETWEEN 3221331752 AND 3221331759 OR notes.tile BETWEEN 3221331768 AND 3221331775 OR notes.tile BETWEEN 3221331816 AND 3221331823 OR notes.tile BETWEEN 3221331832 AND 3221331967 OR notes.tile BETWEEN 3221337168 AND 3221337183 OR notes.tile BETWEEN 3221337200 AND 3221337215 OR notes.tile BETWEEN 3221337296 AND 3221337311 OR notes.tile BETWEEN 3221337328 AND 3221337599 OR notes.tile BETWEEN 3221337680 AND 3221337695 OR notes.tile BETWEEN 3221337712 AND 3221337727 OR notes.tile BETWEEN 3221337808 AND 3221337817 OR notes.tile BETWEEN 3221337820 AND 3221337821 OR notes.tile BETWEEN 3221337856 AND 3221337993 OR notes.tile BETWEEN 3221337996 AND 3221337997 OR notes.tile BETWEEN 3221338000 AND 3221338009 OR notes.tile BETWEEN 3221338012 AND 3221338013 OR notes.tile BETWEEN 3221338048 AND 3221338057 OR notes.tile BETWEEN 3221338060 AND 3221338061 OR notes.tile BETWEEN 3221338064 AND 3221338073 OR notes.tile BETWEEN 3221338076 AND 3221338077 OR notes.tile BETWEEN 3221342760 AND 3221342767 OR notes.tile BETWEEN 3221342776 AND 3221342783 OR notes.tile BETWEEN 3221342824 AND 3221342831 OR notes.tile BETWEEN 3221342840 AND 3221342975 OR notes.tile BETWEEN 3221343016 AND 3221343023 OR notes.tile BETWEEN 3221343032 AND 3221343039 OR notes.tile BETWEEN 3221343080 AND 3221343087 OR notes.tile BETWEEN 3221343096 AND 3221343231 OR notes.tile BETWEEN 3221343784 AND 3221343791 OR notes.tile BETWEEN 3221343800 AND 3221343807 OR notes.tile BETWEEN 3221343848 AND 3221343855 OR notes.tile BETWEEN 3221343864 AND 3221343999 OR notes.tile BETWEEN 3221344040 AND 3221344047 OR notes.tile BETWEEN 3221344128 AND 3221344144 OR notes.tile BETWEEN 3221344160 AND 3221344176 OR notes.tile BETWEEN 3221348352 AND 3221349001 OR notes.tile BETWEEN 3221349004 AND 3221349005 OR notes.tile BETWEEN 3221349008 AND 3221349017 OR notes.tile BETWEEN 3221349020 AND 3221349021 OR notes.tile BETWEEN 3221349056 AND 3221349065 OR notes.tile BETWEEN 3221349068 AND 3221349069 OR notes.tile BETWEEN 3221349072 AND 3221349081 OR notes.tile BETWEEN 3221349084 AND 3221349085 OR notes.tile BETWEEN 3221349120 AND 3221349257 OR notes.tile BETWEEN 3221349260 AND 3221349261 OR notes.tile BETWEEN 3221349264 AND 3221349273 OR notes.tile BETWEEN 3221349276 AND 3221349277 OR notes.tile BETWEEN 3221349312 AND 3221349321 OR notes.tile BETWEEN 3221349324 AND 3221349325 OR notes.tile BETWEEN 3221349328 AND 3221349337 OR notes.tile BETWEEN 3221349340 AND 3221349341 OR notes.tile BETWEEN 3221349376 AND 3221349648 OR notes.tile BETWEEN 3221349664 AND 3221349680 OR notes.tile BETWEEN 3221349760 AND 3221349776 OR notes.tile BETWEEN 3221349792 AND 3221349808 OR notes.tile BETWEEN 3221349888 AND 3221350025 OR notes.tile BETWEEN 3221350028 AND 3221350029 OR notes.tile BETWEEN 3221350032 AND 3221350041 OR notes.tile BETWEEN 3221350044 AND 3221350045 OR notes.tile BETWEEN 3221350080 AND 3221350089 OR notes.tile BETWEEN 3221350092 AND 3221350093 OR notes.tile BETWEEN 3221350096 AND 3221350105 OR notes.tile BETWEEN 3221350108 AND 3221350109 OR notes.tile BETWEEN 3221350144 AND 3221350160 OR notes.tile BETWEEN 3221350176 AND 3221350192 OR notes.tile BETWEEN 3221350272 AND 3221350281 OR notes.tile BETWEEN 3221350284 AND 3221350285 OR notes.tile IN (3221344056, 3221344058, 3221344146, 3221344152, 3221344154, 3221344178, 3221344184, 3221344186, 3221349650, 3221349656, 3221349658, 3221349682, 3221349688, 3221349690, 3221349778, 3221349784, 3221349786, 3221349810, 3221349816, 3221349818, 3221350162, 3221350168, 3221350170, 3221350194, 3221350200, 3221350202, 3221350288, 3221350290, 3221350296)) AND notes.latitude BETWEEN 10000000.0 AND 12000000.0 ORDER BY updated_at DESC LIMIT 2;
+SELECT diary_entries.id AS t0_r0, diary_entries.user_id AS t0_r1, diary_entries.title AS t0_r2, diary_entries.body AS t0_r3, diary_entries.created_at AS t0_r4, diary_entries.updated_at AS t0_r5, diary_entries.latitude AS t0_r6, diary_entries.longitude AS t0_r7, diary_entries.language_code AS t0_r8, diary_entries.visible AS t0_r9, diary_entries.body_format AS t0_r10, users.email AS t1_r0, users.id AS t1_r1, users.pass_crypt AS t1_r2, users.creation_time AS t1_r3, users.display_name AS t1_r4, users.data_public AS t1_r5, users.description AS t1_r6, users.home_lat AS t1_r7, users.home_lon AS t1_r8, users.home_zoom AS t1_r9, users.pass_salt AS t1_r10, users.email_valid AS t1_r11, users.new_email AS t1_r12, users.creation_ip AS t1_r13, users.languages AS t1_r14, users.status AS t1_r15, users.terms_agreed AS t1_r16, users.consider_pd AS t1_r17, users.auth_uid AS t1_r18, users.preferred_editor AS t1_r19, users.terms_seen AS t1_r20, users.description_format AS t1_r21, users.changesets_count AS t1_r22, users.traces_count AS t1_r23, users.diary_entries_count AS t1_r24, users.image_use_gravatar AS t1_r25, users.auth_provider AS t1_r26, users.home_tile AS t1_r27, users.tou_agreed AS t1_r28, languages.code AS t2_r0, languages.english_name AS t2_r1, languages.native_name AS t2_r2 FROM diary_entries INNER JOIN users ON users.id = diary_entries.user_id INNER JOIN languages ON languages.code = diary_entries.language_code WHERE users.status IN ('pending', 'pending') AND diary_entries.language_code = 'fwxzlkfefdeogsllhbi' AND diary_entries.visible = False ORDER BY created_at DESC LIMIT 8 OFFSET 1;

@@ -1,0 +1,24 @@
+{
+    "org": {
+        "sql": "SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = \"$1\" AND tag_adjustments.status = \"$2\"",
+        "cost": 542.83,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = \"$1\" AND tag_adjustments.status = \"$2\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = \"$1\" AND tag_adjustments.status = \"$2\" LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

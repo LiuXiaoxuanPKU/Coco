@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM projects WHERE projects.status = \"$1\" AND projects.id IN (SELECT em.project_id FROM enabled_modules AS em WHERE em.name = 'repository')",
+        "cost": 13870.62,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE projects.status = \"$1\" AND projects.id IN (SELECT em.project_id FROM enabled_modules AS em WHERE em.name = 'repository') LIMIT 1",
+            "cost": 13870.62,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_users INNER JOIN spree_role_users ON spree_role_users.user_id = spree_users.id INNER JOIN spree_roles ON spree_roles.id = spree_role_users.role_id WHERE spree_roles.name = 'gleeidqiaizombqlzsblavtjvajwxdeoamsknbuninlppkasirerejkuvrylzfxrtjfdfilvntfgicsewjpqzhatmhesjerasnayarclqualzydandlgwdwmgihrlaxlqazvcyucuuaaqbjxtnalwfegzcgpbkoytustjtbvuyivarjdczfuigwpoqoewhbqfkofpegximgemebekcnbakgyysb' LIMIT 1;
+SELECT 1 AS "one" FROM spree_stores INNER JOIN spree_products_stores ON spree_stores.id = spree_products_stores.store_id WHERE spree_stores.deleted_at IS NULL AND spree_products_stores.product_id = 10301 LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_users INNER JOIN spree_role_users ON spree_role_users.user_id = spree_users.id LIMIT 1;
+SELECT 1 AS "one" FROM spree_stores WHERE spree_stores.deleted_at IS NULL LIMIT 1;

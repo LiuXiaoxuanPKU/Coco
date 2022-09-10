@@ -1,23 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id LEFT OUTER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = \"$1\" AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT \"$2\"",
-        "cost": 28.45,
+        "sql": "SELECT DISTINCT spree_return_items.* FROM spree_return_items INNER JOIN spree_inventory_units ON spree_inventory_units.original_return_item_id = spree_return_items.id WHERE spree_return_items.reception_status = \"$1\" AND spree_inventory_units.created_at < '2022-07-31 05:42:21.425699' AND spree_inventory_units.state = 'shipped'",
+        "cost": 275.38,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id LEFT OUTER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = \"$1\" AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT \"$2\"",
-            "cost": 28.44,
+            "sql": "SELECT spree_return_items.* FROM spree_return_items INNER JOIN spree_inventory_units ON spree_inventory_units.original_return_item_id = spree_return_items.id WHERE spree_return_items.reception_status = \"$1\" AND spree_inventory_units.created_at < '2022-07-31 05:42:21.425699' AND spree_inventory_units.state = 'shipped'",
+            "cost": 275.32,
             "rewrite_types": [
                 "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id INNER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = \"$1\" AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT \"$2\"",
-            "cost": 28.44,
-            "rewrite_types": [
-                "RemoveDistinct",
-                "ReplaceOuterJoin"
             ]
         }
     ]

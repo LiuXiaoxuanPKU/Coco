@@ -1,25 +1,15 @@
 {
     "org": {
-        "sql": "SELECT custom_emojis.* FROM custom_emojis LEFT OUTER JOIN custom_emoji_categories ON custom_emoji_categories.id = custom_emojis.category_id WHERE custom_emojis.domain IS NULL ORDER BY custom_emoji_categories.name ASC, custom_emojis.shortcode ASC",
-        "cost": 471.2,
+        "sql": "SELECT 1 AS one FROM account_domain_blocks WHERE account_domain_blocks.account_id = \"$1\" AND account_domain_blocks.domain IS NULL LIMIT 1",
+        "cost": 4.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT custom_emojis.* FROM custom_emojis INNER JOIN custom_emoji_categories ON custom_emoji_categories.id = custom_emojis.category_id WHERE custom_emojis.domain IS NULL ORDER BY custom_emoji_categories.name ASC, custom_emojis.shortcode ASC LIMIT 1",
-            "cost": 396.28,
+            "sql": "SELECT 1 AS one FROM account_domain_blocks WHERE account_domain_blocks.account_id = \"$1\" AND False LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "AddLimitOne",
-                "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT custom_emojis.* FROM custom_emojis INNER JOIN custom_emoji_categories ON custom_emoji_categories.id = custom_emojis.category_id WHERE custom_emojis.domain IS NULL ORDER BY custom_emoji_categories.name ASC, custom_emojis.shortcode ASC LIMIT 1",
-            "cost": 396.28,
-            "rewrite_types": [
-                "RemoveJoin",
-                "AddLimitOne",
-                "ReplaceOuterJoin"
+                "RewriteNullPredicate"
             ]
         }
     ]

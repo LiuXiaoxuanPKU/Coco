@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT wiki_pages.title FROM wiki_pages WHERE wiki_pages.wiki_id = \"$1\" ORDER BY LOWER(title) ASC",
+        "cost": 8.32,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT wiki_pages.title FROM wiki_pages WHERE wiki_pages.wiki_id = \"$1\" ORDER BY LOWER(title) ASC LIMIT 1",
+            "cost": 8.32,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

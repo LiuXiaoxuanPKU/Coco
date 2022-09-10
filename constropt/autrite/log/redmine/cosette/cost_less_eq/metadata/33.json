@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT users.* FROM users WHERE users.status IN (\"$1\", \"$2\") AND users.id IN (SELECT DISTINCT user_id FROM members WHERE project_id IN (1, 2))",
+        "cost": 163.16,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT users.* FROM users WHERE users.status IN (\"$1\", \"$2\") AND users.id IN (SELECT user_id FROM members WHERE project_id IN (1, 2))",
+            "cost": 163.08,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        }
+    ]
+}

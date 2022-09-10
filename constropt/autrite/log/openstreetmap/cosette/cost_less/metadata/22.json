@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM current_way_tags WHERE current_way_tags.k = \"$1\" AND NOT(current_way_tags.way_id = 186 AND current_way_tags.k = 'Key 3') AND current_way_tags.way_id IS NULL LIMIT \"$2\"",
-        "cost": 8.31,
+        "sql": "SELECT 1 AS one FROM current_ways INNER JOIN current_way_nodes ON current_way_nodes.way_id = current_ways.id WHERE current_ways.visible = \"$1\" AND current_way_nodes.node_id = \"$2\" LIMIT 1",
+        "cost": 27.87,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM current_way_tags WHERE current_way_tags.k = \"$1\" AND NOT(current_way_tags.way_id = 186 AND current_way_tags.k = 'Key 3') AND False LIMIT \"$2\"",
-            "cost": 0.0,
+            "sql": "SELECT 1 AS one FROM current_ways WHERE current_ways.visible = \"$1\" LIMIT 1",
+            "cost": 0.04,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "RemoveJoin"
             ]
         }
     ]

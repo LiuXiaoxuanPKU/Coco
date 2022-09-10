@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT conversation_mutes.conversation_id FROM conversation_mutes WHERE conversation_mutes.conversation_id = 6034 AND conversation_mutes.account_id = 108847825184791357;
+SELECT mentions.status_id FROM mentions WHERE mentions.silent = False AND mentions.status_id IN (105095372573997709, 106850058391786086, 107479333725730676, 107143075940319734, 108519481873071023, 104209383550240967, 107693047439660364) AND mentions.account_id = 108847801508209384;
 -- Rewritten Queries
-SELECT conversation_mutes.conversation_id FROM conversation_mutes WHERE conversation_mutes.conversation_id = 6034 AND conversation_mutes.account_id = 108847825184791357 LIMIT 1;
+SELECT mentions.status_id FROM mentions WHERE mentions.silent = False AND mentions.status_id IN (105095372573997709, 106850058391786086, 107479333725730676, 107143075940319734, 108519481873071023, 104209383550240967, 107693047439660364) AND mentions.account_id = 108847801508209384 LIMIT 1;

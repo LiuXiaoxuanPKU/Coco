@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN accounts ON accounts.id = statuses.account_id WHERE statuses.visibility = 2 AND accounts.suspended_at IS NULL AND accounts.silenced_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL AND statuses.local = True AND statuses.uri IS NOT NULL AND 1 = 1 AND statuses.deleted_at IS NULL ORDER BY statuses.id DESC LIMIT 4;
+SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id INNER JOIN users ON users.account_id = accounts.id WHERE follows.target_account_id = 108847832199210543 AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:41:07.442667' ORDER BY accounts.id ASC LIMIT 9;
 -- Rewritten Queries
-SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN accounts ON accounts.id = statuses.account_id WHERE statuses.visibility = 2 AND accounts.suspended_at IS NULL AND accounts.silenced_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL AND statuses.local = True AND True AND 1 = 1 AND statuses.deleted_at IS NULL ORDER BY statuses.id DESC LIMIT 4;
+SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 108847832199210543 AND accounts.domain IS NULL ORDER BY accounts.id ASC LIMIT 9;

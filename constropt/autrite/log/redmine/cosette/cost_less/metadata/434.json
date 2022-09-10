@@ -1,0 +1,54 @@
+{
+    "org": {
+        "sql": "SELECT queries.* FROM queries LEFT OUTER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('IssueQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC",
+        "cost": 1239.49,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT queries.* FROM queries INNER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('IssueQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC",
+            "cost": 1237.97,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT queries.* FROM queries INNER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('IssueQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC LIMIT 1",
+            "cost": 1237.97,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT queries.* FROM queries INNER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('IssueQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC",
+            "cost": 1237.97,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT queries.* FROM queries INNER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('IssueQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC LIMIT 1",
+            "cost": 1237.97,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT queries.* FROM queries LEFT OUTER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('IssueQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC LIMIT 1",
+            "cost": 1238.2,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT queries.* FROM queries LEFT OUTER JOIN projects ON queries.project_id = projects.id WHERE queries.type IN ('IssueQuery') AND (queries.project_id IS NULL OR projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL) AND (queries.visibility <> 0 OR queries.user_id = 1) AND queries.project_id IS NULL ORDER BY queries.name ASC, queries.id ASC LIMIT 1",
+            "cost": 1238.2,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

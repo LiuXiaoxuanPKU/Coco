@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT follows.* FROM follows WHERE follows.target_account_id IN (108847811445925883, 108847829977010530, 108847828124240708) AND follows.account_id = 108847814321453711;
+SELECT blocks.target_account_id FROM blocks WHERE blocks.target_account_id = 108847825025131197 AND blocks.account_id = 108847819161653202;
 -- Rewritten Queries
-SELECT follows.* FROM follows WHERE follows.target_account_id IN (108847811445925883, 108847829977010530, 108847828124240708) AND follows.account_id = 108847814321453711 LIMIT 1;
+SELECT blocks.target_account_id FROM blocks WHERE blocks.target_account_id = 108847825025131197 AND blocks.account_id = 108847819161653202 LIMIT 1;

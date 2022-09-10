@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM badges INNER JOIN badge_achievements ON badges.id = badge_achievements.badge_id WHERE badge_achievements.user_id = \"$1\"",
+        "cost": 20.94,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM badges INNER JOIN badge_achievements ON badges.id = badge_achievements.badge_id WHERE badge_achievements.user_id = \"$1\" LIMIT 1",
+            "cost": 20.94,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

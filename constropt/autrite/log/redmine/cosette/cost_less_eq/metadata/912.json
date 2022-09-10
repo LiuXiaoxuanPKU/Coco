@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = \"$1\" AND users.id NOT IN (SELECT gu.user_id FROM groups_users AS gu WHERE gu.group_id = 10) AND (LOWER(users.login) LIKE LOWER('%smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smi%')) OR LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%')) ORDER BY users.firstname, users.lastname, users.id LIMIT \"$2\" OFFSET \"$3\"",
+        "cost": 776.79,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type IN ('User', 'AnonymousUser') AND users.status = \"$1\" AND users.id NOT IN (SELECT gu.user_id FROM groups_users AS gu WHERE gu.group_id = 10 LIMIT 1) AND (LOWER(users.login) LIKE LOWER('%smi%') OR users.id IN (SELECT user_id FROM email_addresses WHERE LOWER(address) LIKE LOWER('%smi%')) OR LOWER(users.firstname) LIKE LOWER('%smi%') OR LOWER(users.lastname) LIKE LOWER('%smi%')) ORDER BY users.firstname, users.lastname, users.id LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 765.33,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

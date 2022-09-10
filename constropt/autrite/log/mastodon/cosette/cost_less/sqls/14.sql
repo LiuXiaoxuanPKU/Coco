@@ -968,9 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = 108847832375773411 ORDER BY follows.id DESC LIMIT 6;
+SELECT 1 AS "one" FROM custom_emojis LEFT OUTER JOIN custom_emojis AS local_counterparts_custom_emojis ON local_counterparts_custom_emojis.domain IS NULL AND local_counterparts_custom_emojis.shortcode = custom_emojis.shortcode LIMIT 1 OFFSET 1;
 -- Rewritten Queries
-SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = 108847832375773411 ORDER BY follows.id DESC LIMIT 6;
-SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = 108847832375773411 ORDER BY follows.id DESC LIMIT 6;
-SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = 108847832375773411 ORDER BY follows.id DESC LIMIT 6;
-SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = 108847832375773411 ORDER BY follows.id DESC LIMIT 6;
+SELECT 1 AS "one" FROM custom_emojis LIMIT 1 OFFSET 1;

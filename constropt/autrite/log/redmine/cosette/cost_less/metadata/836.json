@@ -1,0 +1,24 @@
+{
+    "org": {
+        "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id INNER JOIN enumerations ON enumerations.id = issues.priority_id AND enumerations.type IN ('IssuePriority') WHERE issues.author_id IN (SELECT users.id FROM users LEFT OUTER JOIN custom_values ON custom_values.customized_type = 'Principal' AND custom_values.customized_id = users.id AND custom_values.custom_field_id = 42 WHERE custom_values.value IN ('Foo') AND 1 = 1)",
+        "cost": 22.96,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.author_id IN (SELECT users.id FROM users LEFT OUTER JOIN custom_values ON custom_values.customized_type = 'Principal' AND custom_values.customized_id = users.id AND custom_values.custom_field_id = 42 WHERE custom_values.value IN ('Foo') AND 1 = 1)",
+            "cost": 22.63,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT issues.* FROM issues INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id INNER JOIN trackers ON trackers.id = issues.tracker_id INNER JOIN projects ON projects.id = issues.project_id WHERE issues.author_id IN (SELECT users.id FROM users INNER JOIN custom_values ON custom_values.customized_type = 'Principal' AND custom_values.customized_id = users.id AND custom_values.custom_field_id = 42 WHERE custom_values.value IN ('Foo') AND 1 = 1)",
+            "cost": 22.63,
+            "rewrite_types": [
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

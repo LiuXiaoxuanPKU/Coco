@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT mentions.status_id FROM mentions WHERE mentions.silent = True AND mentions.status_id IN (105571114805753886, 106273896863338861, 104792855413387346, 104837755744030488) AND mentions.account_id = 108847820946044813;
+SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.shortcode = 'wgtnn' AND custom_emojis.domain = 'vomfazaosjpjlyedghtuxrjslhwijqneqganstxauolwgxzpdufzitswdaxgfxuijyfmcsxqrybfovbpolrlrrwmjzchjxqibfxptqhbygwplogqxwwmkcvmdfvmjxykwjsigsrqnimpvbzrd' AND custom_emojis.disabled = False;
 -- Rewritten Queries
-SELECT mentions.status_id FROM mentions WHERE mentions.silent = True AND mentions.status_id IN (105571114805753886, 106273896863338861, 104792855413387346, 104837755744030488) AND mentions.account_id = 108847820946044813 LIMIT 1;
+SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.shortcode = 'wgtnn' AND custom_emojis.domain = 'vomfazaosjpjlyedghtuxrjslhwijqneqganstxauolwgxzpdufzitswdaxgfxuijyfmcsxqrybfovbpolrlrrwmjzchjxqibfxptqhbygwplogqxwwmkcvmdfvmjxykwjsigsrqnimpvbzrd' AND custom_emojis.disabled = False LIMIT 1;

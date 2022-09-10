@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT collections.slug FROM collections WHERE collections.user_id = \"$1\"",
+        "cost": 12.04,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT collections.slug FROM collections WHERE collections.user_id = \"$1\" LIMIT 1",
+            "cost": 6.3,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

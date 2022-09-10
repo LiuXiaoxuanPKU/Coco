@@ -1,0 +1,23 @@
+{
+    "org": {
+        "sql": "SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id LEFT OUTER JOIN custom_values AS cf_80 ON cf_80.customized_type = 'Issue' AND cf_80.customized_id = issues.id AND cf_80.custom_field_id = 80 AND 1 = 1 AND issues.tracker_id IN (SELECT tracker_id FROM custom_fields_trackers WHERE custom_field_id = 80) AND ((SELECT 1 FROM custom_fields AS ifa WHERE ifa.is_for_all = True AND ifa.id = 80) IS NOT NULL OR issues.project_id IN (SELECT project_id FROM custom_fields_projects WHERE custom_field_id = 80)) AND cf_80.value <> '' AND cf_80.id = (SELECT MAX(cf_80_2.id) FROM custom_values AS cf_80_2 WHERE cf_80_2.customized_type = cf_80.customized_type AND cf_80_2.customized_id = cf_80.customized_id AND cf_80_2.custom_field_id = cf_80.custom_field_id) LEFT OUTER JOIN users AS cf_80_user ON CAST(CASE WHEN cf_80.value = '' THEN '0' ELSE cf_80.value END AS DECIMAL(30, 0)) = cf_80_user.id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13)) AND issues.is_private = False ORDER BY cf_80_user.firstname ASC, cf_80_user.lastname ASC, cf_80_user.id ASC, issues.id ASC LIMIT 1",
+        "cost": 100723.49,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id LEFT OUTER JOIN custom_values AS cf_80 ON cf_80.customized_type = 'Issue' AND cf_80.customized_id = issues.id AND cf_80.custom_field_id = 80 AND 1 = 1 AND issues.tracker_id IN (SELECT tracker_id FROM custom_fields_trackers WHERE custom_field_id = 80) AND ((SELECT 1 FROM custom_fields AS ifa WHERE ifa.is_for_all = True AND ifa.id = 80) IS NOT NULL OR issues.project_id IN (SELECT project_id FROM custom_fields_projects WHERE custom_field_id = 80)) AND cf_80.value <> '' AND cf_80.id = (SELECT MAX(cf_80_2.id) FROM custom_values AS cf_80_2 WHERE cf_80_2.customized_type = cf_80.customized_type AND cf_80_2.customized_id = cf_80.customized_id AND cf_80_2.custom_field_id = cf_80.custom_field_id) LEFT OUTER JOIN users AS cf_80_user ON CAST(CASE WHEN cf_80.value = '' THEN '0' ELSE cf_80.value END AS DECIMAL(30, 0)) = cf_80_user.id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking') IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False ORDER BY cf_80_user.firstname ASC, cf_80_user.lastname ASC, cf_80_user.id ASC, issues.id ASC LIMIT 1",
+            "cost": 100715.33,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT issues.id FROM issues INNER JOIN projects ON projects.id = issues.project_id INNER JOIN issue_statuses ON issue_statuses.id = issues.status_id LEFT OUTER JOIN custom_values AS cf_80 ON cf_80.customized_type = 'Issue' AND cf_80.customized_id = issues.id AND cf_80.custom_field_id = 80 AND 1 = 1 AND issues.tracker_id IN (SELECT tracker_id FROM custom_fields_trackers WHERE custom_field_id = 80) AND ((SELECT 1 FROM custom_fields AS ifa WHERE ifa.is_for_all = True AND ifa.id = 80) IS NOT NULL OR issues.project_id IN (SELECT project_id FROM custom_fields_projects WHERE custom_field_id = 80)) AND cf_80.value <> '' AND cf_80.id = (SELECT MAX(cf_80_2.id) FROM custom_values AS cf_80_2 WHERE cf_80_2.customized_type = cf_80.customized_type AND cf_80_2.customized_id = cf_80.customized_id AND cf_80_2.custom_field_id = cf_80.custom_field_id) LEFT OUTER JOIN users AS cf_80_user ON CAST(CASE WHEN cf_80.value = '' THEN '0' ELSE cf_80.value END AS DECIMAL(30, 0)) = cf_80_user.id WHERE projects.status <> 9 AND (SELECT 1 AS one FROM enabled_modules AS em WHERE em.project_id = projects.id AND em.name = 'issue_tracking' LIMIT 1) IS NOT NULL AND projects.is_public = True AND projects.id NOT IN (SELECT project_id FROM members WHERE user_id IN (6, 13) LIMIT 1) AND issues.is_private = False ORDER BY cf_80_user.firstname ASC, cf_80_user.lastname ASC, cf_80_user.id ASC, issues.id ASC LIMIT 1",
+            "cost": 100715.33,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

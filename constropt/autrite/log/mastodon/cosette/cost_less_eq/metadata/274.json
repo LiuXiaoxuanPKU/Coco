@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT follows.* FROM follows WHERE follows.target_account_id IN (\"$1\", \"$2\") AND follows.account_id IN (SELECT follows.target_account_id FROM follows INNER JOIN accounts ON accounts.id = follows.target_account_id WHERE follows.account_id = \"$3\" AND (accounts.hide_collections = \"$4\" OR accounts.hide_collections IS NULL))",
+        "cost": 20.93,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT follows.* FROM follows WHERE follows.target_account_id IN (\"$1\", \"$2\") AND follows.account_id IN (SELECT follows.target_account_id FROM follows INNER JOIN accounts ON accounts.id = follows.target_account_id WHERE follows.account_id = \"$3\" AND (accounts.hide_collections = \"$4\" OR accounts.hide_collections IS NULL)) LIMIT 1",
+            "cost": 20.93,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

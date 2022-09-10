@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM users INNER JOIN watchers ON users.id = watchers.user_id WHERE watchers.watchable_id = \"$1\" AND watchers.watchable_type = \"$2\"",
+        "cost": 16.62,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM users INNER JOIN watchers ON users.id = watchers.user_id WHERE watchers.watchable_id = \"$1\" AND watchers.watchable_type = \"$2\" LIMIT 1",
+            "cost": 16.62,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

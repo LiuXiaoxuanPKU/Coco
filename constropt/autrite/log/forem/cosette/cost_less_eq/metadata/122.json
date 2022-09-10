@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT articles.path, articles.title, articles.id, articles.published, articles.comments_count, articles.public_reactions_count, articles.cached_tag_list, articles.main_image, articles.main_image_background_hex_color, articles.updated_at, articles.slug, articles.video, articles.user_id, articles.organization_id, articles.video_source_url, articles.video_code, articles.video_thumbnail_url, articles.video_closed_caption_track_url, articles.experience_level_rating, articles.experience_level_rating_distribution, articles.cached_user, articles.cached_organization, articles.published_at, articles.crossposted_at, articles.description, articles.reading_time, articles.video_duration_in_seconds, articles.last_comment_at FROM articles INNER JOIN taggings ON articles.id = taggings.taggable_id WHERE taggings.tag_id = \"$1\" AND taggings.taggable_type = \"$2\" AND articles.published = \"$3\" AND published_at <= '2022-02-27 07:11:45.683524' AND published_at > '2022-01-27 07:11:45.683986' ORDER BY articles.public_reactions_count DESC LIMIT \"$4\" OFFSET \"$5\"",
+        "cost": 16.5,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT articles.path, articles.title, articles.id, articles.published, articles.comments_count, articles.public_reactions_count, articles.cached_tag_list, articles.main_image, articles.main_image_background_hex_color, articles.updated_at, articles.slug, articles.video, articles.user_id, articles.organization_id, articles.video_source_url, articles.video_code, articles.video_thumbnail_url, articles.video_closed_caption_track_url, articles.experience_level_rating, articles.experience_level_rating_distribution, articles.cached_user, articles.cached_organization, articles.published_at, articles.crossposted_at, articles.description, articles.reading_time, articles.video_duration_in_seconds, articles.last_comment_at FROM articles WHERE articles.published = \"$3\" AND published_at <= '2022-02-27 07:11:45.683524' AND published_at > '2022-01-27 07:11:45.683986' ORDER BY articles.public_reactions_count DESC LIMIT \"$4\" OFFSET \"$5\"",
+            "cost": 8.33,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

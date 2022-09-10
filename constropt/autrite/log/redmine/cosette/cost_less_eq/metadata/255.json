@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT projects.* FROM projects WHERE projects.id IN (SELECT DISTINCT m.project_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 2 AND cfr.custom_field_id = 30)",
+        "cost": 48.36,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT projects.* FROM projects WHERE projects.id IN (SELECT m.project_id FROM members AS m INNER JOIN member_roles AS mr ON mr.member_id = m.id INNER JOIN custom_fields_roles AS cfr ON cfr.role_id = mr.role_id WHERE m.user_id = 2 AND cfr.custom_field_id = 30)",
+            "cost": 48.34,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        }
+    ]
+}

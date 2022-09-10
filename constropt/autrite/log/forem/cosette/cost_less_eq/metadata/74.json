@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = \"$1\" AND notification_subscriptions.notifiable_type = \"$2\" AND notification_subscriptions.config = \"$3\"",
+        "cost": 8.31,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = \"$1\" AND notification_subscriptions.notifiable_type = \"$2\" AND notification_subscriptions.config = \"$3\" LIMIT 1",
+            "cost": 8.31,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM watchers WHERE watchers.user_id = \"$1\" AND watchers.watchable_type = \"$2\" AND watchers.watchable_id IS NULL LIMIT \"$3\"",
+        "cost": 7.9,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM watchers WHERE watchers.user_id = \"$1\" AND watchers.watchable_type = \"$2\" AND False LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

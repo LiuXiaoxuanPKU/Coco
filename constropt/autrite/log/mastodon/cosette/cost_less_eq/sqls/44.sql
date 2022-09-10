@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT favourites.status_id FROM favourites WHERE favourites.status_id IN (102686436575217744, 105942479090049719) AND favourites.account_id = 108847814426681999;
+SELECT blocks.target_account_id FROM blocks WHERE blocks.account_id = 108847814141943463 AND blocks.target_account_id IN (108847831911813014, 108847819533968767);
 -- Rewritten Queries
-SELECT favourites.status_id FROM favourites WHERE favourites.status_id IN (102686436575217744, 105942479090049719) AND favourites.account_id = 108847814426681999 LIMIT 1;
+SELECT blocks.target_account_id FROM blocks WHERE blocks.account_id = 108847814141943463 AND blocks.target_account_id IN (108847831911813014, 108847819533968767) LIMIT 1;

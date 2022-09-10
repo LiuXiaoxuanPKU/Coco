@@ -1,30 +1,30 @@
 {
     "org": {
-        "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = \"$1\" AND (users.status IN (\"$2\", \"$3\") OR users.status IS NULL) AND note_comments.note_id = \"$4\" ORDER BY note_comments.created_at ASC",
-        "cost": 19.78,
+        "sql": "SELECT 1 AS one FROM relation_tags WHERE relation_tags.k = \"$1\" AND NOT(relation_tags.relation_id = 154 AND relation_tags.version = 1 AND relation_tags.k = 'Key 1') AND relation_tags.relation_id IS NULL AND relation_tags.version IS NULL LIMIT 1",
+        "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = \"$1\" AND users.status IS NULL AND note_comments.note_id = \"$4\" ORDER BY note_comments.created_at ASC",
-            "cost": 19.78,
+            "sql": "SELECT 1 AS one FROM relation_tags WHERE relation_tags.k = \"$1\" AND NOT(relation_tags.relation_id = 154 AND relation_tags.version = 1 AND relation_tags.k = 'Key 1') AND relation_tags.relation_id IS NULL AND False LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "RemoveJoin"
+                "RewriteNullPredicate"
             ]
         },
         {
-            "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = \"$1\" AND (users.status IN (\"$2\", \"$3\") OR users.status IS NULL) AND note_comments.note_id = \"$4\" ORDER BY note_comments.created_at ASC LIMIT 1",
-            "cost": 19.78,
+            "sql": "SELECT 1 AS one FROM relation_tags WHERE relation_tags.k = \"$1\" AND NOT(relation_tags.relation_id = 154 AND relation_tags.version = 1 AND relation_tags.k = 'Key 1') AND False AND relation_tags.version IS NULL LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "AddLimitOne"
+                "RewriteNullPredicate"
             ]
         },
         {
-            "sql": "SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = \"$1\" AND users.status IS NULL AND note_comments.note_id = \"$4\" ORDER BY note_comments.created_at ASC LIMIT 1",
-            "cost": 19.78,
+            "sql": "SELECT 1 AS one FROM relation_tags WHERE relation_tags.k = \"$1\" AND NOT(relation_tags.relation_id = 154 AND relation_tags.version = 1 AND relation_tags.k = 'Key 1') AND False AND False LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "RemoveJoin",
-                "AddLimitOne"
+                "RewriteNullPredicate",
+                "RewriteNullPredicate"
             ]
         }
     ]
