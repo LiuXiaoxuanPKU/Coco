@@ -1,15 +1,30 @@
 {
     "org": {
-        "sql": "SELECT follows.* FROM follows WHERE follows.target_account_id IN (\"$1\", \"$2\", \"$3\") AND follows.account_id = \"$4\"",
-        "cost": 8.31,
+        "sql": "SELECT 1 AS one FROM blocks WHERE blocks.account_id IS NULL AND blocks.target_account_id IS NULL LIMIT 1",
+        "cost": 4.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT follows.* FROM follows WHERE follows.target_account_id IN (\"$1\", \"$2\", \"$3\") AND follows.account_id = \"$4\" LIMIT 1",
-            "cost": 8.31,
+            "sql": "SELECT 1 AS one FROM blocks WHERE False AND blocks.target_account_id IS NULL LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "AddLimitOne"
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM blocks WHERE blocks.account_id IS NULL AND False LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM blocks WHERE False AND False LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RewriteNullPredicate"
             ]
         }
     ]

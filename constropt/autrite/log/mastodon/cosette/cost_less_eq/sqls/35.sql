@@ -152,7 +152,7 @@ CREATE TABLE statuses (
     in_reply_to_id bigint,
     reblog_of_id bigint,
     url character varying,
-    sensitive boolean   NOT NULL,
+    "sensitive" boolean   NOT NULL,
     visibility integer   NOT NULL,
     spoiler_text character varying(255)   NOT NULL,
     reply boolean   NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE statuses (
     poll_id bigint,
     deleted_at timestamp without time zone,
     edited_at timestamp without time zone,
-    trendable boolean,
+    trendable boolean
 );
 
 CREATE TABLE account_warning_presets (
@@ -233,7 +233,7 @@ CREATE TABLE announcements (
     ends_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    published_at timestamp without time zone,
+    published_at timestamp without time zone
 );
 
 CREATE TABLE appeals (
@@ -797,7 +797,7 @@ CREATE TABLE reports (
     uri character varying,
     forwarded boolean,
     category integer   NOT NULL,
-    action_taken_at timestamp without time zone,
+    action_taken_at timestamp without time zone
 );
 
 CREATE TABLE rules (
@@ -862,7 +862,7 @@ CREATE TABLE status_edits (
     spoiler_text character varying(255)   NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    sensitive boolean
+    "sensitive" boolean
 );
 
 CREATE TABLE status_pins (
@@ -957,6 +957,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT COUNT(*) FROM account_pins WHERE account_pins.account_id = 108847830418316608 AND account_pins.target_account_id = 108847801504938526;
+SELECT list_accounts.* FROM list_accounts WHERE list_accounts.list_id = 1800 AND list_accounts.account_id = 108847821830881520;
 -- Rewritten Queries
-SELECT COUNT(*) FROM account_pins WHERE account_pins.account_id = 108847830418316608 AND account_pins.target_account_id = 108847801504938526 LIMIT 1;
+SELECT list_accounts.* FROM list_accounts WHERE list_accounts.list_id = 1800 AND list_accounts.account_id = 108847821830881520 LIMIT 1;

@@ -1,15 +1,30 @@
 {
     "org": {
-        "sql": "SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN status_pins ON statuses.id = status_pins.status_id WHERE statuses.deleted_at IS NULL AND status_pins.account_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") ORDER BY status_pins.created_at DESC",
-        "cost": 28.03,
+        "sql": "SELECT custom_emojis.* FROM custom_emojis LEFT OUTER JOIN custom_emoji_categories ON custom_emoji_categories.id = custom_emojis.category_id WHERE custom_emojis.domain IS NULL ORDER BY custom_emoji_categories.name ASC, custom_emojis.shortcode ASC",
+        "cost": 471.2,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN status_pins ON statuses.id = status_pins.status_id WHERE statuses.deleted_at IS NULL AND status_pins.account_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") ORDER BY status_pins.created_at DESC LIMIT 1",
-            "cost": 28.03,
+            "sql": "SELECT custom_emojis.* FROM custom_emojis INNER JOIN custom_emoji_categories ON custom_emoji_categories.id = custom_emojis.category_id WHERE custom_emojis.domain IS NULL ORDER BY custom_emoji_categories.name ASC, custom_emojis.shortcode ASC LIMIT 1",
+            "cost": 396.28,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT custom_emojis.* FROM custom_emojis LEFT OUTER JOIN custom_emoji_categories ON custom_emoji_categories.id = custom_emojis.category_id WHERE custom_emojis.domain IS NULL ORDER BY custom_emoji_categories.name ASC, custom_emojis.shortcode ASC LIMIT 1",
+            "cost": 471.2,
             "rewrite_types": [
                 "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT custom_emojis.* FROM custom_emojis INNER JOIN custom_emoji_categories ON custom_emoji_categories.id = custom_emojis.category_id WHERE custom_emojis.domain IS NULL ORDER BY custom_emoji_categories.name ASC, custom_emojis.shortcode ASC",
+            "cost": 471.2,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
             ]
         }
     ]

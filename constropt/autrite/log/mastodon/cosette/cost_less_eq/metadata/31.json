@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT account_domain_blocks.domain FROM account_domain_blocks WHERE account_domain_blocks.account_id = \"$1\"",
-        "cost": 4.32,
+        "sql": "SELECT blocks.target_account_id FROM blocks WHERE blocks.account_id = \"$1\" AND blocks.target_account_id = \"$2\"",
+        "cost": 4.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT account_domain_blocks.domain FROM account_domain_blocks WHERE account_domain_blocks.account_id = \"$1\" LIMIT 1",
-            "cost": 2.3,
+            "sql": "SELECT blocks.target_account_id FROM blocks WHERE blocks.account_id = \"$1\" AND blocks.target_account_id = \"$2\" LIMIT 1",
+            "cost": 4.3,
             "rewrite_types": [
                 "AddLimitOne"
             ]

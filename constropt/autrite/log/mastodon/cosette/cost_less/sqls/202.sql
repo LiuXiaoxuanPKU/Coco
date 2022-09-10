@@ -152,7 +152,7 @@ CREATE TABLE statuses (
     in_reply_to_id bigint,
     reblog_of_id bigint,
     url character varying,
-    sensitive boolean   NOT NULL,
+    "sensitive" boolean   NOT NULL,
     visibility integer   NOT NULL,
     spoiler_text character varying(255)   NOT NULL,
     reply boolean   NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE statuses (
     poll_id bigint,
     deleted_at timestamp without time zone,
     edited_at timestamp without time zone,
-    trendable boolean,
+    trendable boolean
 );
 
 CREATE TABLE account_warning_presets (
@@ -233,7 +233,7 @@ CREATE TABLE announcements (
     ends_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    published_at timestamp without time zone,
+    published_at timestamp without time zone
 );
 
 CREATE TABLE appeals (
@@ -797,7 +797,7 @@ CREATE TABLE reports (
     uri character varying,
     forwarded boolean,
     category integer   NOT NULL,
-    action_taken_at timestamp without time zone,
+    action_taken_at timestamp without time zone
 );
 
 CREATE TABLE rules (
@@ -862,7 +862,7 @@ CREATE TABLE status_edits (
     spoiler_text character varying(255)   NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    sensitive boolean
+    "sensitive" boolean
 );
 
 CREATE TABLE status_pins (
@@ -957,9 +957,9 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT DISTINCT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 107382903972687352 ORDER BY favourites.id DESC LIMIT 7;
+SELECT DISTINCT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 104990307938441751 ORDER BY favourites.id DESC LIMIT 7;
 -- Rewritten Queries
-SELECT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 107382903972687352 ORDER BY favourites.id DESC LIMIT 7;
-SELECT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 107382903972687352 ORDER BY favourites.id DESC LIMIT 7;
-SELECT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 107382903972687352 ORDER BY favourites.id DESC LIMIT 7;
-SELECT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 107382903972687352 ORDER BY favourites.id DESC LIMIT 7;
+SELECT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 104990307938441751 ORDER BY favourites.id DESC LIMIT 7;
+SELECT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 104990307938441751 ORDER BY favourites.id DESC LIMIT 7;
+SELECT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 104990307938441751 ORDER BY favourites.id DESC LIMIT 7;
+SELECT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 104990307938441751 ORDER BY favourites.id DESC LIMIT 7;

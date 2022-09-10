@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT follows.id FROM follows WHERE follows.target_account_id = \"$1\" AND follows.account_id IN (SELECT accounts.id FROM accounts WHERE accounts.domain IS NULL) AND follows.account_id NOT IN (SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = \"$2\" AND accounts.domain IS NULL ORDER BY follows.id DESC) AND follows.account_id <> \"$3\" ORDER BY follows.id ASC LIMIT \"$4\"",
-        "cost": 64.31,
+        "sql": "SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN media_attachments ON media_attachments.status_id = statuses.id WHERE statuses.account_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") AND media_attachments.account_id = \"$4\" AND statuses.deleted_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT \"$5\"",
+        "cost": 12.67,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT follows.id FROM follows WHERE follows.target_account_id = \"$1\" AND follows.account_id IN (SELECT accounts.id FROM accounts WHERE accounts.domain IS NULL) AND follows.account_id NOT IN (SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = \"$2\" AND accounts.domain IS NULL ORDER BY follows.id DESC LIMIT 1) AND follows.account_id <> \"$3\" ORDER BY follows.id ASC LIMIT \"$4\"",
-            "cost": 64.31,
+            "sql": "SELECT statuses.id, statuses.updated_at FROM statuses WHERE statuses.account_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") AND statuses.deleted_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT \"$5\"",
+            "cost": 8.33,
             "rewrite_types": [
-                "AddLimitOne"
+                "RemoveJoin"
             ]
         }
     ]

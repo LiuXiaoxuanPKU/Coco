@@ -152,7 +152,7 @@ CREATE TABLE statuses (
     in_reply_to_id bigint,
     reblog_of_id bigint,
     url character varying,
-    sensitive boolean   NOT NULL,
+    "sensitive" boolean   NOT NULL,
     visibility integer   NOT NULL,
     spoiler_text character varying(255)   NOT NULL,
     reply boolean   NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE statuses (
     poll_id bigint,
     deleted_at timestamp without time zone,
     edited_at timestamp without time zone,
-    trendable boolean,
+    trendable boolean
 );
 
 CREATE TABLE account_warning_presets (
@@ -233,7 +233,7 @@ CREATE TABLE announcements (
     ends_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    published_at timestamp without time zone,
+    published_at timestamp without time zone
 );
 
 CREATE TABLE appeals (
@@ -797,7 +797,7 @@ CREATE TABLE reports (
     uri character varying,
     forwarded boolean,
     category integer   NOT NULL,
-    action_taken_at timestamp without time zone,
+    action_taken_at timestamp without time zone
 );
 
 CREATE TABLE rules (
@@ -862,7 +862,7 @@ CREATE TABLE status_edits (
     spoiler_text character varying(255)   NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    sensitive boolean
+    "sensitive" boolean
 );
 
 CREATE TABLE status_pins (
@@ -957,6 +957,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT blocks.account_id FROM blocks WHERE blocks.account_id IN (108847826752611284, 108847819691129818) AND blocks.target_account_id = 108847823770957989;
+SELECT favourites.status_id FROM favourites WHERE favourites.status_id = 105642468707817130 AND favourites.account_id = 108847814573895574;
 -- Rewritten Queries
-SELECT blocks.account_id FROM blocks WHERE blocks.account_id IN (108847826752611284, 108847819691129818) AND blocks.target_account_id = 108847823770957989 LIMIT 1;
+SELECT favourites.status_id FROM favourites WHERE favourites.status_id = 105642468707817130 AND favourites.account_id = 108847814573895574 LIMIT 1;

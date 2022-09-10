@@ -152,7 +152,7 @@ CREATE TABLE statuses (
     in_reply_to_id bigint,
     reblog_of_id bigint,
     url character varying,
-    sensitive boolean   NOT NULL,
+    "sensitive" boolean   NOT NULL,
     visibility integer   NOT NULL,
     spoiler_text character varying(255)   NOT NULL,
     reply boolean   NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE statuses (
     poll_id bigint,
     deleted_at timestamp without time zone,
     edited_at timestamp without time zone,
-    trendable boolean,
+    trendable boolean
 );
 
 CREATE TABLE account_warning_presets (
@@ -233,7 +233,7 @@ CREATE TABLE announcements (
     ends_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    published_at timestamp without time zone,
+    published_at timestamp without time zone
 );
 
 CREATE TABLE appeals (
@@ -797,7 +797,7 @@ CREATE TABLE reports (
     uri character varying,
     forwarded boolean,
     category integer   NOT NULL,
-    action_taken_at timestamp without time zone,
+    action_taken_at timestamp without time zone
 );
 
 CREATE TABLE rules (
@@ -862,7 +862,7 @@ CREATE TABLE status_edits (
     spoiler_text character varying(255)   NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    sensitive boolean
+    "sensitive" boolean
 );
 
 CREATE TABLE status_pins (
@@ -957,6 +957,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT COUNT(*) FROM follow_requests WHERE follow_requests.target_account_id = 108847823675817293 AND follow_requests.account_id = 108847823960625152;
+SELECT blocks.target_account_id FROM blocks WHERE blocks.target_account_id IN (108847806631106579, 108847809393275546, 108847822823279333) AND blocks.account_id = 108847820177654321;
 -- Rewritten Queries
-SELECT COUNT(*) FROM follow_requests WHERE follow_requests.target_account_id = 108847823675817293 AND follow_requests.account_id = 108847823960625152 LIMIT 1;
+SELECT blocks.target_account_id FROM blocks WHERE blocks.target_account_id IN (108847806631106579, 108847809393275546, 108847822823279333) AND blocks.account_id = 108847820177654321 LIMIT 1;

@@ -152,7 +152,7 @@ CREATE TABLE statuses (
     in_reply_to_id bigint,
     reblog_of_id bigint,
     url character varying,
-    sensitive boolean   NOT NULL,
+    "sensitive" boolean   NOT NULL,
     visibility integer   NOT NULL,
     spoiler_text character varying(255)   NOT NULL,
     reply boolean   NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE statuses (
     poll_id bigint,
     deleted_at timestamp without time zone,
     edited_at timestamp without time zone,
-    trendable boolean,
+    trendable boolean
 );
 
 CREATE TABLE account_warning_presets (
@@ -233,7 +233,7 @@ CREATE TABLE announcements (
     ends_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    published_at timestamp without time zone,
+    published_at timestamp without time zone
 );
 
 CREATE TABLE appeals (
@@ -797,7 +797,7 @@ CREATE TABLE reports (
     uri character varying,
     forwarded boolean,
     category integer   NOT NULL,
-    action_taken_at timestamp without time zone,
+    action_taken_at timestamp without time zone
 );
 
 CREATE TABLE rules (
@@ -862,7 +862,7 @@ CREATE TABLE status_edits (
     spoiler_text character varying(255)   NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    sensitive boolean
+    "sensitive" boolean
 );
 
 CREATE TABLE status_pins (
@@ -957,6 +957,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN accounts ON accounts.id = statuses.account_id WHERE statuses.visibility = 0 AND accounts.suspended_at IS NULL AND accounts.silenced_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL AND statuses.local = False AND statuses.uri IS NOT NULL AND 1 = 1 AND statuses.deleted_at IS NULL ORDER BY statuses.id DESC LIMIT 4;
+SELECT name, custom_emoji_id, COUNT(*) AS count, (SELECT 1 FROM announcement_reactions AS r WHERE r.account_id = 108774566504673364 AND r.announcement_id = announcement_reactions.announcement_id AND r.name = announcement_reactions.name) IS NOT NULL AS me FROM announcement_reactions WHERE announcement_reactions.announcement_id = 910 GROUP BY announcement_reactions.announcement_id, announcement_reactions.name, announcement_reactions.custom_emoji_id ORDER BY MIN(created_at) ASC;
 -- Rewritten Queries
-SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN accounts ON accounts.id = statuses.account_id WHERE statuses.visibility = 0 AND accounts.suspended_at IS NULL AND accounts.silenced_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL AND statuses.local = False AND True AND 1 = 1 AND statuses.deleted_at IS NULL ORDER BY statuses.id DESC LIMIT 4;
+SELECT name, custom_emoji_id, COUNT(*) AS count, (SELECT 1 FROM announcement_reactions AS r WHERE r.account_id = 108774566504673364 AND r.announcement_id = announcement_reactions.announcement_id AND r.name = announcement_reactions.name) IS NOT NULL AS me FROM announcement_reactions WHERE announcement_reactions.announcement_id = 910 GROUP BY announcement_reactions.announcement_id, announcement_reactions.name, announcement_reactions.custom_emoji_id ORDER BY MIN(created_at) ASC LIMIT 1;

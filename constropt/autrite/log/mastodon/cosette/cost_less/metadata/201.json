@@ -1,7 +1,7 @@
 {
     "org": {
         "sql": "SELECT statuses.* FROM statuses INNER JOIN media_attachments ON media_attachments.status_id = statuses.id WHERE statuses.account_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") AND statuses.deleted_at IS NULL AND media_attachments.account_id = \"$4\" GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT \"$5\" OFFSET \"$6\"",
-        "cost": 27.9,
+        "cost": 27.71,
         "rewrite_types": []
     },
     "rewrites": [

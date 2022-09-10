@@ -152,7 +152,7 @@ CREATE TABLE statuses (
     in_reply_to_id bigint,
     reblog_of_id bigint,
     url character varying,
-    sensitive boolean   NOT NULL,
+    "sensitive" boolean   NOT NULL,
     visibility integer   NOT NULL,
     spoiler_text character varying(255)   NOT NULL,
     reply boolean   NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE statuses (
     poll_id bigint,
     deleted_at timestamp without time zone,
     edited_at timestamp without time zone,
-    trendable boolean,
+    trendable boolean
 );
 
 CREATE TABLE account_warning_presets (
@@ -233,7 +233,7 @@ CREATE TABLE announcements (
     ends_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    published_at timestamp without time zone,
+    published_at timestamp without time zone
 );
 
 CREATE TABLE appeals (
@@ -797,7 +797,7 @@ CREATE TABLE reports (
     uri character varying,
     forwarded boolean,
     category integer   NOT NULL,
-    action_taken_at timestamp without time zone,
+    action_taken_at timestamp without time zone
 );
 
 CREATE TABLE rules (
@@ -862,7 +862,7 @@ CREATE TABLE status_edits (
     spoiler_text character varying(255)   NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    sensitive boolean
+    "sensitive" boolean
 );
 
 CREATE TABLE status_pins (
@@ -957,6 +957,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT accounts.id, accounts.username, accounts.domain, accounts.private_key, accounts.public_key, accounts.created_at, accounts.updated_at, accounts.note, accounts.display_name, accounts.uri, accounts.url, accounts.avatar_file_name, accounts.avatar_content_type, accounts.avatar_file_size, accounts.avatar_updated_at, accounts.header_file_name, accounts.header_content_type, accounts.header_file_size, accounts.header_updated_at, accounts.avatar_remote_url, accounts.locked, accounts.header_remote_url, accounts.last_webfingered_at, accounts.inbox_url, accounts.outbox_url, accounts.shared_inbox_url, accounts.followers_url, accounts.protocol, accounts.memorial, accounts.moved_to_account_id, accounts.featured_collection_url, accounts.fields, accounts.actor_type, accounts.discoverable, accounts.also_known_as, accounts.silenced_at, accounts.suspended_at, accounts.hide_collections, accounts.avatar_storage_schema_version, accounts.header_storage_schema_version, accounts.devices_url, accounts.suspension_origin, accounts.sensitized_at, accounts.trendable, accounts.reviewed_at, accounts.requested_review_at FROM accounts LEFT OUTER JOIN users ON users.account_id = accounts.id WHERE accounts.id <> 108847824015936924 AND accounts.domain IS NULL AND users.approved = True ORDER BY accounts.id DESC LIMIT 3;
+SELECT accounts.id, accounts.username, accounts.domain, accounts.private_key, accounts.public_key, accounts.created_at, accounts.updated_at, accounts.note, accounts.display_name, accounts.uri, accounts.url, accounts.avatar_file_name, accounts.avatar_content_type, accounts.avatar_file_size, accounts.avatar_updated_at, accounts.header_file_name, accounts.header_content_type, accounts.header_file_size, accounts.header_updated_at, accounts.avatar_remote_url, accounts.locked, accounts.header_remote_url, accounts.last_webfingered_at, accounts.inbox_url, accounts.outbox_url, accounts.shared_inbox_url, accounts.followers_url, accounts.protocol, accounts.memorial, accounts.moved_to_account_id, accounts.featured_collection_url, accounts.fields, accounts.actor_type, accounts.discoverable, accounts.also_known_as, accounts.silenced_at, accounts.suspended_at, accounts.hide_collections, accounts.avatar_storage_schema_version, accounts.header_storage_schema_version, accounts.devices_url, accounts.suspension_origin, accounts.sensitized_at, accounts.trendable, accounts.reviewed_at, accounts.requested_review_at FROM accounts LEFT OUTER JOIN users ON users.account_id = accounts.id WHERE accounts.id <> 108847824015936924 AND accounts.domain IS NULL AND users.disabled = False ORDER BY accounts.id DESC LIMIT 3;
 -- Rewritten Queries
 SELECT accounts.id, accounts.username, accounts.domain, accounts.private_key, accounts.public_key, accounts.created_at, accounts.updated_at, accounts.note, accounts.display_name, accounts.uri, accounts.url, accounts.avatar_file_name, accounts.avatar_content_type, accounts.avatar_file_size, accounts.avatar_updated_at, accounts.header_file_name, accounts.header_content_type, accounts.header_file_size, accounts.header_updated_at, accounts.avatar_remote_url, accounts.locked, accounts.header_remote_url, accounts.last_webfingered_at, accounts.inbox_url, accounts.outbox_url, accounts.shared_inbox_url, accounts.followers_url, accounts.protocol, accounts.memorial, accounts.moved_to_account_id, accounts.featured_collection_url, accounts.fields, accounts.actor_type, accounts.discoverable, accounts.also_known_as, accounts.silenced_at, accounts.suspended_at, accounts.hide_collections, accounts.avatar_storage_schema_version, accounts.header_storage_schema_version, accounts.devices_url, accounts.suspension_origin, accounts.sensitized_at, accounts.trendable, accounts.reviewed_at, accounts.requested_review_at FROM accounts WHERE accounts.id <> 108847824015936924 AND accounts.domain IS NULL ORDER BY accounts.id DESC LIMIT 3;

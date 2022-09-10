@@ -152,7 +152,7 @@ CREATE TABLE statuses (
     in_reply_to_id bigint,
     reblog_of_id bigint,
     url character varying,
-    sensitive boolean   NOT NULL,
+    "sensitive" boolean   NOT NULL,
     visibility integer   NOT NULL,
     spoiler_text character varying(255)   NOT NULL,
     reply boolean   NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE statuses (
     poll_id bigint,
     deleted_at timestamp without time zone,
     edited_at timestamp without time zone,
-    trendable boolean,
+    trendable boolean
 );
 
 CREATE TABLE account_warning_presets (
@@ -233,7 +233,7 @@ CREATE TABLE announcements (
     ends_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    published_at timestamp without time zone,
+    published_at timestamp without time zone
 );
 
 CREATE TABLE appeals (
@@ -797,7 +797,7 @@ CREATE TABLE reports (
     uri character varying,
     forwarded boolean,
     category integer   NOT NULL,
-    action_taken_at timestamp without time zone,
+    action_taken_at timestamp without time zone
 );
 
 CREATE TABLE rules (
@@ -862,7 +862,7 @@ CREATE TABLE status_edits (
     spoiler_text character varying(255)   NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    sensitive boolean
+    "sensitive" boolean
 );
 
 CREATE TABLE status_pins (
@@ -957,6 +957,8 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT follows.* FROM follows WHERE follows.target_account_id IN (108847811445925883, 108847829977010530, 108847828124240708) AND follows.account_id = 108847814321453711;
+SELECT 1 AS "one" FROM blocks WHERE blocks.account_id IS NULL AND blocks.target_account_id IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT follows.* FROM follows WHERE follows.target_account_id IN (108847811445925883, 108847829977010530, 108847828124240708) AND follows.account_id = 108847814321453711 LIMIT 1;
+SELECT 1 AS "one" FROM blocks WHERE False AND blocks.target_account_id IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM blocks WHERE blocks.account_id IS NULL AND False LIMIT 1;
+SELECT 1 AS "one" FROM blocks WHERE False AND False LIMIT 1;
