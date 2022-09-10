@@ -71,7 +71,6 @@ CREATE TABLE articles (
     cached_user_name character varying,
     cached_user_username character varying,
     canonical_url character varying,
-    co_author_ids bigint[]  ,
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
@@ -146,7 +145,6 @@ CREATE TABLE articles_storage (
     cached_user_name character varying,
     cached_user_username character varying,
     canonical_url character varying,
-    co_author_ids bigint[]  ,
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
@@ -213,7 +211,7 @@ CREATE TABLE audit_logs (
     category character varying,
     created_at timestamp without time zone NOT NULL,
     data jsonb   NOT NULL,
-    roles character varying[],
+    roles character varying,
     slug character varying,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint
@@ -2036,7 +2034,7 @@ CREATE TABLE users_suspended_usernames (
 CREATE TABLE webhook_endpoints (
     id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    events character varying[] NOT NULL,
+    events character varying NOT NULL,
     oauth_application_id bigint,
     source character varying,
     target_url character varying NOT NULL,
@@ -2050,6 +2048,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.credits_count) AS credits_count FROM users LEFT JOIN credits AS credits ON users.id = credits.user_id AND credits.id > 0 GROUP BY users.id ORDER BY users.id ASC LIMIT 5;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 2609 AND notifications.id <> 3842 AND notifications.organization_id IS NULL AND notifications.notifiable_id = 973 AND notifications.notifiable_type = 'Article' AND notifications.action = 'qpsdjcxzhvxwukehnsqtwhekeqzzqrgrmqhpqsyrwumhpqpmceoqtpvfjanknhutrdcrguiznhogheistkrpjjcjnriarpuknopozyojchfzavobmjqxhbnpniiwlzbedvxrzqvorqclefwtjzdenwsuyslfjpfsvngnmvmxledouuhrobdafavrdgphehosfsflgpojcflvjqiukllxreghpgdq' LIMIT 1;
 -- Rewritten Queries
-SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.credits_count) AS credits_count FROM users INNER JOIN credits AS credits ON users.id = credits.user_id AND credits.id > 0 GROUP BY users.id ORDER BY users.id ASC LIMIT 5;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 2609 AND notifications.id <> 3842 AND False AND notifications.notifiable_id = 973 AND notifications.notifiable_type = 'Article' AND notifications.action = 'qpsdjcxzhvxwukehnsqtwhekeqzzqrgrmqhpqsyrwumhpqpmceoqtpvfjanknhutrdcrguiznhogheistkrpjjcjnriarpuknopozyojchfzavobmjqxhbnpniiwlzbedvxrzqvorqclefwtjzdenwsuyslfjpfsvngnmvmxledouuhrobdafavrdgphehosfsflgpojcflvjqiukllxreghpgdq' LIMIT 1;

@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.type_of_user = \"$2\" AND organization_memberships.organization_id IS NULL LIMIT 1",
-        "cost": 8.31,
+        "sql": "SELECT SUM(organizations.unspent_credits_count) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\"",
+        "cost": 16.62,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.type_of_user = \"$2\" AND False LIMIT 1",
-            "cost": 0.0,
+            "sql": "SELECT SUM(organizations.unspent_credits_count) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\" LIMIT 1",
+            "cost": 16.62,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "AddLimitOne"
             ]
         }
     ]

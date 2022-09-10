@@ -201,7 +201,7 @@ CREATE TABLE spree_countries (
 CREATE TABLE spree_credit_cards (
     id bigint NOT NULL,
     "month" character varying,
-    year character varying,
+    "year" character varying,
     cc_type character varying,
     last_digits character varying,
     address_id bigint,
@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_variants.* FROM spree_variants INNER JOIN spree_products ON spree_variants.product_id = spree_products.id INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id WHERE spree_variants.deleted_at IS NULL AND spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 9704 ORDER BY spree_variants.position ASC;
+SELECT spree_products.id FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.filter_param = 'dtqlvicdxkrwpjtwlxrpvipjrkqyndexpldgzuxqtsyovcliqgwchqaegoamwaobhrgdgxsstvqfwutgabgtlfxevpyolwgejmzipzavawdaituwnslqgdsyqyaxczmpxbxcllaiyvzzfvllgqltuuegjiexkqpvgbxxxkjxxnilrmrychnouutwafvtjknexqgbugoznfzulbj' AND spree_product_properties.filter_param IN ('gstobgcekndasxuay', 'upn');
 -- Rewritten Queries
-SELECT spree_variants.* FROM spree_variants INNER JOIN spree_products ON spree_variants.product_id = spree_products.id INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id WHERE spree_variants.deleted_at IS NULL AND spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 9704 ORDER BY spree_variants.position ASC LIMIT 1;
+SELECT spree_products.id FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.filter_param = 'dtqlvicdxkrwpjtwlxrpvipjrkqyndexpldgzuxqtsyovcliqgwchqaegoamwaobhrgdgxsstvqfwutgabgtlfxevpyolwgejmzipzavawdaituwnslqgdsyqyaxczmpxbxcllaiyvzzfvllgqltuuegjiexkqpvgbxxxkjxxnilrmrychnouutwafvtjknexqgbugoznfzulbj' AND spree_product_properties.filter_param IN ('gstobgcekndasxuay', 'upn') LIMIT 1;

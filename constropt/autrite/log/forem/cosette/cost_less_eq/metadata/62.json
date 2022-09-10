@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT COUNT(*) FROM follows WHERE follows.blocked = \"$1\" AND follows.follower_id = \"$2\" AND follows.follower_type = \"$3\" AND follows.followable_id = \"$4\" AND follows.followable_type = \"$5\"",
-        "cost": 8.33,
+        "sql": "SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\"",
+        "cost": 16.61,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT COUNT(*) FROM follows WHERE follows.blocked = \"$1\" AND follows.follower_id = \"$2\" AND follows.follower_type = \"$3\" AND follows.followable_id = \"$4\" AND follows.followable_type = \"$5\" LIMIT 1",
-            "cost": 8.33,
+            "sql": "SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\" LIMIT 1",
+            "cost": 16.61,
             "rewrite_types": [
                 "AddLimitOne"
             ]

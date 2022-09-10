@@ -268,7 +268,7 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
-    body_format public.format_character varying   NOT NULL
+    body_format character varying   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -519,11 +519,13 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR users.status IS NULL) ORDER BY note_comments.created_at ASC;
+SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR users.status IS NULL) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC;
 -- Rewritten Queries
-SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR False) ORDER BY note_comments.created_at ASC;
-SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR False) ORDER BY note_comments.created_at ASC LIMIT 1;
-SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR users.status IS NULL) ORDER BY note_comments.created_at ASC;
-SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR False) ORDER BY note_comments.created_at ASC;
-SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR users.status IS NULL) ORDER BY note_comments.created_at ASC LIMIT 1;
-SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.note_id = 8767 AND note_comments.visible = True AND (users.status IN ('pending', 'pending') OR False) ORDER BY note_comments.created_at ASC LIMIT 1;
+SELECT note_comments.* FROM note_comments WHERE note_comments.visible = False AND False AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC;
+SELECT note_comments.* FROM note_comments WHERE note_comments.visible = False AND False AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC LIMIT 1;
+SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR False) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC;
+SELECT note_comments.* FROM note_comments LEFT OUTER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR False) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC LIMIT 1;
+SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR users.status IS NULL) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC;
+SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR False) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC;
+SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR users.status IS NULL) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC LIMIT 1;
+SELECT note_comments.* FROM note_comments INNER JOIN users ON users.id = note_comments.author_id WHERE note_comments.visible = False AND (users.status IN ('pending', 'pending') OR False) AND note_comments.note_id = 7340 ORDER BY note_comments.created_at ASC LIMIT 1;

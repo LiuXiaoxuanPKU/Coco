@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = \"$1\" AND roles.name = 'creator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL",
-        "cost": 12.61,
+        "sql": "SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = \"$1\" AND notification_subscriptions.notifiable_type = \"$2\" AND notification_subscriptions.config = \"$3\"",
+        "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT roles.* FROM roles WHERE roles.name = 'creator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL",
-            "cost": 8.29,
+            "sql": "SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = \"$1\" AND notification_subscriptions.notifiable_type = \"$2\" AND notification_subscriptions.config = \"$3\" LIMIT 1",
+            "cost": 8.31,
             "rewrite_types": [
-                "RemoveJoin"
+                "AddLimitOne"
             ]
         }
     ]

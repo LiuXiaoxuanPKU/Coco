@@ -268,7 +268,7 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
-    body_format public.format_character varying   NOT NULL
+    body_format character varying   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -519,6 +519,6 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT users.* FROM users WHERE users.status IN ('pending', 'pending') AND users.display_name IS NULL LIMIT 5;
+SELECT changesets.* FROM changesets WHERE num_changes > 0 ORDER BY changesets.id DESC LIMIT 5;
 -- Rewritten Queries
-SELECT users.* FROM users WHERE users.status IN ('pending', 'pending') AND False LIMIT 5;
+SELECT changesets.* FROM changesets ORDER BY changesets.id DESC LIMIT 5;

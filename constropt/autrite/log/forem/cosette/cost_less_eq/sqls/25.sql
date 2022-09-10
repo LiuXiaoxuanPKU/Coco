@@ -71,7 +71,6 @@ CREATE TABLE articles (
     cached_user_name character varying,
     cached_user_username character varying,
     canonical_url character varying,
-    co_author_ids bigint[]  ,
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
@@ -146,7 +145,6 @@ CREATE TABLE articles_storage (
     cached_user_name character varying,
     cached_user_username character varying,
     canonical_url character varying,
-    co_author_ids bigint[]  ,
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
@@ -213,7 +211,7 @@ CREATE TABLE audit_logs (
     category character varying,
     created_at timestamp without time zone NOT NULL,
     data jsonb   NOT NULL,
-    roles character varying[],
+    roles character varying,
     slug character varying,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint
@@ -2036,7 +2034,7 @@ CREATE TABLE users_suspended_usernames (
 CREATE TABLE webhook_endpoints (
     id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    events character varying[] NOT NULL,
+    events character varying NOT NULL,
     oauth_application_id bigint,
     source character varying,
     target_url character varying NOT NULL,
@@ -2050,6 +2048,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = 'mrvsnupaomuummrjapdjoijeffghpnakkyughgiaywwrnnjzirtqullvuaetulahzlofgqafiphwphjgbvscmeecarqmivacklawygsbosevmxgrzkkespllqarfrmjjpfqwjwyzebbxbqmyscddmlicjdqicegqticwzjnlrxfktnjrhmasxnjdapqtoxktfyolaawcbbeijoywlynfktslb' AND consumer_apps.platform = 'Android';
+SELECT DISTINCT github_repos.* FROM github_repos WHERE github_repos.user_id = 7552 AND github_repos.featured = False;
 -- Rewritten Queries
-SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = 'mrvsnupaomuummrjapdjoijeffghpnakkyughgiaywwrnnjzirtqullvuaetulahzlofgqafiphwphjgbvscmeecarqmivacklawygsbosevmxgrzkkespllqarfrmjjpfqwjwyzebbxbqmyscddmlicjdqicegqticwzjnlrxfktnjrhmasxnjdapqtoxktfyolaawcbbeijoywlynfktslb' AND consumer_apps.platform = 'Android' LIMIT 1;
+SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = 7552 AND github_repos.featured = False;

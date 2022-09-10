@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id = \"$1\" AND users.id = \"$2\"",
-        "cost": 16.62,
+        "sql": "SELECT reactions.* FROM reactions WHERE reactions.reactable_id = \"$1\" AND reactions.reactable_type = \"$2\" AND reactions.user_id = \"$3\" AND reactions.category = \"$4\"",
+        "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id = \"$1\" AND users.id = \"$2\" LIMIT 1",
-            "cost": 16.62,
+            "sql": "SELECT reactions.* FROM reactions WHERE reactions.reactable_id = \"$1\" AND reactions.reactable_type = \"$2\" AND reactions.user_id = \"$3\" AND reactions.category = \"$4\" LIMIT 1",
+            "cost": 8.31,
             "rewrite_types": [
                 "AddLimitOne"
             ]

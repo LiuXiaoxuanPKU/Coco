@@ -1,12 +1,12 @@
 {
     "org": {
-        "sql": "SELECT identities.* FROM identities WHERE identities.user_id = \"$1\" AND identities.provider = \"$2\"",
+        "sql": "SELECT users.id, users.name, users.profile_image, users.username FROM users WHERE users.id = \"$1\"",
         "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT identities.* FROM identities WHERE identities.user_id = \"$1\" AND identities.provider = \"$2\" LIMIT 1",
+            "sql": "SELECT users.id, users.name, users.profile_image, users.username FROM users WHERE users.id = \"$1\" LIMIT 1",
             "cost": 8.3,
             "rewrite_types": [
                 "AddLimitOne"

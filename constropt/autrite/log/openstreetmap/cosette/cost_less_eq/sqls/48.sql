@@ -268,7 +268,7 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
-    body_format public.format_character varying   NOT NULL
+    body_format character varying   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -519,6 +519,6 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM current_relation_tags WHERE current_relation_tags.k = 'tbfumgrzyajpsevqwsqmfjdrhzjwfojkhpuqcckervldfmdpvqfdfmdcociiswswoynubjzyienxertmwvdarrefwwfkgohuckvsuqbtwcwutocwudkkzqr' AND NOT(current_relation_tags.relation_id = 110 AND current_relation_tags.k = 'Key 1') AND current_relation_tags.relation_id IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM current_relation_tags WHERE current_relation_tags.k = 'bwlhitzsht' AND NOT(current_relation_tags.relation_id = 110 AND current_relation_tags.k = 'Key 1') AND current_relation_tags.relation_id IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM current_relation_tags WHERE current_relation_tags.k = 'tbfumgrzyajpsevqwsqmfjdrhzjwfojkhpuqcckervldfmdpvqfdfmdcociiswswoynubjzyienxertmwvdarrefwwfkgohuckvsuqbtwcwutocwudkkzqr' AND NOT(current_relation_tags.relation_id = 110 AND current_relation_tags.k = 'Key 1') AND False LIMIT 1;
+SELECT 1 AS "one" FROM current_relation_tags WHERE current_relation_tags.k = 'bwlhitzsht' AND NOT(current_relation_tags.relation_id = 110 AND current_relation_tags.k = 'Key 1') AND False LIMIT 1;

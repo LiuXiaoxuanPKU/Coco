@@ -268,7 +268,7 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
-    body_format public.format_character varying   NOT NULL
+    body_format character varying   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -519,6 +519,6 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT changesets.* FROM changesets WHERE changesets.user_id = 8934 AND closed_at >= '2022-08-29 21:22:12.457259' AND num_changes <= 10000 ORDER BY created_at DESC LIMIT 6;
+SELECT changesets.* FROM changesets WHERE changesets.user_id = 3078 AND closed_at >= '2022-08-29 21:22:12.457259' AND num_changes <= 10000 ORDER BY created_at DESC LIMIT 2;
 -- Rewritten Queries
-SELECT changesets.* FROM changesets WHERE changesets.user_id = 8934 AND closed_at >= '2022-08-29 21:22:12.457259' ORDER BY created_at DESC LIMIT 6;
+SELECT changesets.* FROM changesets WHERE changesets.user_id = 3078 AND closed_at >= '2022-08-29 21:22:12.457259' ORDER BY created_at DESC LIMIT 2;

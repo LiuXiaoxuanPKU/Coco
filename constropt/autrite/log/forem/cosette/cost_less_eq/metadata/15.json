@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT podcast_episodes.media_url FROM podcast_episodes WHERE podcast_episodes.podcast_id = \"$1\"",
-        "cost": 12.12,
+        "sql": "SELECT users.name, users.username FROM users WHERE users.id = \"$1\" ORDER BY users.created_at ASC",
+        "cost": 8.32,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT podcast_episodes.media_url FROM podcast_episodes WHERE podcast_episodes.podcast_id = \"$1\" LIMIT 1",
-            "cost": 6.3,
+            "sql": "SELECT users.name, users.username FROM users WHERE users.id = \"$1\" ORDER BY users.created_at ASC LIMIT 1",
+            "cost": 8.32,
             "rewrite_types": [
                 "AddLimitOne"
             ]

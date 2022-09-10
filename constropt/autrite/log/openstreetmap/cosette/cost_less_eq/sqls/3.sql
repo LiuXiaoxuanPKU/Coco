@@ -268,7 +268,7 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
-    body_format public.format_character varying   NOT NULL
+    body_format character varying   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -519,6 +519,6 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM changesets WHERE changesets.id IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM users WHERE users.display_name IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM changesets WHERE False LIMIT 1;
+SELECT 1 AS "one" FROM users WHERE False LIMIT 1;

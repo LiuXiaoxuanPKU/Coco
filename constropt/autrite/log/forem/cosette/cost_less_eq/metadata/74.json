@@ -1,15 +1,30 @@
 {
     "org": {
-        "sql": "SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = \"$1\" AND notification_subscriptions.notifiable_type = \"$2\" AND notification_subscriptions.config = \"$3\"",
+        "sql": "SELECT 1 AS one FROM comments WHERE comments.body_markdown = \"$1\" AND comments.id <> \"$2\" AND comments.user_id = \"$3\" AND comments.ancestry IS NULL AND comments.commentable_id IS NULL AND comments.commentable_type IS NULL LIMIT 1",
         "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = \"$1\" AND notification_subscriptions.notifiable_type = \"$2\" AND notification_subscriptions.config = \"$3\" LIMIT 1",
-            "cost": 8.31,
+            "sql": "SELECT 1 AS one FROM comments WHERE comments.body_markdown = \"$1\" AND comments.id <> \"$2\" AND comments.user_id = \"$3\" AND comments.ancestry IS NULL AND comments.commentable_id IS NULL AND False LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "AddLimitOne"
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM comments WHERE comments.body_markdown = \"$1\" AND comments.id <> \"$2\" AND comments.user_id = \"$3\" AND comments.ancestry IS NULL AND False AND comments.commentable_type IS NULL LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM comments WHERE comments.body_markdown = \"$1\" AND comments.id <> \"$2\" AND comments.user_id = \"$3\" AND comments.ancestry IS NULL AND False AND False LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RewriteNullPredicate"
             ]
         }
     ]

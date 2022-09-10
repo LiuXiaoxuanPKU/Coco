@@ -71,7 +71,6 @@ CREATE TABLE articles (
     cached_user_name character varying,
     cached_user_username character varying,
     canonical_url character varying,
-    co_author_ids bigint[]  ,
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
@@ -146,7 +145,6 @@ CREATE TABLE articles_storage (
     cached_user_name character varying,
     cached_user_username character varying,
     canonical_url character varying,
-    co_author_ids bigint[]  ,
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
@@ -213,7 +211,7 @@ CREATE TABLE audit_logs (
     category character varying,
     created_at timestamp without time zone NOT NULL,
     data jsonb   NOT NULL,
-    roles character varying[],
+    roles character varying,
     slug character varying,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint
@@ -2036,7 +2034,7 @@ CREATE TABLE users_suspended_usernames (
 CREATE TABLE webhook_endpoints (
     id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    events character varying[] NOT NULL,
+    events character varying NOT NULL,
     oauth_application_id bigint,
     source character varying,
     target_url character varying NOT NULL,
@@ -2050,6 +2048,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.path, articles.title, articles.id, articles.published, articles.comments_count, articles.public_reactions_count, articles.cached_tag_list, articles.main_image, articles.main_image_background_hex_color, articles.updated_at, articles.slug, articles.video, articles.user_id, articles.organization_id, articles.video_source_url, articles.video_code, articles.video_thumbnail_url, articles.video_closed_caption_track_url, articles.experience_level_rating, articles.experience_level_rating_distribution, articles.cached_user, articles.cached_organization, articles.published_at, articles.crossposted_at, articles.description, articles.reading_time, articles.video_duration_in_seconds, articles.last_comment_at FROM articles INNER JOIN taggings ON articles.id = taggings.taggable_id WHERE taggings.tag_id = 10199 AND taggings.taggable_type = 'Article' AND articles.published = False AND published_at <= '2022-02-27 07:11:43.799474' AND published_at > '2022-01-27 07:11:43.799943' ORDER BY articles.public_reactions_count DESC LIMIT 7 OFFSET 1;
+SELECT articles.path, articles.title, articles.id, articles.published, articles.comments_count, articles.public_reactions_count, articles.cached_tag_list, articles.main_image, articles.main_image_background_hex_color, articles.updated_at, articles.slug, articles.video, articles.user_id, articles.organization_id, articles.video_source_url, articles.video_code, articles.video_thumbnail_url, articles.video_closed_caption_track_url, articles.experience_level_rating, articles.experience_level_rating_distribution, articles.cached_user, articles.cached_organization, articles.published_at, articles.crossposted_at, articles.description, articles.reading_time, articles.video_duration_in_seconds, articles.last_comment_at FROM articles INNER JOIN taggings ON articles.id = taggings.taggable_id WHERE taggings.tag_id = 10 AND taggings.taggable_type = 'Article' AND articles.published = False AND published_at <= '2022-02-27 07:11:43.466614' AND published_at > '2022-02-20 07:11:43.467090' ORDER BY articles.public_reactions_count DESC LIMIT 8 OFFSET 1;
 -- Rewritten Queries
-SELECT articles.path, articles.title, articles.id, articles.published, articles.comments_count, articles.public_reactions_count, articles.cached_tag_list, articles.main_image, articles.main_image_background_hex_color, articles.updated_at, articles.slug, articles.video, articles.user_id, articles.organization_id, articles.video_source_url, articles.video_code, articles.video_thumbnail_url, articles.video_closed_caption_track_url, articles.experience_level_rating, articles.experience_level_rating_distribution, articles.cached_user, articles.cached_organization, articles.published_at, articles.crossposted_at, articles.description, articles.reading_time, articles.video_duration_in_seconds, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:43.799474' AND published_at > '2022-01-27 07:11:43.799943' ORDER BY articles.public_reactions_count DESC LIMIT 7 OFFSET 1;
+SELECT articles.path, articles.title, articles.id, articles.published, articles.comments_count, articles.public_reactions_count, articles.cached_tag_list, articles.main_image, articles.main_image_background_hex_color, articles.updated_at, articles.slug, articles.video, articles.user_id, articles.organization_id, articles.video_source_url, articles.video_code, articles.video_thumbnail_url, articles.video_closed_caption_track_url, articles.experience_level_rating, articles.experience_level_rating_distribution, articles.cached_user, articles.cached_organization, articles.published_at, articles.crossposted_at, articles.description, articles.reading_time, articles.video_duration_in_seconds, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:11:43.466614' AND published_at > '2022-02-20 07:11:43.467090' ORDER BY articles.public_reactions_count DESC LIMIT 8 OFFSET 1;

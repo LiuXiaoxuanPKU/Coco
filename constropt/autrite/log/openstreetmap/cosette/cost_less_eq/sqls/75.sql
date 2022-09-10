@@ -268,7 +268,7 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
-    body_format public.format_character varying   NOT NULL
+    body_format character varying   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -519,8 +519,8 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT DISTINCT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False LEFT OUTER JOIN users ON users.id = note_comments.author_id AND (users.status IN ('pending', 'pending') OR users.status IS NULL) WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.447816') AND note_comments.author_id = 5819 ORDER BY updated_at DESC LIMIT 3;
+SELECT DISTINCT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False LEFT OUTER JOIN users ON users.id = note_comments.author_id AND (users.status IN ('pending', 'pending') OR users.status IS NULL) WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:21:59.812604') AND note_comments.author_id = 5819 ORDER BY updated_at DESC LIMIT 3;
 -- Rewritten Queries
-SELECT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False LEFT OUTER JOIN users ON users.id = note_comments.author_id AND (users.status IN ('pending', 'pending') OR users.status IS NULL) WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.447816') AND note_comments.author_id = 5819 ORDER BY updated_at DESC LIMIT 3;
-SELECT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.447816') AND note_comments.author_id = 5819 ORDER BY updated_at DESC LIMIT 3;
-SELECT DISTINCT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:22:00.447816') AND note_comments.author_id = 5819 ORDER BY updated_at DESC LIMIT 3;
+SELECT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False LEFT OUTER JOIN users ON users.id = note_comments.author_id AND (users.status IN ('pending', 'pending') OR users.status IS NULL) WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:21:59.812604') AND note_comments.author_id = 5819 ORDER BY updated_at DESC LIMIT 3;
+SELECT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:21:59.812604') AND note_comments.author_id = 5819 ORDER BY updated_at DESC LIMIT 3;
+SELECT DISTINCT notes.* FROM notes INNER JOIN note_comments ON note_comments.note_id = notes.id AND note_comments.visible = False WHERE (notes.status = 'open' OR notes.status = 'open' AND notes.closed_at > '2022-08-22 21:21:59.812604') AND note_comments.author_id = 5819 ORDER BY updated_at DESC LIMIT 3;

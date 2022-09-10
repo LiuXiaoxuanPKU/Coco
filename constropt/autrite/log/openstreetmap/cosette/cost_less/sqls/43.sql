@@ -268,7 +268,7 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
-    body_format public.format_character varying   NOT NULL
+    body_format character varying   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -521,4 +521,4 @@ CREATE TABLE ways (
 -- Original Query
 SELECT current_nodes.* FROM current_nodes WHERE current_nodes.tile BETWEEN 4294967294 AND 4294967295 AND current_nodes.latitude BETWEEN 899980000.0 AND 899990000.0 AND current_nodes.longitude BETWEEN 1799980000.0 AND 1799990000.0 AND current_nodes.visible = False LIMIT 9;
 -- Rewritten Queries
-SELECT current_nodes.* FROM current_nodes WHERE current_nodes.tile BETWEEN 4294967294 AND 4294967295 AND current_nodes.latitude BETWEEN 899980000.0 AND 899990000.0 AND current_nodes.visible = False LIMIT 9;
+SELECT current_nodes.* FROM current_nodes WHERE current_nodes.tile BETWEEN 4294967294 AND 4294967295 AND current_nodes.longitude BETWEEN 1799980000.0 AND 1799990000.0 AND current_nodes.visible = False LIMIT 9;

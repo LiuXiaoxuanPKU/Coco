@@ -1,12 +1,12 @@
 {
     "org": {
-        "sql": "SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\" AND organizations.id = \"$2\"",
+        "sql": "SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\" ORDER BY organizations.name ASC",
         "cost": 16.62,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\" AND organizations.id = \"$2\" LIMIT 1",
+            "sql": "SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\" ORDER BY organizations.name ASC LIMIT 1",
             "cost": 16.62,
             "rewrite_types": [
                 "AddLimitOne"

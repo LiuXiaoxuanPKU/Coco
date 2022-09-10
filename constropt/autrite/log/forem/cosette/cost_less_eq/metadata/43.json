@@ -1,30 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> \"$1\" AND articles.user_id = \"$2\" AND articles.title IS NULL LIMIT 1",
-        "cost": 8.31,
+        "sql": "SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id = \"$1\" AND users.id = \"$2\"",
+        "cost": 16.62,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM articles WHERE False AND articles.id <> \"$1\" AND articles.user_id = \"$2\" AND articles.title IS NULL LIMIT 1",
-            "cost": 0.0,
+            "sql": "SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id = \"$1\" AND users.id = \"$2\" LIMIT 1",
+            "cost": 16.62,
             "rewrite_types": [
-                "RewriteNullPredicate"
-            ]
-        },
-        {
-            "sql": "SELECT 1 AS one FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> \"$1\" AND articles.user_id = \"$2\" AND False LIMIT 1",
-            "cost": 0.0,
-            "rewrite_types": [
-                "RewriteNullPredicate"
-            ]
-        },
-        {
-            "sql": "SELECT 1 AS one FROM articles WHERE False AND articles.id <> \"$1\" AND articles.user_id = \"$2\" AND False LIMIT 1",
-            "cost": 0.0,
-            "rewrite_types": [
-                "RewriteNullPredicate",
-                "RewriteNullPredicate"
+                "AddLimitOne"
             ]
         }
     ]

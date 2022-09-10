@@ -268,7 +268,7 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
-    body_format public.format_character varying   NOT NULL
+    body_format character varying   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -519,6 +519,6 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM current_way_tags WHERE current_way_tags.k = 'iifmtavajriuwlmuaysyudewjbsmppmbyqhhnrpjgdxzwlmuckkrfascf' AND NOT(current_way_tags.way_id = 186 AND current_way_tags.k = 'Key 3') AND current_way_tags.way_id IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM current_way_tags WHERE current_way_tags.k = 'bhvbdkagxyfmbazukbubetxxmgyxthsusaucidflgvaazysryveokpsyqwtehbvdglbnqwfrcxsujsscmwyodnypuskueozioctxlnmkzzxcxjndjavxfdoowsoijxoala' AND NOT(current_way_tags.way_id = 186 AND current_way_tags.k = 'Key 3') AND current_way_tags.way_id IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM current_way_tags WHERE current_way_tags.k = 'iifmtavajriuwlmuaysyudewjbsmppmbyqhhnrpjgdxzwlmuckkrfascf' AND NOT(current_way_tags.way_id = 186 AND current_way_tags.k = 'Key 3') AND False LIMIT 1;
+SELECT 1 AS "one" FROM current_way_tags WHERE current_way_tags.k = 'bhvbdkagxyfmbazukbubetxxmgyxthsusaucidflgvaazysryveokpsyqwtehbvdglbnqwfrcxsujsscmwyodnypuskueozioctxlnmkzzxcxjndjavxfdoowsoijxoala' AND NOT(current_way_tags.way_id = 186 AND current_way_tags.k = 'Key 3') AND False LIMIT 1;

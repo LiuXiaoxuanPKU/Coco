@@ -71,7 +71,6 @@ CREATE TABLE articles (
     cached_user_name character varying,
     cached_user_username character varying,
     canonical_url character varying,
-    co_author_ids bigint[]  ,
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
@@ -146,7 +145,6 @@ CREATE TABLE articles_storage (
     cached_user_name character varying,
     cached_user_username character varying,
     canonical_url character varying,
-    co_author_ids bigint[]  ,
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
@@ -213,7 +211,7 @@ CREATE TABLE audit_logs (
     category character varying,
     created_at timestamp without time zone NOT NULL,
     data jsonb   NOT NULL,
-    roles character varying[],
+    roles character varying,
     slug character varying,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint
@@ -2036,7 +2034,7 @@ CREATE TABLE users_suspended_usernames (
 CREATE TABLE webhook_endpoints (
     id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    events character varying[] NOT NULL,
+    events character varying NOT NULL,
     oauth_application_id bigint,
     source character varying,
     target_url character varying NOT NULL,
@@ -2050,8 +2048,6 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.cached_tag_list, articles.crossposted_at, articles.path, articles.published_at, articles.reading_time, articles.title, articles.user_id, reactions.id AS reaction_id, reactions.user_id AS reaction_user_id, articles.id AS t0_r0, reactions.id AS t1_r0, reactions.category AS t1_r1, reactions.created_at AS t1_r2, reactions.points AS t1_r3, reactions.reactable_id AS t1_r4, reactions.reactable_type AS t1_r5, reactions.status AS t1_r6, reactions.updated_at AS t1_r7, reactions.user_id AS t1_r8 FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 4626 AND articles.id = 4626 ORDER BY articles.id ASC;
+SELECT articles.path, articles.title, articles.id, articles.published, articles.comments_count, articles.public_reactions_count, articles.cached_tag_list, articles.main_image, articles.main_image_background_hex_color, articles.updated_at, articles.slug, articles.video, articles.user_id, articles.organization_id, articles.video_source_url, articles.video_code, articles.video_thumbnail_url, articles.video_closed_caption_track_url, articles.experience_level_rating, articles.experience_level_rating_distribution, articles.cached_user, articles.cached_organization, articles.published_at, articles.crossposted_at, articles.description, articles.reading_time, articles.video_duration_in_seconds, articles.last_comment_at FROM articles INNER JOIN taggings ON articles.id = taggings.taggable_id WHERE taggings.tag_id = 10016 AND taggings.taggable_type = 'Article' AND articles.published = False AND published_at <= '2022-02-27 07:14:52.119495' LIMIT 4 OFFSET 1;
 -- Rewritten Queries
-SELECT articles.cached_tag_list, articles.crossposted_at, articles.path, articles.published_at, articles.reading_time, articles.title, articles.user_id, reactions.id AS reaction_id, reactions.user_id AS reaction_user_id, articles.id AS t0_r0, reactions.id AS t1_r0, reactions.category AS t1_r1, reactions.created_at AS t1_r2, reactions.points AS t1_r3, reactions.reactable_id AS t1_r4, reactions.reactable_type AS t1_r5, reactions.status AS t1_r6, reactions.updated_at AS t1_r7, reactions.user_id AS t1_r8 FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 4626 AND articles.id = 4626 ORDER BY articles.id ASC LIMIT 1;
-SELECT articles.cached_tag_list, articles.crossposted_at, articles.path, articles.published_at, articles.reading_time, articles.title, articles.user_id, reactions.id AS reaction_id, reactions.user_id AS reaction_user_id, articles.id AS t0_r0, reactions.id AS t1_r0, reactions.category AS t1_r1, reactions.created_at AS t1_r2, reactions.points AS t1_r3, reactions.reactable_id AS t1_r4, reactions.reactable_type AS t1_r5, reactions.status AS t1_r6, reactions.updated_at AS t1_r7, reactions.user_id AS t1_r8 FROM articles INNER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 4626 AND articles.id = 4626 ORDER BY articles.id ASC;
-SELECT articles.cached_tag_list, articles.crossposted_at, articles.path, articles.published_at, articles.reading_time, articles.title, articles.user_id, reactions.id AS reaction_id, reactions.user_id AS reaction_user_id, articles.id AS t0_r0, reactions.id AS t1_r0, reactions.category AS t1_r1, reactions.created_at AS t1_r2, reactions.points AS t1_r3, reactions.reactable_id AS t1_r4, reactions.reactable_type AS t1_r5, reactions.status AS t1_r6, reactions.updated_at AS t1_r7, reactions.user_id AS t1_r8 FROM articles INNER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 4626 AND articles.id = 4626 ORDER BY articles.id ASC LIMIT 1;
+SELECT articles.path, articles.title, articles.id, articles.published, articles.comments_count, articles.public_reactions_count, articles.cached_tag_list, articles.main_image, articles.main_image_background_hex_color, articles.updated_at, articles.slug, articles.video, articles.user_id, articles.organization_id, articles.video_source_url, articles.video_code, articles.video_thumbnail_url, articles.video_closed_caption_track_url, articles.experience_level_rating, articles.experience_level_rating_distribution, articles.cached_user, articles.cached_organization, articles.published_at, articles.crossposted_at, articles.description, articles.reading_time, articles.video_duration_in_seconds, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:14:52.119495' LIMIT 4 OFFSET 1;

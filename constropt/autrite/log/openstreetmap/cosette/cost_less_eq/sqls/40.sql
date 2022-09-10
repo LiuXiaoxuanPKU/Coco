@@ -268,7 +268,7 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
-    body_format public.format_character varying   NOT NULL
+    body_format character varying   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -519,6 +519,6 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT COUNT(*) FROM friends INNER JOIN users ON users.id = friends.friend_user_id WHERE friends.user_id = 3781 AND users.status IN ('pending', 'pending') AND created_at >= '2022-08-29 20:22:41.603262';
+SELECT COUNT(*) FROM friends INNER JOIN users ON users.id = friends.friend_user_id WHERE friends.user_id = 3781 AND users.status IN ('pending', 'pending') AND created_at >= '2022-08-29 20:22:41.565818';
 -- Rewritten Queries
-SELECT COUNT(*) FROM friends WHERE friends.user_id = 3781 AND created_at >= '2022-08-29 20:22:41.603262';
+SELECT COUNT(*) FROM friends WHERE friends.user_id = 3781 AND created_at >= '2022-08-29 20:22:41.565818';

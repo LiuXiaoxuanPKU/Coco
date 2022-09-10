@@ -71,7 +71,6 @@ CREATE TABLE articles (
     cached_user_name character varying,
     cached_user_username character varying,
     canonical_url character varying,
-    co_author_ids bigint[]  ,
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
@@ -146,7 +145,6 @@ CREATE TABLE articles_storage (
     cached_user_name character varying,
     cached_user_username character varying,
     canonical_url character varying,
-    co_author_ids bigint[]  ,
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
@@ -213,7 +211,7 @@ CREATE TABLE audit_logs (
     category character varying,
     created_at timestamp without time zone NOT NULL,
     data jsonb   NOT NULL,
-    roles character varying[],
+    roles character varying,
     slug character varying,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint
@@ -2036,7 +2034,7 @@ CREATE TABLE users_suspended_usernames (
 CREATE TABLE webhook_endpoints (
     id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    events character varying[] NOT NULL,
+    events character varying NOT NULL,
     oauth_application_id bigint,
     source character varying,
     target_url character varying NOT NULL,
@@ -2050,6 +2048,7 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.path, articles.title, articles.id, articles.published, articles.comments_count, articles.public_reactions_count, articles.cached_tag_list, articles.main_image, articles.main_image_background_hex_color, articles.updated_at, articles.slug, articles.video, articles.user_id, articles.organization_id, articles.video_source_url, articles.video_code, articles.video_thumbnail_url, articles.video_closed_caption_track_url, articles.experience_level_rating, articles.experience_level_rating_distribution, articles.cached_user, articles.cached_organization, articles.published_at, articles.crossposted_at, articles.description, articles.reading_time, articles.video_duration_in_seconds, articles.last_comment_at FROM articles INNER JOIN taggings ON articles.id = taggings.taggable_id WHERE taggings.tag_id = 10016 AND taggings.taggable_type = 'Article' AND articles.published = False AND published_at <= '2022-02-27 07:14:52.119495' LIMIT 4 OFFSET 1;
+SELECT profile_field_groups.id AS t0_r0, profile_field_groups.created_at AS t0_r1, profile_field_groups.description AS t0_r2, profile_field_groups.name AS t0_r3, profile_field_groups.updated_at AS t0_r4, profile_fields.id AS t1_r0, profile_fields.attribute_name AS t1_r1, profile_fields.created_at AS t1_r2, profile_fields.description AS t1_r3, profile_fields.display_area AS t1_r4, profile_fields.input_type AS t1_r5, profile_fields.label AS t1_r6, profile_fields.placeholder_text AS t1_r7, profile_fields.profile_field_group_id AS t1_r8, profile_fields.show_in_onboarding AS t1_r9, profile_fields.updated_at AS t1_r10 FROM profile_field_groups LEFT OUTER JOIN profile_fields ON profile_fields.profile_field_group_id = profile_field_groups.id WHERE profile_fields.show_in_onboarding = True;
 -- Rewritten Queries
-SELECT articles.path, articles.title, articles.id, articles.published, articles.comments_count, articles.public_reactions_count, articles.cached_tag_list, articles.main_image, articles.main_image_background_hex_color, articles.updated_at, articles.slug, articles.video, articles.user_id, articles.organization_id, articles.video_source_url, articles.video_code, articles.video_thumbnail_url, articles.video_closed_caption_track_url, articles.experience_level_rating, articles.experience_level_rating_distribution, articles.cached_user, articles.cached_organization, articles.published_at, articles.crossposted_at, articles.description, articles.reading_time, articles.video_duration_in_seconds, articles.last_comment_at FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:14:52.119495' LIMIT 4 OFFSET 1;
+SELECT profile_field_groups.id AS t0_r0, profile_field_groups.created_at AS t0_r1, profile_field_groups.description AS t0_r2, profile_field_groups.name AS t0_r3, profile_field_groups.updated_at AS t0_r4, profile_fields.id AS t1_r0, profile_fields.attribute_name AS t1_r1, profile_fields.created_at AS t1_r2, profile_fields.description AS t1_r3, profile_fields.display_area AS t1_r4, profile_fields.input_type AS t1_r5, profile_fields.label AS t1_r6, profile_fields.placeholder_text AS t1_r7, profile_fields.profile_field_group_id AS t1_r8, profile_fields.show_in_onboarding AS t1_r9, profile_fields.updated_at AS t1_r10 FROM profile_field_groups LEFT OUTER JOIN profile_fields ON profile_fields.profile_field_group_id = profile_field_groups.id WHERE profile_fields.show_in_onboarding = True LIMIT 1;
+SELECT profile_field_groups.id AS t0_r0, profile_field_groups.created_at AS t0_r1, profile_field_groups.description AS t0_r2, profile_field_groups.name AS t0_r3, profile_field_groups.updated_at AS t0_r4, profile_fields.id AS t1_r0, profile_fields.attribute_name AS t1_r1, profile_fields.created_at AS t1_r2, profile_fields.description AS t1_r3, profile_fields.display_area AS t1_r4, profile_fields.input_type AS t1_r5, profile_fields.label AS t1_r6, profile_fields.placeholder_text AS t1_r7, profile_fields.profile_field_group_id AS t1_r8, profile_fields.show_in_onboarding AS t1_r9, profile_fields.updated_at AS t1_r10 FROM profile_field_groups INNER JOIN profile_fields ON profile_fields.profile_field_group_id = profile_field_groups.id WHERE profile_fields.show_in_onboarding = True LIMIT 1;

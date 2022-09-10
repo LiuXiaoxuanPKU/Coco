@@ -1,15 +1,23 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM notifications WHERE notifications.user_id IS NULL AND notifications.organization_id = \"$1\" AND notifications.notifiable_id = \"$2\" AND notifications.notifiable_type = \"$3\" AND notifications.action = \"$4\" LIMIT 1",
-        "cost": 4.31,
+        "sql": "SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = \"$1\" AND reactions.reactable_id = articles.id WHERE articles.id = \"$2\" ORDER BY articles.id ASC LIMIT \"$3\"",
+        "cost": 16.62,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM notifications WHERE False AND notifications.organization_id = \"$1\" AND notifications.notifiable_id = \"$2\" AND notifications.notifiable_type = \"$3\" AND notifications.action = \"$4\" LIMIT 1",
-            "cost": 0.0,
+            "sql": "SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = \"$2\" ORDER BY articles.id ASC LIMIT \"$3\"",
+            "cost": 8.3,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = \"$2\" ORDER BY articles.id ASC LIMIT \"$3\"",
+            "cost": 8.3,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
             ]
         }
     ]

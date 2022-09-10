@@ -201,7 +201,7 @@ CREATE TABLE spree_countries (
 CREATE TABLE spree_credit_cards (
     id bigint NOT NULL,
     "month" character varying,
-    year character varying,
+    "year" character varying,
     cc_type character varying,
     last_digits character varying,
     address_id bigint,
@@ -1243,6 +1243,8 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_stock_items.* FROM spree_stock_items INNER JOIN spree_variants ON spree_stock_items.variant_id = spree_variants.id INNER JOIN spree_products ON spree_variants.product_id = spree_products.id INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id WHERE spree_stock_items.deleted_at IS NULL AND spree_variants.deleted_at IS NULL AND spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 14039 ORDER BY spree_variants.position ASC;
+SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:50.110823') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL AND spree_variants.sku = 'meksvyfjsggkodkgqzcfpxobcynvtlqglgvsjdxidyjwccgrbrntmyhzpyzryesxgjikkbfzoeongaeckcaofnzkwjsfbabrafxmsyavcpkxkimjsgjplqtrvttpyvjychmpwqikiuoiq' LIMIT 8;
 -- Rewritten Queries
-SELECT spree_stock_items.* FROM spree_stock_items INNER JOIN spree_variants ON spree_stock_items.variant_id = spree_variants.id INNER JOIN spree_products ON spree_variants.product_id = spree_products.id INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id WHERE spree_stock_items.deleted_at IS NULL AND spree_variants.deleted_at IS NULL AND spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 14039 ORDER BY spree_variants.position ASC LIMIT 1;
+SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:50.110823') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL AND spree_variants.sku = 'meksvyfjsggkodkgqzcfpxobcynvtlqglgvsjdxidyjwccgrbrntmyhzpyzryesxgjikkbfzoeongaeckcaofnzkwjsfbabrafxmsyavcpkxkimjsgjplqtrvttpyvjychmpwqikiuoiq' LIMIT 8;
+SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:50.110823') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND True AND spree_variants.sku = 'meksvyfjsggkodkgqzcfpxobcynvtlqglgvsjdxidyjwccgrbrntmyhzpyzryesxgjikkbfzoeongaeckcaofnzkwjsfbabrafxmsyavcpkxkimjsgjplqtrvttpyvjychmpwqikiuoiq' LIMIT 8;
+SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:50.110823') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_variants.sku = 'meksvyfjsggkodkgqzcfpxobcynvtlqglgvsjdxidyjwccgrbrntmyhzpyzryesxgjikkbfzoeongaeckcaofnzkwjsfbabrafxmsyavcpkxkimjsgjplqtrvttpyvjychmpwqikiuoiq' LIMIT 8;

@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = \"$1\" AND consumer_apps.platform = \"$2\"",
-        "cost": 8.43,
+        "sql": "SELECT DISTINCT github_repos.* FROM github_repos WHERE github_repos.user_id = \"$1\" AND github_repos.featured = \"$2\"",
+        "cost": 1041.1,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle = \"$1\" AND consumer_apps.platform = \"$2\" LIMIT 1",
-            "cost": 8.43,
+            "sql": "SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = \"$1\" AND github_repos.featured = \"$2\"",
+            "cost": 1041.0,
             "rewrite_types": [
-                "AddLimitOne"
+                "RemoveDistinct"
             ]
         }
     ]

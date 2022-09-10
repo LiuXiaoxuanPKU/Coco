@@ -71,7 +71,6 @@ CREATE TABLE articles (
     cached_user_name character varying,
     cached_user_username character varying,
     canonical_url character varying,
-    co_author_ids bigint[]  ,
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
@@ -146,7 +145,6 @@ CREATE TABLE articles_storage (
     cached_user_name character varying,
     cached_user_username character varying,
     canonical_url character varying,
-    co_author_ids bigint[]  ,
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
@@ -213,7 +211,7 @@ CREATE TABLE audit_logs (
     category character varying,
     created_at timestamp without time zone NOT NULL,
     data jsonb   NOT NULL,
-    roles character varying[],
+    roles character varying,
     slug character varying,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint
@@ -2036,7 +2034,7 @@ CREATE TABLE users_suspended_usernames (
 CREATE TABLE webhook_endpoints (
     id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    events character varying[] NOT NULL,
+    events character varying NOT NULL,
     oauth_application_id bigint,
     source character varying,
     target_url character varying NOT NULL,
@@ -2050,6 +2048,8 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT devices.* FROM devices WHERE devices.user_id = 9685 AND devices.token IS NULL AND devices.platform = 'Android' AND devices.consumer_app_id = 2260 LIMIT 10;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 2365 AND articles.user_id = 2827 AND articles.title IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT devices.* FROM devices WHERE devices.user_id = 9685 AND False AND devices.platform = 'Android' AND devices.consumer_app_id = 2260 LIMIT 10;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 2365 AND articles.user_id = 2827 AND articles.title IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 2365 AND articles.user_id = 2827 AND False LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 2365 AND articles.user_id = 2827 AND False LIMIT 1;

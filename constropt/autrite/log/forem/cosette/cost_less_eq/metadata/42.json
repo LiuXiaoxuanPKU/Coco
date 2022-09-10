@@ -1,12 +1,12 @@
 {
     "org": {
-        "sql": "SELECT devices.* FROM devices WHERE devices.user_id = \"$1\" AND devices.token IS NULL AND devices.platform = \"$2\" AND devices.consumer_app_id = \"$3\" LIMIT \"$4\"",
-        "cost": 8.31,
+        "sql": "SELECT 1 AS one FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.organization_id IS NULL LIMIT 1",
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT devices.* FROM devices WHERE devices.user_id = \"$1\" AND False AND devices.platform = \"$2\" AND devices.consumer_app_id = \"$3\" LIMIT \"$4\"",
+            "sql": "SELECT 1 AS one FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND False LIMIT 1",
             "cost": 0.0,
             "rewrite_types": [
                 "RewriteNullPredicate"

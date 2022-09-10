@@ -268,7 +268,7 @@ CREATE TABLE messages (
     to_user_id bigint NOT NULL,
     to_user_visible boolean   NOT NULL,
     from_user_visible boolean   NOT NULL,
-    body_format public.format_character varying   NOT NULL
+    body_format character varying   NOT NULL
 );
 
 CREATE TABLE node_tags (
@@ -519,6 +519,6 @@ CREATE TABLE ways (
 
 
 -- Original Query
-SELECT way_tags.* FROM way_tags WHERE way_tags.way_id = 2860 AND way_tags.version = 204 ORDER BY way_tags.k ASC;
+SELECT changesets.* FROM changesets WHERE num_changes > 0 AND False ORDER BY changesets.id DESC LIMIT 5;
 -- Rewritten Queries
-SELECT way_tags.* FROM way_tags WHERE way_tags.way_id = 2860 AND way_tags.version = 204 ORDER BY way_tags.k ASC LIMIT 1;
+SELECT changesets.* FROM changesets WHERE False ORDER BY changesets.id DESC LIMIT 5;

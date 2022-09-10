@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\"",
-        "cost": 16.61,
+        "sql": "SELECT articles.* FROM articles WHERE articles.published = \"$1\" AND published_at <= '2022-02-27 07:10:54.765698' AND articles.user_id IS NULL ORDER BY articles.published_at DESC LIMIT \"$2\"",
+        "cost": 8.32,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\" LIMIT 1",
-            "cost": 16.61,
+            "sql": "SELECT articles.* FROM articles WHERE articles.published = \"$1\" AND published_at <= '2022-02-27 07:10:54.765698' AND False ORDER BY articles.published_at DESC LIMIT \"$2\"",
+            "cost": 0.02,
             "rewrite_types": [
-                "AddLimitOne"
+                "RewriteNullPredicate"
             ]
         }
     ]

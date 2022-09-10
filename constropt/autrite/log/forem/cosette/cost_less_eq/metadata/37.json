@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM reactions WHERE reactions.user_id IS NULL AND reactions.reactable_type = \"$1\" AND reactions.reactable_id = \"$2\" LIMIT 1",
-        "cost": 8.3,
+        "sql": "SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = \"$1\"",
+        "cost": 12.61,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM reactions WHERE False AND reactions.reactable_type = \"$1\" AND reactions.reactable_id = \"$2\" LIMIT 1",
-            "cost": 0.0,
+            "sql": "SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = \"$1\" LIMIT 1",
+            "cost": 12.61,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "AddLimitOne"
             ]
         }
     ]

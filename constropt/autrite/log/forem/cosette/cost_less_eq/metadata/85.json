@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM notifications WHERE notifications.user_id IS NULL AND notifications.id <> \"$1\" AND notifications.organization_id = \"$2\" AND notifications.notifiable_id = \"$3\" AND notifications.notifiable_type = \"$4\" AND notifications.action = \"$5\" LIMIT 1",
-        "cost": 8.31,
+        "sql": "SELECT podcast_episodes.* FROM podcast_episodes INNER JOIN podcasts ON podcasts.id = podcast_episodes.podcast_id WHERE podcast_episodes.podcast_id = \"$1\" AND podcast_episodes.reachable = \"$2\" AND podcasts.published = \"$3\" AND podcast_episodes.slug = \"$4\" LIMIT \"$5\"",
+        "cost": 20.64,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM notifications WHERE False AND notifications.id <> \"$1\" AND notifications.organization_id = \"$2\" AND notifications.notifiable_id = \"$3\" AND notifications.notifiable_type = \"$4\" AND notifications.action = \"$5\" LIMIT 1",
-            "cost": 0.0,
+            "sql": "SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.podcast_id = \"$1\" AND podcast_episodes.reachable = \"$2\" AND podcast_episodes.slug = \"$4\" LIMIT \"$5\"",
+            "cost": 12.12,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "RemoveJoin"
             ]
         }
     ]

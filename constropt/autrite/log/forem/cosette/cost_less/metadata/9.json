@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT github_repos.* FROM github_repos WHERE github_repos.user_id = \"$1\" AND github_repos.featured = \"$2\"",
-        "cost": 1041.1,
+        "sql": "SELECT 1 AS one FROM user_blocks WHERE user_blocks.blocker_id IS NULL AND user_blocks.blocked_id = \"$1\" LIMIT 1",
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = \"$1\" AND github_repos.featured = \"$2\"",
-            "cost": 1041.0,
+            "sql": "SELECT 1 AS one FROM user_blocks WHERE False AND user_blocks.blocked_id = \"$1\" LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "RemoveDistinct"
+                "RewriteNullPredicate"
             ]
         }
     ]

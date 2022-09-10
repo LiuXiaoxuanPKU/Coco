@@ -201,7 +201,7 @@ CREATE TABLE spree_countries (
 CREATE TABLE spree_credit_cards (
     id bigint NOT NULL,
     "month" character varying,
-    year character varying,
+    "year" character varying,
     cc_type character varying,
     last_digits character varying,
     address_id bigint,
@@ -1243,8 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_menus WHERE spree_menus.location IS NULL AND spree_menus.store_id = 11469 AND spree_menus.locale IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM spree_menus WHERE spree_menus.location = 'header' AND spree_menus.store_id IS NULL AND spree_menus.locale IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_menus WHERE spree_menus.location IS NULL AND spree_menus.store_id = 11469 AND False LIMIT 1;
-SELECT 1 AS "one" FROM spree_menus WHERE False AND spree_menus.store_id = 11469 AND spree_menus.locale IS NULL LIMIT 1;
-SELECT 1 AS "one" FROM spree_menus WHERE False AND spree_menus.store_id = 11469 AND False LIMIT 1;
+SELECT 1 AS "one" FROM spree_menus WHERE spree_menus.location = 'header' AND spree_menus.store_id IS NULL AND False LIMIT 1;

@@ -71,7 +71,6 @@ CREATE TABLE articles (
     cached_user_name character varying,
     cached_user_username character varying,
     canonical_url character varying,
-    co_author_ids bigint[]  ,
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
@@ -146,7 +145,6 @@ CREATE TABLE articles_storage (
     cached_user_name character varying,
     cached_user_username character varying,
     canonical_url character varying,
-    co_author_ids bigint[]  ,
     collection_id bigint,
     comment_score integer  ,
     comment_template character varying,
@@ -213,7 +211,7 @@ CREATE TABLE audit_logs (
     category character varying,
     created_at timestamp without time zone NOT NULL,
     data jsonb   NOT NULL,
-    roles character varying[],
+    roles character varying,
     slug character varying,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint
@@ -2036,7 +2034,7 @@ CREATE TABLE users_suspended_usernames (
 CREATE TABLE webhook_endpoints (
     id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    events character varying[] NOT NULL,
+    events character varying NOT NULL,
     oauth_application_id bigint,
     source character varying,
     target_url character varying NOT NULL,
@@ -2050,6 +2048,8 @@ CREATE TABLE welcome_notifications (
     updated_at timestamp(6) without time zone NOT NULL
 );
 -- Original Query
-SELECT articles.user_id FROM articles INNER JOIN (SELECT reactions.id, reactions.reactable_id, reactions.user_id FROM reactions WHERE reactions.user_id = 5372 AND reactions.category = 'readinglist' AND reactions.status IN ('confirmed', 'valid') AND reactions.reactable_type = 'Article' ORDER BY reactions.created_at DESC) AS reactions ON reactions.reactable_id = articles.id WHERE articles.published = False AND published_at <= '2022-02-27 07:17:29.285728' LIMIT 1 OFFSET 1;
+SELECT articles.cached_tag_list, articles.crossposted_at, articles.path, articles.published_at, articles.reading_time, articles.title, articles.user_id, reactions.id AS reaction_id, reactions.user_id AS reaction_user_id, articles.id AS t0_r0, reactions.id AS t1_r0, reactions.category AS t1_r1, reactions.created_at AS t1_r2, reactions.points AS t1_r3, reactions.reactable_id AS t1_r4, reactions.reactable_type AS t1_r5, reactions.status AS t1_r6, reactions.updated_at AS t1_r7, reactions.user_id AS t1_r8 FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 4626 AND articles.id = 4626 ORDER BY articles.id ASC;
 -- Rewritten Queries
-SELECT articles.user_id FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:17:29.285728' LIMIT 1 OFFSET 1;
+SELECT articles.cached_tag_list, articles.crossposted_at, articles.path, articles.published_at, articles.reading_time, articles.title, articles.user_id, reactions.id AS reaction_id, reactions.user_id AS reaction_user_id, articles.id AS t0_r0, reactions.id AS t1_r0, reactions.category AS t1_r1, reactions.created_at AS t1_r2, reactions.points AS t1_r3, reactions.reactable_id AS t1_r4, reactions.reactable_type AS t1_r5, reactions.status AS t1_r6, reactions.updated_at AS t1_r7, reactions.user_id AS t1_r8 FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 4626 AND articles.id = 4626 ORDER BY articles.id ASC LIMIT 1;
+SELECT articles.cached_tag_list, articles.crossposted_at, articles.path, articles.published_at, articles.reading_time, articles.title, articles.user_id, reactions.id AS reaction_id, reactions.user_id AS reaction_user_id, articles.id AS t0_r0, reactions.id AS t1_r0, reactions.category AS t1_r1, reactions.created_at AS t1_r2, reactions.points AS t1_r3, reactions.reactable_id AS t1_r4, reactions.reactable_type AS t1_r5, reactions.status AS t1_r6, reactions.updated_at AS t1_r7, reactions.user_id AS t1_r8 FROM articles INNER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 4626 AND articles.id = 4626 ORDER BY articles.id ASC;
+SELECT articles.cached_tag_list, articles.crossposted_at, articles.path, articles.published_at, articles.reading_time, articles.title, articles.user_id, reactions.id AS reaction_id, reactions.user_id AS reaction_user_id, articles.id AS t0_r0, reactions.id AS t1_r0, reactions.category AS t1_r1, reactions.created_at AS t1_r2, reactions.points AS t1_r3, reactions.reactable_id AS t1_r4, reactions.reactable_type AS t1_r5, reactions.status AS t1_r6, reactions.updated_at AS t1_r7, reactions.user_id AS t1_r8 FROM articles INNER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 4626 AND articles.id = 4626 ORDER BY articles.id ASC LIMIT 1;

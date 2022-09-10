@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT roles.* FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = \"$1\" AND roles.name = 'creator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL",
-        "cost": 12.61,
+        "sql": "SELECT 1 AS one FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.type_of_user IN (\"$2\", \"$3\") AND organization_memberships.organization_id IS NULL LIMIT 1",
+        "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT roles.* FROM roles WHERE roles.name = 'creator' AND roles.resource_type IS NULL AND roles.resource_id IS NULL",
-            "cost": 8.29,
+            "sql": "SELECT 1 AS one FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.type_of_user IN (\"$2\", \"$3\") AND False LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "RemoveJoin"
+                "RewriteNullPredicate"
             ]
         }
     ]

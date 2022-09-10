@@ -201,7 +201,7 @@ CREATE TABLE spree_countries (
 CREATE TABLE spree_credit_cards (
     id bigint NOT NULL,
     "month" character varying,
-    year character varying,
+    "year" character varying,
     cc_type character varying,
     last_digits character varying,
     address_id bigint,
@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.name = 'olcoebnieehtpkwkqmwswrlargizlfqircfpischlmmikcfdviuntemepjamhbketuictbuwyzpboazklcrniexegnvuxzvqbxsvvsjkcvowzquippctwnchazhtirfywxgjsadeloclwrdbcinwhwzmixyifhlqgwpczughgtestebdbfbyxqccukrxw' AND spree_product_properties.value = 'Nike' AND spree_products.id = 7004 LIMIT 1;
+SELECT DISTINCT spree_shipping_categories.* FROM spree_shipping_categories INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.shipping_category_id = spree_shipping_categories.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_variants.id = 4125;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'Nike' AND spree_products.id = 7004 LIMIT 1;
+SELECT spree_shipping_categories.* FROM spree_shipping_categories INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.shipping_category_id = spree_shipping_categories.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_variants.id = 4125;

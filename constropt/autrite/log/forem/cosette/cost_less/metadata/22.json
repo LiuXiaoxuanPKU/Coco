@@ -1,15 +1,30 @@
 {
     "org": {
-        "sql": "SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = \"$1\"",
-        "cost": 200.93,
+        "sql": "SELECT devices.* FROM devices WHERE devices.user_id = \"$1\" AND devices.token IS NULL AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT \"$2\"",
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = \"$1\"",
-            "cost": 196.61,
+            "sql": "SELECT devices.* FROM devices WHERE devices.user_id = \"$1\" AND False AND devices.platform IS NULL AND devices.consumer_app_id IS NULL LIMIT \"$2\"",
+            "cost": 0.0,
             "rewrite_types": [
-                "RemoveJoin"
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT devices.* FROM devices WHERE devices.user_id = \"$1\" AND devices.token IS NULL AND False AND devices.consumer_app_id IS NULL LIMIT \"$2\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT devices.* FROM devices WHERE devices.user_id = \"$1\" AND False AND False AND devices.consumer_app_id IS NULL LIMIT \"$2\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RewriteNullPredicate"
             ]
         }
     ]

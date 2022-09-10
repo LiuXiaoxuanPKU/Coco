@@ -201,7 +201,7 @@ CREATE TABLE spree_countries (
 CREATE TABLE spree_credit_cards (
     id bigint NOT NULL,
     "month" character varying,
-    year character varying,
+    "year" character varying,
     cc_type character varying,
     last_digits character varying,
     address_id bigint,
@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_stock_items INNER JOIN spree_stock_locations ON spree_stock_locations.id = spree_stock_items.stock_location_id WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_locations.active = True AND spree_stock_items.id = 6520651 LIMIT 1;
+SELECT 1 AS "one" FROM spree_stock_items INNER JOIN spree_stock_locations ON spree_stock_locations.id = spree_stock_items.stock_location_id WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_locations.active = True AND spree_stock_items.id = 3488243 LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_stock_items WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.id = 6520651 LIMIT 1;
+SELECT 1 AS "one" FROM spree_stock_items WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.id = 3488243 LIMIT 1;

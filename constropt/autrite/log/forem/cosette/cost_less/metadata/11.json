@@ -1,12 +1,12 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM roles INNER JOIN users_roles ON roles.id = users_roles.role_id WHERE users_roles.user_id = \"$1\" LIMIT 1",
-        "cost": 6.75,
+        "sql": "SELECT 1 AS one FROM users_roles INNER JOIN roles ON roles.id = users_roles.role_id WHERE roles.name = \"$1\" LIMIT 1",
+        "cost": 6.24,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM roles LIMIT 1",
+            "sql": "SELECT 1 AS one FROM users_roles LIMIT 1",
             "cost": 0.02,
             "rewrite_types": [
                 "RemoveJoin"

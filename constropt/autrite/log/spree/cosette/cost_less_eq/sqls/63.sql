@@ -201,7 +201,7 @@ CREATE TABLE spree_countries (
 CREATE TABLE spree_credit_cards (
     id bigint NOT NULL,
     "month" character varying,
-    year character varying,
+    "year" character varying,
     cc_type character varying,
     last_digits character varying,
     address_id bigint,
@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_products.* FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.filter_param = 'rtvnfiswzoiniutaqmvaskuhgfpzjthxlysmdsbrqghkzgncacpmqefbhimlgtaoozhwnguupmaoquedlpnybwfnktghlrdnzgxymurecnpmporqqkrygmmtbittylboocrvcbsqszohpntgmtqmszexsnzzjhzhllvsplavclrlmkbwdoecawlpsxwbhwaqbpydhvnlmbkjpkgrlmxhiqxxn' AND spree_product_properties.filter_param IN ('cmrmzotdc', 'hhst', 'fvxfmimrsirez');
+SELECT spree_products.* FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.filter_param = 'skrcxdfhrvkqtmvbvdufjjnmxlppbzjjzbfsqi' AND spree_product_properties.filter_param IN ('fvxfmimrsirez', 'qyhmgdummgron', 'tlbtrypfebux');
 -- Rewritten Queries
-SELECT spree_products.* FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.filter_param = 'rtvnfiswzoiniutaqmvaskuhgfpzjthxlysmdsbrqghkzgncacpmqefbhimlgtaoozhwnguupmaoquedlpnybwfnktghlrdnzgxymurecnpmporqqkrygmmtbittylboocrvcbsqszohpntgmtqmszexsnzzjhzhllvsplavclrlmkbwdoecawlpsxwbhwaqbpydhvnlmbkjpkgrlmxhiqxxn' AND spree_product_properties.filter_param IN ('cmrmzotdc', 'hhst', 'fvxfmimrsirez') LIMIT 1;
+SELECT spree_products.* FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.filter_param = 'skrcxdfhrvkqtmvbvdufjjnmxlppbzjjzbfsqi' AND spree_product_properties.filter_param IN ('fvxfmimrsirez', 'qyhmgdummgron', 'tlbtrypfebux') LIMIT 1;

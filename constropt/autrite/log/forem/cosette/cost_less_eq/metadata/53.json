@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT notifications.* FROM notifications WHERE notifications.organization_id = \"$1\" AND notifications.user_id IS NULL ORDER BY notifications.notified_at DESC LIMIT \"$2\"",
-        "cost": 8.32,
+        "sql": "SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.type_of_user = \"$2\"",
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT notifications.* FROM notifications WHERE notifications.organization_id = \"$1\" AND False ORDER BY notifications.notified_at DESC LIMIT \"$2\"",
-            "cost": 0.02,
+            "sql": "SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.type_of_user = \"$2\" LIMIT 1",
+            "cost": 8.3,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "AddLimitOne"
             ]
         }
     ]

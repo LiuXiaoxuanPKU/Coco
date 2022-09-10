@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT articles.user_id FROM articles INNER JOIN (SELECT reactions.id, reactions.reactable_id, reactions.user_id FROM reactions WHERE reactions.user_id = 3528 AND reactions.category = 'readinglist' AND reactions.status = 'valid' AND reactions.reactable_type = 'Article' ORDER BY reactions.created_at DESC) AS reactions ON reactions.reactable_id = articles.id WHERE articles.published = \"$1\" AND published_at <= '2022-02-27 07:11:18.772793' LIMIT \"$2\" OFFSET \"$3\"",
-        "cost": 25.86,
+        "sql": "SELECT users.id, users.username, users.comments_count, users.badge_achievements_count, users.last_comment_at FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = \"$1\" LIMIT \"$2\" OFFSET \"$3\"",
+        "cost": 200.93,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT articles.user_id FROM articles WHERE articles.published = \"$1\" AND published_at <= '2022-02-27 07:11:18.772793' LIMIT \"$2\" OFFSET \"$3\"",
-            "cost": 21.08,
+            "sql": "SELECT users.id, users.username, users.comments_count, users.badge_achievements_count, users.last_comment_at FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = \"$1\" LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 196.61,
             "rewrite_types": [
                 "RemoveJoin"
             ]

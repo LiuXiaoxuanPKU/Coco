@@ -201,7 +201,7 @@ CREATE TABLE spree_countries (
 CREATE TABLE spree_credit_cards (
     id bigint NOT NULL,
     "month" character varying,
-    year character varying,
+    "year" character varying,
     cc_type character varying,
     last_digits character varying,
     address_id bigint,
@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_products_stores.* FROM spree_products_stores WHERE spree_products_stores.product_id = 7052 AND spree_products_stores.store_id = 11242;
+SELECT spree_products_taxons.* FROM spree_products_taxons WHERE spree_products_taxons.product_id = 5883 AND spree_products_taxons.taxon_id = 5512;
 -- Rewritten Queries
-SELECT spree_products_stores.* FROM spree_products_stores WHERE spree_products_stores.product_id = 7052 AND spree_products_stores.store_id = 11242 LIMIT 1;
+SELECT spree_products_taxons.* FROM spree_products_taxons WHERE spree_products_taxons.product_id = 5883 AND spree_products_taxons.taxon_id = 5512 LIMIT 1;
