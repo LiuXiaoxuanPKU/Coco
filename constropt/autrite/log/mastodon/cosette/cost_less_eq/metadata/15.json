@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT user_invite_requests.* FROM user_invite_requests WHERE user_invite_requests.user_id = \"$1\"",
-        "cost": 8.3,
+        "sql": "SELECT mentions.account_id FROM mentions WHERE mentions.status_id = \"$1\" AND mentions.silent = \"$2\"",
+        "cost": 11.45,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT user_invite_requests.* FROM user_invite_requests WHERE user_invite_requests.user_id = \"$1\" LIMIT 1",
-            "cost": 8.3,
+            "sql": "SELECT mentions.account_id FROM mentions WHERE mentions.status_id = \"$1\" AND mentions.silent = \"$2\" LIMIT 1",
+            "cost": 11.45,
             "rewrite_types": [
                 "AddLimitOne"
             ]

@@ -779,7 +779,7 @@ CREATE TABLE relays (
     follow_activity_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    state integer   NOT NULL
+    "state" integer   NOT NULL
 );
 
 CREATE TABLE report_notes (
@@ -871,7 +871,7 @@ CREATE TABLE status_edits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ordered_media_attachment_ids character varying,
-    media_descriptions text[],
+    media_descriptions character varying,
     poll_options character varying,
     "sensitive" boolean
 );
@@ -968,6 +968,12 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id INNER JOIN users ON users.account_id = accounts.id WHERE follows.target_account_id = 108847829759797832 AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:42:31.625615' ORDER BY accounts.id ASC LIMIT 2;
+SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847826821086576 AND follows.target_account_id = 108847832896090056 ORDER BY follows.id DESC LIMIT 3;
 -- Rewritten Queries
-SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 108847829759797832 AND accounts.domain IS NULL ORDER BY accounts.id ASC LIMIT 2;
+SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847826821086576 AND follows.target_account_id = 108847832896090056 ORDER BY follows.id DESC LIMIT 3;
+SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id WHERE accounts.id <> 108847826821086576 AND follows.target_account_id = 108847832896090056 ORDER BY follows.id DESC LIMIT 3;
+SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847826821086576 AND follows.target_account_id = 108847832896090056 ORDER BY follows.id DESC LIMIT 3;
+SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id WHERE accounts.id <> 108847826821086576 AND follows.target_account_id = 108847832896090056 ORDER BY follows.id DESC LIMIT 3;
+SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id WHERE accounts.id <> 108847826821086576 AND follows.target_account_id = 108847832896090056 ORDER BY follows.id DESC LIMIT 3;
+SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> 108847826821086576 AND follows.target_account_id = 108847832896090056 ORDER BY follows.id DESC LIMIT 3;
+SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id WHERE accounts.id <> 108847826821086576 AND follows.target_account_id = 108847832896090056 ORDER BY follows.id DESC LIMIT 3;

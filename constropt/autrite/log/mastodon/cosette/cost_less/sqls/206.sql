@@ -779,7 +779,7 @@ CREATE TABLE relays (
     follow_activity_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    state integer   NOT NULL
+    "state" integer   NOT NULL
 );
 
 CREATE TABLE report_notes (
@@ -871,7 +871,7 @@ CREATE TABLE status_edits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ordered_media_attachment_ids character varying,
-    media_descriptions text[],
+    media_descriptions character varying,
     poll_options character varying,
     "sensitive" boolean
 );
@@ -968,8 +968,9 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT DISTINCT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102841589915182270 AND statuses.visibility IN (2, 0) ORDER BY statuses.id DESC LIMIT 3;
+SELECT DISTINCT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
 -- Rewritten Queries
-SELECT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102841589915182270 AND statuses.visibility IN (0, 2) ORDER BY statuses.id DESC LIMIT 3;
-SELECT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102841589915182270 AND statuses.visibility IN (0, 2) ORDER BY statuses.id DESC LIMIT 3;
-SELECT statuses.id AS alias_0, accounts.id FROM accounts INNER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102841589915182270 AND statuses.visibility IN (2, 0) ORDER BY statuses.id DESC LIMIT 3;
+SELECT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
+SELECT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
+SELECT follow_requests.id AS alias_0, accounts.id FROM accounts INNER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
+SELECT follow_requests.id AS alias_0, accounts.id FROM accounts INNER JOIN follow_requests ON follow_requests.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;

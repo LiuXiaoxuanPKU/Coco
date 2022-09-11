@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM statuses INNER JOIN media_attachments ON media_attachments.status_id = statuses.id WHERE statuses.account_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") AND statuses.deleted_at IS NULL AND media_attachments.account_id = \"$4\" GROUP BY statuses.id LIMIT 1 OFFSET \"$6\"",
-        "cost": 16.71,
+        "sql": "SELECT account_stats.id, account_stats.account_id, account_stats.statuses_count, account_stats.following_count, account_stats.followers_count, account_stats.created_at, account_stats.updated_at, account_stats.last_status_at FROM account_stats WHERE account_stats.account_id = \"$1\"",
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM statuses WHERE statuses.account_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") AND statuses.deleted_at IS NULL GROUP BY statuses.id LIMIT 1 OFFSET \"$6\"",
-            "cost": 8.37,
+            "sql": "SELECT account_stats.id, account_stats.account_id, account_stats.statuses_count, account_stats.following_count, account_stats.followers_count, account_stats.created_at, account_stats.updated_at, account_stats.last_status_at FROM account_stats WHERE account_stats.account_id = \"$1\" LIMIT 1",
+            "cost": 8.3,
             "rewrite_types": [
-                "RemoveJoin"
+                "AddLimitOne"
             ]
         }
     ]

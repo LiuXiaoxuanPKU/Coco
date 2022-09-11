@@ -779,7 +779,7 @@ CREATE TABLE relays (
     follow_activity_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    state integer   NOT NULL
+    "state" integer   NOT NULL
 );
 
 CREATE TABLE report_notes (
@@ -871,7 +871,7 @@ CREATE TABLE status_edits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ordered_media_attachment_ids character varying,
-    media_descriptions text[],
+    media_descriptions character varying,
     poll_options character varying,
     "sensitive" boolean
 );
@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT domain_allows.* FROM domain_allows WHERE domain_allows.domain = 'gkkonwqtvdqihtrnksrirwdcmhasrypzhoqnmmaoxknbdruvhmdlyqhqxqvnozejxrgwsyqkfjdeqsgwrcjomvbaieprnatstjxkwctkqbgtimvylahnrkuupyomgtwmppctdvkxyqkbsttcweioplkhbifavjmjrtqhoyqwvewqvwxuijncm';
+SELECT status_stats.* FROM status_stats WHERE status_stats.status_id = 105371075207971548;
 -- Rewritten Queries
-SELECT domain_allows.* FROM domain_allows WHERE domain_allows.domain = 'gkkonwqtvdqihtrnksrirwdcmhasrypzhoqnmmaoxknbdruvhmdlyqhqxqvnozejxrgwsyqkfjdeqsgwrcjomvbaieprnatstjxkwctkqbgtimvylahnrkuupyomgtwmppctdvkxyqkbsttcweioplkhbifavjmjrtqhoyqwvewqvwxuijncm' LIMIT 1;
+SELECT status_stats.* FROM status_stats WHERE status_stats.status_id = 105371075207971548 LIMIT 1;

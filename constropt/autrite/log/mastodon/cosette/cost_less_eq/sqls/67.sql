@@ -779,7 +779,7 @@ CREATE TABLE relays (
     follow_activity_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    state integer   NOT NULL
+    "state" integer   NOT NULL
 );
 
 CREATE TABLE report_notes (
@@ -871,7 +871,7 @@ CREATE TABLE status_edits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ordered_media_attachment_ids character varying,
-    media_descriptions text[],
+    media_descriptions character varying,
     poll_options character varying,
     "sensitive" boolean
 );
@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.domain = 'lbctymnhvghipdtfoskujaecndqblsqgpaojvsqowftxnyfocbbbbuuegpbfutriqojcqutlerrgoziontpqkvtnbdnkfhbrcrredgmgmqmtcxmbvxunahditsdzhzgnayxkohgxekanuxqup' ORDER BY custom_emojis.domain ASC, custom_emojis.shortcode ASC;
+SELECT 1 AS "one" FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847827699038761 AND account_domain_blocks.domain IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.domain = 'lbctymnhvghipdtfoskujaecndqblsqgpaojvsqowftxnyfocbbbbuuegpbfutriqojcqutlerrgoziontpqkvtnbdnkfhbrcrredgmgmqmtcxmbvxunahditsdzhzgnayxkohgxekanuxqup' ORDER BY custom_emojis.domain ASC, custom_emojis.shortcode ASC LIMIT 1;
+SELECT 1 AS "one" FROM account_domain_blocks WHERE account_domain_blocks.account_id = 108847827699038761 AND False LIMIT 1;

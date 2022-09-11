@@ -779,7 +779,7 @@ CREATE TABLE relays (
     follow_activity_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    state integer   NOT NULL
+    "state" integer   NOT NULL
 );
 
 CREATE TABLE report_notes (
@@ -871,7 +871,7 @@ CREATE TABLE status_edits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ordered_media_attachment_ids character varying,
-    media_descriptions text[],
+    media_descriptions character varying,
     poll_options character varying,
     "sensitive" boolean
 );
@@ -968,6 +968,9 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM statuses INNER JOIN media_attachments ON media_attachments.status_id = statuses.id WHERE statuses.account_id = 108847827886835491 AND statuses.visibility IN (1, 2) AND statuses.deleted_at IS NULL AND media_attachments.account_id = 108847814260308554 GROUP BY statuses.id LIMIT 1 OFFSET 1;
+SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = 108847831946918529 ORDER BY follows.id DESC LIMIT 10;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM statuses WHERE statuses.account_id = 108847827886835491 AND statuses.visibility IN (1, 2) AND statuses.deleted_at IS NULL GROUP BY statuses.id LIMIT 1 OFFSET 1;
+SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = 108847831946918529 ORDER BY follows.id DESC LIMIT 10;
+SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = 108847831946918529 ORDER BY follows.id DESC LIMIT 10;
+SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = 108847831946918529 ORDER BY follows.id DESC LIMIT 10;
+SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = 108847831946918529 ORDER BY follows.id DESC LIMIT 10;

@@ -779,7 +779,7 @@ CREATE TABLE relays (
     follow_activity_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    state integer   NOT NULL
+    "state" integer   NOT NULL
 );
 
 CREATE TABLE report_notes (
@@ -871,7 +871,7 @@ CREATE TABLE status_edits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ordered_media_attachment_ids character varying,
-    media_descriptions text[],
+    media_descriptions character varying,
     poll_options character varying,
     "sensitive" boolean
 );
@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT mentions.status_id FROM mentions WHERE mentions.silent = False AND mentions.status_id IN (105640591470846079, 108275005258495986, 108507527362819183, 106265962550065437) AND mentions.account_id = 108847828919792602;
+SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.shortcode = 'fnrvu' AND custom_emojis.domain = 'aedmkmnuxldtnpscodslecqgbatkqdtpeijiiripyljevebtdsvrvkclatflnisijvshxpjfwzayjoozyvyogfyfutceeavvsdkkkygarjakbsdi' AND custom_emojis.disabled = False;
 -- Rewritten Queries
-SELECT mentions.status_id FROM mentions WHERE mentions.silent = False AND mentions.status_id IN (105640591470846079, 108275005258495986, 108507527362819183, 106265962550065437) AND mentions.account_id = 108847828919792602 LIMIT 1;
+SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.shortcode = 'fnrvu' AND custom_emojis.domain = 'aedmkmnuxldtnpscodslecqgbatkqdtpeijiiripyljevebtdsvrvkclatflnisijvshxpjfwzayjoozyvyogfyfutceeavvsdkkkygarjakbsdi' AND custom_emojis.disabled = False LIMIT 1;

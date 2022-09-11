@@ -779,7 +779,7 @@ CREATE TABLE relays (
     follow_activity_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    state integer   NOT NULL
+    "state" integer   NOT NULL
 );
 
 CREATE TABLE report_notes (
@@ -871,7 +871,7 @@ CREATE TABLE status_edits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ordered_media_attachment_ids character varying,
-    media_descriptions text[],
+    media_descriptions character varying,
     poll_options character varying,
     "sensitive" boolean
 );
@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT session_activations.* FROM session_activations WHERE session_activations.session_id = 'dybqmtjxocpstrykzbshxelvyxyejkhbzhxngsnoxxcdwhywmnruohsqntextsihducidmwksqwydatnqibohiaqomhfacbhvmwmjvucoasjlpdxftpklezbxihmpqmlocvltuuetcmdyuaxjhkfmeoyicrwizrsebqzwpapmlgwurgfivhkultfakq';
+SELECT user_invite_requests.* FROM user_invite_requests WHERE user_invite_requests.user_id = 5603;
 -- Rewritten Queries
-SELECT session_activations.* FROM session_activations WHERE session_activations.session_id = 'dybqmtjxocpstrykzbshxelvyxyejkhbzhxngsnoxxcdwhywmnruohsqntextsihducidmwksqwydatnqibohiaqomhfacbhvmwmjvucoasjlpdxftpklezbxihmpqmlocvltuuetcmdyuaxjhkfmeoyicrwizrsebqzwpapmlgwurgfivhkultfakq' LIMIT 1;
+SELECT user_invite_requests.* FROM user_invite_requests WHERE user_invite_requests.user_id = 5603 LIMIT 1;

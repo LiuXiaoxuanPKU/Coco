@@ -779,7 +779,7 @@ CREATE TABLE relays (
     follow_activity_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    state integer   NOT NULL
+    "state" integer   NOT NULL
 );
 
 CREATE TABLE report_notes (
@@ -871,7 +871,7 @@ CREATE TABLE status_edits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ordered_media_attachment_ids character varying,
-    media_descriptions text[],
+    media_descriptions character varying,
     poll_options character varying,
     "sensitive" boolean
 );
@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id INNER JOIN users ON users.account_id = accounts.id WHERE follows.target_account_id = 108847802088050745 AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:39:55.770693' ORDER BY accounts.id ASC LIMIT 6;
+SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id INNER JOIN users ON users.account_id = accounts.id WHERE follows.target_account_id = 108847827880513947 AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:38:03.405500' ORDER BY accounts.id ASC LIMIT 6;
 -- Rewritten Queries
-SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 108847802088050745 AND accounts.domain IS NULL ORDER BY accounts.id ASC LIMIT 6;
+SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = 108847827880513947 AND accounts.domain IS NULL ORDER BY accounts.id ASC LIMIT 6;

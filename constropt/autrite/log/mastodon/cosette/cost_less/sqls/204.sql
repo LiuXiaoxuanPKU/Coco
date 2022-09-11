@@ -779,7 +779,7 @@ CREATE TABLE relays (
     follow_activity_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    state integer   NOT NULL
+    "state" integer   NOT NULL
 );
 
 CREATE TABLE report_notes (
@@ -871,7 +871,7 @@ CREATE TABLE status_edits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ordered_media_attachment_ids character varying,
-    media_descriptions text[],
+    media_descriptions character varying,
     poll_options character varying,
     "sensitive" boolean
 );
@@ -968,9 +968,9 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT DISTINCT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
+SELECT DISTINCT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 108098893367592620 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 9;
 -- Rewritten Queries
-SELECT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
-SELECT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
-SELECT follow_requests.id AS alias_0, accounts.id FROM accounts INNER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
-SELECT follow_requests.id AS alias_0, accounts.id FROM accounts INNER JOIN follow_requests ON follow_requests.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847832473726517 ORDER BY follow_requests.id DESC LIMIT 3;
+SELECT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 108098893367592620 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 9;
+SELECT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 108098893367592620 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 9;
+SELECT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 108098893367592620 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 9;
+SELECT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = 108098893367592620 AND 1 = 1 ORDER BY favourites.id DESC LIMIT 9;

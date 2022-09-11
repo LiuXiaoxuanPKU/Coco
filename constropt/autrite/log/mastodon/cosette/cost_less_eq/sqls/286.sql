@@ -779,7 +779,7 @@ CREATE TABLE relays (
     follow_activity_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    state integer   NOT NULL
+    "state" integer   NOT NULL
 );
 
 CREATE TABLE report_notes (
@@ -871,7 +871,7 @@ CREATE TABLE status_edits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ordered_media_attachment_ids character varying,
-    media_descriptions text[],
+    media_descriptions character varying,
     poll_options character varying,
     "sensitive" boolean
 );
@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN accounts ON accounts.id = statuses.account_id WHERE statuses.visibility = 2 AND accounts.suspended_at IS NULL AND accounts.silenced_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL AND (statuses.local = False OR statuses.uri IS NULL) AND statuses.deleted_at IS NULL AND 1 = 1 ORDER BY statuses.id DESC LIMIT 2;
+SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN accounts ON accounts.id = statuses.account_id WHERE statuses.visibility = 0 AND accounts.suspended_at IS NULL AND accounts.silenced_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL AND (statuses.local = False OR statuses.uri IS NULL) AND statuses.deleted_at IS NULL AND 1 = 1 ORDER BY statuses.id DESC LIMIT 2;
 -- Rewritten Queries
-SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN accounts ON accounts.id = statuses.account_id WHERE statuses.visibility = 2 AND accounts.suspended_at IS NULL AND accounts.silenced_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL AND (statuses.local = False OR False) AND statuses.deleted_at IS NULL AND 1 = 1 ORDER BY statuses.id DESC LIMIT 2;
+SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN accounts ON accounts.id = statuses.account_id WHERE statuses.visibility = 0 AND accounts.suspended_at IS NULL AND accounts.silenced_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL AND (statuses.local = False OR False) AND statuses.deleted_at IS NULL AND 1 = 1 ORDER BY statuses.id DESC LIMIT 2;

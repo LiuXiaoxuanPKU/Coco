@@ -779,7 +779,7 @@ CREATE TABLE relays (
     follow_activity_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    state integer   NOT NULL
+    "state" integer   NOT NULL
 );
 
 CREATE TABLE report_notes (
@@ -871,7 +871,7 @@ CREATE TABLE status_edits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ordered_media_attachment_ids character varying,
-    media_descriptions text[],
+    media_descriptions character varying,
     poll_options character varying,
     "sensitive" boolean
 );
@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT mentions.status_id FROM mentions WHERE mentions.silent = True AND mentions.status_id IN (107209607691077391, 108098561824026030) AND mentions.account_id = 108847814509746542;
+SELECT account_pins.target_account_id FROM account_pins WHERE account_pins.account_id = 108847820354619415 AND account_pins.target_account_id = 108847832103251825;
 -- Rewritten Queries
-SELECT mentions.status_id FROM mentions WHERE mentions.silent = True AND mentions.status_id IN (107209607691077391, 108098561824026030) AND mentions.account_id = 108847814509746542 LIMIT 1;
+SELECT account_pins.target_account_id FROM account_pins WHERE account_pins.account_id = 108847820354619415 AND account_pins.target_account_id = 108847832103251825 LIMIT 1;

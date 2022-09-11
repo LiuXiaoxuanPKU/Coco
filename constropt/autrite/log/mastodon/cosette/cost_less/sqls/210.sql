@@ -779,7 +779,7 @@ CREATE TABLE relays (
     follow_activity_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    state integer   NOT NULL
+    "state" integer   NOT NULL
 );
 
 CREATE TABLE report_notes (
@@ -871,7 +871,7 @@ CREATE TABLE status_edits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ordered_media_attachment_ids character varying,
-    media_descriptions text[],
+    media_descriptions character varying,
     poll_options character varying,
     "sensitive" boolean
 );
@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT accounts.id, accounts.username, accounts.domain, accounts.private_key, accounts.public_key, accounts.created_at, accounts.updated_at, accounts.note, accounts.display_name, accounts.uri, accounts.url, accounts.avatar_file_name, accounts.avatar_content_type, accounts.avatar_file_size, accounts.avatar_updated_at, accounts.header_file_name, accounts.header_content_type, accounts.header_file_size, accounts.header_updated_at, accounts.avatar_remote_url, accounts.locked, accounts.header_remote_url, accounts.last_webfingered_at, accounts.inbox_url, accounts.outbox_url, accounts.shared_inbox_url, accounts.followers_url, accounts.protocol, accounts.memorial, accounts.moved_to_account_id, accounts.featured_collection_url, accounts.fields, accounts.actor_type, accounts.discoverable, accounts.also_known_as, accounts.silenced_at, accounts.suspended_at, accounts.hide_collections, accounts.avatar_storage_schema_version, accounts.header_storage_schema_version, accounts.devices_url, accounts.suspension_origin, accounts.sensitized_at, accounts.trendable, accounts.reviewed_at, accounts.requested_review_at FROM accounts LEFT OUTER JOIN users ON users.account_id = accounts.id WHERE accounts.id <> 108847824015936924 AND accounts.domain IS NULL AND users.disabled = False ORDER BY accounts.id DESC LIMIT 3;
+SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN media_attachments ON media_attachments.status_id = statuses.id WHERE statuses.account_id = 108847830673882347 AND statuses.visibility IN (2, 1) AND media_attachments.account_id = 108847832314858843 AND statuses.deleted_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT 1;
 -- Rewritten Queries
-SELECT accounts.id, accounts.username, accounts.domain, accounts.private_key, accounts.public_key, accounts.created_at, accounts.updated_at, accounts.note, accounts.display_name, accounts.uri, accounts.url, accounts.avatar_file_name, accounts.avatar_content_type, accounts.avatar_file_size, accounts.avatar_updated_at, accounts.header_file_name, accounts.header_content_type, accounts.header_file_size, accounts.header_updated_at, accounts.avatar_remote_url, accounts.locked, accounts.header_remote_url, accounts.last_webfingered_at, accounts.inbox_url, accounts.outbox_url, accounts.shared_inbox_url, accounts.followers_url, accounts.protocol, accounts.memorial, accounts.moved_to_account_id, accounts.featured_collection_url, accounts.fields, accounts.actor_type, accounts.discoverable, accounts.also_known_as, accounts.silenced_at, accounts.suspended_at, accounts.hide_collections, accounts.avatar_storage_schema_version, accounts.header_storage_schema_version, accounts.devices_url, accounts.suspension_origin, accounts.sensitized_at, accounts.trendable, accounts.reviewed_at, accounts.requested_review_at FROM accounts WHERE accounts.id <> 108847824015936924 AND accounts.domain IS NULL ORDER BY accounts.id DESC LIMIT 3;
+SELECT statuses.id, statuses.updated_at FROM statuses WHERE statuses.account_id = 108847830673882347 AND statuses.visibility IN (2, 2) AND statuses.deleted_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) AND statuses.reblog_of_id IS NULL GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT 1;

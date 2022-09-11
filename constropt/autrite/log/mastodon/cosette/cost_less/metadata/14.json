@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT oauth_applications.* FROM oauth_applications WHERE oauth_applications.id IN (SELECT DISTINCT oauth_access_tokens.application_id FROM oauth_access_tokens WHERE oauth_access_tokens.resource_owner_id = \"$1\" AND oauth_access_tokens.revoked_at IS NULL)",
-        "cost": 19.93,
+        "sql": "SELECT 1 AS one FROM account_domain_blocks WHERE account_domain_blocks.account_id = \"$1\" AND account_domain_blocks.domain IS NULL LIMIT 1",
+        "cost": 4.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT oauth_applications.* FROM oauth_applications WHERE oauth_applications.id IN (SELECT oauth_access_tokens.application_id FROM oauth_access_tokens WHERE oauth_access_tokens.resource_owner_id = \"$1\" AND oauth_access_tokens.revoked_at IS NULL)",
-            "cost": 19.92,
+            "sql": "SELECT 1 AS one FROM account_domain_blocks WHERE account_domain_blocks.account_id = \"$1\" AND False LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "RemoveDistinct"
+                "RewriteNullPredicate"
             ]
         }
     ]

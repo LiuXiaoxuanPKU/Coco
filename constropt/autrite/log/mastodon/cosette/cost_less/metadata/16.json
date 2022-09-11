@@ -1,40 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
-        "cost": 20.29,
+        "sql": "SELECT oauth_applications.* FROM oauth_applications WHERE oauth_applications.id IN (SELECT DISTINCT oauth_access_tokens.application_id FROM oauth_access_tokens WHERE oauth_access_tokens.resource_owner_id = \"$1\" AND oauth_access_tokens.revoked_at IS NULL)",
+        "cost": 19.93,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
-            "cost": 20.28,
+            "sql": "SELECT oauth_applications.* FROM oauth_applications WHERE oauth_applications.id IN (SELECT oauth_access_tokens.application_id FROM oauth_access_tokens WHERE oauth_access_tokens.resource_owner_id = \"$1\" AND oauth_access_tokens.revoked_at IS NULL)",
+            "cost": 19.92,
             "rewrite_types": [
                 "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id WHERE follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
-            "cost": 20.28,
-            "rewrite_types": [
-                "RemoveJoin",
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
-            "cost": 20.28,
-            "rewrite_types": [
-                "RemoveDistinct",
-                "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id WHERE follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
-            "cost": 20.28,
-            "rewrite_types": [
-                "RemoveJoin",
-                "RemoveDistinct",
-                "ReplaceOuterJoin"
             ]
         }
     ]

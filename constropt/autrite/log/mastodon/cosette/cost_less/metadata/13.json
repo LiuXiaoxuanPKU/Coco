@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM custom_emojis LEFT OUTER JOIN custom_emojis AS local_counterparts_custom_emojis ON local_counterparts_custom_emojis.domain IS NULL AND local_counterparts_custom_emojis.shortcode = custom_emojis.shortcode LIMIT 1 OFFSET \"$2\"",
-        "cost": 0.21,
+        "sql": "SELECT 1 AS one FROM webauthn_credentials WHERE webauthn_credentials.nickname IS NULL AND webauthn_credentials.user_id IS NULL LIMIT 1",
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM custom_emojis LIMIT 1 OFFSET \"$2\"",
-            "cost": 0.09,
+            "sql": "SELECT 1 AS one FROM webauthn_credentials WHERE False AND webauthn_credentials.user_id IS NULL LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "RemoveJoin"
+                "RewriteNullPredicate"
             ]
         }
     ]

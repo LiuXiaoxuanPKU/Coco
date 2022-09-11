@@ -56,7 +56,7 @@ CREATE TABLE friendly_id_slugs (
     slug character varying NOT NULL,
     sluggable_id bigint NOT NULL,
     sluggable_type character varying(50),
-    scope character varying,
+    "scope" character varying,
     created_at timestamp without time zone,
     deleted_at timestamp without time zone
 );
@@ -100,7 +100,7 @@ CREATE TABLE spree_adjustments (
     eligible boolean  ,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    state character varying,
+    "state" character varying,
     order_id bigint NOT NULL,
     included boolean  
 );
@@ -262,7 +262,7 @@ CREATE TABLE spree_gateways (
 
 CREATE TABLE spree_inventory_units (
     id bigint NOT NULL,
-    state character varying,
+    "state" character varying,
     variant_id bigint,
     order_id bigint,
     shipment_id bigint,
@@ -426,7 +426,7 @@ CREATE TABLE spree_orders (
     number character varying(32),
     item_total numeric(10,2)   NOT NULL,
     total numeric(10,2)   NOT NULL,
-    state character varying,
+    "state" character varying,
     adjustment_total numeric(10,2)   NOT NULL,
     user_id bigint,
     completed_at timestamp without time zone,
@@ -501,7 +501,7 @@ CREATE TABLE spree_payments (
     source_type character varying,
     source_id bigint,
     payment_method_id bigint,
-    state character varying,
+    "state" character varying,
     response_code character varying,
     avs_response character varying,
     created_at timestamp(6) without time zone NOT NULL,
@@ -783,7 +783,7 @@ CREATE TABLE spree_return_authorization_reasons (
 CREATE TABLE spree_return_authorizations (
     id bigint NOT NULL,
     number character varying,
-    state character varying,
+    "state" character varying,
     order_id bigint,
     memo character varying,
     created_at timestamp without time zone,
@@ -835,7 +835,7 @@ CREATE TABLE spree_shipments (
     shipped_at timestamp without time zone,
     order_id bigint,
     address_id bigint,
-    state character varying,
+    "state" character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     stock_location_id bigint,
@@ -1243,6 +1243,8 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_line_items INNER JOIN spree_variants ON spree_variants.id = spree_line_items.variant_id INNER JOIN spree_products ON spree_products.id = spree_variants.product_id WHERE spree_line_items.order_id = 2753 AND spree_products.promotionable = True LIMIT 1;
+SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND spree_prices.amount IS NOT NULL;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_line_items INNER JOIN spree_variants ON spree_variants.id = spree_line_items.variant_id WHERE spree_line_items.order_id = 2753 LIMIT 1;
+SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND spree_prices.amount IS NOT NULL;
+SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND True;
+SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR';

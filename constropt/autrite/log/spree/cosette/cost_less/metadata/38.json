@@ -1,19 +1,19 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:50.110823') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
+        "sql": "SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:47.419916') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
         "cost": 14.55,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:50.110823') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:47.419916') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
             "cost": 14.49,
             "rewrite_types": [
                 "RemoveDistinct"
             ]
         },
         {
-            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:50.110823') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND True AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:47.419916') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND True AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
             "cost": 14.49,
             "rewrite_types": [
                 "RewriteNullPredicate",
@@ -21,7 +21,7 @@
             ]
         },
         {
-            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:50.110823') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
+            "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_variants.discontinue_on IS NULL OR spree_variants.discontinue_on >= '2022-08-14 05:34:47.419916') AND spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_variants.sku = \"$1\" LIMIT \"$2\"",
             "cost": 14.49,
             "rewrite_types": [
                 "RemovePredicate",

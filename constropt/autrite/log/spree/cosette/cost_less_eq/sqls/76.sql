@@ -56,7 +56,7 @@ CREATE TABLE friendly_id_slugs (
     slug character varying NOT NULL,
     sluggable_id bigint NOT NULL,
     sluggable_type character varying(50),
-    scope character varying,
+    "scope" character varying,
     created_at timestamp without time zone,
     deleted_at timestamp without time zone
 );
@@ -100,7 +100,7 @@ CREATE TABLE spree_adjustments (
     eligible boolean  ,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    state character varying,
+    "state" character varying,
     order_id bigint NOT NULL,
     included boolean  
 );
@@ -262,7 +262,7 @@ CREATE TABLE spree_gateways (
 
 CREATE TABLE spree_inventory_units (
     id bigint NOT NULL,
-    state character varying,
+    "state" character varying,
     variant_id bigint,
     order_id bigint,
     shipment_id bigint,
@@ -426,7 +426,7 @@ CREATE TABLE spree_orders (
     number character varying(32),
     item_total numeric(10,2)   NOT NULL,
     total numeric(10,2)   NOT NULL,
-    state character varying,
+    "state" character varying,
     adjustment_total numeric(10,2)   NOT NULL,
     user_id bigint,
     completed_at timestamp without time zone,
@@ -501,7 +501,7 @@ CREATE TABLE spree_payments (
     source_type character varying,
     source_id bigint,
     payment_method_id bigint,
-    state character varying,
+    "state" character varying,
     response_code character varying,
     avs_response character varying,
     created_at timestamp(6) without time zone NOT NULL,
@@ -783,7 +783,7 @@ CREATE TABLE spree_return_authorization_reasons (
 CREATE TABLE spree_return_authorizations (
     id bigint NOT NULL,
     number character varying,
-    state character varying,
+    "state" character varying,
     order_id bigint,
     memo character varying,
     created_at timestamp without time zone,
@@ -835,7 +835,7 @@ CREATE TABLE spree_shipments (
     shipped_at timestamp without time zone,
     order_id bigint,
     address_id bigint,
-    state character varying,
+    "state" character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     stock_location_id bigint,
@@ -1243,6 +1243,8 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_products.id FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_products.deleted_at IS NULL AND spree_option_values.name = 'qpoablukkqijjthkplkajedzuexoe' AND spree_option_values.option_type_id = 8914 GROUP BY spree_products.id;
+SELECT DISTINCT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id LEFT OUTER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = 15176 AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT 9;
 -- Rewritten Queries
-SELECT spree_products.id FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_option_value_variants ON spree_option_value_variants.variant_id = spree_variants.id INNER JOIN spree_option_values ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_products.deleted_at IS NULL AND spree_option_values.name = 'qpoablukkqijjthkplkajedzuexoe' AND spree_option_values.option_type_id = 8914 GROUP BY spree_products.id LIMIT 1;
+SELECT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id LEFT OUTER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = 15176 AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT 9;
+SELECT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id INNER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = 15176 AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT 9;
+SELECT DISTINCT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id INNER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = 15176 AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT 9;

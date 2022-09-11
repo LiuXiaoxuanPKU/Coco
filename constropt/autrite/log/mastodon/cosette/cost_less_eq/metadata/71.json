@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.shortcode = \"$1\" AND custom_emojis.domain = \"$2\" AND custom_emojis.disabled = \"$3\"",
-        "cost": 8.3,
+        "sql": "SELECT mentions.status_id FROM mentions WHERE mentions.silent = \"$1\" AND mentions.status_id IN (\"$2\", \"$3\", \"$4\", \"$5\") AND mentions.account_id = \"$6\"",
+        "cost": 11.46,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.shortcode = \"$1\" AND custom_emojis.domain = \"$2\" AND custom_emojis.disabled = \"$3\" LIMIT 1",
-            "cost": 8.3,
+            "sql": "SELECT mentions.status_id FROM mentions WHERE mentions.silent = \"$1\" AND mentions.status_id IN (\"$2\", \"$3\", \"$4\", \"$5\") AND mentions.account_id = \"$6\" LIMIT 1",
+            "cost": 11.46,
             "rewrite_types": [
                 "AddLimitOne"
             ]

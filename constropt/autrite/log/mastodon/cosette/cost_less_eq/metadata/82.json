@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM custom_emojis LEFT OUTER JOIN custom_emojis AS local_counterparts_custom_emojis ON local_counterparts_custom_emojis.domain IS NULL AND local_counterparts_custom_emojis.shortcode = custom_emojis.shortcode LIMIT 1 OFFSET \"$2\"",
-        "cost": 0.21,
+        "sql": "SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN status_pins ON statuses.id = status_pins.status_id WHERE statuses.deleted_at IS NULL AND status_pins.account_id = \"$1\" ORDER BY status_pins.created_at DESC",
+        "cost": 28.02,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM custom_emojis LIMIT 1 OFFSET \"$2\"",
-            "cost": 0.09,
+            "sql": "SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN status_pins ON statuses.id = status_pins.status_id WHERE statuses.deleted_at IS NULL AND status_pins.account_id = \"$1\" ORDER BY status_pins.created_at DESC LIMIT 1",
+            "cost": 28.02,
             "rewrite_types": [
-                "RemoveJoin"
+                "AddLimitOne"
             ]
         }
     ]

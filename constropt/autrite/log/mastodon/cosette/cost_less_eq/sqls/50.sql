@@ -779,7 +779,7 @@ CREATE TABLE relays (
     follow_activity_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    state integer   NOT NULL
+    "state" integer   NOT NULL
 );
 
 CREATE TABLE report_notes (
@@ -871,7 +871,7 @@ CREATE TABLE status_edits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ordered_media_attachment_ids character varying,
-    media_descriptions text[],
+    media_descriptions character varying,
     poll_options character varying,
     "sensitive" boolean
 );
@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT blocks.target_account_id FROM blocks WHERE blocks.target_account_id IN (108847814231134076, 108847831579926566, 108847831032917245) AND blocks.account_id = 108847831424476156;
+SELECT blocks.target_account_id FROM blocks WHERE blocks.target_account_id IN (108847832539274913, 108847832607620986, 108847814231134076) AND blocks.account_id = 108847831888662771;
 -- Rewritten Queries
-SELECT blocks.target_account_id FROM blocks WHERE blocks.target_account_id IN (108847814231134076, 108847831579926566, 108847831032917245) AND blocks.account_id = 108847831424476156 LIMIT 1;
+SELECT blocks.target_account_id FROM blocks WHERE blocks.target_account_id IN (108847832539274913, 108847832607620986, 108847814231134076) AND blocks.account_id = 108847831888662771 LIMIT 1;

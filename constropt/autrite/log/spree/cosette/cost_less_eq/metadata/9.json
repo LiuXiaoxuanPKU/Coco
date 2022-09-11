@@ -1,12 +1,12 @@
 {
     "org": {
-        "sql": "SELECT spree_products_taxons.* FROM spree_products_taxons WHERE spree_products_taxons.product_id = \"$1\" AND spree_products_taxons.taxon_id = \"$2\"",
+        "sql": "SELECT spree_products_stores.* FROM spree_products_stores WHERE spree_products_stores.product_id = \"$1\" AND spree_products_stores.store_id = \"$2\"",
         "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_products_taxons.* FROM spree_products_taxons WHERE spree_products_taxons.product_id = \"$1\" AND spree_products_taxons.taxon_id = \"$2\" LIMIT 1",
+            "sql": "SELECT spree_products_stores.* FROM spree_products_stores WHERE spree_products_stores.product_id = \"$1\" AND spree_products_stores.store_id = \"$2\" LIMIT 1",
             "cost": 8.3,
             "rewrite_types": [
                 "AddLimitOne"

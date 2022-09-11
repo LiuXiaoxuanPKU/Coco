@@ -779,7 +779,7 @@ CREATE TABLE relays (
     follow_activity_id character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    state integer   NOT NULL
+    "state" integer   NOT NULL
 );
 
 CREATE TABLE report_notes (
@@ -871,7 +871,7 @@ CREATE TABLE status_edits (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ordered_media_attachment_ids character varying,
-    media_descriptions text[],
+    media_descriptions character varying,
     poll_options character varying,
     "sensitive" boolean
 );
@@ -968,6 +968,6 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM custom_emojis LEFT OUTER JOIN custom_emojis AS local_counterparts_custom_emojis ON local_counterparts_custom_emojis.domain IS NULL AND local_counterparts_custom_emojis.shortcode = custom_emojis.shortcode LIMIT 1 OFFSET 1;
+SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN status_pins ON statuses.id = status_pins.status_id WHERE statuses.deleted_at IS NULL AND status_pins.account_id = 108847831376496546 ORDER BY status_pins.created_at DESC;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM custom_emojis LIMIT 1 OFFSET 1;
+SELECT statuses.id, statuses.updated_at FROM statuses INNER JOIN status_pins ON statuses.id = status_pins.status_id WHERE statuses.deleted_at IS NULL AND status_pins.account_id = 108847831376496546 ORDER BY status_pins.created_at DESC LIMIT 1;

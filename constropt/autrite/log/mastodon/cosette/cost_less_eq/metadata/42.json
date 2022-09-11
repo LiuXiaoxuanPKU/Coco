@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT follows.account_id FROM follows WHERE follows.account_id IN (\"$1\", \"$2\") AND follows.target_account_id = \"$3\"",
-        "cost": 8.6,
+        "sql": "SELECT status_pins.status_id FROM status_pins WHERE status_pins.status_id = \"$1\" AND status_pins.account_id = \"$2\"",
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT follows.account_id FROM follows WHERE follows.account_id IN (\"$1\", \"$2\") AND follows.target_account_id = \"$3\" LIMIT 1",
-            "cost": 8.6,
+            "sql": "SELECT status_pins.status_id FROM status_pins WHERE status_pins.status_id = \"$1\" AND status_pins.account_id = \"$2\" LIMIT 1",
+            "cost": 8.3,
             "rewrite_types": [
                 "AddLimitOne"
             ]

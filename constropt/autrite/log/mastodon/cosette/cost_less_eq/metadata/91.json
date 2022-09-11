@@ -1,15 +1,62 @@
 {
     "org": {
-        "sql": "SELECT account_stats.id, account_stats.account_id, account_stats.statuses_count, account_stats.following_count, account_stats.followers_count, account_stats.created_at, account_stats.updated_at, account_stats.last_status_at FROM account_stats WHERE account_stats.account_id = \"$1\"",
-        "cost": 8.3,
+        "sql": "SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
+        "cost": 20.29,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT account_stats.id, account_stats.account_id, account_stats.statuses_count, account_stats.following_count, account_stats.followers_count, account_stats.created_at, account_stats.updated_at, account_stats.last_status_at FROM account_stats WHERE account_stats.account_id = \"$1\" LIMIT 1",
-            "cost": 8.3,
+            "sql": "SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
+            "cost": 20.28,
             "rewrite_types": [
-                "AddLimitOne"
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
+            "cost": 20.28,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
+            "cost": 20.28,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
+            "cost": 20.28,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
+            "cost": 20.29,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
+            "cost": 20.29,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.account_id = accounts.id WHERE 1 = 1 AND follows.target_account_id = \"$1\" ORDER BY follows.id DESC LIMIT \"$2\"",
+            "cost": 20.29,
+            "rewrite_types": [
+                "RemoveJoin",
+                "ReplaceOuterJoin"
             ]
         }
     ]

@@ -1,15 +1,31 @@
 {
     "org": {
-        "sql": "SELECT name, custom_emoji_id, COUNT(*) AS count, (SELECT 1 FROM announcement_reactions AS r WHERE r.account_id = 108774566504673364 AND r.announcement_id = announcement_reactions.announcement_id AND r.name = announcement_reactions.name) IS NOT NULL AS me FROM announcement_reactions WHERE announcement_reactions.announcement_id = \"$1\" GROUP BY announcement_reactions.announcement_id, announcement_reactions.name, announcement_reactions.custom_emoji_id ORDER BY MIN(created_at) ASC",
-        "cost": 20.18,
+        "sql": "SELECT DISTINCT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND 1 = 1 AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") ORDER BY statuses.id DESC LIMIT \"$4\"",
+        "cost": 70.53,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT name, custom_emoji_id, COUNT(*) AS count, (SELECT 1 FROM announcement_reactions AS r WHERE r.account_id = 108774566504673364 AND r.announcement_id = announcement_reactions.announcement_id AND r.name = announcement_reactions.name) IS NOT NULL AS me FROM announcement_reactions WHERE announcement_reactions.announcement_id = \"$1\" GROUP BY announcement_reactions.announcement_id, announcement_reactions.name, announcement_reactions.custom_emoji_id ORDER BY MIN(created_at) ASC LIMIT 1",
-            "cost": 15.88,
+            "sql": "SELECT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND 1 = 1 AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") ORDER BY statuses.id DESC LIMIT \"$4\"",
+            "cost": 70.51,
             "rewrite_types": [
-                "AddLimitOne"
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND 1 = 1 AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") ORDER BY statuses.id DESC LIMIT \"$4\"",
+            "cost": 70.51,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT statuses.id AS alias_0, accounts.id FROM accounts INNER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND 1 = 1 AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") ORDER BY statuses.id DESC LIMIT \"$4\"",
+            "cost": 70.51,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
             ]
         }
     ]

@@ -56,7 +56,7 @@ CREATE TABLE friendly_id_slugs (
     slug character varying NOT NULL,
     sluggable_id bigint NOT NULL,
     sluggable_type character varying(50),
-    scope character varying,
+    "scope" character varying,
     created_at timestamp without time zone,
     deleted_at timestamp without time zone
 );
@@ -100,7 +100,7 @@ CREATE TABLE spree_adjustments (
     eligible boolean  ,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    state character varying,
+    "state" character varying,
     order_id bigint NOT NULL,
     included boolean  
 );
@@ -262,7 +262,7 @@ CREATE TABLE spree_gateways (
 
 CREATE TABLE spree_inventory_units (
     id bigint NOT NULL,
-    state character varying,
+    "state" character varying,
     variant_id bigint,
     order_id bigint,
     shipment_id bigint,
@@ -426,7 +426,7 @@ CREATE TABLE spree_orders (
     number character varying(32),
     item_total numeric(10,2)   NOT NULL,
     total numeric(10,2)   NOT NULL,
-    state character varying,
+    "state" character varying,
     adjustment_total numeric(10,2)   NOT NULL,
     user_id bigint,
     completed_at timestamp without time zone,
@@ -501,7 +501,7 @@ CREATE TABLE spree_payments (
     source_type character varying,
     source_id bigint,
     payment_method_id bigint,
-    state character varying,
+    "state" character varying,
     response_code character varying,
     avs_response character varying,
     created_at timestamp(6) without time zone NOT NULL,
@@ -783,7 +783,7 @@ CREATE TABLE spree_return_authorization_reasons (
 CREATE TABLE spree_return_authorizations (
     id bigint NOT NULL,
     number character varying,
-    state character varying,
+    "state" character varying,
     order_id bigint,
     memo character varying,
     created_at timestamp without time zone,
@@ -835,7 +835,7 @@ CREATE TABLE spree_shipments (
     shipped_at timestamp without time zone,
     order_id bigint,
     address_id bigint,
-    state character varying,
+    "state" character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     stock_location_id bigint,
@@ -1243,14 +1243,8 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:55.833234') AND spree_products.available_on <= '2022-08-14 05:28:55.833224' AND spree_prices.currency = 'usd' AND spree_prices.amount IS NOT NULL ORDER BY spree_products.available_on DESC;
+SELECT DISTINCT spree_zones.id FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = 'Spree::State' AND zone_members_spree_countries_join.zoneable_id = spree_countries.id INNER JOIN spree_zones AS zones_spree_countries ON zones_spree_countries.id = zone_members_spree_countries_join.zone_id WHERE zone_members_spree_countries_join.zone_id = 58;
 -- Rewritten Queries
-SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:55.833234') AND spree_products.available_on <= '2022-08-14 05:28:55.833224' AND True ORDER BY spree_products.available_on DESC;
-SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:55.833234') AND spree_products.available_on <= '2022-08-14 05:28:55.833224' ORDER BY spree_products.available_on DESC;
-SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:55.833234') AND spree_products.available_on <= '2022-08-14 05:28:55.833224' AND True ORDER BY spree_products.available_on DESC;
-SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:55.833234') AND spree_products.available_on <= '2022-08-14 05:28:55.833224' ORDER BY spree_products.available_on DESC;
-SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:55.833234') AND spree_products.available_on <= '2022-08-14 05:28:55.833224' AND spree_prices.currency = 'usd' AND spree_prices.amount IS NOT NULL ORDER BY spree_products.available_on DESC;
-SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:55.833234') AND spree_products.available_on <= '2022-08-14 05:28:55.833224' AND spree_prices.currency = 'usd' AND True ORDER BY spree_products.available_on DESC;
-SELECT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:55.833234') AND spree_products.available_on <= '2022-08-14 05:28:55.833224' AND spree_prices.currency = 'usd' ORDER BY spree_products.available_on DESC;
-SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:55.833234') AND spree_products.available_on <= '2022-08-14 05:28:55.833224' AND spree_prices.currency = 'usd' AND True ORDER BY spree_products.available_on DESC;
-SELECT DISTINCT spree_products.* FROM spree_products INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_products.deleted_at IS NULL AND (spree_products.discontinue_on IS NULL OR spree_products.discontinue_on >= '2022-08-14 05:28:55.833234') AND spree_products.available_on <= '2022-08-14 05:28:55.833224' AND spree_prices.currency = 'usd' ORDER BY spree_products.available_on DESC;
+SELECT spree_zones.id FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = 'Spree::State' AND zone_members_spree_countries_join.zoneable_id = spree_countries.id WHERE zone_members_spree_countries_join.zone_id = 58;
+SELECT DISTINCT spree_zones.id FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = 'Spree::State' AND zone_members_spree_countries_join.zoneable_id = spree_countries.id WHERE zone_members_spree_countries_join.zone_id = 58;
+SELECT spree_zones.id FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = 'Spree::State' AND zone_members_spree_countries_join.zoneable_id = spree_countries.id INNER JOIN spree_zones AS zones_spree_countries ON zones_spree_countries.id = zone_members_spree_countries_join.zone_id WHERE zone_members_spree_countries_join.zone_id = 58;
