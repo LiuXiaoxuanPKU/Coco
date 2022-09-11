@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM favourites WHERE favourites.status_id IS NULL AND favourites.id <> \"$1\" AND favourites.account_id = \"$2\" LIMIT 1",
-        "cost": 8.31,
+        "sql": "SELECT mentions.status_id FROM mentions WHERE mentions.silent = \"$1\" AND mentions.status_id IN (\"$2\", \"$3\") AND mentions.account_id = \"$4\"",
+        "cost": 11.46,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM favourites WHERE False AND favourites.id <> \"$1\" AND favourites.account_id = \"$2\" LIMIT 1",
-            "cost": 0.0,
+            "sql": "SELECT mentions.status_id FROM mentions WHERE mentions.silent = \"$1\" AND mentions.status_id IN (\"$2\", \"$3\") AND mentions.account_id = \"$4\" LIMIT 1",
+            "cost": 11.46,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "AddLimitOne"
             ]
         }
     ]

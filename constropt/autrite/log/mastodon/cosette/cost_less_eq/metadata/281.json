@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT follows.id FROM follows WHERE follows.target_account_id = \"$1\" AND follows.account_id IN (SELECT accounts.id FROM accounts WHERE accounts.domain IS NULL) AND follows.account_id NOT IN (SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = \"$2\" AND accounts.domain IS NULL ORDER BY follows.id DESC) AND follows.account_id <> \"$3\" ORDER BY follows.id ASC LIMIT \"$4\"",
-        "cost": 64.31,
+        "sql": "SELECT DISTINCT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND accounts.id <> \"$1\" AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = \"$2\" AND statuses.visibility IN (\"$3\", \"$4\") ORDER BY statuses.id DESC LIMIT \"$5\"",
+        "cost": 70.54,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT follows.id FROM follows WHERE follows.target_account_id = \"$1\" AND follows.account_id IN (SELECT accounts.id FROM accounts WHERE accounts.domain IS NULL) AND follows.account_id NOT IN (SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = \"$2\" AND accounts.domain IS NULL ORDER BY follows.id DESC LIMIT 1) AND follows.account_id <> \"$3\" ORDER BY follows.id ASC LIMIT \"$4\"",
-            "cost": 64.31,
+            "sql": "SELECT DISTINCT statuses.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND accounts.id <> \"$1\" AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = \"$2\" AND statuses.visibility IN (\"$3\", \"$4\") ORDER BY statuses.id DESC LIMIT \"$5\"",
+            "cost": 70.54,
             "rewrite_types": [
-                "AddLimitOne"
+                "RemoveJoin"
             ]
         }
     ]

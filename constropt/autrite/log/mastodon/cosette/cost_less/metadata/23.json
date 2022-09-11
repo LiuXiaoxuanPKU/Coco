@@ -1,40 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> \"$1\" AND follows.account_id = \"$2\" ORDER BY follows.id DESC LIMIT \"$3\"",
-        "cost": 12.63,
+        "sql": "SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id INNER JOIN users ON users.account_id = accounts.id WHERE follows.target_account_id = \"$1\" AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:45:51.089172' ORDER BY accounts.id ASC LIMIT \"$2\"",
+        "cost": 44.01,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> \"$1\" AND follows.account_id = \"$2\" ORDER BY follows.id DESC LIMIT \"$3\"",
-            "cost": 12.62,
+            "sql": "SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = \"$1\" AND accounts.domain IS NULL ORDER BY accounts.id ASC LIMIT \"$2\"",
+            "cost": 36.3,
             "rewrite_types": [
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT follows.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follows ON follows.target_account_id = accounts.id WHERE accounts.id <> \"$1\" AND follows.account_id = \"$2\" ORDER BY follows.id DESC LIMIT \"$3\"",
-            "cost": 12.62,
-            "rewrite_types": [
-                "RemoveJoin",
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.target_account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.id <> \"$1\" AND follows.account_id = \"$2\" ORDER BY follows.id DESC LIMIT \"$3\"",
-            "cost": 12.62,
-            "rewrite_types": [
-                "RemoveDistinct",
-                "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT follows.id AS alias_0, accounts.id FROM accounts INNER JOIN follows ON follows.target_account_id = accounts.id WHERE accounts.id <> \"$1\" AND follows.account_id = \"$2\" ORDER BY follows.id DESC LIMIT \"$3\"",
-            "cost": 12.62,
-            "rewrite_types": [
-                "RemoveJoin",
-                "RemoveDistinct",
-                "ReplaceOuterJoin"
+                "RemoveJoin"
             ]
         }
     ]

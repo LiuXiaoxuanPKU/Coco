@@ -11,6 +11,8 @@ CREATE TABLE account_conversations (
     id bigint NOT NULL,
     account_id bigint,
     conversation_id bigint,
+    participant_account_ids character varying   NOT NULL,
+    status_ids character varying   NOT NULL,
     last_status_id bigint,
     lock_version integer   NOT NULL,
     unread boolean   NOT NULL
@@ -43,7 +45,7 @@ CREATE TABLE account_migrations (
 
 CREATE TABLE account_moderation_notes (
     id bigint NOT NULL,
-    content character varying(255) NOT NULL,
+    content character varying NOT NULL,
     account_id bigint NOT NULL,
     target_account_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -54,7 +56,7 @@ CREATE TABLE account_notes (
     id bigint NOT NULL,
     account_id bigint,
     target_account_id bigint,
-    comment character varying(255) NOT NULL,
+    comment character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -99,11 +101,11 @@ CREATE TABLE accounts (
     id bigint   NOT NULL,
     username character varying    NOT NULL,
     domain character varying,
-    private_key character varying(255),
-    public_key character varying(255)   NOT NULL,
+    private_key character varying,
+    public_key character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    note character varying(255)   NOT NULL,
+    note character varying   NOT NULL,
     display_name character varying    NOT NULL,
     uri character varying    NOT NULL,
     url character varying,
@@ -147,7 +149,7 @@ CREATE TABLE accounts (
 CREATE TABLE statuses (
     id bigint   NOT NULL,
     uri character varying,
-    text character varying(255)   NOT NULL,
+    text character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     in_reply_to_id bigint,
@@ -155,23 +157,24 @@ CREATE TABLE statuses (
     url character varying,
     "sensitive" boolean   NOT NULL,
     visibility integer   NOT NULL,
-    spoiler_text character varying(255)   NOT NULL,
+    spoiler_text character varying   NOT NULL,
     reply boolean   NOT NULL,
     "language" character varying,
     conversation_id bigint,
-    local boolean,
+    "local" boolean,
     account_id bigint NOT NULL,
     application_id bigint,
     in_reply_to_account_id bigint,
     poll_id bigint,
     deleted_at timestamp without time zone,
     edited_at timestamp without time zone,
-    trendable boolean
+    trendable boolean,
+    ordered_media_attachment_ids character varying
 );
 
 CREATE TABLE account_warning_presets (
     id bigint NOT NULL,
-    text character varying(255)  NOT NULL,
+    text character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     title character varying    NOT NULL
@@ -181,8 +184,8 @@ CREATE TABLE account_warnings (
     id bigint NOT NULL,
     account_id bigint,
     target_account_id bigint,
-    "action" integer   NOT NULL,
-    text character varying(255)   NOT NULL,
+    action integer   NOT NULL,
+    text character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     report_id bigint,
@@ -198,10 +201,10 @@ CREATE TABLE accounts_tags (
 CREATE TABLE admin_action_logs (
     id bigint NOT NULL,
     account_id bigint,
-    "action" character varying    NOT NULL,
+    action character varying    NOT NULL,
     target_type character varying,
     target_id bigint,
-    recorded_changes character varying(255)   NOT NULL,
+    recorded_changes character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -226,7 +229,7 @@ CREATE TABLE announcement_reactions (
 
 CREATE TABLE announcements (
     id bigint NOT NULL,
-    text character varying(255)   NOT NULL,
+    text character varying   NOT NULL,
     published boolean   NOT NULL,
     all_day boolean   NOT NULL,
     scheduled_at timestamp without time zone,
@@ -234,14 +237,15 @@ CREATE TABLE announcements (
     ends_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    published_at timestamp without time zone
+    published_at timestamp without time zone,
+    status_ids character varying
 );
 
 CREATE TABLE appeals (
     id bigint NOT NULL,
     account_id bigint NOT NULL,
     account_warning_id bigint NOT NULL,
-    text character varying(255)   NOT NULL,
+    text character varying   NOT NULL,
     approved_at timestamp without time zone,
     approved_by_account_id bigint,
     rejected_at timestamp without time zone,
@@ -251,7 +255,7 @@ CREATE TABLE appeals (
 );
 
 CREATE TABLE ar_internal_metadata (
-    key character varying NOT NULL,
+    "key" character varying NOT NULL,
     "value" character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -336,8 +340,8 @@ CREATE TABLE custom_filters (
     id bigint NOT NULL,
     account_id bigint,
     expires_at timestamp without time zone,
-    phrase character varying(255)   NOT NULL,
-    context character varying NOT NULL,
+    phrase character varying   NOT NULL,
+    context character varying    NOT NULL,
     irreversible boolean   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -350,8 +354,8 @@ CREATE TABLE devices (
     account_id bigint,
     device_id character varying    NOT NULL,
     name character varying    NOT NULL,
-    fingerprint_key character varying(255)   NOT NULL,
-    identity_key character varying(255)   NOT NULL,
+    fingerprint_key character varying   NOT NULL,
+    identity_key character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -371,8 +375,8 @@ CREATE TABLE domain_blocks (
     severity integer  ,
     reject_media boolean   NOT NULL,
     reject_reports boolean   NOT NULL,
-    private_comment character varying(255),
-    public_comment character varying(255),
+    private_comment character varying,
+    public_comment character varying,
     obfuscate boolean   NOT NULL
 );
 
@@ -390,9 +394,9 @@ CREATE TABLE encrypted_messages (
     from_account_id bigint,
     from_device_id character varying    NOT NULL,
     type integer   NOT NULL,
-    body character varying(255)   NOT NULL,
-    digest character varying(255)   NOT NULL,
-    message_franking character varying(255)   NOT NULL,
+    body character varying   NOT NULL,
+    digest character varying   NOT NULL,
+    message_franking character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -467,7 +471,7 @@ CREATE TABLE users (
     otp_required_for_login boolean   NOT NULL,
     last_emailed_at timestamp without time zone,
     otp_backup_codes character varying,
-    filtered_languages character varying NOT NULL,
+    filtered_languages character varying    NOT NULL,
     account_id bigint NOT NULL,
     disabled boolean   NOT NULL,
     moderator boolean   NOT NULL,
@@ -478,7 +482,7 @@ CREATE TABLE users (
     sign_in_token character varying,
     sign_in_token_sent_at timestamp without time zone,
     webauthn_id character varying,
-    sign_up_ip inet,
+    sign_up_ip character varying,
     skip_sign_in_token boolean
 );
 
@@ -526,7 +530,7 @@ CREATE TABLE invites (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     autofollow boolean   NOT NULL,
-    comment character varying(255)
+    comment character varying
 );
 
 CREATE TABLE ip_blocks (
@@ -534,9 +538,9 @@ CREATE TABLE ip_blocks (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     expires_at timestamp without time zone,
-    ip inet   NOT NULL,
+    ip character varying   NOT NULL,
     severity integer   NOT NULL,
-    comment character varying(255)   NOT NULL
+    comment character varying   NOT NULL
 );
 
 CREATE TABLE list_accounts (
@@ -562,7 +566,7 @@ CREATE TABLE login_activities (
     provider character varying,
     success boolean,
     failure_reason character varying,
-    ip inet,
+    ip character varying,
     user_agent character varying,
     created_at timestamp without time zone
 );
@@ -589,9 +593,9 @@ CREATE TABLE media_attachments (
     updated_at timestamp without time zone NOT NULL,
     shortcode character varying,
     type integer   NOT NULL,
-    file_meta json,
+    file_meta character varying,
     account_id bigint,
-    description character varying(255),
+    description character varying,
     scheduled_status_id bigint,
     blurhash character varying,
     processing integer,
@@ -637,7 +641,7 @@ CREATE TABLE oauth_access_grants (
     id bigint NOT NULL,
     token character varying NOT NULL,
     expires_in integer NOT NULL,
-    redirect_uri character varying(255) NOT NULL,
+    redirect_uri character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     revoked_at timestamp without time zone,
     scopes character varying,
@@ -656,7 +660,7 @@ CREATE TABLE oauth_access_tokens (
     application_id bigint,
     resource_owner_id bigint,
     last_used_at timestamp without time zone,
-    last_used_ip inet
+    last_used_ip character varying
 );
 
 CREATE TABLE oauth_applications (
@@ -664,7 +668,7 @@ CREATE TABLE oauth_applications (
     name character varying NOT NULL,
     uid character varying NOT NULL,
     secret character varying NOT NULL,
-    redirect_uri character varying(255) NOT NULL,
+    redirect_uri character varying NOT NULL,
     scopes character varying    NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -679,17 +683,17 @@ CREATE TABLE one_time_keys (
     id bigint NOT NULL,
     device_id bigint,
     key_id character varying    NOT NULL,
-    key character varying(255)   NOT NULL,
-    signature character varying(255)   NOT NULL,
+    "key" character varying   NOT NULL,
+    signature character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 CREATE TABLE pghero_space_stats (
     id bigint NOT NULL,
-    database character varying(255),
-    schema character varying(255),
-    relation character varying(255),
+    database character varying,
+    schema character varying,
+    relation character varying,
     size bigint,
     captured_at timestamp without time zone
 );
@@ -709,7 +713,8 @@ CREATE TABLE polls (
     account_id bigint,
     status_id bigint,
     expires_at timestamp without time zone,
-    options character varying NOT NULL,
+    options character varying    NOT NULL,
+    cached_tallies character varying   NOT NULL,
     multiple boolean   NOT NULL,
     hide_totals boolean   NOT NULL,
     votes_count bigint   NOT NULL,
@@ -744,7 +749,7 @@ CREATE TABLE preview_cards (
     image_file_size integer,
     image_updated_at timestamp without time zone,
     type integer   NOT NULL,
-    html character varying(255)   NOT NULL,
+    html character varying   NOT NULL,
     author_name character varying    NOT NULL,
     author_url character varying    NOT NULL,
     provider_name character varying    NOT NULL,
@@ -779,7 +784,7 @@ CREATE TABLE relays (
 
 CREATE TABLE report_notes (
     id bigint NOT NULL,
-    content character varying(255) NOT NULL,
+    content character varying NOT NULL,
     report_id bigint NOT NULL,
     account_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -788,7 +793,8 @@ CREATE TABLE report_notes (
 
 CREATE TABLE reports (
     id bigint NOT NULL,
-    comment character varying(255)   NOT NULL,
+    status_ids character varying   NOT NULL,
+    comment character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     account_id bigint NOT NULL,
@@ -798,14 +804,15 @@ CREATE TABLE reports (
     uri character varying,
     forwarded boolean,
     category integer   NOT NULL,
-    action_taken_at timestamp without time zone
+    action_taken_at timestamp without time zone,
+    rule_ids character varying
 );
 
 CREATE TABLE rules (
     id bigint NOT NULL,
     priority integer   NOT NULL,
     deleted_at timestamp without time zone,
-    text character varying(255)   NOT NULL,
+    text character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -827,7 +834,7 @@ CREATE TABLE session_activations (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     user_agent character varying    NOT NULL,
-    ip inet,
+    ip character varying,
     access_token_id bigint,
     user_id bigint NOT NULL,
     web_push_subscription_id bigint
@@ -836,7 +843,7 @@ CREATE TABLE session_activations (
 CREATE TABLE settings (
     id bigint NOT NULL,
     var character varying NOT NULL,
-    "value" character varying(255),
+    "value" character varying,
     thing_type character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -850,7 +857,7 @@ CREATE TABLE site_uploads (
     file_content_type character varying,
     file_file_size integer,
     file_updated_at timestamp without time zone,
-    meta json,
+    meta character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -859,10 +866,13 @@ CREATE TABLE status_edits (
     id bigint NOT NULL,
     status_id bigint NOT NULL,
     account_id bigint,
-    text character varying(255)   NOT NULL,
-    spoiler_text character varying(255)   NOT NULL,
+    text character varying   NOT NULL,
+    spoiler_text character varying   NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
+    ordered_media_attachment_ids character varying,
+    media_descriptions text[],
+    poll_options character varying,
     "sensitive" boolean
 );
 
@@ -881,7 +891,7 @@ CREATE TABLE statuses_tags (
 
 CREATE TABLE system_keys (
     id bigint NOT NULL,
-    key binary(255),
+    "key" binary(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -920,7 +930,7 @@ CREATE TABLE unavailable_domains (
 CREATE TABLE user_invite_requests (
     id bigint NOT NULL,
     user_id bigint,
-    text character varying(255),
+    text character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -930,7 +940,7 @@ CREATE TABLE web_push_subscriptions (
     endpoint character varying NOT NULL,
     key_p256dh character varying NOT NULL,
     key_auth character varying NOT NULL,
-    data json,
+    data character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     access_token_id bigint,
@@ -939,7 +949,7 @@ CREATE TABLE web_push_subscriptions (
 
 CREATE TABLE web_settings (
     id bigint NOT NULL,
-    data json,
+    data character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint NOT NULL

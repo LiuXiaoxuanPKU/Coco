@@ -1,40 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = \"$1\" ORDER BY follow_requests.id DESC LIMIT \"$2\"",
-        "cost": 291.94,
+        "sql": "SELECT statuses.* FROM statuses INNER JOIN media_attachments ON media_attachments.status_id = statuses.id WHERE statuses.account_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") AND media_attachments.account_id = \"$4\" AND statuses.deleted_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT \"$5\"",
+        "cost": 16.15,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = \"$1\" ORDER BY follow_requests.id DESC LIMIT \"$2\"",
-            "cost": 291.93,
+            "sql": "SELECT statuses.* FROM statuses WHERE statuses.account_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") AND statuses.deleted_at IS NULL AND (statuses.reply = False OR statuses.in_reply_to_account_id = statuses.account_id) GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT \"$5\"",
+            "cost": 11.82,
             "rewrite_types": [
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT follow_requests.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = \"$1\" ORDER BY follow_requests.id DESC LIMIT \"$2\"",
-            "cost": 291.93,
-            "rewrite_types": [
-                "RemoveJoin",
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT follow_requests.id AS alias_0, accounts.id FROM accounts INNER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = \"$1\" ORDER BY follow_requests.id DESC LIMIT \"$2\"",
-            "cost": 291.93,
-            "rewrite_types": [
-                "RemoveDistinct",
-                "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT follow_requests.id AS alias_0, accounts.id FROM accounts INNER JOIN follow_requests ON follow_requests.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = \"$1\" ORDER BY follow_requests.id DESC LIMIT \"$2\"",
-            "cost": 291.93,
-            "rewrite_types": [
-                "RemoveJoin",
-                "RemoveDistinct",
-                "ReplaceOuterJoin"
+                "RemoveJoin"
             ]
         }
     ]

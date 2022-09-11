@@ -11,6 +11,8 @@ CREATE TABLE account_conversations (
     id bigint NOT NULL,
     account_id bigint,
     conversation_id bigint,
+    participant_account_ids character varying   NOT NULL,
+    status_ids character varying   NOT NULL,
     last_status_id bigint,
     lock_version integer   NOT NULL,
     unread boolean   NOT NULL
@@ -43,7 +45,7 @@ CREATE TABLE account_migrations (
 
 CREATE TABLE account_moderation_notes (
     id bigint NOT NULL,
-    content character varying(255) NOT NULL,
+    content character varying NOT NULL,
     account_id bigint NOT NULL,
     target_account_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -54,7 +56,7 @@ CREATE TABLE account_notes (
     id bigint NOT NULL,
     account_id bigint,
     target_account_id bigint,
-    comment character varying(255) NOT NULL,
+    comment character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -99,11 +101,11 @@ CREATE TABLE accounts (
     id bigint   NOT NULL,
     username character varying    NOT NULL,
     domain character varying,
-    private_key character varying(255),
-    public_key character varying(255)   NOT NULL,
+    private_key character varying,
+    public_key character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    note character varying(255)   NOT NULL,
+    note character varying   NOT NULL,
     display_name character varying    NOT NULL,
     uri character varying    NOT NULL,
     url character varying,
@@ -147,7 +149,7 @@ CREATE TABLE accounts (
 CREATE TABLE statuses (
     id bigint   NOT NULL,
     uri character varying,
-    text character varying(255)   NOT NULL,
+    text character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     in_reply_to_id bigint,
@@ -155,11 +157,11 @@ CREATE TABLE statuses (
     url character varying,
     "sensitive" boolean   NOT NULL,
     visibility integer   NOT NULL,
-    spoiler_text character varying(255)   NOT NULL,
+    spoiler_text character varying   NOT NULL,
     reply boolean   NOT NULL,
     "language" character varying,
     conversation_id bigint,
-    local boolean,
+    "local" boolean,
     account_id bigint NOT NULL,
     application_id bigint,
     in_reply_to_account_id bigint,
@@ -172,7 +174,7 @@ CREATE TABLE statuses (
 
 CREATE TABLE account_warning_presets (
     id bigint NOT NULL,
-    text character varying(255)  NOT NULL,
+    text character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     title character varying    NOT NULL
@@ -182,8 +184,8 @@ CREATE TABLE account_warnings (
     id bigint NOT NULL,
     account_id bigint,
     target_account_id bigint,
-    "action" integer   NOT NULL,
-    text character varying(255)   NOT NULL,
+    action integer   NOT NULL,
+    text character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     report_id bigint,
@@ -199,10 +201,10 @@ CREATE TABLE accounts_tags (
 CREATE TABLE admin_action_logs (
     id bigint NOT NULL,
     account_id bigint,
-    "action" character varying    NOT NULL,
+    action character varying    NOT NULL,
     target_type character varying,
     target_id bigint,
-    recorded_changes character varying(255)   NOT NULL,
+    recorded_changes character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -227,7 +229,7 @@ CREATE TABLE announcement_reactions (
 
 CREATE TABLE announcements (
     id bigint NOT NULL,
-    text character varying(255)   NOT NULL,
+    text character varying   NOT NULL,
     published boolean   NOT NULL,
     all_day boolean   NOT NULL,
     scheduled_at timestamp without time zone,
@@ -235,14 +237,15 @@ CREATE TABLE announcements (
     ends_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    published_at timestamp without time zone
+    published_at timestamp without time zone,
+    status_ids character varying
 );
 
 CREATE TABLE appeals (
     id bigint NOT NULL,
     account_id bigint NOT NULL,
     account_warning_id bigint NOT NULL,
-    text character varying(255)   NOT NULL,
+    text character varying   NOT NULL,
     approved_at timestamp without time zone,
     approved_by_account_id bigint,
     rejected_at timestamp without time zone,
@@ -252,7 +255,7 @@ CREATE TABLE appeals (
 );
 
 CREATE TABLE ar_internal_metadata (
-    key character varying NOT NULL,
+    "key" character varying NOT NULL,
     "value" character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -337,8 +340,8 @@ CREATE TABLE custom_filters (
     id bigint NOT NULL,
     account_id bigint,
     expires_at timestamp without time zone,
-    phrase character varying(255)   NOT NULL,
-    context character varying NOT NULL,
+    phrase character varying   NOT NULL,
+    context character varying    NOT NULL,
     irreversible boolean   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -351,8 +354,8 @@ CREATE TABLE devices (
     account_id bigint,
     device_id character varying    NOT NULL,
     name character varying    NOT NULL,
-    fingerprint_key character varying(255)   NOT NULL,
-    identity_key character varying(255)   NOT NULL,
+    fingerprint_key character varying   NOT NULL,
+    identity_key character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -372,8 +375,8 @@ CREATE TABLE domain_blocks (
     severity integer  ,
     reject_media boolean   NOT NULL,
     reject_reports boolean   NOT NULL,
-    private_comment character varying(255),
-    public_comment character varying(255),
+    private_comment character varying,
+    public_comment character varying,
     obfuscate boolean   NOT NULL
 );
 
@@ -391,9 +394,9 @@ CREATE TABLE encrypted_messages (
     from_account_id bigint,
     from_device_id character varying    NOT NULL,
     type integer   NOT NULL,
-    body character varying(255)   NOT NULL,
-    digest character varying(255)   NOT NULL,
-    message_franking character varying(255)   NOT NULL,
+    body character varying   NOT NULL,
+    digest character varying   NOT NULL,
+    message_franking character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -468,7 +471,7 @@ CREATE TABLE users (
     otp_required_for_login boolean   NOT NULL,
     last_emailed_at timestamp without time zone,
     otp_backup_codes character varying,
-    filtered_languages character varying NOT NULL,
+    filtered_languages character varying    NOT NULL,
     account_id bigint NOT NULL,
     disabled boolean   NOT NULL,
     moderator boolean   NOT NULL,
@@ -527,7 +530,7 @@ CREATE TABLE invites (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     autofollow boolean   NOT NULL,
-    comment character varying(255)
+    comment character varying
 );
 
 CREATE TABLE ip_blocks (
@@ -537,7 +540,7 @@ CREATE TABLE ip_blocks (
     expires_at timestamp without time zone,
     ip character varying   NOT NULL,
     severity integer   NOT NULL,
-    comment character varying(255)   NOT NULL
+    comment character varying   NOT NULL
 );
 
 CREATE TABLE list_accounts (
@@ -592,7 +595,7 @@ CREATE TABLE media_attachments (
     type integer   NOT NULL,
     file_meta character varying,
     account_id bigint,
-    description character varying(255),
+    description character varying,
     scheduled_status_id bigint,
     blurhash character varying,
     processing integer,
@@ -638,7 +641,7 @@ CREATE TABLE oauth_access_grants (
     id bigint NOT NULL,
     token character varying NOT NULL,
     expires_in integer NOT NULL,
-    redirect_uri character varying(255) NOT NULL,
+    redirect_uri character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     revoked_at timestamp without time zone,
     scopes character varying,
@@ -665,7 +668,7 @@ CREATE TABLE oauth_applications (
     name character varying NOT NULL,
     uid character varying NOT NULL,
     secret character varying NOT NULL,
-    redirect_uri character varying(255) NOT NULL,
+    redirect_uri character varying NOT NULL,
     scopes character varying    NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -680,17 +683,17 @@ CREATE TABLE one_time_keys (
     id bigint NOT NULL,
     device_id bigint,
     key_id character varying    NOT NULL,
-    key character varying(255)   NOT NULL,
-    signature character varying(255)   NOT NULL,
+    "key" character varying   NOT NULL,
+    signature character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 CREATE TABLE pghero_space_stats (
     id bigint NOT NULL,
-    database character varying(255),
-    schema character varying(255),
-    relation character varying(255),
+    database character varying,
+    schema character varying,
+    relation character varying,
     size bigint,
     captured_at timestamp without time zone
 );
@@ -710,7 +713,8 @@ CREATE TABLE polls (
     account_id bigint,
     status_id bigint,
     expires_at timestamp without time zone,
-    options character varying NOT NULL,
+    options character varying    NOT NULL,
+    cached_tallies character varying   NOT NULL,
     multiple boolean   NOT NULL,
     hide_totals boolean   NOT NULL,
     votes_count bigint   NOT NULL,
@@ -745,7 +749,7 @@ CREATE TABLE preview_cards (
     image_file_size integer,
     image_updated_at timestamp without time zone,
     type integer   NOT NULL,
-    html character varying(255)   NOT NULL,
+    html character varying   NOT NULL,
     author_name character varying    NOT NULL,
     author_url character varying    NOT NULL,
     provider_name character varying    NOT NULL,
@@ -780,7 +784,7 @@ CREATE TABLE relays (
 
 CREATE TABLE report_notes (
     id bigint NOT NULL,
-    content character varying(255) NOT NULL,
+    content character varying NOT NULL,
     report_id bigint NOT NULL,
     account_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -789,7 +793,8 @@ CREATE TABLE report_notes (
 
 CREATE TABLE reports (
     id bigint NOT NULL,
-    comment character varying(255)   NOT NULL,
+    status_ids character varying   NOT NULL,
+    comment character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     account_id bigint NOT NULL,
@@ -799,14 +804,15 @@ CREATE TABLE reports (
     uri character varying,
     forwarded boolean,
     category integer   NOT NULL,
-    action_taken_at timestamp without time zone
+    action_taken_at timestamp without time zone,
+    rule_ids character varying
 );
 
 CREATE TABLE rules (
     id bigint NOT NULL,
     priority integer   NOT NULL,
     deleted_at timestamp without time zone,
-    text character varying(255)   NOT NULL,
+    text character varying   NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -837,7 +843,7 @@ CREATE TABLE session_activations (
 CREATE TABLE settings (
     id bigint NOT NULL,
     var character varying NOT NULL,
-    "value" character varying(255),
+    "value" character varying,
     thing_type character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -860,10 +866,13 @@ CREATE TABLE status_edits (
     id bigint NOT NULL,
     status_id bigint NOT NULL,
     account_id bigint,
-    text character varying(255)   NOT NULL,
-    spoiler_text character varying(255)   NOT NULL,
+    text character varying   NOT NULL,
+    spoiler_text character varying   NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
+    ordered_media_attachment_ids character varying,
+    media_descriptions text[],
+    poll_options character varying,
     "sensitive" boolean
 );
 
@@ -882,7 +891,7 @@ CREATE TABLE statuses_tags (
 
 CREATE TABLE system_keys (
     id bigint NOT NULL,
-    key binary(255),
+    "key" binary(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -921,7 +930,7 @@ CREATE TABLE unavailable_domains (
 CREATE TABLE user_invite_requests (
     id bigint NOT NULL,
     user_id bigint,
-    text character varying(255),
+    text character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -959,10 +968,10 @@ CREATE TABLE webauthn_credentials (
 
 
 -- Original Query
-SELECT accounts.id AS t0_r0, accounts.username AS t0_r1, accounts.domain AS t0_r2, accounts.private_key AS t0_r3, accounts.public_key AS t0_r4, accounts.created_at AS t0_r5, accounts.updated_at AS t0_r6, accounts.note AS t0_r7, accounts.display_name AS t0_r8, accounts.uri AS t0_r9, accounts.url AS t0_r10, accounts.avatar_file_name AS t0_r11, accounts.avatar_content_type AS t0_r12, accounts.avatar_file_size AS t0_r13, accounts.avatar_updated_at AS t0_r14, accounts.header_file_name AS t0_r15, accounts.header_content_type AS t0_r16, accounts.header_file_size AS t0_r17, accounts.header_updated_at AS t0_r18, accounts.avatar_remote_url AS t0_r19, accounts.locked AS t0_r20, accounts.header_remote_url AS t0_r21, accounts.last_webfingered_at AS t0_r22, accounts.inbox_url AS t0_r23, accounts.outbox_url AS t0_r24, accounts.shared_inbox_url AS t0_r25, accounts.followers_url AS t0_r26, accounts.protocol AS t0_r27, accounts.memorial AS t0_r28, accounts.moved_to_account_id AS t0_r29, accounts.featured_collection_url AS t0_r30, accounts.fields AS t0_r31, accounts.actor_type AS t0_r32, accounts.discoverable AS t0_r33, accounts.also_known_as AS t0_r34, accounts.silenced_at AS t0_r35, accounts.suspended_at AS t0_r36, accounts.hide_collections AS t0_r37, accounts.avatar_storage_schema_version AS t0_r38, accounts.header_storage_schema_version AS t0_r39, accounts.devices_url AS t0_r40, accounts.suspension_origin AS t0_r41, accounts.sensitized_at AS t0_r42, accounts.trendable AS t0_r43, accounts.reviewed_at AS t0_r44, accounts.requested_review_at AS t0_r45, statuses.id AS t1_r0, statuses.uri AS t1_r1, statuses.text AS t1_r2, statuses.created_at AS t1_r3, statuses.updated_at AS t1_r4, statuses.in_reply_to_id AS t1_r5, statuses.reblog_of_id AS t1_r6, statuses.url AS t1_r7, statuses.sensitive AS t1_r8, statuses.visibility AS t1_r9, statuses.spoiler_text AS t1_r10, statuses.reply AS t1_r11, statuses.language AS t1_r12, statuses.conversation_id AS t1_r13, statuses.local AS t1_r14, statuses.account_id AS t1_r15, statuses.application_id AS t1_r16, statuses.in_reply_to_account_id AS t1_r17, statuses.poll_id AS t1_r18, statuses.deleted_at AS t1_r19, statuses.edited_at AS t1_r20, statuses.trendable AS t1_r21, statuses.ordered_media_attachment_ids AS t1_r22, account_stats.id AS t2_r0, account_stats.account_id AS t2_r1, account_stats.statuses_count AS t2_r2, account_stats.following_count AS t2_r3, account_stats.followers_count AS t2_r4, account_stats.created_at AS t2_r5, account_stats.updated_at AS t2_r6, account_stats.last_status_at AS t2_r7 FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102893206257751039 AND statuses.visibility IN (1, 2) AND accounts.id = 108847814096488272 ORDER BY statuses.id DESC;
+SELECT accounts.id AS t0_r0, accounts.username AS t0_r1, accounts.domain AS t0_r2, accounts.private_key AS t0_r3, accounts.public_key AS t0_r4, accounts.created_at AS t0_r5, accounts.updated_at AS t0_r6, accounts.note AS t0_r7, accounts.display_name AS t0_r8, accounts.uri AS t0_r9, accounts.url AS t0_r10, accounts.avatar_file_name AS t0_r11, accounts.avatar_content_type AS t0_r12, accounts.avatar_file_size AS t0_r13, accounts.avatar_updated_at AS t0_r14, accounts.header_file_name AS t0_r15, accounts.header_content_type AS t0_r16, accounts.header_file_size AS t0_r17, accounts.header_updated_at AS t0_r18, accounts.avatar_remote_url AS t0_r19, accounts.locked AS t0_r20, accounts.header_remote_url AS t0_r21, accounts.last_webfingered_at AS t0_r22, accounts.inbox_url AS t0_r23, accounts.outbox_url AS t0_r24, accounts.shared_inbox_url AS t0_r25, accounts.followers_url AS t0_r26, accounts.protocol AS t0_r27, accounts.memorial AS t0_r28, accounts.moved_to_account_id AS t0_r29, accounts.featured_collection_url AS t0_r30, accounts.fields AS t0_r31, accounts.actor_type AS t0_r32, accounts.discoverable AS t0_r33, accounts.also_known_as AS t0_r34, accounts.silenced_at AS t0_r35, accounts.suspended_at AS t0_r36, accounts.hide_collections AS t0_r37, accounts.avatar_storage_schema_version AS t0_r38, accounts.header_storage_schema_version AS t0_r39, accounts.devices_url AS t0_r40, accounts.suspension_origin AS t0_r41, accounts.sensitized_at AS t0_r42, accounts.trendable AS t0_r43, accounts.reviewed_at AS t0_r44, accounts.requested_review_at AS t0_r45, follow_requests.id AS t1_r0, follow_requests.created_at AS t1_r1, follow_requests.updated_at AS t1_r2, follow_requests.account_id AS t1_r3, follow_requests.target_account_id AS t1_r4, follow_requests.show_reblogs AS t1_r5, follow_requests.uri AS t1_r6, follow_requests.notify AS t1_r7, account_stats.id AS t2_r0, account_stats.account_id AS t2_r1, account_stats.statuses_count AS t2_r2, account_stats.following_count AS t2_r3, account_stats.followers_count AS t2_r4, account_stats.created_at AS t2_r5, account_stats.updated_at AS t2_r6, account_stats.last_status_at AS t2_r7 FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847822702373489 AND accounts.id = 108847824010747631 ORDER BY follow_requests.id DESC;
 -- Rewritten Queries
-SELECT accounts.id AS t0_r0, accounts.username AS t0_r1, accounts.domain AS t0_r2, accounts.private_key AS t0_r3, accounts.public_key AS t0_r4, accounts.created_at AS t0_r5, accounts.updated_at AS t0_r6, accounts.note AS t0_r7, accounts.display_name AS t0_r8, accounts.uri AS t0_r9, accounts.url AS t0_r10, accounts.avatar_file_name AS t0_r11, accounts.avatar_content_type AS t0_r12, accounts.avatar_file_size AS t0_r13, accounts.avatar_updated_at AS t0_r14, accounts.header_file_name AS t0_r15, accounts.header_content_type AS t0_r16, accounts.header_file_size AS t0_r17, accounts.header_updated_at AS t0_r18, accounts.avatar_remote_url AS t0_r19, accounts.locked AS t0_r20, accounts.header_remote_url AS t0_r21, accounts.last_webfingered_at AS t0_r22, accounts.inbox_url AS t0_r23, accounts.outbox_url AS t0_r24, accounts.shared_inbox_url AS t0_r25, accounts.followers_url AS t0_r26, accounts.protocol AS t0_r27, accounts.memorial AS t0_r28, accounts.moved_to_account_id AS t0_r29, accounts.featured_collection_url AS t0_r30, accounts.fields AS t0_r31, accounts.actor_type AS t0_r32, accounts.discoverable AS t0_r33, accounts.also_known_as AS t0_r34, accounts.silenced_at AS t0_r35, accounts.suspended_at AS t0_r36, accounts.hide_collections AS t0_r37, accounts.avatar_storage_schema_version AS t0_r38, accounts.header_storage_schema_version AS t0_r39, accounts.devices_url AS t0_r40, accounts.suspension_origin AS t0_r41, accounts.sensitized_at AS t0_r42, accounts.trendable AS t0_r43, accounts.reviewed_at AS t0_r44, accounts.requested_review_at AS t0_r45, statuses.id AS t1_r0, statuses.uri AS t1_r1, statuses.text AS t1_r2, statuses.created_at AS t1_r3, statuses.updated_at AS t1_r4, statuses.in_reply_to_id AS t1_r5, statuses.reblog_of_id AS t1_r6, statuses.url AS t1_r7, statuses.sensitive AS t1_r8, statuses.visibility AS t1_r9, statuses.spoiler_text AS t1_r10, statuses.reply AS t1_r11, statuses.language AS t1_r12, statuses.conversation_id AS t1_r13, statuses.local AS t1_r14, statuses.account_id AS t1_r15, statuses.application_id AS t1_r16, statuses.in_reply_to_account_id AS t1_r17, statuses.poll_id AS t1_r18, statuses.deleted_at AS t1_r19, statuses.edited_at AS t1_r20, statuses.trendable AS t1_r21, statuses.ordered_media_attachment_ids AS t1_r22, account_stats.id AS t2_r0, account_stats.account_id AS t2_r1, account_stats.statuses_count AS t2_r2, account_stats.following_count AS t2_r3, account_stats.followers_count AS t2_r4, account_stats.created_at AS t2_r5, account_stats.updated_at AS t2_r6, account_stats.last_status_at AS t2_r7 FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102893206257751039 AND statuses.visibility IN (1, 2) AND accounts.id = 108847814096488272 ORDER BY statuses.id DESC LIMIT 1;
-SELECT accounts.id AS t0_r0, accounts.username AS t0_r1, accounts.domain AS t0_r2, accounts.private_key AS t0_r3, accounts.public_key AS t0_r4, accounts.created_at AS t0_r5, accounts.updated_at AS t0_r6, accounts.note AS t0_r7, accounts.display_name AS t0_r8, accounts.uri AS t0_r9, accounts.url AS t0_r10, accounts.avatar_file_name AS t0_r11, accounts.avatar_content_type AS t0_r12, accounts.avatar_file_size AS t0_r13, accounts.avatar_updated_at AS t0_r14, accounts.header_file_name AS t0_r15, accounts.header_content_type AS t0_r16, accounts.header_file_size AS t0_r17, accounts.header_updated_at AS t0_r18, accounts.avatar_remote_url AS t0_r19, accounts.locked AS t0_r20, accounts.header_remote_url AS t0_r21, accounts.last_webfingered_at AS t0_r22, accounts.inbox_url AS t0_r23, accounts.outbox_url AS t0_r24, accounts.shared_inbox_url AS t0_r25, accounts.followers_url AS t0_r26, accounts.protocol AS t0_r27, accounts.memorial AS t0_r28, accounts.moved_to_account_id AS t0_r29, accounts.featured_collection_url AS t0_r30, accounts.fields AS t0_r31, accounts.actor_type AS t0_r32, accounts.discoverable AS t0_r33, accounts.also_known_as AS t0_r34, accounts.silenced_at AS t0_r35, accounts.suspended_at AS t0_r36, accounts.hide_collections AS t0_r37, accounts.avatar_storage_schema_version AS t0_r38, accounts.header_storage_schema_version AS t0_r39, accounts.devices_url AS t0_r40, accounts.suspension_origin AS t0_r41, accounts.sensitized_at AS t0_r42, accounts.trendable AS t0_r43, accounts.reviewed_at AS t0_r44, accounts.requested_review_at AS t0_r45, statuses.id AS t1_r0, statuses.uri AS t1_r1, statuses.text AS t1_r2, statuses.created_at AS t1_r3, statuses.updated_at AS t1_r4, statuses.in_reply_to_id AS t1_r5, statuses.reblog_of_id AS t1_r6, statuses.url AS t1_r7, statuses.sensitive AS t1_r8, statuses.visibility AS t1_r9, statuses.spoiler_text AS t1_r10, statuses.reply AS t1_r11, statuses.language AS t1_r12, statuses.conversation_id AS t1_r13, statuses.local AS t1_r14, statuses.account_id AS t1_r15, statuses.application_id AS t1_r16, statuses.in_reply_to_account_id AS t1_r17, statuses.poll_id AS t1_r18, statuses.deleted_at AS t1_r19, statuses.edited_at AS t1_r20, statuses.trendable AS t1_r21, statuses.ordered_media_attachment_ids AS t1_r22, account_stats.id AS t2_r0, account_stats.account_id AS t2_r1, account_stats.statuses_count AS t2_r2, account_stats.following_count AS t2_r3, account_stats.followers_count AS t2_r4, account_stats.created_at AS t2_r5, account_stats.updated_at AS t2_r6, account_stats.last_status_at AS t2_r7 FROM accounts INNER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102893206257751039 AND statuses.visibility IN (0, 1) AND accounts.id = 108847814096488272 ORDER BY statuses.id DESC;
-SELECT accounts.id AS t0_r0, accounts.username AS t0_r1, accounts.domain AS t0_r2, accounts.private_key AS t0_r3, accounts.public_key AS t0_r4, accounts.created_at AS t0_r5, accounts.updated_at AS t0_r6, accounts.note AS t0_r7, accounts.display_name AS t0_r8, accounts.uri AS t0_r9, accounts.url AS t0_r10, accounts.avatar_file_name AS t0_r11, accounts.avatar_content_type AS t0_r12, accounts.avatar_file_size AS t0_r13, accounts.avatar_updated_at AS t0_r14, accounts.header_file_name AS t0_r15, accounts.header_content_type AS t0_r16, accounts.header_file_size AS t0_r17, accounts.header_updated_at AS t0_r18, accounts.avatar_remote_url AS t0_r19, accounts.locked AS t0_r20, accounts.header_remote_url AS t0_r21, accounts.last_webfingered_at AS t0_r22, accounts.inbox_url AS t0_r23, accounts.outbox_url AS t0_r24, accounts.shared_inbox_url AS t0_r25, accounts.followers_url AS t0_r26, accounts.protocol AS t0_r27, accounts.memorial AS t0_r28, accounts.moved_to_account_id AS t0_r29, accounts.featured_collection_url AS t0_r30, accounts.fields AS t0_r31, accounts.actor_type AS t0_r32, accounts.discoverable AS t0_r33, accounts.also_known_as AS t0_r34, accounts.silenced_at AS t0_r35, accounts.suspended_at AS t0_r36, accounts.hide_collections AS t0_r37, accounts.avatar_storage_schema_version AS t0_r38, accounts.header_storage_schema_version AS t0_r39, accounts.devices_url AS t0_r40, accounts.suspension_origin AS t0_r41, accounts.sensitized_at AS t0_r42, accounts.trendable AS t0_r43, accounts.reviewed_at AS t0_r44, accounts.requested_review_at AS t0_r45, statuses.id AS t1_r0, statuses.uri AS t1_r1, statuses.text AS t1_r2, statuses.created_at AS t1_r3, statuses.updated_at AS t1_r4, statuses.in_reply_to_id AS t1_r5, statuses.reblog_of_id AS t1_r6, statuses.url AS t1_r7, statuses.sensitive AS t1_r8, statuses.visibility AS t1_r9, statuses.spoiler_text AS t1_r10, statuses.reply AS t1_r11, statuses.language AS t1_r12, statuses.conversation_id AS t1_r13, statuses.local AS t1_r14, statuses.account_id AS t1_r15, statuses.application_id AS t1_r16, statuses.in_reply_to_account_id AS t1_r17, statuses.poll_id AS t1_r18, statuses.deleted_at AS t1_r19, statuses.edited_at AS t1_r20, statuses.trendable AS t1_r21, statuses.ordered_media_attachment_ids AS t1_r22, account_stats.id AS t2_r0, account_stats.account_id AS t2_r1, account_stats.statuses_count AS t2_r2, account_stats.following_count AS t2_r3, account_stats.followers_count AS t2_r4, account_stats.created_at AS t2_r5, account_stats.updated_at AS t2_r6, account_stats.last_status_at AS t2_r7 FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id INNER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102893206257751039 AND statuses.visibility IN (0, 1) AND accounts.id = 108847814096488272 ORDER BY statuses.id DESC;
-SELECT accounts.id AS t0_r0, accounts.username AS t0_r1, accounts.domain AS t0_r2, accounts.private_key AS t0_r3, accounts.public_key AS t0_r4, accounts.created_at AS t0_r5, accounts.updated_at AS t0_r6, accounts.note AS t0_r7, accounts.display_name AS t0_r8, accounts.uri AS t0_r9, accounts.url AS t0_r10, accounts.avatar_file_name AS t0_r11, accounts.avatar_content_type AS t0_r12, accounts.avatar_file_size AS t0_r13, accounts.avatar_updated_at AS t0_r14, accounts.header_file_name AS t0_r15, accounts.header_content_type AS t0_r16, accounts.header_file_size AS t0_r17, accounts.header_updated_at AS t0_r18, accounts.avatar_remote_url AS t0_r19, accounts.locked AS t0_r20, accounts.header_remote_url AS t0_r21, accounts.last_webfingered_at AS t0_r22, accounts.inbox_url AS t0_r23, accounts.outbox_url AS t0_r24, accounts.shared_inbox_url AS t0_r25, accounts.followers_url AS t0_r26, accounts.protocol AS t0_r27, accounts.memorial AS t0_r28, accounts.moved_to_account_id AS t0_r29, accounts.featured_collection_url AS t0_r30, accounts.fields AS t0_r31, accounts.actor_type AS t0_r32, accounts.discoverable AS t0_r33, accounts.also_known_as AS t0_r34, accounts.silenced_at AS t0_r35, accounts.suspended_at AS t0_r36, accounts.hide_collections AS t0_r37, accounts.avatar_storage_schema_version AS t0_r38, accounts.header_storage_schema_version AS t0_r39, accounts.devices_url AS t0_r40, accounts.suspension_origin AS t0_r41, accounts.sensitized_at AS t0_r42, accounts.trendable AS t0_r43, accounts.reviewed_at AS t0_r44, accounts.requested_review_at AS t0_r45, statuses.id AS t1_r0, statuses.uri AS t1_r1, statuses.text AS t1_r2, statuses.created_at AS t1_r3, statuses.updated_at AS t1_r4, statuses.in_reply_to_id AS t1_r5, statuses.reblog_of_id AS t1_r6, statuses.url AS t1_r7, statuses.sensitive AS t1_r8, statuses.visibility AS t1_r9, statuses.spoiler_text AS t1_r10, statuses.reply AS t1_r11, statuses.language AS t1_r12, statuses.conversation_id AS t1_r13, statuses.local AS t1_r14, statuses.account_id AS t1_r15, statuses.application_id AS t1_r16, statuses.in_reply_to_account_id AS t1_r17, statuses.poll_id AS t1_r18, statuses.deleted_at AS t1_r19, statuses.edited_at AS t1_r20, statuses.trendable AS t1_r21, statuses.ordered_media_attachment_ids AS t1_r22, account_stats.id AS t2_r0, account_stats.account_id AS t2_r1, account_stats.statuses_count AS t2_r2, account_stats.following_count AS t2_r3, account_stats.followers_count AS t2_r4, account_stats.created_at AS t2_r5, account_stats.updated_at AS t2_r6, account_stats.last_status_at AS t2_r7 FROM accounts INNER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102893206257751039 AND statuses.visibility IN (0, 1) AND accounts.id = 108847814096488272 ORDER BY statuses.id DESC LIMIT 1;
-SELECT accounts.id AS t0_r0, accounts.username AS t0_r1, accounts.domain AS t0_r2, accounts.private_key AS t0_r3, accounts.public_key AS t0_r4, accounts.created_at AS t0_r5, accounts.updated_at AS t0_r6, accounts.note AS t0_r7, accounts.display_name AS t0_r8, accounts.uri AS t0_r9, accounts.url AS t0_r10, accounts.avatar_file_name AS t0_r11, accounts.avatar_content_type AS t0_r12, accounts.avatar_file_size AS t0_r13, accounts.avatar_updated_at AS t0_r14, accounts.header_file_name AS t0_r15, accounts.header_content_type AS t0_r16, accounts.header_file_size AS t0_r17, accounts.header_updated_at AS t0_r18, accounts.avatar_remote_url AS t0_r19, accounts.locked AS t0_r20, accounts.header_remote_url AS t0_r21, accounts.last_webfingered_at AS t0_r22, accounts.inbox_url AS t0_r23, accounts.outbox_url AS t0_r24, accounts.shared_inbox_url AS t0_r25, accounts.followers_url AS t0_r26, accounts.protocol AS t0_r27, accounts.memorial AS t0_r28, accounts.moved_to_account_id AS t0_r29, accounts.featured_collection_url AS t0_r30, accounts.fields AS t0_r31, accounts.actor_type AS t0_r32, accounts.discoverable AS t0_r33, accounts.also_known_as AS t0_r34, accounts.silenced_at AS t0_r35, accounts.suspended_at AS t0_r36, accounts.hide_collections AS t0_r37, accounts.avatar_storage_schema_version AS t0_r38, accounts.header_storage_schema_version AS t0_r39, accounts.devices_url AS t0_r40, accounts.suspension_origin AS t0_r41, accounts.sensitized_at AS t0_r42, accounts.trendable AS t0_r43, accounts.reviewed_at AS t0_r44, accounts.requested_review_at AS t0_r45, statuses.id AS t1_r0, statuses.uri AS t1_r1, statuses.text AS t1_r2, statuses.created_at AS t1_r3, statuses.updated_at AS t1_r4, statuses.in_reply_to_id AS t1_r5, statuses.reblog_of_id AS t1_r6, statuses.url AS t1_r7, statuses.sensitive AS t1_r8, statuses.visibility AS t1_r9, statuses.spoiler_text AS t1_r10, statuses.reply AS t1_r11, statuses.language AS t1_r12, statuses.conversation_id AS t1_r13, statuses.local AS t1_r14, statuses.account_id AS t1_r15, statuses.application_id AS t1_r16, statuses.in_reply_to_account_id AS t1_r17, statuses.poll_id AS t1_r18, statuses.deleted_at AS t1_r19, statuses.edited_at AS t1_r20, statuses.trendable AS t1_r21, statuses.ordered_media_attachment_ids AS t1_r22, account_stats.id AS t2_r0, account_stats.account_id AS t2_r1, account_stats.statuses_count AS t2_r2, account_stats.following_count AS t2_r3, account_stats.followers_count AS t2_r4, account_stats.created_at AS t2_r5, account_stats.updated_at AS t2_r6, account_stats.last_status_at AS t2_r7 FROM accounts LEFT OUTER JOIN statuses ON statuses.deleted_at IS NULL AND statuses.account_id = accounts.id INNER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND statuses.deleted_at IS NULL AND statuses.reblog_of_id = 102893206257751039 AND statuses.visibility IN (0, 1) AND accounts.id = 108847814096488272 ORDER BY statuses.id DESC LIMIT 1;
+SELECT accounts.id AS t0_r0, accounts.username AS t0_r1, accounts.domain AS t0_r2, accounts.private_key AS t0_r3, accounts.public_key AS t0_r4, accounts.created_at AS t0_r5, accounts.updated_at AS t0_r6, accounts.note AS t0_r7, accounts.display_name AS t0_r8, accounts.uri AS t0_r9, accounts.url AS t0_r10, accounts.avatar_file_name AS t0_r11, accounts.avatar_content_type AS t0_r12, accounts.avatar_file_size AS t0_r13, accounts.avatar_updated_at AS t0_r14, accounts.header_file_name AS t0_r15, accounts.header_content_type AS t0_r16, accounts.header_file_size AS t0_r17, accounts.header_updated_at AS t0_r18, accounts.avatar_remote_url AS t0_r19, accounts.locked AS t0_r20, accounts.header_remote_url AS t0_r21, accounts.last_webfingered_at AS t0_r22, accounts.inbox_url AS t0_r23, accounts.outbox_url AS t0_r24, accounts.shared_inbox_url AS t0_r25, accounts.followers_url AS t0_r26, accounts.protocol AS t0_r27, accounts.memorial AS t0_r28, accounts.moved_to_account_id AS t0_r29, accounts.featured_collection_url AS t0_r30, accounts.fields AS t0_r31, accounts.actor_type AS t0_r32, accounts.discoverable AS t0_r33, accounts.also_known_as AS t0_r34, accounts.silenced_at AS t0_r35, accounts.suspended_at AS t0_r36, accounts.hide_collections AS t0_r37, accounts.avatar_storage_schema_version AS t0_r38, accounts.header_storage_schema_version AS t0_r39, accounts.devices_url AS t0_r40, accounts.suspension_origin AS t0_r41, accounts.sensitized_at AS t0_r42, accounts.trendable AS t0_r43, accounts.reviewed_at AS t0_r44, accounts.requested_review_at AS t0_r45, follow_requests.id AS t1_r0, follow_requests.created_at AS t1_r1, follow_requests.updated_at AS t1_r2, follow_requests.account_id AS t1_r3, follow_requests.target_account_id AS t1_r4, follow_requests.show_reblogs AS t1_r5, follow_requests.uri AS t1_r6, follow_requests.notify AS t1_r7, account_stats.id AS t2_r0, account_stats.account_id AS t2_r1, account_stats.statuses_count AS t2_r2, account_stats.following_count AS t2_r3, account_stats.followers_count AS t2_r4, account_stats.created_at AS t2_r5, account_stats.updated_at AS t2_r6, account_stats.last_status_at AS t2_r7 FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847822702373489 AND accounts.id = 108847824010747631 ORDER BY follow_requests.id DESC LIMIT 1;
+SELECT accounts.id AS t0_r0, accounts.username AS t0_r1, accounts.domain AS t0_r2, accounts.private_key AS t0_r3, accounts.public_key AS t0_r4, accounts.created_at AS t0_r5, accounts.updated_at AS t0_r6, accounts.note AS t0_r7, accounts.display_name AS t0_r8, accounts.uri AS t0_r9, accounts.url AS t0_r10, accounts.avatar_file_name AS t0_r11, accounts.avatar_content_type AS t0_r12, accounts.avatar_file_size AS t0_r13, accounts.avatar_updated_at AS t0_r14, accounts.header_file_name AS t0_r15, accounts.header_content_type AS t0_r16, accounts.header_file_size AS t0_r17, accounts.header_updated_at AS t0_r18, accounts.avatar_remote_url AS t0_r19, accounts.locked AS t0_r20, accounts.header_remote_url AS t0_r21, accounts.last_webfingered_at AS t0_r22, accounts.inbox_url AS t0_r23, accounts.outbox_url AS t0_r24, accounts.shared_inbox_url AS t0_r25, accounts.followers_url AS t0_r26, accounts.protocol AS t0_r27, accounts.memorial AS t0_r28, accounts.moved_to_account_id AS t0_r29, accounts.featured_collection_url AS t0_r30, accounts.fields AS t0_r31, accounts.actor_type AS t0_r32, accounts.discoverable AS t0_r33, accounts.also_known_as AS t0_r34, accounts.silenced_at AS t0_r35, accounts.suspended_at AS t0_r36, accounts.hide_collections AS t0_r37, accounts.avatar_storage_schema_version AS t0_r38, accounts.header_storage_schema_version AS t0_r39, accounts.devices_url AS t0_r40, accounts.suspension_origin AS t0_r41, accounts.sensitized_at AS t0_r42, accounts.trendable AS t0_r43, accounts.reviewed_at AS t0_r44, accounts.requested_review_at AS t0_r45, follow_requests.id AS t1_r0, follow_requests.created_at AS t1_r1, follow_requests.updated_at AS t1_r2, follow_requests.account_id AS t1_r3, follow_requests.target_account_id AS t1_r4, follow_requests.show_reblogs AS t1_r5, follow_requests.uri AS t1_r6, follow_requests.notify AS t1_r7, account_stats.id AS t2_r0, account_stats.account_id AS t2_r1, account_stats.statuses_count AS t2_r2, account_stats.following_count AS t2_r3, account_stats.followers_count AS t2_r4, account_stats.created_at AS t2_r5, account_stats.updated_at AS t2_r6, account_stats.last_status_at AS t2_r7 FROM accounts INNER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847822702373489 AND accounts.id = 108847824010747631 ORDER BY follow_requests.id DESC;
+SELECT accounts.id AS t0_r0, accounts.username AS t0_r1, accounts.domain AS t0_r2, accounts.private_key AS t0_r3, accounts.public_key AS t0_r4, accounts.created_at AS t0_r5, accounts.updated_at AS t0_r6, accounts.note AS t0_r7, accounts.display_name AS t0_r8, accounts.uri AS t0_r9, accounts.url AS t0_r10, accounts.avatar_file_name AS t0_r11, accounts.avatar_content_type AS t0_r12, accounts.avatar_file_size AS t0_r13, accounts.avatar_updated_at AS t0_r14, accounts.header_file_name AS t0_r15, accounts.header_content_type AS t0_r16, accounts.header_file_size AS t0_r17, accounts.header_updated_at AS t0_r18, accounts.avatar_remote_url AS t0_r19, accounts.locked AS t0_r20, accounts.header_remote_url AS t0_r21, accounts.last_webfingered_at AS t0_r22, accounts.inbox_url AS t0_r23, accounts.outbox_url AS t0_r24, accounts.shared_inbox_url AS t0_r25, accounts.followers_url AS t0_r26, accounts.protocol AS t0_r27, accounts.memorial AS t0_r28, accounts.moved_to_account_id AS t0_r29, accounts.featured_collection_url AS t0_r30, accounts.fields AS t0_r31, accounts.actor_type AS t0_r32, accounts.discoverable AS t0_r33, accounts.also_known_as AS t0_r34, accounts.silenced_at AS t0_r35, accounts.suspended_at AS t0_r36, accounts.hide_collections AS t0_r37, accounts.avatar_storage_schema_version AS t0_r38, accounts.header_storage_schema_version AS t0_r39, accounts.devices_url AS t0_r40, accounts.suspension_origin AS t0_r41, accounts.sensitized_at AS t0_r42, accounts.trendable AS t0_r43, accounts.reviewed_at AS t0_r44, accounts.requested_review_at AS t0_r45, follow_requests.id AS t1_r0, follow_requests.created_at AS t1_r1, follow_requests.updated_at AS t1_r2, follow_requests.account_id AS t1_r3, follow_requests.target_account_id AS t1_r4, follow_requests.show_reblogs AS t1_r5, follow_requests.uri AS t1_r6, follow_requests.notify AS t1_r7, account_stats.id AS t2_r0, account_stats.account_id AS t2_r1, account_stats.statuses_count AS t2_r2, account_stats.following_count AS t2_r3, account_stats.followers_count AS t2_r4, account_stats.created_at AS t2_r5, account_stats.updated_at AS t2_r6, account_stats.last_status_at AS t2_r7 FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id INNER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847822702373489 AND accounts.id = 108847824010747631 ORDER BY follow_requests.id DESC;
+SELECT accounts.id AS t0_r0, accounts.username AS t0_r1, accounts.domain AS t0_r2, accounts.private_key AS t0_r3, accounts.public_key AS t0_r4, accounts.created_at AS t0_r5, accounts.updated_at AS t0_r6, accounts.note AS t0_r7, accounts.display_name AS t0_r8, accounts.uri AS t0_r9, accounts.url AS t0_r10, accounts.avatar_file_name AS t0_r11, accounts.avatar_content_type AS t0_r12, accounts.avatar_file_size AS t0_r13, accounts.avatar_updated_at AS t0_r14, accounts.header_file_name AS t0_r15, accounts.header_content_type AS t0_r16, accounts.header_file_size AS t0_r17, accounts.header_updated_at AS t0_r18, accounts.avatar_remote_url AS t0_r19, accounts.locked AS t0_r20, accounts.header_remote_url AS t0_r21, accounts.last_webfingered_at AS t0_r22, accounts.inbox_url AS t0_r23, accounts.outbox_url AS t0_r24, accounts.shared_inbox_url AS t0_r25, accounts.followers_url AS t0_r26, accounts.protocol AS t0_r27, accounts.memorial AS t0_r28, accounts.moved_to_account_id AS t0_r29, accounts.featured_collection_url AS t0_r30, accounts.fields AS t0_r31, accounts.actor_type AS t0_r32, accounts.discoverable AS t0_r33, accounts.also_known_as AS t0_r34, accounts.silenced_at AS t0_r35, accounts.suspended_at AS t0_r36, accounts.hide_collections AS t0_r37, accounts.avatar_storage_schema_version AS t0_r38, accounts.header_storage_schema_version AS t0_r39, accounts.devices_url AS t0_r40, accounts.suspension_origin AS t0_r41, accounts.sensitized_at AS t0_r42, accounts.trendable AS t0_r43, accounts.reviewed_at AS t0_r44, accounts.requested_review_at AS t0_r45, follow_requests.id AS t1_r0, follow_requests.created_at AS t1_r1, follow_requests.updated_at AS t1_r2, follow_requests.account_id AS t1_r3, follow_requests.target_account_id AS t1_r4, follow_requests.show_reblogs AS t1_r5, follow_requests.uri AS t1_r6, follow_requests.notify AS t1_r7, account_stats.id AS t2_r0, account_stats.account_id AS t2_r1, account_stats.statuses_count AS t2_r2, account_stats.following_count AS t2_r3, account_stats.followers_count AS t2_r4, account_stats.created_at AS t2_r5, account_stats.updated_at AS t2_r6, account_stats.last_status_at AS t2_r7 FROM accounts INNER JOIN follow_requests ON follow_requests.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847822702373489 AND accounts.id = 108847824010747631 ORDER BY follow_requests.id DESC LIMIT 1;
+SELECT accounts.id AS t0_r0, accounts.username AS t0_r1, accounts.domain AS t0_r2, accounts.private_key AS t0_r3, accounts.public_key AS t0_r4, accounts.created_at AS t0_r5, accounts.updated_at AS t0_r6, accounts.note AS t0_r7, accounts.display_name AS t0_r8, accounts.uri AS t0_r9, accounts.url AS t0_r10, accounts.avatar_file_name AS t0_r11, accounts.avatar_content_type AS t0_r12, accounts.avatar_file_size AS t0_r13, accounts.avatar_updated_at AS t0_r14, accounts.header_file_name AS t0_r15, accounts.header_content_type AS t0_r16, accounts.header_file_size AS t0_r17, accounts.header_updated_at AS t0_r18, accounts.avatar_remote_url AS t0_r19, accounts.locked AS t0_r20, accounts.header_remote_url AS t0_r21, accounts.last_webfingered_at AS t0_r22, accounts.inbox_url AS t0_r23, accounts.outbox_url AS t0_r24, accounts.shared_inbox_url AS t0_r25, accounts.followers_url AS t0_r26, accounts.protocol AS t0_r27, accounts.memorial AS t0_r28, accounts.moved_to_account_id AS t0_r29, accounts.featured_collection_url AS t0_r30, accounts.fields AS t0_r31, accounts.actor_type AS t0_r32, accounts.discoverable AS t0_r33, accounts.also_known_as AS t0_r34, accounts.silenced_at AS t0_r35, accounts.suspended_at AS t0_r36, accounts.hide_collections AS t0_r37, accounts.avatar_storage_schema_version AS t0_r38, accounts.header_storage_schema_version AS t0_r39, accounts.devices_url AS t0_r40, accounts.suspension_origin AS t0_r41, accounts.sensitized_at AS t0_r42, accounts.trendable AS t0_r43, accounts.reviewed_at AS t0_r44, accounts.requested_review_at AS t0_r45, follow_requests.id AS t1_r0, follow_requests.created_at AS t1_r1, follow_requests.updated_at AS t1_r2, follow_requests.account_id AS t1_r3, follow_requests.target_account_id AS t1_r4, follow_requests.show_reblogs AS t1_r5, follow_requests.uri AS t1_r6, follow_requests.notify AS t1_r7, account_stats.id AS t2_r0, account_stats.account_id AS t2_r1, account_stats.statuses_count AS t2_r2, account_stats.following_count AS t2_r3, account_stats.followers_count AS t2_r4, account_stats.created_at AS t2_r5, account_stats.updated_at AS t2_r6, account_stats.last_status_at AS t2_r7 FROM accounts LEFT OUTER JOIN follow_requests ON follow_requests.account_id = accounts.id INNER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND follow_requests.target_account_id = 108847822702373489 AND accounts.id = 108847824010747631 ORDER BY follow_requests.id DESC LIMIT 1;

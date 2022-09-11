@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM webauthn_credentials WHERE webauthn_credentials.nickname IS NULL AND webauthn_credentials.user_id IS NULL LIMIT 1",
-        "cost": 8.3,
+        "sql": "SELECT follow_requests.* FROM follow_requests WHERE follow_requests.target_account_id IN (\"$1\", \"$2\") AND follow_requests.account_id = \"$3\"",
+        "cost": 11.67,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM webauthn_credentials WHERE False AND webauthn_credentials.user_id IS NULL LIMIT 1",
-            "cost": 0.0,
+            "sql": "SELECT follow_requests.* FROM follow_requests WHERE follow_requests.target_account_id IN (\"$1\", \"$2\") AND follow_requests.account_id = \"$3\" LIMIT 1",
+            "cost": 11.67,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "AddLimitOne"
             ]
         }
     ]

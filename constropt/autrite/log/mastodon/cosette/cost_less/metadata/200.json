@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id INNER JOIN users ON users.account_id = accounts.id WHERE follows.target_account_id = \"$1\" AND accounts.domain IS NULL AND users.current_sign_in_at > '2022-07-30 06:42:28.607149' ORDER BY accounts.id ASC LIMIT \"$2\"",
-        "cost": 44.01,
+        "sql": "SELECT statuses.* FROM statuses INNER JOIN media_attachments ON media_attachments.status_id = statuses.id WHERE statuses.account_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") AND statuses.deleted_at IS NULL AND media_attachments.account_id = \"$4\" GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT \"$5\" OFFSET \"$6\"",
+        "cost": 27.71,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT accounts.id FROM accounts INNER JOIN follows ON accounts.id = follows.account_id WHERE follows.target_account_id = \"$1\" AND accounts.domain IS NULL ORDER BY accounts.id ASC LIMIT \"$2\"",
-            "cost": 36.3,
+            "sql": "SELECT statuses.* FROM statuses WHERE statuses.account_id = \"$1\" AND statuses.visibility IN (\"$2\", \"$3\") AND statuses.deleted_at IS NULL GROUP BY statuses.id ORDER BY statuses.id DESC LIMIT \"$5\" OFFSET \"$6\"",
+            "cost": 11.82,
             "rewrite_types": [
                 "RemoveJoin"
             ]

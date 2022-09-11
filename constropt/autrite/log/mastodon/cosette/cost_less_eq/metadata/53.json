@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT status_pins.status_id FROM status_pins WHERE status_pins.status_id IN (\"$1\", \"$2\", \"$3\") AND status_pins.account_id = \"$4\"",
-        "cost": 8.33,
+        "sql": "SELECT COUNT(*) FROM accounts INNER JOIN blocks ON accounts.id = blocks.target_account_id WHERE blocks.account_id = \"$1\"",
+        "cost": 12.94,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT status_pins.status_id FROM status_pins WHERE status_pins.status_id IN (\"$1\", \"$2\", \"$3\") AND status_pins.account_id = \"$4\" LIMIT 1",
-            "cost": 8.33,
+            "sql": "SELECT COUNT(*) FROM accounts INNER JOIN blocks ON accounts.id = blocks.target_account_id WHERE blocks.account_id = \"$1\" LIMIT 1",
+            "cost": 12.94,
             "rewrite_types": [
                 "AddLimitOne"
             ]

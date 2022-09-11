@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM changeset_tags WHERE changeset_tags.k = \"$1\" AND NOT(changeset_tags.changeset_id = 734 AND changeset_tags.k = 'Key 2') AND changeset_tags.changeset_id IS NULL LIMIT 1",
-        "cost": 8.31,
+        "sql": "SELECT COUNT(*) FROM friends INNER JOIN users ON users.id = friends.friend_user_id WHERE friends.user_id = \"$1\" AND users.status IN (\"$2\", \"$3\") AND created_at >= '2022-08-29 20:22:41.565818'",
+        "cost": 27.98,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM changeset_tags WHERE changeset_tags.k = \"$1\" AND NOT(changeset_tags.changeset_id = 734 AND changeset_tags.k = 'Key 2') AND False LIMIT 1",
-            "cost": 0.0,
+            "sql": "SELECT COUNT(*) FROM friends WHERE friends.user_id = \"$1\" AND created_at >= '2022-08-29 20:22:41.565818'",
+            "cost": 4.34,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "RemoveJoin"
             ]
         }
     ]

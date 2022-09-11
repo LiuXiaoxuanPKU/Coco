@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT follow_requests.* FROM follow_requests WHERE follow_requests.target_account_id = \"$1\" AND follow_requests.account_id IN (\"$2\", \"$3\", \"$4\")",
-        "cost": 16.9,
+        "sql": "SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.domain = \"$1\" ORDER BY custom_emojis.domain ASC, custom_emojis.shortcode ASC",
+        "cost": 480.01,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT follow_requests.* FROM follow_requests WHERE follow_requests.target_account_id = \"$1\" AND follow_requests.account_id IN (\"$2\", \"$3\", \"$4\") LIMIT 1",
-            "cost": 16.9,
+            "sql": "SELECT custom_emojis.* FROM custom_emojis WHERE custom_emojis.domain = \"$1\" ORDER BY custom_emojis.domain ASC, custom_emojis.shortcode ASC LIMIT 1",
+            "cost": 480.01,
             "rewrite_types": [
                 "AddLimitOne"
             ]

@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT blocks.account_id FROM blocks WHERE blocks.account_id IN (\"$1\", \"$2\", \"$3\", \"$4\") AND blocks.target_account_id = \"$5\"",
-        "cost": 11.67,
+        "sql": "SELECT blocks.target_account_id FROM blocks WHERE blocks.account_id = \"$1\" AND blocks.target_account_id IN (\"$2\", \"$3\")",
+        "cost": 4.33,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT blocks.account_id FROM blocks WHERE blocks.account_id IN (\"$1\", \"$2\", \"$3\", \"$4\") AND blocks.target_account_id = \"$5\" LIMIT 1",
-            "cost": 11.67,
+            "sql": "SELECT blocks.target_account_id FROM blocks WHERE blocks.account_id = \"$1\" AND blocks.target_account_id IN (\"$2\", \"$3\") LIMIT 1",
+            "cost": 4.33,
             "rewrite_types": [
                 "AddLimitOne"
             ]

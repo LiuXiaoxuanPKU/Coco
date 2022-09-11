@@ -1,62 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = \"$1\" AND 1 = 1 ORDER BY favourites.id DESC LIMIT \"$2\"",
-        "cost": 28.03,
+        "sql": "SELECT follows.* FROM follows WHERE follows.target_account_id IN (\"$1\", \"$2\") AND follows.account_id IN (SELECT follows.target_account_id FROM follows INNER JOIN accounts ON accounts.id = follows.target_account_id WHERE follows.account_id = \"$3\" AND (accounts.hide_collections = \"$4\" OR accounts.hide_collections IS NULL))",
+        "cost": 20.93,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = \"$1\" AND 1 = 1 ORDER BY favourites.id DESC LIMIT \"$2\"",
-            "cost": 28.02,
+            "sql": "SELECT follows.* FROM follows WHERE follows.target_account_id IN (\"$1\", \"$2\") AND follows.account_id IN (SELECT follows.target_account_id FROM follows INNER JOIN accounts ON accounts.id = follows.target_account_id WHERE follows.account_id = \"$3\" AND (accounts.hide_collections = \"$4\" OR accounts.hide_collections IS NULL)) LIMIT 1",
+            "cost": 20.93,
             "rewrite_types": [
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = \"$1\" AND 1 = 1 ORDER BY favourites.id DESC LIMIT \"$2\"",
-            "cost": 28.02,
-            "rewrite_types": [
-                "RemoveJoin",
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = \"$1\" AND 1 = 1 ORDER BY favourites.id DESC LIMIT \"$2\"",
-            "cost": 28.02,
-            "rewrite_types": [
-                "RemoveDistinct",
-                "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = \"$1\" AND 1 = 1 ORDER BY favourites.id DESC LIMIT \"$2\"",
-            "cost": 28.02,
-            "rewrite_types": [
-                "RemoveJoin",
-                "RemoveDistinct",
-                "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT DISTINCT favourites.id AS alias_0, accounts.id FROM accounts LEFT OUTER JOIN favourites ON favourites.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = \"$1\" AND 1 = 1 ORDER BY favourites.id DESC LIMIT \"$2\"",
-            "cost": 28.03,
-            "rewrite_types": [
-                "RemoveJoin"
-            ]
-        },
-        {
-            "sql": "SELECT DISTINCT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id LEFT OUTER JOIN account_stats ON account_stats.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = \"$1\" AND 1 = 1 ORDER BY favourites.id DESC LIMIT \"$2\"",
-            "cost": 28.03,
-            "rewrite_types": [
-                "ReplaceOuterJoin"
-            ]
-        },
-        {
-            "sql": "SELECT DISTINCT favourites.id AS alias_0, accounts.id FROM accounts INNER JOIN favourites ON favourites.account_id = accounts.id WHERE accounts.suspended_at IS NULL AND favourites.status_id = \"$1\" AND 1 = 1 ORDER BY favourites.id DESC LIMIT \"$2\"",
-            "cost": 28.03,
-            "rewrite_types": [
-                "RemoveJoin",
-                "ReplaceOuterJoin"
+                "AddLimitOne"
             ]
         }
     ]

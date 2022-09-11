@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT follow_requests.* FROM follow_requests WHERE follow_requests.target_account_id = \"$1\" AND follow_requests.account_id = \"$2\"",
-        "cost": 8.3,
+        "sql": "SELECT account_notes.* FROM account_notes WHERE account_notes.target_account_id IN (\"$1\", \"$2\") AND account_notes.account_id = \"$3\"",
+        "cost": 11.46,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT follow_requests.* FROM follow_requests WHERE follow_requests.target_account_id = \"$1\" AND follow_requests.account_id = \"$2\" LIMIT 1",
-            "cost": 8.3,
+            "sql": "SELECT account_notes.* FROM account_notes WHERE account_notes.target_account_id IN (\"$1\", \"$2\") AND account_notes.account_id = \"$3\" LIMIT 1",
+            "cost": 11.46,
             "rewrite_types": [
                 "AddLimitOne"
             ]

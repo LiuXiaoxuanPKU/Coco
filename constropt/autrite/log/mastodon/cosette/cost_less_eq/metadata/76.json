@@ -1,13 +1,13 @@
 {
     "org": {
         "sql": "SELECT mentions.status_id FROM mentions WHERE mentions.silent = \"$1\" AND mentions.status_id IN (\"$2\", \"$3\", \"$4\", \"$5\", \"$6\", \"$7\", \"$8\") AND mentions.account_id = \"$9\"",
-        "cost": 11.47,
+        "cost": 17.92,
         "rewrite_types": []
     },
     "rewrites": [
         {
             "sql": "SELECT mentions.status_id FROM mentions WHERE mentions.silent = \"$1\" AND mentions.status_id IN (\"$2\", \"$3\", \"$4\", \"$5\", \"$6\", \"$7\", \"$8\") AND mentions.account_id = \"$9\" LIMIT 1",
-            "cost": 11.47,
+            "cost": 17.92,
             "rewrite_types": [
                 "AddLimitOne"
             ]

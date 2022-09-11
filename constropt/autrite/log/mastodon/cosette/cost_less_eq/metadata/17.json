@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM webauthn_credentials WHERE webauthn_credentials.external_id IS NULL LIMIT 1",
-        "cost": 4.43,
+        "sql": "SELECT mutes.* FROM mutes WHERE mutes.target_account_id IN (\"$1\", \"$2\", \"$3\") AND mutes.account_id = \"$4\"",
+        "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM webauthn_credentials WHERE False LIMIT 1",
-            "cost": 0.0,
+            "sql": "SELECT mutes.* FROM mutes WHERE mutes.target_account_id IN (\"$1\", \"$2\", \"$3\") AND mutes.account_id = \"$4\" LIMIT 1",
+            "cost": 8.31,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "AddLimitOne"
             ]
         }
     ]
