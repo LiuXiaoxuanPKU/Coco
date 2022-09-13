@@ -1,6 +1,6 @@
 import re
 import rule
-from constraint import InclusionConstraint, PresenceConstraint, UniqueConstraint
+from constraint import InclusionConstraint
 from collections import defaultdict
 
 class ExtractQueryRule(rule.Rule):
