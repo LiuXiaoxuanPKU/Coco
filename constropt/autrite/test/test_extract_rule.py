@@ -162,15 +162,23 @@ class GeneralCase(unittest.TestCase):
         self.assertEqual(len(extracted), 1)
         
     def test_subquery_in_where_with_op_exist(self):
-        cs = [UniqueConstraint("media_attachments", "status_id", False, "builtin", None)]
+        cs = [UniqueConstraint("media_attachments", ["status_id"], False, "builtin", None)]
         q = "SELECT statuses.id FROM statuses WHERE statuses.account_id = 1 AND statuses.id <= 108695304470528000 AND statuses.deleted_at IS NULL AND ((SELECT * FROM media_attachments WHERE media_attachments.status_id = statuses.id) IS NOT NULL) ORDER BY statuses.id ASC LIMIT 2"
         q = parse(q)
-        extracted = ExtractQueryRule(cs).apply(q)
+        rule = ExtractQueryRule(cs)
+        extracted = rule.apply(q)
         self.assertEqual(len(extracted), 1)
     
     def test_subquery_in_where_with_op_not_exist(self):
-        cs = [UniqueConstraint("media_attachments", "status_id", False, "builtin", None)]
+        cs = [UniqueConstraint("media_attachments", ["status_id"], False, "builtin", None)]
         q = "SELECT statuses.id FROM statuses WHERE statuses.account_id = 1 AND statuses.id <= 108695304470528000 AND statuses.deleted_at IS NULL AND NOT((SELECT * FROM media_attachments WHERE media_attachments.status_id = statuses.id) IS NOT NULL) ORDER BY statuses.id ASC LIMIT 2"
+        q = parse(q)
+        extracted = ExtractQueryRule(cs).apply(q)
+        self.assertEqual(len(extracted), 1)
+        
+    def test_spree_query_2000(self):
+        cs = [UniqueConstraint("spree_products", ["id"], False, "pk", None)]
+        q = "SELECT 1 AS one FROM spree_products INNER JOIN friendly_id_slugs ON friendly_id_slugs.deleted_at IS NULL AND friendly_id_slugs.sluggable_type = 1 AND friendly_id_slugs.sluggable_id = spree_products.id WHERE spree_products.id IS NOT NULL AND friendly_id_slugs.sluggable_type = 'Spree::Product' AND friendly_id_slugs.slug = 'product-2733-45' LIMIT 2"
         q = parse(q)
         extracted = ExtractQueryRule(cs).apply(q)
         self.assertEqual(len(extracted), 1)
