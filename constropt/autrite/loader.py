@@ -9,7 +9,8 @@ class Loader:
     @staticmethod
     def load_constraints(filename):
         constraints = []
-        classnodes = json.load(open(filename, 'r'))
+        with open(filename, 'r') as f:
+            classnodes = json.load(f)
         for classnode in classnodes:
             constraints_obj = classnode['constraints']
             for obj in constraints_obj:
