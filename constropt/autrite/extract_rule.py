@@ -77,8 +77,6 @@ class ExtractQueryRule(rule.Rule):
     def get_cs_map(self, cs) -> dict:
         table_to_field = defaultdict(set)
         for c in cs:
-            if isinstance(c, UniqueConstraint) or isinstance(c, PresenceConstraint):
-                table_to_field[c.table].add("id")
             if isinstance(c.field, str):
                 table_to_field[c.table].add(c.field)
             elif isinstance(c.field, list):
