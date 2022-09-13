@@ -148,11 +148,4 @@ class TestEnumeration(unittest.TestCase):
 
     
 if __name__ == "__main__":
-    # test_get_constraints()
-    # test_get_rules()
-    # test_simple_enumerate()
-    # test_redmine_enumerate()
-    # test_add_limit_one_rewrite()
-    # test_rewrite_types()
-    # test_rewrite_spree()
     unittest.main()
