@@ -1,7 +1,7 @@
 import re
 import rule
-from constraint import InclusionConstraint
-
+from constraint import InclusionConstraint, PresenceConstraint, UniqueConstraint
+from collections import defaultdict
 
 class ExtractQueryRule(rule.Rule):
     def __init__(self, cs) -> None:
@@ -75,14 +75,14 @@ class ExtractQueryRule(rule.Rule):
 
     # return a map: table(str) -> fields(set) 
     def get_cs_map(self, cs) -> dict:
-        table_to_field = {}
+        table_to_field = defaultdict(set)
         for c in cs:
-            if not c.table in table_to_field.keys():
-                table_to_field[c.table] = set()
+            if isinstance(c, UniqueConstraint) or isinstance(c, PresenceConstraint):
+                table_to_field[c.table].add("id")
             if isinstance(c.field, str):
                 table_to_field[c.table].add(c.field)
             elif isinstance(c.field, list):
-                table_to_field[c.table].union(set(c.field))
+                table_to_field[c.table].update(c.field)
             elif c.field is None:
                 print(c)
             else:
