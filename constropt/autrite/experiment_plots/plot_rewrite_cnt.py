@@ -2,18 +2,18 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 redmine = [
-    2289, # qs with constraints
-    1530, # qs with rewritten
-    1328, # qs with lower cost
-    1049, # qs with lower cost and pass tests
-    124   # qs get verified
+    2861, # qs with constraints
+    1830, # qs with rewritten
+    1464, # qs with lower cost
+    1294, # qs with lower cost and pass tests
+    286   # qs get verified
 ]
 
 forem = [
-   1638, # qs with constraints
+   4411, # qs with constraints
    461, # qs with rewritten
-   102, # qs with lower cost
-   54, # qs with lower cost and pass tests
+   165, # qs with lower cost
+   124, # qs with lower cost and pass tests
    29   # qs get verified 
 ]
 
@@ -25,12 +25,37 @@ openproject = [
    709   # qs get verified 
 ]
 
+spree = [
+   1143, # qs with constraints
+   3503, # qs with rewritten
+   1616, # qs with lower cost
+   149, # qs with lower cost and pass tests
+   12   # qs get verified 
+]
+
+mastodon = [
+   6936, # qs with constraints
+   1040, # qs with rewritten
+   345, # qs with lower cost
+   345, # qs with lower cost and pass tests
+   22   # qs get verified 
+]
+
+openstreetmap = [
+   4830, # qs with constraints
+   170, # qs with rewritten
+   131, # qs with lower cost
+   102, # qs with lower cost and pass tests
+   17   # qs get verified 
+]
+
 fig, ax = plt.subplots()
 fig.set_size_inches(8, 4)
     
 x = [1,2,3,4, 5, 6]
-colors = ["#1AA7EC", "#713b28", "#FF847C"]
-data = {'Redmine': redmine, 'Dev.to' : forem, 'Openproject' : openproject} 
+colors = ["#1AA7EC", "#713b28", "#FF847C", "green", "purple", "black"]
+data = {'Redmine': redmine, 'Dev.to' : forem, 'Openproject' : openproject,
+        'Mastodon': mastodon, 'Openstreetmap': openstreetmap, 'Spree': spree} 
 patches = []
 for i, k in enumerate(data):
     patches.append(plt.stairs(data[k], x, baseline=None, label=k, \
@@ -54,4 +79,4 @@ plt.yscale('log', base=10)
 plt.legend(prop={'size': 11}, loc='upper right')
 # plt.subplots_adjust(top=0.92, bottom=5, left=0.10, right=0.95, hspace=0.25,
 #                     wspace=0.35)
-plt.savefig("/home/ubuntu/ConstrOpt/figures/7.3/rewrite_cnt.pdf")
+plt.savefig("/home/ubuntu/ConstrOpt/figures/7.3/rewrite_cnt.png")
