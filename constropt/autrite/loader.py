@@ -7,7 +7,7 @@ from config import RewriteQuery
 
 class Loader:
     @staticmethod
-    def load_constraints(filename):
+    def load_constraints(filename: str) -> list[constraint.Constraint]:
         constraints = []
         classnodes = json.load(open(filename, 'r'))
         for classnode in classnodes:

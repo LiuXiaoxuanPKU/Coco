@@ -150,7 +150,7 @@ def generate_query_param_single(q, connect_str, cache):
     q = " ".join(tokens)
     return q
 
-# the rewrites and q should have the sample parameters
+# the rewrites and q should have the same parameters
 # return False if fails to generate parameters for the original query, otherwise True
 def generate_query_param_rewrites(q, rewrites, connect_str):
     cache = {}
