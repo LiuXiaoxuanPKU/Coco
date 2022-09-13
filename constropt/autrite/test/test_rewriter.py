@@ -44,6 +44,8 @@ class TestRewrite(unittest.TestCase):
         print("------------------------Start Rewrite------------------------")
         print("Before:\n", format(parse(q_str)))
         print("After:", len(rewritten_queries))
+        for q in rewritten_queries:
+            print(q.q_raw)
         print("------------------------Finish Rewrite------------------------")
 
 
@@ -91,6 +93,11 @@ class TestRewrite(unittest.TestCase):
     def test_rewrite_spree(self):
         constraints = Loader.load_constraints("../../constraints/spree")
         sql = 'SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = \"$1\" AND spree_stock_items.variant_id IN (\"$2\", \"$3\")'
+        self.rewrite_helper(constraints, sql)
+        
+    def test_rewrite_spree_id(self):
+        constraints = Loader.load_constraints("../../constraints/spree")
+        sql = "SELECT 1 AS one FROM spree_products INNER JOIN friendly_id_slugs ON friendly_id_slugs.deleted_at IS NULL AND friendly_id_slugs.sluggable_type = $1 AND friendly_id_slugs.sluggable_id = spree_products.id WHERE spree_products.id IS NOT NULL AND friendly_id_slugs.sluggable_type = 'Spree::Product' AND friendly_id_slugs.slug = 'product-84-9600' LIMIT $2"
         self.rewrite_helper(constraints, sql)
 
 class TestEnumeration(unittest.TestCase):
