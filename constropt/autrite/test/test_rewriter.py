@@ -41,6 +41,8 @@ def test_rewrite_helper(constraints, q_str):
     print("------------------------Start Rewrite------------------------")
     print("Before:\n", format(parse(q_str)))
     print("After:", len(rewritten_queries))
+    if len(rewritten_queries) > 0:
+        print(len(rewritten_queries[0].q_raw))
     print("------------------------Finish Rewrite------------------------")
 
 
@@ -136,12 +138,28 @@ def test_rewrite_types():
            rewritten_queries[1].rewrites == [rule.RewriteNullPredicate(c1)])
     assert(rewritten_queries[2].rewrites == [rule.RewriteNullPredicate(c1), rule.RewriteNullPredicate(c2)] or
            rewritten_queries[2].rewrites == [rule.RewriteNullPredicate(c2), rule.RewriteNullPredicate(c1)])
-
+    
 def test_rewrite_spree():
     constraints = Loader.load_constraints("../../constraints/spree")
     sql = 'SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = \"$1\" AND spree_stock_items.variant_id IN (\"$2\", \"$3\")'
     test_rewrite_helper(constraints, sql)
+    sql = 'SELECT DISTINCT spree_shipping_categories.* FROM spree_shipping_categories INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.shipping_category_id = spree_shipping_categories.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_variants.id = 4289;'
+    test_rewrite_helper(constraints, sql)
+    sql = 'SELECT COUNT(DISTINCT spree_option_values.option_type_id) FROM spree_option_values WHERE spree_option_values.id IN (7878, 3936);'
+    test_rewrite_helper(constraints, sql)
+    sql = 'SELECT COUNT(DISTINCT spree_option_values.option_type_id) FROM spree_option_values WHERE spree_option_values.id = 4493;'
+    test_rewrite_helper(constraints, sql)
+    sql = 'SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = True AND spree_stock_items.variant_id = 4620;'
+    test_rewrite_helper(constraints, sql)
+    sql = "SELECT 1 AS one FROM spree_products INNER JOIN friendly_id_slugs ON friendly_id_slugs.deleted_at IS NULL AND friendly_id_slugs.sluggable_type = $1 AND friendly_id_slugs.sluggable_id = spree_products.id WHERE spree_products.id IS NOT NULL AND friendly_id_slugs.sluggable_type = 'Spree::Product' AND friendly_id_slugs.slug = 'product-593-398' LIMIT $2"
+    print(len(sql))
+    test_rewrite_helper(constraints, sql)
     
+def test_rewrite_mastodon():
+    constraints = Loader.load_constraints("../../constraints/mastodon")
+    sql = 'SELECT oauth_applications.* FROM oauth_applications WHERE oauth_applications.id IN (SELECT DISTINCT oauth_access_tokens.application_id FROM oauth_access_tokens WHERE oauth_access_tokens.resource_owner_id = 865 AND oauth_access_tokens.revoked_at IS NULL)'
+    test_rewrite_helper(constraints, sql)
+
 if __name__ == "__main__":
     # test_get_constraints()
     # test_get_rules()
@@ -150,3 +168,4 @@ if __name__ == "__main__":
     # test_add_limit_one_rewrite()
     # test_rewrite_types()
     test_rewrite_spree()
+    # test_rewrite_mastodon()
