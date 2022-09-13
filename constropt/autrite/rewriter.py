@@ -18,7 +18,7 @@ class Rewriter:
         
         # use constraints to generate potential rules
         rules = self.get_rules(constraints)
-        
+
         # order rules, apply slow rules (add predicate, remove predicate) first
         rules.sort()
 
@@ -84,6 +84,8 @@ class Rewriter:
         rules = []
         for c in constraints:
             rules += [r(c) for r in constraint_rule_map[type(c)]]
+        # always add remove distinct
+        rules += [RemoveDistinct(None)]
         rules = set(rules)
         if self.rules != []:
             return [r for r in rules if type(r) in self.rules]

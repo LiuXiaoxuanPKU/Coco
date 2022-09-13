@@ -57,7 +57,7 @@ TYPE_TO_NAME = {
    RewriteType.ERROR: "Error"
 }      
 def load_results(app):
-    filename = "log/%s_perf" % app
+    filename = "log/perf_leq/%s_perf" % app
     queries = []
     with open(filename, 'r') as f:
         lines = f.readlines()
@@ -114,8 +114,8 @@ def group_by(queries, gb, for_type = True):
         #     print(sp)
         for i, v in enumerate(gb):
             if sp >= v and ((i == len(gb) - 1) or sp < gb[i+1]):
+                # print(sp, v)
                 return v
-        return -1
         assert(False)
         
     db_groups = {}
@@ -131,6 +131,8 @@ def group_by(queries, gb, for_type = True):
     groups = []
     sqls = []
     rewrite_types = []
+    slowdown_types = {}
+    speedup_types = {}
     
     def within_range(c):
         return True
@@ -182,6 +184,9 @@ def group_by(queries, gb, for_type = True):
                 continue
             if t[0] is None:
                 continue
+            rewrite_sp = q.t_db / q.t_rewrite, 0.1
+            # if find_group(rewrite_sp) == 0:
+            #     continue
             if within_range(db_sp):
                 # if db_sp <= 1.05:
                 #     continue
@@ -207,21 +212,33 @@ def group_by(queries, gb, for_type = True):
                 global sp_cnt
                 sp_cnt += 1 
             if within_range(rewrite_constraint_sp):
-                # if rewrite_constraint_sp <= 1.05:
-                #     continue
                 t = get_type(q.raw, q.rewrite)
+                if rewrite_constraint_sp <= 0.95:
+                    if t[0] not in slowdown_types:
+                        slowdown_types[t[0]] = []
+                    slowdown_types[t[0]].append(rewrite_constraint_sp)
+                if rewrite_constraint_sp >= 1.05:
+                    if t[0] not in speedup_types:
+                        speedup_types[t[0]] = []
+                    speedup_types[t[0]].append(rewrite_constraint_sp)
                 types += ["install constraints + rewrite"]
                 speedups += [rewrite_constraint_sp]
                 sqls += [q.rewrite] 
                 rewrite_types += [t[0]]  
                 groups += [find_group(rewrite_constraint_sp)]
-            if rewrite_sp < 0.98 or rewrite_constraint_sp < 0.98:
-                print("-------------------------------")
-                print("db", db_sp, q.raw)
-                print("rewrite", rewrite_sp, q.rewrite)
-                print("cons + rewrite", rewrite_constraint_sp)
-                print(db_sp, find_group(db_sp))
-                print("-------------------------------")
+            # if rewrite_sp < 0.98 or rewrite_constraint_sp < 0.98:
+            #     print("-------------------------------")
+            #     print("db", db_sp, q.raw)
+            #     print("rewrite", rewrite_sp, q.rewrite)
+            #     print("cons + rewrite", rewrite_constraint_sp)
+            #     print(db_sp, find_group(db_sp))
+            #     print("-------------------------------")
+        for t in slowdown_types:
+            print(t, np.median(slowdown_types[t]))
+        for t in speedup_types:
+            print(t, np.median(speedup_types[t]))
+        # print(slowdown_types)
+        # print(speedup_types)
     
     return pd.DataFrame({"sp":speedups, "type": types, "group" : groups, "sql":sqls, "rewrite_type":rewrite_types})
 
@@ -230,7 +247,7 @@ def plot_speedup(data, appname):
     at = AnchoredText(
     APP_NAME[appname], prop=dict(size=18), frameon=False, loc='upper center')
     ax.add_artist(at)
-    group_boundaries = [0.98, 1.02, 1.1, 2]
+    group_boundaries = [0, 0.98, 1.02, 1.1, 2]
     data = group_by(queries, group_boundaries, for_type=False)
     # print(list(data["rewrite_type"]))
     # print(data.head)
@@ -247,12 +264,12 @@ def plot_speedup(data, appname):
                 kind="count", legend=False,
                 height=3, aspect=6/3)
 
-    plt.xticks([0, 1, 2, 3, 4], ["slowdown", '0$\pm$5%', "<10%", "10~100%", ">100%"], size=tick_size)
+    plt.xticks([0, 1, 2, 3, 4], ["slowdown", '0$\pm$2%', "<10%", "10~100%", ">100%"], size=tick_size)
     plt.yticks(fontsize=tick_size)
     # plt.yscale("log", base=2)
     # plt.legend(loc='upper left', prop={'size': 12})
     if appname == "redmine":
-        plt.yticks([0, 20, 40, 60])
+        plt.yticks([0, 50, 100, 150, 200])
         plt.ylabel("Number of queries", size=label_size)
     else:
         plt.ylabel("")
@@ -271,7 +288,7 @@ def plot_speedup(data, appname):
     
 def plot_rewrite_type(data, app):
     f, ax = plt.subplots()
-    group_boundaries = [1, 1.1, 2]
+    group_boundaries = [0, 1, 1.1, 2]
     data = group_by(queries, group_boundaries, for_type=True)
     # print(list(data["rewrite_type"]))
     # data = data[data["group"] != -1]
