@@ -1,6 +1,6 @@
-{"app_name": "forem", "queries_with_cs": 4946, "warning cnt": 41, "inclusion": 435, "length": 664, "format": 374}
-{"app_name": "redmine", "queries_with_cs": 3203, "warning cnt": 25, "inclusion": 875, "length": 1223, "format": 234}
-{"app_name": "openproject", "queries_with_cs": 14870, "warning cnt": 5, "inclusion": 6381, "length": 6173, "format": 54}
-{"app_name": "openstreetmap", "queries_with_cs": 4881, "warning cnt": 24, "inclusion": 84, "length": 67, "format": 0}
-{"app_name": "mastodon", "queries_with_cs": 7045, "warning cnt": 0, "inclusion": 81, "length": 5461, "format": 5511}
-{"app_name": "spree", "queries_with_cs": 4274, "warning cnt": 4, "inclusion": 185, "length": 15, "format": 0}
+{"app_name": "forem", "queries_with_cs": 4772, "warning cnt": 57, "inclusion": 435, "length": 664, "format": 374}
+{"app_name": "redmine", "queries_with_cs": 2950, "warning cnt": 63, "inclusion": 875, "length": 1223, "format": 234}
+{"app_name": "openproject", "queries_with_cs": 13125, "warning cnt": 139, "inclusion": 6381, "length": 6173, "format": 54}
+{"app_name": "mastodon", "queries_with_cs": 6955, "warning cnt": 118, "inclusion": 81, "length": 5461, "format": 5511}
+{"app_name": "openstreetmap", "queries_with_cs": 4836, "warning cnt": 24, "inclusion": 84, "length": 67, "format": 0}
+{"app_name": "spree", "queries_with_cs": 1163, "warning cnt": 4, "inclusion": 185, "length": 15, "format": 0}
