@@ -54,18 +54,18 @@ fig.set_size_inches(9, 8)
     
 x = [1, 2, 3, 4, 5, 6]
 BLUE = "#1AA7EC"
-BLACK = "black"
+BLACK = "#453020"
 ORANGE = "#de8004"
 GREEN = "#28a81d"
-PURPLE = "#d822f0"
+PURPLE = "#955df5"
 RED = "#e3272d"
-colors = [BLUE, BLACK, ORANGE, GREEN, PURPLE, RED]
-data = {'Redmine': redmine, 'Dev.to' : forem, 'Openproject' : openproject,
-        'Mastodon': mastodon, 'Openstreetmap': openstreetmap, 'Spree': spree} 
+colors = {'Redmine':ORANGE, 'Dev.to': BLUE, 'Openproject': RED, 'Mastodon': BLACK, 'Openstreetmap': GREEN, 'Spree': PURPLE}
+data = {'Dev.to' : forem, 'Redmine': redmine, 'Openstreetmap': openstreetmap, 'Openproject' : openproject,
+        'Spree': spree, 'Mastodon': mastodon, } 
 patches = []
-for i, k in enumerate(data):
+for k in data:
     patches.append(plt.stairs(data[k], x, baseline=None, label=k, \
-                  lw=4, ls = "-", color = colors[i]))
+                  lw=4, ls = "-", color = colors[k]))
     
 # ============= four vertical dividing bars ============
 ax.axvline(2, alpha=0.2, color='#713b28')
