@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_refunds INNER JOIN spree_payments ON spree_refunds.payment_id = spree_payments.id WHERE spree_payments.order_id = 9823 AND spree_refunds.reimbursement_id IS NULL LIMIT 1;
+SELECT COUNT(*) FROM spree_taxons INNER JOIN spree_products_taxons ON spree_taxons.id = spree_products_taxons.taxon_id WHERE spree_products_taxons.product_id = 9848;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_refunds WHERE spree_refunds.reimbursement_id IS NULL LIMIT 1;
+SELECT COUNT(*) FROM spree_taxons INNER JOIN spree_products_taxons ON spree_taxons.id = spree_products_taxons.taxon_id WHERE spree_products_taxons.product_id = 9848 LIMIT 1;

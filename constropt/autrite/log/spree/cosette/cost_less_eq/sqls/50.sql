@@ -1243,7 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_prices.amount IS NOT NULL AND spree_variants.id = 4178 LIMIT 1;
+SELECT 1 AS "one" FROM spree_products LEFT OUTER JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_products_taxons.taxon_id IN (6741, 1258) AND spree_products.id = 6315 LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND True AND spree_variants.id = 4178 LIMIT 1;
-SELECT 1 AS "one" FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'USD' AND spree_variants.id = 4178 LIMIT 1;
+SELECT 1 AS "one" FROM spree_products INNER JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_products_taxons.taxon_id IN (9704, 6741) AND spree_products.id = 6315 LIMIT 1;

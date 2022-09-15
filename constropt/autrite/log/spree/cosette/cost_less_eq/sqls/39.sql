@@ -1243,10 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND spree_prices.amount IS NOT NULL;
+SELECT 1 AS "one" FROM spree_stores INNER JOIN spree_products_stores ON spree_stores.id = spree_products_stores.store_id WHERE spree_stores.deleted_at IS NULL AND spree_products_stores.product_id = 9732 LIMIT 1;
 -- Rewritten Queries
-SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND spree_prices.amount IS NOT NULL;
-SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND True;
-SELECT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR';
-SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND True;
-SELECT DISTINCT spree_variants.* FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR';
+SELECT 1 AS "one" FROM spree_stores WHERE spree_stores.deleted_at IS NULL LIMIT 1;

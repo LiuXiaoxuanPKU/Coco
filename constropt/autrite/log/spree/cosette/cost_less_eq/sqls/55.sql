@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT DISTINCT spree_return_items.* FROM spree_return_items INNER JOIN spree_inventory_units ON spree_inventory_units.original_return_item_id = spree_return_items.id WHERE spree_return_items.reception_status = 'awaiting' AND spree_inventory_units.created_at < '2022-07-31 05:42:21.425699' AND spree_inventory_units.state = 'shipped';
+SELECT SUM(spree_stock_items.count_on_hand) FROM spree_stock_items INNER JOIN spree_variants ON spree_stock_items.variant_id = spree_variants.id WHERE spree_stock_items.deleted_at IS NULL AND spree_variants.deleted_at IS NULL AND spree_variants.product_id = 8831;
 -- Rewritten Queries
-SELECT spree_return_items.* FROM spree_return_items INNER JOIN spree_inventory_units ON spree_inventory_units.original_return_item_id = spree_return_items.id WHERE spree_return_items.reception_status = 'awaiting' AND spree_inventory_units.created_at < '2022-07-31 05:42:21.425699' AND spree_inventory_units.state = 'shipped';
+SELECT SUM(spree_stock_items.count_on_hand) FROM spree_stock_items INNER JOIN spree_variants ON spree_stock_items.variant_id = spree_variants.id WHERE spree_stock_items.deleted_at IS NULL AND spree_variants.deleted_at IS NULL AND spree_variants.product_id = 8831 LIMIT 1;

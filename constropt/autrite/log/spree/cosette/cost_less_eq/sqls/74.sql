@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_stock_items.* FROM spree_stock_items INNER JOIN spree_variants ON spree_stock_items.variant_id = spree_variants.id INNER JOIN spree_products ON spree_variants.product_id = spree_products.id INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id WHERE spree_stock_items.deleted_at IS NULL AND spree_variants.deleted_at IS NULL AND spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 14039 ORDER BY spree_variants.position ASC;
+SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_option_types ON spree_product_option_types.product_id = spree_products.id INNER JOIN spree_option_types ON spree_option_types.id = spree_product_option_types.option_type_id WHERE spree_products.deleted_at IS NULL AND spree_option_types.id = 5270;
 -- Rewritten Queries
-SELECT spree_stock_items.* FROM spree_stock_items INNER JOIN spree_variants ON spree_stock_items.variant_id = spree_variants.id INNER JOIN spree_products ON spree_variants.product_id = spree_products.id INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id WHERE spree_stock_items.deleted_at IS NULL AND spree_variants.deleted_at IS NULL AND spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 14039 ORDER BY spree_variants.position ASC LIMIT 1;
+SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_option_types ON spree_product_option_types.product_id = spree_products.id INNER JOIN spree_option_types ON spree_option_types.id = spree_product_option_types.option_type_id WHERE spree_products.deleted_at IS NULL AND spree_option_types.id = 5270 LIMIT 1;

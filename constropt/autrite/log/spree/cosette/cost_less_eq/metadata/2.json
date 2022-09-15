@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT spree_dummy_models.* FROM spree_dummy_models WHERE spree_dummy_models.name = 'TestName'",
-        "cost": 21.5,
+        "sql": "SELECT spree_menu_items.* FROM spree_menu_items WHERE spree_menu_items.menu_id = \"$1\"",
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_dummy_models.* FROM spree_dummy_models WHERE spree_dummy_models.name = 'TestName' LIMIT 1",
-            "cost": 4.3,
+            "sql": "SELECT spree_menu_items.* FROM spree_menu_items WHERE spree_menu_items.menu_id = \"$1\" LIMIT 1",
+            "cost": 8.3,
             "rewrite_types": [
                 "AddLimitOne"
             ]

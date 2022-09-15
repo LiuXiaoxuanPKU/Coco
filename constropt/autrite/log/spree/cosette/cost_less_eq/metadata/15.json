@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT COUNT(*) FROM spree_adjustments WHERE spree_adjustments.adjustable_id = \"$1\" AND spree_adjustments.adjustable_type = \"$2\" AND spree_adjustments.amount >= 0",
-        "cost": 8.32,
+        "sql": "SELECT 1 AS one FROM spree_option_types LEFT OUTER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id LIMIT 1",
+        "cost": 1.45,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT COUNT(*) FROM spree_adjustments WHERE spree_adjustments.adjustable_id = \"$1\" AND spree_adjustments.adjustable_type = \"$2\"",
-            "cost": 4.32,
+            "sql": "SELECT 1 AS one FROM spree_option_types LIMIT 1",
+            "cost": 0.97,
             "rewrite_types": [
-                "RemovePredicate"
+                "RemoveJoin"
             ]
         }
     ]

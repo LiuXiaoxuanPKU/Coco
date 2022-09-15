@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT spree_stores.id FROM spree_stores INNER JOIN spree_payment_methods_stores ON spree_stores.id = spree_payment_methods_stores.store_id WHERE spree_stores.deleted_at IS NULL AND spree_payment_methods_stores.payment_method_id = \"$1\" ORDER BY spree_stores.created_at ASC",
-        "cost": 16.68,
+        "sql": "SELECT spree_properties.* FROM spree_properties INNER JOIN spree_property_prototypes ON spree_properties.id = spree_property_prototypes.property_id WHERE spree_property_prototypes.prototype_id = \"$1\"",
+        "cost": 24.93,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_stores.id FROM spree_stores INNER JOIN spree_payment_methods_stores ON spree_stores.id = spree_payment_methods_stores.store_id WHERE spree_stores.deleted_at IS NULL AND spree_payment_methods_stores.payment_method_id = \"$1\" ORDER BY spree_stores.created_at ASC LIMIT 1",
-            "cost": 16.68,
+            "sql": "SELECT spree_properties.* FROM spree_properties INNER JOIN spree_property_prototypes ON spree_properties.id = spree_property_prototypes.property_id WHERE spree_property_prototypes.prototype_id = \"$1\" LIMIT 1",
+            "cost": 12.75,
             "rewrite_types": [
                 "AddLimitOne"
             ]

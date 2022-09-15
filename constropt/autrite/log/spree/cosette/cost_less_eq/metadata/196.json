@@ -1,29 +1,44 @@
 {
     "org": {
-        "sql": "SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones LEFT OUTER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 311 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 234 ORDER BY spree_zones.zone_members_count, spree_zones.created_at",
-        "cost": 32.42,
+        "sql": "SELECT DISTINCT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id LEFT OUTER JOIN spree_promotion_rules ON spree_promotion_rules.promotion_id = spree_promotions.id LEFT OUTER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = \"$1\" AND (spree_promotions.starts_at IS NULL OR spree_promotions.starts_at < '2022-08-14 05:29:18.046162') AND (spree_promotions.expires_at IS NULL OR spree_promotions.expires_at > '2022-08-14 05:29:18.046721') AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT \"$2\"",
+        "cost": 29.64,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones LEFT OUTER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 311 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 234 ORDER BY spree_zones.zone_members_count, spree_zones.created_at LIMIT 1",
-            "cost": 32.42,
+            "sql": "SELECT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id INNER JOIN spree_promotion_rules ON spree_promotion_rules.promotion_id = spree_promotions.id LEFT OUTER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = \"$1\" AND (spree_promotions.starts_at IS NULL OR spree_promotions.starts_at < '2022-08-14 05:29:18.046162') AND (spree_promotions.expires_at IS NULL OR spree_promotions.expires_at > '2022-08-14 05:29:18.046721') AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT \"$2\"",
+            "cost": 20.84,
             "rewrite_types": [
-                "AddLimitOne"
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
             ]
         },
         {
-            "sql": "SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 311 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 234 ORDER BY spree_zones.zone_members_count, spree_zones.created_at",
-            "cost": 32.42,
+            "sql": "SELECT DISTINCT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id INNER JOIN spree_promotion_rules ON spree_promotion_rules.promotion_id = spree_promotions.id LEFT OUTER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = \"$1\" AND (spree_promotions.starts_at IS NULL OR spree_promotions.starts_at < '2022-08-14 05:29:18.046162') AND (spree_promotions.expires_at IS NULL OR spree_promotions.expires_at > '2022-08-14 05:29:18.046721') AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT \"$2\"",
+            "cost": 20.85,
             "rewrite_types": [
                 "ReplaceOuterJoin"
             ]
         },
         {
-            "sql": "SELECT spree_zones.id AS t0_r0, spree_zones.name AS t0_r1, spree_zones.description AS t0_r2, spree_zones.default_tax AS t0_r3, spree_zones.zone_members_count AS t0_r4, spree_zones.created_at AS t0_r5, spree_zones.updated_at AS t0_r6, spree_zones.kind AS t0_r7, spree_zone_members.id AS t1_r0, spree_zone_members.zoneable_type AS t1_r1, spree_zone_members.zoneable_id AS t1_r2, spree_zone_members.zone_id AS t1_r3, spree_zone_members.created_at AS t1_r4, spree_zone_members.updated_at AS t1_r5 FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zone_id = spree_zones.id WHERE spree_zone_members.zoneable_type = 'Spree::Country' AND spree_zone_members.zoneable_id = 311 OR spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 234 ORDER BY spree_zones.zone_members_count, spree_zones.created_at LIMIT 1",
-            "cost": 32.42,
+            "sql": "SELECT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id LEFT OUTER JOIN spree_promotion_rules ON spree_promotion_rules.promotion_id = spree_promotions.id LEFT OUTER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = \"$1\" AND (spree_promotions.starts_at IS NULL OR spree_promotions.starts_at < '2022-08-14 05:29:18.046162') AND (spree_promotions.expires_at IS NULL OR spree_promotions.expires_at > '2022-08-14 05:29:18.046721') AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT \"$2\"",
+            "cost": 29.64,
             "rewrite_types": [
-                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id LEFT OUTER JOIN spree_promotion_rules ON spree_promotion_rules.promotion_id = spree_promotions.id INNER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = \"$1\" AND (spree_promotions.starts_at IS NULL OR spree_promotions.starts_at < '2022-08-14 05:29:18.046162') AND (spree_promotions.expires_at IS NULL OR spree_promotions.expires_at > '2022-08-14 05:29:18.046721') AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT \"$2\"",
+            "cost": 29.64,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT spree_promotions.id AS alias_0, spree_promotions.id FROM spree_promotions INNER JOIN spree_promotions_stores ON spree_promotions.id = spree_promotions_stores.promotion_id LEFT OUTER JOIN spree_promotion_rules ON spree_promotion_rules.promotion_id = spree_promotions.id INNER JOIN spree_promotion_actions ON spree_promotion_actions.deleted_at IS NULL AND spree_promotion_actions.promotion_id = spree_promotions.id WHERE spree_promotions_stores.store_id = \"$1\" AND (spree_promotions.starts_at IS NULL OR spree_promotions.starts_at < '2022-08-14 05:29:18.046162') AND (spree_promotions.expires_at IS NULL OR spree_promotions.expires_at > '2022-08-14 05:29:18.046721') AND LOWER(spree_promotions.code) = '10off' AND spree_promotion_actions.id IS NOT NULL ORDER BY spree_promotions.id DESC LIMIT \"$2\"",
+            "cost": 29.64,
+            "rewrite_types": [
+                "RemoveDistinct",
                 "ReplaceOuterJoin"
             ]
         }

@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_users INNER JOIN spree_role_users ON spree_role_users.user_id = spree_users.id INNER JOIN spree_roles ON spree_roles.id = spree_role_users.role_id WHERE spree_roles.name = 'gleeidqiaizombqlzsblavtjvajwxdeoamsknbuninlppkasirerejkuvrylzfxrtjfdfilvntfgicsewjpqzhatmhesjerasnayarclqualzydandlgwdwmgihrlaxlqazvcyucuuaaqbjxtnalwfegzcgpbkoytustjtbvuyivarjdczfuigwpoqoewhbqfkofpegximgemebekcnbakgyysb' LIMIT 1;
+SELECT COUNT(*) FROM spree_properties INNER JOIN spree_product_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_product_properties.product_id = 11457;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_users INNER JOIN spree_role_users ON spree_role_users.user_id = spree_users.id LIMIT 1;
+SELECT COUNT(*) FROM spree_properties INNER JOIN spree_product_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_product_properties.product_id = 11457 LIMIT 1;

@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_line_items.* FROM spree_line_items INNER JOIN spree_orders ON spree_line_items.order_id = spree_orders.id WHERE spree_orders.store_id = 5777 ORDER BY spree_line_items.created_at ASC;
+SELECT spree_option_types.* FROM spree_option_types WHERE 1 = 1 AND spree_option_types.position IS NOT NULL ORDER BY spree_option_types.position DESC LIMIT 5;
 -- Rewritten Queries
-SELECT spree_line_items.* FROM spree_line_items ORDER BY spree_line_items.created_at ASC;
+SELECT spree_option_types.* FROM spree_option_types WHERE 1 = 1 AND True ORDER BY spree_option_types.position DESC LIMIT 5;

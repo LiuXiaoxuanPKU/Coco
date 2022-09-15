@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM spree_users INNER JOIN spree_role_users ON spree_role_users.user_id = spree_users.id INNER JOIN spree_roles ON spree_roles.id = spree_role_users.role_id WHERE spree_roles.name = \"$1\" LIMIT 1",
-        "cost": 20.32,
+        "sql": "SELECT COUNT(*) FROM spree_properties INNER JOIN spree_product_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_product_properties.product_id = \"$1\"",
+        "cost": 28.19,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM spree_users INNER JOIN spree_role_users ON spree_role_users.user_id = spree_users.id LIMIT 1",
-            "cost": 0.64,
+            "sql": "SELECT COUNT(*) FROM spree_properties INNER JOIN spree_product_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_product_properties.product_id = \"$1\" LIMIT 1",
+            "cost": 28.19,
             "rewrite_types": [
-                "RemoveJoin"
+                "AddLimitOne"
             ]
         }
     ]

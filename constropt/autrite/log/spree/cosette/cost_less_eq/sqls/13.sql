@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_payments WHERE spree_payments.order_id = 7340 AND source_type = 'Spree::Payment' AND amount < 0 AND state = 'completed' LIMIT 1;
+SELECT spree_products_taxons.* FROM spree_products_taxons WHERE spree_products_taxons.product_id = 7056 AND spree_products_taxons.taxon_id = 7165;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_payments WHERE spree_payments.order_id = 7340 AND source_type = 'Spree::Payment' AND state = 'completed' LIMIT 1;
+SELECT spree_products_taxons.* FROM spree_products_taxons WHERE spree_products_taxons.product_id = 7056 AND spree_products_taxons.taxon_id = 7165 LIMIT 1;

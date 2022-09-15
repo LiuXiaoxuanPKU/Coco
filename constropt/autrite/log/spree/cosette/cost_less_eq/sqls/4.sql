@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_product_option_types.option_type_id FROM spree_product_option_types WHERE spree_product_option_types.product_id = 12707;
+SELECT COUNT(*) FROM spree_variants WHERE spree_variants.product_id = 11576 AND spree_variants.position = 4;
 -- Rewritten Queries
-SELECT spree_product_option_types.option_type_id FROM spree_product_option_types WHERE spree_product_option_types.product_id = 12707 LIMIT 1;
+SELECT COUNT(*) FROM spree_variants WHERE spree_variants.product_id = 11576 AND spree_variants.position = 4 LIMIT 1;

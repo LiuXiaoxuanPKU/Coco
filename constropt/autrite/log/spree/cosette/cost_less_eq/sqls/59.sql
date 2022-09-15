@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'Alpha' AND spree_properties.name = 'qbqvopzmwamgihhtcrbhfneki';
+SELECT spree_stores.id FROM spree_stores INNER JOIN spree_payment_methods_stores ON spree_stores.id = spree_payment_methods_stores.store_id WHERE spree_stores.deleted_at IS NULL AND spree_payment_methods_stores.payment_method_id = 18498 ORDER BY spree_stores.created_at ASC;
 -- Rewritten Queries
-SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'Alpha' AND spree_properties.name = 'qbqvopzmwamgihhtcrbhfneki' LIMIT 1;
+SELECT spree_stores.id FROM spree_stores INNER JOIN spree_payment_methods_stores ON spree_stores.id = spree_payment_methods_stores.store_id WHERE spree_stores.deleted_at IS NULL AND spree_payment_methods_stores.payment_method_id = 18498 ORDER BY spree_stores.created_at ASC LIMIT 1;

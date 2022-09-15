@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.name IS NULL LIMIT 7;
+SELECT COUNT(*) FROM spree_variants WHERE spree_variants.product_id = 9685 AND spree_variants.position = 3;
 -- Rewritten Queries
-SELECT spree_stock_locations.* FROM spree_stock_locations WHERE False LIMIT 7;
+SELECT COUNT(*) FROM spree_variants WHERE spree_variants.product_id = 9685 AND spree_variants.position = 3 LIMIT 1;

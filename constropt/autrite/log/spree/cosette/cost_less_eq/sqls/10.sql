@@ -1243,6 +1243,8 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_option_types LEFT OUTER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id LIMIT 1;
+SELECT 1 AS "one" FROM spree_menus WHERE spree_menus.location IS NULL AND spree_menus.store_id = 13315 AND spree_menus.locale IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_option_types LIMIT 1;
+SELECT 1 AS "one" FROM spree_menus WHERE False AND spree_menus.store_id = 13315 AND spree_menus.locale IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM spree_menus WHERE spree_menus.location IS NULL AND spree_menus.store_id = 13315 AND False LIMIT 1;
+SELECT 1 AS "one" FROM spree_menus WHERE False AND spree_menus.store_id = 13315 AND False LIMIT 1;

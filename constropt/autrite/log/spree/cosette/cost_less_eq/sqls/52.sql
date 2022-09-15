@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_option_types ON spree_product_option_types.product_id = spree_products.id INNER JOIN spree_option_types ON spree_option_types.id = spree_product_option_types.option_type_id WHERE spree_products.deleted_at IS NULL AND spree_option_types.name = 'tulvehnl';
+SELECT spree_option_types.* FROM spree_option_types INNER JOIN spree_option_type_prototypes ON spree_option_types.id = spree_option_type_prototypes.option_type_id WHERE spree_option_type_prototypes.prototype_id = 5317 ORDER BY spree_option_types.position ASC;
 -- Rewritten Queries
-SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_option_types ON spree_product_option_types.product_id = spree_products.id INNER JOIN spree_option_types ON spree_option_types.id = spree_product_option_types.option_type_id WHERE spree_products.deleted_at IS NULL AND spree_option_types.name = 'tulvehnl' LIMIT 1;
+SELECT spree_option_types.* FROM spree_option_types INNER JOIN spree_option_type_prototypes ON spree_option_types.id = spree_option_type_prototypes.option_type_id WHERE spree_option_type_prototypes.prototype_id = 5317 ORDER BY spree_option_types.position ASC LIMIT 1;

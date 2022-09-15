@@ -1243,7 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND spree_prices.amount IS NOT NULL AND spree_variants.id = 4694 LIMIT 1;
+SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_taxonomies ON spree_taxons.taxonomy_id = spree_taxonomies.id WHERE spree_taxonomies.store_id = 6892 AND spree_taxons.id IN (9551, 525) ORDER BY spree_taxonomies.position, spree_taxonomies.created_at;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND True AND spree_variants.id = 4694 LIMIT 1;
-SELECT 1 AS "one" FROM spree_variants INNER JOIN spree_prices ON spree_prices.deleted_at IS NULL AND spree_prices.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND spree_prices.currency = 'EUR' AND spree_variants.id = 4694 LIMIT 1;
+SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_taxonomies ON spree_taxons.taxonomy_id = spree_taxonomies.id WHERE spree_taxonomies.store_id = 6892 AND spree_taxons.id IN (9551, 525) ORDER BY spree_taxonomies.position, spree_taxonomies.created_at LIMIT 1;

@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.id = \"$1\"",
-        "cost": 29.26,
+        "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_product_promotion_rules ON spree_products.id = spree_product_promotion_rules.product_id WHERE spree_products.deleted_at IS NULL AND spree_product_promotion_rules.promotion_rule_id = \"$1\"",
+        "cost": 24.93,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_properties.id = \"$1\" LIMIT 1",
-            "cost": 29.26,
+            "sql": "SELECT spree_products.* FROM spree_products INNER JOIN spree_product_promotion_rules ON spree_products.id = spree_product_promotion_rules.product_id WHERE spree_products.deleted_at IS NULL AND spree_product_promotion_rules.promotion_rule_id = \"$1\" LIMIT 1",
+            "cost": 12.75,
             "rewrite_types": [
                 "AddLimitOne"
             ]

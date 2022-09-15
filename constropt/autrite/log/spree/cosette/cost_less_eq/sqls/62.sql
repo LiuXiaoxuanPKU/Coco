@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_variants.* FROM spree_variants INNER JOIN spree_products ON spree_variants.product_id = spree_products.id INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id WHERE spree_variants.deleted_at IS NULL AND spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 7675 ORDER BY spree_variants.position ASC;
+SELECT 1 AS "one" FROM spree_products INNER JOIN friendly_id_slugs ON friendly_id_slugs.deleted_at IS NULL AND friendly_id_slugs.sluggable_type = 'Spree::Product' AND friendly_id_slugs.sluggable_id = spree_products.id WHERE spree_products.id IS NOT NULL AND spree_products.slug = 'ajhhzknheofnw' LIMIT 1;
 -- Rewritten Queries
-SELECT spree_variants.* FROM spree_variants INNER JOIN spree_products ON spree_variants.product_id = spree_products.id INNER JOIN spree_products_stores ON spree_products.id = spree_products_stores.product_id WHERE spree_variants.deleted_at IS NULL AND spree_products.deleted_at IS NULL AND spree_products_stores.store_id = 7675 ORDER BY spree_variants.position ASC LIMIT 1;
+SELECT 1 AS "one" FROM spree_products WHERE spree_products.id IS NOT NULL AND spree_products.slug = 'ajhhzknheofnw' LIMIT 1;

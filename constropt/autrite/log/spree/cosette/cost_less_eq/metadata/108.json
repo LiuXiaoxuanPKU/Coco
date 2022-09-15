@@ -1,30 +1,15 @@
 {
     "org": {
-        "sql": "SELECT DISTINCT spree_zones.id FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = \"$1\" AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = \"$2\" AND zone_members_spree_countries_join.zoneable_id = spree_countries.id INNER JOIN spree_zones AS zones_spree_countries ON zones_spree_countries.id = zone_members_spree_countries_join.zone_id WHERE zone_members_spree_countries_join.zone_id = 40",
-        "cost": 29.05,
+        "sql": "SELECT spree_promotions.* FROM spree_promotions INNER JOIN spree_promotion_rules ON spree_promotions.id = spree_promotion_rules.promotion_id INNER JOIN spree_product_promotion_rules ON spree_promotion_rules.id = spree_product_promotion_rules.promotion_rule_id WHERE spree_product_promotion_rules.product_id = \"$1\" AND spree_promotions.advertise = \"$2\" AND (spree_promotions.starts_at IS NULL OR spree_promotions.starts_at < '2022-08-14 05:38:26.589079') AND (spree_promotions.expires_at IS NULL OR spree_promotions.expires_at > '2022-08-14 05:38:26.589163')",
+        "cost": 29.12,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_zones.id FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = \"$1\" AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = \"$2\" AND zone_members_spree_countries_join.zoneable_id = spree_countries.id WHERE zone_members_spree_countries_join.zone_id = 40",
-            "cost": 20.72,
+            "sql": "SELECT spree_promotions.* FROM spree_promotions INNER JOIN spree_promotion_rules ON spree_promotions.id = spree_promotion_rules.promotion_id INNER JOIN spree_product_promotion_rules ON spree_promotion_rules.id = spree_product_promotion_rules.promotion_rule_id WHERE spree_product_promotion_rules.product_id = \"$1\" AND spree_promotions.advertise = \"$2\" AND (spree_promotions.starts_at IS NULL OR spree_promotions.starts_at < '2022-08-14 05:38:26.589079') AND (spree_promotions.expires_at IS NULL OR spree_promotions.expires_at > '2022-08-14 05:38:26.589163') LIMIT 1",
+            "cost": 29.12,
             "rewrite_types": [
-                "RemoveJoin",
-                "RemoveDistinct"
-            ]
-        },
-        {
-            "sql": "SELECT DISTINCT spree_zones.id FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = \"$1\" AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = \"$2\" AND zone_members_spree_countries_join.zoneable_id = spree_countries.id WHERE zone_members_spree_countries_join.zone_id = 40",
-            "cost": 20.74,
-            "rewrite_types": [
-                "RemoveJoin"
-            ]
-        },
-        {
-            "sql": "SELECT spree_zones.id FROM spree_zones INNER JOIN spree_zone_members ON spree_zone_members.zoneable_type = \"$1\" AND spree_zone_members.zone_id = spree_zones.id INNER JOIN spree_countries ON spree_countries.id = spree_zone_members.zoneable_id INNER JOIN spree_zone_members AS zone_members_spree_countries_join ON zone_members_spree_countries_join.zoneable_type = \"$2\" AND zone_members_spree_countries_join.zoneable_id = spree_countries.id INNER JOIN spree_zones AS zones_spree_countries ON zones_spree_countries.id = zone_members_spree_countries_join.zone_id WHERE zone_members_spree_countries_join.zone_id = 40",
-            "cost": 29.03,
-            "rewrite_types": [
-                "RemoveDistinct"
+                "AddLimitOne"
             ]
         }
     ]

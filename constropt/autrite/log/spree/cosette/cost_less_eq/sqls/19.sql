@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_option_value_variants.* FROM spree_option_value_variants WHERE spree_option_value_variants.variant_id = 4245 AND spree_option_value_variants.option_value_id = 4492;
+SELECT 1 AS "one" FROM spree_product_properties WHERE spree_product_properties.property_id IS NULL AND spree_product_properties.product_id = 3550 LIMIT 1;
 -- Rewritten Queries
-SELECT spree_option_value_variants.* FROM spree_option_value_variants WHERE spree_option_value_variants.variant_id = 4245 AND spree_option_value_variants.option_value_id = 4492 LIMIT 1;
+SELECT 1 AS "one" FROM spree_product_properties WHERE False AND spree_product_properties.product_id = 3550 LIMIT 1;

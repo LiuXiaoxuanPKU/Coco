@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT spree_stock_locations.* FROM spree_stock_locations WHERE spree_stock_locations.name IS NULL LIMIT \"$1\"",
-        "cost": 225.0,
+        "sql": "SELECT COUNT(*) FROM spree_variants WHERE spree_variants.product_id = \"$1\" AND spree_variants.position = 3",
+        "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_stock_locations.* FROM spree_stock_locations WHERE False LIMIT \"$1\"",
-            "cost": 0.0,
+            "sql": "SELECT COUNT(*) FROM spree_variants WHERE spree_variants.product_id = \"$1\" AND spree_variants.position = 3 LIMIT 1",
+            "cost": 8.31,
             "rewrite_types": [
-                "RewriteNullPredicate"
+                "AddLimitOne"
             ]
         }
     ]

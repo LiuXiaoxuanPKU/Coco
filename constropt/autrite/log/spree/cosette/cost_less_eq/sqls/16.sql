@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_option_types.* FROM spree_option_types WHERE 1 = 1 AND spree_option_types.position IS NOT NULL ORDER BY spree_option_types.position DESC LIMIT 5;
+SELECT 1 AS "one" FROM spree_promotions_stores WHERE spree_promotions_stores.store_id = 12547 AND spree_promotions_stores.promotion_id IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT spree_option_types.* FROM spree_option_types WHERE 1 = 1 AND True ORDER BY spree_option_types.position DESC LIMIT 5;
+SELECT 1 AS "one" FROM spree_promotions_stores WHERE spree_promotions_stores.store_id = 12547 AND False LIMIT 1;

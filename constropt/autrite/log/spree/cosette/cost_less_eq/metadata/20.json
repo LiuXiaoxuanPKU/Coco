@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_prototype_taxons ON spree_taxons.id = spree_prototype_taxons.taxon_id WHERE spree_prototype_taxons.prototype_id = \"$1\"",
-        "cost": 24.93,
+        "sql": "SELECT spree_variants.* FROM spree_variants WHERE spree_variants.deleted_at IS NULL AND spree_variants.is_master = \"$1\" AND spree_variants.product_id = \"$2\"",
+        "cost": 8.29,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_taxons.* FROM spree_taxons INNER JOIN spree_prototype_taxons ON spree_taxons.id = spree_prototype_taxons.taxon_id WHERE spree_prototype_taxons.prototype_id = \"$1\" LIMIT 1",
-            "cost": 12.75,
+            "sql": "SELECT spree_variants.* FROM spree_variants WHERE spree_variants.deleted_at IS NULL AND spree_variants.is_master = \"$1\" AND spree_variants.product_id = \"$2\" LIMIT 1",
+            "cost": 8.29,
             "rewrite_types": [
                 "AddLimitOne"
             ]

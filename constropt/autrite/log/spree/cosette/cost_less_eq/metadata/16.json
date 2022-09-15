@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT spree_option_types.* FROM spree_option_types WHERE 1 = 1 AND spree_option_types.position IS NOT NULL ORDER BY spree_option_types.position DESC LIMIT \"$1\"",
-        "cost": 22.2,
+        "sql": "SELECT 1 AS one FROM spree_promotions_stores WHERE spree_promotions_stores.store_id = \"$1\" AND spree_promotions_stores.promotion_id IS NULL LIMIT 1",
+        "cost": 4.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_option_types.* FROM spree_option_types WHERE 1 = 1 AND True ORDER BY spree_option_types.position DESC LIMIT \"$1\"",
-            "cost": 22.19,
+            "sql": "SELECT 1 AS one FROM spree_promotions_stores WHERE spree_promotions_stores.store_id = \"$1\" AND False LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
                 "RewriteNullPredicate"
             ]

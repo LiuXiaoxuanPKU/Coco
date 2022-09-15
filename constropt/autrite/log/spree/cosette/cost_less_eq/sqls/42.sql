@@ -1243,8 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT SUM(spree_stock_items.count_on_hand) FROM spree_stock_items INNER JOIN spree_stock_locations ON spree_stock_locations.id = spree_stock_items.stock_location_id WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = 4072 AND spree_stock_locations.active = True;
+SELECT spree_zone_members.* FROM spree_zone_members WHERE spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 5576 AND spree_zone_members.zone_id IS NULL ORDER BY spree_zone_members.id ASC LIMIT 8;
 -- Rewritten Queries
-SELECT SUM(spree_stock_items.count_on_hand) FROM spree_stock_items WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = 4072;
-SELECT SUM(spree_stock_items.count_on_hand) FROM spree_stock_items WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = 4072 LIMIT 1;
-SELECT SUM(spree_stock_items.count_on_hand) FROM spree_stock_items INNER JOIN spree_stock_locations ON spree_stock_locations.id = spree_stock_items.stock_location_id WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = 4072 AND spree_stock_locations.active = True LIMIT 1;
+SELECT spree_zone_members.* FROM spree_zone_members WHERE spree_zone_members.zoneable_type = 'Spree::State' AND spree_zone_members.zoneable_id = 5576 AND False ORDER BY spree_zone_members.id ASC LIMIT 8;

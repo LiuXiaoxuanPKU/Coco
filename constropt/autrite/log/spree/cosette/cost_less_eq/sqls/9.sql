@@ -1243,6 +1243,8 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_products_stores.* FROM spree_products_stores WHERE spree_products_stores.product_id = 7052 AND spree_products_stores.store_id = 11242;
+SELECT 1 AS "one" FROM spree_menus WHERE spree_menus.location = 'footer' AND spree_menus.store_id IS NULL AND spree_menus.locale IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT spree_products_stores.* FROM spree_products_stores WHERE spree_products_stores.product_id = 7052 AND spree_products_stores.store_id = 11242 LIMIT 1;
+SELECT 1 AS "one" FROM spree_menus WHERE spree_menus.location = 'footer' AND False AND spree_menus.locale IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM spree_menus WHERE spree_menus.location = 'footer' AND spree_menus.store_id IS NULL AND False LIMIT 1;
+SELECT 1 AS "one" FROM spree_menus WHERE spree_menus.location = 'footer' AND False AND False LIMIT 1;

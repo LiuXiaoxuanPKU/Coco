@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT active_storage_attachments.* FROM active_storage_attachments WHERE active_storage_attachments.record_type = 'Spree::Asset' AND active_storage_attachments.name = 'attachment' AND active_storage_attachments.record_id = 18332;
+SELECT 1 AS "one" FROM spree_option_type_prototypes WHERE spree_option_type_prototypes.prototype_id IS NULL AND spree_option_type_prototypes.option_type_id = 7140 LIMIT 1;
 -- Rewritten Queries
-SELECT active_storage_attachments.* FROM active_storage_attachments WHERE active_storage_attachments.record_type = 'Spree::Asset' AND active_storage_attachments.name = 'attachment' AND active_storage_attachments.record_id = 18332 LIMIT 1;
+SELECT 1 AS "one" FROM spree_option_type_prototypes WHERE False AND spree_option_type_prototypes.option_type_id = 7140 LIMIT 1;

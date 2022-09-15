@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'Alpha' AND spree_properties.id = 2808;
+SELECT spree_variants.* FROM spree_variants INNER JOIN spree_products ON spree_products.id = spree_variants.product_id WHERE spree_variants.deleted_at IS NULL AND (LOWER(spree_products.name) LIKE LOWER('%variant_white%') OR LOWER(sku) LIKE LOWER('%variant_white%'));
 -- Rewritten Queries
-SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'Alpha' AND spree_properties.id = 2808 LIMIT 1;
+SELECT spree_variants.* FROM spree_variants INNER JOIN spree_products ON spree_products.id = spree_variants.product_id WHERE spree_variants.deleted_at IS NULL AND (LOWER(spree_products.name) LIKE LOWER('%variant_white%') OR LOWER(sku) LIKE LOWER('%variant_white%')) LIMIT 1;

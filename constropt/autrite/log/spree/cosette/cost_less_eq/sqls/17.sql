@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT COUNT(*) FROM spree_taxons INNER JOIN spree_products_taxons ON spree_taxons.id = spree_products_taxons.taxon_id WHERE spree_products_taxons.product_id = 10325;
+SELECT 1 AS "one" FROM spree_states WHERE LOWER(spree_states.abbr) = 'hmycxfkkuzlbbkpnkweululfmfoilfpoaxhxvwbcbdyvnfhixeffrxsvjgpbquiotezfqwchnxycrjjfnwmxmbgorpdtlwsqkbvekoggljjkusrqeqxsjczmhsmgufsuondjjldxwzgccxvonttgjufchuxhvtresxtckxjuhxhkmhqcmckhaoluaw' AND spree_states.id <> 12033 AND spree_states.country_id IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT COUNT(*) FROM spree_taxons INNER JOIN spree_products_taxons ON spree_taxons.id = spree_products_taxons.taxon_id WHERE spree_products_taxons.product_id = 10325 LIMIT 1;
+SELECT 1 AS "one" FROM spree_states WHERE LOWER(spree_states.abbr) = 'hmycxfkkuzlbbkpnkweululfmfoilfpoaxhxvwbcbdyvnfhixeffrxsvjgpbquiotezfqwchnxycrjjfnwmxmbgorpdtlwsqkbvekoggljjkusrqeqxsjczmhsmgufsuondjjldxwzgccxvonttgjufchuxhvtresxtckxjuhxhkmhqcmckhaoluaw' AND spree_states.id <> 12033 AND False LIMIT 1;

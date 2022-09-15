@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT spree_variants.* FROM spree_variants INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = spree_variants.id WHERE spree_variants.deleted_at IS NULL AND (spree_stock_items.count_on_hand > 0 OR spree_variants.track_inventory = False)",
-        "cost": 180872.87,
+        "sql": "SELECT spree_option_types.* FROM spree_option_types INNER JOIN spree_product_option_types ON spree_option_types.id = spree_product_option_types.option_type_id WHERE spree_product_option_types.product_id = \"$1\" ORDER BY spree_option_types.position ASC",
+        "cost": 28.33,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_variants.* FROM spree_variants WHERE spree_variants.deleted_at IS NULL AND spree_variants.track_inventory = False",
-            "cost": 4.29,
+            "sql": "SELECT spree_option_types.* FROM spree_option_types INNER JOIN spree_product_option_types ON spree_option_types.id = spree_product_option_types.option_type_id WHERE spree_product_option_types.product_id = \"$1\" ORDER BY spree_option_types.position ASC LIMIT 1",
+            "cost": 28.33,
             "rewrite_types": [
-                "RemoveJoin"
+                "AddLimitOne"
             ]
         }
     ]

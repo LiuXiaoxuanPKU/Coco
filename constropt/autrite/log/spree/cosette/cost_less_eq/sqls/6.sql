@@ -1243,8 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_menus WHERE spree_menus.location IS NULL AND spree_menus.store_id = 7971 AND spree_menus.locale IS NULL LIMIT 1;
+SELECT spree_zone_members.* FROM spree_zone_members WHERE zoneable_id IS NULL OR zoneable_type <> 'Spree::Country';
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_menus WHERE spree_menus.location IS NULL AND spree_menus.store_id = 7971 AND False LIMIT 1;
-SELECT 1 AS "one" FROM spree_menus WHERE False AND spree_menus.store_id = 7971 AND spree_menus.locale IS NULL LIMIT 1;
-SELECT 1 AS "one" FROM spree_menus WHERE False AND spree_menus.store_id = 7971 AND False LIMIT 1;
+SELECT spree_zone_members.* FROM spree_zone_members WHERE False OR zoneable_type <> 'Spree::Country';

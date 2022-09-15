@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT DISTINCT spree_option_types.position, spree_option_values.position AS alias_0, spree_option_types.id FROM spree_option_types LEFT OUTER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id ORDER BY spree_option_types.position ASC, spree_option_values.position ASC LIMIT 3;
+SELECT 1 AS "one" FROM spree_stock_items INNER JOIN spree_stock_locations ON spree_stock_locations.id = spree_stock_items.stock_location_id WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_locations.active = True AND spree_stock_items.id = 11318111 LIMIT 1;
 -- Rewritten Queries
-SELECT spree_option_types.position, spree_option_values.position AS alias_0, spree_option_types.id FROM spree_option_types LEFT OUTER JOIN spree_option_values ON spree_option_values.option_type_id = spree_option_types.id ORDER BY spree_option_types.position ASC, spree_option_values.position ASC LIMIT 3;
+SELECT 1 AS "one" FROM spree_stock_items WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.id = 11318111 LIMIT 1;

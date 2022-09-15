@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_products_taxons.* FROM spree_products_taxons WHERE spree_products_taxons.product_id = 8875 AND spree_products_taxons.taxon_id = 1719;
+SELECT 1 AS "one" FROM spree_menus WHERE spree_menus.location = 'header' AND spree_menus.store_id = 13055 AND spree_menus.locale IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT spree_products_taxons.* FROM spree_products_taxons WHERE spree_products_taxons.product_id = 8875 AND spree_products_taxons.taxon_id = 1719 LIMIT 1;
+SELECT 1 AS "one" FROM spree_menus WHERE spree_menus.location = 'header' AND spree_menus.store_id = 13055 AND False LIMIT 1;

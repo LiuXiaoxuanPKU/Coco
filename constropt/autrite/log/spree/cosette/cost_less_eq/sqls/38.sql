@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM spree_line_items INNER JOIN spree_variants ON spree_variants.id = spree_line_items.variant_id INNER JOIN spree_products ON spree_products.id = spree_variants.product_id WHERE spree_line_items.order_id = 2753 AND spree_products.promotionable = True LIMIT 1;
+SELECT COUNT(*) FROM spree_option_values INNER JOIN spree_option_value_variants ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_option_value_variants.variant_id = 4186;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM spree_line_items INNER JOIN spree_variants ON spree_variants.id = spree_line_items.variant_id WHERE spree_line_items.order_id = 2753 LIMIT 1;
+SELECT COUNT(*) FROM spree_option_values INNER JOIN spree_option_value_variants ON spree_option_values.id = spree_option_value_variants.option_value_id WHERE spree_option_value_variants.variant_id = 4186 LIMIT 1;

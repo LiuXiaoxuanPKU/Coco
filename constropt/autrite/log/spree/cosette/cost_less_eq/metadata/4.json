@@ -1,13 +1,13 @@
 {
     "org": {
-        "sql": "SELECT spree_product_option_types.option_type_id FROM spree_product_option_types WHERE spree_product_option_types.product_id = \"$1\"",
-        "cost": 11.45,
+        "sql": "SELECT COUNT(*) FROM spree_variants WHERE spree_variants.product_id = \"$1\" AND spree_variants.position = 4",
+        "cost": 8.31,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_product_option_types.option_type_id FROM spree_product_option_types WHERE spree_product_option_types.product_id = \"$1\" LIMIT 1",
-            "cost": 6.3,
+            "sql": "SELECT COUNT(*) FROM spree_variants WHERE spree_variants.product_id = \"$1\" AND spree_variants.position = 4 LIMIT 1",
+            "cost": 8.31,
             "rewrite_types": [
                 "AddLimitOne"
             ]

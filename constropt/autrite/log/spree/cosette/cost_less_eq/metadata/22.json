@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT spree_products_taxons.* FROM spree_products_taxons WHERE spree_products_taxons.taxon_id = \"$1\" AND spree_products_taxons.product_id = \"$2\" ORDER BY spree_products_taxons.position ASC",
-        "cost": 8.32,
+        "sql": "SELECT 1 AS one FROM spree_property_prototypes WHERE spree_property_prototypes.prototype_id IS NULL AND spree_property_prototypes.property_id = \"$1\" LIMIT 1",
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT spree_products_taxons.* FROM spree_products_taxons WHERE spree_products_taxons.taxon_id = \"$1\" AND spree_products_taxons.product_id = \"$2\" ORDER BY spree_products_taxons.position ASC LIMIT 1",
-            "cost": 8.32,
+            "sql": "SELECT 1 AS one FROM spree_property_prototypes WHERE False AND spree_property_prototypes.property_id = \"$1\" LIMIT 1",
+            "cost": 0.0,
             "rewrite_types": [
-                "AddLimitOne"
+                "RewriteNullPredicate"
             ]
         }
     ]

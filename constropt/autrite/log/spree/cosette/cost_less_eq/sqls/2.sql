@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT spree_dummy_models.* FROM spree_dummy_models WHERE spree_dummy_models.name = 'TestName';
+SELECT spree_menu_items.* FROM spree_menu_items WHERE spree_menu_items.menu_id = 5509;
 -- Rewritten Queries
-SELECT spree_dummy_models.* FROM spree_dummy_models WHERE spree_dummy_models.name = 'TestName' LIMIT 1;
+SELECT spree_menu_items.* FROM spree_menu_items WHERE spree_menu_items.menu_id = 5509 LIMIT 1;

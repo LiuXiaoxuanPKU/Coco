@@ -1243,6 +1243,6 @@ CREATE TABLE spree_zones (
 
 
 -- Original Query
-SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'fake' AND spree_properties.name = 'alhihiwewrccluaqdtqgdpcwpowquhtozoudfaphkqkxytnixbocazgunibinqyzdfctulkgwzxtmmvzqwivpukgscbdlgxwlpiathqquhxeqtefsumrtiudeujhomivzyjdkjybkwrbwzjvjmgsdqyimtoeyqgmiexjiczzulrgxlwygmeivpbfdzvxuzpuekgaukugbukqgtjeabxbgxvhieyd';
+SELECT spree_stock_items.* FROM spree_stock_items INNER JOIN spree_stock_locations ON spree_stock_locations.id = spree_stock_items.stock_location_id WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = 4936 AND spree_stock_locations.active = True;
 -- Rewritten Queries
-SELECT COUNT(*) FROM spree_products INNER JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id INNER JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id WHERE spree_products.deleted_at IS NULL AND spree_product_properties.value = 'fake' AND spree_properties.name = 'alhihiwewrccluaqdtqgdpcwpowquhtozoudfaphkqkxytnixbocazgunibinqyzdfctulkgwzxtmmvzqwivpukgscbdlgxwlpiathqquhxeqtefsumrtiudeujhomivzyjdkjybkwrbwzjvjmgsdqyimtoeyqgmiexjiczzulrgxlwygmeivpbfdzvxuzpuekgaukugbukqgtjeabxbgxvhieyd' LIMIT 1;
+SELECT spree_stock_items.* FROM spree_stock_items WHERE spree_stock_items.deleted_at IS NULL AND spree_stock_items.variant_id = 4936;

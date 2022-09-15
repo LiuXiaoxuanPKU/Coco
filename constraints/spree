@@ -54,7 +54,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "country",
+        "field_name": "country_id",
         "db": false,
         "cond": ""
       },
@@ -132,13 +132,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "adjustable",
+        "field_name": "adjustable_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "order",
+        "field_name": "order_id",
         "db": false,
         "cond": ""
       },
@@ -324,13 +324,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "taxon",
+        "field_name": "taxon_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "product",
+        "field_name": "product_id",
         "db": false,
         "cond": ""
       },
@@ -588,19 +588,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "store",
+        "field_name": "store_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "return_items",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "stock_location",
+        "field_name": "stock_location_id",
         "db": false,
         "cond": ""
       },
@@ -653,7 +647,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "variant",
+        "field_name": "variant_id",
         "db": false,
         "cond": ""
       },
@@ -704,13 +698,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "digital",
+        "field_name": "digital_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "line_item",
+        "field_name": "line_item_id",
         "db": false,
         "cond": ""
       },
@@ -945,13 +939,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "variant",
+        "field_name": "variant_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "order",
+        "field_name": "order_id",
         "db": false,
         "cond": ""
       },
@@ -1092,7 +1086,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "store",
+        "field_name": "store_id",
         "db": false,
         "cond": ""
       },
@@ -1112,7 +1106,7 @@
         "^o": "UniqueConstraint",
         "field_name": [
           "location",
-          "store",
+          "store_id",
           "locale"
         ],
         "db": false,
@@ -1194,12 +1188,6 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "menu",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "item_type",
         "db": false,
         "cond": ""
@@ -1231,7 +1219,7 @@
       {
         "^o": "UniqueConstraint",
         "field_name": [
-          "spree::menu_id"
+          "menu_id"
         ],
         "db": false,
         "cond": "",
@@ -1299,7 +1287,7 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": ["name"],
         "db": false,
         "cond": "",
         "case_sensitive": false,
@@ -1384,13 +1372,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "prototype",
+        "field_name": "prototype_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "option_type",
+        "field_name": "option_type_id",
         "db": false,
         "cond": ""
       },
@@ -1517,13 +1505,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "option_value",
+        "field_name": "option_value_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "variant",
+        "field_name": "variant_id",
         "db": false,
         "cond": ""
       },
@@ -1611,7 +1599,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "store",
+        "field_name": "store_id",
         "db": false,
         "cond": ""
       },
@@ -1620,21 +1608,6 @@
         "field_name": "currency",
         "db": false,
         "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "payment_state",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "payment_state",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
@@ -1849,12 +1822,6 @@
         "class_name": "Source",
         "fk_column_name": "source_id",
         "polymorphic": true
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "payment_method",
-        "db": false,
-        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -2086,19 +2053,6 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "compare_at_amount",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "compare_at_amount",
-        "db": false,
-        "min": 0,
-        "max": null
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "variant_id",
         "db": true,
         "cond": ""
@@ -2185,16 +2139,6 @@
         "type": "builtin"
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "spree::wisheditem_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "has_one"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "name",
         "db": true,
@@ -2257,13 +2201,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "product",
+        "field_name": "product_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "option_type",
+        "field_name": "option_type_id",
         "db": false,
         "cond": ""
       },
@@ -2325,13 +2269,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "product",
+        "field_name": "product_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "promotion_rule",
+        "field_name": "promotion_rule_id",
         "db": false,
         "cond": ""
       },
@@ -2378,12 +2322,6 @@
         "class_name": "Spree::Property",
         "fk_column_name": "property_id",
         "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "property",
-        "db": false,
-        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -2549,13 +2487,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "promotion_action",
+        "field_name": "promotion_action_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "variant",
+        "field_name": "variant_id",
         "db": false,
         "cond": ""
       },
@@ -2679,13 +2617,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "promotion_rule",
+        "field_name": "promotion_rule_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "taxon",
+        "field_name": "taxon_id",
         "db": false,
         "cond": ""
       },
@@ -2735,13 +2673,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "user",
+        "field_name": "user_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "promotion_rule",
+        "field_name": "promotion_rule_id",
         "db": false,
         "cond": ""
       },
@@ -2844,13 +2782,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "prototype",
+        "field_name": "prototype_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "property",
+        "field_name": "property_id",
         "db": false,
         "cond": ""
       },
@@ -2952,13 +2890,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "prototype",
+        "field_name": "prototype_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "taxon",
+        "field_name": "taxon_id",
         "db": false,
         "cond": ""
       },
@@ -3017,7 +2955,7 @@
         "field_name": "reason",
         "db": false,
         "class_name": "Spree::RefundReason",
-        "fk_column_name": ":refund_reason_id",
+        "fk_column_name": "refund_reason_id",
         "polymorphic": null
       },
       {
@@ -3029,13 +2967,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "payment",
+        "field_name": "payment_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "reason",
+        "field_name": "refund_reason_id",
         "db": false,
         "cond": ""
       },
@@ -3115,7 +3053,7 @@
     ]
   },
   {
-    "table": "spree_reimbursement/credits",
+    "table": "spree_reimbursement_credits",
     "parent": "Spree::Base",
     "class": "Spree::Reimbursement::Credit",
     "constraints": [
@@ -3137,7 +3075,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "creditable",
+        "field_name": "creditable_id",
         "db": false,
         "cond": ""
       },
@@ -3176,7 +3114,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "order",
+        "field_name": "order_id",
         "db": false,
         "cond": ""
       },
@@ -3371,24 +3309,24 @@
         "field_name": "reason",
         "db": false,
         "class_name": "Spree::ReturnAuthorizationReason",
-        "fk_column_name": ":return_authorization_reason_id",
+        "fk_column_name": "return_authorization_reason_id",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "order",
+        "field_name": "order_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "reason",
+        "field_name": "return_authorization_reason_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "stock_location",
+        "field_name": "stock_location_id",
         "db": false,
         "cond": ""
       },
@@ -3528,22 +3466,9 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "inventory_unit",
+        "field_name": "inventory_unit_id",
         "db": false,
         "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "return_quantity",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "return_quantity",
-        "db": false,
-        "min": 1,
-        "max": null
       },
       {
         "^o": "InclusionConstraint",
@@ -3635,7 +3560,7 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": ["name"],
         "db": false,
         "cond": "",
         "case_sensitive": false,
@@ -3727,7 +3652,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "stock_location",
+        "field_name": "stock_location_id",
         "db": false,
         "cond": ""
       },
@@ -3818,7 +3743,7 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": ["name"],
         "db": false,
         "cond": "",
         "case_sensitive": false,
@@ -4077,7 +4002,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "country",
+        "field_name": "country_id",
         "db": false,
         "cond": ""
       },
@@ -4200,13 +4125,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "stock_location",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "variant",
+        "field_name": "stock_location_id",
         "db": false,
         "cond": ""
       },
@@ -4271,7 +4190,7 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": ["name"],
         "db": false,
         "cond": "",
         "case_sensitive": false,
@@ -4359,7 +4278,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "stock_item",
+        "field_name": "stock_item_id",
         "db": false,
         "cond": ""
       },
@@ -4494,32 +4413,6 @@
         "cond": ""
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "digital_asset_authorized_clicks",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "digital_asset_authorized_clicks",
-        "db": false,
-        "min": 0,
-        "max": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "digital_asset_authorized_days",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "digital_asset_authorized_days",
-        "db": false,
-        "min": 0,
-        "max": null
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "code"
@@ -4616,25 +4509,25 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "user",
+        "field_name": "user_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "category",
+        "field_name": "category_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "credit_type",
+        "field_name": "type_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "created_by",
+        "field_name": "created_by_id",
         "db": false,
         "cond": ""
       },
@@ -4646,7 +4539,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "store",
+        "field_name": "store_id",
         "db": false,
         "cond": ""
       },
@@ -4889,13 +4782,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "store",
+        "field_name": "store_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "payment_method",
+        "field_name": "payment_method_id",
         "db": false,
         "cond": ""
       },
@@ -4962,13 +4855,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "store",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "product",
+        "field_name": "product_id",
         "db": false,
         "cond": ""
       },
@@ -5047,13 +4934,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "store",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "promotion",
+        "field_name": "promotion_id",
         "db": false,
         "cond": ""
       },
@@ -5190,7 +5071,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "tax_category",
+        "field_name": "tax_category_id",
         "db": false,
         "cond": ""
       },
@@ -5257,7 +5138,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "taxonomy",
+        "field_name": "taxonomy_id",
         "db": false,
         "cond": ""
       },
@@ -5318,7 +5199,7 @@
       {
         "^o": "UniqueConstraint",
         "field_name": [
-          "spree::taxonomy_id"
+          "taxonomy_id"
         ],
         "db": false,
         "cond": "",
@@ -5403,7 +5284,7 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "store",
+        "field_name": "store_id",
         "db": false,
         "cond": ""
       },
@@ -5485,16 +5366,9 @@
         "max": null
       },
       {
-        "^o": "NumericalConstraint",
-        "field_name": "price",
-        "db": false,
-        "min": 0,
-        "max": null
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
-          "spree::product_id"
+          "product_id"
         ],
         "db": false,
         "cond": "",
@@ -5554,21 +5428,21 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "variant",
+        "field_name": "variant_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "wishlist",
+        "field_name": "wishlist_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
-          "variant",
-          "wishlist"
+          "variant_id",
+          "wishlist_id"
         ],
         "db": false,
         "cond": "",
@@ -5658,13 +5532,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "store",
+        "field_name": "store_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "user",
+        "field_name": "user_id",
         "db": false,
         "cond": ""
       },
@@ -5733,7 +5607,7 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": ["name"],
         "db": false,
         "cond": "",
         "case_sensitive": false,
@@ -5786,13 +5660,13 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "zone",
+        "field_name": "zone_id",
         "db": false,
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "zoneable",
+        "field_name": "zoneable_id",
         "db": false,
         "cond": ""
       },
