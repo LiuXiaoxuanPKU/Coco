@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM changes INNER JOIN changesets ON changesets.id = changes.changeset_id WHERE changes.changeset_id IN (SELECT changesets.id FROM changesets WHERE changesets.repository_id = \"$1\" ORDER BY changesets.committed_on DESC, changesets.id DESC)",
+        "cost": 21.9,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM changes WHERE changes.changeset_id IN (SELECT changesets.id FROM changesets WHERE changesets.repository_id = \"$1\" ORDER BY changesets.committed_on DESC, changesets.id DESC)",
+            "cost": 20.78,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

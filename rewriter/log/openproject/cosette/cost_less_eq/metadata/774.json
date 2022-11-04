@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM attribute_help_texts WHERE attribute_help_texts.attribute_name IS NULL AND attribute_help_texts.type = \"$1\" LIMIT 1",
+        "cost": 1.48,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM attribute_help_texts WHERE False AND attribute_help_texts.type = \"$1\" LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

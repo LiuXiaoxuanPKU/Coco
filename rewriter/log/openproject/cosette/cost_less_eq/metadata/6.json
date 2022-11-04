@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT projects.* FROM projects WHERE identifier LIKE 'my-new-project%'",
+        "cost": 486.01,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT projects.* FROM projects WHERE identifier LIKE 'my-new-project%' LIMIT 1",
+            "cost": 486.01,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

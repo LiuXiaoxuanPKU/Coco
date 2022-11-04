@@ -1,0 +1,389 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) LIMIT 1",
+        "cost": 21.21,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) LIMIT 1",
+            "cost": 21.2,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) LIMIT 1",
+            "cost": 21.21,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) LIMIT 1",
+            "cost": 21.21,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) LIMIT 1",
+            "cost": 21.21,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) LIMIT 1",
+            "cost": 21.21,
+            "rewrite_types": [
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) LIMIT 1",
+            "cost": 21.21,
+            "rewrite_types": [
+                "RemoveJoin",
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

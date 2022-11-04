@@ -1,0 +1,259 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+        "cost": 1510922.98,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 159.57,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 159.57,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 159.57,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 159.57,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 159.58,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 159.58,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 159.58,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 159.58,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 315.56,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 315.56,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 315.56,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 315.56,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 326.52,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 326.52,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 326.52,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 326.52,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 609.88,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 609.88,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 609.88,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 609.88,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 625.9,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 625.9,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 625.9,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 625.9,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 18543.12,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 18543.12,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 18543.12,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 18543.12,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 1510922.98,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%')",
+            "cost": 1510922.98,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM projects WHERE id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 627 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND (LOWER(projects.name) LIKE '%issue%' OR LOWER(projects.identifier) LIKE '%issue%' OR LOWER(projects.description) LIKE '%issue%') LIMIT 1",
+            "cost": 1510922.98,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

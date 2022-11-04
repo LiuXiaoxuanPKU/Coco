@@ -1,0 +1,61 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id NOT IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC) AND work_packages.version_id IN (SELECT versions.id FROM versions LEFT OUTER JOIN projects ON projects.id = versions.project_id WHERE projects.active = \"$1\" AND projects.id IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC)) LIMIT 1",
+        "cost": 71.7,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id NOT IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC LIMIT 1) AND work_packages.version_id IN (SELECT versions.id FROM versions LEFT OUTER JOIN projects ON projects.id = versions.project_id WHERE projects.active = \"$1\" AND projects.id IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC)) LIMIT 1",
+            "cost": 71.7,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id NOT IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC) AND work_packages.version_id IN (SELECT versions.id FROM versions LEFT OUTER JOIN projects ON projects.id = versions.project_id WHERE projects.active = \"$1\" AND projects.id IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC LIMIT 1)) LIMIT 1",
+            "cost": 71.7,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id NOT IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC LIMIT 1) AND work_packages.version_id IN (SELECT versions.id FROM versions LEFT OUTER JOIN projects ON projects.id = versions.project_id WHERE projects.active = \"$1\" AND projects.id IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC LIMIT 1)) LIMIT 1",
+            "cost": 71.7,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id NOT IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC) AND work_packages.version_id IN (SELECT versions.id FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.active = \"$1\" AND projects.id IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC)) LIMIT 1",
+            "cost": 71.7,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id NOT IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC LIMIT 1) AND work_packages.version_id IN (SELECT versions.id FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.active = \"$1\" AND projects.id IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC)) LIMIT 1",
+            "cost": 71.7,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id NOT IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC) AND work_packages.version_id IN (SELECT versions.id FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.active = \"$1\" AND projects.id IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC LIMIT 1)) LIMIT 1",
+            "cost": 71.7,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id NOT IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC LIMIT 1) AND work_packages.version_id IN (SELECT versions.id FROM versions INNER JOIN projects ON projects.id = versions.project_id WHERE projects.active = \"$1\" AND projects.id IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC LIMIT 1)) LIMIT 1",
+            "cost": 71.7,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

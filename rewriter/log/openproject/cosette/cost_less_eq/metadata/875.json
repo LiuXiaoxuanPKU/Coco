@@ -1,0 +1,23 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM work_packages INNER JOIN relations ON work_packages.id = relations.from_id LEFT OUTER JOIN statuses ON statuses.id = work_packages.status_id WHERE relations.to_id = \"$1\" AND relations.blocks = \"$2\" AND relations.hierarchy = \"$3\" AND relations.relates = \"$4\" AND relations.duplicates = \"$5\" AND relations.follows = \"$6\" AND relations.includes = \"$7\" AND relations.requires = \"$8\" AND statuses.is_closed = \"$9\" LIMIT 1",
+        "cost": 8.15,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM work_packages INNER JOIN relations ON work_packages.id = relations.from_id WHERE relations.to_id = \"$1\" AND relations.blocks = \"$2\" AND relations.hierarchy = \"$3\" AND relations.relates = \"$4\" AND relations.duplicates = \"$5\" AND relations.follows = \"$6\" AND relations.includes = \"$7\" AND relations.requires = \"$8\" LIMIT 1",
+            "cost": 4.07,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages INNER JOIN relations ON work_packages.id = relations.from_id INNER JOIN statuses ON statuses.id = work_packages.status_id WHERE relations.to_id = \"$1\" AND relations.blocks = \"$2\" AND relations.hierarchy = \"$3\" AND relations.relates = \"$4\" AND relations.duplicates = \"$5\" AND relations.follows = \"$6\" AND relations.includes = \"$7\" AND relations.requires = \"$8\" AND statuses.is_closed = \"$9\" LIMIT 1",
+            "cost": 8.15,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

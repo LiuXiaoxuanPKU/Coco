@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT users.* FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 837 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON users.type = 'User' AND (roles.id = member_roles.role_id OR member_roles.role_id IS NULL AND roles.builtin = 1) OR users.type = 'AnonymousUser' AND roles.builtin = 2 LEFT OUTER JOIN role_permissions ON roles.id = role_permissions.role_id AND role_permissions.permission = 'view_work_packages' WHERE users.type IN (\"$1\", \"$2\", \"$3\", \"$4\") AND (roles.id IS NOT NULL AND role_permissions.id IS NOT NULL OR users.admin = True) AND users.id = \"$5\"",
+        "cost": 465.27,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT DISTINCT users.* FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 837 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON users.type = 'User' AND (roles.id = member_roles.role_id OR member_roles.role_id IS NULL AND roles.builtin = 1) OR users.type = 'AnonymousUser' AND roles.builtin = 2 LEFT OUTER JOIN role_permissions ON roles.id = role_permissions.role_id AND role_permissions.permission = 'view_work_packages' WHERE users.type IN (\"$1\", \"$2\", \"$3\", \"$4\") AND (roles.id IS NOT NULL AND role_permissions.id IS NOT NULL OR users.admin = True) AND users.id = \"$5\" LIMIT 1",
+            "cost": 465.27,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,48 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) LIMIT 1",
+        "cost": 91.1,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True) LIMIT 1",
+            "cost": 0.68,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True) LIMIT 1",
+            "cost": 0.69,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) LIMIT 1",
+            "cost": 4.38,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) LIMIT 1",
+            "cost": 4.64,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) LIMIT 1",
+            "cost": 87.14,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        }
+    ]
+}

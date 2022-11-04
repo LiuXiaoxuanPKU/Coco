@@ -1,0 +1,31 @@
+{
+    "org": {
+        "sql": "SELECT work_packages.id FROM work_packages LEFT OUTER JOIN projects ON projects.id = work_packages.project_id LEFT OUTER JOIN relations ON relations.hierarchy <> \"$1\" AND relations.relates = \"$2\" AND relations.duplicates = \"$3\" AND relations.follows = \"$4\" AND relations.blocks = \"$5\" AND relations.includes = \"$6\" AND relations.requires = \"$7\" AND relations.to_id = work_packages.id LEFT OUTER JOIN work_packages AS ancestors_work_packages ON ancestors_work_packages.id = relations.from_id WHERE work_packages.id = \"$8\" ORDER BY id ASC",
+        "cost": 16.64,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT work_packages.id FROM work_packages LEFT OUTER JOIN projects ON projects.id = work_packages.project_id LEFT OUTER JOIN relations ON relations.hierarchy <> \"$1\" AND relations.relates = \"$2\" AND relations.duplicates = \"$3\" AND relations.follows = \"$4\" AND relations.blocks = \"$5\" AND relations.includes = \"$6\" AND relations.requires = \"$7\" AND relations.to_id = work_packages.id WHERE work_packages.id = \"$8\" ORDER BY id ASC",
+            "cost": 16.64,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages LEFT OUTER JOIN projects ON projects.id = work_packages.project_id LEFT OUTER JOIN relations ON relations.hierarchy <> \"$1\" AND relations.relates = \"$2\" AND relations.duplicates = \"$3\" AND relations.follows = \"$4\" AND relations.blocks = \"$5\" AND relations.includes = \"$6\" AND relations.requires = \"$7\" AND relations.to_id = work_packages.id LEFT OUTER JOIN work_packages AS ancestors_work_packages ON ancestors_work_packages.id = relations.from_id WHERE work_packages.id = \"$8\" ORDER BY id ASC LIMIT 1",
+            "cost": 16.64,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages LEFT OUTER JOIN projects ON projects.id = work_packages.project_id LEFT OUTER JOIN relations ON relations.hierarchy <> \"$1\" AND relations.relates = \"$2\" AND relations.duplicates = \"$3\" AND relations.follows = \"$4\" AND relations.blocks = \"$5\" AND relations.includes = \"$6\" AND relations.requires = \"$7\" AND relations.to_id = work_packages.id WHERE work_packages.id = \"$8\" ORDER BY id ASC LIMIT 1",
+            "cost": 16.64,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

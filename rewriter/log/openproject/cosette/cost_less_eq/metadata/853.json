@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT work_packages.id, work_packages.subject, work_packages.project_id, from_id FROM work_packages INNER JOIN relations ON relations.hierarchy = \"$1\" AND relations.relates = \"$2\" AND relations.duplicates = \"$3\" AND relations.follows = \"$4\" AND relations.blocks = \"$5\" AND relations.includes = \"$6\" AND relations.requires = \"$7\" AND relations.to_id = work_packages.id WHERE relations.from_id IN (\"$8\", \"$9\", \"$10\", \"$11\", \"$12\", \"$13\")",
+        "cost": 38.38,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT work_packages.id, work_packages.subject, work_packages.project_id, from_id FROM work_packages INNER JOIN relations ON relations.hierarchy = \"$1\" AND relations.relates = \"$2\" AND relations.duplicates = \"$3\" AND relations.follows = \"$4\" AND relations.blocks = \"$5\" AND relations.includes = \"$6\" AND relations.requires = \"$7\" AND relations.to_id = work_packages.id WHERE relations.from_id IN (\"$8\", \"$9\", \"$10\", \"$11\", \"$12\", \"$13\") LIMIT 1",
+            "cost": 38.38,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

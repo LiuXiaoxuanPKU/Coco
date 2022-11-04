@@ -1,0 +1,58 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM cost_queries WHERE user_id = 786 AND is_public = False AND (project_id IS NULL OR project_id = 292) LIMIT 1",
+        "cost": 11.95,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM cost_queries WHERE user_id = 786 AND is_public = False AND (False OR project_id = 292) LIMIT 1",
+            "cost": 11.95,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM cost_queries WHERE user_id = 786 AND is_public = False AND (False OR project_id = 292) LIMIT 1",
+            "cost": 11.95,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM cost_queries WHERE user_id = 786 AND is_public = False AND (False OR project_id = 292) LIMIT 1",
+            "cost": 11.95,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM cost_queries WHERE user_id = 786 AND is_public = False AND (False OR project_id = 292) LIMIT 1",
+            "cost": 11.95,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM cost_queries WHERE user_id = 786 AND is_public = False AND (False OR project_id = 292) LIMIT 1",
+            "cost": 11.95,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM cost_queries WHERE user_id = 786 AND is_public = False AND (False OR project_id = 292) LIMIT 1",
+            "cost": 11.95,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM cost_queries WHERE user_id = 786 AND is_public = False AND (False OR project_id = 292) LIMIT 1",
+            "cost": 11.95,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM projects WHERE projects.identifier IS NULL AND projects.id <> \"$1\" LIMIT 1",
+        "cost": 8.43,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM projects WHERE False AND projects.id <> \"$1\" LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

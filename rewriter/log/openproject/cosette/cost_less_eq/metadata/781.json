@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT users.id FROM users INNER JOIN group_users ON users.id = group_users.user_id WHERE users.type IN (\"$1\", \"$2\", \"$3\", \"$4\") AND group_users.group_id = \"$5\"",
+        "cost": 16.61,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT users.id FROM users INNER JOIN group_users ON users.id = group_users.user_id WHERE users.type IN (\"$1\", \"$2\", \"$3\", \"$4\") AND group_users.group_id = \"$5\" LIMIT 1",
+            "cost": 16.61,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

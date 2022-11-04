@@ -1,0 +1,238 @@
+{
+    "org": {
+        "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+        "cost": 99.33,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) LIMIT 1) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1) LIMIT 1) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True) LIMIT 1) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) LIMIT 1) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) LIMIT 1) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1) LIMIT 1) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True) LIMIT 1) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) LIMIT 1) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 0.02,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True) LIMIT 1) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 9.08,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True) LIMIT 1) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 9.09,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 12.6,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 12.89,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) LIMIT 1) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 16.38,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) LIMIT 1) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 16.64,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 17.09,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 17.6,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) LIMIT 1) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 95.54,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 99.32,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.read_ian IS NOT NULL AND notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1)) ORDER BY notifications.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 99.33,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

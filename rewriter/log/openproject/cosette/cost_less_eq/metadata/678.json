@@ -1,0 +1,31 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id IN ('3')",
+        "cost": 16.62,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM members WHERE members.project_id IN ('3')",
+            "cost": 8.31,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM members WHERE members.project_id IN ('3') LIMIT 1",
+            "cost": 8.31,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id IN ('3') LIMIT 1",
+            "cost": 16.62,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

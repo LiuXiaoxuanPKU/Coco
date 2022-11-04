@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT journals.* FROM journals WHERE journals.journable_id = \"$1\" AND journals.journable_type = \"$2\" AND version > 1 ORDER BY journals.version ASC, journals.created_at ASC",
+        "cost": 8.46,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT journals.* FROM journals WHERE journals.journable_id = \"$1\" AND journals.journable_type = \"$2\" AND version > 1 ORDER BY journals.version ASC, journals.created_at ASC LIMIT 1",
+            "cost": 8.46,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

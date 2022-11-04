@@ -1,1 +1,0 @@
-select * from users where a=1 and b is not NULL or c > 0

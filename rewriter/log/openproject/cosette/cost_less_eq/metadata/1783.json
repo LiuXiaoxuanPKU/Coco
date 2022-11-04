@@ -1,0 +1,63 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT projects.id, projects.name FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 703 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE projects.lft >= 1 AND projects.lft < 2 AND projects.id <> 312 AND assigned_roles.id IS NOT NULL ORDER BY projects.name ASC",
+        "cost": 389.11,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT projects.id, projects.name FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 703 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE projects.lft >= 1 AND projects.lft < 2 AND projects.id <> 312 AND assigned_roles.id IS NOT NULL ORDER BY projects.name ASC",
+            "cost": 389.1,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT projects.id, projects.name FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 703 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE projects.lft >= 1 AND projects.lft < 2 AND projects.id <> 312 AND assigned_roles.id IS NOT NULL ORDER BY projects.name ASC LIMIT 1",
+            "cost": 389.1,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT projects.id, projects.name FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 703 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE projects.lft >= 1 AND projects.lft < 2 AND projects.id <> 312 AND assigned_roles.id IS NOT NULL ORDER BY projects.name ASC",
+            "cost": 389.1,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT projects.id, projects.name FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 703 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE projects.lft >= 1 AND projects.lft < 2 AND projects.id <> 312 AND assigned_roles.id IS NOT NULL ORDER BY projects.name ASC LIMIT 1",
+            "cost": 389.1,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT projects.id, projects.name FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 703 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE projects.lft >= 1 AND projects.lft < 2 AND projects.id <> 312 AND assigned_roles.id IS NOT NULL ORDER BY projects.name ASC LIMIT 1",
+            "cost": 389.11,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT projects.id, projects.name FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 703 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE projects.lft >= 1 AND projects.lft < 2 AND projects.id <> 312 AND assigned_roles.id IS NOT NULL ORDER BY projects.name ASC",
+            "cost": 389.11,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT projects.id, projects.name FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 703 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE projects.lft >= 1 AND projects.lft < 2 AND projects.id <> 312 AND assigned_roles.id IS NOT NULL ORDER BY projects.name ASC LIMIT 1",
+            "cost": 389.11,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

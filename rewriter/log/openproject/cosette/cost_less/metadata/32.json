@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT attribute_help_texts.attribute_name FROM attribute_help_texts WHERE attribute_help_texts.type = \"$1\" AND attribute_help_texts.type = \"$2\"",
+        "cost": 1.49,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT attribute_help_texts.attribute_name FROM attribute_help_texts WHERE attribute_help_texts.type = \"$1\" AND attribute_help_texts.type = \"$2\"",
+            "cost": 1.48,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,83 @@
+{
+    "org": {
+        "sql": "SELECT relations.* FROM relations WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) ORDER BY relations.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+        "cost": 98.91,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT relations.* FROM relations WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True) LIMIT 1) ORDER BY relations.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 8.95,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT relations.* FROM relations WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True) LIMIT 1) ORDER BY relations.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 8.96,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT relations.* FROM relations WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1)) ORDER BY relations.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 12.18,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT relations.* FROM relations WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1)) ORDER BY relations.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 12.48,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT relations.* FROM relations WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) LIMIT 1) ORDER BY relations.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 16.4,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT relations.* FROM relations WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) LIMIT 1) ORDER BY relations.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 16.66,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT relations.* FROM relations WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True)) ORDER BY relations.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 17.11,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT relations.* FROM relations WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) ORDER BY relations.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 17.62,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT relations.* FROM relations WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) LIMIT 1) ORDER BY relations.id DESC LIMIT \"$2\" OFFSET \"$3\"",
+            "cost": 95.56,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

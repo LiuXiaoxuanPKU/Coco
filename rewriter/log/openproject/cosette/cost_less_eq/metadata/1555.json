@@ -1,0 +1,238 @@
+{
+    "org": {
+        "sql": "SELECT notifications.* FROM notifications WHERE notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+        "cost": 99.43,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) LIMIT 1) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1) LIMIT 1) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True) LIMIT 1) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) LIMIT 1) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) LIMIT 1) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1) LIMIT 1) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True) LIMIT 1) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE False AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) LIMIT 1) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True) LIMIT 1) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 9.06,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True) LIMIT 1) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 9.07,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 12.7,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 12.99,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) LIMIT 1) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 16.36,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) LIMIT 1) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 16.62,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 17.07,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 17.58,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) LIMIT 1) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 95.52,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 99.43,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT notifications.* FROM notifications WHERE notifications.recipient_id IS NULL AND notifications.resource_type = \"$1\" AND notifications.resource_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1)) AND notifications.read_ian IS NOT NULL AND notifications.id = \"$2\" LIMIT \"$3\"",
+            "cost": 99.43,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

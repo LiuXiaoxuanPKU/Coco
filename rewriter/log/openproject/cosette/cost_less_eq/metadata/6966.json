@@ -1,0 +1,97 @@
+{
+    "org": {
+        "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, news_journals.title AS title, news_journals.project_id AS project_id FROM journals INNER JOIN news_journals ON journals.data_id = news_journals.id AND journals.data_type = 'Journal::NewsJournal' INNER JOIN projects ON projects.id = news_journals.project_id WHERE journals.journable_type = 'News' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('news') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+        "cost": 59.89,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, news_journals.title AS title, news_journals.project_id AS project_id FROM journals INNER JOIN news_journals ON journals.data_id = news_journals.id AND journals.data_type = 'Journal::NewsJournal' WHERE journals.journable_type = 'News' AND journals.user_id = 653 ORDER BY journals.id DESC LIMIT 10",
+            "cost": 18.72,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, news_journals.title AS title, news_journals.project_id AS project_id FROM journals INNER JOIN news_journals ON journals.data_id = news_journals.id AND journals.data_type = 'Journal::NewsJournal' INNER JOIN projects ON projects.id = news_journals.project_id WHERE journals.journable_type = 'News' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 19.64,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, news_journals.title AS title, news_journals.project_id AS project_id FROM journals INNER JOIN news_journals ON journals.data_id = news_journals.id AND journals.data_type = 'Journal::NewsJournal' INNER JOIN projects ON projects.id = news_journals.project_id WHERE journals.journable_type = 'News' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 19.94,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, news_journals.title AS title, news_journals.project_id AS project_id FROM journals INNER JOIN news_journals ON journals.data_id = news_journals.id AND journals.data_type = 'Journal::NewsJournal' INNER JOIN projects ON projects.id = news_journals.project_id WHERE journals.journable_type = 'News' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 20.03,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, news_journals.title AS title, news_journals.project_id AS project_id FROM journals INNER JOIN news_journals ON journals.data_id = news_journals.id AND journals.data_type = 'Journal::NewsJournal' INNER JOIN projects ON projects.id = news_journals.project_id WHERE journals.journable_type = 'News' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('news') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 20.54,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, news_journals.title AS title, news_journals.project_id AS project_id FROM journals INNER JOIN news_journals ON journals.data_id = news_journals.id AND journals.data_type = 'Journal::NewsJournal' INNER JOIN projects ON projects.id = news_journals.project_id WHERE journals.journable_type = 'News' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 27.58,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, news_journals.title AS title, news_journals.project_id AS project_id FROM journals INNER JOIN news_journals ON journals.data_id = news_journals.id AND journals.data_type = 'Journal::NewsJournal' INNER JOIN projects ON projects.id = news_journals.project_id WHERE journals.journable_type = 'News' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 27.89,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, news_journals.title AS title, news_journals.project_id AS project_id FROM journals INNER JOIN news_journals ON journals.data_id = news_journals.id AND journals.data_type = 'Journal::NewsJournal' INNER JOIN projects ON projects.id = news_journals.project_id WHERE journals.journable_type = 'News' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 27.97,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, news_journals.title AS title, news_journals.project_id AS project_id FROM journals INNER JOIN news_journals ON journals.data_id = news_journals.id AND journals.data_type = 'Journal::NewsJournal' INNER JOIN projects ON projects.id = news_journals.project_id WHERE journals.journable_type = 'News' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('news') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 28.48,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, news_journals.title AS title, news_journals.project_id AS project_id FROM journals INNER JOIN news_journals ON journals.data_id = news_journals.id AND journals.data_type = 'Journal::NewsJournal' INNER JOIN projects ON projects.id = news_journals.project_id WHERE journals.journable_type = 'News' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('news') AND projects.active = True WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 59.87,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, news_journals.title AS title, news_journals.project_id AS project_id FROM journals INNER JOIN news_journals ON journals.data_id = news_journals.id AND journals.data_type = 'Journal::NewsJournal' INNER JOIN projects ON projects.id = news_journals.project_id WHERE journals.journable_type = 'News' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('news') AND projects.active = True WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 59.89,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

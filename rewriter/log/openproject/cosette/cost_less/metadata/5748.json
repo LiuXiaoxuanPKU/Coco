@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT relations.* FROM relations INNER JOIN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) AS visible_from ON visible_from.id = relations.from_id INNER JOIN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) AS visible_to ON visible_to.id = relations.to_id WHERE hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND relations.id = \"$1\" LIMIT \"$2\"",
+        "cost": 194.41,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT relations.* FROM relations INNER JOIN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) AS visible_from ON visible_from.id = relations.from_id WHERE hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND relations.id = \"$1\" LIMIT \"$2\"",
+            "cost": 99.29,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

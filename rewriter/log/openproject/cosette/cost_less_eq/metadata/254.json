@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-page-no-60%' AND wiki_id = 115",
+        "cost": 11.9,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-page-no-60%' AND wiki_id = 115 LIMIT 1",
+            "cost": 11.9,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

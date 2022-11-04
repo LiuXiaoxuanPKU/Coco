@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM users INNER JOIN members ON users.id = members.user_id WHERE members.project_id = \"$1\" AND users.type = 'Group' AND users.id = \"$2\" LIMIT 1",
+        "cost": 16.62,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM users WHERE users.type = 'Group' AND users.id = \"$2\" LIMIT 1",
+            "cost": 8.31,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

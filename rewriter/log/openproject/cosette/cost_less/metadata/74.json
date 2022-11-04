@@ -1,0 +1,25 @@
+{
+    "org": {
+        "sql": "SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id IS NULL LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id OR members.id IS NULL AND roles.builtin = 1 WHERE users.id = 116)",
+        "cost": 389.46,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id IS NULL LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id WHERE users.id = 116) LIMIT 1",
+            "cost": 25.84,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id IS NULL LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id WHERE users.id = 116 LIMIT 1) LIMIT 1",
+            "cost": 25.84,
+            "rewrite_types": [
+                "RemoveJoin",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT roles.id FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id LEFT OUTER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE member_roles.member_id = \"$1\"",
+        "cost": 13.83,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT DISTINCT roles.id FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = \"$1\"",
+            "cost": 12.61,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT roles.id FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = \"$1\"",
+            "cost": 12.61,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RemoveDistinct"
+            ]
+        }
+    ]
+}

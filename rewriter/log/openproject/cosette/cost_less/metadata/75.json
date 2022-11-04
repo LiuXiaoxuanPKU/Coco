@@ -1,0 +1,24 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT types.* FROM types INNER JOIN projects_types ON projects_types.type_id = types.id INNER JOIN projects ON projects.id = projects_types.project_id WHERE projects.id IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC) AND projects.active = \"$1\" ORDER BY position ASC, types.position",
+        "cost": 11.7,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT types.* FROM types INNER JOIN projects_types ON projects_types.type_id = types.id INNER JOIN projects ON projects.id = projects_types.project_id WHERE projects.id IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC) AND projects.active = \"$1\" ORDER BY position ASC, types.position",
+            "cost": 11.67,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT types.* FROM types INNER JOIN projects_types ON projects_types.type_id = types.id INNER JOIN projects ON projects.id = projects_types.project_id WHERE projects.id IN (SELECT projects.id FROM projects WHERE projects.lft >= 1 AND projects.lft < 2 ORDER BY projects.name ASC LIMIT 1) AND projects.active = \"$1\" ORDER BY position ASC, types.position",
+            "cost": 11.67,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

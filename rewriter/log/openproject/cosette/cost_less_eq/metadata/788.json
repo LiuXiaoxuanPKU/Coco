@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM relations WHERE relations.from_id = \"$1\" AND relations.to_id IS NULL AND NOT(hierarchy + relates + duplicates + follows + blocks + includes + requires > 1) LIMIT 1",
+        "cost": 6.17,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM relations WHERE relations.from_id = \"$1\" AND False AND NOT(hierarchy + relates + duplicates + follows + blocks + includes + requires > 1) LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

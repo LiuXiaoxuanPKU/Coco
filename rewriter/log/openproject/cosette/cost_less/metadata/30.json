@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM menu_items WHERE menu_items.name IS NULL AND menu_items.navigatable_id IS NULL AND menu_items.parent_id IS NULL LIMIT 1",
+        "cost": 871.07,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM menu_items WHERE False AND menu_items.navigatable_id IS NULL AND menu_items.parent_id IS NULL LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

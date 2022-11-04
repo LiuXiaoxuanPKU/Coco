@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT members.* FROM members WHERE members.id IN (\"$1\", \"$2\", \"$3\", \"$4\") AND members.id NOT IN (SELECT DISTINCT member_roles.member_id FROM member_roles)",
+        "cost": 356.59,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT members.* FROM members WHERE members.id IN (\"$1\", \"$2\", \"$3\", \"$4\") AND members.id NOT IN (SELECT member_roles.member_id FROM member_roles)",
+            "cost": 201.31,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT projects.* FROM projects WHERE projects.id IN (SELECT DISTINCT projects.parent_id FROM projects WHERE projects.parent_id IS NOT NULL) ORDER BY projects.id ASC LIMIT \"$1\"",
+        "cost": 469.34,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT projects.* FROM projects WHERE projects.id IN (SELECT projects.parent_id FROM projects WHERE projects.parent_id IS NOT NULL) ORDER BY projects.id ASC LIMIT \"$1\"",
+            "cost": 469.34,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        }
+    ]
+}

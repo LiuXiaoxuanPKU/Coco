@@ -1,0 +1,105 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 1423 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_work_packages') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND work_packages.id = \"$1\" LIMIT 1",
+        "cost": 377.37,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 1423 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_work_packages') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND work_packages.id = \"$1\" LIMIT 1",
+            "cost": 369.35,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 1423 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_work_packages') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND work_packages.id = \"$1\" LIMIT 1",
+            "cost": 369.35,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 1423 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_work_packages') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND work_packages.id = \"$1\" LIMIT 1",
+            "cost": 369.55,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 1423 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_work_packages') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND work_packages.id = \"$1\" LIMIT 1",
+            "cost": 369.55,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 1423 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_work_packages') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND work_packages.id = \"$1\" LIMIT 1",
+            "cost": 377.16,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 1423 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_work_packages') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND work_packages.id = \"$1\" LIMIT 1",
+            "cost": 377.16,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 1423 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_work_packages') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND work_packages.id = \"$1\" LIMIT 1",
+            "cost": 377.17,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 1423 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_work_packages') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) AND work_packages.id = \"$1\" LIMIT 1",
+            "cost": 377.17,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 1423 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_work_packages') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND work_packages.id = \"$1\" LIMIT 1",
+            "cost": 377.17,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 1423 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_work_packages') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND work_packages.id = \"$1\" LIMIT 1",
+            "cost": 377.17,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 1423 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_work_packages') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND work_packages.id = \"$1\" LIMIT 1",
+            "cost": 377.36,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 1423 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_work_packages') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) AND work_packages.id = \"$1\" LIMIT 1",
+            "cost": 377.36,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

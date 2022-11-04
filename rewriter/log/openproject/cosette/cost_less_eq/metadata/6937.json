@@ -1,0 +1,227 @@
+{
+    "org": {
+        "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)) AND users.id = \"$2\" LIMIT \"$3\"",
+        "cost": 964.39,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 335.55,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 335.55,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 377.29,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 377.29,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 377.3,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 377.3,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 384.77,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 384.77,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 384.77,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 384.77,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 389.25,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 389.25,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 389.26,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 389.26,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 389.26,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 389.26,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 652.37,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 652.37,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 765.53,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 765.53,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 769.3,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 769.3,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 960.81,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 960.81,
+            "rewrite_types": [
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 961.5,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 961.5,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "AddLimitOne",
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT users.* FROM users WHERE users.type = \"$1\" AND users.id IN (SELECT members.user_id FROM members WHERE members.project_id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 2921 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('view_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)) AND users.id = \"$2\" LIMIT \"$3\"",
+            "cost": 964.39,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

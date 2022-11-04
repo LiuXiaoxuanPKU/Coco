@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT projects.id AS t0_r0, projects.name AS t0_r1, projects.description AS t0_r2, projects.public AS t0_r3, projects.parent_id AS t0_r4, projects.created_at AS t0_r5, projects.updated_at AS t0_r6, projects.identifier AS t0_r7, projects.lft AS t0_r8, projects.rgt AS t0_r9, projects.active AS t0_r10, projects.templated AS t0_r11, repositories.id AS t1_r0, repositories.project_id AS t1_r1, repositories.url AS t1_r2, repositories.login AS t1_r3, repositories.password AS t1_r4, repositories.root_url AS t1_r5, repositories.type AS t1_r6, repositories.path_encoding AS t1_r7, repositories.log_encoding AS t1_r8, repositories.scm_type AS t1_r9, repositories.required_storage_bytes AS t1_r10, repositories.storage_updated_at AS t1_r11 FROM projects LEFT OUTER JOIN repositories ON repositories.project_id = projects.id WHERE projects.active = \"$1\" AND projects.id IN (SELECT em.project_id FROM enabled_modules AS em WHERE em.name = 'repository') ORDER BY identifier",
+        "cost": 17.24,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT projects.id AS t0_r0, projects.name AS t0_r1, projects.description AS t0_r2, projects.public AS t0_r3, projects.parent_id AS t0_r4, projects.created_at AS t0_r5, projects.updated_at AS t0_r6, projects.identifier AS t0_r7, projects.lft AS t0_r8, projects.rgt AS t0_r9, projects.active AS t0_r10, projects.templated AS t0_r11, repositories.id AS t1_r0, repositories.project_id AS t1_r1, repositories.url AS t1_r2, repositories.login AS t1_r3, repositories.password AS t1_r4, repositories.root_url AS t1_r5, repositories.type AS t1_r6, repositories.path_encoding AS t1_r7, repositories.log_encoding AS t1_r8, repositories.scm_type AS t1_r9, repositories.required_storage_bytes AS t1_r10, repositories.storage_updated_at AS t1_r11 FROM projects LEFT OUTER JOIN repositories ON repositories.project_id = projects.id WHERE projects.active = \"$1\" AND projects.id IN (SELECT em.project_id FROM enabled_modules AS em WHERE em.name = 'repository') ORDER BY identifier LIMIT 1",
+            "cost": 17.24,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

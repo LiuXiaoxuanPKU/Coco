@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT changesets.* FROM changesets WHERE changesets.repository_id = \"$1\" AND scmid IN ('713f4944648826f558cf548222f813dabe7cbb04', '61b685fbe55ab05b5ac68402d5720c1a6ac973d1') ORDER BY changesets.committed_on DESC, changesets.id DESC, committed_on DESC",
+        "cost": 12.05,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT changesets.* FROM changesets WHERE changesets.repository_id = \"$1\" AND scmid IN ('713f4944648826f558cf548222f813dabe7cbb04', '61b685fbe55ab05b5ac68402d5720c1a6ac973d1') ORDER BY changesets.committed_on DESC, changesets.id DESC, committed_on DESC LIMIT 1",
+            "cost": 12.05,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}
