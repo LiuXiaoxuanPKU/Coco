@@ -51,16 +51,28 @@ def load_results(app):
         queries.append(q)
     return queries
 
-def parse_result(APP):
+def parse_result(APP: str, include_eq: bool):
     verified_idx_filename = get_filename(FileType.VERIFIER_OUTPUT_IDX, APP)
     verified_idx = open(verified_idx_filename, "r")
     out_file = get_filename(FileType.VERIFIER_OUTPUT_SQL, APP)
     exp_recorder.clear(out_file)
     first = False
-    rewritten_q_foler = get_filename(FileType.REWRITE_OUTPUT_SQL_EQ, APP)
+    rewritten_q_folder = get_filename(FileType.REWRITE_OUTPUT_SQL_EQ, APP)
+    meta_folder = get_filename(FileType.REWRITE_OUTPUT_META, APP)
+    print(rewritten_q_folder, meta_folder, verified_idx_filename)
+    eq_cnt = 0
     for line in verified_idx:
         file, num = line.split(":")
-        with open("{}/{}.sql".format(rewritten_q_foler, file)) as q:
+        print(line)
+        with open(f"{meta_folder}/{file}.json", "r") as f:
+            obj = json.load(f)
+            org_cost = obj["org"]["cost"]
+            rewrite_cost = obj["rewrites"][int(num)-1]["cost"]
+            if (not include_eq) and org_cost == rewrite_cost:
+                eq_cnt += 1
+                continue
+            
+        with open(f"{rewritten_q_folder}/{file}.sql") as q:
             found = False
             for q_line in q:
                 if first:
@@ -79,31 +91,26 @@ def parse_result(APP):
                     num = int(num)
 
     verified_idx.close()
+    print("Skip EQ cnt: %d" % eq_cnt)
   
-def load_queries(app):
-    out_file = get_filename(FileType.VERIFIER_OUTPUT_SQL, app) 
-    with open(out_file, 'r') as f:
-        lines = f.readlines()
-    queries = []
-    for line in lines:
-        obj = json.loads(line)
-        queries.append(EvalQuery(obj['before'], obj['after']))
-    return queries
+def load_queries(app: str) -> list[EvalQuery]:
+    with open(get_filename(FileType.VERIFIER_OUTPUT_SQL, app), 'r') as f:
+        objs = [json.loads(line) for line in f]
+        return [EvalQuery(obj['before'], obj['after']) for obj in objs]
 
-def eval_queries(queries, connect_str, stage):
-    repeat = 30
-    times = {}
+def eval_queries(queries: list[EvalQuery], connect_str: str, stage: str, repeat = 1):
+    times = [[] for _ in queries]
         
-    for t in range(repeat):
-        for i, q in enumerate(queries):
+    for i, q in enumerate(queries):
+        for _ in range(repeat):
             try:
-                if i not in times:
-                    times[i] = []
                 if stage in ["org", "db_constraint"]:
                     # Evaluator.evaluate_query("set jit=off", connect_str)
+                    # times[i].append(Evaluator.evaluate_cost(q.raw, connect_str))
                     times[i].append(Evaluator.evaluate_actual_time(q.raw, connect_str))
                 elif stage in ["rewrite", "rewrite_constraint"]:
                     # Evaluator.evaluate_query("set jit=off", connect_str)
+                    # times[i].append(Evaluator.evaluate_cost(q.raw, connect_str))
                     times[i].append(Evaluator.evaluate_actual_time(q.rewrite, connect_str))
                 else:
                     assert(False)
@@ -111,7 +118,7 @@ def eval_queries(queries, connect_str, stage):
                 print(traceback.format_exc())
     
     for i, t in enumerate(times):
-        avg_time = np.median(times[i][1:i])
+        avg_time = np.median(times[i][1:])
         if stage == "org":
             queries[i].t_db = avg_time
         elif stage == "rewrite":
@@ -186,9 +193,10 @@ def plot_speedup(queries, appname):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--app', default='redmine')
+    parser.add_argument('--include_eq', default=False, action="store_true")
     args = parser.parse_args()
     
-    parse_result(args.app) 
+    parse_result(args.app, args.include_eq) 
     queries = load_queries(args.app)
     print("=======Org======")
     eval_queries(queries, CONNECT_MAP[args.app], "org")

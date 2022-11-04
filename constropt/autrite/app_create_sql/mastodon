@@ -1578,7 +1578,7 @@ CREATE TABLE public.users (
     sign_in_token character varying,
     sign_in_token_sent_at timestamp without time zone,
     webauthn_id character varying,
-    sign_up_ip inet,
+    sign_up_ip character varying,
     skip_sign_in_token boolean
 );
 

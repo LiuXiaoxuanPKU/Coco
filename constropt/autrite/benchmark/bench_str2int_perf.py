@@ -75,14 +75,13 @@ def enum_to_varchar(cs) -> list:
 # create a copy of table schemas
 def create_table(cs) -> list:
     tables = set([c.table for c in cs])
-    sqls = []
     for t in tables:
         new_t = "{}_test_str2int".format(t)
         # DROP if existed in case they duplicate
-        Evaluator.evaluate_query("DROP TABLE IF EXISTS {}".format(new_t), CONNECT_MAP[appname])
+        drop_sql = "DROP TABLE IF EXISTS {}".format(new_t)
+        Evaluator.evaluate_query(drop_sql, CONNECT_MAP[appname])
         sql = "CREATE TABLE {} ( like {} INCLUDING DEFAULTS INCLUDING CONSTRAINTS INCLUDING INDEXES );".format(new_t, t)
-        sqls.append(sql)
-    return sqls
+        Evaluator.evaluate_query(sql, CONNECT_MAP[appname])
 
 # insert values to the copied table
 def insert_value(cs) -> list:  
@@ -272,13 +271,13 @@ if __name__ == "__main__":
     # print("========Insert value to new table===========")
     # run_sqls(insert_value(inclusion_cs))
     
-    # # 3.b create enum type
-    # print("========Create Enum type===========")
-    # run_sqls(generate_enum_type(inclusion_cs))
+    # 3.b create enum type
+    print("========Create Enum type===========")
+    run_sqls(generate_enum_type(inclusion_cs))
     
-    # # 4 alter enum type in duplicated new table
-    # print("========Change Enum type===========")
-    # run_sqls(alter_type(inclusion_cs))
+    # 4 alter enum type in duplicated new table
+    print("========Change Enum type===========")
+    run_sqls(alter_type(inclusion_cs))
     
     # 5.a generate new sqls
     print("========Generate new sql===========")

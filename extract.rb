@@ -10,11 +10,14 @@ require_relative 'constropt/constr_extractor/constraint'
 require_relative 'constropt/constr_extractor/serializer' 
 
 
+start = Time.now
 appname = ARGV[0]
+
 engine = Engine.new("constropt/constr_extractor/test/data/#{appname}_models")
 root = engine.run
 
-builtin_t = Traversor.new(BuiltinExtractor.new)
+builtin_extractor = BuiltinExtractor.new
+builtin_t = Traversor.new(builtin_extractor)
 builtin_t.traverse(root)
 
 class_inheritance_t = Traversor.new(ClassInheritanceExtractor.new)
@@ -38,4 +41,8 @@ puts "After extracting db constraints, # of constraints #{constraints_cnt}"
 id_t = Traversor.new(IdExtractor.new)
 id_t.traverse(root)
 
-Serializer.serialize_tree(root, "constraints/#{appname}")
+finish = Time.now
+puts "Constraint Extraction Time: #{finish - start}"
+puts "Bultin: #{builtin_extractor.builtin_validation_cnt}, \
+      Custom: #{builtin_extractor.custom_validation_cnt}"
+# Serializer.serialize_tree(root, "constraints/#{appname}")

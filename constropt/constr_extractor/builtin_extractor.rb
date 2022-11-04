@@ -7,6 +7,7 @@ def trim_string(s)
 end
 
 class BuiltinExtractor < Extractor
+  attr_accessor :builtin_validation_cnt, :custom_validation_cnt
   BUILTIN_VALIDATOR = %w[validates_presence_of validates_uniqueness_of
                          validates_format_of validates_length_of
                          belongs_to has_one has_many

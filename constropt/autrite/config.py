@@ -27,16 +27,10 @@ class FileType(IntEnum):
     REWRITE_TIME = 15
     VERIFIER_TIME = 16
   
-def get_filename(_type, appname, cost_include_eq=True):
-    workdir = os.getcwd()
-    path = Path(workdir)
-    projectdir = path.parent.parent.absolute()
-      
-    if cost_include_eq:
-        cost_path = "cost_less_eq"
-    else:
-        cost_path = "cost_less"
-        
+def get_filename(_type: FileType, appname: str, cost_include_eq=True) -> str:
+    projectdir = Path(os.getcwd()).parent.parent.absolute()
+    cost_path = "cost_less_eq" if cost_include_eq else "cost_less"
+ 
     m = {
             # input query, constraint, create table sql
             FileType.TEST_PROVE_Q : "log/%s/prove.sql" % appname,
@@ -55,7 +49,7 @@ def get_filename(_type, appname, cost_include_eq=True):
             FileType.VERIFIER_OUTPUT_SQL : "log/%s/cosette/result.sql" % appname, 
                       
             # output performance file
-            FileType.REWRITE_PERF : "log/%s_perf" % appname,
+            FileType.REWRITE_PERF : "log/perf_leq/%s_perf" % appname,
             FileType.DB_PERF : "log/db/%s_db_speedup" % appname,
             FileType.ENUM_EVAL : "log/%s/enum_evaluation_time" % appname,
             

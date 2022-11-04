@@ -10,18 +10,30 @@ from matplotlib.offsetbox import AnchoredText
 
 n_bins = 50
 s=16
-app="openproject"
+app="mastodon"
 suffix="pdf"
 
 APP_NAME = {
     "redmine" : "Redmine",
     "forem" : "Dev.to",
-    "openproject" : "Openproject"
+    "openproject" : "Openproject",
+    "mastodon": "Mastodon",
+    "openstreetmap": "Openstreetmap",
+    "spree": "Spree"
+}
+
+ACHNOR_SIZE = {
+    "redmine" : 18,
+    "forem" : 18,
+    "openproject" : 18,
+    "mastodon": 18,
+    "openstreetmap": 16,
+    "spree": 18
 }
 def plot(data):
     fig, ax = plt.subplots(figsize=(4, 4))
     at = AnchoredText(
-    APP_NAME[app], prop=dict(size=18), frameon=False, loc='upper left')
+    APP_NAME[app], prop=dict(size=ACHNOR_SIZE[app]), frameon=False, loc='upper left')
     ax.add_artist(at)
     pd_data = pd.DataFrame.from_dict(data)
     print(pd_data)
@@ -34,7 +46,7 @@ def plot(data):
         plt.ylim(0.001, 20)
     # plt.yticks([0, 2, 4, 6, 8, 10])
     plt.yscale('log')
-    if app == "redmine":  
+    if app in ["redmine", "mastodon"]:  
         plt.ylabel("Execution time (s)", size=s)
         fig.subplots_adjust(bottom=0.2, left=0.24)
     else:
@@ -62,9 +74,10 @@ def prepare_data(app):
         lines = f.readlines()
     times = []
     for line in lines:
+        line = line.strip()
         data['type'].append('verify')
-        data['time'].append(eval(line)[1])
-        times.append(eval(line)[1])
+        data['time'].append(float(line.split("\t")[-1]))
+        times.append(float(line.split("\t")[-1]))
     print(max(times)) 
     return data
 

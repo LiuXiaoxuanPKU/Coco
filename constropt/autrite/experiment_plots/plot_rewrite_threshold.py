@@ -22,9 +22,7 @@ def plot_app(appname, fig, ax):
   
   with open("log/%s/enumerate_times" % appname, "rb") as f:
     times = pickle.load(f) 
-  print(cnts)
-  print(max(cnts))
-  print(len(cnts))
+  print(min(cnts), max(cnts), (np.array(cnts)>100).sum())
   
   plt.yticks(fontsize=tick_size)
   plt.xticks(fontsize=tick_size)
@@ -45,7 +43,7 @@ def plot_app(appname, fig, ax):
   
 
 
-suffix = "pdf"
+suffix = "png"
 fig, ax = plt.subplots()
 fig.set_size_inches(6, 4)
 plot_app("forem", fig, ax)

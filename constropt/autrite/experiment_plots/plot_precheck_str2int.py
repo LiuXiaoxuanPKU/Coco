@@ -9,13 +9,14 @@ import numpy as np
 import seaborn as sns
 import pandas as pd
 
+suffix = "png"
 speedup = {}
 s = []
 a = []
 q_len = {"redmine":0, "forem":0, "openproject":0,
          "mastodon": 0, "spree": 0, "openstreetmap": 0}
-storages = {"redmine":1.49, "forem":1.57, "openproject":1.7,
-         "mastodon": 1.89, "spree": 2.58, "openstreetmap": 1.49}
+storages = {"redmine": 2.67, "forem": 2.14, "openproject":2.55,
+         "mastodon": 1.89, "spree": 2.45, "openstreetmap": 1.49}
 
 APP_NAME = {
     "redmine" : "Re",
@@ -56,7 +57,6 @@ storage = list(storages.values())
 fig.set_size_inches(4, 4)
 x = np.arange(len(speedup))  # the label locations
 #sns.boxplot(data=pd.DataFrame.from_dict({"speedup":s, "app":a}), x="app", y="speedup")
-#ax.set_ylim((0.5, 1.2))
 ax.set_xticks([0, 1, 2, 3, 4, 5])
 ax.tick_params(axis='both', which='major', labelsize=12)
 ax.set_xticklabels(apps)
@@ -74,7 +74,7 @@ for k in speedup:
     errors[0].append(med - mv)
     errors[1].append(mx - med)
 
-# print(means)
+print(means)
 # print(min(speedup['forem']))
 # print(q_len)
 
@@ -83,7 +83,7 @@ width = 0.5
 ax.bar(x, means, width=width, yerr=errors, label="Query Speedup", color='#1f77b4', capsize=6)
 ax.set_ylabel("Speedup", size = 18)
 ax.set_xlabel("Application", size= 18)
-ax.set_yticks([0, 0.5, 1, 1.5])
+ax.set_yticks([0, 0.5, 1])
 ax.set_xticks([0, 1, 2, 3, 4, 5])
 ax.set_xticklabels([APP_NAME[a] for a in apps])
 # ax.legend(loc='upper right', ncol=2, prop={'size': 14})
@@ -91,7 +91,8 @@ ax.tick_params(axis='both', which='major', labelsize=16)
 ax.grid(axis='y', color='grey')
 plt.tight_layout()
 plt.subplots_adjust(bottom=0.15)
-plt.savefig("/home/ubuntu/ConstrOpt/figures/7.4/str2int_perf.pdf")
+ax.set_ylim(0.5, 1.3)
+fig.savefig("/home/ubuntu/ConstrOpt/figures/7.4/str2int_perf.%s" % suffix)
 
 
 fig, ax = plt.subplots(1, 1)
@@ -109,7 +110,7 @@ ax.tick_params(axis='both', which='major', labelsize=16)
 ax.grid(axis='y', color='grey')
 plt.tight_layout()
 plt.subplots_adjust(bottom=0.15)
-plt.savefig("/home/ubuntu/ConstrOpt/figures/7.4/str2int_storage.pdf")
+plt.savefig("/home/ubuntu/ConstrOpt/figures/7.4/str2int_storage.%s" % suffix)
 
 
 fig, ax = plt.subplots(1, 1)
@@ -134,6 +135,6 @@ ax.tick_params(axis='both', which='major', labelsize=14)
 ax.grid(axis='y', color='grey')
 plt.tight_layout()
 plt.subplots_adjust(bottom=0.15)
-plt.savefig("/home/ubuntu/ConstrOpt/figures/7.4/precheck.pdf")
+plt.savefig("/home/ubuntu/ConstrOpt/figures/7.4/precheck.%s" % suffix)
 
 

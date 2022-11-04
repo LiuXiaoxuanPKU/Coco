@@ -41,16 +41,23 @@ def remove_default(stmts):
         for line in lines:
             if skip_line:
                 skip_line = False
+                if ");" in line:
+                    remove_stmt.append(line)
+                else:
+                    remove_stmt[-1] += ","
                 continue
             tokens = line.split(" ")
             if "DEFAULT" in tokens:
                 default_idx = tokens.index("DEFAULT")
                 comma_idx = default_idx
                 while comma_idx < len(tokens) and not tokens[comma_idx].endswith(','):
-                    tokens[comma_idx] = ''
+                    if tokens[comma_idx] not in ["NOT", "NULL"]:   
+                        tokens[comma_idx] = ''
                     comma_idx += 1
                 if comma_idx == len(tokens):
                     skip_line = True
+                elif tokens[comma_idx] == "NULL,":
+                    pass
                 else:
                     tokens[comma_idx] = ','
                 if default_idx + 2 < len(tokens):
@@ -70,7 +77,8 @@ def replace_keyword(stmts):
                 "text": "character varying",
                 "bytea": "binary(255)",
                 "inet": "character varying",
-                "jsonb": "character varying"}
+                "jsonb": "character varying",
+                "json": "character varying"}
     fuzzy_keywords = ["public."]
     replace_stmts = []
     for stmt in stmts:
@@ -101,7 +109,7 @@ def replace_keyword(stmts):
 
 def add_quote_keyword(stmts):
     keywords = ["language", "filter", "value", "default_value", "sensitive",
-                "month", "path"]
+                "month", "path", "year", "day", "role", "key", "scope", "local", "state"]
     comment_stmts = []
     for stmt in stmts:
         lines = stmt.split("\n")
@@ -125,7 +133,7 @@ def dump_stmts(appname, stmts):
             f.write(stmt)
 
 if __name__ == "__main__":
-    appname = "forem"
+    appname = "mastodon"
     with open(appname, "r") as f: 
         lines = f.readlines()
     create_stmts = extract_create_stmt(lines)

@@ -12,7 +12,7 @@ from TestVerifier import TestVerifier
 from mo_sql_parsing import format, parse
 from tqdm import tqdm
 import time
-from utils import generate_query_param_rewrites, generate_query_param_single, get_sqlobj_table
+from utils import exp_recorder, generate_query_param_rewrites, generate_query_param_single, get_sqlobj_table
 
 from config import CONNECT_MAP, FileType, RewriteQuery, get_filename
 
@@ -182,6 +182,10 @@ if __name__ == '__main__':
         
             end = time.time()
             run_test_time = end - start
+            exp_recorder.record("enumerate", enumerate_time)
+            exp_recorder.record("get_cost", get_cost_time)
+            exp_recorder.record("test", run_test_time)
+            # exp_recorder.dump(get_filename(FileType.REWRITE_TIME, appname))
             
             # ========= Sort rewrites that pass tests ============
             # Sort the list in place
@@ -192,10 +196,3 @@ if __name__ == '__main__':
             total_candidate_cnt.append(len(rewritten_queries_lower_cost_after_test))
             ProveDumper.dump_param_rewrite(appname, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, args.include_eq)
             ProveDumper.dump_metadaba(appname, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, args.include_eq)
-
-        # print(enumerate_cnts) 
-        # print(enumerate_times)
-        # print("Average # of candidates %f" % (sum(total_candidate_cnt) / len(total_candidate_cnt)))
-        # print("Enumerate count %d" % enumerate_cnt)
-        # print("Lower cost cnt %d" % lower_cost_cnt)
-        # print("Lower cost pass test %d" % lower_cost_pass_test_cnt)
