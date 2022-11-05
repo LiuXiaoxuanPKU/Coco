@@ -9,5 +9,8 @@ cd extractor
 bundle install
 cd ..
 
+# # run constraint extractor tests, you should not see any errors
+# bash extractor/run_test.sh
+
 # extract constraints
 ruby extractor/main.rb --dir data/ --app redmine
