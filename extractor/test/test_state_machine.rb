@@ -1,9 +1,10 @@
+require 'test/unit'
+require 'yard'
 require_relative '../constraint'
 require_relative '../engine'
 require_relative '../traversor'
 require_relative '../state_machine_extractor'
 require_relative '../class_node'
-require 'yard'
 
 class TestPrint
   def visit(node, _params)
@@ -11,23 +12,10 @@ class TestPrint
   end
 end
 
-def test_gitlab 
-  engine = Engine.new('./data/gitlab_models')
-  root = engine.run
-
-  t = Traversor.new(StateMachineExtractor.new)
-  t.traverse(root)
-
-  t = Traversor.new(TestPrint.new)
-  t.traverse(root)
-end
-
-# uncomment the following if want to run through an application
-# test_gitlab
-
-############################## unit tests #################################
-def test_naive 
-  class_def = <<-FOO
+class TestBulitin < Test::Unit::TestCase
+  ############################## unit tests #################################
+  def test_naive
+    class_def = <<-FOO
     class Test
       state_machine :state, initial: :pending do
         event :done do
@@ -37,21 +25,21 @@ def test_naive
         state :done
       end
     end
-  FOO
-  node = ClassNode.new('Test')
-  node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
-  state_machine_extractor = StateMachineExtractor.new
-  state_machine_extractor.visit(node, {})
-  # check for possible errors
-  raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
+    FOO
+    node = ClassNode.new('Test')
+    node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
+    state_machine_extractor = StateMachineExtractor.new
+    state_machine_extractor.visit(node, {})
+    # check for possible errors
+    raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
 
-  if node.constraints[0].values.to_set != %w[done pending].to_set
-    raise "values should be ['done', 'pending'], but get #{node.constraints[0].values}"
+    if node.constraints[0].values.to_set != %w[done pending].to_set
+      raise "values should be ['done', 'pending'], but get #{node.constraints[0].values}"
+    end
   end
-end
 
-def test_naive2
-  class_def = <<-FOO
+  def test_naive2
+    class_def = <<-FOO
     class Test
         state_machine :status, initial: :created do
             event :run do
@@ -83,22 +71,22 @@ def test_naive2
             end
         end
     end
-  FOO
-  node = ClassNode.new('Test')
-  node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
-  state_machine_extractor = StateMachineExtractor.new
-  state_machine_extractor.visit(node, {})
-  # check for possible errors
-  raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
+    FOO
+    node = ClassNode.new('Test')
+    node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
+    state_machine_extractor = StateMachineExtractor.new
+    state_machine_extractor.visit(node, {})
+    # check for possible errors
+    raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
 
-  if node.constraints[0].values.to_set != %w[created running blocked success failed canceled skipped].to_set
-    raise "values should be ['created', 'running', 'blocked', 'success', 'failed', 'canceled', 'skipped'], but get #{node.constraints[0].values}"
+    if node.constraints[0].values.to_set != %w[created running blocked success failed canceled skipped].to_set
+      raise "values should be ['created', 'running', 'blocked', 'success', 'failed', 'canceled', 'skipped'], but get #{node.constraints[0].values}"
+    end
   end
-end
 
-# Note in the following case, keyword "all" should not be parsed as a state
-def test_keyword_all
-  class_def = <<-FOO
+  # Note in the following case, keyword "all" should not be parsed as a state
+  def test_keyword_all
+    class_def = <<-FOO
     class Test
       state_machine :state, initial: :none do
         state :scheduled
@@ -123,22 +111,21 @@ def test_keyword_all
         end
       end
     end
-  FOO
-  node = ClassNode.new('Test')
-  node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
-  state_machine_extractor = StateMachineExtractor.new
-  state_machine_extractor.visit(node, {})
-  # check for possible errors
-  raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
+    FOO
+    node = ClassNode.new('Test')
+    node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
+    state_machine_extractor = StateMachineExtractor.new
+    state_machine_extractor.visit(node, {})
+    # check for possible errors
+    raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
 
-  if node.constraints[0].values.to_set != %w[scheduled ready failed obsolete none].to_set
-    raise "values should be ['scheduled', 'ready', 'failed', 'obsolete', 'none'], but get #{node.constraints[0].values}"
+    if node.constraints[0].values.to_set != %w[scheduled ready failed obsolete none].to_set
+      raise "values should be ['scheduled', 'ready', 'failed', 'obsolete', 'none'], but get #{node.constraints[0].values}"
+    end
   end
-end
 
-
-def test_after_transition
-  class_def = <<-FOO
+  def test_after_transition
+    class_def = <<-FOO
     class Test
       state_machine :status do
         after_transition [:created, :manual, :waiting_for_resource] => :pending do |bridge|
@@ -150,21 +137,16 @@ def test_after_transition
         end
       end
     end
-  FOO
-  node = ClassNode.new('Test')
-  node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
-  state_machine_extractor = StateMachineExtractor.new
-  state_machine_extractor.visit(node, {})
-  # check for possible errors
-  raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
+    FOO
+    node = ClassNode.new('Test')
+    node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
+    state_machine_extractor = StateMachineExtractor.new
+    state_machine_extractor.visit(node, {})
+    # check for possible errors
+    raise "expect 1 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 1
 
-  if node.constraints[0].values.to_set != %w[pending manual created waiting_for_resource].to_set
-    raise "values should be ['pending', 'manual', 'scheduled', 'created', 'waiting_for_resource'], but get #{node.constraints[0].values}"
+    if node.constraints[0].values.to_set != %w[pending manual created waiting_for_resource].to_set
+      raise "values should be ['pending', 'manual', 'scheduled', 'created', 'waiting_for_resource'], but get #{node.constraints[0].values}"
+    end
   end
 end
-
-
-test_naive
-test_naive2
-test_keyword_all
-test_after_transition

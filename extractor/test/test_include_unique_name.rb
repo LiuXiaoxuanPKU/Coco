@@ -1,19 +1,19 @@
+require 'test/unit'
 require 'yard'
 require_relative '../builtin_extractor'
 require_relative '../class_node'
 
-def test_naive
-  puts '==============Test Naive=============='
-  class_def = <<-FOO
-    class StockLocation < Spree::Base
-      include UniqueName
-    end
-  FOO
-  node = ClassNode.new('Test')
-  node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
-  builtin_extractor = BuiltinExtractor.new
-  builtin_extractor.visit(node, {})
-  puts "# of extracted constraints: #{node.constraints.length}"
+class TestBulitin < Test::Unit::TestCase
+  def test_naive
+    class_def = <<-FOO
+      class StockLocation < Spree::Base
+        include UniqueName
+      end
+    FOO
+    node = ClassNode.new('Test')
+    node.ast = YARD::Parser::Ruby::RubyParser.parse(class_def).root[0]
+    builtin_extractor = BuiltinExtractor.new
+    builtin_extractor.visit(node, {})
+    raise "expect 2 constraint, get #{node.constraints.length} constraints" unless node.constraints.length == 2
+  end
 end
-
-test_naive

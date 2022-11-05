@@ -16,6 +16,7 @@ class TreeVisitor
       # puts "#{node.parent}"
       return
     end
+
     c = Serializer.serialize_node(node)
     @constraints << c
     @constraints_cnt += node.constraints.length
@@ -31,6 +32,7 @@ class Serializer
     node.table = node_obj['table']
     node.children = node_obj['children']
     node.constraints = Oj.load(node_obj['constraints'].to_json)
+    node
   end
 
   def self.serialize_node(node)
@@ -43,13 +45,12 @@ class Serializer
     ]
     dump_constrains = node.constraints.reject { |c| skip_types.include? c.class }
     dump_constrains = dump_constrains.uniq
-    obj = {
+    {
       table: node.table,
       parent: node.parent,
       class: node.name,
       constraints: (JSON.parse Oj.dump(dump_constrains))
     }
-    return obj
   end
 
   def self.deserialize_tree(filename)
