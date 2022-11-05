@@ -1,19 +1,28 @@
-require_relative 'constropt/constr_extractor/engine'
-require_relative 'constropt/constr_extractor/traversor'
-require_relative 'constropt/constr_extractor/builtin_extractor'
-require_relative 'constropt/constr_extractor/db_extractor'
-require_relative 'constropt/constr_extractor/id_extractor'
-require_relative 'constropt/constr_extractor/class_inheritance_extractor'
-require_relative 'constropt/constr_extractor/state_machine_extractor'
-require_relative 'constropt/constr_extractor/hasone_belongto_extractor'
-require_relative 'constropt/constr_extractor/constraint'
-require_relative 'constropt/constr_extractor/serializer' 
+require 'optparse'
 
+require_relative 'engine'
+require_relative 'traversor'
+require_relative 'builtin_extractor'
+require_relative 'db_extractor'
+require_relative 'id_extractor'
+require_relative 'class_inheritance_extractor'
+require_relative 'state_machine_extractor'
+require_relative 'hasone_belongto_extractor'
+require_relative 'constraint'
+require_relative 'serializer' 
+
+
+options = {}
+OptionParser.new do |opt|
+  opt.on('--dir DATADIR') { |o| options[:dir] = o }
+  opt.on('--app APPNAME') { |o| options[:app] = o }
+end.parse!
 
 start = Time.now
-appname = ARGV[0]
+dir = options[:dir]
+appname = options[:app]
 
-engine = Engine.new("constropt/constr_extractor/test/data/#{appname}_models")
+engine = Engine.new("#{dir}/app_source_code/#{appname}_models")
 root = engine.run
 
 builtin_extractor = BuiltinExtractor.new
@@ -33,7 +42,7 @@ hasone_belongto.traverse(root)
 constraints_cnt = engine.get_constraints_cnt(root)
 puts "After extracting hasone belongto constraints, # of constraints #{constraints_cnt}"
 
-db_t = Traversor.new(DBExtractor.new("constropt/constr_extractor/test/data/#{appname}_db/schema.rb"))
+db_t = Traversor.new(DBExtractor.new("#{dir}/app_source_code/#{appname}_db/schema.rb"))
 db_t.traverse(root)
 constraints_cnt = engine.get_constraints_cnt(root)
 puts "After extracting db constraints, # of constraints #{constraints_cnt}"
@@ -45,4 +54,4 @@ finish = Time.now
 puts "Constraint Extraction Time: #{finish - start}"
 puts "Bultin: #{builtin_extractor.builtin_validation_cnt}, \
       Custom: #{builtin_extractor.custom_validation_cnt}"
-# Serializer.serialize_tree(root, "constraints/#{appname}")
+# Serializer.serialize_tree(root, "#{dir}/constraints/#{appname}")
