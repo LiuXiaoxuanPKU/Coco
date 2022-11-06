@@ -13,4 +13,4 @@ cd ..
 # bash extractor/run_test.sh
 
 # extract constraints
-ruby extractor/main.rb --dir data/ --app redmine
+ruby extractor/main.rb --dir data/app_source_code/ --app redmine

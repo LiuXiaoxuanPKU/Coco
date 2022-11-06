@@ -22,7 +22,7 @@ start = Time.now
 dir = options[:dir]
 appname = options[:app]
 
-engine = Engine.new("#{dir}/app_source_code/#{appname}_models")
+engine = Engine.new("#{dir}/#{appname}_models")
 root = engine.run
 
 builtin_extractor = BuiltinExtractor.new
@@ -42,7 +42,7 @@ hasone_belongto.traverse(root)
 constraints_cnt = engine.get_constraints_cnt(root)
 puts "After extracting hasone belongto constraints, # of constraints #{constraints_cnt}"
 
-db_t = Traversor.new(DBExtractor.new("#{dir}/app_source_code/#{appname}_db/schema.rb"))
+db_t = Traversor.new(DBExtractor.new("#{dir}/#{appname}_db/schema.rb"))
 db_t.traverse(root)
 constraints_cnt = engine.get_constraints_cnt(root)
 puts "After extracting db constraints, # of constraints #{constraints_cnt}"
