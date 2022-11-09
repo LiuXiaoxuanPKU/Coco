@@ -1,13 +1,13 @@
 import pickle
-import traceback
 from mo_sql_parsing import parse, format
 import json
 import constraint
 from config import RewriteQuery
 
+
 class Loader:
     @staticmethod
-    def load_constraints(filename: str) -> list[constraint.Constraint]:
+    def load_constraints(filename: str):
         constraints = []
         classnodes = json.load(open(filename, 'r'))
         for classnode in classnodes:
@@ -65,7 +65,8 @@ class Loader:
             with open(filename, 'r') as f:
                 lines = f.readlines()
         else:
-            raise NotImplementedError("Does not support file %s as query input" % (filename))
+            raise NotImplementedError(
+                "Does not support file %s as query input" % (filename))
         total_raw_queries = len(lines)
         lines = list(set(lines))
         unique_raw_queries = len(lines)
@@ -82,7 +83,7 @@ class Loader:
             tokens = line.split(' ')
             idx = tokens.index('LIMIT')
             return tokens[idx + 1]
-            
+
         from tqdm import tqdm
         lines = Loader.load_queries_raw(filename, offset, cnt)
         lines = [l for l in lines if len(l) < 25000]
@@ -98,6 +99,8 @@ class Loader:
                 rewrite_qs.append(q)
             except Exception as e:
                 fail_raw_queries.append(line)
-        print("======================[Success] Parse unique queries %d" % len(rewrite_qs))
-        print("======================[Fail]    Parse %d queries" % len(fail_raw_queries))
+        print(
+            "======================[Success] Parse unique queries %d" % len(rewrite_qs))
+        print("======================[Fail]    Parse %d queries" % len(
+            fail_raw_queries))
         return rewrite_qs

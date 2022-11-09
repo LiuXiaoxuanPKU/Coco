@@ -14,3 +14,11 @@ cd ..
 
 # extract constraints
 ruby extractor/main.rb --dir data/app_source_code/ --app redmine
+
+# create conda environment
+conda create -n rewriter python=3.10
+conda activate rewriter
+pip install -r rewriter/requirements.txt 
+
+# rewrite queries
+python rewriter/pipeline.py --app redmine --cnt 1000 --include_eq

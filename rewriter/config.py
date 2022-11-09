@@ -6,57 +6,38 @@ from typing import List
 from mo_sql_parsing import format
 
 class FileType(IntEnum):
-    TEST_PROVE_Q = 1
-    RAW_QUERY = 2
-    CONSTRAINT = 3
-    VERIFIER_INPUT = 4
+    RAW_QUERY = 0
+    CONSTRAINT = 1
+    VERIFIER_INPUT = 2
    
-    REWRITE_OUTPUT_META = 5
-    REWRITE_OUTPUT_SQL_EQ = 6
-    REWRITE_OUTPUT_SQL_NOT_EQ = 7
-
-    VERIFIER_OUTPUT_IDX = 8
-    VERIFIER_OUTPUT_SQL = 9
-
-    REWRITE_PERF = 10
-    DB_PERF = 11
-    ENUM_EVAL = 12 
+    REWRITE_OUTPUT_META = 3
+    REWRITE_OUTPUT_SQL_EQ = 4
     
-    EMPTY_RESULT_QUERY = 13
-    PRECHECK_STR2INT_NUM =14
-    REWRITE_TIME = 15
-    VERIFIER_TIME = 16
+    ENUMERATE_CNT = 5
+    ENUMERATE_TIME = 6
+    REWRITE_STATS = 7
+    ENUMERATE_ROOT = 8
   
 def get_filename(_type: FileType, appname: str, cost_include_eq=True) -> str:
-    projectdir = Path(os.getcwd()).parent.parent.absolute()
+    projectdir = Path(__file__).parent.parent.absolute()
+    datadir = os.path.join(projectdir, "data")
     cost_path = "cost_less_eq" if cost_include_eq else "cost_less"
  
     m = {
             # input query, constraint, create table sql
-            FileType.TEST_PROVE_Q : "log/%s/prove.sql" % appname,
-            FileType.RAW_QUERY : "%s/queries/%s/%s.pk" % (projectdir, appname, appname),
-            FileType.CONSTRAINT : "%s/constraints/%s"  % (projectdir, appname),
-            FileType.VERIFIER_INPUT : "log/%s/cosette/create.sql" % appname,
+            FileType.RAW_QUERY : "%s/queries/%s/%s.pk" % (datadir, appname, appname),
+            FileType.CONSTRAINT : "%s/constraints/%s"  % (datadir, appname),
+            FileType.VERIFIER_INPUT : "%s/app_create_sql/%s.sql" %(datadir, appname),
             
             # output sqls from rewrite and tests
-            FileType.REWRITE_OUTPUT_SQL_EQ: "log/%s/cosette/%s/sqls/" % (appname, cost_path),
-            FileType.REWRITE_OUTPUT_META: "log/%s/cosette/%s/metadata/" % (appname, cost_path),
-            FileType.REWRITE_OUTPUT_SQL_NOT_EQ: "log/%s/cosette/not_eq/" % appname, 
+            FileType.REWRITE_OUTPUT_SQL_EQ: "%s/rewrites/%s/%s/sqls/" % (datadir, appname, cost_path),
+            FileType.REWRITE_OUTPUT_META: "%s/rewrites/%s/%s/metadata/" % (datadir, appname, cost_path),
             
-            # output sqls from cosette
-            FileType.VERIFIER_OUTPUT_IDX: "log/%s/cosette/verifier-result-leq" % appname,
-            # FileType.VERIFIER_OUTPUT_LESS_IDX: "log/%s/cosette/verifier-result-leq" % appname,
-            FileType.VERIFIER_OUTPUT_SQL : "log/%s/cosette/result.sql" % appname, 
-                      
-            # output performance file
-            FileType.REWRITE_PERF : "log/perf_leq/%s_perf" % appname,
-            FileType.DB_PERF : "log/db/%s_db_speedup" % appname,
-            FileType.ENUM_EVAL : "log/%s/enum_evaluation_time" % appname,
-            
-            FileType.EMPTY_RESULT_QUERY: "log/%s/empty_query" % appname,
-            FileType.PRECHECK_STR2INT_NUM : "log/precheck_strtoint_num",
-            FileType.REWRITE_TIME: "log/%s/rewrite_time" % appname,
-            FileType.VERIFIER_TIME: "log/%s/verify_time" % appname
+            # meta data (rewrite count/time) of rewrites
+            FileType.ENUMERATE_ROOT: "%s/rewrites/%s/" % (datadir, appname),
+            FileType.ENUMERATE_CNT: "%s/rewrites/%s/enumerate_cnts" % (datadir, appname),
+            FileType.ENUMERATE_TIME: "%s/rewrites/%s/enumerate_times" % (datadir, appname),
+            FileType.REWRITE_STATS: "%s/rewrites/%s/rewrite_stats" % (datadir, appname),
     }
     return m[_type]
 
@@ -103,6 +84,5 @@ class RewriteQuery:
             "cost" : self.estimate_cost,
             "rewrite_types" : [r.__class__.__name__.split('.')[-1] for r in self.rewrites]
         }
-        
-# REWRITE_LIMIT = 100000000
+
 REWRITE_LIMIT = 100

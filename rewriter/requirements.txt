@@ -1,0 +1,4 @@
+z3
+mo_sql_parsing
+psycopg2
+tqdm

@@ -1,7 +1,9 @@
+import os
 import traceback
 import argparse
 import pickle
 import operator
+from pathlib import Path
 
 import rule
 from loader import Loader
@@ -19,10 +21,8 @@ from config import CONNECT_MAP, FileType, RewriteQuery, get_filename
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--app', default='redmine')
-    parser.add_argument('--prove', action='store_true')
     parser.add_argument('--db', action='store_true', \
             help='only use db constraints to perform optimization')
-    parser.add_argument('--counter', action='store_true', help="dump counter example")
     parser.add_argument('--only_rewrite', action='store_true', default=False, help='only rewrite queries based on constraints,\
                          does not run any tests, do not have communication with the database')
     parser.add_argument('--cnt', type=int, default=100000, help='number of queries to rewrite')
@@ -30,14 +30,12 @@ if __name__ == '__main__':
                         with the same cost as the original sql' )
     args = parser.parse_args()
     
+    projectdir = Path(__file__).parent.parent.absolute()
+    datadir = os.path.join(projectdir, "data")
+    
     appname =  args.app
-    if args.prove:
-        query_filename = get_filename(FileType.TEST_PROVE_Q, appname)
-    else:
-        query_filename = get_filename(FileType.RAW_QUERY, appname) 
+    query_filename = get_filename(FileType.RAW_QUERY, appname) 
     constraint_filename = get_filename(FileType.CONSTRAINT, appname)
-    offset = 0
-    query_cnt = args.cnt
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
              rule.RemoveJoin, rule.ReplaceOuterJoin, rule.AddLimitOne]
     constraints = Loader.load_constraints(constraint_filename)
@@ -46,6 +44,9 @@ if __name__ == '__main__':
         print("[Before filtering DB constraints] ", len(constraints))
         constraints = [c for c in constraints if c.db == True]
         print("[After filtering DB constraints] ", len(constraints))
+    
+    offset = 0
+    query_cnt = args.cnt
     queries = Loader.load_queries(query_filename, offset, query_cnt)
     rewriter = Rewriter()
     rewriter.set_rules(rules)
@@ -72,16 +73,14 @@ if __name__ == '__main__':
             enumerate_times.append(enumerate_time)
             start = end 
             used_tables += get_sqlobj_table(q.q_obj)
-       
-        print("Used tables %d: %s" %(len(set(used_tables)), list(set(used_tables))))
-        with open("log/%s/enumerate_cnts" % appname, "wb") as f:
+
+        with open(get_filename(FileType.ENUMERATE_CNT, appname), "wb") as f:
             pickle.dump(enumerate_cnts, f)
-        with open("log/%s/enumerate_times" % appname, "wb") as f:
+        with open(get_filename(FileType.ENUMERATE_TIME, appname), "wb") as f:
             pickle.dump(enumerate_times, f)
     else:
         rewrite_cnt = 0
         total_candidate_cnt = []
-        dump_counter = args.counter # only dump counter example
 
         enumerate_cnt = 0
         lower_cost_cnt = 0
@@ -91,8 +90,10 @@ if __name__ == '__main__':
         get_cost_time = 0
         run_test_time = 0
         connect_str = CONNECT_MAP[appname]
+        # create rewrite result dir if not exists
+        Path(get_filename(FileType.ENUMERATE_ROOT, appname)).mkdir(parents=True, exist_ok=True)
         for q in tqdm(queries):
-            with open("log/%s/%s_stats" % (appname, appname), "w") as f:
+            with open(get_filename(FileType.REWRITE_STATS, appname), "w+") as f:
                 f.write("%d, %d, %d" % (enumerate_cnt, lower_cost_cnt, lower_cost_pass_test_cnt))
             start = time.time()
             # =================Enumerate Candidates================
@@ -100,8 +101,8 @@ if __name__ == '__main__':
             try:
                 enumerate_queries = rewriter.rewrite(constraints, q)
             except:
-                print("[Error rewrite]", q.q_raw)
-                print(traceback.format_exc())
+                # print("[Error rewrite]", q.q_raw)
+                # print(traceback.format_exc())
                 continue
             if len(enumerate_queries) == 0:
                 continue
@@ -168,13 +169,6 @@ if __name__ == '__main__':
             not_eq_qs = []
             # use tests to check equivalence
             rewritten_queries_lower_cost_after_test, not_eq_qs = TestVerifier().verify(appname, q, constraints, rewritten_queries_lower_cost)
-            if dump_counter:
-                if len(not_eq_qs) == 0:
-                    continue
-                # dump counter examples
-                ProveDumper.dump_param_rewrite(appname, q, not_eq_qs, rewrite_cnt,  args.include_eq, counter=True)
-                rewrite_cnt += 1
-                continue
             
             if len(rewritten_queries_lower_cost_after_test) == 0:
                 continue
