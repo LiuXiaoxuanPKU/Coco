@@ -1,4 +1,4 @@
-import os, sys, random
+import os, sys, random, time
 import pytest
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from evaluator import Evaluator
@@ -21,6 +21,7 @@ def create_table():
             
 def test_evaluate_query():
     eva = Evaluator()
+    random.seed(time.time())
     q = "INSERT into a VALUES(%d, %d, 'test')" % \
                 (random.randint(0, 1000), random.randint(0, 1000))
     print("Exec result: ", eva.evaluate_query(q, CONNECT_STRING))

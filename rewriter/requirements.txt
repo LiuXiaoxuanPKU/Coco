@@ -1,4 +1,5 @@
-z3
+z3-solver
 mo_sql_parsing
 psycopg2
 tqdm
+pytest

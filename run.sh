@@ -20,5 +20,10 @@ conda create -n rewriter python=3.10
 conda activate rewriter
 pip install -r rewriter/requirements.txt 
 
+# # run query rewriter tests, you should not see any errors
+# cd rewriter/test
+# pytest
+# cd ../.. # go back to project root
+
 # rewrite queries
 python rewriter/pipeline.py --app redmine --cnt 1000 --include_eq

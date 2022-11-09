@@ -54,7 +54,7 @@ class Rewriter:
         def get_field_constraint(table_field, constraints, all_used_fields, tables):
             field_constraints = []
             for c in constraints:
-                if isinstance(c.field, str) and c.field == table_field and c.table in tables:
+                if isinstance(c.field, str) and c.field == table_field and c.table.lower() in tables:
                     field_constraints.append(c)
                 elif isinstance(c.field, list) and \
                     set(c.field).issubset(all_used_fields) and \
@@ -65,7 +65,7 @@ class Rewriter:
         # extract fields in q
         fields, tables = extract_q_field(q)
         q_constraints = []
-        # print(fields, tables)
+
         for table_field in fields:
             cs = get_field_constraint(table_field, constraints, fields, tables)
             q_constraints += cs

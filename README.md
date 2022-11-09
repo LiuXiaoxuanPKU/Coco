@@ -1,9 +1,9 @@
 # `ConstrOpt` Overview
 This is the official repository for [Leveraging Applicaton Data Constraints to Optimize Database-Backed Web Applications](https://arxiv.org/abs/2205.02954) by Xiaoxuan Liu, Shuxian Wang, Mengzhu Sun, Sharon Lee, Sicheng Pan, Joshua Wu, Cong Yan, Junwen Yang, and Alvin Chueng. 
 Here we present `ConstrOpt`, the first tool that identifies data relationships by analyzing the programs that generate and maintain the persist data. Once identified,`ConstrOpt` leverages the found constraints to optimize the application's physical design and query execution by rewriting queries. Instead of developing a fixed set of predefined rewriting rules, `ConstrOpt` employs an enumerate-test-verify technique to automatically exploit the discovered data constraints to improve query execution. 
-<img src="./figures/readme/system_architecture.png" width=380>
+<!-- <img src="./figures/readme/system_architecture.png" width=380> -->
 
-## Install
+<!-- ## Install
 ### Ruby Dependencies
 We highly recommend use [rbenv](https://github.com/rbenv/rbenv#command-reference) or [rmv](https://rvm.io) to manage ruby environments. Note that `ConstrOpt` requires ruby version >= 3.0.0.  
 To install third party libraries for ruby, under root directory, run
@@ -65,4 +65,4 @@ ConstrOpt employs an enumerate-test-verify technique to automatically exploit th
 Under `constropt/` directory, run
 ```
 python3 query_rewriter_tests/test.py # run all tests
-```
+``` -->

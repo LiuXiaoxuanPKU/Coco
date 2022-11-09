@@ -5,7 +5,7 @@ from constraint import NumericalConstraint, PresenceConstraint
 from rule import AddLimitOne, RemoveDistinct, AddPredicate, RemovePredicate, RewriteNullPredicate, UnionToUnionAll, RemoveJoin
 from mo_sql_parsing import parse, format
 
-def test_q_obj(q_obj, q_str):
+def compare_q_obj(q_obj, q_str):
     q_str = format(parse(q_str))
     if format(q_obj) != q_str:
         print("Expect ", q_str)
@@ -20,7 +20,7 @@ def test_add_limit_one_select_from():
     q_afters = AddLimitOne(None).apply(q_before)
     assert(len(q_afters) == 1)
     q_after = q_afters[0]
-    test_q_obj(q_after, q_after_str)
+    compare_q_obj(q_after, q_after_str)
 
     q_before_str = "select * from (select * from R where id = 2) where a = 1"
     q_before = parse(q_before_str)
