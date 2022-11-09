@@ -1,0 +1,2 @@
+This folder contains the output of rewriter, which enumerates possible rewrites based on constraints for extracted queries
+It will also contains rewrite meta data (e.g, the number of candidates for a rewrite, the time spent on enumeration, the estimated cost before/after rewrite)
