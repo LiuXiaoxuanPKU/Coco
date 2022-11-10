@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "constropt-rewriter"
+version = "0.1.0"
+description = ""
+authors = []
+packages = [{ include = "*.py", from = "src" }]
+
+[tool.poetry.scripts]
+constropt-rewriter = "pipeline:main"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+z3-solver = "^4.11.2.0"
+mo-sql-parsing = "^8.235.22313"
+tqdm = "^4.64.1"
+pytest = "^7.2.0"
+psycopg2 = "^2.9.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

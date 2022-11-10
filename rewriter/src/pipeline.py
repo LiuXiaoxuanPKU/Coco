@@ -9,8 +9,8 @@ import rule
 from loader import Loader
 from rewriter import Rewriter
 from evaluator import Evaluator
-from Provedumper import ProveDumper
-from TestVerifier import TestVerifier
+from prove_dumper import ProveDumper
+from test_verifier import TestVerifier
 from mo_sql_parsing import format, parse
 from tqdm import tqdm
 import time
@@ -18,7 +18,7 @@ from utils import exp_recorder, generate_query_param_rewrites, generate_query_pa
 
 from config import CONNECT_MAP, FileType, RewriteQuery, get_filename
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--app', default='redmine')
     parser.add_argument('--db', action='store_true', \
