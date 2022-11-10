@@ -1,7 +1,0 @@
-[submodule "cosette-prover"]
-	path = cosette-prover
-	url = https://github.com/cosette-solver/cosette-prover
-[submodule "cosette-parser"]
-	path = cosette-parser
-	url = https://github.com/cosette-solver/cosette-parser
-	branch = experimental

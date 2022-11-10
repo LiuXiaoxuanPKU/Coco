@@ -8,15 +8,16 @@
       "locked": {
         "lastModified": 1668052270,
         "narHash": "sha256-hLsJSzUBHeuUsXlJBwTiwtlYHicXVX7sqgNqDqrF3l8=",
-        "ref": "cc2c0d5e296abef0576f6360a21476edd9b786b8",
+        "owner": "cosette-solver",
+        "repo": "cosette-parser",
         "rev": "cc2c0d5e296abef0576f6360a21476edd9b786b8",
-        "revCount": 90,
-        "type": "git",
-        "url": "file:./cosette-parser"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:./cosette-parser"
+        "owner": "cosette-solver",
+        "ref": "experimental",
+        "repo": "cosette-parser",
+        "type": "github"
       }
     },
     "cosette-prover": {
@@ -29,15 +30,15 @@
       "locked": {
         "lastModified": 1667974347,
         "narHash": "sha256-bQP8l3MibDptcGMZT6STv6Dg0SpB5d4Hy+Khd8rkORo=",
-        "ref": "eb389329d5790a3af3c857d58e1ef48f9a9071b0",
+        "owner": "cosette-solver",
+        "repo": "cosette-prover",
         "rev": "eb389329d5790a3af3c857d58e1ef48f9a9071b0",
-        "revCount": 39,
-        "type": "git",
-        "url": "file:./cosette-prover"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:./cosette-prover"
+        "owner": "cosette-solver",
+        "repo": "cosette-prover",
+        "type": "github"
       }
     },
     "crane": {

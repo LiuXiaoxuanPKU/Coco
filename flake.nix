@@ -5,10 +5,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     get-flake.url = "github:ursi/get-flake";
-    #constropt-extractor.url = "path:./extractor";
-    #constropt-rewriter.url = "path:./rewriter";
-    cosette-parser.url = "git+file:./cosette-parser";
-    cosette-prover.url = "git+file:./cosette-prover";
+    cosette-parser.url = "github:cosette-solver/cosette-parser/experimental";
+    cosette-prover.url = "github:cosette-solver/cosette-prover";
   };
 
   outputs = {
@@ -16,8 +14,6 @@
     nixpkgs,
     flake-utils,
     get-flake,
-    #constropt-extractor,
-    #constropt-rewriter,
     cosette-parser,
     cosette-prover,
   }: flake-utils.lib.eachDefaultSystem (system:
