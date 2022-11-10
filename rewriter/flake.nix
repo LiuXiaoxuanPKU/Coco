@@ -17,7 +17,6 @@
       package-def = with pkgs; {
         projectDir = ./.;
         python = python310;
-        preferWheels = true;
         overrides = pkgs.poetry2nix.overrides.withDefaults (_: prev: {
           mo-future = prev.mo-future.overrideAttrs (_: old: {
             propagatedBuildInputs = old.propagatedBuildInputs ++ [prev.setuptools];
