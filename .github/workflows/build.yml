@@ -19,7 +19,7 @@ jobs:
         name: constropt
         extraPullNames: cosette
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-    - run: nix develop -c echo "OK"
+    - run: nix build
     - run: nix flake check
   build-macos:
     runs-on: macos-latest
@@ -33,5 +33,5 @@ jobs:
         name: constropt
         extraPullNames: cosette
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-    - run: nix develop -c echo "OK"
+    - run: nix build
     - run: nix flake check

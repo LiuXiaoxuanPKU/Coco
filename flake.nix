@@ -21,14 +21,18 @@
       pkgs = nixpkgs.legacyPackages.${system};
       constropt-extractor = get-flake ./extractor;
       constropt-rewriter = get-flake ./rewriter;
-    in {
-      devShells.default = pkgs.mkShell {
-        buildInputs = [
+    in rec {
+      packages.default = pkgs.symlinkJoin {
+        name = "constropt";
+        paths = [
           constropt-extractor.packages.${system}.default
           constropt-rewriter.packages.${system}.default
           cosette-parser.packages.${system}.default
           cosette-prover.packages.${system}.default
         ];
+      };
+      devShells.default = pkgs.mkShell {
+        buildInputs = [ packages.default ];
       };
     });
 
