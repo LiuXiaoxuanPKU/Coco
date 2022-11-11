@@ -26,4 +26,4 @@ pip install -r rewriter/requirements.txt
 # cd ../.. # go back to project root
 
 # rewrite queries
-python rewriter/pipeline.py --app redmine --cnt 1000 --include_eq
+python rewriter/src/pipeline.py --app redmine --cnt 1000 --include_eq --data_dir data

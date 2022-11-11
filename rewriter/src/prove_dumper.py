@@ -17,13 +17,13 @@ class ProveDumper:
         return q
 
     @staticmethod
-    def dump_metadaba(appname, org_q, rewritten_queries, id, cost_include_eq):
+    def dump_metadaba(appname, org_q, rewritten_queries, id, cost_include_eq, datadir):
         result = {
             "org": org_q.to_dict(),
             "rewrites": [q.to_dict() for q in rewritten_queries]
         }
         path = path = get_filename(
-            FileType.REWRITE_OUTPUT_META, appname, cost_include_eq)
+            FileType.REWRITE_OUTPUT_META, appname, datadir, cost_include_eq)
        
         if not Path(path).exists():
             Path(path).mkdir(parents=True)
@@ -34,10 +34,10 @@ class ProveDumper:
             f.write(json.dumps(result, indent=4))
 
     @staticmethod
-    def dump_param_rewrite(appname, org_q, rewritten_queries, id, cost_include_eq, counter=False):
+    def dump_param_rewrite(appname, org_q, rewritten_queries, id, cost_include_eq, datadir):
         assert (len(rewritten_queries) > 0)
         # Dump SQLs
-        sql_create_path = get_filename(FileType.VERIFIER_INPUT, appname)
+        sql_create_path = get_filename(FileType.VERIFIER_INPUT, appname, datadir)
         with open(sql_create_path, "r") as f:
             create_lines = f.readlines()
 
@@ -48,7 +48,7 @@ class ProveDumper:
                ";\n" for q in rewritten_queries]
 
         path = get_filename(FileType.REWRITE_OUTPUT_SQL_EQ,
-                            appname, cost_include_eq)
+                            appname, datadir, cost_include_eq)
         
         if not Path(path).exists():
             Path(path).mkdir(parents=True)

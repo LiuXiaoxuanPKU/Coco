@@ -18,9 +18,7 @@ class FileType(IntEnum):
     REWRITE_STATS = 7
     ENUMERATE_ROOT = 8
   
-def get_filename(_type: FileType, appname: str, cost_include_eq=True) -> str:
-    projectdir = Path(__file__).parent.parent.absolute()
-    datadir = os.path.join(projectdir, "data")
+def get_filename(_type: FileType, appname: str, datadir: str, cost_include_eq=True) -> str:
     cost_path = "cost_less_eq" if cost_include_eq else "cost_less"
  
     m = {

@@ -28,14 +28,15 @@ def main():
     parser.add_argument('--cnt', type=int, default=100000, help='number of queries to rewrite')
     parser.add_argument('--include_eq',  action='store_true', default=False,  help='when filtering rewrites, include rewrites, \
                         with the same cost as the original sql' )
+    parser.add_argument("--data_dir", type=str, help="data root dir")
+    
     args = parser.parse_args()
     
-    projectdir = Path(__file__).parent.parent.absolute()
-    datadir = os.path.join(projectdir, "data")
-    
     appname =  args.app
-    query_filename = get_filename(FileType.RAW_QUERY, appname) 
-    constraint_filename = get_filename(FileType.CONSTRAINT, appname)
+    query_filename = get_filename(FileType.RAW_QUERY, appname, args.data_dir) 
+    constraint_filename = get_filename(FileType.CONSTRAINT, appname, args.data_dir)
+    print(query_filename)
+    
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
              rule.RemoveJoin, rule.ReplaceOuterJoin, rule.AddLimitOne]
     constraints = Loader.load_constraints(constraint_filename)
@@ -74,9 +75,9 @@ def main():
             start = end 
             used_tables += get_sqlobj_table(q.q_obj)
 
-        with open(get_filename(FileType.ENUMERATE_CNT, appname), "wb") as f:
+        with open(get_filename(FileType.ENUMERATE_CNT, appname, args.data_dir), "wb") as f:
             pickle.dump(enumerate_cnts, f)
-        with open(get_filename(FileType.ENUMERATE_TIME, appname), "wb") as f:
+        with open(get_filename(FileType.ENUMERATE_TIME, appname, args.data_dir), "wb") as f:
             pickle.dump(enumerate_times, f)
     else:
         rewrite_cnt = 0
@@ -91,9 +92,9 @@ def main():
         run_test_time = 0
         connect_str = CONNECT_MAP[appname]
         # create rewrite result dir if not exists
-        Path(get_filename(FileType.ENUMERATE_ROOT, appname)).mkdir(parents=True, exist_ok=True)
+        Path(get_filename(FileType.ENUMERATE_ROOT, appname, args.data_dir)).mkdir(parents=True, exist_ok=True)
         for q in tqdm(queries):
-            with open(get_filename(FileType.REWRITE_STATS, appname), "w+") as f:
+            with open(get_filename(FileType.REWRITE_STATS, appname, args.data_dir), "w+") as f:
                 f.write("%d, %d, %d" % (enumerate_cnt, lower_cost_cnt, lower_cost_pass_test_cnt))
             start = time.time()
             # =================Enumerate Candidates================
@@ -188,5 +189,7 @@ def main():
             # ========== Dump outputs to cosette ==========
             rewrite_cnt += 1
             total_candidate_cnt.append(len(rewritten_queries_lower_cost_after_test))
-            ProveDumper.dump_param_rewrite(appname, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, args.include_eq)
-            ProveDumper.dump_metadaba(appname, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, args.include_eq)
+            ProveDumper.dump_param_rewrite(appname, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, args.include_eq, args.data_dir)
+            ProveDumper.dump_metadaba(appname, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, args.include_eq, args.data_dir)
+
+main()
