@@ -27,8 +27,8 @@
           '';
         };
       in {
-        defaultPackage = constropt-extractor;
-        devShell = pkgs.mkShell {
+        packages.default = constropt-extractor;
+        devShells.default = pkgs.mkShell {
           inputsFrom = [ constropt-extractor ];
         };
       }

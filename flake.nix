@@ -24,12 +24,16 @@
     in {
       devShell = pkgs.mkShell {
         buildInputs = [
-          constropt-extractor.defaultPackage.${system}
-          constropt-rewriter.defaultPackage.${system}
-          cosette-parser.defaultPackage.${system}
-          cosette-prover.defaultPackage.${system}
+          constropt-extractor.packages.${system}.default
+          constropt-rewriter.packages.${system}.default
+          cosette-parser.packages.${system}.default
+          cosette-prover.packages.${system}.default
         ];
       };
-    }
-  );
+    });
+
+  nixConfig = {
+    extra-substituters = [ "https://constropt.cachix.org" ];
+    extra-trusted-public-keys = [ "constropt.cachix.org-1:Dy9RIrswrIpwotaY72stGFWdrDPkfldvttgwdt0y+E8=" ];
+  };
 }
