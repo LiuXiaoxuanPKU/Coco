@@ -22,7 +22,7 @@
       constropt-extractor = get-flake ./extractor;
       constropt-rewriter = get-flake ./rewriter;
     in {
-      devShell = pkgs.mkShell {
+      devShells.default = pkgs.mkShell {
         buildInputs = [
           constropt-extractor.packages.${system}.default
           constropt-rewriter.packages.${system}.default
