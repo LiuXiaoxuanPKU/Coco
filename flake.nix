@@ -38,6 +38,6 @@
 
   nixConfig = {
     extra-substituters = [ "https://constropt.cachix.org" ];
-    extra-trusted-public-keys = [ "constropt.cachix.org-1:Dy9RIrswrIpwotaY72stGFWdrDPkfldvttgwdt0y+E8=" ];
+    extra-trusted-public-keys = [ "constropt.cachix.org-1:4dQuJoRIUutgZkYIOLS81Tj5LxteQcBUrySfZCt2CTA=" ];
   };
 }
