@@ -34,8 +34,8 @@
       constropt-rewriter = pkgs.poetry2nix.mkPoetryApplication package-def;
       constropt-rewriter-env = pkgs.poetry2nix.mkPoetryEnv package-def;
     in {
-      defaultPackage = constropt-rewriter;
-      devShell = pkgs.mkShell {
+      packages.default = constropt-rewriter;
+      devShells.default = pkgs.mkShell {
         buildInputs = with pkgs; [constropt-rewriter-env poetry postgresql openssl];
       };
     });
