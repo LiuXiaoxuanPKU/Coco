@@ -27,3 +27,7 @@ pip install -r rewriter/requirements.txt
 
 # rewrite queries
 python rewriter/src/pipeline.py --app redmine --cnt 1000 --include_eq --data_dir data
+
+python benchmark/bench_rewrite_perf.py --app redmine --data_dir data
+
+python benchmark/plot_rewrite_perf.py --app redmine --data_dir data
