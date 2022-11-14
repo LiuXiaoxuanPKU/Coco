@@ -192,4 +192,5 @@ def main():
             ProveDumper.dump_param_rewrite(appname, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, args.include_eq, args.data_dir)
             ProveDumper.dump_metadaba(appname, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, args.include_eq, args.data_dir)
 
-main()
+if __name__ == "__main__":
+    main()
