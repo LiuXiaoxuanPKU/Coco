@@ -30,4 +30,5 @@ python rewriter/src/pipeline.py --app redmine --cnt 1000 --include_eq --data_dir
 
 python benchmark/bench_rewrite_perf.py --app redmine --data_dir data
 
+mkdir data/figures
 python benchmark/plot_rewrite_perf.py --app redmine --data_dir data
