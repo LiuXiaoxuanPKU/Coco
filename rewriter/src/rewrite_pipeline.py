@@ -1,4 +1,3 @@
-import os
 import traceback
 import argparse
 import pickle
@@ -16,7 +15,7 @@ from tqdm import tqdm
 import time
 from utils import exp_recorder, generate_query_param_rewrites, generate_query_param_single, get_sqlobj_table
 
-from config import CONNECT_MAP, FileType, RewriteQuery, get_filename
+from config import CONNECT_MAP, FileType, get_filename
 
 def main():
     parser = argparse.ArgumentParser()

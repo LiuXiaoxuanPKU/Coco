@@ -15,6 +15,8 @@ class FileType(IntEnum):
     ENUMERATE_TIME = 6
     REWRITE_STATS = 7
     ENUMERATE_ROOT = 8
+    
+    PRECHECK_STR2INT_NUM = 9
   
 def get_filename(_type: FileType, appname: str, datadir: str, cost_include_eq=True) -> str:
     cost_path = "cost_less_eq" if cost_include_eq else "cost_less"
@@ -34,6 +36,8 @@ def get_filename(_type: FileType, appname: str, datadir: str, cost_include_eq=Tr
             FileType.ENUMERATE_CNT: "%s/rewrites/%s/enumerate_cnts" % (datadir, appname),
             FileType.ENUMERATE_TIME: "%s/rewrites/%s/enumerate_times" % (datadir, appname),
             FileType.REWRITE_STATS: "%s/rewrites/%s/rewrite_stats" % (datadir, appname),
+    
+            FileType.PRECHECK_STR2INT_NUM: "%s/rewrites/%s/str2int" % (datadir, appname),
     }
     return m[_type]
 

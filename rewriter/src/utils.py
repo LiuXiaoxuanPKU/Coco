@@ -1,4 +1,4 @@
-import traceback
+from tqdm import tqdm
 import os
 import json, random, hashlib
 from collections import OrderedDict
@@ -191,6 +191,23 @@ def get_sqlobj_table(sql_obj):
     else:
         print("[Error] cannot extract table form %s" % (sql_obj['from']) )
         return []
+
+def get_valid_queries(queries, connect_str):
+    print("==========Get Valid Queries============")
+    valid_queries = []
+    for q in tqdm(queries):
+        try:
+            q_param = generate_query_param_single(q.q_raw, connect_str, {})
+            if q_param is None:
+                continue
+            Evaluator.evaluate_query(q_param, connect_str)
+            valid_queries.append(q)
+        except:
+            # print(traceback.format_exc())
+            pass
+    print("Total queries: %d, valid queries: %d" %
+          (len(queries), len(valid_queries)))
+    return valid_queries
 
 class GlobalExpRecorder:
     def __init__(self):

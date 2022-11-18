@@ -25,8 +25,12 @@ pip install -r rewriter/requirements.txt
 # pytest
 # cd ../.. # go back to project root
 
-# rewrite queries
-python rewriter/src/pipeline.py --app redmine --cnt 1000 --include_eq --data_dir data
+
+# 1. string to int optimization
+python rewriter/src/str2int_pipeline.py --app redmine --cnt 1000 --data_dir data
+
+# 2. query rewrite optimization
+python rewriter/src/rewrite_pipeline.py --app redmine --cnt 1000 --include_eq --data_dir data
 
 python benchmark/bench_rewrite_perf.py --app redmine --data_dir data
 
