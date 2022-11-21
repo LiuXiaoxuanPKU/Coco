@@ -1,59 +1,46 @@
-import os
+import clize
 import traceback
-import argparse
 import pickle
 import operator
-from pathlib import Path
 
 import rule
-from loader import Loader
+import loader
 from rewriter import Rewriter
 from evaluator import Evaluator
 from prove_dumper import ProveDumper
 from test_verifier import TestVerifier
-from mo_sql_parsing import format, parse
 from tqdm import tqdm
 import time
 from utils import exp_recorder, generate_query_param_rewrites, generate_query_param_single, get_sqlobj_table
+from config import CONNECT_MAP, FileType, get_path
+from prover import prove
 
-from config import CONNECT_MAP, FileType, RewriteQuery, get_filename
+def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = False, cnt: int = 100000, include_eq: bool = False):
+    """ConstrOpt rewriter
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--app', default='redmine')
-    parser.add_argument('--db', action='store_true', \
-            help='only use db constraints to perform optimization')
-    parser.add_argument('--only_rewrite', action='store_true', default=False, help='only rewrite queries based on constraints,\
-                         does not run any tests, do not have communication with the database')
-    parser.add_argument('--cnt', type=int, default=100000, help='number of queries to rewrite')
-    parser.add_argument('--include_eq',  action='store_true', default=False,  help='when filtering rewrites, include rewrites, \
-                        with the same cost as the original sql' )
-    parser.add_argument("--data_dir", type=str, help="data root dir")
-    
-    args = parser.parse_args()
-    
-    appname =  args.app
-    query_filename = get_filename(FileType.RAW_QUERY, appname, args.data_dir) 
-    constraint_filename = get_filename(FileType.CONSTRAINT, appname, args.data_dir)
-    print(query_filename)
-    
+    Args:
+        :param data_dir: Root directory for storing intermediate and final results.
+        :param app: Name of app to be processed.
+        :param db: Only use db constraints to perform optimization.
+        :param only_rewrite: Only rewrite queries based on constraints, without running any tests, or having communication with the database.
+        :param cnt: Number of queries to rewrite.
+        :param include_eq: When filtering rewrites, include rewrites with the same cost as the original sql
+    """
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
              rule.RemoveJoin, rule.ReplaceOuterJoin, rule.AddLimitOne]
-    constraints = Loader.load_constraints(constraint_filename)
-    if args.db:
+    constraint_file = get_path(FileType.CONSTRAINT, app, data_dir)
+    constraints = loader.read_constraints(constraint_file)
+    if db:
         print("========Only use DB constraints to perform optimization======")
         print("[Before filtering DB constraints] ", len(constraints))
         constraints = [c for c in constraints if c.db == True]
         print("[After filtering DB constraints] ", len(constraints))
-    
-    offset = 0
-    query_cnt = args.cnt
-    queries = Loader.load_queries(query_filename, offset, query_cnt)
+
+    queries = loader.read_queries(get_path(FileType.RAW_QUERY, app, data_dir), 0, cnt)
     rewriter = Rewriter()
     rewriter.set_rules(rules)
- 
     used_tables = []
-    if args.only_rewrite:
+    if only_rewrite:
         enumerate_cnts = []
         enumerate_times = []
         for q in tqdm(queries):
@@ -70,14 +57,13 @@ def main():
                 continue
             enumerate_cnts.append(len(enumerate_queries))
             end = time.time()
-            enumerate_time = end-start
-            enumerate_times.append(enumerate_time)
+            enumerate_times.append(end - start)
             start = end 
             used_tables += get_sqlobj_table(q.q_obj)
 
-        with open(get_filename(FileType.ENUMERATE_CNT, appname, args.data_dir), "wb") as f:
+        with open(get_path(FileType.ENUMERATE_CNT, app, data_dir), "wb") as f:
             pickle.dump(enumerate_cnts, f)
-        with open(get_filename(FileType.ENUMERATE_TIME, appname, args.data_dir), "wb") as f:
+        with open(get_path(FileType.ENUMERATE_TIME, app, data_dir), "wb") as f:
             pickle.dump(enumerate_times, f)
     else:
         rewrite_cnt = 0
@@ -90,12 +76,8 @@ def main():
         enumerate_time = 0
         get_cost_time = 0
         run_test_time = 0
-        connect_str = CONNECT_MAP[appname]
-        # create rewrite result dir if not exists
-        Path(get_filename(FileType.ENUMERATE_ROOT, appname, args.data_dir)).mkdir(parents=True, exist_ok=True)
+        connect_str = CONNECT_MAP[app]
         for q in tqdm(queries):
-            with open(get_filename(FileType.REWRITE_STATS, appname, args.data_dir), "w+") as f:
-                f.write("%d, %d, %d" % (enumerate_cnt, lower_cost_cnt, lower_cost_pass_test_cnt))
             start = time.time()
             # =================Enumerate Candidates================
             enumerate_queries = []
@@ -121,7 +103,7 @@ def main():
             
             # ======== Estimate cost and retain those with lower cost than original ======
             rewritten_queries_lower_cost = []
-            if args.include_eq:
+            if include_eq:
                 cmp_op = operator.le
             else:
                 cmp_op = operator.lt
@@ -169,7 +151,7 @@ def main():
             rewritten_queries_lower_cost_after_test = []
             not_eq_qs = []
             # use tests to check equivalence
-            rewritten_queries_lower_cost_after_test, not_eq_qs = TestVerifier().verify(appname, q, constraints, rewritten_queries_lower_cost)
+            rewritten_queries_lower_cost_after_test, not_eq_qs = TestVerifier().verify(app, q, constraints, rewritten_queries_lower_cost)
             
             if len(rewritten_queries_lower_cost_after_test) == 0:
                 continue
@@ -180,7 +162,7 @@ def main():
             exp_recorder.record("enumerate", enumerate_time)
             exp_recorder.record("get_cost", get_cost_time)
             exp_recorder.record("test", run_test_time)
-            # exp_recorder.dump(get_filename(FileType.REWRITE_TIME, appname))
+            # exp_recorder.dump(get_filename(FileType.REWRITE_TIME, app))
             
             # ========= Sort rewrites that pass tests ============
             # Sort the list in place
@@ -189,8 +171,17 @@ def main():
             # ========== Dump outputs to cosette ==========
             rewrite_cnt += 1
             total_candidate_cnt.append(len(rewritten_queries_lower_cost_after_test))
-            ProveDumper.dump_param_rewrite(appname, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, args.include_eq, args.data_dir)
-            ProveDumper.dump_metadaba(appname, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, args.include_eq, args.data_dir)
+            ProveDumper.dump_param_rewrite(app, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, include_eq, data_dir)
+            ProveDumper.dump_metadata(app, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, include_eq, data_dir)
+    stats_file = get_path(FileType.REWRITE_STATS, app, data_dir)
+    stats_file.parent.mkdir(parents=True, exist_ok=True)
+    stats_file.write_text(f"{enumerate_cnt}, {lower_cost_cnt}, {lower_cost_pass_test_cnt}")
+    
+    print("========  Running prover  ========")
+    prove(get_path(FileType.REWRITTEN_QUERY, app, data_dir), constraint_file)
+
+def main():
+    clize.run(rewrite)
 
 if __name__ == "__main__":
     main()

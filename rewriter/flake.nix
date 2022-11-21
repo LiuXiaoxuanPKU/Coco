@@ -1,14 +1,18 @@
 {
   description = "ConstrOpt rewriter";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.poetry2nix = {
-    url = "github:nix-community/poetry2nix";
-    inputs.nixpkgs.follows = "nixpkgs";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+    poetry2nix = {
+      url = "github:nix-community/poetry2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    cosette-parser.url = "github:cosette-solver/cosette-parser/experimental";
+    cosette-prover.url = "github:cosette-solver/cosette-prover";
   };
 
-  outputs = { self, nixpkgs, flake-utils, poetry2nix, }:
+  outputs = { self, nixpkgs, flake-utils, poetry2nix, cosette-parser, cosette-prover }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
         inherit system;
@@ -19,7 +23,10 @@
         python = python310;
         overrides = pkgs.poetry2nix.overrides.withDefaults (_: prev: {
           mo-future = prev.mo-future.overrideAttrs (_: old: {
-            propagatedBuildInputs = old.propagatedBuildInputs ++ [prev.setuptools];
+            propagatedBuildInputs = old.propagatedBuildInputs ++ [ prev.setuptools ];
+          });
+          clize = prev.clize.overrideAttrs (_: old: {
+            propagatedBuildInputs = old.propagatedBuildInputs ++ [ prev.setuptools prev.setuptools-scm prev.wheel ];
           });
           z3-solver = prev.z3-solver.overridePythonAttrs (old: {
             dontUseCmakeConfigure = true;
@@ -31,12 +38,21 @@
           });
         });
       };
-      constropt-rewriter = pkgs.poetry2nix.mkPoetryApplication package-def;
       constropt-rewriter-env = pkgs.poetry2nix.mkPoetryEnv package-def;
+      constropt-rewriter = pkgs.poetry2nix.mkPoetryApplication (package-def // {
+        propagatedBuildInputs = [
+          cosette-parser.packages.${system}.default
+          cosette-prover.packages.${system}.default
+        ];
+      });
     in {
       packages.default = constropt-rewriter;
       devShells.default = pkgs.mkShell {
-        buildInputs = with pkgs; [constropt-rewriter-env poetry postgresql openssl];
+        packages = with pkgs; [
+          constropt-rewriter-env poetry postgresql openssl
+          cosette-parser.packages.${system}.default
+          cosette-prover.packages.${system}.default
+        ];
       };
     });
 }

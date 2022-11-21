@@ -1,3 +1,4 @@
+from pathlib import Path
 from enum import IntEnum
 from dataclasses import dataclass
 from typing import List
@@ -6,45 +7,59 @@ from mo_sql_parsing import format
 class FileType(IntEnum):
     RAW_QUERY = 0
     CONSTRAINT = 1
-    VERIFIER_INPUT = 2
+    DATABASE_SCHEMA = 2
    
-    REWRITE_OUTPUT_META = 3
-    REWRITE_OUTPUT_SQL_EQ = 4
+    REWRITE_META = 3
+    REWRITTEN_QUERY = 4
     
     ENUMERATE_CNT = 5
     ENUMERATE_TIME = 6
     REWRITE_STATS = 7
     ENUMERATE_ROOT = 8
+    
+    BENCH_REWRITE_PERF = 9
+    BENCH_STR2INT_NUM = 10
+    BENCH_STR2INT_PERF = 11
+    
+    GRAPH_REWRITE_PERF = 12
+    GRAPH_TYPE_PERF = 13
   
-def get_filename(_type: FileType, appname: str, datadir: str, cost_include_eq=True) -> str:
+def get_path(_type: FileType, appname: str, datadir: str, cost_include_eq=True) -> Path:
     cost_path = "cost_less_eq" if cost_include_eq else "cost_less"
  
     m = {
             # input query, constraint, create table sql
-            FileType.RAW_QUERY : "%s/queries/%s/%s.pk" % (datadir, appname, appname),
-            FileType.CONSTRAINT : "%s/constraints/%s"  % (datadir, appname),
-            FileType.VERIFIER_INPUT : "%s/app_create_sql/%s.sql" %(datadir, appname),
+            FileType.RAW_QUERY : Path(f"{datadir}/queries/{appname}/{appname}.pk"),
+            FileType.CONSTRAINT : Path(f"{datadir}/constraints/{appname}"),
+            FileType.DATABASE_SCHEMA : Path(f"{datadir}/app_create_sql/{appname}.sql"),
             
             # output sqls from rewrite and tests
-            FileType.REWRITE_OUTPUT_SQL_EQ: "%s/rewrites/%s/%s/sqls/" % (datadir, appname, cost_path),
-            FileType.REWRITE_OUTPUT_META: "%s/rewrites/%s/%s/metadata/" % (datadir, appname, cost_path),
+            FileType.REWRITTEN_QUERY: Path(f"{datadir}/rewrites/{appname}/{cost_path}/sqls/"),
+            FileType.REWRITE_META: Path(f"{datadir}/rewrites/{appname}/{cost_path}/metadata/"),
             
             # meta data (rewrite count/time) of rewrites
-            FileType.ENUMERATE_ROOT: "%s/rewrites/%s/" % (datadir, appname),
-            FileType.ENUMERATE_CNT: "%s/rewrites/%s/enumerate_cnts" % (datadir, appname),
-            FileType.ENUMERATE_TIME: "%s/rewrites/%s/enumerate_times" % (datadir, appname),
-            FileType.REWRITE_STATS: "%s/rewrites/%s/rewrite_stats" % (datadir, appname),
+            FileType.ENUMERATE_CNT: Path(f"{datadir}/rewrites/{appname}/enumerate_cnts"),
+            FileType.ENUMERATE_TIME: Path(f"{datadir}/rewrites/{appname}/enumerate_times"),
+            FileType.REWRITE_STATS: Path(f"{datadir}/rewrites/{appname}/rewrite_stats"),
+            
+            # benchmark results dir
+            FileType.BENCH_REWRITE_PERF: Path(f"{datadir}/{appname}_rewrite_perf"),
+            FileType.BENCH_STR2INT_NUM: Path(f"{datadir}/{appname}_str2int_count"),
+            FileType.BENCH_STR2INT_PERF: Path(f"{datadir}/{appname}_str2int_perf"),
+            
+            # graphs
+            FileType.GRAPH_REWRITE_PERF: Path(f"{datadir}/{appname}_rewrite_perf.png"),
+            FileType.GRAPH_TYPE_PERF: Path(f"{datadir}/{appname}_type_perf.png")
     }
     return m[_type]
 
 CONNECT_MAP = {
-    "redmine" : "user=redmine password=my_password dbname=redmine_develop",
-    "redmine_test" : "user=redmine password=my_password dbname=redmine_test",
-    "forem" : "user=ubuntu password=my_password dbname=Forem_development",
-    "openproject" : "user=openproject password=my_password dbname=openproject_dev",
-    "mastodon": "user=ubuntu password=my_password dbname=mastodon_development",
-    "spree": "user=ubuntu password=my_password dbname=spree_core_spree_test",
-    "openstreetmap": "user=ubuntu password=my_password dbname=openstreetmap"
+    "redmine" : "dbname=redmine_develop",
+    "forem" : "dbname=Forem_development",
+    "openproject" : "dbname=openproject_dev",
+    "mastodon": "dbname=mastodon_development",
+    "spree": "dbname=spree_core_spree_test",
+    "openstreetmap": "dbname=openstreetmap"
 }
    
 class RewriteType(IntEnum):

@@ -1,4 +1,8 @@
 .*
 !.github/
 
+result
+
+data/rewrites/
+
 *__pycache__*
