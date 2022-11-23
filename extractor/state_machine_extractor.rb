@@ -4,6 +4,9 @@ require_relative './ast_handler'
 
 # extract inclusion constraints with state machine type
 class StateMachineExtractor < Extractor
+  def initialize(schema)
+    super(schema)
+  end
 
   def visit(node, _params)
     return if node.ast.nil?
@@ -12,7 +15,7 @@ class StateMachineExtractor < Extractor
     ast[2].children.select.each do |c|
       if c.type.to_s == 'command' && c[0].source == 'state_machine'
         constraint = extract_state_machine_inclusion(c)
-        node.constraints.append(constraint)
+        set_constraints(node, filter_validate_constraints(node, [constraint]))
       end
     end
   end

@@ -4,15 +4,15 @@ require_relative 'base_extractor'
 require_relative 'constraint'
 
 class DBExtractor < Extractor
-  attr_accessor :unique_cnt, :table_dbconstraint_map
+  attr_accessor :unique_cnt, :table_dbconstraint_map, :db_schema
 
   def initialize(filename)
     @unique_cnt = 0
-    @table_dbconstraint_map = extract_from_schema(filename)
-    @all_tables = []
+    @table_dbconstraint_map, @db_schema = extract_from_schema(filename)
+    @all_node_tables = []
   end
 
-  def extract_from_line(line)
+  def extract_constraint_from_line(line)
     tokens = line.split(',')
     # length constraint
     if line.include? 'limit'
@@ -76,22 +76,38 @@ class DBExtractor < Extractor
     nil
   end
 
+  def extract_field_from_line(line)
+    case line
+    when /(t.string|t.jsonb|t.datetime|t.bigint|t.text|t.integer|t.boolean|t.float|t.tsvector)\s*"(?<field>\w+)"/
+      return $1
+    else
+      return nil
+    end
+  end
+
   def extract_from_schema(field_name)
     table_constraint_map = {}
+    db_schema = {}
     File.open(field_name, 'r') do |f|
       table_name = nil
       f.each_line do |line|
         if line.include?('create_table')
           table_name = line.split[1][1..-3]
           table_constraint_map[table_name] = []
+          db_schema[table_name] = []
         else
-          c, t = extract_from_line(line)
+          c, t = extract_constraint_from_line(line)
           table_name = t unless t.nil?
           table_constraint_map[table_name].append(c) unless c.nil?
+
+          field = extract_field_from_line(line.strip)
+          if !field.nil?
+            db_schema[table_name].append(field)
+          end
         end
       end
     end
-    table_constraint_map
+    return table_constraint_map, db_schema
   end
 
   def visit(node, _params)
@@ -99,12 +115,12 @@ class DBExtractor < Extractor
       node.constraints += @table_dbconstraint_map[node.table]
       # @table_dbconstraint_map = @table_dbconstraint_map.except!(node.table)
     end
-    @all_tables.append(node.table)
+    @all_node_tables.append(node.table)
   end
 
   def post_visit(_node)
     @table_dbconstraint_map.each do |table, _c|
-      puts "[Warning] #{table} does not exist in node tree" unless @all_tables.include? table
+      puts "[Warning] #{table} does not exist in node tree" unless @all_node_tables.include? table
     end
   end
 end

@@ -2,7 +2,8 @@ require_relative './base_extractor'
 require_relative './constraint'
 
 class ClassInheritanceExtractor < Extractor
-  def initialize
+  def initialize(schema)
+    super(schema)
     @table_value_map = {}
     @table_node_map = {}
   end
@@ -23,7 +24,7 @@ class ClassInheritanceExtractor < Extractor
       node = @table_node_map[table]
       db = false
       c = InclusionConstraint.new('type', @table_value_map[node.table], 'class_inheritance', db)
-      node.constraints.append(c)
+      set_constraints(node, filter_validate_constraints(node, [c]))
     end
   end
 end
