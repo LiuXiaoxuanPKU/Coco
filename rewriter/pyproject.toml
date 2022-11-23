@@ -7,6 +7,7 @@ packages = [{ include = "*.py", from = "src" }]
 
 [tool.poetry.scripts]
 constropt-rewriter = "pipeline:main"
+constropt-benchmark = "bench_rewrite:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -15,6 +16,8 @@ mo-sql-parsing = "^8.235.22313"
 tqdm = "^4.64.1"
 pytest = "^7.2.0"
 psycopg2 = "^2.9.5"
+funcy = "^1.17"
+clize = "^5.0.0"
 
 [build-system]
 requires = ["poetry-core"]

@@ -56,4 +56,4 @@ finish = Time.now
 puts "Constraint Extraction Time: #{finish - start}"
 puts "Bultin: #{builtin_extractor.builtin_validation_cnt}, \
       Custom: #{builtin_extractor.custom_validation_cnt}"
-# Serializer.serialize_tree(root, "#{dir}/constraints/#{appname}")
+Serializer.serialize_tree(root, "#{dir}/../constraints/#{appname}")

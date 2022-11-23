@@ -13,6 +13,25 @@ tests = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900
 tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins"]
 
 [[package]]
+name = "clize"
+version = "5.0.0"
+description = "Turn functions into command-line interfaces"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+attrs = ">=19.1.0"
+docutils = ">=0.17.0"
+od = "*"
+sigtools = ">=4.0.1"
+
+[package.extras]
+clize-own-docs = ["sphinx (>=4.2.0,<4.3.0)", "sphinx-rtd-theme"]
+datetime = ["python-dateutil"]
+test = ["Pygments", "python-dateutil", "repeated-test (>=2.3.0a4)"]
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
@@ -21,8 +40,16 @@ optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 
 [[package]]
+name = "docutils"
+version = "0.19"
+description = "Docutils -- Python Documentation Utilities"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "exceptiongroup"
-version = "1.0.1"
+version = "1.0.4"
 description = "Backport of PEP 654 (exception groups)"
 category = "main"
 optional = false
@@ -30,6 +57,14 @@ python-versions = ">=3.7"
 
 [package.extras]
 test = ["pytest (>=6)"]
+
+[[package]]
+name = "funcy"
+version = "1.17"
+description = "A fancy and practical functional tools"
+category = "main"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "iniconfig"
@@ -93,7 +128,7 @@ tests = ["mo-files", "mo-logs", "mo-testing", "mo-threads"]
 
 [[package]]
 name = "mo-sql-parsing"
-version = "8.235.22313"
+version = "8.237.22316"
 description = "More SQL Parsing! Parse SQL into JSON parse tree"
 category = "main"
 optional = false
@@ -107,6 +142,17 @@ mo-parsing = "8.233.22310"
 
 [package.extras]
 tests = ["mo-files", "mo-testing", "mo-threads"]
+
+[[package]]
+name = "od"
+version = "2.0.2"
+description = "Shorthand syntax for building OrderedDicts"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.extras]
+test = ["repeated-test"]
 
 [[package]]
 name = "packaging"
@@ -171,6 +217,21 @@ tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "xmlschema"]
 
 [[package]]
+name = "sigtools"
+version = "4.0.1"
+description = "Utilities for working with inspect.Signature objects."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+attrs = "*"
+
+[package.extras]
+test = ["coverage", "mock", "repeated-test (>=2.2.1)", "sphinx"]
+tests = ["coverage", "mock", "repeated-test (>=2.2.1)", "sphinx"]
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -206,20 +267,32 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "799db664a210dc5c0576521970f0c99a1257fab21f33bfd46439c14f188a3409"
+content-hash = "69df30f316e796d434d62286ef7aa16715ff15b1fa02bcb65f13d189b609f88b"
 
 [metadata.files]
 attrs = [
     {file = "attrs-22.1.0-py2.py3-none-any.whl", hash = "sha256:86efa402f67bf2df34f51a335487cf46b1ec130d02b8d39fd248abfd30da551c"},
     {file = "attrs-22.1.0.tar.gz", hash = "sha256:29adc2665447e5191d0e7c568fde78b21f9672d344281d0c6e1ab085429b22b6"},
 ]
+clize = [
+    {file = "clize-5.0.0-py2.py3-none-any.whl", hash = "sha256:c3b4788f5935280fadae684e18e17b5d34a62d3dec1ba1c4127f24ec53fc23b5"},
+    {file = "clize-5.0.0.tar.gz", hash = "sha256:fdc16912f00dfcca2f777f31684e7763e0fd11883f485c877aab65554a350f42"},
+]
 colorama = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
+docutils = [
+    {file = "docutils-0.19-py3-none-any.whl", hash = "sha256:5e1de4d849fee02c63b040a4a3fd567f4ab104defd8a5511fbbc24a8a017efbc"},
+    {file = "docutils-0.19.tar.gz", hash = "sha256:33995a6753c30b7f577febfc2c50411fec6aac7f7ffeb7c4cfe5991072dcf9e6"},
+]
 exceptiongroup = [
-    {file = "exceptiongroup-1.0.1-py3-none-any.whl", hash = "sha256:4d6c0aa6dd825810941c792f53d7b8d71da26f5e5f84f20f9508e8f2d33b140a"},
-    {file = "exceptiongroup-1.0.1.tar.gz", hash = "sha256:73866f7f842ede6cb1daa42c4af078e2035e5f7607f0e2c762cc51bb31bbe7b2"},
+    {file = "exceptiongroup-1.0.4-py3-none-any.whl", hash = "sha256:542adf9dea4055530d6e1279602fa5cb11dab2395fa650b8674eaec35fc4a828"},
+    {file = "exceptiongroup-1.0.4.tar.gz", hash = "sha256:bd14967b79cd9bdb54d97323216f8fdf533e278df937aa2a90089e7d6e06e5ec"},
+]
+funcy = [
+    {file = "funcy-1.17-py2.py3-none-any.whl", hash = "sha256:ba7af5e58bfc69321aaf860a1547f18d35e145706b95d1b3c966abc4f0b60309"},
+    {file = "funcy-1.17.tar.gz", hash = "sha256:40b9b9a88141ae6a174df1a95861f2b82f2fdc17669080788b73a3ed9370e968"},
 ]
 iniconfig = [
     {file = "iniconfig-1.1.1-py2.py3-none-any.whl", hash = "sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3"},
@@ -238,7 +311,11 @@ mo-parsing = [
     {file = "mo-parsing-8.233.22310.tar.gz", hash = "sha256:74105a5170481ddef23dabb527a0e6180cad213489a3dda84a2c5eb1917b2bd6"},
 ]
 mo-sql-parsing = [
-    {file = "mo-sql-parsing-8.235.22313.tar.gz", hash = "sha256:7956a83b7dfe372d3ddd9f2a94bf487e3bb7b7a62259b97608ef71f1af9b268d"},
+    {file = "mo-sql-parsing-8.237.22316.tar.gz", hash = "sha256:7c73744dddbf5fb73f7a37cc94df22892beac8da418bbefcc35e22dd6b65ba79"},
+]
+od = [
+    {file = "od-2.0.2-py3-none-any.whl", hash = "sha256:af8febd09a137ed2931c5b08b2c0c2a498d4707ac0fb8827352a80316d0e1edc"},
+    {file = "od-2.0.2.tar.gz", hash = "sha256:b86923d99f262e0e75215f853aac19975853ef35728e60f509c63f55b1f8b4a9"},
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
@@ -270,6 +347,10 @@ pyparsing = [
 pytest = [
     {file = "pytest-7.2.0-py3-none-any.whl", hash = "sha256:892f933d339f068883b6fd5a459f03d85bfcb355e4981e146d2c7616c21fef71"},
     {file = "pytest-7.2.0.tar.gz", hash = "sha256:c4014eb40e10f11f355ad4e3c2fb2c6c6d1919c73f3b5a433de4708202cade59"},
+]
+sigtools = [
+    {file = "sigtools-4.0.1-py2.py3-none-any.whl", hash = "sha256:d216b4cf920bbab0fce636ddc429ed8463a5b533d9e1492acb45a2a1bc36ac6c"},
+    {file = "sigtools-4.0.1.tar.gz", hash = "sha256:4b8e135a9cd4d2ea00da670c093372d74e672ba3abb87f4c98d8e73dea54445c"},
 ]
 tomli = [
     {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},

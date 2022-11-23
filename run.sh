@@ -1,38 +1,53 @@
-# install rvm
-gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-curl -sSL https://get.rvm.io | bash -s stable
-curl -sSL https://get.rvm.io | bash -s stable --rails
+#!/usr/bin/env bash
+# $data_dir: Source folder $2: Application name
 
-# create rvm environment
-rvm use 3.0.0@constropt --create
-cd extractor
-bundle install
-cd ..
+if [ $# -eq 2 ]
+then
+  # Expand data directory path
+  data_dir=`realpath $1`
 
-# # run constraint extractor tests, you should not see any errors
-# bash extractor/run_test.sh
+  # Initialize database if necessary
+  export PGHOST="$data_dir/postgres"
+  export PGDATA="$PGHOST/data"
+  export PGDATABASE="postgres"
+  export PGUSER="postgres"
+  mkdir -p "$PGHOST"
+  if [ ! -d "$PGDATA" ]
+  then
+    initdb -U "$PGUSER" --auth=trust --no-locale --encoding=UTF8
+  fi
+  if ! pg_ctl status
+  then
+    pg_ctl start -l "$PGHOST/postgres.log" -o "--unix_socket_directories='$PGHOST' --listen_addresses=''"
+  fi
 
-# extract constraints
-ruby extractor/main.rb --dir data/app_source_code/ --app redmine
+  # Trap to stop database
+  trap "{ pg_ctl stop; exit 255; }" SIGINT SIGTERM EXIT
 
-# create conda environment
-conda create -n rewriter python=3.10
-conda activate rewriter
-pip install -r rewriter/requirements.txt 
+  mkdir -p "$data_dir/dump"
+  if [ ! -f "$data_dir/dump/$2.dump" ]
+  then
+    ia download "constropt-$2-dump" "$2.dump" --no-directories --destdir="$data_dir/dump"
+  fi
+  pg_restore -d $PGDATABASE -C -j 16 -x -O -c "$data_dir/dump/$2.dump"
 
-# # run query rewriter tests, you should not see any errors
-# cd rewriter/test
-# pytest
-# cd ../.. # go back to project root
+  # extract constraints
+  constropt-extractor --dir "$data_dir/app_source_code/" --app "$2"
 
+<<<<<<< HEAD
 
 # 1. string to int optimization
 python rewriter/src/str2int_pipeline.py --app redmine --cnt 1000 --data_dir data
 
 # 2. query rewrite optimization
 python rewriter/src/rewrite_pipeline.py --app redmine --cnt 1000 --include_eq --data_dir data
+=======
+  # rewrite queries
+  constropt-rewriter "$data_dir" "$2" --cnt 10000 --include-eq 
+>>>>>>> 07758ae59f299a56f8017e3dc352cd50ae36624f
 
-python benchmark/bench_rewrite_perf.py --app redmine --data_dir data
-
-mkdir data/figures
-python benchmark/plot_rewrite_perf.py --app redmine --data_dir data
+  # Run benchmark
+  constropt-benchmark "$data_dir" "$2" --include-eq
+else
+  echo "Please provide the data directory and application name."
+fi
