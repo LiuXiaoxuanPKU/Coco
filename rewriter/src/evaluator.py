@@ -1,4 +1,5 @@
 import psycopg2
+import re
 
 JIT = "on"
 class Evaluator:
@@ -19,7 +20,7 @@ class Evaluator:
                 return explain_fetched
 
     @staticmethod
-    def evaluate_actual_time(q, connect_string, jit=False):
+    def evaluate_actual_time(q, connect_string, repeat=1, jit=False):
         if jit:
             JIT = True
         else:
@@ -30,13 +31,14 @@ class Evaluator:
             with conn.cursor() as cur:
                 # Execute a command: explain query
                 cur.execute("set jit=%s" % JIT)
-                cur.execute("EXPLAIN ANALYZE " + q)
-                # Fetch result
-                explain_fetched = cur.fetchall()[-1]
-                # Parse actual runtime
-                actual_time = float(explain_fetched[0].split(':')[-1].split('ms')[0])
-                cur.close()
-                return actual_time
+                rows = 0
+                def execute(q):
+                    cur.execute("EXPLAIN ANALYZE " + q)
+                    result = cur.fetchall()
+                    nonlocal rows
+                    rows = int(re.search(r"\(actual time=.* rows=(\d+).*\)", result[0][0]).group(1))
+                    return float(result[-1][0].split(':')[-1].split('ms')[0])
+                return sum(execute(q) for _ in range(repeat)) / repeat, rows
 
     @staticmethod
     def evaluate_cost(q, connect_string):

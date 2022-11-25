@@ -1,38 +1,35 @@
 #!/usr/bin/env bash
 # $data_dir: Source folder $2: Application name
 
-if [ $# -eq 2 ]
-then
+if [[ $# -eq 2 ]]; then
   # Expand data directory path
-  data_dir=`realpath $1`
+  data_dir="$(realpath $1)"
 
   # Initialize database if necessary
   export PGHOST="$data_dir/postgres"
   export PGDATA="$PGHOST/data"
   export PGDATABASE="postgres"
   export PGUSER="postgres"
+
   mkdir -p "$PGHOST"
-  if [ ! -d "$PGDATA" ]
-  then
+  if [[ ! -d "$PGDATA" ]]; then
     initdb -U "$PGUSER" --auth=trust --no-locale --encoding=UTF8
   fi
-  if ! pg_ctl status
-  then
+  if ! pg_ctl status; then
     pg_ctl start -l "$PGHOST/postgres.log" -o "--unix_socket_directories='$PGHOST' --listen_addresses=''"
   fi
 
   # Trap to stop database
-  trap "{ pg_ctl stop; exit 255; }" SIGINT SIGTERM EXIT
+  trap "{ pg_ctl stop; exit; }" SIGINT SIGTERM EXIT
 
   mkdir -p "$data_dir/dump"
-  if [ ! -f "$data_dir/dump/$2.dump" ]
-  then
+  if [[ ! -f "$data_dir/dump/$2.dump" ]]; then
     ia download "constropt-$2-dump" "$2.dump" --no-directories --destdir="$data_dir/dump"
   fi
   pg_restore -d $PGDATABASE -C -j 16 -x -O -c "$data_dir/dump/$2.dump"
 
   # extract constraints
-  constropt-extractor --dir "$data_dir/app_source_code/" --app "$2"
+  # constropt-extractor --dir "$data_dir/app_source_code/" --app "$2"
 
   # rewrite queries
   constropt-rewriter "$data_dir" "$2" --cnt 10000 --include-eq 
