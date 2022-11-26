@@ -17,9 +17,11 @@ class TreeVisitor
       return
     end
 
-    c = Serializer.serialize_node(node)
-    @constraints << c
-    @constraints_cnt += node.constraints.length
+    if ["ActiveRecord::Base", "Principal"].include? node.parent
+      c = Serializer.serialize_node(node)
+      @constraints << c
+      @constraints_cnt += node.constraints.length
+    end
   end
 end
 

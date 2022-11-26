@@ -14,7 +14,8 @@ class BuiltinExtractor < Extractor
                          validates_inclusion_of
                          validates_numericality_of validates].freeze
 
-  def initialize
+  def initialize(db_schema)
+    super(db_schema)
     @builtin_validation_cnt = 0
     @custom_validation_cnt = 0
     @vars = {}
@@ -32,7 +33,7 @@ class BuiltinExtractor < Extractor
 
       constraints += extract_cmd(c) if c.type.to_s == 'command'
     end
-    node.constraints += constraints
+    set_constraints(node, filter_validate_constraints(node, constraints))
   end
 
   def extract_cmd(c)
@@ -304,6 +305,7 @@ class BuiltinExtractor < Extractor
     end
     fields.each do |field|
       constraints << PresenceConstraint.new(field, cond, db = false)
+      constraints << PresenceConstraint.new(field + "_id", cond, db = false)
     end
     constraints
   end

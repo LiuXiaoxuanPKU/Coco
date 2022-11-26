@@ -6,7 +6,8 @@ require_relative './base_extractor'
 require_relative './constraint'
 
 class HasoneBelongtoExtractor < Extractor
-  def initialize
+  def initialize(schema)
+    super(schema)
     @class_node_map = {}
     @class_constraint_map = {}
 
@@ -59,7 +60,7 @@ class HasoneBelongtoExtractor < Extractor
         end
       end
       node = @class_node_map[class_name]
-      node.constraints.append(constraint)
+      set_constraints(node, filter_validate_constraints(node, [constraint]))
     end
 
     # genreate inclusion constraints for polymorphic assoc
@@ -69,8 +70,8 @@ class HasoneBelongtoExtractor < Extractor
         next
       end
       value_list = @polyfield_valuelist_map[field]
-      inclusion_c = InclusionConstraint.new(field + "_type", value_list, 'polymorphic', db = false)
-      node.constraints.append(inclusion_c)
+      c = InclusionConstraint.new(field + "_type", value_list, 'polymorphic', db = false)
+      set_constraints(node, filter_validate_constraints(node, [c]))
     end
   end
 end
