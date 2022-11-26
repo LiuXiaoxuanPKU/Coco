@@ -31,17 +31,8 @@ if [[ $# -eq 2 ]]; then
   # extract constraints
   # constropt-extractor --dir "$data_dir/app_source_code/" --app "$2"
 
-<<<<<<< HEAD
-
-# 1. string to int optimization
-python rewriter/src/str2int_pipeline.py --app redmine --cnt 1000 --data_dir data
-
-# 2. query rewrite optimization
-python rewriter/src/rewrite_pipeline.py --app redmine --cnt 1000 --include_eq --data_dir data
-=======
   # rewrite queries
-  constropt-rewriter "$data_dir" "$2" --cnt 10000 --include-eq 
->>>>>>> 07758ae59f299a56f8017e3dc352cd50ae36624f
+  constropt-rewriter "$data_dir" "$2" --cnt 1000 --include-eq 
 
   # Run benchmark
   constropt-benchmark "$data_dir" "$2" --include-eq

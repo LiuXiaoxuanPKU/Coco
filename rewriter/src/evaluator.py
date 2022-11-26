@@ -21,16 +21,12 @@ class Evaluator:
 
     @staticmethod
     def evaluate_actual_time(q, connect_string, repeat=1, jit=False):
-        if jit:
-            JIT = True
-        else:
-            JIT = False
         # Connect to an existing database
         with psycopg2.connect(connect_string) as conn:
             # Open a cursor to perform database operations
             with conn.cursor() as cur:
                 # Execute a command: explain query
-                cur.execute("set jit=%s" % JIT)
+                cur.execute("set jit=%s" % jit)
                 rows = 0
                 def execute(q):
                     cur.execute("EXPLAIN ANALYZE " + q)

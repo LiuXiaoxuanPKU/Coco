@@ -1,7 +1,4 @@
-<<<<<<< HEAD:rewriter/src/rewrite_pipeline.py
-=======
 import clize
->>>>>>> 07758ae59f299a56f8017e3dc352cd50ae36624f:rewriter/src/pipeline.py
 import traceback
 import pickle
 import operator
@@ -18,12 +15,8 @@ from utils import exp_recorder, generate_query_param_rewrites, generate_query_pa
 from config import CONNECT_MAP, FileType, get_path
 from prover import prove
 
-<<<<<<< HEAD:rewriter/src/rewrite_pipeline.py
-from config import CONNECT_MAP, FileType, get_filename
-=======
 def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = False, cnt: int = 100000, include_eq: bool = False):
     """ConstrOpt rewriter
->>>>>>> 07758ae59f299a56f8017e3dc352cd50ae36624f:rewriter/src/pipeline.py
 
     Args:
         :param data_dir: Root directory for storing intermediate and final results.
