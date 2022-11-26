@@ -38,6 +38,7 @@
       devShells.default = pkgs.mkShell {
         inputsFrom = [ constropt-run ];
       };
+	  devShell = devShells.default;
     });
 
   nixConfig = {

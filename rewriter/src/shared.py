@@ -12,7 +12,7 @@ class EvalQuery:
     id: tuple[str, int]
     before: str
     after: str
-    timer: dict[Stage, list[float]]
+    timer: dict[Stage, float]
     rows: int
     rewrite_types: list[str]
 

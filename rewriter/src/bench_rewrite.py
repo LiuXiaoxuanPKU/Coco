@@ -10,7 +10,7 @@ from config import CONNECT_MAP, get_path, FileType
 from funcy import keep
 
 
-def eval(rewrites: list[EvalQuery], connection: str, stage: Stage, repeat=1):
+def eval(rewrites: list[EvalQuery], connection: str, stage: Stage, repeat):
     for rewrite in tqdm(rewrites):
         query = rewrite.before if stage in [
             Stage.BASE, Stage.CONSTRAINT] else rewrite.after
@@ -54,8 +54,7 @@ def process_constraints(constraints: list[Constraint]) -> tuple[list[str], list[
     return zip(*keep(map(process_constraint, constraints)))
 
 
-def benchmark(data_dir: str, app: str, *, include_eq: bool = False):
-
+def benchmark(data_dir: str, app: str, *, include_eq: bool = False, repeat=100):
     rewrites = loader.read_rewrites(
         get_path(FileType.REWRITE_META, app, data_dir, include_eq),
         get_path(FileType.REWRITTEN_QUERY, app, data_dir, include_eq),
@@ -68,15 +67,15 @@ def benchmark(data_dir: str, app: str, *, include_eq: bool = False):
     print("========  Cleanup constraints  ========")
     exec_statements(cleanups, connection)
     print("========  Original queries  ========")
-    eval(rewrites, connection, Stage.BASE)
+    eval(rewrites, connection, Stage.BASE, repeat)
     print("========  Rewritten queries  ========")
-    eval(rewrites, connection, Stage.REWRITE)
+    eval(rewrites, connection, Stage.REWRITE, repeat)
     print("========  Install constraints  ========")
     exec_statements(installs, connection)
     print("========  Database constriant  ========")
-    eval(rewrites, connection, Stage.CONSTRAINT)
+    eval(rewrites, connection, Stage.CONSTRAINT, repeat)
     print("========  Rewrite constraint  ========")
-    eval(rewrites, connection, Stage.CONSTRAINT_REWRITE)
+    eval(rewrites, connection, Stage.CONSTRAINT_REWRITE, repeat)
     loader.write_bench_results(get_path(FileType.BENCH_REWRITE_PERF,
                         app, data_dir, include_eq), rewrites)
 
