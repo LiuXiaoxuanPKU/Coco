@@ -1,5 +1,5 @@
 from pathlib import Path
-from enum import IntEnum
+from enum import Enum, IntEnum
 from dataclasses import dataclass
 from typing import List
 from mo_sql_parsing import format
@@ -62,15 +62,15 @@ CONNECT_MAP = {
     "openstreetmap": "dbname=openstreetmap"
 }
    
-class RewriteType(IntEnum):
-    AddPredicate = 6
-    RewriteNullPredicate = 5
-    RemovePredicate = 4
-    RemoveJoin = 3
-    RemoveDistinct = 2
-    AddLimitOne = 1
-    ReplaceOuterJoin = 0
-    UnionToUnionAll = -1
+class RewriteType(Enum):
+    AddPredicate = "PI/E"
+    RewriteNullPredicate = "ES"
+    RemovePredicate = "PI/E"
+    RemoveJoin = "JI/E"
+    RemoveDistinct = "RD"
+    AddLimitOne = "AL"
+    ReplaceOuterJoin = "JI/E"
+    UnionToUnionAll = "UA"
     
 @dataclass
 class RewriteQuery:

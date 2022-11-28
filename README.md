@@ -3,17 +3,24 @@ This is the official repository for [Leveraging Applicaton Data Constraints to O
 Here we present `ConstrOpt`, the first tool that identifies data relationships by analyzing the programs that generate and maintain the persist data. Once identified,`ConstrOpt` leverages the found constraints to optimize the application's physical design and query execution by rewriting queries. Instead of developing a fixed set of predefined rewriting rules, `ConstrOpt` employs an enumerate-test-verify technique to automatically exploit the discovered data constraints to improve query execution. 
 
 # Install and Run
-requirements: make sure you have conda and postgres set up
-Run
+requirements: we need a linux system to run `ConstrOpt`
+1. Install nix
 ```
-bash run.sh
+sh <(curl -L https://nixos.org/nix/install) --daemon
 ```
-under the project root directory. You should see performance figures under `data/figures` directory.
+2. Run the end-to-end pipeline
+```
+bash run.sh DATA APP
+```
+DATA is the data directory that includes application source code (data/app_source_code), sqls that define app scheme (data/app_create_sql/), and app queries (data/queries/) to be optimized. In the repo, the DATA should be set to `data`.
+APP is the application name, which can be set to `redmine`, `forem`, `mastodon`, `openproject`, `openstreetmap`, `spree`.
+
+<!-- If should see benchmark results as follows under data directory after running `bash run.sh data redmine`:
+![Readme perf](imgs/ "Redmine rewrite performance") -->
 
 # Code structure
 | folder | description|
 | ----------- | ----------- |
-| extractor | Constraint Extraction |
-| rewriter | Rewrite queries based on input constraints. Rewriting queries is performed in three steps: enumerate rewrites with rules, estimate cost, and run tests to filter out incorrect rewrites. The output is a file that records the original query and its rewrites. |
-| cosette-parser | parse the original and rewritten pairs, generate input for cosette-solver |
-| cosette-prover | formally verify the equivalence of query pairs |
+| extractor | Constraint Extraction. |
+| rewriter | Rewrite queries based on input constraints. Rewriting queries is performed in the following steps: enumerate rewrites with rules, estimate cost, run tests to filter out incorrect rewrites, collect the queries that pass the test and prepare into inputs for prover, formally verify the equivalence of query pairs.|
+｜ data | Input and output data.| 
