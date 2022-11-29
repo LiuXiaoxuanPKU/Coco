@@ -23,4 +23,4 @@ APP is the application name, which can be set to `redmine`, `forem`, `mastodon`,
 | ----------- | ----------- |
 | extractor | Constraint Extraction. |
 | rewriter | Rewrite queries based on input constraints. Rewriting queries is performed in the following steps: enumerate rewrites with rules, estimate cost, run tests to filter out incorrect rewrites, collect the queries that pass the test and prepare into inputs for prover, formally verify the equivalence of query pairs.|
-｜ data | Input and output data.| 
+| data | Input and output data.| 

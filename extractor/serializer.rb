@@ -8,7 +8,10 @@ class TreeVisitor
 
   def initialize
     @constraints = []
-    @constraints_cnt = 0
+    @constraints_cnt = {}
+    ConstrainType.constants.each do |t|
+      @constraints_cnt[t] = 0
+    end
   end
 
   def visit(node, _params)
@@ -17,11 +20,13 @@ class TreeVisitor
       return
     end
 
-    if ["ActiveRecord::Base", "Principal"].include? node.parent
+    # if ['ActiveRecord::Base', 'Principal', 'ApplicationRecord', 'Spree::Base'].include? node.parent
       c = Serializer.serialize_node(node)
       @constraints << c
-      @constraints_cnt += node.constraints.length
-    end
+      ConstrainType.constants.each do |t|
+        @constraints_cnt[t] += node.constraints.select { |con| con.ctype == t.to_s }.length
+      end
+    # end
   end
 end
 

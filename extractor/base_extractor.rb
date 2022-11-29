@@ -1,5 +1,7 @@
+require_relative 'constraint'
+
 class Extractor
-    def initialize(db_schema)
+    def initialize(db_schema=nil)
         @db_schema = db_schema
     end
 
@@ -18,9 +20,13 @@ class Extractor
     end
 
     def filter_validate_constraints(node, constraints)
+        if @db_schema.nil?
+            return constraints
+        end
+        
         filtered_constraints = constraints
         if @db_schema.key? node.table
-            filtered_constraints = constraints.select{|c| validate_constraint(node.table, c)}
+            filtered_constraints = constraints.select{|c| validate_constraint(node.table, c) || c.is_a?(HasOneManyConstraint)}
         else
             puts "[Warning] Schema does not have table #{node.table}"
         end

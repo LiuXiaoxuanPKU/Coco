@@ -19,12 +19,12 @@ class DBExtractor < Extractor
       field = tokens[0].split(' ')[1][1..-2]
       token_with_limit = tokens.select { |t| t.include? 'limit' }[0]
       limit = token_with_limit['limit'.length..-1].to_i
-      return LengthConstraint.new(field, 0, limit, db = true), nil
+      return LengthConstraint.new(field, 0, limit, ConstrainType::DB), nil
     end
     # presence constraint
     if line.include? 'null: false'
       field = tokens[0].split(' ')[1][1..-2]
-      return PresenceConstraint.new(field, nil, db = true), nil
+      return PresenceConstraint.new(field, nil, ConstrainType::DB), nil
     end
 
     # 3 "user_subscriptions", "users", column: "subscriber_id"
@@ -38,7 +38,7 @@ class DBExtractor < Extractor
       if node.children.length == 2
         fk_column = primary_table.singularize + '_id'
         return ForeignKeyConstraint.new(primary_table.singularize, primary_table.classify, fk_column, false,
-                                        db = true), fk_table
+          ConstrainType::DB), fk_table
       end
 
       node.children[2].each do |assoc|
@@ -54,7 +54,7 @@ class DBExtractor < Extractor
 
       fk_column = primary_table.singularize + '_id' if fk_column.nil?
       return ForeignKeyConstraint.new(primary_table.singularize, primary_table.classify, fk_column, false,
-                                      db = true), fk_table
+        ConstrainType::DB), fk_table
     end
 
     if line.include? 'unique'
@@ -71,7 +71,7 @@ class DBExtractor < Extractor
       return nil, nil if idx_columns.nil?
 
       @unique_cnt += 1
-      return UniqueConstraint.new(idx_columns, cond, true, 'db-index', db = true), nil
+      return UniqueConstraint.new(idx_columns, cond, true, 'db-index', ConstrainType::DB), nil
     end
     nil
   end

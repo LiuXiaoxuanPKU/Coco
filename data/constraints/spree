@@ -5,57 +5,63 @@
     "class": "Spree::Address",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "country",
-        "db": false,
+        "field_name": "country_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Country",
-        "fk_column_name": "country_id",
+        "fk_column_name": "country",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "state",
-        "db": false,
+        "field_name": "state_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::State",
-        "fk_column_name": "state_id",
+        "fk_column_name": "state",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree.user_class.name",
-        "fk_column_name": "user_id",
+        "fk_column_name": "user",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "firstname",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "lastname",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "address1",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "city",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "country_id",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -64,29 +70,17 @@
           "label",
           "user_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -99,65 +93,57 @@
     "class": "Spree::Adjustment",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "adjustable",
-        "db": false,
-        "class_name": "Adjustable",
-        "fk_column_name": "adjustable_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "source",
-        "db": false,
-        "class_name": "Source",
-        "fk_column_name": "source_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "order",
-        "db": false,
-        "class_name": "Spree::Order",
-        "fk_column_name": "order_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "promotion_action",
-        "db": false,
-        "class_name": "Spree::PromotionAction",
-        "fk_column_name": ":source_id",
-        "polymorphic": null
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "adjustable_id",
-        "db": false,
+        "field_name": "updated_at",
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "order_id",
-        "db": false,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "adjustable_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Adjustable",
+        "fk_column_name": "adjustable",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "source_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Source",
+        "fk_column_name": "source",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "order_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Order",
+        "fk_column_name": "order",
+        "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "label",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "amount",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "state",
-        "db": false,
+        "ctype": "FIELD_DEFINITION",
         "values": [
           "open",
           "closed"
@@ -165,29 +151,11 @@
         "type": "state_machine"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "order_id",
-        "db": true,
-        "cond": ""
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -200,17 +168,24 @@
     "class": "Spree::Asset",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "viewable",
-        "db": false,
+        "field_name": "viewable_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Viewable",
-        "fk_column_name": "viewable_id",
+        "fk_column_name": "viewable",
         "polymorphic": true
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "Spree::Asset",
           "Spree::Icon"
@@ -220,7 +195,7 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "viewable_type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "Spree::MenuItem",
           "Spree::Taxon",
@@ -229,18 +204,11 @@
         "type": "polymorphic"
       },
       {
-        "^o": "LengthConstraint",
-        "field_name": "type",
-        "db": true,
-        "min": 0,
-        "max": 0
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -253,11 +221,18 @@
     "class": "Spree::Icon",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -270,31 +245,31 @@
     "class": "Spree::Calculator",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "calculable",
-        "db": false,
-        "class_name": "Calculable",
-        "fk_column_name": "calculable_id",
-        "polymorphic": true
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "calculable_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Calculable",
+        "fk_column_name": "calculable",
+        "polymorphic": true
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -307,37 +282,36 @@
     "class": "Spree::Classification",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "product",
-        "db": false,
-        "class_name": "Spree::Product",
-        "fk_column_name": "product_id",
-        "polymorphic": null
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "product_id",
+          "taxon_id"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "taxon",
-        "db": false,
-        "class_name": "Spree::Taxon",
-        "fk_column_name": "taxon_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "taxon_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "product_id",
-        "db": false,
-        "cond": ""
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Product",
+        "fk_column_name": "product",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "taxon_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Taxon",
+        "fk_column_name": "taxon",
+        "polymorphic": null
       },
       {
         "^o": "NumericalConstraint",
         "field_name": "position",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": null,
         "max": null
       },
@@ -347,7 +321,7 @@
           "taxon_id",
           "product_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -355,20 +329,9 @@
       {
         "^o": "UniqueConstraint",
         "field_name": [
-          "product_id",
-          "taxon_id"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -382,26 +345,78 @@
     "constraints": [
       {
         "^o": "PresenceConstraint",
+        "field_name": "iso",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "iso3",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "iso"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "iso3"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "iso_name"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "iso_name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "iso",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "iso3",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -409,7 +424,7 @@
         "field_name": [
           "name"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -419,7 +434,7 @@
         "field_name": [
           "iso_name"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -429,7 +444,7 @@
         "field_name": [
           "iso"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -439,69 +454,17 @@
         "field_name": [
           "iso3"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "iso",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "iso3",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "iso"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "iso3"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "iso_name"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "name"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -514,43 +477,43 @@
     "class": "Spree::CreditCard",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "payment_method",
-        "db": false,
-        "class_name": "Payment_method",
-        "fk_column_name": "payment_method_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
-        "class_name": "Spree.user_class.to_s",
-        "fk_column_name": "user_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "default",
-        "db": true,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "payment_method_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Payment_method",
+        "fk_column_name": "payment_method",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree.user_class.to_s",
+        "fk_column_name": "user",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -558,7 +521,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -571,43 +534,15 @@
     "class": "Spree::CustomerReturn",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "stock_location",
-        "db": false,
-        "class_name": "Stock_location",
-        "fk_column_name": "stock_location_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "store",
-        "db": false,
-        "class_name": "Spree::Store",
-        "fk_column_name": "store_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "store_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "stock_location_id",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -615,17 +550,33 @@
         "field_name": [
           "number"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "stock_location_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Stock_location",
+        "fk_column_name": "stock_location",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Store",
+        "fk_column_name": "store",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -638,37 +589,31 @@
     "class": "Spree::Digital",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "variant",
-        "db": false,
-        "class_name": "Variant",
-        "fk_column_name": "variant_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "variant_id",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "variant_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Variant",
+        "fk_column_name": "variant",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -681,56 +626,15 @@
     "class": "Spree::DigitalLink",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "digital",
-        "db": false,
-        "class_name": "Digital",
-        "fk_column_name": "digital_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "line_item",
-        "db": false,
-        "class_name": "Line_item",
-        "fk_column_name": "line_item_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "digital_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "line_item_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "access_counter",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "access_counter",
-        "db": false,
-        "min": 0,
-        "max": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -738,17 +642,46 @@
         "field_name": [
           "token"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "digital_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Digital",
+        "fk_column_name": "digital",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "line_item_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Line_item",
+        "fk_column_name": "line_item",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "access_counter",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "access_counter",
+        "ctype": "DATA_VALIDATION",
+        "min": 0,
+        "max": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -761,62 +694,74 @@
     "class": "Spree::InventoryUnit",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "variant",
-        "db": false,
+        "field_name": "variant_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Variant",
-        "fk_column_name": "variant_id",
+        "fk_column_name": "variant",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "order",
-        "db": false,
+        "field_name": "order_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Order",
-        "fk_column_name": "order_id",
+        "fk_column_name": "order",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "shipment",
-        "db": false,
+        "field_name": "shipment_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Shipment",
-        "fk_column_name": "shipment_id",
+        "fk_column_name": "shipment",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "line_item",
-        "db": false,
+        "field_name": "line_item_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::LineItem",
-        "fk_column_name": "line_item_id",
+        "fk_column_name": "line_item",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "original_return_item",
-        "db": false,
+        "field_name": "original_return_item_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::ReturnItem",
-        "fk_column_name": "original_return_item_id",
+        "fk_column_name": "original_return_item",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "quantity",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "NumericalConstraint",
         "field_name": "quantity",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": 0,
         "max": null
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "state",
-        "db": false,
+        "ctype": "FIELD_DEFINITION",
         "values": [
           "on_hand",
           "backordered",
@@ -830,23 +775,11 @@
         "type": "state_machine"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -861,39 +794,39 @@
       {
         "^o": "LengthConstraint",
         "field_name": "encrypted_password",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "LengthConstraint",
         "field_name": "password_salt",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "sign_in_count",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "failed_attempts",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -901,7 +834,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -914,114 +847,96 @@
     "class": "Spree::LineItem",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "order",
-        "db": false,
-        "class_name": "Spree::Order",
-        "fk_column_name": "order_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "variant",
-        "db": false,
-        "class_name": "Spree::Variant",
-        "fk_column_name": "variant_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "tax_category",
-        "db": false,
-        "class_name": "Spree::TaxCategory",
-        "fk_column_name": "tax_category_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "variant_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "order_id",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "quantity",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "quantity",
-        "db": false,
-        "min": null,
-        "max": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "price",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "quantity",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "price",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "included_tax_total",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "pre_tax_amount",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "taxable_adjustment_total",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "non_taxable_adjustment_total",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "order_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Order",
+        "fk_column_name": "order",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "variant_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Variant",
+        "fk_column_name": "variant",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "tax_category_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::TaxCategory",
+        "fk_column_name": "tax_category",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "quantity",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "quantity",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1034,31 +949,31 @@
     "class": "Spree::LogEntry",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "source",
-        "db": false,
-        "class_name": "Source",
-        "fk_column_name": "source_id",
-        "polymorphic": true
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "source_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Source",
+        "fk_column_name": "source",
+        "polymorphic": true
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1071,88 +986,70 @@
     "class": "Spree::Menu",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "store",
-        "db": false,
-        "class_name": "Spree::Store",
-        "fk_column_name": "store_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
+        "field_name": "created_at",
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "store_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "locale",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "location",
-        "db": false,
+        "field_name": "updated_at",
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
-          "location",
           "store_id",
+          "location",
           "locale"
         ],
-        "db": false,
+        "ctype": "DB",
         "cond": "",
-        "case_sensitive": false,
-        "type": "builtin"
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Store",
+        "fk_column_name": "store",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "locale",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "location",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "location",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "values": [
 
         ],
         "type": "builtin"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "store_id",
-          "location",
-          "locale"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1165,109 +1062,99 @@
     "class": "Spree::MenuItem",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "menu",
-        "db": false,
-        "class_name": "Menu",
-        "fk_column_name": "menu_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "linked_resource",
-        "db": false,
-        "class_name": "Linked_resource",
-        "fk_column_name": "linked_resource_id",
-        "polymorphic": true
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "item_type",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "item_type",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "linked_resource_type",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "linked_resource_type",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "menu_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "has_one"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "lft",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "rgt",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "depth",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "menu_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Menu",
+        "fk_column_name": "menu",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "linked_resource_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Linked_resource",
+        "fk_column_name": "linked_resource",
+        "polymorphic": true
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "item_type",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "item_type",
+        "ctype": "DATA_VALIDATION",
+        "values": [
+
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "linked_resource_type",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "linked_resource_type",
+        "ctype": "DATA_VALIDATION",
+        "values": [
+
+        ],
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1280,15 +1167,53 @@
     "class": "Spree::OptionType",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "presentation",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "position",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "filterable",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": ["name"],
-        "db": false,
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -1296,45 +1221,7 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "presentation",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "name",
-        "db": true,
-        "min": 0,
-        "max": 0
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "presentation",
-        "db": true,
-        "min": 0,
-        "max": 0
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "position",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "filterable",
-        "db": true,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -1342,7 +1229,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1355,37 +1242,36 @@
     "class": "Spree::OptionTypePrototype",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "option_type",
-        "db": false,
-        "class_name": "Spree::OptionType",
-        "fk_column_name": "option_type_id",
-        "polymorphic": null
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "prototype_id",
+          "option_type_id"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "prototype",
-        "db": false,
-        "class_name": "Spree::Prototype",
-        "fk_column_name": "prototype_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "prototype_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "option_type_id",
-        "db": false,
-        "cond": ""
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::OptionType",
+        "fk_column_name": "option_type",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "prototype_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Prototype",
+        "fk_column_name": "prototype",
+        "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "prototype_id",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -1394,7 +1280,7 @@
           "prototype_id",
           "option_type_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -1402,20 +1288,9 @@
       {
         "^o": "UniqueConstraint",
         "field_name": [
-          "prototype_id",
-          "option_type_id"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1428,17 +1303,29 @@
     "class": "Spree::OptionValue",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "option_type",
-        "db": false,
+        "field_name": "option_type_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::OptionType",
-        "fk_column_name": "option_type_id",
+        "fk_column_name": "option_type",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -1447,7 +1334,7 @@
           "name",
           "option_type_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -1455,19 +1342,7 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "presentation",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -1475,7 +1350,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1488,37 +1363,36 @@
     "class": "Spree::OptionValueVariant",
     "constraints": [
       {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "variant_id",
+          "option_value_id"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "option_value",
-        "db": false,
+        "field_name": "option_value_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::OptionValue",
-        "fk_column_name": "option_value_id",
+        "fk_column_name": "option_value",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "variant",
-        "db": false,
+        "field_name": "variant_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Variant",
-        "fk_column_name": "variant_id",
+        "fk_column_name": "variant",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "option_value_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "variant_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "option_value_id",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -1527,7 +1401,7 @@
           "option_value_id",
           "variant_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -1535,20 +1409,9 @@
       {
         "^o": "UniqueConstraint",
         "field_name": [
-          "variant_id",
-          "option_value_id"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1561,182 +1424,70 @@
     "class": "Spree::Order",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "bill_address",
-        "db": false,
-        "class_name": "Spree::Address",
-        "fk_column_name": ":bill_address_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "ship_address",
-        "db": false,
-        "class_name": "Spree::Address",
-        "fk_column_name": ":ship_address_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "store",
-        "db": false,
-        "class_name": "Spree::Store",
-        "fk_column_name": "store_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "item_count",
-        "db": false,
-        "min": 0,
-        "max": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "item_count",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "store_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "currency",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "shipment_state",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "shipment_state",
-        "db": false,
-        "values": [
-
-        ],
-        "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "item_total",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "adjustment_total",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "included_tax_total",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "additional_tax_total",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "payment_total",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "shipment_total",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "promo_total",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "total",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "number",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "item_total",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "total",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "adjustment_total",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "shipment_total",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "included_tax_total",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "state_lock_version",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "taxable_adjustment_total",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "non_taxable_adjustment_total",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -1744,17 +1495,74 @@
         "field_name": [
           "number"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Store",
+        "fk_column_name": "store",
+        "polymorphic": null
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "item_count",
+        "ctype": "DATA_VALIDATION",
+        "min": 0,
+        "max": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "item_count",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "currency",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "payment_state",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "payment_state",
+        "ctype": "DATA_VALIDATION",
+        "values": [
+
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "shipment_state",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "shipment_state",
+        "ctype": "DATA_VALIDATION",
+        "values": [
+
+        ],
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1768,18 +1576,18 @@
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "order",
-        "db": false,
+        "field_name": "order_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Order",
-        "fk_column_name": "order_id",
+        "fk_column_name": "order",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "promotion",
-        "db": false,
+        "field_name": "promotion_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Promotion",
-        "fk_column_name": "promotion_id",
+        "fk_column_name": "promotion",
         "polymorphic": null
       },
       {
@@ -1787,7 +1595,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1800,39 +1608,61 @@
     "class": "Spree::Payment",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "order",
-        "db": false,
-        "class_name": "Spree::Order",
-        "fk_column_name": "order_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "payment_method",
-        "db": false,
-        "class_name": "Spree::PaymentMethod",
-        "fk_column_name": "payment_method_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "source",
-        "db": false,
-        "class_name": "Source",
-        "fk_column_name": "source_id",
-        "polymorphic": true
+        "^o": "PresenceConstraint",
+        "field_name": "amount",
+        "ctype": "DB",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "amount",
-        "db": false,
+        "field_name": "created_at",
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "number"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "order_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Order",
+        "fk_column_name": "order",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "payment_method_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::PaymentMethod",
+        "fk_column_name": "payment_method",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "source_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Source",
+        "fk_column_name": "source",
+        "polymorphic": true
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "state",
-        "db": false,
+        "ctype": "FIELD_DEFINITION",
         "values": [
           "checkout",
           "pending",
@@ -1850,7 +1680,7 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "source_type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "Spree::CreditCard",
           "Spree::Payment",
@@ -1859,39 +1689,11 @@
         "type": "polymorphic"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "amount",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "number"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1904,31 +1706,31 @@
     "class": "Spree::PaymentCaptureEvent",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "payment",
-        "db": false,
-        "class_name": "Spree::Payment",
-        "fk_column_name": "payment_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "payment_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Payment",
+        "fk_column_name": "payment",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1942,20 +1744,20 @@
     "constraints": [
       {
         "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -1963,7 +1765,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1977,30 +1779,14 @@
     "constraints": [
       {
         "^o": "PresenceConstraint",
-        "field_name": "key",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "key"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -2008,17 +1794,33 @@
         "field_name": [
           "key"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "key",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "key"
+        ],
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2031,50 +1833,37 @@
     "class": "Spree::Price",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "variant",
-        "db": false,
-        "class_name": "Spree::Variant",
-        "fk_column_name": "variant_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "amount",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "amount",
-        "db": false,
-        "min": 0,
-        "max": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "variant_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "variant_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Variant",
+        "fk_column_name": "variant",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2087,45 +1876,73 @@
     "class": "Spree::Product",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "slug"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "tax_category",
-        "db": false,
+        "field_name": "tax_category_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::TaxCategory",
-        "fk_column_name": "tax_category_id",
+        "fk_column_name": "tax_category",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "shipping_category",
-        "db": false,
+        "field_name": "shipping_category_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::ShippingCategory",
-        "fk_column_name": "shipping_category_id",
+        "fk_column_name": "shipping_category",
         "polymorphic": null
       },
       {
         "^o": "LengthConstraint",
         "field_name": "meta_keywords",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
       },
       {
         "^o": "LengthConstraint",
         "field_name": "meta_title",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "slug",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -2133,45 +1950,17 @@
         "field_name": [
           "slug"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": true,
         "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "slug"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2184,32 +1973,32 @@
     "class": "Spree::ProductOptionType",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "product",
-        "db": false,
-        "class_name": "Spree::Product",
-        "fk_column_name": "product_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "option_type",
-        "db": false,
-        "class_name": "Spree::OptionType",
-        "fk_column_name": "option_type_id",
-        "polymorphic": null
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
         "field_name": "product_id",
-        "db": false,
-        "cond": ""
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Product",
+        "fk_column_name": "product",
+        "polymorphic": null
       },
       {
-        "^o": "PresenceConstraint",
+        "^o": "ForeignKeyConstraint",
         "field_name": "option_type_id",
-        "db": false,
-        "cond": ""
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::OptionType",
+        "fk_column_name": "option_type",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
@@ -2217,29 +2006,17 @@
           "product_id",
           "option_type_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2253,31 +2030,19 @@
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "product",
-        "db": false,
+        "field_name": "product_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Product",
-        "fk_column_name": "product_id",
+        "fk_column_name": "product",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "promotion_rule",
-        "db": false,
-        "class_name": "Spree::PromotionRule",
-        "fk_column_name": "promotion_rule_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "product_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "promotion_rule_id",
-        "db": false,
-        "cond": ""
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::PromotionRule",
+        "fk_column_name": "promotion_rule",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
@@ -2285,7 +2050,7 @@
           "product_id",
           "promotion_rule_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -2295,7 +2060,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2308,48 +2073,15 @@
     "class": "Spree::ProductProperty",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "product",
-        "db": false,
-        "class_name": "Spree::Product",
-        "fk_column_name": "product_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "property",
-        "db": false,
-        "class_name": "Spree::Property",
-        "fk_column_name": "property_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "property_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "property_id",
-          "product_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "builtin"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -2358,17 +2090,50 @@
           "property_id",
           "product_id"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "product_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Product",
+        "fk_column_name": "product",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "property_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Property",
+        "fk_column_name": "property",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "property_id",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "property_id",
+          "product_id"
+        ],
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2381,58 +2146,58 @@
     "class": "Spree::Promotion",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "promotion_category",
-        "db": false,
-        "class_name": "Promotion_category",
-        "fk_column_name": "promotion_category_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "usage_limit",
-        "db": false,
-        "min": 0,
-        "max": null
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "description",
-        "db": false,
-        "min": -1,
-        "max": -1
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "usage_limit",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "promotion_category_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Promotion_category",
+        "fk_column_name": "promotion_category",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "usage_limit",
+        "ctype": "DATA_VALIDATION",
+        "min": 0,
+        "max": null
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "description",
+        "ctype": "DATA_VALIDATION",
+        "min": -1,
+        "max": -1
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2446,10 +2211,10 @@
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "promotion",
-        "db": false,
+        "field_name": "promotion_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Promotion",
-        "fk_column_name": "promotion_id",
+        "fk_column_name": "promotion",
         "polymorphic": null
       },
       {
@@ -2457,7 +2222,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2471,42 +2236,30 @@
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "promotion_action",
-        "db": false,
+        "field_name": "promotion_action_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Promotion::Actions::CreateLineItems",
-        "fk_column_name": "promotion_action_id",
+        "fk_column_name": "promotion_action",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "variant",
-        "db": false,
+        "field_name": "variant_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Variant",
-        "fk_column_name": "variant_id",
+        "fk_column_name": "variant",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "promotion_action_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "variant_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "quantity",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "NumericalConstraint",
         "field_name": "quantity",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": null,
         "max": null
       },
@@ -2515,7 +2268,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2529,20 +2282,20 @@
     "constraints": [
       {
         "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -2550,7 +2303,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2563,31 +2316,31 @@
     "class": "Spree::PromotionRule",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "promotion",
-        "db": false,
-        "class_name": "Spree::Promotion",
-        "fk_column_name": "promotion_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "promotion_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Promotion",
+        "fk_column_name": "promotion",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2601,31 +2354,19 @@
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "promotion_rule",
-        "db": false,
+        "field_name": "promotion_rule_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::PromotionRule",
-        "fk_column_name": "promotion_rule_id",
+        "fk_column_name": "promotion_rule",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "taxon",
-        "db": false,
-        "class_name": "Spree::Taxon",
-        "fk_column_name": "taxon_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "promotion_rule_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "taxon_id",
-        "db": false,
-        "cond": ""
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Taxon",
+        "fk_column_name": "taxon",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
@@ -2633,7 +2374,7 @@
           "promotion_rule_id",
           "taxon_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -2643,7 +2384,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2657,31 +2398,19 @@
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "promotion_rule",
-        "db": false,
+        "field_name": "promotion_rule_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::PromotionRule",
-        "fk_column_name": "promotion_rule_id",
+        "fk_column_name": "promotion_rule",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
-        "class_name": "Spree.user_class.to_s",
-        "fk_column_name": "user_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "promotion_rule_id",
-        "db": false,
-        "cond": ""
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree.user_class.to_s",
+        "fk_column_name": "user",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
@@ -2689,7 +2418,7 @@
           "user_id",
           "promotion_rule_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -2699,7 +2428,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2713,38 +2442,38 @@
     "constraints": [
       {
         "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "presentation",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "presentation",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "filterable",
-        "db": true,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "presentation",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -2752,7 +2481,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2765,37 +2494,36 @@
     "class": "Spree::PropertyPrototype",
     "constraints": [
       {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "prototype_id",
+          "property_id"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "prototype",
-        "db": false,
+        "field_name": "prototype_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Prototype",
-        "fk_column_name": "prototype_id",
+        "fk_column_name": "prototype",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "property",
-        "db": false,
+        "field_name": "property_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Property",
-        "fk_column_name": "property_id",
+        "fk_column_name": "property",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "prototype_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "property_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "prototype_id",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -2804,7 +2532,7 @@
           "prototype_id",
           "property_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -2812,20 +2540,9 @@
       {
         "^o": "UniqueConstraint",
         "field_name": [
-          "prototype_id",
-          "property_id"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2839,20 +2556,20 @@
     "constraints": [
       {
         "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -2860,7 +2577,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2874,36 +2591,24 @@
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "taxon",
-        "db": false,
+        "field_name": "taxon_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Taxon",
-        "fk_column_name": "taxon_id",
+        "fk_column_name": "taxon",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "prototype",
-        "db": false,
+        "field_name": "prototype_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Prototype",
-        "fk_column_name": "prototype_id",
+        "fk_column_name": "prototype",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "prototype_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "taxon_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "prototype_id",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -2912,7 +2617,7 @@
           "prototype_id",
           "taxon_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -2922,7 +2627,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2935,78 +2640,45 @@
     "class": "Spree::Refund",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "payment",
-        "db": false,
-        "class_name": "Payment",
-        "fk_column_name": "payment_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "reimbursement",
-        "db": false,
-        "class_name": "Reimbursement",
-        "fk_column_name": "reimbursement_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "reason",
-        "db": false,
-        "class_name": "Spree::RefundReason",
-        "fk_column_name": "refund_reason_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "amount",
-        "db": false,
-        "min": 0,
-        "max": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "payment_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "refund_reason_id",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "amount",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "amount",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "payment_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Payment",
+        "fk_column_name": "payment",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "reimbursement_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Reimbursement",
+        "fk_column_name": "reimbursement",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3021,13 +2693,13 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -3035,7 +2707,7 @@
         "field_name": [
           "name"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
@@ -3045,7 +2717,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3053,30 +2725,30 @@
     ]
   },
   {
-    "table": "spree_reimbursement_credits",
+    "table": "spree_reimbursement/credits",
     "parent": "Spree::Base",
     "class": "Spree::Reimbursement::Credit",
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "reimbursement",
-        "db": false,
+        "field_name": "reimbursement_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Reimbursement",
-        "fk_column_name": "reimbursement_id",
+        "fk_column_name": "reimbursement",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "creditable",
-        "db": false,
+        "field_name": "creditable_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Creditable",
-        "fk_column_name": "creditable_id",
+        "fk_column_name": "creditable",
         "polymorphic": true
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "creditable_id",
-        "db": false,
+        "field_name": "creditable",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -3084,7 +2756,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3097,31 +2769,47 @@
     "class": "Spree::Reimbursement",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "order",
-        "db": false,
-        "class_name": "Order",
-        "fk_column_name": "order_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "customer_return",
-        "db": false,
-        "class_name": "Customer_return",
-        "fk_column_name": "customer_return_id",
-        "polymorphic": null
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "order_id",
-        "db": false,
+        "field_name": "updated_at",
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "number"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "order_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Order",
+        "fk_column_name": "order",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "customer_return_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Customer_return",
+        "fk_column_name": "customer_return",
+        "polymorphic": null
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "reimbursement_status",
-        "db": false,
+        "ctype": "FIELD_DEFINITION",
         "values": [
           "errored",
           "pending",
@@ -3130,33 +2818,11 @@
         "type": "state_machine"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "number"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3169,9 +2835,31 @@
     "class": "Spree::ReimbursementType",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
         "^o": "InclusionConstraint",
         "field_name": "type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "Spree::ReimbursementType",
           "Spree::ReimbursementType::Credit",
@@ -3182,33 +2870,11 @@
         "type": "class_inheritance"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "name"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3221,11 +2887,33 @@
     "class": "Spree::ReimbursementType::Credit",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3238,11 +2926,33 @@
     "class": "Spree::ReimbursementType::Exchange",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3255,11 +2965,33 @@
     "class": "Spree::ReimbursementType::OriginalPayment",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3272,11 +3004,33 @@
     "class": "Spree::ReimbursementType::StoreCredit",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3289,51 +3043,35 @@
     "class": "Spree::ReturnAuthorization",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "order",
-        "db": false,
-        "class_name": "Spree::Order",
-        "fk_column_name": "order_id",
-        "polymorphic": null
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "number"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "stock_location",
-        "db": false,
-        "class_name": "Stock_location",
-        "fk_column_name": "stock_location_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "reason",
-        "db": false,
-        "class_name": "Spree::ReturnAuthorizationReason",
-        "fk_column_name": "return_authorization_reason_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "order_id",
-        "db": false,
-        "cond": ""
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Order",
+        "fk_column_name": "order",
+        "polymorphic": null
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "return_authorization_reason_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
+        "^o": "ForeignKeyConstraint",
         "field_name": "stock_location_id",
-        "db": false,
-        "cond": ""
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Stock_location",
+        "fk_column_name": "stock_location",
+        "polymorphic": null
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "state",
-        "db": false,
+        "ctype": "FIELD_DEFINITION",
         "values": [
           "canceled",
           "do",
@@ -3345,19 +3083,9 @@
       {
         "^o": "UniqueConstraint",
         "field_name": [
-          "number"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3372,13 +3100,13 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -3386,7 +3114,7 @@
         "field_name": [
           "name"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
@@ -3396,7 +3124,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3409,71 +3137,101 @@
     "class": "Spree::ReturnItem",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "return_authorization",
-        "db": false,
-        "class_name": "Return_authorization",
-        "fk_column_name": "return_authorization_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "inventory_unit",
-        "db": false,
-        "class_name": "Inventory_unit",
-        "fk_column_name": "inventory_unit_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "customer_return",
-        "db": false,
-        "class_name": "Customer_return",
-        "fk_column_name": "customer_return_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "reimbursement",
-        "db": false,
-        "class_name": "Reimbursement",
-        "fk_column_name": "reimbursement_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "exchange_variant",
-        "db": false,
-        "class_name": "Spree::Variant",
-        "fk_column_name": "exchange_variant_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "preferred_reimbursement_type",
-        "db": false,
-        "class_name": "Spree::ReimbursementType",
-        "fk_column_name": "preferred_reimbursement_type_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "override_reimbursement_type",
-        "db": false,
-        "class_name": "Spree::ReimbursementType",
-        "fk_column_name": "override_reimbursement_type_id",
-        "polymorphic": null
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "inventory_unit_id",
-        "db": false,
+        "field_name": "updated_at",
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "pre_tax_amount",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "included_tax_total",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "additional_tax_total",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "resellable",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "return_authorization_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Return_authorization",
+        "fk_column_name": "return_authorization",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "inventory_unit_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Inventory_unit",
+        "fk_column_name": "inventory_unit",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "customer_return_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Customer_return",
+        "fk_column_name": "customer_return",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "reimbursement_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Reimbursement",
+        "fk_column_name": "reimbursement",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "exchange_variant_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Variant",
+        "fk_column_name": "exchange_variant",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "preferred_reimbursement_type_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::ReimbursementType",
+        "fk_column_name": "preferred_reimbursement_type",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "override_reimbursement_type_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::ReimbursementType",
+        "fk_column_name": "override_reimbursement_type",
+        "polymorphic": null
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "reception_status",
-        "db": false,
+        "ctype": "FIELD_DEFINITION",
         "values": [
           "received",
           "do",
@@ -3488,7 +3246,7 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "acceptance_status",
-        "db": false,
+        "ctype": "FIELD_DEFINITION",
         "values": [
           "accepted",
           "pending",
@@ -3500,47 +3258,11 @@
         "type": "state_machine"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "pre_tax_amount",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "included_tax_total",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "additional_tax_total",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "resellable",
-        "db": true,
-        "cond": ""
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3553,15 +3275,25 @@
     "class": "Spree::Role",
     "constraints": [
       {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": ["name"],
-        "db": false,
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -3569,19 +3301,9 @@
       {
         "^o": "UniqueConstraint",
         "field_name": [
-          "name"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3595,18 +3317,18 @@
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "role",
-        "db": false,
+        "field_name": "role_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Role",
-        "fk_column_name": "role_id",
+        "fk_column_name": "role",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree.user_class.to_s",
-        "fk_column_name": "user_id",
+        "fk_column_name": "user",
         "polymorphic": null
       },
       {
@@ -3614,7 +3336,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3627,39 +3349,79 @@
     "class": "Spree::Shipment",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "address",
-        "db": false,
-        "class_name": "Spree::Address",
-        "fk_column_name": "address_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "order",
-        "db": false,
-        "class_name": "Spree::Order",
-        "fk_column_name": "order_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "stock_location",
-        "db": false,
-        "class_name": "Spree::StockLocation",
-        "fk_column_name": "stock_location_id",
-        "polymorphic": null
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "stock_location_id",
-        "db": false,
+        "field_name": "updated_at",
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "included_tax_total",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "pre_tax_amount",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "taxable_adjustment_total",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "non_taxable_adjustment_total",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "number"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "address_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Address",
+        "fk_column_name": "address",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "order_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Order",
+        "fk_column_name": "order",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "stock_location_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::StockLocation",
+        "fk_column_name": "stock_location",
+        "polymorphic": null
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "state",
-        "db": false,
+        "ctype": "FIELD_DEFINITION",
         "values": [
           "pending",
           "ready",
@@ -3673,57 +3435,11 @@
         "type": "state_machine"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "included_tax_total",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "pre_tax_amount",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "taxable_adjustment_total",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "non_taxable_adjustment_total",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "number"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3737,36 +3453,36 @@
     "constraints": [
       {
         "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": ["name"],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3779,35 +3495,35 @@
     "class": "Spree::ShippingMethod",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "tax_category",
-        "db": false,
-        "class_name": "Spree::TaxCategory",
-        "fk_column_name": "tax_category_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "display_on",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "tax_category_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::TaxCategory",
+        "fk_column_name": "tax_category",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "display_on",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -3815,7 +3531,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3828,43 +3544,27 @@
     "class": "Spree::ShippingMethodCategory",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "shipping_method",
-        "db": false,
-        "class_name": "Spree::ShippingMethod",
-        "fk_column_name": "shipping_method_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "shipping_category",
-        "db": false,
-        "class_name": "Spree::ShippingCategory",
-        "fk_column_name": "shipping_category_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "shipping_method_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "shipping_category_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -3873,17 +3573,33 @@
           "shipping_category_id",
           "shipping_method_id"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "shipping_method_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::ShippingMethod",
+        "fk_column_name": "shipping_method",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "shipping_category_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::ShippingCategory",
+        "fk_column_name": "shipping_category",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3897,18 +3613,18 @@
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "shipping_method",
-        "db": false,
+        "field_name": "shipping_method_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Shipping_method",
-        "fk_column_name": "shipping_method_id",
+        "fk_column_name": "shipping_method",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "zone",
-        "db": false,
+        "field_name": "zone_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Zone",
-        "fk_column_name": "zone_id",
+        "fk_column_name": "zone",
         "polymorphic": null
       },
       {
@@ -3916,7 +3632,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3929,39 +3645,15 @@
     "class": "Spree::ShippingRate",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "shipment",
-        "db": false,
-        "class_name": "Spree::Shipment",
-        "fk_column_name": "shipment_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "tax_rate",
-        "db": false,
-        "class_name": "Spree::TaxRate",
-        "fk_column_name": "tax_rate_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "shipping_method",
-        "db": false,
-        "class_name": "Spree::ShippingMethod",
-        "fk_column_name": "shipping_method_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -3970,17 +3662,41 @@
           "shipment_id",
           "shipping_method_id"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "shipment_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Shipment",
+        "fk_column_name": "shipment",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "tax_rate_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::TaxRate",
+        "fk_column_name": "tax_rate",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "shipping_method_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::ShippingMethod",
+        "fk_column_name": "shipping_method",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3994,22 +3710,16 @@
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "country",
-        "db": false,
+        "field_name": "country_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Country",
-        "fk_column_name": "country_id",
+        "fk_column_name": "country",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "country_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -4018,7 +3728,7 @@
           "name",
           "country_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -4029,7 +3739,7 @@
           "abbr",
           "country_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -4039,7 +3749,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4052,25 +3762,37 @@
     "class": "Spree::StateChange",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree.user_class.to_s",
-        "fk_column_name": "user_id",
+        "fk_column_name": "user",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "stateful",
-        "db": false,
+        "field_name": "stateful_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Stateful",
-        "fk_column_name": "stateful_id",
+        "fk_column_name": "stateful",
         "polymorphic": true
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "stateful_type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "Spree::Order",
           "Spree::Payment",
@@ -4079,23 +3801,11 @@
         "type": "polymorphic"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4108,31 +3818,43 @@
     "class": "Spree::StockItem",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "stock_location",
-        "db": false,
-        "class_name": "Spree::StockLocation",
-        "fk_column_name": "stock_location_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "variant",
-        "db": false,
-        "class_name": "Spree::Variant",
-        "fk_column_name": "variant_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
-        "field_name": "stock_location_id",
-        "db": false,
+        "field_name": "count_on_hand",
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "stock_location_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::StockLocation",
+        "fk_column_name": "stock_location",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
         "field_name": "variant_id",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Variant",
+        "fk_column_name": "variant",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "variant_id",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -4142,35 +3864,17 @@
           "stock_location_id",
           "deleted_at"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "count_on_hand",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4184,58 +3888,58 @@
     "constraints": [
       {
         "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "default",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": ["name"],
-        "db": false,
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "state",
-        "db": false,
+        "field_name": "state_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::State",
-        "fk_column_name": "state_id",
+        "fk_column_name": "state",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "country",
-        "db": false,
+        "field_name": "country_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Country",
-        "fk_column_name": "country_id",
+        "fk_column_name": "country",
         "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "default",
-        "db": true,
-        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4248,58 +3952,52 @@
     "class": "Spree::StockMovement",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "stock_item",
-        "db": false,
-        "class_name": "Spree::StockItem",
-        "fk_column_name": "stock_item_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "originator",
-        "db": false,
-        "class_name": "Originator",
-        "fk_column_name": "originator_id",
-        "polymorphic": true
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "quantity",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "quantity",
-        "db": false,
-        "min": null,
-        "max": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "stock_item_id",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "stock_item_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::StockItem",
+        "fk_column_name": "stock_item",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "originator_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Originator",
+        "fk_column_name": "originator",
+        "polymorphic": true
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "quantity",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "quantity",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4312,31 +4010,15 @@
     "class": "Spree::StockTransfer",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "source_location",
-        "db": false,
-        "class_name": "StockLocation",
-        "fk_column_name": "source_location_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "destination_location",
-        "db": false,
-        "class_name": "StockLocation",
-        "fk_column_name": "destination_location_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -4344,17 +4026,33 @@
         "field_name": [
           "number"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "source_location_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "StockLocation",
+        "fk_column_name": "source_location",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "destination_location_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "StockLocation",
+        "fk_column_name": "destination_location",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4367,77 +4065,21 @@
     "class": "Spree::Store",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "default_country",
-        "db": false,
-        "class_name": "Spree::Country",
-        "fk_column_name": "default_country_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "checkout_zone",
-        "db": false,
-        "class_name": "Spree::Zone",
-        "fk_column_name": "checkout_zone_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "url",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "mail_from_address",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "default_currency",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "code",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "code"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "builtin"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "default",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -4445,17 +4087,73 @@
         "field_name": [
           "code"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "default_country_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Country",
+        "fk_column_name": "default_country",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "checkout_zone_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Zone",
+        "fk_column_name": "checkout_zone",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail_from_address",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "default_currency",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "code",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "code"
+        ],
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4468,135 +4166,79 @@
     "class": "Spree::StoreCredit",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
-        "class_name": "Spree.user_class.to_s",
-        "fk_column_name": "user_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "category",
-        "db": false,
-        "class_name": "Spree::StoreCreditCategory",
-        "fk_column_name": "category_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "created_by",
-        "db": false,
-        "class_name": "Spree.admin_user_class.to_s",
-        "fk_column_name": "created_by_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "credit_type",
-        "db": false,
-        "class_name": "Spree::StoreCreditType",
-        "fk_column_name": "type_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "store",
-        "db": false,
-        "class_name": "Spree::Store",
-        "fk_column_name": "store_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "user_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "category_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "type_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_by_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "currency",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "store_id",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "amount",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "amount",
-        "db": false,
-        "min": 0,
-        "max": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "amount_used",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "amount_used",
-        "db": false,
-        "min": 0,
-        "max": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "amount",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "amount_used",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "amount_authorized",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree.user_class.to_s",
+        "fk_column_name": "user",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "category_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::StoreCreditCategory",
+        "fk_column_name": "category",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "created_by_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree.admin_user_class.to_s",
+        "fk_column_name": "created_by",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "type_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::StoreCreditType",
+        "fk_column_name": "credit_type",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Store",
+        "fk_column_name": "store",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "currency",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -4604,7 +4246,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4618,20 +4260,20 @@
     "constraints": [
       {
         "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -4639,7 +4281,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4652,72 +4294,72 @@
     "class": "Spree::StoreCreditEvent",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "store_credit_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "action",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "authorization_code",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_total_amount",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "store_credit",
-        "db": false,
+        "field_name": "store_credit_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Store_credit",
-        "fk_column_name": "store_credit_id",
+        "fk_column_name": "store_credit",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "originator",
-        "db": false,
+        "field_name": "originator_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Originator",
-        "fk_column_name": "originator_id",
+        "fk_column_name": "originator",
         "polymorphic": true
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "originator_type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "Spree::StockTransfer"
         ],
         "type": "polymorphic"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "store_credit_id",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "action",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "authorization_code",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "user_total_amount",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4731,20 +4373,20 @@
     "constraints": [
       {
         "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -4752,7 +4394,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4765,37 +4407,36 @@
     "class": "Spree::StorePaymentMethod",
     "constraints": [
       {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "payment_method_id",
+          "store_id"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "store",
-        "db": false,
+        "field_name": "store_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Store",
-        "fk_column_name": "store_id",
+        "fk_column_name": "store",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "payment_method",
-        "db": false,
+        "field_name": "payment_method_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::PaymentMethod",
-        "fk_column_name": "payment_method_id",
+        "fk_column_name": "payment_method",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "store_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "payment_method_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "store_id",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -4804,7 +4445,7 @@
           "store_id",
           "payment_method_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -4812,20 +4453,9 @@
       {
         "^o": "UniqueConstraint",
         "field_name": [
-          "payment_method_id",
-          "store_id"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4838,54 +4468,15 @@
     "class": "Spree::StoreProduct",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "store",
-        "db": false,
-        "class_name": "Spree::Store",
-        "fk_column_name": "store_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "product",
-        "db": false,
-        "class_name": "Spree::Product",
-        "fk_column_name": "product_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "product_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "store_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "store_id",
-          "product_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "builtin"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -4894,17 +4485,50 @@
           "product_id",
           "store_id"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Store",
+        "fk_column_name": "store",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "product_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Product",
+        "fk_column_name": "product",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "store_id",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "store_id",
+          "product_id"
+        ],
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4917,54 +4541,15 @@
     "class": "Spree::StorePromotion",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "store",
-        "db": false,
-        "class_name": "Spree::Store",
-        "fk_column_name": "store_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "promotion",
-        "db": false,
-        "class_name": "Spree::Promotion",
-        "fk_column_name": "promotion_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "promotion_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "store_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "store_id",
-          "promotion_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "builtin"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -4973,17 +4558,50 @@
           "promotion_id",
           "store_id"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Store",
+        "fk_column_name": "store",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "promotion_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Promotion",
+        "fk_column_name": "promotion",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "store_id",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "store_id",
+          "promotion_id"
+        ],
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4997,8 +4615,20 @@
     "constraints": [
       {
         "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -5006,29 +4636,17 @@
         "field_name": [
           "name"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -5041,56 +4659,37 @@
     "class": "Spree::TaxRate",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "zone",
-        "db": false,
-        "class_name": "Spree::Zone",
-        "fk_column_name": "zone_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "tax_category",
-        "db": false,
-        "class_name": "Spree::TaxCategory",
-        "fk_column_name": "tax_category_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "amount",
-        "db": false,
-        "min": null,
-        "max": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "amount",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "tax_category_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "zone_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Zone",
+        "fk_column_name": "zone",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "tax_category_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::TaxCategory",
+        "fk_column_name": "tax_category",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -5098,7 +4697,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -5111,17 +4710,21 @@
     "class": "Spree::Taxon",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "taxonomy",
-        "db": false,
-        "class_name": "Spree::Taxonomy",
-        "fk_column_name": "taxonomy_id",
-        "polymorphic": null
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -5131,21 +4734,53 @@
           "parent_id",
           "taxonomy_id"
         ],
-        "db": false,
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "permalink",
+          "parent_id",
+          "taxonomy_id"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "taxonomy_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Taxonomy",
+        "fk_column_name": "taxonomy",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name",
+          "parent_id",
+          "taxonomy_id"
+        ],
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "taxonomy_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "permalink",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -5155,7 +4790,7 @@
           "parent_id",
           "taxonomy_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
@@ -5163,13 +4798,13 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "hide_from_nav",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "hide_from_nav",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "values": [
 
         ],
@@ -5178,82 +4813,30 @@
       {
         "^o": "LengthConstraint",
         "field_name": "meta_keywords",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
       },
       {
         "^o": "LengthConstraint",
         "field_name": "meta_description",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
       },
       {
         "^o": "LengthConstraint",
         "field_name": "meta_title",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
-          "taxonomy_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "has_one"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "name",
-          "parent_id",
-          "taxonomy_id"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "permalink",
-          "parent_id",
-          "taxonomy_id"
-        ],
-        "db": true,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -5268,50 +4851,19 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "name",
-          "store_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "store_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "store",
-        "db": false,
-        "class_name": "Spree::Store",
-        "fk_column_name": "store_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -5320,17 +4872,42 @@
           "name",
           "store_id"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "name",
+          "store_id"
+        ],
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Store",
+        "fk_column_name": "store",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -5343,62 +4920,45 @@
     "class": "Spree::Variant",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "product",
-        "db": false,
-        "class_name": "Spree::Product",
-        "fk_column_name": "product_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "tax_category",
-        "db": false,
-        "class_name": "Spree::TaxCategory",
-        "fk_column_name": "tax_category_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "cost_price",
-        "db": false,
-        "min": 0,
-        "max": null
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "product_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "has_one"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "sku",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "product_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Product",
+        "fk_column_name": "product",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "tax_category_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::TaxCategory",
+        "fk_column_name": "tax_category",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -5411,73 +4971,21 @@
     "class": "Spree::WishedItem",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "variant",
-        "db": false,
-        "class_name": "Spree::Variant",
-        "fk_column_name": "variant_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "wishlist",
-        "db": false,
-        "class_name": "Spree::Wishlist",
-        "fk_column_name": "wishlist_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "variant_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "wishlist_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "variant_id",
-          "wishlist_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "builtin"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "quantity",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "quantity",
-        "db": false,
-        "min": 0,
-        "max": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "quantity",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -5486,17 +4994,46 @@
           "variant_id",
           "wishlist_id"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "variant_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Variant",
+        "fk_column_name": "variant",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "wishlist_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Wishlist",
+        "fk_column_name": "wishlist",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "quantity",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "quantity",
+        "ctype": "DATA_VALIDATION",
+        "min": 0,
+        "max": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -5509,67 +5046,33 @@
     "class": "Spree::Wishlist",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
-        "class_name": "Spree.user_class.name",
-        "fk_column_name": "user_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "store",
-        "db": false,
-        "class_name": "Spree::Store",
-        "fk_column_name": "store_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "store_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "user_id",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "token",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "is_private",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "is_default",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -5577,17 +5080,39 @@
         "field_name": [
           "token"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree.user_class.name",
+        "fk_column_name": "user",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "store_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Store",
+        "fk_column_name": "store",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -5601,36 +5126,36 @@
     "constraints": [
       {
         "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": ["name"],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -5643,51 +5168,39 @@
     "class": "Spree::ZoneMember",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "zone",
-        "db": false,
-        "class_name": "Spree::Zone",
-        "fk_column_name": "zone_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "zoneable",
-        "db": false,
-        "class_name": "Zoneable",
-        "fk_column_name": "zoneable_id",
-        "polymorphic": true
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "zone_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "zoneable_id",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "zone_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Zone",
+        "fk_column_name": "zone",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "zoneable_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Zoneable",
+        "fk_column_name": "zoneable",
+        "polymorphic": true
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"

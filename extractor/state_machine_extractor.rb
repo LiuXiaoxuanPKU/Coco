@@ -39,7 +39,7 @@ class StateMachineExtractor < Extractor
     if column.nil?
       column = "state"
     end
-    constraint = InclusionConstraint.new(column, possible_values, 'state_machine', db=false)
+    constraint = InclusionConstraint.new(column, possible_values, 'state_machine', ConstrainType::FIELD_DEFINITION)
     constraint
   end
 

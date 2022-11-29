@@ -1,48 +1,7 @@
 [
   {
-    "table": null,
-    "class": "DummyRoot",
-    "constraints": [
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "type",
-        "db": false,
-        "values": [
-          "DummyRoot",
-          "ApplicationRecord"
-        ],
-        "type": "class_inheritance"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": null,
-    "class": "ApplicationRecord",
-    "constraints": [
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
     "table": "actions",
+    "parent": "ApplicationRecord",
     "class": "Action",
     "constraints": [
       {
@@ -50,7 +9,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -59,20 +18,15 @@
   },
   {
     "table": "announcements",
+    "parent": "ApplicationRecord",
     "class": "Announcement",
     "constraints": [
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "show_until",
-        "db": false,
-        "cond": ""
-      },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -81,99 +35,100 @@
   },
   {
     "table": "attachments",
+    "parent": "ApplicationRecord",
     "class": "Attachment",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "container",
-        "db": false,
-        "class_name": "Container",
-        "fk_column_name": "container_id",
-        "polymorphic": true
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "author",
-        "db": false,
-        "class_name": "User",
-        "fk_column_name": "author_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "author_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "content_type",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "filesize",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "description",
-        "db": false,
-        "min": null,
-        "max": 255
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "container_type",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "filename",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "disk_filename",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "filesize",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "digest",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "downloads",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "author_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "container_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Container",
+        "fk_column_name": "container",
+        "polymorphic": true
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "User",
+        "fk_column_name": "author",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "author_id",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "content_type",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "filesize",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "description",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 255
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -182,12 +137,43 @@
   },
   {
     "table": "attribute_help_texts",
+    "parent": "ApplicationRecord",
     "class": "AttributeHelpText",
     "constraints": [
       {
         "^o": "PresenceConstraint",
         "field_name": "help_text",
-        "db": false,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "attribute_name",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "help_text",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -196,21 +182,21 @@
           "attribute_name",
           "type"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
-        "case_sensitive": null,
+        "case_sensitive": false,
         "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "attribute_name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "AttributeHelpText",
           "AttributeHelpText::Project",
@@ -219,55 +205,56 @@
         "type": "class_inheritance"
       },
       {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "attribute_help_texts",
+    "parent": "AttributeHelpText",
+    "class": "AttributeHelpText::Project",
+    "constraints": [
+      {
         "^o": "PresenceConstraint",
         "field_name": "help_text",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "type",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "attribute_name",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": "attribute_help_texts",
-    "class": "AttributeHelpText::Project",
-    "constraints": [
-      {
         "^o": "InclusionConstraint",
         "field_name": "attribute_name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "values": [
           {
             "^o": "Proc"
@@ -278,7 +265,7 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "attribute_name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -286,7 +273,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -295,12 +282,43 @@
   },
   {
     "table": "attribute_help_texts",
+    "parent": "AttributeHelpText",
     "class": "AttributeHelpText::WorkPackage",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "help_text",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "attribute_name",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "InclusionConstraint",
         "field_name": "attribute_name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "values": [
           {
             "^o": "Proc"
@@ -311,7 +329,7 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "attribute_name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -319,7 +337,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -328,12 +346,86 @@
   },
   {
     "table": "auth_sources",
+    "parent": "ApplicationRecord",
     "class": "AuthSource",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "host",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_login",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_firstname",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_lastname",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_mail",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "onthefly_register",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "tls_mode",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -341,26 +433,22 @@
         "field_name": [
           "name"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
       },
       {
-        "^o": "CaseConstraint",
-        "field_name": "name"
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "AuthSource",
           "DummyAuthSource",
@@ -369,76 +457,93 @@
         "type": "class_inheritance"
       },
       {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "auth_sources",
+    "parent": "AuthSource",
+    "class": "DummyAuthSource",
+    "constraints": [
+      {
         "^o": "LengthConstraint",
         "field_name": "type",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "LengthConstraint",
         "field_name": "host",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "LengthConstraint",
         "field_name": "attr_login",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "LengthConstraint",
         "field_name": "attr_firstname",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "LengthConstraint",
         "field_name": "attr_lastname",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "LengthConstraint",
         "field_name": "attr_mail",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "onthefly_register",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "tls_mode",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -446,7 +551,207 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "auth_sources",
+    "parent": "AuthSource",
+    "class": "LdapAuthSource",
+    "constraints": [
+      {
+        "^o": "LengthConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "host",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_login",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_firstname",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_lastname",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_mail",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "onthefly_register",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "tls_mode",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "tls_mode",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "tls_mode",
+        "ctype": "DATA_VALIDATION",
+        "values": [
+
+        ],
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "host",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "port",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "attr_login",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 60
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "host",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 60
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "account",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 255
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "account_password",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 255
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "base_dn",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 255
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_login",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 30
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_firstname",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 30
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_lastname",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 30
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_mail",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 30
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "attr_admin",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 30
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "port",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": null
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -455,22 +760,23 @@
   },
   {
     "table": "capabilities",
+    "parent": "ApplicationRecord",
     "class": "Capability",
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "context",
-        "db": false,
+        "field_name": "context_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Project",
-        "fk_column_name": "context_id",
+        "fk_column_name": "context",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "principal",
-        "db": false,
+        "field_name": "principal_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Principal",
-        "fk_column_name": "principal_id",
+        "fk_column_name": "principal",
         "polymorphic": null
       },
       {
@@ -478,7 +784,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -487,28 +793,54 @@
   },
   {
     "table": "categories",
+    "parent": "ApplicationRecord",
     "class": "Category",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "project_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Project",
-        "fk_column_name": "project_id",
+        "fk_column_name": "project",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "assigned_to",
-        "db": false,
+        "field_name": "assigned_to_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Principal",
-        "fk_column_name": "assigned_to_id",
+        "fk_column_name": "assigned_to",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -517,53 +849,24 @@
           "name",
           "project_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
       },
       {
-        "^o": "CaseConstraint",
-        "field_name": "name"
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "project_id",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "name",
-        "db": true,
-        "min": 0,
-        "max": 0
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -572,51 +875,52 @@
   },
   {
     "table": "changes",
+    "parent": "ApplicationRecord",
     "class": "Change",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "changeset",
-        "db": false,
-        "class_name": "Changeset",
-        "fk_column_name": "changeset_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "changeset_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "action",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "path",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "changeset_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "action",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "path",
-        "db": true,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "changeset_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Changeset",
+        "fk_column_name": "changeset",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "changeset_id",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "action",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "path",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -624,7 +928,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -633,92 +937,25 @@
   },
   {
     "table": "changesets",
+    "parent": "ApplicationRecord",
     "class": "Changeset",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "repository",
-        "db": false,
-        "class_name": "Repository",
-        "fk_column_name": "repository_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
-        "class_name": "User",
-        "fk_column_name": "user_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "repository_id",
-        "db": false,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "revision",
-        "db": false,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "committed_on",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "commit_date",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "revision",
-          "repository_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": null,
-        "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "revision",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "scmid",
-          "repository_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": null,
-        "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "repository_id",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "revision",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "committed_on",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -727,17 +964,73 @@
           "repository_id",
           "revision"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "repository_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Repository",
+        "fk_column_name": "repository",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "User",
+        "fk_column_name": "user",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "repository_id",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "revision",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "committed_on",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "revision",
+          "repository_id"
+        ],
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "scmid",
+          "repository_id"
+        ],
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -746,63 +1039,52 @@
   },
   {
     "table": "colors",
+    "parent": "ApplicationRecord",
     "class": "Color",
     "constraints": [
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "hexcode",
-        "db": false,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "hexcode",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": null,
         "max": 255
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "FormatConstraint",
         "field_name": "hexcode",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "format": "/\\A#[0-9A-F]{6}\\z/"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "hexcode",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "hexcode",
-        "db": true,
-        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -811,88 +1093,77 @@
   },
   {
     "table": "comments",
+    "parent": "ApplicationRecord",
     "class": "Comment",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "commented",
-        "db": false,
-        "class_name": "Commented",
-        "fk_column_name": "commented_id",
-        "polymorphic": true
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "author",
-        "db": false,
-        "class_name": "User",
-        "fk_column_name": "author_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "commented_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "author_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "comments",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "commented_type",
-        "db": false,
-        "values": [
-          "News"
-        ],
-        "type": "polymorphic"
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "commented_type",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "commented_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "author_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "commented_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Commented",
+        "fk_column_name": "commented",
+        "polymorphic": true
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "User",
+        "fk_column_name": "author",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "comments",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "commented_type",
+        "ctype": "CLASS_RELATIONSHIP",
+        "values": [
+          "News"
+        ],
+        "type": "polymorphic"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -901,18 +1172,19 @@
   },
   {
     "table": "custom_actions",
+    "parent": "ApplicationRecord",
     "class": "CustomAction",
     "constraints": [
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
       },
@@ -921,7 +1193,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -930,83 +1202,117 @@
   },
   {
     "table": "custom_fields",
+    "parent": "ApplicationRecord",
     "class": "CustomField",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "field_format",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "min_length",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "max_length",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_required",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_for_all",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_filter",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "visible",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "field_format",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "field_format",
-        "db": false,
-        "values": [],
+        "ctype": "DATA_VALIDATION",
+        "values": [
+
+        ],
         "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "field_format",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "min_length",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "NumericalConstraint",
         "field_name": "min_length",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": 0,
         "max": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "max_length",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "NumericalConstraint",
         "field_name": "max_length",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": 0,
-        "max": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "min_length",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "NumericalConstraint",
-        "field_name": "min_length",
-        "db": false,
-        "min": null,
         "max": null
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "CustomField",
           "GroupCustomField",
@@ -1019,53 +1325,70 @@
         "type": "class_inheritance"
       },
       {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "custom_fields",
+    "parent": "CustomField",
+    "class": "GroupCustomField",
+    "constraints": [
+      {
         "^o": "LengthConstraint",
         "field_name": "type",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "LengthConstraint",
         "field_name": "field_format",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "min_length",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "max_length",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "is_required",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "is_for_all",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "is_filter",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "visible",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -1073,7 +1396,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1082,30 +1405,65 @@
   },
   {
     "table": "custom_fields",
-    "class": "GroupCustomField",
-    "constraints": [
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": "custom_fields",
+    "parent": "CustomField",
     "class": "IssuePriorityCustomField",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "field_format",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "min_length",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "max_length",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_required",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_for_all",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_filter",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "visible",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1114,14 +1472,65 @@
   },
   {
     "table": "custom_fields",
+    "parent": "CustomField",
     "class": "ProjectCustomField",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "field_format",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "min_length",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "max_length",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_required",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_for_all",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_filter",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "visible",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1130,14 +1539,65 @@
   },
   {
     "table": "custom_fields",
+    "parent": "CustomField",
     "class": "UserCustomField",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "field_format",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "min_length",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "max_length",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_required",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_for_all",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_filter",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "visible",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1146,14 +1606,65 @@
   },
   {
     "table": "custom_fields",
+    "parent": "CustomField",
     "class": "VersionCustomField",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "field_format",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "min_length",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "max_length",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_required",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_for_all",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_filter",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "visible",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1162,14 +1673,65 @@
   },
   {
     "table": "custom_fields",
+    "parent": "CustomField",
     "class": "WorkPackageCustomField",
     "constraints": [
+      {
+        "^o": "LengthConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "field_format",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "min_length",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "max_length",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_required",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_for_all",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_filter",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "visible",
+        "ctype": "DB",
+        "cond": ""
+      },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1178,26 +1740,27 @@
   },
   {
     "table": "custom_options",
+    "parent": "ApplicationRecord",
     "class": "CustomOption",
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "custom_field",
-        "db": false,
+        "field_name": "custom_field_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Custom_field",
-        "fk_column_name": "custom_field_id",
+        "fk_column_name": "custom_field",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "value",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "value",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
       },
@@ -1206,7 +1769,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1215,18 +1778,19 @@
   },
   {
     "table": "custom_styles",
+    "parent": "ApplicationRecord",
     "class": "CustomStyle",
     "constraints": [
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -1234,7 +1798,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1243,49 +1807,50 @@
   },
   {
     "table": "custom_values",
+    "parent": "ApplicationRecord",
     "class": "CustomValue",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "custom_field",
-        "db": false,
-        "class_name": "Custom_field",
-        "fk_column_name": "custom_field_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "customized",
-        "db": false,
-        "class_name": "Customized",
-        "fk_column_name": "customized_id",
-        "polymorphic": true
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "customized_type",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "customized_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "custom_field_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "custom_field_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Custom_field",
+        "fk_column_name": "custom_field",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "customized_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Customized",
+        "fk_column_name": "customized",
+        "polymorphic": true
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1294,58 +1859,19 @@
   },
   {
     "table": "design_colors",
+    "parent": "ApplicationRecord",
     "class": "DesignColor",
     "constraints": [
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "variable"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": null,
-        "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "variable",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "hexcode",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "variable",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "FormatConstraint",
-        "field_name": "hexcode",
-        "db": false,
-        "format": "/\\A#[0-9A-F]{6}\\z/"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "hexcode",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -1353,7 +1879,7 @@
         "field_name": [
           "variable"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
@@ -1361,9 +1887,37 @@
       {
         "^o": "UniqueConstraint",
         "field_name": [
+          "variable"
+        ],
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "variable",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "hexcode",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "FormatConstraint",
+        "field_name": "hexcode",
+        "ctype": "DATA_VALIDATION",
+        "format": "/\\A#[0-9A-F]{6}\\z/"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1372,20 +1926,27 @@
   },
   {
     "table": "enabled_modules",
+    "parent": "ApplicationRecord",
     "class": "EnabledModule",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Project",
-        "fk_column_name": "project_id",
+        "fk_column_name": "project",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -1394,23 +1955,17 @@
           "name",
           "project_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": true,
         "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": true,
-        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1419,24 +1974,25 @@
   },
   {
     "table": "enterprise_tokens",
+    "parent": "ApplicationRecord",
     "class": "EnterpriseToken",
     "constraints": [
       {
         "^o": "PresenceConstraint",
-        "field_name": "encoded_token",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "encoded_token",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -1444,7 +2000,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1453,20 +2009,52 @@
   },
   {
     "table": "enumerations",
+    "parent": "ApplicationRecord",
     "class": "Enumeration",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_default",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "active",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Project",
-        "fk_column_name": "project_id",
+        "fk_column_name": "project",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -1476,42 +2064,22 @@
           "type",
           "project_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
       },
       {
-        "^o": "CaseConstraint",
-        "field_name": "name"
-      },
-      {
-        "^o": "CaseConstraint",
-        "field_name": "type"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": null,
         "max": 30
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "InclusionConstraint",
         "field_name": "type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "Enumeration",
           "IssuePriority",
@@ -1520,42 +2088,11 @@
         "type": "class_inheritance"
       },
       {
-        "^o": "LengthConstraint",
-        "field_name": "name",
-        "db": true,
-        "min": 0,
-        "max": 0
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "is_default",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "active",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1564,14 +2101,46 @@
   },
   {
     "table": "enumerations",
+    "parent": "Enumeration",
     "class": "IssuePriority",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_default",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "active",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "color",
-        "db": false,
+        "field_name": "color_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Color",
-        "fk_column_name": "color_id",
+        "fk_column_name": "color",
         "polymorphic": null
       },
       {
@@ -1579,7 +2148,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1588,14 +2157,46 @@
   },
   {
     "table": "enumerations",
+    "parent": "IssuePriority",
     "class": "Priority::InexistentPriority",
     "constraints": [
+      {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_default",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "active",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1604,12 +2205,25 @@
   },
   {
     "table": "exports",
+    "parent": "ApplicationRecord",
     "class": "Export",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "InclusionConstraint",
         "field_name": "type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "Export",
           "Backup",
@@ -1618,15 +2232,32 @@
         "type": "class_inheritance"
       },
       {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "exports",
+    "parent": "Export",
+    "class": "Backup",
+    "constraints": [
+      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -1634,7 +2265,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1643,30 +2274,27 @@
   },
   {
     "table": "exports",
-    "class": "Backup",
-    "constraints": [
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": "exports",
+    "parent": "Export",
     "class": "WorkPackages::Export",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1675,92 +2303,73 @@
   },
   {
     "table": "forums",
+    "parent": "ApplicationRecord",
     "class": "Forum",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
-        "class_name": "Project",
-        "fk_column_name": "project_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "last_message",
-        "db": false,
-        "class_name": "Message",
-        "fk_column_name": ":last_message_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "description",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "name",
-        "db": false,
-        "min": null,
-        "max": 30
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "description",
-        "db": false,
-        "min": null,
-        "max": 255
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "description",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "project_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "topics_count",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "messages_count",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Project",
+        "fk_column_name": "project",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "description",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 30
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "description",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 255
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1769,34 +2378,19 @@
   },
   {
     "table": "group_users",
+    "parent": "ApplicationRecord",
     "class": "GroupUser",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "group",
-        "db": false,
-        "class_name": "Group",
-        "fk_column_name": "group_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
-        "class_name": "User",
-        "fk_column_name": "user_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "group_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -1805,7 +2399,7 @@
           "group_id",
           "user_id"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
@@ -1816,17 +2410,33 @@
           "user_id",
           "group_id"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "group_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Group",
+        "fk_column_name": "group",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "User",
+        "fk_column_name": "user",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1835,22 +2445,23 @@
   },
   {
     "table": "journal/associated_journals",
+    "parent": "ApplicationRecord",
     "class": "Journal::AssociatedJournal",
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "author",
-        "db": false,
+        "field_name": "author_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "User",
-        "fk_column_name": "author_id",
+        "fk_column_name": "author",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "journal",
-        "db": false,
+        "field_name": "journal_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Journal",
-        "fk_column_name": "journal_id",
+        "fk_column_name": "journal",
         "polymorphic": null
       },
       {
@@ -1858,7 +2469,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1867,40 +2478,41 @@
   },
   {
     "table": "attachable_journals",
+    "parent": "Journal::AssociatedJournal",
     "class": "Journal::AttachableJournal",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "attachment",
-        "db": false,
-        "class_name": "Attachment",
-        "fk_column_name": "attachment_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "journal_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "attachment_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "filename",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "attachment_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Attachment",
+        "fk_column_name": "attachment",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1909,34 +2521,35 @@
   },
   {
     "table": "customizable_journals",
+    "parent": "Journal::AssociatedJournal",
     "class": "Journal::CustomizableJournal",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "custom_field",
-        "db": false,
-        "class_name": "Custom_field",
-        "fk_column_name": "custom_field_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "journal_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "custom_field_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "custom_field_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Custom_field",
+        "fk_column_name": "custom_field",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1945,14 +2558,15 @@
   },
   {
     "table": "journal/base_journals",
+    "parent": "ApplicationRecord",
     "class": "Journal::BaseJournal",
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "author",
-        "db": false,
+        "field_name": "author_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "User",
-        "fk_column_name": "author_id",
+        "fk_column_name": "author",
         "polymorphic": null
       },
       {
@@ -1960,7 +2574,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -1969,50 +2583,51 @@
   },
   {
     "table": "attachment_journals",
+    "parent": "Journal::BaseJournal",
     "class": "Journal::AttachmentJournal",
     "constraints": [
       {
         "^o": "LengthConstraint",
         "field_name": "container_type",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "filename",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "disk_filename",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "filesize",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "digest",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "downloads",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "author_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -2020,7 +2635,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2029,24 +2644,25 @@
   },
   {
     "table": "changeset_journals",
+    "parent": "Journal::BaseJournal",
     "class": "Journal::ChangesetJournal",
     "constraints": [
       {
         "^o": "PresenceConstraint",
         "field_name": "repository_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "revision",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "committed_on",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -2054,7 +2670,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2063,34 +2679,35 @@
   },
   {
     "table": "message_journals",
+    "parent": "Journal::BaseJournal",
     "class": "Journal::MessageJournal",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "forum",
-        "db": false,
-        "class_name": "Forum",
-        "fk_column_name": "forum_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "forum_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "subject",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "forum_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Forum",
+        "fk_column_name": "forum",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2099,41 +2716,42 @@
   },
   {
     "table": "news_journals",
+    "parent": "Journal::BaseJournal",
     "class": "Journal::NewsJournal",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
-        "class_name": "Project",
-        "fk_column_name": "project_id",
-        "polymorphic": null
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "title",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "author_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "comments_count",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Project",
+        "fk_column_name": "project",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2142,12 +2760,13 @@
   },
   {
     "table": "wiki_content_journals",
+    "parent": "Journal::BaseJournal",
     "class": "Journal::WikiContentJournal",
     "constraints": [
       {
         "^o": "PresenceConstraint",
         "field_name": "page_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -2155,7 +2774,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2164,80 +2783,81 @@
   },
   {
     "table": "work_package_journals",
+    "parent": "Journal::BaseJournal",
     "class": "Journal::WorkPackageJournal",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
-        "class_name": "Project",
-        "fk_column_name": "project_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "assigned_to",
-        "db": false,
-        "class_name": "Principal",
-        "fk_column_name": "assigned_to_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "responsible",
-        "db": false,
-        "class_name": "Principal",
-        "fk_column_name": "responsible_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "type_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "project_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "subject",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "status_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "priority_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "author_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "done_ratio",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Project",
+        "fk_column_name": "project",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "assigned_to_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Principal",
+        "fk_column_name": "assigned_to",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "responsible_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Principal",
+        "fk_column_name": "responsible",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2246,75 +2866,25 @@
   },
   {
     "table": "journals",
+    "parent": "ApplicationRecord",
     "class": "Journal",
     "constraints": [
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "version",
-          "journable_id",
-          "journable_type"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": null,
-        "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "version",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
-        "class_name": "User",
-        "fk_column_name": "user_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "journable",
-        "db": false,
-        "class_name": "Journable",
-        "fk_column_name": "journable_id",
-        "polymorphic": true
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "data",
-        "db": false,
-        "class_name": "Data",
-        "fk_column_name": "data_id",
-        "polymorphic": true
-      },
-      {
-        "^o": "InclusionConstraint",
-        "field_name": "data_type",
-        "db": false,
-        "values": [
-          "Journal::BaseJournal"
-        ],
-        "type": "polymorphic"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "version",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -2323,7 +2893,7 @@
           "data_id",
           "data_type"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
@@ -2335,7 +2905,7 @@
           "journable_id",
           "version"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
@@ -2343,9 +2913,60 @@
       {
         "^o": "UniqueConstraint",
         "field_name": [
+          "version",
+          "journable_id",
+          "journable_type"
+        ],
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "version",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "User",
+        "fk_column_name": "user",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "journable_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Journable",
+        "fk_column_name": "journable",
+        "polymorphic": true
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "data_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Data",
+        "fk_column_name": "data",
+        "polymorphic": true
+      },
+      {
+        "^o": "InclusionConstraint",
+        "field_name": "data_type",
+        "ctype": "CLASS_RELATIONSHIP",
+        "values": [
+          "Journal::BaseJournal"
+        ],
+        "type": "polymorphic"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2354,57 +2975,19 @@
   },
   {
     "table": "members",
+    "parent": "ApplicationRecord",
     "class": "Member",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "principal",
-        "db": false,
-        "class_name": "Principal",
-        "fk_column_name": "user_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
-        "class_name": "Project",
-        "fk_column_name": "project_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "user_id",
-          "project_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": null,
-        "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "user_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "user_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -2413,17 +2996,50 @@
           "user_id",
           "project_id"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Principal",
+        "fk_column_name": "principal",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Project",
+        "fk_column_name": "project",
+        "polymorphic": null
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "user_id",
+          "project_id"
+        ],
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2432,40 +3048,19 @@
   },
   {
     "table": "member_roles",
+    "parent": "ApplicationRecord",
     "class": "MemberRole",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "member",
-        "db": false,
-        "class_name": "Member",
-        "fk_column_name": "member_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "role",
-        "db": false,
-        "class_name": "Role",
-        "fk_column_name": "role_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "role_id",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "member_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "role_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -2475,17 +3070,39 @@
           "role_id",
           "inherited_from"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "member_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Member",
+        "fk_column_name": "member",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "role_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Role",
+        "fk_column_name": "role",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "role_id",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2494,20 +3111,21 @@
   },
   {
     "table": "menu_items",
+    "parent": "ApplicationRecord",
     "class": "MenuItem",
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "parent",
-        "db": false,
+        "field_name": "parent_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "MenuItem",
-        "fk_column_name": "parent_id",
+        "fk_column_name": "parent",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "title",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -2517,7 +3135,7 @@
           "navigatable_id",
           "type"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": true,
         "type": "builtin"
@@ -2525,7 +3143,7 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -2535,7 +3153,7 @@
           "navigatable_id",
           "parent_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": true,
         "type": "builtin"
@@ -2543,7 +3161,7 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "MenuItem",
           "MenuItems::QueryMenuItem",
@@ -2556,7 +3174,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2565,14 +3183,15 @@
   },
   {
     "table": "menu_items",
+    "parent": "MenuItem",
     "class": "MenuItems::QueryMenuItem",
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "query",
-        "db": false,
+        "field_name": "navigatable_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Query",
-        "fk_column_name": "navigatable_id",
+        "fk_column_name": "query",
         "polymorphic": null
       },
       {
@@ -2580,8 +3199,8 @@
         "field_name": [
           "navigatable_id"
         ],
-        "db": false,
-        "cond": "class=MenuItems::QueryMenuItem",
+        "ctype": "CLASS_RELATIONSHIP",
+        "cond": "",
         "case_sensitive": true,
         "type": "has_one"
       },
@@ -2590,7 +3209,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2599,14 +3218,15 @@
   },
   {
     "table": "menu_items",
+    "parent": "MenuItem",
     "class": "MenuItems::WikiMenuItem",
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "wiki",
-        "db": false,
+        "field_name": "navigatable_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Wiki",
-        "fk_column_name": "navigatable_id",
+        "fk_column_name": "wiki",
         "polymorphic": null
       },
       {
@@ -2614,7 +3234,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2623,99 +3243,94 @@
   },
   {
     "table": "messages",
+    "parent": "ApplicationRecord",
     "class": "Message",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "forum",
-        "db": false,
-        "class_name": "Forum",
-        "fk_column_name": "forum_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "author",
-        "db": false,
-        "class_name": "User",
-        "fk_column_name": "author_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "last_reply",
-        "db": false,
-        "class_name": "Message",
-        "fk_column_name": "last_reply_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "forum_id",
-        "db": false,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "subject",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "content",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "subject",
-        "db": false,
-        "min": null,
-        "max": 255
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "subject",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "forum_id",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "subject",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "replies_count",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "forum_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Forum",
+        "fk_column_name": "forum",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "User",
+        "fk_column_name": "author",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "last_reply_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Message",
+        "fk_column_name": "last_reply",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "forum_id",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "subject",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "content",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "subject",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 255
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2724,81 +3339,70 @@
   },
   {
     "table": "news",
+    "parent": "ApplicationRecord",
     "class": "News",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
-        "class_name": "Project",
-        "fk_column_name": "project_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "author",
-        "db": false,
-        "class_name": "User",
-        "fk_column_name": "author_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "title",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "title",
-        "db": false,
-        "min": null,
-        "max": 60
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "title",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "summary",
-        "db": false,
-        "min": null,
-        "max": 255
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "summary",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "title",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "author_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "comments_count",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Project",
+        "fk_column_name": "project",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "User",
+        "fk_column_name": "author",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "title",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 60
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "summary",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 255
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2807,103 +3411,64 @@
   },
   {
     "table": "notifications",
+    "parent": "ApplicationRecord",
     "class": "Notification",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "recipient",
-        "db": false,
-        "class_name": "User",
-        "fk_column_name": "recipient_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "actor",
-        "db": false,
-        "class_name": "User",
-        "fk_column_name": "actor_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
-        "class_name": "Project",
-        "fk_column_name": "project_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "journal",
-        "db": false,
-        "class_name": "Journal",
-        "fk_column_name": "journal_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "resource",
-        "db": false,
-        "class_name": "Resource",
-        "fk_column_name": "resource_id",
-        "polymorphic": true
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "reason_ian",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "recipient_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "resource_type",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "resource_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "reason_mail",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "LengthConstraint",
         "field_name": "reason_mail_digest",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "ForeignKeyConstraint",
         "field_name": "user",
-        "db": true,
+        "ctype": "DB",
         "class_name": "User",
         "fk_column_name": "actor_id",
         "polymorphic": false
@@ -2911,17 +3476,57 @@
       {
         "^o": "ForeignKeyConstraint",
         "field_name": "user",
-        "db": true,
+        "ctype": "DB",
         "class_name": "User",
         "fk_column_name": "recipient_id",
         "polymorphic": false
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "recipient_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "User",
+        "fk_column_name": "recipient",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "actor_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "User",
+        "fk_column_name": "actor",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Project",
+        "fk_column_name": "project",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "journal_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Journal",
+        "fk_column_name": "journal",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "resource_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Resource",
+        "fk_column_name": "resource",
+        "polymorphic": true
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -2930,65 +3535,32 @@
   },
   {
     "table": "notification_settings",
+    "parent": "ApplicationRecord",
     "class": "NotificationSetting",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
-        "class_name": "Project",
-        "fk_column_name": "project_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
-        "class_name": "User",
-        "fk_column_name": "user_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "channel",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "channel",
-          "project_id",
-          "user_id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": null,
-        "type": "builtin"
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "channel",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -2997,7 +3569,7 @@
           "user_id",
           "channel"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "\"(project_id IS NULL)\"",
         "case_sensitive": true,
         "type": "db-index"
@@ -3009,7 +3581,7 @@
           "project_id",
           "channel"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "\"(project_id IS NOT NULL)\"",
         "case_sensitive": true,
         "type": "db-index"
@@ -3017,7 +3589,7 @@
       {
         "^o": "ForeignKeyConstraint",
         "field_name": "project",
-        "db": true,
+        "ctype": "DB",
         "class_name": "Project",
         "fk_column_name": "project_id",
         "polymorphic": false
@@ -3025,17 +3597,39 @@
       {
         "^o": "ForeignKeyConstraint",
         "field_name": "user",
-        "db": true,
+        "ctype": "DB",
         "class_name": "User",
         "fk_column_name": "user_id",
         "polymorphic": false
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Project",
+        "fk_column_name": "project",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "User",
+        "fk_column_name": "user",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "channel",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3044,34 +3638,19 @@
   },
   {
     "table": "ordered_work_packages",
+    "parent": "ApplicationRecord",
     "class": "OrderedWorkPackage",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "query",
-        "db": false,
-        "class_name": "Query",
-        "fk_column_name": "query_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "work_package",
-        "db": false,
-        "class_name": "Work_package",
-        "fk_column_name": "work_package_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "position",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "ForeignKeyConstraint",
         "field_name": "query",
-        "db": true,
+        "ctype": "DB",
         "class_name": "Query",
         "fk_column_name": "query_id",
         "polymorphic": false
@@ -3079,17 +3658,33 @@
       {
         "^o": "ForeignKeyConstraint",
         "field_name": "work_package",
-        "db": true,
+        "ctype": "DB",
         "class_name": "WorkPackage",
         "fk_column_name": "work_package_id",
         "polymorphic": false
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "query_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Query",
+        "fk_column_name": "query",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "work_package_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Work_package",
+        "fk_column_name": "work_package",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3098,12 +3693,80 @@
   },
   {
     "table": "users",
+    "parent": "ApplicationRecord",
     "class": "Principal",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "login",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "firstname",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lastname",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "admin",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "language",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail_notification",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "first_login",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "lastname",
+          "type"
+        ],
+        "ctype": "DB",
+        "cond": "\"(((type)::text = 'Group'::text) OR ((type)::text = 'PlaceholderUser'::text))\"",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
         "^o": "InclusionConstraint",
         "field_name": "type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "Principal",
           "Group",
@@ -3117,59 +3780,76 @@
         "type": "class_inheritance"
       },
       {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "users",
+    "parent": "Principal",
+    "class": "Group",
+    "constraints": [
+      {
         "^o": "LengthConstraint",
         "field_name": "login",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "firstname",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "lastname",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "mail",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "admin",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "status",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "language",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "mail_notification",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "first_login",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -3178,7 +3858,7 @@
           "lastname",
           "type"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "\"(((type)::text = 'Group'::text) OR ((type)::text = 'PlaceholderUser'::text))\"",
         "case_sensitive": true,
         "type": "db-index"
@@ -3188,7 +3868,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3196,82 +3876,74 @@
     ]
   },
   {
-    "table": "projects",
-    "class": "Project",
+    "table": "users",
+    "parent": "Principal",
+    "class": "PlaceholderUser",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "login",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
         "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
+        "field_name": "firstname",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lastname",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "admin",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status",
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "LengthConstraint",
-        "field_name": "name",
-        "db": false,
-        "min": -1,
-        "max": -1
+        "field_name": "language",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "identifier",
-        "db": false,
+        "field_name": "mail_notification",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "first_login",
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
-          "identifier"
+          "lastname",
+          "type"
         ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": true,
-        "type": "builtin"
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "identifier",
-        "db": false,
-        "min": -1,
-        "max": -1
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "identifier",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "public",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "active",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "templated",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "identifier"
-        ],
-        "db": true,
-        "cond": "",
+        "ctype": "DB",
+        "cond": "\"(((type)::text = 'Group'::text) OR ((type)::text = 'PlaceholderUser'::text))\"",
         "case_sensitive": true,
         "type": "db-index"
       },
@@ -3280,7 +3952,577 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "users",
+    "parent": "Principal",
+    "class": "User",
+    "constraints": [
+      {
+        "^o": "LengthConstraint",
+        "field_name": "login",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "firstname",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lastname",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "admin",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "language",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail_notification",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "first_login",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "lastname",
+          "type"
+        ],
+        "ctype": "DB",
+        "cond": "\"(((type)::text = 'Group'::text) OR ((type)::text = 'PlaceholderUser'::text))\"",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "auth_source_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Auth_source",
+        "fk_column_name": "auth_source",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "login",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "firstname",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lastname",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "login"
+        ],
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "mail"
+        ],
+        "ctype": "DATA_VALIDATION",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "builtin"
+      },
+      {
+        "^o": "FormatConstraint",
+        "field_name": "login",
+        "ctype": "DATA_VALIDATION",
+        "format": "/\\A[a-z0-9_\\-@.+ ]*\\z/i"
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "login",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 256
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "firstname",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 256
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "lastname",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 256
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "mail",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 256
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "users",
+    "parent": "User",
+    "class": "AnonymousUser",
+    "constraints": [
+      {
+        "^o": "LengthConstraint",
+        "field_name": "login",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "firstname",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lastname",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "admin",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "language",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail_notification",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "first_login",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "lastname",
+          "type"
+        ],
+        "ctype": "DB",
+        "cond": "\"(((type)::text = 'Group'::text) OR ((type)::text = 'PlaceholderUser'::text))\"",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "users",
+    "parent": "User",
+    "class": "DeletedUser",
+    "constraints": [
+      {
+        "^o": "LengthConstraint",
+        "field_name": "login",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "firstname",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lastname",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "admin",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "language",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail_notification",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "first_login",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "lastname",
+          "type"
+        ],
+        "ctype": "DB",
+        "cond": "\"(((type)::text = 'Group'::text) OR ((type)::text = 'PlaceholderUser'::text))\"",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "users",
+    "parent": "User",
+    "class": "SystemUser",
+    "constraints": [
+      {
+        "^o": "LengthConstraint",
+        "field_name": "login",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "firstname",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lastname",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "admin",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "language",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail_notification",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "first_login",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "lastname",
+          "type"
+        ],
+        "ctype": "DB",
+        "cond": "\"(((type)::text = 'Group'::text) OR ((type)::text = 'PlaceholderUser'::text))\"",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "users",
+    "parent": "User",
+    "class": "Users::InexistentUser",
+    "constraints": [
+      {
+        "^o": "LengthConstraint",
+        "field_name": "login",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "firstname",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lastname",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "admin",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "language",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "mail_notification",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "first_login",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "lastname",
+          "type"
+        ],
+        "ctype": "DB",
+        "cond": "\"(((type)::text = 'Group'::text) OR ((type)::text = 'PlaceholderUser'::text))\"",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "projects",
+    "parent": "ApplicationRecord",
+    "class": "Project",
+    "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "public",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "active",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "templated",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "identifier"
+        ],
+        "ctype": "DB",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "db-index"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "min": -1,
+        "max": -1
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3289,73 +4531,68 @@
   },
   {
     "table": "queries",
+    "parent": "ApplicationRecord",
     "class": "Query",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
-        "class_name": "Project",
-        "fk_column_name": "project_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
-        "class_name": "User",
-        "fk_column_name": "user_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "name",
-        "db": false,
-        "min": null,
-        "max": 255
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "is_public",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "display_sums",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Project",
+        "fk_column_name": "project",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "User",
+        "fk_column_name": "user",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 255
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3364,73 +4601,67 @@
   },
   {
     "table": "relations",
+    "parent": "ApplicationRecord",
     "class": "Relation",
     "constraints": [
       {
-        "^o": "NumericalConstraint",
-        "field_name": "delay",
-        "db": false,
-        "min": null,
-        "max": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "from_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "to_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "hierarchy",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "relates",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "duplicates",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "blocks",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "follows",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "includes",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "requires",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "count",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -3446,17 +4677,24 @@
           "includes",
           "requires"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "NumericalConstraint",
+        "field_name": "delay",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3465,27 +4703,73 @@
   },
   {
     "table": "repositories",
+    "parent": "ApplicationRecord",
     "class": "Repository",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "project_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "login",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "path_encoding",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "log_encoding",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "scm_type",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "required_storage_bytes",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Project",
-        "fk_column_name": "project_id",
+        "fk_column_name": "project",
         "polymorphic": null
       },
       {
         "^o": "LengthConstraint",
         "field_name": "password",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": null,
         "max": 255
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "Repository",
           "Repository::Git",
@@ -3498,76 +4782,77 @@
         "field_name": [
           "project_id"
         ],
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "cond": "",
         "case_sensitive": true,
         "type": "has_one"
       },
       {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "repositories",
+    "parent": "Repository",
+    "class": "Repository::Git",
+    "constraints": [
+      {
         "^o": "PresenceConstraint",
         "field_name": "project_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "url",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "login",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "LengthConstraint",
         "field_name": "path_encoding",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "LengthConstraint",
         "field_name": "log_encoding",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "scm_type",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "required_storage_bytes",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": "repositories",
-    "class": "Repository::Git",
-    "constraints": [
       {
         "^o": "PresenceConstraint",
         "field_name": "url",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -3575,7 +4860,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3584,32 +4869,72 @@
   },
   {
     "table": "repositories",
+    "parent": "Repository",
     "class": "Repository::Subversion",
     "constraints": [
       {
         "^o": "PresenceConstraint",
+        "field_name": "project_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
         "field_name": "url",
-        "db": false,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "login",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "path_encoding",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "log_encoding",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "scm_type",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "required_storage_bytes",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "url",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "FormatConstraint",
         "field_name": "url",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "format": "/\\A(http|https|svn(\\+[^\\s:\\/\\\\]+)?|file):\\/\\/.+\\z/i"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "url",
-        "db": false,
-        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3618,18 +4943,39 @@
   },
   {
     "table": "roles",
+    "parent": "ApplicationRecord",
     "class": "Role",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "builtin",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
       },
@@ -3638,7 +4984,7 @@
         "field_name": [
           "name"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": true,
         "type": "builtin"
@@ -3646,7 +4992,7 @@
       {
         "^o": "InclusionConstraint",
         "field_name": "type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "Role",
           "GlobalRole"
@@ -3654,31 +5000,11 @@
         "type": "class_inheritance"
       },
       {
-        "^o": "LengthConstraint",
-        "field_name": "name",
-        "db": true,
-        "min": 0,
-        "max": 0
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "builtin",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "type",
-        "db": true,
-        "min": 0,
-        "max": 0
-      },
-      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3687,14 +5013,35 @@
   },
   {
     "table": "roles",
+    "parent": "Role",
     "class": "GlobalRole",
     "constraints": [
+      {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "builtin",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3703,32 +5050,33 @@
   },
   {
     "table": "role_permissions",
+    "parent": "ApplicationRecord",
     "class": "RolePermission",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "role",
-        "db": false,
-        "class_name": "Role",
-        "fk_column_name": "role_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "permission",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "role_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Role",
+        "fk_column_name": "role",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "permission",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -3736,7 +5084,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3745,28 +5093,35 @@
   },
   {
     "table": "settings",
+    "parent": "ApplicationRecord",
     "class": "Setting",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "cond": ""
+      },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "name"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
-        "case_sensitive": null,
+        "case_sensitive": false,
         "type": "builtin"
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "values": [
           {
             "^o": "Proc"
@@ -3775,28 +5130,16 @@
         "type": "builtin"
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "NumericalConstraint",
         "field_name": "value",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": null,
         "max": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "value",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": true,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -3804,7 +5147,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3813,20 +5156,52 @@
   },
   {
     "table": "statuses",
+    "parent": "ApplicationRecord",
     "class": "Status",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_closed",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "is_default",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "color",
-        "db": false,
+        "field_name": "color_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Color",
-        "fk_column_name": "color_id",
+        "fk_column_name": "color",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -3834,58 +5209,71 @@
         "field_name": [
           "name"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
       },
       {
-        "^o": "CaseConstraint",
-        "field_name": "name"
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
       },
       {
         "^o": "NumericalConstraint",
         "field_name": "default_done_ratio",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": 0,
         "max": 100
       },
       {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "statuses",
+    "parent": "Status",
+    "class": "Status::InexistentStatus",
+    "constraints": [
+      {
         "^o": "LengthConstraint",
         "field_name": "name",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "is_closed",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "is_default",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -3893,7 +5281,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3902,20 +5290,34 @@
   },
   {
     "table": "tokens",
+    "parent": "ApplicationRecord",
     "class": "Token::Base",
     "constraints": [
       {
+        "^o": "LengthConstraint",
+        "field_name": "value",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "User",
-        "fk_column_name": "user_id",
+        "fk_column_name": "user",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "value",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -3923,36 +5325,17 @@
         "field_name": [
           "value"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
-        "case_sensitive": null,
+        "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "value",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "value",
-        "db": true,
-        "min": 0,
-        "max": 0
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -3960,21 +5343,22 @@
     ]
   },
   {
-    "table": "types",
+    "table": "/types",
+    "parent": "ApplicationRecord",
     "class": "::Type",
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "color",
-        "db": false,
+        "field_name": "color_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Color",
-        "fk_column_name": "color_id",
+        "fk_column_name": "color",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -3982,26 +5366,22 @@
         "field_name": [
           "name"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
       },
       {
-        "^o": "CaseConstraint",
-        "field_name": "name"
-      },
-      {
         "^o": "LengthConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "is_default",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "values": [
           true,
           false
@@ -4011,13 +5391,13 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "is_default",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "is_milestone",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "values": [
           true,
           false
@@ -4027,7 +5407,7 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "is_milestone",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -4035,7 +5415,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4044,20 +5424,47 @@
   },
   {
     "table": "user_passwords",
+    "parent": "ApplicationRecord",
     "class": "UserPassword",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "hashed_password",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "salt",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "User",
-        "fk_column_name": "user_id",
+        "fk_column_name": "user",
         "polymorphic": null
       },
       {
         "^o": "InclusionConstraint",
         "field_name": "type",
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "values": [
           "UserPassword",
           "UserPassword::Bcrypt",
@@ -4066,29 +5473,46 @@
         "type": "class_inheritance"
       },
       {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      }
+    ]
+  },
+  {
+    "table": "user_passwords",
+    "parent": "UserPassword",
+    "class": "UserPassword::Bcrypt",
+    "constraints": [
+      {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "LengthConstraint",
         "field_name": "hashed_password",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "LengthConstraint",
         "field_name": "salt",
-        "db": true,
+        "ctype": "DB",
         "min": 0,
         "max": 0
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "type",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -4096,7 +5520,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4105,30 +5529,41 @@
   },
   {
     "table": "user_passwords",
-    "class": "UserPassword::Bcrypt",
-    "constraints": [
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "db": false,
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
-      }
-    ]
-  },
-  {
-    "table": "user_passwords",
+    "parent": "UserPassword",
     "class": "UserPassword::SHA1",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "hashed_password",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "salt",
+        "ctype": "DB",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "type",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4137,34 +5572,45 @@
   },
   {
     "table": "user_preferences",
+    "parent": "ApplicationRecord",
     "class": "UserPreference",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "User",
-        "fk_column_name": "user_id",
+        "fk_column_name": "user",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
-        "^o": "PresenceConstraint",
-        "field_name": "user_id",
-        "db": true,
-        "cond": ""
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "user_id"
+        ],
+        "ctype": "CLASS_RELATIONSHIP",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "has_one"
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4173,20 +5619,39 @@
   },
   {
     "table": "versions",
+    "parent": "ApplicationRecord",
     "class": "Version",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "project_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "sharing",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Project",
-        "fk_column_name": "project_id",
+        "fk_column_name": "project",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "name",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -4195,31 +5660,15 @@
           "name",
           "project_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
       },
       {
-        "^o": "CaseConstraint",
-        "field_name": "name"
-      },
-      {
-        "^o": "FormatConstraint",
-        "field_name": "effective_date",
-        "db": false,
-        "format": "/\\A\\d{4}-\\d{2}-\\d{2}\\z/"
-      },
-      {
-        "^o": "FormatConstraint",
-        "field_name": "start_date",
-        "db": false,
-        "format": "/\\A\\d{4}-\\d{2}-\\d{2}\\z/"
-      },
-      {
         "^o": "InclusionConstraint",
         "field_name": "status",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "values": [
           "open",
           "locked",
@@ -4230,25 +5679,7 @@
       {
         "^o": "PresenceConstraint",
         "field_name": "status",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "project_id",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "name",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "sharing",
-        "db": true,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -4256,7 +5687,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4265,34 +5696,47 @@
   },
   {
     "table": "watchers",
+    "parent": "ApplicationRecord",
     "class": "Watcher",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "watchable_type",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "watchable_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "watchable",
-        "db": false,
+        "field_name": "watchable_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Watchable",
-        "fk_column_name": "watchable_id",
+        "fk_column_name": "watchable",
         "polymorphic": true
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "user",
-        "db": false,
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "User",
-        "fk_column_name": "user_id",
+        "fk_column_name": "user",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "watchable_id",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "user_id",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -4302,35 +5746,17 @@
           "watchable_type",
           "watchable_id"
         ],
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": "",
-        "case_sensitive": null,
+        "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "user_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "watchable_type",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "watchable_id",
-        "db": true,
-        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4339,20 +5765,51 @@
   },
   {
     "table": "wikis",
+    "parent": "ApplicationRecord",
     "class": "Wiki",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "project_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "start_page",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "created_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Project",
-        "fk_column_name": "project_id",
+        "fk_column_name": "project",
         "polymorphic": null
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "start_page",
-        "db": false,
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -4360,47 +5817,17 @@
         "field_name": [
           "project_id"
         ],
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "cond": "",
         "case_sensitive": true,
         "type": "has_one"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "project_id",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "start_page",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "status",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "created_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4409,65 +5836,59 @@
   },
   {
     "table": "wiki_contents",
+    "parent": "ApplicationRecord",
     "class": "WikiContent",
     "constraints": [
       {
+        "^o": "PresenceConstraint",
+        "field_name": "page_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "updated_at",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lock_version",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
-        "field_name": "page",
-        "db": false,
+        "field_name": "page_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "WikiPage",
-        "fk_column_name": "page_id",
+        "fk_column_name": "page",
         "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": "author",
-        "db": false,
+        "field_name": "author_id",
+        "ctype": "CLASS_RELATIONSHIP",
         "class_name": "User",
-        "fk_column_name": "author_id",
+        "fk_column_name": "author",
         "polymorphic": null
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "comments",
-        "db": false,
-        "min": null,
-        "max": 255
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "page_id"
         ],
-        "db": false,
+        "ctype": "CLASS_RELATIONSHIP",
         "cond": "",
         "case_sensitive": true,
         "type": "has_one"
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "page_id",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "updated_at",
-        "db": true,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "lock_version",
-        "db": true,
-        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4476,62 +5897,43 @@
   },
   {
     "table": "wiki_pages",
+    "parent": "ApplicationRecord",
     "class": "WikiPage",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "wiki",
-        "db": false,
-        "class_name": "Wiki",
-        "fk_column_name": "wiki_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "title",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "slug",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "wiki_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "title",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "protected",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "slug",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
@@ -4540,17 +5942,37 @@
           "wiki_id",
           "slug"
         ],
-        "db": true,
+        "ctype": "DB",
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "wiki_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Wiki",
+        "fk_column_name": "wiki",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "slug",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4559,72 +5981,61 @@
   },
   {
     "table": "wiki_redirects",
+    "parent": "ApplicationRecord",
     "class": "WikiRedirect",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "wiki",
-        "db": false,
-        "class_name": "Wiki",
-        "fk_column_name": "wiki_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "title",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "redirects_to",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "title",
-        "db": false,
-        "min": null,
-        "max": 255
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "title",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "LengthConstraint",
-        "field_name": "redirects_to",
-        "db": false,
-        "min": null,
-        "max": 255
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "redirects_to",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "wiki_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "created_at",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "wiki_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Wiki",
+        "fk_column_name": "wiki",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "title",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "redirects_to",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "title",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 255
+      },
+      {
+        "^o": "LengthConstraint",
+        "field_name": "redirects_to",
+        "ctype": "DATA_VALIDATION",
+        "min": null,
+        "max": 255
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4633,128 +6044,129 @@
   },
   {
     "table": "work_packages",
+    "parent": "ApplicationRecord",
     "class": "WorkPackage",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "project",
-        "db": false,
-        "class_name": "Project",
-        "fk_column_name": "project_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "type",
-        "db": false,
-        "class_name": "Type",
-        "fk_column_name": "type_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "status",
-        "db": false,
-        "class_name": "Status",
-        "fk_column_name": "status_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "author",
-        "db": false,
-        "class_name": "User",
-        "fk_column_name": "author_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "assigned_to",
-        "db": false,
-        "class_name": "Principal",
-        "fk_column_name": "assigned_to_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "responsible",
-        "db": false,
-        "class_name": "Principal",
-        "fk_column_name": "responsible_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "version",
-        "db": false,
-        "class_name": "Version",
-        "fk_column_name": "version_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "priority",
-        "db": false,
-        "class_name": "IssuePriority",
-        "fk_column_name": "priority_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "category",
-        "db": false,
-        "class_name": "Category",
-        "fk_column_name": "category_id",
-        "polymorphic": null
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "type_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "project_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "subject",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "status_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "author_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "lock_version",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "done_ratio",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "project_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Project",
+        "fk_column_name": "project",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "type_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Type",
+        "fk_column_name": "type",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "status_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Status",
+        "fk_column_name": "status",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "author_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "User",
+        "fk_column_name": "author",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "assigned_to_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Principal",
+        "fk_column_name": "assigned_to",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "responsible_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Principal",
+        "fk_column_name": "responsible",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "version_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Version",
+        "fk_column_name": "version",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "priority_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "IssuePriority",
+        "fk_column_name": "priority",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "category_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Category",
+        "fk_column_name": "category",
+        "polymorphic": null
       },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4763,14 +6175,57 @@
   },
   {
     "table": "work_packages",
+    "parent": "WorkPackage",
     "class": "WorkPackage::InexistentWorkPackage",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "type_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "project_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "subject",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "status_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "author_id",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "lock_version",
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "done_ratio",
+        "ctype": "DB",
+        "cond": ""
+      },
       {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"
@@ -4779,92 +6234,93 @@
   },
   {
     "table": "workflows",
+    "parent": "ApplicationRecord",
     "class": "Workflow",
     "constraints": [
       {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "role",
-        "db": false,
-        "class_name": "Role",
-        "fk_column_name": "role_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "old_status",
-        "db": false,
-        "class_name": "Status",
-        "fk_column_name": "old_status_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "new_status",
-        "db": false,
-        "class_name": "Status",
-        "fk_column_name": "new_status_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "ForeignKeyConstraint",
-        "field_name": "type",
-        "db": false,
-        "class_name": "Type",
-        "fk_column_name": "type_id",
-        "polymorphic": null
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "role_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "old_status_id",
-        "db": false,
-        "cond": ""
-      },
-      {
-        "^o": "PresenceConstraint",
-        "field_name": "new_status_id",
-        "db": false,
-        "cond": ""
-      },
-      {
         "^o": "PresenceConstraint",
         "field_name": "type_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "old_status_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "new_status_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "role_id",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "assignee",
-        "db": true,
+        "ctype": "DB",
         "cond": ""
       },
       {
         "^o": "PresenceConstraint",
         "field_name": "author",
-        "db": true,
+        "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "role_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Role",
+        "fk_column_name": "role",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "old_status_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Status",
+        "fk_column_name": "old_status",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "new_status_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Status",
+        "fk_column_name": "new_status",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "type_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Type",
+        "fk_column_name": "type",
+        "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "role_id",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "old_status_id",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "new_status_id",
+        "ctype": "DATA_VALIDATION",
         "cond": ""
       },
       {
@@ -4872,7 +6328,7 @@
         "field_name": [
           "id"
         ],
-        "db": false,
+        "ctype": "PK",
         "cond": "",
         "case_sensitive": false,
         "type": "pk"

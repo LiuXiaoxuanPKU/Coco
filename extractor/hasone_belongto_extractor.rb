@@ -6,7 +6,7 @@ require_relative './base_extractor'
 require_relative './constraint'
 
 class HasoneBelongtoExtractor < Extractor
-  def initialize(schema)
+  def initialize(schema=nil)
     super(schema)
     @class_node_map = {}
     @class_constraint_map = {}
@@ -25,7 +25,7 @@ class HasoneBelongtoExtractor < Extractor
       end # if as field is nil, it's a polymorphic assoc, the unique constriant does not hold anymore
 
       @class_constraint_map[constraint.class_name.classify] = \
-        UniqueConstraint.new([constraint.foreign_key], nil, true, "has_one", db = false)
+        UniqueConstraint.new([constraint.foreign_key], nil, true, "has_one", ConstrainType::CLASS_RELATIONSHIP)
     end
 
     # extract polymorphic associations
@@ -70,7 +70,7 @@ class HasoneBelongtoExtractor < Extractor
         next
       end
       value_list = @polyfield_valuelist_map[field]
-      c = InclusionConstraint.new(field + "_type", value_list, 'polymorphic', db = false)
+      c = InclusionConstraint.new(field + "_type", value_list, 'polymorphic', ConstrainType::CLASS_RELATIONSHIP)
       set_constraints(node, filter_validate_constraints(node, [c]))
     end
   end

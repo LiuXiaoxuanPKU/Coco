@@ -14,7 +14,7 @@ class BuiltinExtractor < Extractor
                          validates_inclusion_of
                          validates_numericality_of validates].freeze
 
-  def initialize(db_schema)
+  def initialize(db_schema=nil)
     super(db_schema)
     @builtin_validation_cnt = 0
     @custom_validation_cnt = 0
@@ -54,8 +54,8 @@ class BuiltinExtractor < Extractor
 
   def extract_unique_name_from_include(ast)
     if ast.source == 'include UniqueName'
-      pc = PresenceConstraint.new('name', nil, false)
-      uc = UniqueConstraint.new('name', nil, false, 'builtin', false)
+      pc = PresenceConstraint.new('name', nil, ConstrainType::DATA_VALIDATION)
+      uc = UniqueConstraint.new('name', nil, false, 'builtin', ConstrainType::DATA_VALIDATION)
       [pc, uc]
     else
       []
@@ -166,7 +166,7 @@ class BuiltinExtractor < Extractor
         end
         fields.each do |field|
           presence_fields << field
-          constraints << PresenceConstraint.new(field, cond, db = false)
+          constraints << PresenceConstraint.new(field, cond, ConstrainType::DATA_VALIDATION)
         end
       when 'uniqueness'
         cond = nil
@@ -179,19 +179,19 @@ class BuiltinExtractor < Extractor
         end
         fields.each do |field|
           type = 'builtin'
-          constraints << UniqueConstraint.new([field] + scope, cond, case_sensitive, type, db = false)
+          constraints << UniqueConstraint.new([field] + scope, cond, case_sensitive, type, ConstrainType::DATA_VALIDATION)
         end
       when 'inclusion'
         values = []
         type = 'builtin'
         fields.each do |field|
-          constraints << InclusionConstraint.new(field, values, type, db = false)
+          constraints << InclusionConstraint.new(field, values, type, ConstrainType::DATA_VALIDATION)
         end
       when 'length'
         min = -1
         max = -1
         fields.each do |field|
-          constraints << LengthConstraint.new(field, min, max, db = false)
+          constraints << LengthConstraint.new(field, min, max, ConstrainType::DATA_VALIDATION)
         end
       when 'numericality'
         # does not extract constraints from 'numericality: true'
@@ -199,12 +199,12 @@ class BuiltinExtractor < Extractor
 
         min, max, allow_nil = extract_numerical_hash(other.children)
         fields.each do |field|
-          constraints << NumericalConstraint.new(field, min, max, db = false)
+          constraints << NumericalConstraint.new(field, min, max, ConstrainType::DATA_VALIDATION)
         end
       when 'format'
         # TODO: extract format pattern
         fields.each do |field|
-          constraints << FormatConstraint.new(field, nil, db = false)
+          constraints << FormatConstraint.new(field, nil, ConstrainType::DATA_VALIDATION)
         end
       when 'allow_blank', 'allow_nil'
         allow_nil = true
@@ -223,7 +223,7 @@ class BuiltinExtractor < Extractor
     all_constraints = []
     valid_fields.each do |field|
       if !allow_nil && !(presence_fields.include? field)
-        all_constraints << PresenceConstraint.new(field, cond = nil, db = false)
+        all_constraints << PresenceConstraint.new(field, nil, ConstrainType::DATA_VALIDATION)
       end
     end
     all_constraints += constraints
@@ -286,8 +286,8 @@ class BuiltinExtractor < Extractor
     end
     fields.each do |field|
       type = 'builtin'
-      constraints << UniqueConstraint.new([field] + scope, cond, case_sensitive, type, db = false)
-      constraints << PresenceConstraint.new(field, cond, db = false) unless allow_nil
+      constraints << UniqueConstraint.new([field] + scope, cond, case_sensitive, type, ConstrainType::DATA_VALIDATION)
+      constraints << PresenceConstraint.new(field, cond, ConstrainType::DATA_VALIDATION) unless allow_nil
     end
     constraints
   end
@@ -304,8 +304,8 @@ class BuiltinExtractor < Extractor
       cond = v if !k.nil? && (k == 'if')
     end
     fields.each do |field|
-      constraints << PresenceConstraint.new(field, cond, db = false)
-      constraints << PresenceConstraint.new(field + "_id", cond, db = false)
+      constraints << PresenceConstraint.new(field, cond, ConstrainType::DATA_VALIDATION)
+      constraints << PresenceConstraint.new(field + "_id", cond, ConstrainType::DATA_VALIDATION)
     end
     constraints
   end
@@ -352,8 +352,8 @@ class BuiltinExtractor < Extractor
     end
 
     fields.each do |field|
-      constraints << InclusionConstraint.new(field, values, type, db = false)
-      constraints << PresenceConstraint.new(field, cond = nil, db = false) unless allow_nil
+      constraints << InclusionConstraint.new(field, values, type, ConstrainType::DATA_VALIDATION)
+      constraints << PresenceConstraint.new(field, nil, ConstrainType::DATA_VALIDATION) unless allow_nil
     end
     constraints
   end
@@ -372,8 +372,8 @@ class BuiltinExtractor < Extractor
       allow_nil = (v.source.downcase == 'true') if !k.nil? && (%w[allow_nil allow_blank].include? k)
     end
     fields.each do |field|
-      constraints << FormatConstraint.new(field, format, db = false)
-      constraints << PresenceConstraint.new(field, cond = nil, db = false) unless allow_nil
+      constraints << FormatConstraint.new(field, format, ConstrainType::DATA_VALIDATION)
+      constraints << PresenceConstraint.new(field, nil, ConstrainType::DATA_VALIDATION) unless allow_nil
     end
     constraints
   end
@@ -396,8 +396,8 @@ class BuiltinExtractor < Extractor
       end
     end
     fields.each do |field|
-      constraints << LengthConstraint.new(field, min, max, db = false)
-      constraints << PresenceConstraint.new(field, cond = nil, db = false) if !allow_nil && (!min.nil? && min > 0)
+      constraints << LengthConstraint.new(field, min, max, ConstrainType::DATA_VALIDATION)
+      constraints << PresenceConstraint.new(field, nil, ConstrainType::DATA_VALIDATION) if !allow_nil && (!min.nil? && min > 0)
     end
     constraints
   end
@@ -439,8 +439,8 @@ class BuiltinExtractor < Extractor
       allow_nil ||= tmp_allow_nil
     end
     fields.each do |field|
-      constraints << NumericalConstraint.new(field, min, max, db = false)
-      constraints << PresenceConstraint.new(field, cond = nil, db = false) unless allow_nil
+      constraints << NumericalConstraint.new(field, min, max, ConstrainType::DATA_VALIDATION)
+      constraints << PresenceConstraint.new(field, nil, ConstrainType::DATA_VALIDATION) unless allow_nil
     end
     constraints
   end
@@ -471,8 +471,9 @@ class BuiltinExtractor < Extractor
       fk_column_name << '_id'
     end
 
+    # puts "#{fields} #{fk_column_name}"
     fields.each do |field|
-      constraints << ForeignKeyConstraint.new(field, class_name, fk_column_name, polymorphic, db = false)
+      constraints << ForeignKeyConstraint.new(fk_column_name, class_name, field, polymorphic, ConstrainType::CLASS_RELATIONSHIP)
     end
     constraints
   end
@@ -510,7 +511,7 @@ class BuiltinExtractor < Extractor
 
     fields.each do |field|
       constraints << HasOneManyConstraint.new(field, class_name, foreign_key, as_field, validate_type, through,
-                                              db = false)
+        ConstrainType::OTHER)
     end
     constraints
   end
