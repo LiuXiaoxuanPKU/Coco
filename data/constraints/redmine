@@ -2830,6 +2830,14 @@
       },
       {
         "^o": "ForeignKeyConstraint",
+        "field_name": "journalized_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Issue",
+        "fk_column_name": "issue",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
         "field_name": "user_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "User",

@@ -135,6 +135,14 @@
         "polymorphic": null
       },
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "source_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::PromotionAction",
+        "fk_column_name": "promotion_action",
+        "polymorphic": null
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "label",
         "ctype": "DATA_VALIDATION",
@@ -929,7 +937,7 @@
         "field_name": "quantity",
         "ctype": "DATA_VALIDATION",
         "min": null,
-        "max": null
+        "max": 0
       },
       {
         "^o": "UniqueConstraint",
@@ -1502,6 +1510,22 @@
       },
       {
         "^o": "ForeignKeyConstraint",
+        "field_name": "bill_address_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Address",
+        "fk_column_name": "bill_address",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "ship_address_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::Address",
+        "fk_column_name": "ship_address",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
         "field_name": "store_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Store",
@@ -1513,7 +1537,7 @@
         "field_name": "item_count",
         "ctype": "DATA_VALIDATION",
         "min": 0,
-        "max": null
+        "max": 2
       },
       {
         "^o": "PresenceConstraint",
@@ -2674,6 +2698,14 @@
         "polymorphic": null
       },
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "refund_reason_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::RefundReason",
+        "fk_column_name": "reason",
+        "polymorphic": null
+      },
+      {
         "^o": "UniqueConstraint",
         "field_name": [
           "id"
@@ -3066,6 +3098,14 @@
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Stock_location",
         "fk_column_name": "stock_location",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "return_authorization_reason_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Spree::ReturnAuthorizationReason",
+        "fk_column_name": "reason",
         "polymorphic": null
       },
       {
@@ -3989,8 +4029,8 @@
         "^o": "NumericalConstraint",
         "field_name": "quantity",
         "ctype": "DATA_VALIDATION",
-        "min": null,
-        "max": null
+        "min": 0,
+        "max": 0
       },
       {
         "^o": "UniqueConstraint",

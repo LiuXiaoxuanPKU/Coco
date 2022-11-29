@@ -2053,6 +2053,16 @@
       {
         "^o": "UniqueConstraint",
         "field_name": [
+          "shortcode"
+        ],
+        "ctype": "CLASS_RELATIONSHIP",
+        "cond": "",
+        "case_sensitive": true,
+        "type": "has_one"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
           "id"
         ],
         "ctype": "PK",
@@ -2861,7 +2871,7 @@
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": ":account_id",
+        "field_name": "account_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Account_summary",
         "fk_column_name": "account_summary",
@@ -2869,7 +2879,7 @@
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": ":account_id",
+        "field_name": "account_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Account",
         "fk_column_name": "account",
@@ -3223,7 +3233,7 @@
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": ":domain",
+        "field_name": "domain",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Domain_block",
         "fk_column_name": "domain_block",
@@ -3231,7 +3241,7 @@
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": ":domain",
+        "field_name": "domain",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Domain_allow",
         "fk_column_name": "domain_allow",
@@ -3239,7 +3249,7 @@
       },
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": ":domain",
+        "field_name": "domain",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Unavailable_domain",
         "fk_column_name": "unavailable_domain",
@@ -6000,7 +6010,7 @@
     "constraints": [
       {
         "^o": "ForeignKeyConstraint",
-        "field_name": ":user_id",
+        "field_name": "user_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "User",
         "fk_column_name": "user",
@@ -6219,7 +6229,7 @@
         "field_name": "sign_count",
         "ctype": "DATA_VALIDATION",
         "min": 0,
-        "max": null
+        "max": 2
       },
       {
         "^o": "UniqueConstraint",

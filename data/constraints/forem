@@ -3031,6 +3031,14 @@
       },
       {
         "^o": "ForeignKeyConstraint",
+        "field_name": "classified_listing_category_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Listing_category",
+        "fk_column_name": "listing_category",
+        "polymorphic": null
+      },
+      {
+        "^o": "ForeignKeyConstraint",
         "field_name": "user_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "User",
@@ -5099,6 +5107,14 @@
         "class_name": "User",
         "fk_column_name": "user_id",
         "polymorphic": false
+      },
+      {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "user_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "User",
+        "fk_column_name": "owner",
+        "polymorphic": null
       },
       {
         "^o": "ForeignKeyConstraint",

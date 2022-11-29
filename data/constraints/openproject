@@ -2339,6 +2339,14 @@
         "polymorphic": null
       },
       {
+        "^o": "ForeignKeyConstraint",
+        "field_name": "last_message_id",
+        "ctype": "CLASS_RELATIONSHIP",
+        "class_name": "Message",
+        "fk_column_name": "last_message",
+        "polymorphic": null
+      },
+      {
         "^o": "PresenceConstraint",
         "field_name": "name",
         "ctype": "DATA_VALIDATION",

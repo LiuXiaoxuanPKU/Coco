@@ -3,7 +3,7 @@ require_relative 'base_extractor'
 require_relative 'constraint'
 
 def trim_string(s)
-  s.delete_prefix("'").delete_suffix("'").delete_prefix('"').delete_suffix('"')
+  s.delete_prefix("'").delete_suffix("'").delete_prefix('"').delete_suffix('"').delete_prefix(":")
 end
 
 class BuiltinExtractor < Extractor
@@ -208,6 +208,8 @@ class BuiltinExtractor < Extractor
         end
       when 'allow_blank', 'allow_nil'
         allow_nil = true
+      when "characters", "associated", "image", "utf8", "confirmation", "whitespace"
+        # do nothing
       else
         puts "[Warning] Does not handle complex validates: #{label}, #{other.source}"
         valid_fields = []
@@ -413,10 +415,10 @@ class BuiltinExtractor < Extractor
         max = v[1].source.to_i
       end
       begin
-        min = v[0].to_i if !k.nil? && %w[greater_than_or_equal_to greater_than].include?(k)
-        max = v[0].to_i if !k.nil? && %w[less_than_or_equal_to less_than].include?(k)
+        min = v.source.to_i if !k.nil? && %w[greater_than_or_equal_to greater_than].include?(k)
+        max = v.source.to_i if !k.nil? && %w[less_than_or_equal_to less_than].include?(k)
       rescue StandardError
-        puts "[Error] Fail to parse min, max value k: #{k}, v: #{v.source}"
+        puts "[Error] Fail to parse min, max value k: #{k}, v: #{v.source} #{v[0]}"
       end
       allow_nil = true if !k.nil? && %w[allow_nil allow_blank].include?(k) && v.source.downcase == 'true'
     end
@@ -471,7 +473,6 @@ class BuiltinExtractor < Extractor
       fk_column_name << '_id'
     end
 
-    # puts "#{fields} #{fk_column_name}"
     fields.each do |field|
       constraints << ForeignKeyConstraint.new(fk_column_name, class_name, field, polymorphic, ConstrainType::CLASS_RELATIONSHIP)
     end
