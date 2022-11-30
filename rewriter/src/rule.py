@@ -4,6 +4,17 @@ from constraint import NumericalConstraint
 from mo_sql_parsing import parse, format
 from config import RewriteType, REWRITE_LIMIT
 
+RULE_ORDER = [
+    "AddPredicate", 
+    "RewriteNullPredicate", 
+    "RemovePredicate", 
+    "RemoveJoin",
+    "RemoveDistinct",
+    "AddLimitOne",
+    "ReplaceOuterJoin",
+    "UnionToUnionAll"
+]
+
 class Rule:
     def __init__(self, cs) -> None:
         self.constraint = cs
@@ -15,7 +26,7 @@ class Rule:
         return self.__hash__() == __o.__hash__()
     
     def __gt__(self, other):
-        return RewriteType[self.name] < RewriteType[other.name]
+        return RULE_ORDER.index(self.name) < RULE_ORDER.index(other.name)
         
     def __hash__(self) -> int:
         if type(self) in [AddPredicate, RewriteNullPredicate]:
