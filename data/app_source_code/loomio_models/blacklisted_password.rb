@@ -1,0 +1,2 @@
+class BlacklistedPassword < ApplicationRecord
+end
