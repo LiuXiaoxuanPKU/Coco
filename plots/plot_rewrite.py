@@ -4,6 +4,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from typing import List
+from os.path import dirname, abspath, join
+import sys
+sys.path.append(join(dirname(dirname(abspath(__file__))), "rewriter/src/"))
 from shared import EvalQuery, Stage
 from config import RewriteType, FileType, get_path
 from loader import read_bench_results

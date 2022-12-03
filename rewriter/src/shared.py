@@ -1,3 +1,4 @@
+from typing import Tuple, Dict, List
 from enum import Enum
 
 
@@ -9,12 +10,12 @@ class Stage(Enum):
 
 
 class EvalQuery:
-    id: tuple[str, int]
+    id: Tuple[str, int]
     before: str
     after: str
-    timer: dict[Stage, float]
+    timer: Dict[Stage, float]
     rows: int
-    rewrite_types: list[str]
+    rewrite_types: List[str]
 
     def __init__(self, id, before_sql, after_sql, rows, rewrite_types = []):
         self.id = id
