@@ -6,9 +6,10 @@ require_relative 'class_node'
 class TreeVisitor
   attr_accessor :constraints, :constraints_cnt
 
-  def initialize
+  def initialize(for_rewrite)
     @constraints = []
     @constraints_cnt = {}
+    @for_rewrite = for_rewrite
     ConstrainType.constants.each do |t|
       @constraints_cnt[t] = 0
     end
@@ -20,13 +21,15 @@ class TreeVisitor
       return
     end
 
-    # if ['ActiveRecord::Base', 'Principal', 'ApplicationRecord', 'Spree::Base'].include? node.parent
-      c = Serializer.serialize_node(node)
-      @constraints << c
-      ConstrainType.constants.each do |t|
-        @constraints_cnt[t] += node.constraints.select { |con| con.ctype == t.to_s }.length
-      end
-    # end
+    if @for_rewrite && !(['ActiveRecord::Base', 'Principal', 'ApplicationRecord', 'Spree::Base'].include? node.parent)
+      return
+    end
+
+    c = Serializer.serialize_node(node)
+    @constraints << c
+    ConstrainType.constants.each do |t|
+      @constraints_cnt[t] += node.constraints.select { |con| con.ctype == t.to_s }.length
+    end
   end
 end
 
@@ -87,8 +90,8 @@ class Serializer
     root
   end
 
-  def self.serialize_tree(root, output_filename)
-    visitor = TreeVisitor.new
+  def self.serialize_tree(root, output_filename, for_rewrite)
+    visitor = TreeVisitor.new(for_rewrite)
     t = Traversor.new(visitor)
     t.traverse(root)
     File.open(output_filename, 'w') do |f|

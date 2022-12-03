@@ -22,8 +22,8 @@ class Engine
     root
   end
 
-  def get_constraints_cnt(root)
-    visitor = TreeVisitor.new
+  def get_constraints_cnt(root, for_rewrite)
+    visitor = TreeVisitor.new(for_rewrite)
     t = Traversor.new(visitor)
     t.traverse(root)
     visitor.constraints_cnt

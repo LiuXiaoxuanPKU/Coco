@@ -29,7 +29,7 @@ if [[ $# -eq 2 ]]; then
   pg_restore -d $PGDATABASE -C -j 16 -x -O -c "$data_dir/dump/$2.dump"
 
   # extract constraints
-  constropt-extractor --dir "$data_dir/app_source_code/" --app "$2"
+  constropt-extractor --dir "$data_dir/app_source_code/" --app "$2" --for_rewrite
 
   rm -rf "$data_dir/rewrites/$2" && mkdir "$data_dir/rewrites/$2"
   # rewrite queries
