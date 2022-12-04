@@ -1,29 +1,84 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from os.path import dirname, abspath, join
+import os
 import sys
 sys.path.append(join(dirname(dirname(abspath(__file__))), "rewriter/src/"))
+from loader import *
 
+# models = {
+#    'Presence' : 1482,
+#    'Inclusion' : 144,
+#    'Uniqueness': 370,
+#    'Format' : 116,
+#    'Length' : 430,
+#    'Numerical' : 144,
+#    'Foreign Key' : 1360
+# }
+
+# dbs = {
+#    'Presence' : 2469,
+#    'Inclusion' : 0,
+#    'Uniqueness': 368,
+#    'Format' : 0,
+#    'Length' : 2546,
+#    'Numerical' : 63,
+#    'Foreign Key' : 89
+# }
 
 models = {
-   'Presence' : 1482,
-   'Inclusion' : 144,
-   'Uniqueness': 370,
-   'Format' : 116,
-   'Length' : 430,
-   'Numerical' : 144,
-   'Foreign Key' : 1360
+   'Presence' : 0,
+   'Inclusion' : 0,
+   'Uniqueness': 0,
+   'Format' : 0,
+   'Length' : 0,
+   'Numerical' : 0,
+   'Foreign Key' : 0
 }
 
 dbs = {
-   'Presence' : 2469,
+   'Presence' : 0,
    'Inclusion' : 0,
-   'Uniqueness': 368,
+   'Uniqueness': 0,
    'Format' : 0,
-   'Length' : 2546,
-   'Numerical' : 63,
-   'Foreign Key' : 89
+   'Length' : 0,
+   'Numerical' : 0,
+   'Foreign Key' : 0
 }
+
+ctrs = []
+for f in os.listdir('../data/constraints'):
+   ctrs += read_constraints("../data/constraints/" + f)
+
+types = {UniqueConstraint, InclusionConstraint, LengthConstraint, 
+         FormatConstraint, PresenceConstraint, NumericalConstraint, ForeignKeyConstraint}
+
+for ctr in ctrs:
+   bucket = dbs if ctr.db == True else models
+   match type(ctr).__name__:
+      case UniqueConstraint.__name__:
+         bucket["Uniqueness"] += 1
+         continue
+      case InclusionConstraint.__name__:
+         bucket["Inclusion"] += 1
+         continue
+      case LengthConstraint.__name__:
+         bucket["Length"] += 1
+         continue
+      case FormatConstraint.__name__:
+         bucket["Format"] += 1
+         continue
+      case PresenceConstraint.__name__:
+         bucket["Presence"] += 1
+         continue
+      case NumericalConstraint.__name__:
+         bucket["Numerical"] += 1
+         continue
+      case ForeignKeyConstraint.__name__:
+         bucket["Foreign Key"] += 1
+         continue
+
+
 
 labels = list(models.keys())
 
@@ -60,4 +115,5 @@ ax.set_ylabel("Number of constraints", size = 40)
 ax.tick_params(axis='both', which='major', labelsize=40)
 ax.legend(prop={'size': 30}, loc=(0.65, 1.05), ncol = 2)
 fig.subplots_adjust(bottom=0.2)
-plt.savefig("/home/ubuntu/ConstrOpt_str2int/figures/7.2/constraint_dis.pdf")
+# plt.savefig("/home/ubuntu/ConstrOpt_str2int/figures/7.2/constraint_dis.pdf")
+plt.savefig("/home/ubuntu/graph_script_GeLi/constraint_dis.pdf")
