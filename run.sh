@@ -35,8 +35,12 @@ if [[ $# -eq 2 ]]; then
   # rewrite queries
   constropt-rewriter "$data_dir" "$2" --cnt 10000 --include-eq 
 
-  # Run benchmark
-  constropt-benchmark "$data_dir" "$2" --include-eq
+  # # Run benchmark
+  # constropt-benchmark "$data_dir" "$2" --include-eq
+
+  # plots
+  # rewrite perf
+  python plots/plot_rewrite.py --data_dir "$data_dir" --app "$2"
 else
   echo "Please provide the data directory and application name."
 fi
