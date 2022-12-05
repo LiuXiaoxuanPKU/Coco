@@ -62,7 +62,7 @@ def benchmark(data_dir: str, app: str, *, include_eq: bool = False, repeat=100):
     )
     connection = CONNECT_MAP[app]
     constraints = loader.read_constraints(
-        get_path(FileType.CONSTRAINT, app, data_dir))
+        get_path(FileType.CONSTRAINT, app, data_dir), include_all=False)
     installs, cleanups = process_constraints(constraints)
     print("========  Cleanup constraints  ========")
     exec_statements(cleanups, connection)

@@ -61,9 +61,10 @@ def read_constraints(file: Path, include_all: bool, remove_pk: bool = True) -> l
             case _:
                 if include_all:
                     c = eval(obj['^o'])(table, obj["field_name"], obj["ctype"] == "DB")
+                    return c
                 else:
                     print(f"Unsupported constraint: {obj}")
-                return c
+                    return None
     with open(file, "r") as f:
         constraints = (decode_constraint(table["table"], obj) for table in json.load(f) for obj in table["constraints"])
         constraints = ldistinct(keep(constraints))
