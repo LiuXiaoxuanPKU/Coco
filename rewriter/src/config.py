@@ -24,6 +24,7 @@ class FileType(IntEnum):
     GRAPH_REWRITE_PERF = 12
     GRAPH_TYPE_PERF = 13
     GRAPH_CONSTRAINT_DIS = 14
+    GRAPH_CONSTRAINT_COMPARE = 15
   
 def get_path(_type: FileType, appname: str, datadir: str, cost_include_eq=True) -> Path:
     cost_path = "cost_less_eq" if cost_include_eq else "cost_less"
@@ -51,7 +52,8 @@ def get_path(_type: FileType, appname: str, datadir: str, cost_include_eq=True) 
             # graphs
             FileType.GRAPH_REWRITE_PERF: Path(f"{datadir}/{appname}_rewrite_perf.pdf"),
             FileType.GRAPH_TYPE_PERF: Path(f"{datadir}/{appname}_type_perf.pdf"),
-            FileType.GRAPH_CONSTRAINT_DIS: Path(f"{datadir}/figures/constraint_dis.pdf")
+            FileType.GRAPH_CONSTRAINT_DIS: Path(f"{datadir}/figures/constraint_dis.pdf"),
+            FileType.GRAPH_CONSTRAINT_COMPARE: Path(f"{datadir}/figures/constraint_compare.pdf")
     }
     return m[_type]
 

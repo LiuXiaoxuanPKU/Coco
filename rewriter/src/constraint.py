@@ -11,13 +11,14 @@ class Constraint:
         return hash(str(self))
 
 class UniqueConstraint(Constraint):
-    def __init__(self, table, field, db, type, cond) -> None:
+    def __init__(self, table, field, db, type = None, cond = None) -> None:
         if table == "principals":
             table = "users"
 
         super().__init__(table, field, db)
         self.cond = cond
-        assert(type in ["pk", "has_one", "builtin", "db-index"])
+        if type is not None:
+            assert(type in ["pk", "has_one", "builtin", "db-index"])
         self.type = type
 
     def __str__(self) -> str:
@@ -41,7 +42,7 @@ class InclusionConstraint(Constraint):
 
 
 class LengthConstraint(Constraint):
-    def __init__(self, table, field, db, min, max) -> None:
+    def __init__(self, table, field, db, min = None, max = None) -> None:
         super().__init__(table, field, db)
         self.min = min
         self.max = max
@@ -68,15 +69,13 @@ class PresenceConstraint(Constraint):
 
 
 class NumericalConstraint(Constraint):
-    def __init__(self, table, field, db, min, max) -> None:
+    def __init__(self, table, field, db, min = None, max = None) -> None:
         super().__init__(table, field, db)
         self.min = min
         self.max = max
         if self.min is None and self.max is None:
-            print("[Error] Numerical Constraint, Min and Max cannot be None at the same time")
-        #     raise Exception(
-        #         "[Error] Numerical Constraint, Min and Max cannot be None at the same time")
-
+            print("[Warning] Numerical Constraint, Min and Max cannot be None at the same time")
+            
     def in_range(self, v):
         if self.min and self.max:
             return self.min <= v and v <= self.max

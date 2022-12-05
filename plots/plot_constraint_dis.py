@@ -38,8 +38,8 @@ def plot_stats(stats, outfile):
    width = 0.4
    #ax.bar(x - width/2, list(models.values()), width, edgecolor='black', color='#efccc9', label = "Model")
    #ax.bar(x + width/2, list(dbs.values()), width, edgecolor='black', color='#713b28', label = "DB")
-   ax.bar(x - width/2, list(models.values()), width, label = "Model")
-   ax.bar(x + width/2, list(dbs.values()), width, label = "DB")
+   ax.bar(x - width/2, list(models.values()), width, edgecolor='black', label = "Model")
+   ax.bar(x + width/2, list(dbs.values()), width, edgecolor='black', label = "DB")
    for i, v in enumerate(models.values()):
       ax.text(i - width/2 - 0.17, v * 1.05, str(v), color='black', fontsize=24)
    for i, v in enumerate(dbs.values()):
@@ -76,7 +76,7 @@ if __name__ == "__main__":
    constr_dir = get_path(FileType.CONSTRAINT, '', args.data_dir)
    ctrs = []
    for f in os.listdir(constr_dir):
-      ctrs += read_constraints(join(constr_dir, f))
+      ctrs += read_constraints(join(constr_dir, f), include_all = True)
    
    # get stats of different types
    stats = get_stats(ctrs)

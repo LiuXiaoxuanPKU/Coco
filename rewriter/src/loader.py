@@ -39,9 +39,9 @@ def read_queries(file: str, offset: int, cnt: int) -> list[str]:
     print(f"===========[Fail]    Parsing {len(fail_raw_queries)} queries")
     return rewrite_qs
     
-def read_constraints(file: Path) -> list[Constraint]:
+def read_constraints(file: Path, include_all: bool, remove_pk: bool = True) -> list[Constraint]:
     def decode_constraint(table: str, obj: dict[str, Any]):
-        if "type" in obj and obj["type"] == "pk":
+        if remove_pk and "type" in obj and obj["type"] == "pk":
             return None
         match obj:
             case {"^o": "LengthConstraint", "field_name": field, "ctype": ctype, "min": min, "max": max}:
@@ -59,8 +59,11 @@ def read_constraints(file: Path) -> list[Constraint]:
             case {"^o": "ForeignKeyConstraint", "field_name": field, "ctype": ctype, "class_name": cls}:
                 return ForeignKeyConstraint(table, field, ctype == "DB", cls)
             case _:
-                print(f"Unsupported constraint: {obj}")
-                return None
+                if include_all:
+                    c = eval(obj['^o'])(table, obj["field_name"], obj["ctype"] == "DB")
+                else:
+                    print(f"Unsupported constraint: {obj}")
+                return c
     with open(file, "r") as f:
         constraints = (decode_constraint(table["table"], obj) for table in json.load(f) for obj in table["constraints"])
         constraints = ldistinct(keep(constraints))
