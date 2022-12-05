@@ -71,9 +71,11 @@ class StateMachineExtractor < Extractor
     possible_fields = []
     ast = ast.jump(:do_block)
     if ast.children.length != 1
-      puts "[Error] even do block can only have one transition " + ast.children.to_s
+      puts "[Error] even do block can only have one transition " + ast.source
     end
     ast = ast.children[0][0]
+    return [] if ast.type.to_s == "fcall"
+      
     if ast[0].source == "transition"
       # transition available: :stopped
       possible_fields += parse_transition_cmd(ast)
