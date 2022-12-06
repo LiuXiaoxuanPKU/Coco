@@ -87,8 +87,8 @@ if __name__ == "__main__":
     constr_dir = get_path(FileType.CONSTRAINT, '', args.data_dir)
     dbs, models, dups = {}, {}, {}
     for f in os.listdir(constr_dir):
+        app = NAME_TO_ATTRS[f.split('.')[0]]      
         ctrs = read_constraints(join(constr_dir, f), include_all = True, remove_pk = False)
-        app = NAME_TO_ATTRS[f.split('.')[0]]
         # get stats of different types
         dbs[app], models[app], dups[app] = get_stats(ctrs)
         

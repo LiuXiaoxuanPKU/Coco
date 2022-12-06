@@ -29,7 +29,7 @@ def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = F
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
              rule.RemoveJoin, rule.ReplaceOuterJoin, rule.AddLimitOne]
     constraint_file = get_path(FileType.CONSTRAINT, app, data_dir)
-    constraints = loader.read_constraints(constraint_file)
+    constraints = loader.read_constraints(constraint_file, include_all=False)
     if db:
         print("========Only use DB constraints to perform optimization======")
         print("[Before filtering DB constraints] ", len(constraints))

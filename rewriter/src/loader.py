@@ -67,9 +67,14 @@ def read_constraints(file: Path, include_all: bool, remove_pk: bool = True) -> l
                     return None
     with open(file, "r") as f:
         constraints = (decode_constraint(table["table"], obj) for table in json.load(f) for obj in table["constraints"])
-        constraints = ldistinct(keep(constraints))
-        print(f"Load {len(constraints)} constraints")
-        return constraints
+        if include_all:
+            constraints = list(keep(constraints))
+            print(f"Load {len(constraints)} constraints")
+            return constraints
+        else:
+            constraints = ldistinct(keep(constraints))
+            print(f"Load {len(constraints)} constraints")
+            return constraints
 
 def read_rewrites(meta_folder: Path, queries_folder: Path, include_eq: bool) -> list[EvalQuery]:
     # Read out and cleanup id of rewrite

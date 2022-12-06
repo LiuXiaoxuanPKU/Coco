@@ -39,7 +39,7 @@ class Rewriter:
                         return True
                 return False
             
-            # TODO: extract all the fields insteaf of all the tokens
+            # TODO: extract all the fields instead of all the tokens
             tokens = [t.lower().split('.')[-1] for t in q_str.split(' ')]
             #if there are table names in the field
             if table_in_field():
@@ -57,8 +57,8 @@ class Rewriter:
                 if isinstance(c.field, str) and c.field == table_field and c.table.lower() in tables:
                     field_constraints.append(c)
                 elif isinstance(c.field, list) and \
-                    set(c.field).issubset(all_used_fields) and \
-                    set([c.table.lower()]).issubset(tables):
+                    set(c.field).issubset(all_used_fields):
+                        # and set([c.table.lower()]).issubset(tables):
                     field_constraints.append(c)
             return field_constraints
 

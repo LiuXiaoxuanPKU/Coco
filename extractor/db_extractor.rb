@@ -37,7 +37,7 @@ class DBExtractor < Extractor
       primary_table = handle_string_literal_node(node.children[1])
       if node.children.length == 2
         fk_column = primary_table.singularize + '_id'
-        return ForeignKeyConstraint.new(primary_table.singularize, primary_table.classify, fk_column, false,
+        return ForeignKeyConstraint.new(fk_column, primary_table.classify, fk_column, false,
           ConstrainType::DB), fk_table
       end
 
@@ -53,7 +53,7 @@ class DBExtractor < Extractor
       end
 
       fk_column = primary_table.singularize + '_id' if fk_column.nil?
-      return ForeignKeyConstraint.new(primary_table.singularize, primary_table.classify, fk_column, false,
+      return ForeignKeyConstraint.new(fk_column, primary_table.classify, fk_column, false,
         ConstrainType::DB), fk_table
     end
 
