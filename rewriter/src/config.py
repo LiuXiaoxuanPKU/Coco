@@ -46,8 +46,8 @@ def get_path(_type: FileType, appname: str, datadir: str, cost_include_eq=True) 
             
             # benchmark results dir
             FileType.BENCH_REWRITE_PERF: Path(f"{datadir}/{appname}_rewrite_perf"),
-            FileType.BENCH_STR2INT_NUM: Path(f"{datadir}/{appname}_str2int_count"),
-            FileType.BENCH_STR2INT_PERF: Path(f"{datadir}/{appname}_str2int_perf"),
+            FileType.BENCH_STR2INT_NUM: Path(f"{datadir}/results/{appname}_str2int_count"),
+            FileType.BENCH_STR2INT_PERF: Path(f"{datadir}/results/{appname}_str2int_perf"),
             
             # graphs
             FileType.GRAPH_REWRITE_PERF: Path(f"{datadir}/{appname}_rewrite_perf.pdf"),
