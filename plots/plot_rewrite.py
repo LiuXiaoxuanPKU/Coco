@@ -134,7 +134,7 @@ def plot_rewrite_type(data: List[EvalQuery], appname: str, output_dir: str):
     #    plt.ylim(0,1300)
     if appname == "redmine":
         plt.ylabel("Average Speedup", size=label_size)
-        plt.yticks([0, 1, 2, 3, 4, 5, 6])
+        # plt.yticks([0, 1, 2, 3, 4, 5, 6])
     elif appname == "mastodon":
         plt.ylabel("Average Speedup", size=label_size)
     elif appname == "forem":

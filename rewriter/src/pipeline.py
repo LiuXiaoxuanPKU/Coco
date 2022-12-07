@@ -149,7 +149,6 @@ def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = F
             
             # ======== Run test and retain those that pass =========
             rewritten_queries_lower_cost_after_test = []
-            not_eq_qs = []
             # use tests to check equivalence
             rewritten_queries_lower_cost_after_test, not_eq_qs = TestVerifier().verify(app, q, constraints, rewritten_queries_lower_cost)
             
