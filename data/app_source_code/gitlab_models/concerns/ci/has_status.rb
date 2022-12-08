@@ -7,37 +7,25 @@ module Ci
     DEFAULT_STATUS = 'created'
     BLOCKED_STATUS = %w[manual scheduled].freeze
     AVAILABLE_STATUSES = %w[created waiting_for_resource preparing pending running success failed canceled skipped manual scheduled].freeze
-    STARTED_STATUSES = %w[running success failed skipped manual scheduled].freeze
+    STARTED_STATUSES = %w[running success failed].freeze
     ACTIVE_STATUSES = %w[waiting_for_resource preparing pending running].freeze
     COMPLETED_STATUSES = %w[success failed canceled skipped].freeze
+    STOPPED_STATUSES = COMPLETED_STATUSES + BLOCKED_STATUS
     ORDERED_STATUSES = %w[failed preparing pending running waiting_for_resource manual scheduled canceled success skipped created].freeze
     PASSED_WITH_WARNINGS_STATUSES = %w[failed canceled].to_set.freeze
     EXCLUDE_IGNORED_STATUSES = %w[manual failed canceled].to_set.freeze
+    ALIVE_STATUSES = (ACTIVE_STATUSES + ['created']).freeze
+    CANCELABLE_STATUSES = (ALIVE_STATUSES + ['scheduled']).freeze
     STATUSES_ENUM = { created: 0, pending: 1, running: 2, success: 3,
                       failed: 4, canceled: 5, skipped: 6, manual: 7,
                       scheduled: 8, preparing: 9, waiting_for_resource: 10 }.freeze
-    STATUSES_DESCRIPTION = {
-      created: 'Pipeline has been created',
-      waiting_for_resource: 'A resource (for example, a runner) that the pipeline requires to run is unavailable',
-      preparing: 'Pipeline is preparing to run',
-      pending: 'Pipeline has not started running yet',
-      running: 'Pipeline is running',
-      failed: 'At least one stage of the pipeline failed',
-      success: 'Pipeline completed successfully',
-      canceled: 'Pipeline was canceled before completion',
-      skipped: 'Pipeline was skipped',
-      manual: 'Pipeline needs to be manually started',
-      scheduled: 'Pipeline is scheduled to run'
-    }.freeze
 
     UnknownStatusError = Class.new(StandardError)
 
     class_methods do
-      # The parameter `project` is only used for the feature flag check, and will be removed with
-      # https://gitlab.com/gitlab-org/gitlab/-/issues/321972
-      def composite_status(project: nil)
+      def composite_status
         Gitlab::Ci::Status::Composite
-          .new(all, with_allow_failure: columns_hash.key?('allow_failure'), project: project)
+          .new(all, with_allow_failure: columns_hash.key?('allow_failure'))
           .status
       end
 
@@ -55,6 +43,10 @@ module Ci
 
       def completed_statuses
         COMPLETED_STATUSES.map(&:to_sym)
+      end
+
+      def stopped_statuses
+        STOPPED_STATUSES.map(&:to_sym)
       end
     end
 
@@ -87,17 +79,18 @@ module Ci
       scope :skipped, -> { with_status(:skipped) }
       scope :manual, -> { with_status(:manual) }
       scope :scheduled, -> { with_status(:scheduled) }
-      scope :alive, -> { with_status(:created, :waiting_for_resource, :preparing, :pending, :running) }
-      scope :alive_or_scheduled, -> { with_status(:created, :waiting_for_resource, :preparing, :pending, :running, :scheduled) }
+      scope :alive, -> { with_status(*ALIVE_STATUSES) }
+      scope :alive_or_scheduled, -> { with_status(*klass::CANCELABLE_STATUSES) }
       scope :created_or_pending, -> { with_status(:created, :pending) }
       scope :running_or_pending, -> { with_status(:running, :pending) }
       scope :finished, -> { with_status(:success, :failed, :canceled) }
       scope :failed_or_canceled, -> { with_status(:failed, :canceled) }
       scope :complete, -> { with_status(completed_statuses) }
       scope :incomplete, -> { without_statuses(completed_statuses) }
+      scope :waiting_for_resource_or_upcoming, -> { with_status(:created, :scheduled, :waiting_for_resource) }
 
       scope :cancelable, -> do
-        where(status: [:running, :waiting_for_resource, :preparing, :pending, :created, :scheduled])
+        where(status: klass::CANCELABLE_STATUSES)
       end
 
       scope :without_statuses, -> (names) do
@@ -106,7 +99,7 @@ module Ci
     end
 
     def started?
-      STARTED_STATUSES.include?(status) && started_at
+      STARTED_STATUSES.include?(status) && !!started_at
     end
 
     def active?
@@ -115,6 +108,10 @@ module Ci
 
     def complete?
       COMPLETED_STATUSES.include?(status)
+    end
+
+    def incomplete?
+      COMPLETED_STATUSES.exclude?(status)
     end
 
     def blocked?

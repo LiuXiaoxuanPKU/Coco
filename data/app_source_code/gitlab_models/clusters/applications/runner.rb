@@ -3,7 +3,7 @@
 module Clusters
   module Applications
     class Runner < ApplicationRecord
-      VERSION = '0.31.0'
+      VERSION = '0.42.1'
 
       self.table_name = 'clusters_applications_runners'
 
@@ -15,7 +15,7 @@ module Clusters
       belongs_to :runner, class_name: 'Ci::Runner', foreign_key: :runner_id
       delegate :project, :group, to: :cluster
 
-      default_value_for :version, VERSION
+      attribute :version, default: VERSION
 
       def chart
         "#{name}/gitlab-runner"
@@ -41,7 +41,7 @@ module Clusters
       end
 
       def prepare_uninstall
-        runner&.update!(active: false)
+        # No op, see https://gitlab.com/gitlab-org/gitlab/-/issues/350180.
       end
 
       def post_uninstall
@@ -50,34 +50,6 @@ module Clusters
 
       private
 
-      def ensure_runner
-        runner || create_and_assign_runner
-      end
-
-      def create_and_assign_runner
-        transaction do
-          Ci::Runner.create!(runner_create_params).tap do |runner|
-            update!(runner_id: runner.id)
-          end
-        end
-      end
-
-      def runner_create_params
-        attributes = {
-          name: 'kubernetes-cluster',
-          runner_type: cluster.cluster_type,
-          tag_list: %w[kubernetes cluster]
-        }
-
-        if cluster.group_type?
-          attributes[:groups] = [group]
-        elsif cluster.project_type?
-          attributes[:projects] = [project]
-        end
-
-        attributes
-      end
-
       def gitlab_url
         Gitlab::Routing.url_helpers.root_url(only_path: false)
       end
@@ -85,7 +57,6 @@ module Clusters
       def specification
         {
           "gitlabUrl" => gitlab_url,
-          "runnerToken" => ensure_runner.token,
           "runners" => { "privileged" => privileged }
         }
       end

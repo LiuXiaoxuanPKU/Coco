@@ -13,10 +13,10 @@ class X509Certificate < ApplicationRecord
 
   belongs_to :x509_issuer, class_name: 'X509Issuer', foreign_key: 'x509_issuer_id', optional: false
 
-  has_many :x509_commit_signatures, inverse_of: 'x509_certificate'
+  has_many :x509_commit_signatures, class_name: 'CommitSignatures::X509CommitSignature', inverse_of: 'x509_certificate'
 
   # rfc 5280 - 4.2.1.2  Subject Key Identifier
-  validates :subject_key_identifier, presence: true, format: { with: /\A(\h{2}:){19}\h{2}\z/ }
+  validates :subject_key_identifier, presence: true, format: { with: Gitlab::Regex.x509_subject_key_identifier_regex }
   # rfc 5280 - 4.1.2.6  Subject
   validates :subject, presence: true
   # rfc 5280 - 4.1.2.6  Subject (subjectAltName contains the email address)

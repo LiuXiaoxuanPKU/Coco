@@ -7,6 +7,8 @@ class WebHookLog < ApplicationRecord
   include CreatedAtFilterable
   include PartitionedTable
 
+  OVERSIZE_REQUEST_DATA = { 'oversize' => true }.freeze
+
   self.primary_key = :id
 
   partitioned_by :created_at, strategy: :monthly, retain_for: 3.months
@@ -20,10 +22,18 @@ class WebHookLog < ApplicationRecord
   validates :web_hook, presence: true
 
   before_save :obfuscate_basic_auth
+  before_save :redact_user_emails
 
   def self.recent
-    where('created_at >= ?', 2.days.ago.beginning_of_day)
+    where(created_at: 2.days.ago.beginning_of_day..Time.zone.now)
       .order(created_at: :desc)
+  end
+
+  # Delete a batch of log records. Returns true if there may be more remaining.
+  def self.delete_batch_for(web_hook, batch_size:)
+    raise ArgumentError, 'batch_size is too small' if batch_size < 1
+
+    where(web_hook: web_hook).limit(batch_size).delete_all == batch_size
   end
 
   def success?
@@ -34,9 +44,26 @@ class WebHookLog < ApplicationRecord
     response_status == WebHookService::InternalErrorResponse::ERROR_MESSAGE
   end
 
+  def oversize?
+    request_data == OVERSIZE_REQUEST_DATA
+  end
+
+  def request_headers
+    super unless web_hook.token?
+    super if self[:request_headers]['X-Gitlab-Token'] == _('[REDACTED]')
+
+    self[:request_headers].merge('X-Gitlab-Token' => _('[REDACTED]'))
+  end
+
   private
 
   def obfuscate_basic_auth
     self.url = safe_url
+  end
+
+  def redact_user_emails
+    self.request_data.deep_transform_values! do |value|
+      value.to_s =~ URI::MailTo::EMAIL_REGEXP ? _('[REDACTED]') : value
+    end
   end
 end

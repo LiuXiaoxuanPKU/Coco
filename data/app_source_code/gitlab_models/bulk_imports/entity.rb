@@ -20,6 +20,8 @@
 class BulkImports::Entity < ApplicationRecord
   self.table_name = 'bulk_import_entities'
 
+  FailedError = Class.new(StandardError)
+
   belongs_to :bulk_import, optional: false
   belongs_to :parent, class_name: 'BulkImports::Entity', optional: true
 
@@ -49,11 +51,17 @@ class BulkImports::Entity < ApplicationRecord
   enum source_type: { group_entity: 0, project_entity: 1 }
 
   scope :by_user_id, ->(user_id) { joins(:bulk_import).where(bulk_imports: { user_id: user_id }) }
+  scope :stale, -> { where('created_at < ?', 8.hours.ago).where(status: [0, 1]) }
+  scope :by_bulk_import_id, ->(bulk_import_id) { where(bulk_import_id: bulk_import_id) }
+  scope :order_by_created_at, ->(direction) { order(created_at: direction) }
+
+  alias_attribute :destination_slug, :destination_name
 
   state_machine :status, initial: :created do
     state :created, value: 0
     state :started, value: 1
     state :finished, value: 2
+    state :timeout, value: 3
     state :failed, value: -1
 
     event :start do
@@ -68,6 +76,11 @@ class BulkImports::Entity < ApplicationRecord
     event :fail_op do
       transition any => :failed
     end
+
+    event :cleanup_stale do
+      transition created: :timeout
+      transition started: :timeout
+    end
   end
 
   def self.all_human_statuses
@@ -76,6 +89,67 @@ class BulkImports::Entity < ApplicationRecord
 
   def encoded_source_full_path
     ERB::Util.url_encode(source_full_path)
+  end
+
+  def pipelines
+    @pipelines ||= case source_type
+                   when 'group_entity'
+                     BulkImports::Groups::Stage.new(self).pipelines
+                   when 'project_entity'
+                     BulkImports::Projects::Stage.new(self).pipelines
+                   end
+  end
+
+  def pipeline_exists?(name)
+    pipelines.any? { _1[:pipeline].to_s == name.to_s }
+  end
+
+  def entity_type
+    source_type.gsub('_entity', '')
+  end
+
+  def pluralized_name
+    entity_type.pluralize
+  end
+
+  def base_resource_url_path
+    "/#{pluralized_name}/#{encoded_source_full_path}"
+  end
+
+  def base_xid_resource_url_path
+    "/#{pluralized_name}/#{source_xid}"
+  end
+
+  def base_resource_path
+    if source_xid.present?
+      base_xid_resource_url_path
+    else
+      base_resource_url_path
+    end
+  end
+
+  def export_relations_url_path
+    "#{base_resource_path}/export_relations"
+  end
+
+  def relation_download_url_path(relation)
+    "#{export_relations_url_path}/download?relation=#{relation}"
+  end
+
+  def wikis_url_path
+    "#{base_resource_path}/wikis"
+  end
+
+  def project?
+    source_type == 'project_entity'
+  end
+
+  def group?
+    source_type == 'group_entity'
+  end
+
+  def update_service
+    "::#{pluralized_name.capitalize}::UpdateService".constantize
   end
 
   private
@@ -87,6 +161,13 @@ class BulkImports::Entity < ApplicationRecord
   end
 
   def validate_imported_entity_type
+    if project_entity? && !BulkImports::Features.project_migration_enabled?(destination_namespace)
+      errors.add(
+        :base,
+        s_('BulkImport|invalid entity source type')
+      )
+    end
+
     if group.present? && project_entity?
       errors.add(
         :group,

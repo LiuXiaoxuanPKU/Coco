@@ -23,20 +23,27 @@ module Ci
 
       def includes?(target_project)
         # if the setting is disabled any project is considered to be in scope.
-        return true unless source_project.ci_job_token_scope_enabled?
+        return true unless source_project.ci_outbound_job_token_scope_enabled?
 
         target_project.id == source_project.id ||
           Ci::JobToken::ProjectScopeLink.from_project(source_project).to_project(target_project).exists?
       end
 
       def all_projects
-        Project.from_union([
+        Project.from_union(target_projects, remove_duplicates: false)
+      end
+
+      private
+
+      def target_project_ids
+        Ci::JobToken::ProjectScopeLink.from_project(source_project).pluck(:target_project_id)
+      end
+
+      def target_projects
+        [
           Project.id_in(source_project),
-          Project.where_exists(
-            Ci::JobToken::ProjectScopeLink
-              .from_project(source_project)
-              .where('projects.id = ci_job_token_project_scope_links.target_project_id'))
-        ], remove_duplicates: false)
+          Project.id_in(target_project_ids)
+        ]
       end
     end
   end

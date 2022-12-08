@@ -27,22 +27,33 @@ class ProjectHook < WebHook
   belongs_to :project
   validates :project, presence: true
 
+  scope :for_projects, ->(project) { where(project: project) }
+
   def pluralized_name
     _('Webhooks')
-  end
-
-  def web_hooks_disable_failed?
-    Feature.enabled?(:web_hooks_disable_failed, project)
-  end
-
-  override :rate_limit
-  def rate_limit
-    project.actual_limits.limit_for(:web_hook_calls)
   end
 
   override :application_context
   def application_context
     super.merge(project: project)
+  end
+
+  override :parent
+  def parent
+    project
+  end
+
+  override :update_last_failure
+  def update_last_failure
+    return if executable?
+
+    key = "web_hooks:last_failure:project-#{project_id}"
+    time = Time.current.utc.iso8601
+
+    Gitlab::Redis::SharedState.with do |redis|
+      prev = redis.get(key)
+      redis.set(key, time) if !prev || prev < time
+    end
   end
 end
 

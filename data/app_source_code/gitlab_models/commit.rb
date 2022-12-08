@@ -3,6 +3,7 @@
 class Commit
   extend ActiveModel::Naming
   extend Gitlab::Cache::RequestCache
+  extend Gitlab::Utils::Override
 
   include ActiveModel::Conversion
   include Noteable
@@ -83,43 +84,27 @@ class Commit
       sha[0..MIN_SHA_LENGTH]
     end
 
-    def diff_safe_lines(project: nil)
-      diff_safe_max_lines(project: project)
+    def diff_max_files
+      Gitlab::CurrentSettings.diff_max_files
     end
 
-    def diff_max_files(project: nil)
-      if Feature.enabled?(:increased_diff_limits, project)
-        3000
-      elsif Feature.enabled?(:configurable_diff_limits, project)
-        Gitlab::CurrentSettings.diff_max_files
-      else
-        1000
-      end
+    def diff_max_lines
+      Gitlab::CurrentSettings.diff_max_lines
     end
 
-    def diff_max_lines(project: nil)
-      if Feature.enabled?(:increased_diff_limits, project)
-        100000
-      elsif Feature.enabled?(:configurable_diff_limits, project)
-        Gitlab::CurrentSettings.diff_max_lines
-      else
-        50000
-      end
-    end
-
-    def max_diff_options(project: nil)
+    def max_diff_options
       {
-        max_files: diff_max_files(project: project),
-        max_lines: diff_max_lines(project: project)
+        max_files: diff_max_files,
+        max_lines: diff_max_lines
       }
     end
 
-    def diff_safe_max_files(project: nil)
-      diff_max_files(project: project) / DIFF_SAFE_LIMIT_FACTOR
+    def diff_safe_max_files
+      diff_max_files / DIFF_SAFE_LIMIT_FACTOR
     end
 
-    def diff_safe_max_lines(project: nil)
-      diff_max_lines(project: project) / DIFF_SAFE_LIMIT_FACTOR
+    def diff_safe_max_lines
+      diff_max_lines / DIFF_SAFE_LIMIT_FACTOR
     end
 
     def from_hash(hash, container)
@@ -132,7 +117,7 @@ class Commit
     end
 
     def lazy(container, oid)
-      BatchLoader.for({ container: container, oid: oid }).batch(replace_methods: false) do |items, loader|
+      BatchLoader.for({ container: container, oid: oid }).batch do |items, loader|
         items_by_container = items.group_by { |i| i[:container] }
 
         items_by_container.each do |container, commit_ids|
@@ -147,6 +132,22 @@ class Commit
 
     def parent_class
       ::Project
+    end
+
+    def build_from_sidekiq_hash(project, hash)
+      hash = hash.dup
+      date_suffix = '_date'
+
+      # When processing Sidekiq payloads various timestamps are stored as Strings.
+      # Commit in turn expects Time-like instances upon input, so we have to
+      # manually parse these values.
+      hash.each do |key, value|
+        if key.to_s.end_with?(date_suffix) && value.is_a?(String)
+          hash[key] = Time.zone.parse(value)
+        end
+      end
+
+      from_hash(hash, project)
     end
   end
 
@@ -205,7 +206,7 @@ class Commit
 
   def self.link_reference_pattern
     @link_reference_pattern ||=
-      super("commit", /(?<commit>#{COMMIT_SHA_PATTERN})?(\.(?<extension>#{LINK_EXTENSION_PATTERN}))?/)
+      super("commit", /(?<commit>#{COMMIT_SHA_PATTERN})?(\.(?<extension>#{LINK_EXTENSION_PATTERN}))?/o)
   end
 
   def to_reference(from = nil, full: false)
@@ -327,7 +328,7 @@ class Commit
   end
 
   def user_mentions
-    CommitUserMention.where(commit_id: self.id)
+    user_mention_class.where(commit_id: self.id)
   end
 
   def discussion_notes
@@ -358,6 +359,10 @@ class Commit
   end
 
   def has_signature?
+    if signature_type == :SSH && !ssh_signatures_enabled?
+      return false
+    end
+
     signature_type && signature_type != :NONE
   end
 
@@ -377,6 +382,10 @@ class Commit
     @signature_type ||= raw_signature_type || :NONE
   end
 
+  def ssh_signatures_enabled?
+    Feature.enabled?(:ssh_commit_signatures, project)
+  end
+
   def signature
     strong_memoize(:signature) do
       case signature_type
@@ -384,6 +393,8 @@ class Commit
         gpg_commit.signature
       when :X509
         Gitlab::X509::Commit.new(self).signature
+      when :SSH
+        Gitlab::Ssh::Commit.new(self).signature if ssh_signatures_enabled?
       else
         nil
       end
@@ -528,13 +539,16 @@ class Commit
     # We don't want to do anything for `Commit` model, so this is empty.
   end
 
-  # WIP is deprecated in favor of Draft. Currently both options are supported
-  # https://gitlab.com/gitlab-org/gitlab/-/issues/227426
-  DRAFT_REGEX = /\A\s*#{Regexp.union(Gitlab::Regex.merge_request_wip, Gitlab::Regex.merge_request_draft)}|(fixup!|squash!)\s/.freeze
+  # We are continuing to support `(fixup!|squash!)` here as it is the prefix
+  #   added by `git commit --fixup` which is used by some community members.
+  #   https://gitlab.com/gitlab-org/gitlab/-/issues/342937#note_892065311
+  #
+  DRAFT_REGEX = /\A\s*#{Gitlab::Regex.merge_request_draft}|(fixup!|squash!)\s/.freeze
 
-  def work_in_progress?
+  def draft?
     !!(title =~ DRAFT_REGEX)
   end
+  alias_method :work_in_progress?, :draft?
 
   def merged_merge_request?(user)
     !!merged_merge_request(user)
@@ -552,6 +566,19 @@ class Commit
 
   def readable_by?(user)
     Ability.allowed?(user, :read_commit, self)
+  end
+
+  override :user_mention_class
+  def user_mention_class
+    CommitUserMention
+  end
+
+  override :user_mention_identifier
+  def user_mention_identifier
+    {
+      commit_id: id,
+      note_id: nil
+    }
   end
 
   private

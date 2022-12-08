@@ -2,6 +2,8 @@
 
 # Placeholder class for model that is implemented in EE
 class Iteration < ApplicationRecord
+  include IgnorableColumns
+
   self.table_name = 'sprints'
 
   def self.reference_prefix

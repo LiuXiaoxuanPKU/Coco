@@ -9,16 +9,12 @@ class Label < ApplicationRecord
   include Sortable
   include FromUnion
   include Presentable
-  include IgnorableColumns
-
-  # TODO: Project#create_labels can remove column exception when this column is dropped from all envs
-  ignore_column :remove_on_close, remove_with: '14.1', remove_after: '2021-06-22'
 
   cache_markdown_field :description, pipeline: :single_line
 
-  DEFAULT_COLOR = '#6699cc'
+  DEFAULT_COLOR = ::Gitlab::Color.of('#6699cc')
 
-  default_value_for :color, DEFAULT_COLOR
+  attribute :color, ::Gitlab::Database::Type::Color.new, default: DEFAULT_COLOR
 
   has_many :lists, dependent: :destroy # rubocop:disable Cop/ActiveRecordDependent
   has_many :priorities, class_name: 'LabelPriority'
@@ -26,9 +22,9 @@ class Label < ApplicationRecord
   has_many :issues, through: :label_links, source: :target, source_type: 'Issue'
   has_many :merge_requests, through: :label_links, source: :target, source_type: 'MergeRequest'
 
-  before_validation :strip_whitespace_from_title_and_color
+  before_validation :strip_whitespace_from_title
 
-  validates :color, color: true, allow_blank: false
+  validates :color, color: true, presence: true
 
   # Don't allow ',' for label titles
   validates :title, presence: true, format: { with: /\A[^,]+\z/ }
@@ -45,6 +41,7 @@ class Label < ApplicationRecord
   scope :order_name_asc, -> { reorder(title: :asc) }
   scope :order_name_desc, -> { reorder(title: :desc) }
   scope :subscribed_by, ->(user_id) { joins(:subscriptions).where(subscriptions: { user_id: user_id, subscribed: true }) }
+  scope :with_preloaded_container, -> { preload(parent_container: :route) }
 
   scope :top_labels_by_target, -> (target_relation) {
     label_id_column = arel_table[:id]
@@ -61,6 +58,13 @@ class Label < ApplicationRecord
       .reorder(count_by_id: :desc)
       .distinct
   }
+
+  scope :for_targets, ->(target_relation) do
+    joins(:label_links)
+      .merge(LabelLink.where(target: target_relation))
+      .select(arel_table[Arel.star], LabelLink.arel_table[:target_id])
+      .with_preloaded_container
+  end
 
   def self.prioritized(project)
     joins(:priorities)
@@ -121,7 +125,7 @@ class Label < ApplicationRecord
         | # Integer-based label ID, or
           (?<label_name>
               # String-based single-word label title, or
-              [A-Za-z0-9_\-\?\.&]+
+              #{Gitlab::Regex.sep_by_1(/:{1,2}/, /[A-Za-z0-9_\-\?\.&]+/)}
               (?<!\.|\?)
             |
               # String-based multi-word label surrounded in quotes
@@ -161,11 +165,6 @@ class Label < ApplicationRecord
     return false if label_id.blank?
 
     on_project_boards(project_id).where(id: label_id).exists?
-  end
-
-  # Generate a hex color based on hex-encoded value
-  def self.color_for(value)
-    "##{Digest::MD5.hexdigest(value)[0..5]}"
   end
 
   def open_issues_count(user = nil)
@@ -216,15 +215,23 @@ class Label < ApplicationRecord
   end
 
   def text_color
-    LabelsHelper.text_color_for_bg(self.color)
+    color.contrast
   end
 
   def title=(value)
-    write_attribute(:title, sanitize_value(value)) if value.present?
+    if value.blank?
+      super
+    else
+      write_attribute(:title, sanitize_value(value))
+    end
   end
 
   def description=(value)
-    write_attribute(:description, sanitize_value(value)) if value.present?
+    if value.blank?
+      super
+    else
+      write_attribute(:description, sanitize_value(value))
+    end
   end
 
   ##
@@ -264,7 +271,7 @@ class Label < ApplicationRecord
     attributes
   end
 
-  def present(attributes)
+  def present(attributes = {})
     super(**attributes.merge(presenter_class: ::LabelPresenter))
   end
 
@@ -289,8 +296,8 @@ class Label < ApplicationRecord
     CGI.unescapeHTML(Sanitize.clean(value.to_s))
   end
 
-  def strip_whitespace_from_title_and_color
-    %w(color title).each { |attr| self[attr] = self[attr]&.strip }
+  def strip_whitespace_from_title
+    self[:title] = title&.strip
   end
 end
 

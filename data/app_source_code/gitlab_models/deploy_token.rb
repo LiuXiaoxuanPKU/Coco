@@ -5,13 +5,20 @@ class DeployToken < ApplicationRecord
   include TokenAuthenticatable
   include PolicyActor
   include Gitlab::Utils::StrongMemoize
-  add_authentication_token_field :token, encrypted: :optional
+
+  add_authentication_token_field :token, encrypted: :required
 
   AVAILABLE_SCOPES = %i(read_repository read_registry write_registry
                         read_package_registry write_package_registry).freeze
   GITLAB_DEPLOY_TOKEN_NAME = 'gitlab-deploy-token'
+  REQUIRED_DEPENDENCY_PROXY_SCOPES = %i[read_registry write_registry].freeze
 
-  default_value_for(:expires_at) { Forever.date }
+  attribute :expires_at, default: -> { Forever.date }
+
+  # Do NOT use this `user` for the authentication/authorization of the deploy tokens.
+  # It's for the auditing purpose on Credential Inventory, only.
+  # See https://gitlab.com/gitlab-org/gitlab/-/issues/353467#note_859774246 for more information.
+  belongs_to :user, foreign_key: :creator_id, optional: true
 
   has_many :project_deploy_tokens, inverse_of: :deploy_token
   has_many :projects, through: :project_deploy_tokens
@@ -46,6 +53,12 @@ class DeployToken < ApplicationRecord
     active.find_by(name: GITLAB_DEPLOY_TOKEN_NAME)
   end
 
+  def valid_for_dependency_proxy?
+    group_type? &&
+      active? &&
+      REQUIRED_DEPENDENCY_PROXY_SCOPES.all? { |scope| scope.in?(scopes) }
+  end
+
   def revoke!
     update!(revoked: true)
   end
@@ -71,6 +84,14 @@ class DeployToken < ApplicationRecord
     return false unless holder
 
     holder.has_access_to?(requested_project)
+  end
+
+  def has_access_to_group?(requested_group)
+    return false unless active?
+    return false unless group_type?
+    return false unless holder
+
+    holder.has_access_to_group?(requested_group)
   end
 
   # This is temporal. Currently we limit DeployToken
@@ -104,6 +125,10 @@ class DeployToken < ApplicationRecord
         group_deploy_tokens.first
       end
     end
+  end
+
+  def impersonated?
+    false
   end
 
   def expires_at

@@ -4,11 +4,17 @@ class ProtectedBranch < ApplicationRecord
   include ProtectedRef
   include Gitlab::SQL::Pattern
 
+  belongs_to :group, foreign_key: :namespace_id, touch: true, inverse_of: :protected_branches
+
+  validate :validate_either_project_or_top_group
+
   scope :requiring_code_owner_approval,
         -> { where(code_owner_approval_required: true) }
 
   scope :allowing_force_push,
         -> { where(allow_force_push: true) }
+
+  scope :get_ids_by_name, -> (name) { where(name: name).pluck(:id) }
 
   protected_ref_access_levels :merge, :push
 
@@ -25,9 +31,39 @@ class ProtectedBranch < ApplicationRecord
   # Check if branch name is marked as protected in the system
   def self.protected?(project, ref_name)
     return true if project.empty_repo? && project.default_branch_protected?
+    return false if ref_name.blank?
 
-    self.matching(ref_name, protected_refs: protected_refs(project)).present?
+    dry_run = Feature.disabled?(:rely_on_protected_branches_cache, project)
+
+    new_cache_result = new_cache(project, ref_name, dry_run: dry_run)
+
+    return new_cache_result unless new_cache_result.nil?
+
+    deprecated_cache(project, ref_name)
   end
+
+  def self.new_cache(project, ref_name, dry_run: true)
+    if Feature.enabled?(:hash_based_cache_for_protected_branches, project)
+      ProtectedBranches::CacheService.new(project).fetch(ref_name, dry_run: dry_run) do # rubocop: disable CodeReuse/ServiceClass
+        self.matching(ref_name, protected_refs: protected_refs(project)).present?
+      end
+    end
+  end
+
+  # Deprecated: https://gitlab.com/gitlab-org/gitlab/-/issues/368279
+  # ----------------------------------------------------------------
+  CACHE_EXPIRE_IN = 1.hour
+
+  def self.deprecated_cache(project, ref_name)
+    Rails.cache.fetch(protected_ref_cache_key(project, ref_name), expires_in: CACHE_EXPIRE_IN) do
+      self.matching(ref_name, protected_refs: protected_refs(project)).present?
+    end
+  end
+
+  def self.protected_ref_cache_key(project, ref_name)
+    "protected_ref-#{project.cache_key}-#{Digest::SHA1.hexdigest(ref_name)}"
+  end
+  # End of deprecation --------------------------------------------
 
   def self.allow_force_push?(project, ref_name)
     project.protected_branches.allowing_force_push.matching(ref_name).any?
@@ -58,6 +94,26 @@ class ProtectedBranch < ApplicationRecord
 
   def allow_multiple?(type)
     type == :push
+  end
+
+  def self.downcase_humanized_name
+    name.underscore.humanize.downcase
+  end
+
+  def default_branch?
+    name == project.default_branch
+  end
+
+  private
+
+  def validate_either_project_or_top_group
+    if !project && !group
+      errors.add(:base, _('must be associated with a Group or a Project'))
+    elsif project && group
+      errors.add(:base, _('cannot be associated with both a Group and a Project'))
+    elsif group && group.root_ancestor != group
+      errors.add(:base, _('cannot be associated with a subgroup'))
+    end
   end
 end
 

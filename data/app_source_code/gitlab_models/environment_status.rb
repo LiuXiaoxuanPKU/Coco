@@ -51,7 +51,7 @@ class EnvironmentStatus
 
   def deployment
     strong_memoize(:deployment) do
-      Deployment.where(environment: environment).find_by_sha(sha)
+      Deployment.where(environment: environment).ordered.find_by_sha(sha)
     end
   end
 
@@ -100,7 +100,7 @@ class EnvironmentStatus
   def self.build_environments_status(mr, user, pipeline)
     return [] unless pipeline
 
-    pipeline.environments_in_self_and_descendants.includes(:project).available.map do |environment|
+    pipeline.environments_in_self_and_project_descendants.includes(:project).available.map do |environment|
       next unless Ability.allowed?(user, :read_environment, environment)
 
       EnvironmentStatus.new(pipeline.project, environment, mr, pipeline.sha)

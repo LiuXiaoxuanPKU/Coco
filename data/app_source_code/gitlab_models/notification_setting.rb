@@ -3,9 +3,7 @@
 class NotificationSetting < ApplicationRecord
   include FromUnion
 
-  enum level: { global: 3, watch: 2, participating: 1, mention: 4, disabled: 0, custom: 5 }
-
-  default_value_for :level, NotificationSetting.levels[:global]
+  enum level: { global: 3, watch: 2, participating: 1, mention: 4, disabled: 0, custom: 5 }, _default: :global
 
   belongs_to :user
   belongs_to :source, polymorphic: true # rubocop:disable Cop/PolymorphicAssociations
@@ -16,7 +14,7 @@ class NotificationSetting < ApplicationRecord
   validates :user_id, uniqueness: { scope: [:source_type, :source_id],
                                     message: "already exists in source",
                                     allow_nil: true }
-  validate :owns_notification_email, if: :notification_email_changed?
+  validate :notification_email_verified, if: :notification_email_changed?
 
   scope :for_groups, -> { where(source_type: 'Namespace') }
 
@@ -110,11 +108,11 @@ class NotificationSetting < ApplicationRecord
     has_attribute?(event) && !!read_attribute(event)
   end
 
-  def owns_notification_email
+  def notification_email_verified
     return if user.temp_oauth_email?
     return if notification_email.empty?
 
-    errors.add(:notification_email, _("is not an email you own")) unless user.verified_emails.include?(notification_email)
+    errors.add(:notification_email, _("must be an email you have verified")) unless user.verified_emails.include?(notification_email)
   end
 end
 

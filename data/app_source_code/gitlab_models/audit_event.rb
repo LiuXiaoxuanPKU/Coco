@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class AuditEvent < ApplicationRecord
+  include AfterCommitQueue
   include CreatedAtFilterable
   include BulkInsertSafe
   include EachBatch
@@ -27,9 +28,11 @@ class AuditEvent < ApplicationRecord
   validates :entity_type, presence: true
   validates :ip_address, ip_address: true
 
-  scope :by_entity_type, -> (entity_type) { where(entity_type: entity_type) }
-  scope :by_entity_id, -> (entity_id) { where(entity_id: entity_id) }
-  scope :by_author_id, -> (author_id) { where(author_id: author_id) }
+  scope :by_entity_type, ->(entity_type) { where(entity_type: entity_type) }
+  scope :by_entity_id, ->(entity_id) { where(entity_id: entity_id) }
+  scope :by_author_id, ->(author_id) { where(author_id: author_id) }
+  scope :by_entity_username, ->(username) { where(entity_id: find_user_id(username)) }
+  scope :by_author_username, ->(username) { where(author_id: find_user_id(username)) }
 
   after_initialize :initialize_details
 
@@ -66,12 +69,11 @@ class AuditEvent < ApplicationRecord
   end
 
   def author
-    lazy_author&.itself.presence ||
-      ::Gitlab::Audit::NullAuthor.for(author_id, (self[:author_name] || details[:author_name]))
+    lazy_author&.itself.presence || default_author_value
   end
 
   def lazy_author
-    BatchLoader.for(author_id).batch(replace_methods: false) do |author_ids, loader|
+    BatchLoader.for(author_id).batch do |author_ids, loader|
       User.select(:id, :name, :username).where(id: author_ids).find_each do |user|
         loader.call(user.id, user)
       end
@@ -82,6 +84,18 @@ class AuditEvent < ApplicationRecord
     super(options).tap do |json|
       json['ip_address'] = self.ip_address.to_s
     end
+  end
+
+  def target_type
+    super || details[:target_type]
+  end
+
+  def target_id
+    details[:target_id]
+  end
+
+  def target_details
+    super || details[:target_details]
   end
 
   private
@@ -95,7 +109,7 @@ class AuditEvent < ApplicationRecord
   end
 
   def default_author_value
-    ::Gitlab::Audit::NullAuthor.for(author_id, (self[:author_name] || details[:author_name]))
+    ::Gitlab::Audit::NullAuthor.for(author_id, self)
   end
 
   def parallel_persist
@@ -105,6 +119,10 @@ class AuditEvent < ApplicationRecord
 
       self[name] = self.details[name] = original
     end
+  end
+
+  def self.find_user_id(username)
+    User.find_by_username(username)&.id
   end
 end
 

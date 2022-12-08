@@ -6,7 +6,6 @@ class MergeRequestDiff < ApplicationRecord
   include ManualInverseAssociation
   include EachBatch
   include Gitlab::Utils::StrongMemoize
-  include ObjectStorage::BackgroundMove
   include BulkInsertableAssociations
 
   # Don't display more than 100 commits at once
@@ -20,6 +19,10 @@ class MergeRequestDiff < ApplicationRecord
   # The files_count column is a 2-byte signed integer. Look up the true value
   # from the database if this sentinel is seen
   FILES_COUNT_SENTINEL = 2**15 - 1
+
+  # External diff cache key used by diffs export
+  EXTERNAL_DIFFS_CACHE_TMPDIR = 'project-%{project_id}-external-mr-%{mr_id}-diff-%{id}-cache'
+  EXTERNAL_DIFF_CACHE_CHUNK_SIZE = 8.megabytes
 
   belongs_to :merge_request
 
@@ -66,7 +69,7 @@ class MergeRequestDiff < ApplicationRecord
     joins(:merge_request).where(merge_requests: { target_project_id: project_id })
   end
 
-  scope :recent, -> { order(id: :desc).limit(100) }
+  scope :recent, -> (limit = 100) { order(id: :desc).limit(limit) }
 
   scope :files_in_database, -> do
     where(stored_externally: [false, nil]).where(arel_table[:files_count].gt(0))
@@ -263,7 +266,7 @@ class MergeRequestDiff < ApplicationRecord
   end
 
   # This method will rely on repository branch sha
-  # in case start_commit_sha is nil. Its necesarry for old merge request diff
+  # in case start_commit_sha is nil. It's necessary for old merge request diff
   # created before version 8.4 to work
   def safe_start_commit_sha
     start_commit_sha || merge_request.target_branch_sha
@@ -288,9 +291,9 @@ class MergeRequestDiff < ApplicationRecord
     end
   end
 
-  def commits(limit: nil)
-    strong_memoize(:"commits_#{limit || 'all'}") do
-      load_commits(limit: limit)
+  def commits(limit: nil, load_from_gitaly: false, page: nil)
+    strong_memoize(:"commits_#{limit || 'all'}_#{load_from_gitaly}_page_#{page}") do
+      load_commits(limit: limit, load_from_gitaly: load_from_gitaly, page: page)
     end
   end
 
@@ -354,9 +357,9 @@ class MergeRequestDiff < ApplicationRecord
     return unless start_commit_sha || base_commit_sha
 
     Gitlab::Diff::DiffRefs.new(
-      base_sha:  base_commit_sha,
+      base_sha: base_commit_sha,
       start_sha: start_commit_sha,
-      head_sha:  head_commit_sha
+      head_sha: head_commit_sha
     )
   end
 
@@ -377,9 +380,9 @@ class MergeRequestDiff < ApplicationRecord
     likely_base_commit_sha = (first_commit&.parent || first_commit)&.sha
 
     Gitlab::Diff::DiffRefs.new(
-      base_sha:  likely_base_commit_sha,
+      base_sha: likely_base_commit_sha,
       start_sha: safe_start_commit_sha,
-      head_sha:  head_commit_sha
+      head_sha: head_commit_sha
     )
   end
 
@@ -406,6 +409,29 @@ class MergeRequestDiff < ApplicationRecord
         comparison.diffs(diff_options)
       else
         diffs_batch
+      end
+    end
+  end
+
+  def paginated_diffs(page, per_page)
+    fetching_repository_diffs({}) do |comparison|
+      reorder_diff_files!
+
+      collection = Gitlab::Diff::FileCollection::PaginatedMergeRequestDiff.new(
+        self,
+        page,
+        per_page
+      )
+
+      if comparison
+        comparison.diffs(
+          paths: collection.diff_paths,
+          page: collection.current_page,
+          per_page: collection.limit_value,
+          count: collection.total_count
+        )
+      else
+        collection
       end
     end
   end
@@ -515,7 +541,7 @@ class MergeRequestDiff < ApplicationRecord
 
     transaction do
       MergeRequestDiffFile.where(merge_request_diff_id: id).delete_all
-      Gitlab::Database.main.bulk_insert('merge_request_diff_files', rows) # rubocop:disable Gitlab/BulkInsert
+      ApplicationRecord.legacy_bulk_insert('merge_request_diff_files', rows) # rubocop:disable Gitlab/BulkInsert
       save!
     end
 
@@ -535,7 +561,7 @@ class MergeRequestDiff < ApplicationRecord
 
     transaction do
       MergeRequestDiffFile.where(merge_request_diff_id: id).delete_all
-      Gitlab::Database.main.bulk_insert('merge_request_diff_files', rows) # rubocop:disable Gitlab/BulkInsert
+      ApplicationRecord.legacy_bulk_insert('merge_request_diff_files', rows) # rubocop:disable Gitlab/BulkInsert
       update!(stored_externally: false)
     end
 
@@ -543,6 +569,28 @@ class MergeRequestDiff < ApplicationRecord
     # the database
     remove_external_diff!
     merge_request_diff_files.reset
+  end
+
+  # Yields locally cached external diff if it's externally stored.
+  # Used during Project Export to speed up externally
+  # stored merge request diffs export
+  def cached_external_diff
+    return yield(nil) unless stored_externally?
+
+    cache_external_diff unless File.exist?(external_diff_cache_filepath)
+
+    File.open(external_diff_cache_filepath) do |file|
+      yield(file)
+    end
+  end
+
+  def remove_cached_external_diff
+    Gitlab::Utils.check_path_traversal!(external_diff_cache_dir)
+    Gitlab::Utils.check_allowed_absolute_path!(external_diff_cache_dir, [Dir.tmpdir])
+
+    return unless Dir.exist?(external_diff_cache_dir)
+
+    FileUtils.rm_rf(external_diff_cache_dir)
   end
 
   private
@@ -595,7 +643,7 @@ class MergeRequestDiff < ApplicationRecord
     rows = build_external_merge_request_diff_files(rows) if use_external_diff?
 
     # Faster inserts
-    Gitlab::Database.main.bulk_insert('merge_request_diff_files', rows) # rubocop:disable Gitlab/BulkInsert
+    ApplicationRecord.legacy_bulk_insert('merge_request_diff_files', rows) # rubocop:disable Gitlab/BulkInsert
   end
 
   def build_external_diff_tempfile(rows)
@@ -680,8 +728,7 @@ class MergeRequestDiff < ApplicationRecord
     latest_id = MergeRequest
       .where(id: merge_request_id)
       .limit(1)
-      .pluck(:latest_merge_request_diff_id)
-      .first
+      .pick(:latest_merge_request_diff_id)
 
     latest_id && self.id < latest_id
   end
@@ -700,12 +747,19 @@ class MergeRequestDiff < ApplicationRecord
     end
   end
 
-  def load_commits(limit: nil)
-    commits = merge_request_diff_commits.with_users.limit(limit)
-      .map { |commit| Commit.from_hash(commit.to_hash, project) }
+  def load_commits(limit: nil, load_from_gitaly: false, page: nil)
+    diff_commits = page.present? ? merge_request_diff_commits.page(page).per(limit) : merge_request_diff_commits.limit(limit)
+
+    if load_from_gitaly
+      commits = Gitlab::Git::Commit.batch_by_oid(repository, diff_commits.map(&:sha))
+      commits = Commit.decorate(commits, project)
+    else
+      commits = diff_commits.with_users
+        .map { |commit| Commit.from_hash(commit.to_hash, project) }
+    end
 
     CommitCollection
-      .new(merge_request.source_project, commits, merge_request.source_branch)
+      .new(merge_request.target_project, commits, merge_request.target_branch, page: page.to_i, per_page: limit, count: commits_count)
   end
 
   def save_diffs
@@ -714,7 +768,7 @@ class MergeRequestDiff < ApplicationRecord
     if compare.commits.empty?
       new_attributes[:state] = :empty
     else
-      diff_collection = compare.diffs(Commit.max_diff_options(project: merge_request.project))
+      diff_collection = compare.diffs(Commit.max_diff_options)
       new_attributes[:real_size] = diff_collection.real_size
 
       if diff_collection.any?
@@ -785,6 +839,31 @@ class MergeRequestDiff < ApplicationRecord
 
   def sort_diffs(diffs)
     Gitlab::Diff::FileCollectionSorter.new(diffs).sort
+  end
+
+  # Downloads external diff to a temp storage location.
+  def cache_external_diff
+    return unless stored_externally?
+    return if File.exist?(external_diff_cache_filepath)
+
+    Dir.mkdir(external_diff_cache_dir) unless Dir.exist?(external_diff_cache_dir)
+
+    opening_external_diff do |external_diff|
+      File.open(external_diff_cache_filepath, 'wb') do |file|
+        file.write(external_diff.read(EXTERNAL_DIFF_CACHE_CHUNK_SIZE)) until external_diff.eof?
+      end
+    end
+  end
+
+  def external_diff_cache_filepath
+    File.join(external_diff_cache_dir, "diff-#{id}")
+  end
+
+  def external_diff_cache_dir
+    File.join(
+      Dir.tmpdir,
+      EXTERNAL_DIFFS_CACHE_TMPDIR % { project_id: project.id, mr_id: merge_request_id, id: id }
+    )
   end
 end
 

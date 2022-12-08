@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-# Base class for CI services
-# List methods you need to implement to get your CI service
+# Base class for CI integrations
+# List methods you need to implement to get your CI integration
 # working with GitLab merge requests
 module Integrations
   class BaseCi < Integration
-    default_value_for :category, 'ci'
+    attribute :category, default: 'ci'
 
     def valid_token?(token)
       self.respond_to?(:token) && self.token.present? && ActiveSupport::SecurityUtils.secure_compare(token, self.token)
     end
 
     def self.supported_events
-      %w(push)
+      %w[push]
     end
 
     # Return complete url to build page
@@ -30,10 +30,10 @@ module Integrations
     #
     #
     # Ex.
-    #   @service.commit_status('13be4ac', 'master')
+    #   @integration.commit_status('13be4ac', 'master')
     #   # => 'success'
     #
-    #   @service.commit_status('2abe4ac', 'dev')
+    #   @integration.commit_status('2abe4ac', 'dev')
     #   # => 'running'
     #
     #

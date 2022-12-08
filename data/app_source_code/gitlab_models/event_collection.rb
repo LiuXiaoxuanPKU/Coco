@@ -8,6 +8,8 @@
 class EventCollection
   include Gitlab::Utils::StrongMemoize
 
+  attr_reader :filter
+
   # To prevent users from putting too much pressure on the database by cycling
   # through thousands of events we put a limit on the number of pages.
   MAX_PAGE = 10
@@ -19,7 +21,7 @@ class EventCollection
     @projects = projects
     @limit = limit
     @offset = offset
-    @filter = filter
+    @filter = filter || EventFilter.new(EventFilter::ALL)
     @groups = groups
   end
 
@@ -44,35 +46,33 @@ class EventCollection
   private
 
   def project_events
-    relation_with_join_lateral('project_id', projects)
+    in_operator_optimized_relation('project_id', projects, Project)
+  end
+
+  def group_events
+    in_operator_optimized_relation('group_id', groups, Namespace)
   end
 
   def project_and_group_events
-    group_events = relation_with_join_lateral('group_id', groups)
-
-    Event.from_union([project_events, group_events]).recent
+    if EventFilter::PROJECT_ONLY_EVENT_TYPES.include?(filter.filter)
+      project_events
+    else
+      Event.from_union([project_events, group_events]).recent
+    end
   end
 
-  # This relation is built using JOIN LATERAL, producing faster queries than a
-  # regular LIMIT + OFFSET approach.
-  def relation_with_join_lateral(parent_column, parents)
-    parents_for_lateral = parents.select(:id).to_sql
+  def in_operator_optimized_relation(parent_column, parents, parent_model)
+    array_data = {
+      scope_ids: parents.pluck(:id),
+      scope_model: parent_model,
+      mapping_column: parent_column
+    }
+    query_builder_params = filter.in_operator_query_builder_params(array_data)
 
-    lateral = filtered_events
-      # Applying the limit here (before we filter (permissions) means we may get less than limit)
-      .limit(limit_for_join_lateral)
-      .where("events.#{parent_column} = parents_for_lateral.id") # rubocop:disable GitlabSecurity/SqlInjection
-      .to_sql
-
-    # The outer query does not need to re-apply the filters since the JOIN
-    # LATERAL body already takes care of this.
-    base_relation
-      .from("(#{parents_for_lateral}) parents_for_lateral")
-      .joins("JOIN LATERAL (#{lateral}) AS #{Event.table_name} ON true")
-  end
-
-  def filtered_events
-    @filter ? @filter.apply_filter(base_relation) : base_relation
+    Gitlab::Pagination::Keyset::InOperatorOptimization::QueryBuilder
+      .new(**query_builder_params)
+      .execute
+      .limit(@limit + @offset)
   end
 
   def paginate_events(events)
@@ -83,16 +83,6 @@ class EventCollection
     # We want to have absolute control over the event queries being built, thus
     # we're explicitly opting out of any default scopes that may be set.
     Event.unscoped.recent
-  end
-
-  def limit_for_join_lateral
-    # Applying the OFFSET on the inside of a JOIN LATERAL leads to incorrect
-    # results. To work around this we need to increase the inner limit for every
-    # page.
-    #
-    # This means that on page 1 we use LIMIT 20, and an outer OFFSET of 0. On
-    # page 2 we use LIMIT 40 and an outer OFFSET of 20.
-    @limit + @offset
   end
 
   def current_page
@@ -109,3 +99,5 @@ class EventCollection
     end
   end
 end
+
+EventCollection.prepend_mod

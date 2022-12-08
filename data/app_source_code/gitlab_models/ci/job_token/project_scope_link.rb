@@ -5,7 +5,7 @@
 
 module Ci
   module JobToken
-    class ProjectScopeLink < ApplicationRecord
+    class ProjectScopeLink < Ci::ApplicationRecord
       self.table_name = 'ci_job_token_project_scope_links'
 
       belongs_to :source_project, class_name: 'Project'
@@ -18,6 +18,11 @@ module Ci
       validates :source_project, presence: true
       validates :target_project, presence: true
       validate :not_self_referential_link
+
+      enum direction: {
+        outbound: 0,
+        inbound: 1
+      }
 
       def self.for_source_and_target(source_project, target_project)
         self.find_by(source_project: source_project, target_project: target_project)

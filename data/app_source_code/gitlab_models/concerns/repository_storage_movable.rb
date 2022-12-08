@@ -19,9 +19,7 @@ module RepositoryStorageMovable
       inclusion: { in: ->(_) { Gitlab.config.repositories.storages.keys } }
     validate :container_repository_writable, on: :create
 
-    default_value_for(:destination_storage_name, allows_nil: false) do
-      Repository.pick_storage_shard
-    end
+    attribute :destination_storage_name, default: -> { Repository.pick_storage_shard }
 
     state_machine initial: :initial do
       event :schedule do
@@ -50,8 +48,8 @@ module RepositoryStorageMovable
 
         begin
           storage_move.container.set_repository_read_only!(skip_git_transfer_check: true)
-        rescue StandardError => err
-          storage_move.add_error(err.message)
+        rescue StandardError => e
+          storage_move.add_error(e.message)
           next false
         end
 

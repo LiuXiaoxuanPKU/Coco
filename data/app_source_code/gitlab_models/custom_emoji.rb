@@ -5,7 +5,7 @@ class CustomEmoji < ApplicationRecord
 
   belongs_to :namespace, inverse_of: :custom_emoji
 
-  belongs_to :group, -> { where(type: 'Group') }, foreign_key: 'namespace_id'
+  belongs_to :group, -> { where(type: Group.sti_name) }, foreign_key: 'namespace_id'
   belongs_to :creator, class_name: "User", inverse_of: :created_custom_emoji
 
   # For now only external emoji are supported. See https://gitlab.com/gitlab-org/gitlab/-/issues/230467
@@ -22,16 +22,29 @@ class CustomEmoji < ApplicationRecord
     presence: true,
     length: { maximum: 36 },
 
-    format: { with: /\A#{NAME_REGEXP}\z/ }
+    format: { with: /\A#{NAME_REGEXP}\z/o }
 
   scope :by_name, -> (names) { where(name: names) }
 
   alias_attribute :url, :file # this might need a change in https://gitlab.com/gitlab-org/gitlab/-/issues/230467
 
+  # Find custom emoji for the given resource.
+  # A resource can be either a Project or a Group, or anything responding to #root_ancestor.
+  # Usually it's the return value of #resource_parent on any model.
+  scope :for_resource, -> (resource) do
+    return none if resource.nil?
+
+    namespace = resource.root_ancestor
+
+    return none if namespace.nil? || Feature.disabled?(:custom_emoji, namespace)
+
+    namespace.custom_emoji
+  end
+
   private
 
   def valid_emoji_name
-    if Gitlab::Emoji.emoji_exists?(name)
+    if TanukiEmoji.find_by_alpha_code(name)
       errors.add(:name, _('%{name} is already being used for another emoji') % { name: self.name })
     end
   end

@@ -45,6 +45,7 @@ class WikiPage
 
   # The GitLab Wiki instance.
   attr_reader :wiki
+
   delegate :container, to: :wiki
 
   # The raw Gitlab::Git::WikiPage instance.
@@ -72,7 +73,7 @@ class WikiPage
 
   # The escaped URL path of this page.
   def slug
-    attributes[:slug].presence || wiki.wiki.preview_slug(title, format)
+    attributes[:slug].presence || ::Wiki.preview_slug(title, format)
   end
   alias_method :id, :slug # required to use build_stubbed
 
@@ -98,6 +99,13 @@ class WikiPage
     attributes[:content] ||= page&.text_data
   end
 
+  def raw_content=(content)
+    return if page.nil?
+
+    page.raw_data = content
+    attributes[:content] = page.text_data
+  end
+
   # The hierarchy of the directory this page is contained in.
   def directory
     wiki.page_title_and_dir(slug)&.last.to_s
@@ -117,7 +125,7 @@ class WikiPage
   def version
     return unless persisted?
 
-    @version ||= @page.version
+    @version ||= @page.version || last_version
   end
 
   def path
@@ -137,7 +145,7 @@ class WikiPage
     default_per_page = Kaminari.config.default_per_page
     offset = [options[:page].to_i - 1, 0].max * options.fetch(:per_page, default_per_page)
 
-    wiki.repository.commits('HEAD',
+    wiki.repository.commits(wiki.default_branch,
                             path: page.path,
                             limit: options.fetch(:limit, default_per_page),
                             offset: offset)
@@ -146,11 +154,11 @@ class WikiPage
   def count_versions
     return [] unless persisted?
 
-    wiki.wiki.count_page_versions(page.path)
+    wiki.repository.count_commits(ref: wiki.default_branch, path: page.path)
   end
 
   def last_version
-    @last_version ||= versions(limit: 1).first
+    @last_version ||= wiki.repository.last_commit_for_path(wiki.default_branch, page.path) if page
   end
 
   def last_commit_sha
@@ -184,7 +192,7 @@ class WikiPage
   #       :content - The raw markup content.
   #       :format  - Optional symbol representing the
   #                  content format. Can be any type
-  #                  listed in the Wiki::MARKUPS
+  #                  listed in the Wiki::VALID_USER_MARKUPS
   #                  Hash.
   #       :message - Optional commit message to set on
   #                  the new page.
@@ -204,7 +212,7 @@ class WikiPage
   # attrs - Hash of attributes to be updated on the page.
   #        :content         - The raw markup content to replace the existing.
   #        :format          - Optional symbol representing the content format.
-  #                           See Wiki::MARKUPS Hash for available formats.
+  #                           See Wiki::VALID_USER_MARKUPS Hash for available formats.
   #        :message         - Optional commit message to set on the new version.
   #        :last_commit_sha - Optional last commit sha to validate the page unchanged.
   #        :title           - The Title (optionally including dir) to replace existing title
@@ -221,7 +229,7 @@ class WikiPage
 
     update_attributes(attrs)
 
-    if title.present? && title_changed? && wiki.find_page(title).present?
+    if title.present? && title_changed? && wiki.find_page(title, load_content: false).present?
       attributes[:title] = page.title
       raise PageRenameError, s_('WikiEdit|There is already a page with the same title in that path.')
     end
@@ -338,7 +346,7 @@ class WikiPage
     current_dirname = File.dirname(title)
 
     if persisted?
-      return title[1..-1] if current_dirname == '/'
+      return title[1..] if current_dirname == '/'
       return File.join([directory.presence, title].compact) if current_dirname == '.'
     end
 
@@ -404,3 +412,5 @@ class WikiPage
     })
   end
 end
+
+WikiPage.prepend_mod

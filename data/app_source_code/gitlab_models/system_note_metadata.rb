@@ -10,7 +10,7 @@ class SystemNoteMetadata < ApplicationRecord
   # in the same project (i.e. with the same permissions)
   TYPES_WITH_CROSS_REFERENCES = %w[
     commit cross_reference
-    close duplicate
+    closed duplicate
     moved merge
     label milestone
     relate unrelate
@@ -22,8 +22,10 @@ class SystemNoteMetadata < ApplicationRecord
     designs_added designs_modified designs_removed designs_discussion_added
     title time_tracking branch milestone discussion task moved cloned
     opened closed merged duplicate locked unlocked outdated reviewer
-    tag due_date pinned_embed cherry_pick health_status approved unapproved
+    tag due_date start_date_or_due_date pinned_embed cherry_pick health_status approved unapproved
     status alert_issue_added relate unrelate new_alert_added severity
+    attention_requested attention_request_removed contact timeline_event
+    issue_type relate_to_child unrelate_from_child relate_to_parent unrelate_from_parent
   ].freeze
 
   validates :note, presence: true, unless: :importing?

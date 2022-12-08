@@ -8,6 +8,7 @@ class Blob < SimpleDelegator
   include BlobActiveModel
 
   MODE_SYMLINK = '120000' # The STRING 120000 is the git-reported octal filemode for a symlink
+  MODE_EXECUTABLE = '100755' # The STRING 100755 is the git-reported octal filemode for an executable file
 
   CACHE_TIME = 60 # Cache raw blobs referred to by a (mutable) ref for 1 minute
   CACHE_TIME_IMMUTABLE = 3600 # Cache blobs referred to by an immutable reference for 1 hour
@@ -35,7 +36,6 @@ class Blob < SimpleDelegator
 
     BlobViewer::Image,
     BlobViewer::Sketch,
-    BlobViewer::Balsamiq,
 
     BlobViewer::Video,
     BlobViewer::Audio,
@@ -93,8 +93,8 @@ class Blob < SimpleDelegator
   end
 
   def self.lazy(repository, commit_id, path, blob_size_limit: Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE)
-    BatchLoader.for([commit_id, path]).batch(key: repository) do |items, loader, args|
-      args[:key].blobs_at(items, blob_size_limit: blob_size_limit).each do |blob|
+    BatchLoader.for([commit_id, path]).batch(key: [:repository_blobs, repository]) do |items, loader, args|
+      args[:key].last.blobs_at(items, blob_size_limit: blob_size_limit).each do |blob|
         loader.call([blob.commit_id, blob.path], blob) if blob
       end
     end
@@ -176,6 +176,14 @@ class Blob < SimpleDelegator
     else
       binary_in_repo?
     end
+  end
+
+  def symlink?
+    mode == MODE_SYMLINK
+  end
+
+  def executable?
+    mode == MODE_EXECUTABLE
   end
 
   def extension

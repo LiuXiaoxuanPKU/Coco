@@ -9,12 +9,70 @@ class Wiki
 
   extend ActiveModel::Naming
 
+  DuplicatePageError = Class.new(StandardError)
+
   MARKUPS = { # rubocop:disable Style/MultilineIfModifier
-    'Markdown' => :markdown,
-    'RDoc'     => :rdoc,
-    'AsciiDoc' => :asciidoc,
-    'Org'      => :org
+    markdown: {
+      name: 'Markdown',
+      default_extension: :md,
+      extension_regex: Regexp.new('md|mkdn?|mdown|markdown', 'i'),
+      created_by_user: true
+    },
+    rdoc: {
+      name: 'RDoc',
+      default_extension: :rdoc,
+      extension_regex: Regexp.new('rdoc', 'i'),
+      created_by_user: true
+    },
+    asciidoc: {
+      name: 'AsciiDoc',
+      default_extension: :asciidoc,
+      extension_regex: Regexp.new('adoc|asciidoc', 'i'),
+      created_by_user: true
+    },
+    org: {
+      name: 'Org',
+      default_extension: :org,
+      extension_regex: Regexp.new('org', 'i'),
+      created_by_user: true
+    },
+    textile: {
+      name: 'Textile',
+      default_extension: :textile,
+      extension_regex: Regexp.new('textile', 'i')
+    },
+    creole: {
+      name: 'Creole',
+      default_extension: :creole,
+      extension_regex: Regexp.new('creole', 'i')
+    },
+    rest: {
+      name: 'reStructuredText',
+      default_extension: :rst,
+      extension_regex: Regexp.new('re?st(\.txt)?', 'i')
+    },
+    mediawiki: {
+      name: 'MediaWiki',
+      default_extension: :mediawiki,
+      extension_regex: Regexp.new('(media)?wiki', 'i')
+    },
+    pod: {
+      name: 'Pod',
+      default_extension: :pod,
+      extension_regex: Regexp.new('pod', 'i')
+    },
+    plaintext: {
+      name: 'Plain Text',
+      default_extension: :txt,
+      extension_regex: Regexp.new('txt', 'i')
+    }
   }.freeze unless defined?(MARKUPS)
+
+  VALID_USER_MARKUPS = MARKUPS.select { |_, v| v[:created_by_user] }.freeze unless defined?(VALID_USER_MARKUPS)
+
+  unless defined?(ALLOWED_EXTENSIONS_REGEX)
+    ALLOWED_EXTENSIONS_REGEX = Regexp.union(MARKUPS.map { |key, value| value[:extension_regex] }).freeze
+  end
 
   CouldNotCreateWikiError = Class.new(StandardError)
 
@@ -47,6 +105,40 @@ class Wiki
     def find_by_id(container_id)
       container_class.find_by_id(container_id)&.wiki
     end
+
+    def sluggified_full_path(title, extension)
+      sluggified_title(title) + '.' + extension
+    end
+
+    def sluggified_title(title)
+      title = Gitlab::EncodingHelper.encode_utf8_no_detect(title.to_s.strip)
+      title = File.absolute_path(title, '/')
+      title = Pathname.new(title).relative_path_from('/').to_s
+      title.tr(' ', '-')
+    end
+
+    def canonicalize_filename(filename)
+      ::File.basename(filename, ::File.extname(filename)).tr('-', ' ')
+    end
+
+    def cname(name, char_white_sub = '-', char_other_sub = '-')
+      name.to_s.gsub(/\s/, char_white_sub).gsub(/[<>+]/, char_other_sub)
+    end
+
+    def preview_slug(title, format)
+      ext = format == :markdown ? "md" : format.to_s
+      name = cname(title) + '.' + ext
+      canonical_name = canonicalize_filename(name)
+
+      path =
+        if name.include?('/')
+          name.sub(%r{/[^/]+$}, '/')
+        else
+          ''
+        end
+
+      path + cname(canonical_name, '-', '-')
+    end
   end
 
   def initialize(container, user = nil)
@@ -78,21 +170,12 @@ class Wiki
     container.path + '.wiki'
   end
 
-  # Returns the Gitlab::Git::Wiki object.
-  def wiki
-    strong_memoize(:wiki) do
-      create_wiki_repository
-      Gitlab::Git::Wiki.new(repository.raw)
-    end
-  end
-
   def create_wiki_repository
-    repository.create_if_not_exists
-    change_head_to_default_branch
+    repository.create_if_not_exists(default_branch)
 
     raise CouldNotCreateWikiError unless repository_exists?
-  rescue StandardError => err
-    Gitlab::ErrorTracking.track_exception(err, wiki: {
+  rescue StandardError => e
+    Gitlab::ErrorTracking.track_exception(e, wiki: {
       container_type: container.class.name,
       container_id: container.id,
       full_path: full_path,
@@ -107,7 +190,7 @@ class Wiki
   end
 
   def empty?
-    !repository_exists? || list_pages(limit: 1).empty?
+    !repository_exists? || list_page_paths(limit: 1).empty?
   end
 
   def exists?
@@ -124,15 +207,29 @@ class Wiki
   #
   # Returns an Array of GitLab WikiPage instances or an
   # empty Array if this Wiki has no pages.
-  def list_pages(limit: 0, sort: nil, direction: DIRECTION_ASC, load_content: false)
-    wiki.list_pages(
-      limit: limit,
-      sort: sort,
-      direction_desc: direction == DIRECTION_DESC,
-      load_content: load_content
-    ).map do |page|
+  def list_pages(direction: DIRECTION_ASC, load_content: false, limit: 0, offset: 0)
+    create_wiki_repository unless repository_exists?
+
+    paths = list_page_paths(limit: limit, offset: offset)
+    return [] if paths.empty?
+
+    pages = paths.map do |path|
+      page = Gitlab::Git::WikiPage.new(
+        url_path: sluggified_title(strip_extension(path)),
+        title: canonicalize_filename(path),
+        format: find_page_format(path),
+        path: sluggified_title(path),
+        raw_data: '',
+        name: canonicalize_filename(path),
+        historical: false
+      )
       WikiPage.new(self, page)
     end
+    sort_pages!(pages, direction)
+    pages = pages.take(limit) if limit > 0
+    fetch_pages_content!(pages) if load_content
+
+    pages
   end
 
   def sidebar_entries(limit: Gitlab::WikiPages::MAX_SIDEBAR_PAGES, **options)
@@ -150,19 +247,36 @@ class Wiki
   #         the page.
   #
   # Returns an initialized WikiPage instance or nil
-  def find_page(title, version = nil)
-    page_title, page_dir = page_title_and_dir(title)
+  def find_page(title, version = nil, load_content: true)
+    create_wiki_repository unless repository_exists?
 
-    if page = wiki.page(title: page_title, version: version, dir: page_dir)
-      WikiPage.new(self, page)
-    end
+    version = version.presence || default_branch
+    path = find_matched_file(title, version)
+    return if path.blank?
+
+    blob_options = load_content ? {} : { limit: 0 }
+    blob = repository.blob_at(version, path, **blob_options)
+    commit = repository.commit(blob.commit_id)
+    format = find_page_format(path)
+
+    page = Gitlab::Git::WikiPage.new(
+      url_path: sluggified_title(strip_extension(path)),
+      title: canonicalize_filename(path),
+      format: format,
+      path: sluggified_title(path),
+      raw_data: blob.data,
+      name: canonicalize_filename(path),
+      historical: version == default_branch ? false : check_page_historical(path, commit),
+      version: Gitlab::Git::WikiPageVersion.new(commit, format)
+    )
+    WikiPage.new(self, page)
   end
 
   def find_sidebar(version = nil)
     find_page(SIDEBAR, version)
   end
 
-  def find_file(name, version = 'HEAD', load_content: true)
+  def find_file(name, version = default_branch, load_content: true)
     data_limit = load_content ? -1 : 0
     blobs = repository.blobs_at([[version, name]], blob_size_limit: data_limit)
 
@@ -172,31 +286,59 @@ class Wiki
   end
 
   def create_page(title, content, format = :markdown, message = nil)
-    commit = commit_details(:created, message, title)
+    with_valid_format(format) do |default_extension|
+      if file_exists_by_regex?(title)
+        raise_duplicate_page_error!
+      end
 
-    wiki.write_page(title, format.to_sym, content, commit)
-    repository.expire_status_cache if repository.empty?
-    after_wiki_activity
+      capture_git_error(:created) do
+        create_wiki_repository unless repository_exists?
+        sanitized_path = sluggified_full_path(title, default_extension)
+        repository.create_file(user, sanitized_path, content, **multi_commit_options(:created, message, title))
+        repository.expire_status_cache if repository.empty?
+        after_wiki_activity
 
-    true
-  rescue Gitlab::Git::Wiki::DuplicatePageError => e
-    @error_message = "Duplicate page: #{e.message}"
+        true
+      rescue Gitlab::Git::Index::IndexError
+        raise_duplicate_page_error!
+      end
+    end
+  rescue DuplicatePageError => e
+    @error_message = _("Duplicate page: %{error_message}" % { error_message: e.message })
+
     false
   end
 
   def update_page(page, content:, title: nil, format: :markdown, message: nil)
-    commit = commit_details(:updated, message, page.title)
+    with_valid_format(format) do |default_extension|
+      title = title.presence || Pathname(page.path).sub_ext('').to_s
 
-    wiki.update_page(page.path, title || page.name, format.to_sym, content, commit)
-    after_wiki_activity
+      # If the format is the same we keep the former extension. This check is for formats
+      # that can have more than one extension like Markdown (.md, .markdown)
+      # If we don't do this we will override the existing extension.
+      extension = page.format != format.to_sym ? default_extension : File.extname(page.path).downcase[1..]
 
-    true
+      capture_git_error(:updated) do
+        create_wiki_repository unless repository_exists?
+        repository.update_file(
+          user,
+          sluggified_full_path(title, extension),
+          content,
+          previous_path: page.path,
+          **multi_commit_options(:updated, message, title))
+
+        after_wiki_activity
+
+        true
+      end
+    end
   end
 
   def delete_page(page, message = nil)
     return unless page
 
     capture_git_error(:deleted) do
+      create_wiki_repository unless repository_exists?
       repository.delete_file(user, page.path, **multi_commit_options(:deleted, message, page.title))
 
       after_wiki_activity
@@ -211,10 +353,6 @@ class Wiki
     title_array = title.split("/")
     title = title_array.pop
     [title, title_array.join("/")]
-  end
-
-  def ensure_repository
-    raise CouldNotCreateWikiError unless wiki.repository_exists?
   end
 
   def hook_attrs
@@ -250,11 +388,11 @@ class Wiki
 
   override :default_branch
   def default_branch
-    super || Gitlab::Git::Wiki.default_ref(container)
+    super || Gitlab::DefaultBranch.value(object: container)
   end
 
   def wiki_base_path
-    web_url(only_path: true).sub(%r{/#{Wiki::HOMEPAGE}\z}, '')
+    web_url(only_path: true).sub(%r{/#{Wiki::HOMEPAGE}\z}o, '')
   end
 
   # Callbacks for synchronous processing after wiki changes.
@@ -283,9 +421,9 @@ class Wiki
          Gitlab::Git::CommitError,
          Gitlab::Git::PreReceiveError,
          Gitlab::Git::CommandError,
-         ArgumentError => error
+         ArgumentError => e
 
-    Gitlab::ErrorTracking.log_exception(error, action: action, wiki_id: id)
+    Gitlab::ErrorTracking.log_exception(e, action: action, wiki_id: id)
 
     false
   end
@@ -297,22 +435,11 @@ class Wiki
     git_user = Gitlab::Git::User.from_gitlab(user)
 
     {
-      branch_name: repository.root_ref,
+      branch_name: repository.root_ref || default_branch,
       message: commit_message,
       author_email: git_user.email,
       author_name: git_user.name
     }
-  end
-
-  def commit_details(action, message = nil, title = nil)
-    commit_message = build_commit_message(action, message, title)
-    git_user = Gitlab::Git::User.from_gitlab(user)
-
-    Gitlab::Git::Wiki::CommitDetails.new(user.id,
-                                         git_user.username,
-                                         git_user.name,
-                                         git_user.email,
-                                         commit_message)
   end
 
   def build_commit_message(action, message, title)
@@ -323,14 +450,102 @@ class Wiki
     "#{user.username} #{action} page: #{title}"
   end
 
-  def change_head_to_default_branch
-    # If the wiki has commits in the 'HEAD' branch means that the current
-    # HEAD is pointing to the right branch. If not, it could mean that either
-    # the repo has just been created or that 'HEAD' is pointing
-    # to the wrong branch and we need to rewrite it
-    return if repository.raw_repository.commit_count('HEAD') != 0
+  def with_valid_format(format, &block)
+    default_extension = Wiki::VALID_USER_MARKUPS.dig(format.to_sym, :default_extension).to_s
 
-    repository.raw_repository.write_ref('HEAD', "refs/heads/#{default_branch}")
+    if default_extension.blank?
+      @error_message = _('Invalid format selected')
+
+      return false
+    end
+
+    yield default_extension
+  end
+
+  def file_exists_by_regex?(title)
+    return false unless repository_exists?
+
+    escaped_title = Regexp.escape(sluggified_title(title))
+    regex = Regexp.new("^#{escaped_title}\.#{ALLOWED_EXTENSIONS_REGEX}$", 'i')
+
+    repository.ls_files(default_branch).any? { |s| s =~ regex }
+  end
+
+  def raise_duplicate_page_error!
+    raise ::Wiki::DuplicatePageError, _('A page with that title already exists')
+  end
+
+  def sluggified_full_path(title, extension)
+    self.class.sluggified_full_path(title, extension)
+  end
+
+  def sluggified_title(title)
+    self.class.sluggified_title(title)
+  end
+
+  def canonicalize_filename(filename)
+    self.class.canonicalize_filename(filename)
+  end
+
+  def find_matched_file(title, version)
+    escaped_path = RE2::Regexp.escape(sluggified_title(title))
+    path_regexp = Gitlab::EncodingHelper.encode_utf8_no_detect("(?i)^#{escaped_path}\\.(#{file_extension_regexp})$")
+
+    matched_files = repository.search_files_by_regexp(path_regexp, version, limit: 1)
+    return if matched_files.blank?
+
+    Gitlab::EncodingHelper.encode_utf8_no_detect(matched_files.first)
+  end
+
+  def find_page_format(path)
+    ext = File.extname(path).downcase[1..]
+    MARKUPS.find { |_, markup| markup[:extension_regex].match?(ext) }&.first
+  end
+
+  def check_page_historical(path, commit)
+    repository.last_commit_for_path(default_branch, path)&.id != commit&.id
+  end
+
+  def file_extension_regexp
+    # We could not use ALLOWED_EXTENSIONS_REGEX constant or similar regexp with
+    # Regexp.union. The result combination complicated modifiers:
+    # /(?i-mx:md|mkdn?|mdown|markdown)|(?i-mx:rdoc).../
+    # Regexp used by Gitaly is Go's Regexp package. It does not support those
+    # features. So, we have to compose another more-friendly regexp to pass to
+    # Gitaly side.
+    Wiki::MARKUPS.map { |_, format| format[:extension_regex].source }.join("|")
+  end
+
+  def strip_extension(path)
+    path.sub(/\.[^.]+\z/, "")
+  end
+
+  def list_page_paths(limit: 0, offset: 0)
+    return [] if repository.empty?
+
+    path_regexp = Gitlab::EncodingHelper.encode_utf8_no_detect("(?i)\\.(#{file_extension_regexp})$")
+    repository.search_files_by_regexp(path_regexp, default_branch, limit: limit, offset: offset)
+  end
+
+  # After migrating to normal repository RPCs, it's very expensive to sort the
+  # pages by created_at. We have to either ListLastCommitsForTree RPC call or
+  # N+1 LastCommitForPath. Either are efficient for a large repository.
+  # Therefore, we decide to sort the title only.
+  def sort_pages!(pages, direction)
+    # Sort by path to ensure the files inside a sub-folder are grouped and sorted together
+    pages.sort_by!(&:path)
+    pages.reverse! if direction == DIRECTION_DESC
+  end
+
+  def fetch_pages_content!(pages)
+    blobs =
+      repository
+      .blobs_at(pages.map { |page| [default_branch, page.path] })
+      .to_h { |blob| [blob.path, blob.data] }
+
+    pages.each do |page|
+      page.raw_content = blobs[page.path]
+    end
   end
 end
 

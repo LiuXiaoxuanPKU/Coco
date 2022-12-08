@@ -14,7 +14,6 @@ module ApplicationSettingImplementation
   # Setting a key restriction to `-1` means that all keys of this type are
   # forbidden.
   FORBIDDEN_KEY_VALUE = KeyRestrictionValidator::FORBIDDEN
-  SUPPORTED_KEY_TYPES = %i[rsa dsa ecdsa ed25519].freeze
   VALID_RUNNER_REGISTRAR_TYPES = %w(project group).freeze
 
   DEFAULT_PROTECTED_PATHS = [
@@ -63,13 +62,16 @@ module ApplicationSettingImplementation
         diff_max_patch_bytes: Gitlab::Git::Diff::DEFAULT_MAX_PATCH_BYTES,
         diff_max_files: Commit::DEFAULT_MAX_DIFF_FILES_SETTING,
         diff_max_lines: Commit::DEFAULT_MAX_DIFF_LINES_SETTING,
+        disable_admin_oauth_scopes: false,
         disable_feed_token: false,
         disabled_oauth_sign_in_sources: [],
         dns_rebinding_protection_enabled: true,
         domain_allowlist: Settings.gitlab['domain_allowlist'],
-        dsa_key_restriction: 0,
-        ecdsa_key_restriction: 0,
-        ed25519_key_restriction: 0,
+        dsa_key_restriction: default_min_key_size(:dsa),
+        ecdsa_key_restriction: default_min_key_size(:ecdsa),
+        ecdsa_sk_key_restriction: default_min_key_size(:ecdsa_sk),
+        ed25519_key_restriction: default_min_key_size(:ed25519),
+        ed25519_sk_key_restriction: default_min_key_size(:ed25519_sk),
         eks_access_key_id: nil,
         eks_account_id: nil,
         eks_integration_enabled: false,
@@ -94,7 +96,6 @@ module ApplicationSettingImplementation
         help_page_text: nil,
         help_page_documentation_base_url: nil,
         hide_third_party_offers: false,
-        housekeeping_bitmaps_enabled: true,
         housekeeping_enabled: true,
         housekeeping_full_repack_period: 50,
         housekeeping_gc_period: 200,
@@ -102,13 +103,18 @@ module ApplicationSettingImplementation
         import_sources: Settings.gitlab['import_sources'],
         invisible_captcha_enabled: false,
         issues_create_limit: 300,
+        jira_connect_application_key: nil,
+        jira_connect_proxy_url: nil,
         local_markdown_version: 0,
         login_recaptcha_protection_enabled: false,
         mailgun_signing_key: nil,
         mailgun_events_enabled: false,
         max_artifacts_size: Settings.artifacts['max_size'],
         max_attachment_size: Settings.gitlab['max_attachment_size'],
+        max_export_size: 0,
         max_import_size: 0,
+        max_yaml_size_bytes: 1.megabyte,
+        max_yaml_depth: 100,
         minimum_password_length: DEFAULT_MINIMUM_PASSWORD_LENGTH,
         mirror_available: true,
         notes_create_limit: 300,
@@ -118,7 +124,7 @@ module ApplicationSettingImplementation
         password_authentication_enabled_for_git: true,
         password_authentication_enabled_for_web: Settings.gitlab['signin_enabled'],
         performance_bar_allowed_group_id: nil,
-        personal_access_token_prefix: nil,
+        personal_access_token_prefix: 'glpat-',
         plantuml_enabled: false,
         plantuml_url: nil,
         polling_interval_multiplier: 1,
@@ -139,11 +145,14 @@ module ApplicationSettingImplementation
         require_admin_approval_after_user_signup: true,
         require_two_factor_authentication: false,
         restricted_visibility_levels: Settings.gitlab['restricted_visibility_levels'],
-        rsa_key_restriction: 0,
+        rsa_key_restriction: default_min_key_size(:rsa),
         send_user_confirmation_email: false,
         session_expire_delay: Settings.gitlab['session_expire_delay'],
         shared_runners_enabled: Settings.gitlab_ci['shared_runners_enabled'],
         shared_runners_text: nil,
+        sidekiq_job_limiter_mode: Gitlab::SidekiqMiddleware::SizeLimiter::Validator::COMPRESS_MODE,
+        sidekiq_job_limiter_compression_threshold_bytes: Gitlab::SidekiqMiddleware::SizeLimiter::Validator::DEFAULT_COMPRESSION_THRESHOLD_BYTES,
+        sidekiq_job_limiter_limit_bytes: Gitlab::SidekiqMiddleware::SizeLimiter::Validator::DEFAULT_SIZE_LIMIT,
         sign_in_text: nil,
         signup_enabled: Settings.gitlab['signup_enabled'],
         snippet_size_limit: 50.megabytes,
@@ -157,28 +166,47 @@ module ApplicationSettingImplementation
         spam_check_endpoint_enabled: false,
         spam_check_endpoint_url: nil,
         spam_check_api_key: nil,
+        suggest_pipeline_enabled: true,
         terminal_max_session_time: 0,
         throttle_authenticated_api_enabled: false,
         throttle_authenticated_api_period_in_seconds: 3600,
         throttle_authenticated_api_requests_per_period: 7200,
+        throttle_authenticated_git_lfs_enabled: false,
+        throttle_authenticated_git_lfs_period_in_seconds: 60,
+        throttle_authenticated_git_lfs_requests_per_period: 1000,
         throttle_authenticated_web_enabled: false,
         throttle_authenticated_web_period_in_seconds: 3600,
         throttle_authenticated_web_requests_per_period: 7200,
         throttle_authenticated_packages_api_enabled: false,
         throttle_authenticated_packages_api_period_in_seconds: 15,
         throttle_authenticated_packages_api_requests_per_period: 1000,
+        throttle_authenticated_files_api_enabled: false,
+        throttle_authenticated_files_api_period_in_seconds: 15,
+        throttle_authenticated_files_api_requests_per_period: 500,
+        throttle_authenticated_deprecated_api_enabled: false,
+        throttle_authenticated_deprecated_api_period_in_seconds: 3600,
+        throttle_authenticated_deprecated_api_requests_per_period: 3600,
         throttle_incident_management_notification_enabled: false,
         throttle_incident_management_notification_per_period: 3600,
         throttle_incident_management_notification_period_in_seconds: 3600,
         throttle_protected_paths_enabled: false,
         throttle_protected_paths_in_seconds: 10,
         throttle_protected_paths_per_period: 60,
+        throttle_unauthenticated_api_enabled: false,
+        throttle_unauthenticated_api_period_in_seconds: 3600,
+        throttle_unauthenticated_api_requests_per_period: 3600,
         throttle_unauthenticated_enabled: false,
         throttle_unauthenticated_period_in_seconds: 3600,
         throttle_unauthenticated_requests_per_period: 3600,
         throttle_unauthenticated_packages_api_enabled: false,
         throttle_unauthenticated_packages_api_period_in_seconds: 15,
         throttle_unauthenticated_packages_api_requests_per_period: 800,
+        throttle_unauthenticated_files_api_enabled: false,
+        throttle_unauthenticated_files_api_period_in_seconds: 15,
+        throttle_unauthenticated_files_api_requests_per_period: 125,
+        throttle_unauthenticated_deprecated_api_enabled: false,
+        throttle_unauthenticated_deprecated_api_period_in_seconds: 3600,
+        throttle_unauthenticated_deprecated_api_requests_per_period: 1800,
         time_tracking_limit_to_hours: false,
         two_factor_grace_period: 48,
         unique_ips_limit_enabled: false,
@@ -191,18 +219,50 @@ module ApplicationSettingImplementation
         user_show_add_ssh_key_message: true,
         valid_runner_registrars: VALID_RUNNER_REGISTRAR_TYPES,
         wiki_page_max_content_bytes: 50.megabytes,
+        package_registry_cleanup_policies_worker_capacity: 2,
         container_registry_delete_tags_service_timeout: 250,
-        container_registry_expiration_policies_worker_capacity: 0,
+        container_registry_expiration_policies_worker_capacity: 4,
+        container_registry_cleanup_tags_service_max_list_size: 200,
+        container_registry_expiration_policies_caching: true,
+        container_registry_import_max_tags_count: 100,
+        container_registry_import_max_retries: 3,
+        container_registry_import_start_max_retries: 50,
+        container_registry_import_max_step_duration: 5.minutes,
+        container_registry_pre_import_tags_rate: 0.5,
+        container_registry_pre_import_timeout: 30.minutes,
+        container_registry_import_timeout: 10.minutes,
+        container_registry_import_target_plan: 'free',
+        container_registry_import_created_before: '2022-01-23 00:00:00',
         kroki_enabled: false,
         kroki_url: nil,
         kroki_formats: { blockdiag: false, bpmn: false, excalidraw: false },
         rate_limiting_response_text: nil,
-        whats_new_variant: 0
+        whats_new_variant: 0,
+        user_deactivation_emails_enabled: true,
+        search_rate_limit: 30,
+        search_rate_limit_unauthenticated: 10,
+        users_get_by_id_limit: 300,
+        users_get_by_id_limit_allowlist: [],
+        can_create_group: true
       }
     end
 
     def default_commit_email_hostname
       "users.noreply.#{Gitlab.config.gitlab.host}"
+    end
+
+    # Return the default allowed minimum key size for a type.
+    # By default this is 0 (unrestricted), but in FIPS mode
+    # this will return the smallest allowed key size. If no
+    # size is available, this type is denied.
+    #
+    # @return [Integer]
+    def default_min_key_size(name)
+      if Gitlab::FIPS.enabled?
+        Gitlab::SSHPublicKey.supported_sizes(name).select(&:positive?).min || -1
+      else
+        0
+      end
     end
 
     def create_from_defaults
@@ -219,11 +279,11 @@ module ApplicationSettingImplementation
   end
 
   def home_page_url_column_exists?
-    ::Gitlab::Database.main.cached_column_exists?(:application_settings, :home_page_url)
+    ApplicationSetting.database.cached_column_exists?(:home_page_url)
   end
 
   def help_page_support_url_column_exists?
-    ::Gitlab::Database.main.cached_column_exists?(:application_settings, :help_page_support_url)
+    ApplicationSetting.database.cached_column_exists?(:help_page_support_url)
   end
 
   def disabled_oauth_sign_in_sources=(sources)
@@ -300,6 +360,14 @@ module ApplicationSettingImplementation
     self.notes_create_limit_allowlist = strings_to_array(values).map(&:downcase)
   end
 
+  def users_get_by_id_limit_allowlist_raw
+    array_to_string(self.users_get_by_id_limit_allowlist)
+  end
+
+  def users_get_by_id_limit_allowlist_raw=(values)
+    self.users_get_by_id_limit_allowlist = strings_to_array(values).map(&:downcase)
+  end
+
   def asset_proxy_whitelist=(values)
     values = strings_to_array(values) if values.is_a?(String)
 
@@ -338,6 +406,14 @@ module ApplicationSettingImplementation
     super(levels&.map { |level| Gitlab::VisibilityLevel.level_value(level) })
   end
 
+  def static_objects_external_storage_auth_token=(token)
+    if token.present?
+      set_static_objects_external_storage_auth_token(token)
+    else
+      self.static_objects_external_storage_auth_token_encrypted = nil
+    end
+  end
+
   def performance_bar_allowed_group
     Group.find_by_id(performance_bar_allowed_group_id)
   end
@@ -350,7 +426,7 @@ module ApplicationSettingImplementation
   def normalized_repository_storage_weights
     strong_memoize(:normalized_repository_storage_weights) do
       repository_storages_weights = repository_storages_weighted.slice(*Gitlab.config.repositories.storages.keys)
-      weights_total = repository_storages_weights.values.reduce(:+)
+      weights_total = repository_storages_weights.values.sum
 
       repository_storages_weights.transform_values do |w|
         next w if weights_total == 0
@@ -373,6 +449,10 @@ module ApplicationSettingImplementation
     ensure_health_check_access_token!
   end
 
+  def error_tracking_access_token
+    ensure_error_tracking_access_token!
+  end
+
   def usage_ping_can_be_configured?
     Settings.gitlab.usage_ping_enabled
   end
@@ -387,7 +467,7 @@ module ApplicationSettingImplementation
   alias_method :usage_ping_enabled?, :usage_ping_enabled
 
   def allowed_key_types
-    SUPPORTED_KEY_TYPES.select do |type|
+    Gitlab::SSHPublicKey.supported_types.select do |type|
       key_restriction_for(type) != FORBIDDEN_KEY_VALUE
     end
   end
@@ -438,7 +518,34 @@ module ApplicationSettingImplementation
     'https://sandbox-prod.gitlab-static.net'
   end
 
+  def ensure_key_restrictions!
+    return if Gitlab::Database.read_only?
+    return unless Gitlab::FIPS.enabled?
+
+    Gitlab::SSHPublicKey.supported_types.each do |key_type|
+      set_max_key_restriction!(key_type)
+    end
+  end
+
   private
+
+  def set_max_key_restriction!(key_type)
+    attr_name = "#{key_type}_key_restriction"
+    current = self.attributes[attr_name].to_i
+
+    return if current == KeyRestrictionValidator::FORBIDDEN
+
+    min_size = self.class.default_min_key_size(key_type)
+
+    new_value =
+      if min_size == KeyRestrictionValidator::FORBIDDEN
+        min_size
+      else
+        [min_size, current].max
+      end
+
+    self.assign_attributes({ attr_name => new_value })
+  end
 
   def separate_allowlists(string_array)
     string_array.reduce([[], []]) do |(ip_allowlist, domain_allowlist), string|

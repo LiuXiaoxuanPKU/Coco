@@ -17,6 +17,15 @@ class Group < Namespace
   include GroupAPICompatibility
   include EachBatch
   include BulkMemberAccessLoad
+  include BulkUsersByEmailLoad
+  include ChronicDurationAttribute
+  include RunnerTokenExpirationInterval
+
+  extend ::Gitlab::Utils::Override
+
+  def self.sti_name
+    'Group'
+  end
 
   has_many :all_group_members, -> { where(requested_at: nil) }, dependent: :destroy, as: :source, class_name: 'GroupMember' # rubocop:disable Cop/ActiveRecordDependent
   has_many :group_members, -> { where(requested_at: nil).where.not(members: { access_level: Gitlab::Access::MINIMAL_ACCESS }) }, dependent: :destroy, as: :source # rubocop:disable Cop/ActiveRecordDependent
@@ -34,7 +43,28 @@ class Group < Namespace
   has_many :milestones
   has_many :integrations
   has_many :shared_group_links, foreign_key: :shared_with_group_id, class_name: 'GroupGroupLink'
-  has_many :shared_with_group_links, foreign_key: :shared_group_id, class_name: 'GroupGroupLink'
+  has_many :shared_with_group_links, foreign_key: :shared_group_id, class_name: 'GroupGroupLink' do
+    def of_ancestors
+      group = proxy_association.owner
+
+      return GroupGroupLink.none unless group.has_parent?
+
+      GroupGroupLink.where(shared_group_id: group.ancestors.reorder(nil).select(:id))
+    end
+
+    def of_ancestors_and_self
+      group = proxy_association.owner
+
+      source_ids =
+        if group.has_parent?
+          group.self_and_ancestors.reorder(nil).select(:id)
+        else
+          group.id
+        end
+
+      GroupGroupLink.where(shared_group_id: source_ids)
+    end
+  end
   has_many :shared_groups, through: :shared_group_links, source: :shared_group
   has_many :shared_with_groups, through: :shared_with_group_links, source: :shared_with_group
   has_many :project_group_links, dependent: :destroy # rubocop:disable Cop/ActiveRecordDependent
@@ -51,6 +81,10 @@ class Group < Namespace
 
   has_many :boards
   has_many :badges, class_name: 'GroupBadge'
+
+  # AR defaults to nullify when trying to delete via has_many associations unless we set dependent: :delete_all
+  has_many :organizations, class_name: 'CustomerRelations::Organization', inverse_of: :group, dependent: :delete_all # rubocop:disable Cop/ActiveRecordDependent
+  has_many :contacts, class_name: 'CustomerRelations::Contact', inverse_of: :group, dependent: :delete_all # rubocop:disable Cop/ActiveRecordDependent
 
   has_many :cluster_groups, class_name: 'Clusters::Group'
   has_many :clusters, through: :cluster_groups, class_name: 'Clusters::Cluster'
@@ -74,15 +108,30 @@ class Group < Namespace
   has_many :oauth_applications, class_name: 'Doorkeeper::Application', as: :owner, dependent: :destroy # rubocop:disable Cop/ActiveRecordDependent
 
   has_one :dependency_proxy_setting, class_name: 'DependencyProxy::GroupSetting'
+  has_one :dependency_proxy_image_ttl_policy, class_name: 'DependencyProxy::ImageTtlGroupPolicy'
   has_many :dependency_proxy_blobs, class_name: 'DependencyProxy::Blob'
   has_many :dependency_proxy_manifests, class_name: 'DependencyProxy::Manifest'
+
+  has_one :harbor_integration, class_name: 'Integrations::Harbor'
 
   # debian_distributions and associated component_files must be destroyed by ruby code in order to properly remove carrierwave uploads
   has_many :debian_distributions, class_name: 'Packages::Debian::GroupDistribution', dependent: :destroy # rubocop:disable Cop/ActiveRecordDependent
 
-  delegate :prevent_sharing_groups_outside_hierarchy, :new_user_signups_cap, to: :namespace_settings
+  has_many :group_callouts, class_name: 'Users::GroupCallout', foreign_key: :group_id
+
+  has_many :protected_branches, inverse_of: :group, foreign_key: :namespace_id
+
+  has_one :group_feature, inverse_of: :group, class_name: 'Groups::FeatureSetting'
+
+  delegate :prevent_sharing_groups_outside_hierarchy, :new_user_signups_cap, :setup_for_company, :jobs_to_be_done, to: :namespace_settings
+  delegate :runner_token_expiration_interval, :runner_token_expiration_interval=, :runner_token_expiration_interval_human_readable, :runner_token_expiration_interval_human_readable=, to: :namespace_settings, allow_nil: true
+  delegate :subgroup_runner_token_expiration_interval, :subgroup_runner_token_expiration_interval=, :subgroup_runner_token_expiration_interval_human_readable, :subgroup_runner_token_expiration_interval_human_readable=, to: :namespace_settings, allow_nil: true
+  delegate :project_runner_token_expiration_interval, :project_runner_token_expiration_interval=, :project_runner_token_expiration_interval_human_readable, :project_runner_token_expiration_interval_human_readable=, to: :namespace_settings, allow_nil: true
+
+  has_one :crm_settings, class_name: 'Group::CrmSettings', inverse_of: :group
 
   accepts_nested_attributes_for :variables, allow_destroy: true
+  accepts_nested_attributes_for :group_feature, update_only: true
 
   validate :visibility_level_allowed_by_projects
   validate :visibility_level_allowed_by_sub_groups
@@ -98,18 +147,25 @@ class Group < Namespace
                       message: Gitlab::Regex.group_name_regex_message },
             if: :name_changed?
 
-  add_authentication_token_field :runners_token, encrypted: -> { Feature.enabled?(:groups_tokens_optional_encryption, default_enabled: true) ? :optional : :required }
+  validates :group_feature, presence: true
+
+  add_authentication_token_field :runners_token,
+                                 encrypted: -> { Feature.enabled?(:groups_tokens_optional_encryption) ? :optional : :required },
+                                 prefix: RunnersTokenPrefixable::RUNNERS_TOKEN_PREFIX
 
   after_create :post_create_hook
   after_destroy :post_destroy_hook
-  after_save :update_two_factor_requirement
+  after_commit :update_two_factor_requirement
   after_update :path_changed_hook, if: :saved_change_to_path?
+  after_create -> { create_or_load_association(:group_feature) }
 
   scope :with_users, -> { includes(:users) }
 
   scope :with_onboarding_progress, -> { joins(:onboarding_progress) }
 
   scope :by_id, ->(groups) { where(id: groups) }
+
+  scope :by_ids_or_paths, -> (ids, paths) { by_id(ids).or(where(path: paths)) }
 
   scope :for_authorized_group_members, -> (user_ids) do
     joins(:group_members)
@@ -120,6 +176,37 @@ class Group < Namespace
   scope :for_authorized_project_members, -> (user_ids) do
     joins(projects: :project_authorizations)
       .where(project_authorizations: { user_id: user_ids })
+  end
+
+  scope :project_creation_allowed, -> do
+    permitted_levels = [
+      ::Gitlab::Access::DEVELOPER_MAINTAINER_PROJECT_ACCESS,
+      ::Gitlab::Access::MAINTAINER_PROJECT_ACCESS,
+      nil
+    ]
+
+    where(project_creation_level: permitted_levels)
+  end
+
+  scope :shared_into_ancestors, -> (group) do
+    joins(:shared_group_links)
+      .where(group_group_links: { shared_group_id: group.self_and_ancestors })
+  end
+
+  # WARNING: This method should never be used on its own
+  # please do make sure the number of rows you are filtering is small
+  # enough for this query
+  #
+  # It's a replacement for `public_or_visible_to_user` that correctly
+  # supports subgroup permissions
+  scope :accessible_to_user, -> (user) do
+    if user
+      Preloaders::GroupPolicyPreloader.new(self, user).execute
+
+      select { |group| user.can?(:read_group, group) }
+    else
+      public_to_user
+    end
   end
 
   class << self
@@ -185,9 +272,10 @@ class Group < Namespace
     # Returns the ids of the passed group models where the `emails_disabled`
     # column is set to true anywhere in the ancestor hierarchy.
     def ids_with_disabled_email(groups)
-      innner_query = Gitlab::ObjectHierarchy
-        .new(Group.where('id = namespaces_with_emails_disabled.id'))
-        .base_and_ancestors
+      inner_groups = Group.where('id = namespaces_with_emails_disabled.id')
+
+      inner_query = inner_groups
+        .self_and_ancestors
         .where(emails_disabled: true)
         .select('1')
         .limit(1)
@@ -195,10 +283,14 @@ class Group < Namespace
       group_ids = Namespace
         .from('(SELECT * FROM namespaces) as namespaces_with_emails_disabled')
         .where(namespaces_with_emails_disabled: { id: groups })
-        .where('EXISTS (?)', innner_query)
+        .where('EXISTS (?)', inner_query)
         .pluck(:id)
 
       Set.new(group_ids)
+    end
+
+    def get_ids_by_ids_or_paths(ids, paths)
+      by_ids_or_paths(ids, paths).pluck(:id)
     end
 
     private
@@ -260,6 +352,15 @@ class Group < Namespace
     Gitlab::UrlBuilder.build(self, only_path: only_path)
   end
 
+  def dependency_proxy_image_prefix
+    # The namespace path can include uppercase letters, which
+    # Docker doesn't allow. The proxy expects it to be downcased.
+    url = "#{Gitlab::Routing.url_helpers.group_url(self).downcase}#{DependencyProxy::URL_SUFFIX}"
+
+    # Docker images do not include the protocol
+    url.partition('//').last
+  end
+
   def human_name
     full_name
   end
@@ -295,44 +396,48 @@ class Group < Namespace
     owners.include?(user)
   end
 
-  def add_users(users, access_level, current_user: nil, expires_at: nil)
-    Members::Groups::CreatorService.add_users( # rubocop:todo CodeReuse/ServiceClass
+  def add_members(users, access_level, current_user: nil, expires_at: nil, tasks_to_be_done: [], tasks_project_id: nil)
+    Members::Groups::CreatorService.add_members( # rubocop:disable CodeReuse/ServiceClass
       self,
       users,
       access_level,
       current_user: current_user,
-      expires_at: expires_at
+      expires_at: expires_at,
+      tasks_to_be_done: tasks_to_be_done,
+      tasks_project_id: tasks_project_id
     )
   end
 
-  def add_user(user, access_level, current_user: nil, expires_at: nil, ldap: false)
-    Members::Groups::CreatorService.new(self, # rubocop:todo CodeReuse/ServiceClass
-                                        user,
-                                        access_level,
-                                        current_user: current_user,
-                                        expires_at: expires_at,
-                                        ldap: ldap)
-                                   .execute
+  def add_member(user, access_level, current_user: nil, expires_at: nil, ldap: false, blocking_refresh: true)
+    Members::Groups::CreatorService.add_member( # rubocop:disable CodeReuse/ServiceClass
+      self,
+      user,
+      access_level,
+      current_user: current_user,
+      expires_at: expires_at,
+      ldap: ldap,
+      blocking_refresh: blocking_refresh
+    )
   end
 
   def add_guest(user, current_user = nil)
-    add_user(user, :guest, current_user: current_user)
+    add_member(user, :guest, current_user: current_user)
   end
 
   def add_reporter(user, current_user = nil)
-    add_user(user, :reporter, current_user: current_user)
+    add_member(user, :reporter, current_user: current_user)
   end
 
   def add_developer(user, current_user = nil)
-    add_user(user, :developer, current_user: current_user)
+    add_member(user, :developer, current_user: current_user)
   end
 
   def add_maintainer(user, current_user = nil)
-    add_user(user, :maintainer, current_user: current_user)
+    add_member(user, :maintainer, current_user: current_user)
   end
 
   def add_owner(user, current_user = nil)
-    add_user(user, :owner, current_user: current_user)
+    add_member(user, :owner, current_user: current_user)
   end
 
   def member?(user, min_access_level = Gitlab::Access::GUEST)
@@ -362,8 +467,10 @@ class Group < Namespace
   end
 
   # Check if user is a last owner of the group.
+  # Excludes non-direct owners for top-level group
+  # Excludes project_bots
   def last_owner?(user)
-    has_owner?(user) && single_owner?
+    has_owner?(user) && member_owners_excluding_project_bots.size == 1
   end
 
   def member_last_owner?(member)
@@ -372,8 +479,14 @@ class Group < Namespace
     last_owner?(member.user)
   end
 
-  def single_owner?
-    members_with_parents.owners.size == 1
+  # Excludes non-direct owners for top-level group
+  # Excludes project_bots
+  def member_owners_excluding_project_bots
+    if root?
+      members
+    else
+      members_with_parents
+    end.owners.merge(User.without_project_bot)
   end
 
   def single_blocked_owner?
@@ -383,7 +496,7 @@ class Group < Namespace
   def member_last_blocked_owner?(member)
     return member.last_blocked_owner unless member.last_blocked_owner.nil?
 
-    return false if members_with_parents.owners.any?
+    return false if member_owners_excluding_project_bots.any?
 
     single_blocked_owner? && blocked_owners.exists?(user_id: member.user)
   end
@@ -435,6 +548,11 @@ class Group < Namespace
 
   def user_ids_for_project_authorizations
     members_with_parents.pluck(Arel.sql('DISTINCT members.user_id'))
+  end
+
+  def self_and_hierarchy_intersecting_with_user_groups(user)
+    user_groups = GroupsFinder.new(user).execute.unscope(:order)
+    self_and_hierarchy.unscope(:order).where(id: user_groups)
   end
 
   def self_and_ancestors_ids
@@ -531,11 +649,11 @@ class Group < Namespace
   # 4. They belong to an ancestor group
   def direct_and_indirect_users
     User.from_union([
-      User
-        .where(id: direct_and_indirect_members.select(:user_id))
-        .reorder(nil),
-      project_users_with_descendants
-    ])
+                      User
+                        .where(id: direct_and_indirect_members.select(:user_id))
+                        .reorder(nil),
+                      project_users_with_descendants
+                    ])
   end
 
   # Returns all users (also inactive) that are members of the group because:
@@ -545,11 +663,11 @@ class Group < Namespace
   # 4. They belong to an ancestor group
   def direct_and_indirect_users_with_inactive
     User.from_union([
-      User
-        .where(id: direct_and_indirect_members_with_inactive.select(:user_id))
-        .reorder(nil),
-      project_users_with_descendants
-    ])
+                      User
+                        .where(id: direct_and_indirect_members_with_inactive.select(:user_id))
+                        .reorder(nil),
+                      project_users_with_descendants
+                    ])
   end
 
   def users_count
@@ -589,15 +707,7 @@ class Group < Namespace
     }
   end
 
-  def ci_variables_for(ref, project, environment: nil)
-    cache_key = "ci_variables_for:group:#{self&.id}:project:#{project&.id}:ref:#{ref}:environment:#{environment}"
-
-    ::Gitlab::SafeRequestStore.fetch(cache_key) do
-      uncached_ci_variables_for(ref, project, environment: environment)
-    end
-  end
-
-  def group_member(user)
+  def member(user)
     if group_members.loaded?
       group_members.find { |gm| gm.user_id == user.id }
     else
@@ -607,6 +717,10 @@ class Group < Namespace
 
   def highest_group_member(user)
     GroupMember.where(source_id: self_and_ancestors_ids, user_id: user.id).order(:access_level).last
+  end
+
+  def bots
+    users.project_bot
   end
 
   def related_group_ids
@@ -630,6 +744,11 @@ class Group < Namespace
     ensure_runners_token!
   end
 
+  override :format_runners_token
+  def format_runners_token(token)
+    "#{RunnersTokenPrefixable::RUNNERS_TOKEN_PREFIX}#{token}"
+  end
+
   def project_creation_level
     super || ::Gitlab::CurrentSettings.default_project_creation
   end
@@ -640,6 +759,10 @@ class Group < Namespace
 
   def access_request_approvers_to_be_notified
     members.owners.connected_to_user.order_recent_sign_in.limit(Member::ACCESS_REQUEST_APPROVERS_TO_BE_NOTIFIED_LIMIT)
+  end
+
+  def membership_locked?
+    false # to support project and group calling this as 'source'
   end
 
   def supports_events?
@@ -681,14 +804,14 @@ class Group < Namespace
     raise ArgumentError unless SHARED_RUNNERS_SETTINGS.include?(state)
 
     case state
-    when 'disabled_and_unoverridable' then disable_shared_runners! # also disallows override
-    when 'disabled_with_override' then disable_shared_runners_and_allow_override!
-    when 'enabled' then enable_shared_runners! # set both to true
+    when SR_DISABLED_AND_UNOVERRIDABLE then disable_shared_runners! # also disallows override
+    when SR_DISABLED_WITH_OVERRIDE then disable_shared_runners_and_allow_override!
+    when SR_ENABLED then enable_shared_runners! # set both to true
     end
   end
 
-  def default_owner
-    owners.first || parent&.default_owner || owner
+  def first_owner
+    owners.first || parent&.first_owner || owner
   end
 
   def default_branch_name
@@ -730,10 +853,97 @@ class Group < Namespace
   end
   # rubocop: enable CodeReuse/ServiceClass
 
+  def timelogs
+    Timelog.in_group(self)
+  end
+
+  def dependency_proxy_image_ttl_policy
+    super || build_dependency_proxy_image_ttl_policy
+  end
+
+  def dependency_proxy_setting
+    super || build_dependency_proxy_setting
+  end
+
+  def group_feature
+    super || build_group_feature
+  end
+
+  def crm_enabled?
+    crm_settings&.enabled?
+  end
+
+  def shared_with_group_links_visible_to_user(user)
+    shared_with_group_links.preload_shared_with_groups.filter { |link| Ability.allowed?(user, :read_group, link.shared_with_group) }
+  end
+
+  def enforced_runner_token_expiration_interval
+    all_parent_groups = Gitlab::ObjectHierarchy.new(Group.where(id: id)).ancestors
+    all_group_settings = NamespaceSetting.where(namespace_id: all_parent_groups)
+    group_interval = all_group_settings.where.not(subgroup_runner_token_expiration_interval: nil).minimum(:subgroup_runner_token_expiration_interval)&.seconds
+
+    [
+      Gitlab::CurrentSettings.group_runner_token_expiration_interval&.seconds,
+      group_interval
+    ].compact.min
+  end
+
+  def work_items_feature_flag_enabled?
+    feature_flag_enabled_for_self_or_ancestor?(:work_items)
+  end
+
+  def work_items_mvc_feature_flag_enabled?
+    feature_flag_enabled_for_self_or_ancestor?(:work_items_mvc)
+  end
+
+  def work_items_mvc_2_feature_flag_enabled?
+    feature_flag_enabled_for_self_or_ancestor?(:work_items_mvc_2)
+  end
+
+  def work_items_create_from_markdown_feature_flag_enabled?
+    feature_flag_enabled_for_self_or_ancestor?(:work_items_create_from_markdown)
+  end
+
+  # Check for enabled features, similar to `Project#feature_available?`
+  # NOTE: We still want to keep this after removing `Namespace#feature_available?`.
+  override :feature_available?
+  def feature_available?(feature, user = nil)
+    if ::Groups::FeatureSetting.available_features.include?(feature)
+      group_feature.feature_available?(feature, user) # rubocop:disable Gitlab/FeatureAvailableUsage
+    else
+      super
+    end
+  end
+
+  def gitlab_deploy_token
+    strong_memoize(:gitlab_deploy_token) do
+      deploy_tokens.gitlab_deploy_token
+    end
+  end
+
+  def packages_policy_subject
+    ::Packages::Policies::Group.new(self)
+  end
+
+  def update_two_factor_requirement_for_members
+    direct_and_indirect_members.find_each(&:update_two_factor_requirement)
+  end
+
   private
 
+  def feature_flag_enabled_for_self_or_ancestor?(feature_flag)
+    actors = [root_ancestor]
+    actors << self if root_ancestor != self
+
+    actors.any? do |actor|
+      ::Feature.enabled?(feature_flag, actor)
+    end
+  end
+
   def max_member_access(user_ids)
-    max_member_access_for_resource_ids(User, user_ids) do |user_ids|
+    Gitlab::SafeRequestLoader.execute(resource_key: max_member_access_for_resource_key(User),
+                                      resource_ids: user_ids,
+                                      default_value: Gitlab::Access::NO_ACCESS) do |user_ids|
       members_with_parents.where(user_id: user_ids).group(:user_id).maximum(:access_level)
     end
   end
@@ -741,7 +951,7 @@ class Group < Namespace
   def update_two_factor_requirement
     return unless saved_change_to_require_two_factor_authentication? || saved_change_to_two_factor_grace_period?
 
-    direct_and_indirect_members.find_each(&:update_two_factor_requirement)
+    Groups::UpdateTwoFactorRequirementForMembersWorker.perform_async(self.id)
   end
 
   def path_changed_hook
@@ -808,6 +1018,7 @@ class Group < Namespace
       .where(group_member_table[:requested_at].eq(nil))
       .where(group_member_table[:source_id].eq(group_group_link_table[:shared_with_group_id]))
       .where(group_member_table[:source_type].eq('Namespace'))
+      .where(group_member_table[:state].eq(::Member::STATE_ACTIVE))
       .non_minimal_access
   end
 
@@ -815,12 +1026,6 @@ class Group < Namespace
     Arel::Nodes::As.new(
       Arel::Nodes::NamedFunction.new('LEAST', args),
       Arel::Nodes::SqlLiteral.new(column_alias))
-  end
-
-  def self.groups_including_descendants_by(group_ids)
-    Gitlab::ObjectHierarchy
-      .new(Group.where(id: group_ids))
-      .base_and_descendants
   end
 
   def disable_shared_runners!
@@ -860,26 +1065,6 @@ class Group < Namespace
 
   def enable_shared_runners!
     update!(shared_runners_enabled: true)
-  end
-
-  def uncached_ci_variables_for(ref, project, environment: nil)
-    list_of_ids = if root_ancestor.use_traversal_ids?
-                    [self] + ancestors(hierarchy_order: :asc)
-                  else
-                    [self] + ancestors
-                  end
-
-    variables = Ci::GroupVariable.where(group: list_of_ids)
-    variables = variables.unprotected unless project.protected_for?(ref)
-
-    variables = if environment
-                  variables.on_environment(environment)
-                else
-                  variables.where(environment_scope: '*')
-                end
-
-    variables = variables.group_by(&:group_id)
-    list_of_ids.reverse.flat_map { |group| variables[group.id] }.compact
   end
 end
 

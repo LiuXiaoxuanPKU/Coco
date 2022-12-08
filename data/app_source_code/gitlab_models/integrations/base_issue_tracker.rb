@@ -4,11 +4,7 @@ module Integrations
   class BaseIssueTracker < Integration
     validate :one_issue_tracker, if: :activated?, on: :manual_change
 
-    # TODO: we can probably just delegate as part of
-    # https://gitlab.com/gitlab-org/gitlab/issues/29404
-    data_field :project_url, :issues_url, :new_issue_url
-
-    default_value_for :category, 'issue_tracker'
+    attribute :category, default: 'issue_tracker'
 
     before_validation :handle_properties
     before_validation :set_default_data, on: :create
@@ -29,12 +25,15 @@ module Integrations
     def handle_properties
       # this has been moved from initialize_properties and should be improved
       # as part of https://gitlab.com/gitlab-org/gitlab/issues/29404
-      return unless properties
+      return unless properties.present?
+
+      safe_keys = data_fields.attributes.keys.grep_v(/encrypted/) - %w[id service_id created_at]
 
       @legacy_properties_data = properties.dup
-      data_values = properties.slice!('title', 'description')
+
+      data_values = properties.slice(*safe_keys)
       data_values.reject! { |key| data_fields.changed.include?(key) }
-      data_values.slice!(*data_fields.attributes.keys)
+
       data_fields.assign_attributes(data_values) if data_values.present?
 
       self.properties = {}
@@ -72,18 +71,6 @@ module Integrations
       issue_url(iid)
     end
 
-    def fields
-      [
-        { type: 'text', name: 'project_url', title: _('Project URL'), help: s_('IssueTracker|The URL to the project in the external issue tracker.'), required: true },
-        { type: 'text', name: 'issues_url', title: s_('IssueTracker|Issue URL'), help: s_('IssueTracker|The URL to view an issue in the external issue tracker. Must contain %{colon_id}.') % { colon_id: '<code>:id</code>'.html_safe }, required: true },
-        { type: 'text', name: 'new_issue_url', title: s_('IssueTracker|New issue URL'), help: s_('IssueTracker|The URL to create an issue in the external issue tracker.'), required: true }
-      ]
-    end
-
-    def initialize_properties
-      {}
-    end
-
     # Initialize with default properties values
     def set_default_data
       return unless issues_tracker.present?
@@ -107,14 +94,14 @@ module Integrations
       result = false
 
       begin
-        response = Gitlab::HTTP.head(self.project_url, verify: true, use_read_total_timeout: true)
+        response = Gitlab::HTTP.head(self.project_url, verify: true)
 
         if response
           message = "#{self.type} received response #{response.code} when attempting to connect to #{self.project_url}"
           result = true
         end
-      rescue Gitlab::HTTP::Error, Timeout::Error, SocketError, Errno::ECONNRESET, Errno::ECONNREFUSED, OpenSSL::SSL::SSLError => error
-        message = "#{self.type} had an error when trying to connect to #{self.project_url}: #{error.message}"
+      rescue Gitlab::HTTP::Error, Timeout::Error, SocketError, Errno::ECONNRESET, Errno::ECONNREFUSED, OpenSSL::SSL::SSLError => e
+        message = "#{self.type} had an error when trying to connect to #{self.project_url}: #{e.message}"
       end
       log_info(message)
       result
@@ -128,11 +115,21 @@ module Integrations
       false
     end
 
-    def create_cross_reference_note(mentioned, noteable, author)
+    def create_cross_reference_note(external_issue, mentioned_in, author)
       # implement inside child
     end
 
+    def activate_disabled_reason
+      { trackers: other_external_issue_trackers } if other_external_issue_trackers.any?
+    end
+
     private
+
+    def other_external_issue_trackers
+      return [] unless project_level?
+
+      @other_external_issue_trackers ||= project.integrations.external_issue_trackers.where.not(id: id)
+    end
 
     def enabled_in_gitlab_config
       Gitlab.config.issues_tracker &&
@@ -145,10 +142,10 @@ module Integrations
     end
 
     def one_issue_tracker
-      return if template? || instance?
+      return if instance?
       return if project.blank?
 
-      if project.integrations.external_issue_trackers.where.not(id: id).any?
+      if other_external_issue_trackers.any?
         errors.add(:base, _('Another issue tracker is already in use. Only one issue tracker service can be active at a time'))
       end
     end

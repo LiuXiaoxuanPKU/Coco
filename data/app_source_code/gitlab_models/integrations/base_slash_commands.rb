@@ -4,11 +4,11 @@
 # This class is not meant to be used directly, but only to inherrit from.
 module Integrations
   class BaseSlashCommands < Integration
-    default_value_for :category, 'chat'
+    attribute :category, default: 'chat'
 
     prop_accessor :token
 
-    has_many :chat_names, foreign_key: :service_id, dependent: :destroy # rubocop:disable Cop/ActiveRecordDependent
+    has_many :chat_names, foreign_key: :integration_id, dependent: :destroy # rubocop:disable Cop/ActiveRecordDependent
 
     def valid_token?(token)
       self.respond_to?(:token) &&
@@ -26,7 +26,13 @@ module Integrations
 
     def fields
       [
-        { type: 'text', name: 'token', placeholder: 'XXxxXXxxXXxxXXxxXXxxXXxx' }
+        {
+          type: 'password',
+          name: 'token',
+          non_empty_password_title: s_('ProjectService|Enter new token'),
+          non_empty_password_help: s_('ProjectService|Leave blank to use your current token.'),
+          placeholder: 'XXxxXXxxXXxxXXxxXXxxXXxx'
+        }
       ]
     end
 

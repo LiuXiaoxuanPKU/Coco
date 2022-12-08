@@ -23,21 +23,47 @@ class Namespace::RootStorageStatistics < ApplicationRecord
 
   delegate :all_projects, to: :namespace
 
+  enum notification_level: {
+    storage_remaining: 100,
+    caution: 30,
+    warning: 15,
+    danger: 5,
+    exceeded: 0
+  }, _prefix: true
+
   def recalculate!
     update!(merged_attributes)
+  end
+
+  def self.namespace_statistics_attributes
+    %w(storage_size dependency_proxy_size)
   end
 
   private
 
   def merged_attributes
-    attributes_from_project_statistics.merge!(attributes_from_personal_snippets) { |key, v1, v2| v1 + v2 }
+    attributes_from_project_statistics.merge!(
+      attributes_from_personal_snippets,
+      attributes_from_namespace_statistics,
+      attributes_for_container_registry_size
+    ) { |key, v1, v2| v1 + v2 }
+  end
+
+  def attributes_for_container_registry_size
+    container_registry_size = namespace.container_repositories_size || 0
+
+    {
+      storage_size: container_registry_size,
+      container_registry_size: container_registry_size
+    }.with_indifferent_access
   end
 
   def attributes_from_project_statistics
     from_project_statistics
-      .take
-      .attributes
-      .slice(*STATISTICS_ATTRIBUTES)
+    .take
+    .attributes
+    .slice(*STATISTICS_ATTRIBUTES)
+    .with_indifferent_access
   end
 
   def from_project_statistics
@@ -57,9 +83,12 @@ class Namespace::RootStorageStatistics < ApplicationRecord
   end
 
   def attributes_from_personal_snippets
-    return {} unless namespace.user?
+    return {} unless namespace.user_namespace?
 
-    from_personal_snippets.take.slice(SNIPPETS_SIZE_STAT_NAME)
+    from_personal_snippets
+    .take
+    .slice(SNIPPETS_SIZE_STAT_NAME)
+    .with_indifferent_access
   end
 
   def from_personal_snippets
@@ -67,6 +96,32 @@ class Namespace::RootStorageStatistics < ApplicationRecord
       .joins('INNER JOIN snippet_statistics s ON s.snippet_id = snippets.id')
       .where(author: namespace.owner_id)
       .select("COALESCE(SUM(s.repository_size), 0) AS #{SNIPPETS_SIZE_STAT_NAME}")
+  end
+
+  def from_namespace_statistics
+    namespace
+      .self_and_descendants
+      .joins("INNER JOIN namespace_statistics ns ON ns.namespace_id  = namespaces.id")
+      .select(
+        'COALESCE(SUM(ns.storage_size), 0) AS storage_size',
+        'COALESCE(SUM(ns.dependency_proxy_size), 0) AS dependency_proxy_size'
+      )
+  end
+
+  def attributes_from_namespace_statistics
+    # At the moment, only groups can have some storage data because of dependency proxy assets.
+    # Therefore, if the namespace is not a group one, there is no need to perform
+    # the query. If this changes in the future and we add some sort of resource to
+    # users that it's store in NamespaceStatistics, we will need to remove this
+    # guard clause.
+    return {} unless namespace.group_namespace?
+
+    from_namespace_statistics
+    .take
+    .slice(
+      *self.class.namespace_statistics_attributes
+    )
+    .with_indifferent_access
   end
 end
 

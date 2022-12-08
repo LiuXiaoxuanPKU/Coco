@@ -21,7 +21,7 @@ class GpgKey < ApplicationRecord
     presence: true,
     uniqueness: true,
     format: {
-      with: /\A#{KEY_PREFIX}((?!#{KEY_PREFIX})(?!#{KEY_SUFFIX}).)+#{KEY_SUFFIX}\Z/m,
+      with: /\A#{KEY_PREFIX}((?!#{KEY_PREFIX})(?!#{KEY_SUFFIX}).)+#{KEY_SUFFIX}\Z/mo,
       message: "is invalid. A valid public GPG key begins with '#{KEY_PREFIX}' and ends with '#{KEY_SUFFIX}'"
     }
 
@@ -92,13 +92,13 @@ class GpgKey < ApplicationRecord
   end
 
   def revoke
-    GpgSignature
+    CommitSignatures::GpgSignature
       .with_key_and_subkeys(self)
-      .where.not(verification_status: GpgSignature.verification_statuses[:unknown_key])
+      .where.not(verification_status: CommitSignatures::GpgSignature.verification_statuses[:unknown_key])
       .update_all(
         gpg_key_id: nil,
         gpg_key_subkey_id: nil,
-        verification_status: GpgSignature.verification_statuses[:unknown_key],
+        verification_status: CommitSignatures::GpgSignature.verification_statuses[:unknown_key],
         updated_at: Time.zone.now
       )
 

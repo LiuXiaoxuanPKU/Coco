@@ -16,17 +16,12 @@ module Clusters
       include ::Clusters::Concerns::ApplicationData
       include AfterCommitQueue
       include UsageStatistics
-      include IgnorableColumns
 
-      default_value_for :ingress_type, :nginx
-      default_value_for :version, VERSION
-
-      ignore_column :modsecurity_enabled, remove_with: '14.2', remove_after: '2021-07-22'
-      ignore_column :modsecurity_mode, remove_with: '14.2', remove_after: '2021-07-22'
+      attribute :version, default: VERSION
 
       enum ingress_type: {
         nginx: 1
-      }
+      }, _default: :nginx
 
       FETCH_IP_ADDRESS_DELAY = 30.seconds
 

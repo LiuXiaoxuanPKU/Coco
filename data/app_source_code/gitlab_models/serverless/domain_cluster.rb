@@ -17,9 +17,9 @@ module Serverless
 
     validates :pages_domain, :knative, presence: true
     validates :uuid, presence: true, uniqueness: true, length: { is: ::Serverless::Domain::UUID_LENGTH },
-              format: { with: HEX_REGEXP, message: 'only allows hex characters' }
+                     format: { with: HEX_REGEXP, message: 'only allows hex characters' }
 
-    default_value_for(:uuid, allows_nil: false) { ::Serverless::Domain.generate_uuid }
+    after_initialize :set_uuid, if: :new_record?
 
     delegate :domain, to: :pages_domain
     delegate :cluster, to: :knative
@@ -28,6 +28,12 @@ module Serverless
       joins(:pages_domain, :knative)
         .includes(:pages_domain, :knative)
         .find_by(uuid: uuid)
+    end
+
+    private
+
+    def set_uuid
+      self.uuid = ::Serverless::Domain.generate_uuid
     end
   end
 end

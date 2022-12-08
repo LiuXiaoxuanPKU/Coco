@@ -2,11 +2,18 @@
 
 require 'securerandom'
 
+# Explicitly require licensee/license file in order to use Licensee::InvalidLicense class defined in
+# https://github.com/licensee/licensee/blob/v9.14.1/lib/licensee/license.rb#L6
+# The problem is that nested classes are not automatically preloaded which may lead to
+# uninitialized constant exception being raised: https://gitlab.com/gitlab-org/gitlab/-/issues/356658
+require 'licensee/license'
+
 class Repository
   REF_MERGE_REQUEST = 'merge-requests'
   REF_KEEP_AROUND = 'keep-around'
   REF_ENVIRONMENTS = 'environments'
   REF_PIPELINES = 'pipelines'
+  REF_TMP = 'tmp'
 
   ARCHIVE_CACHE_TIME = 60 # Cache archives referred to by a (mutable) ref for 1 minute
   ARCHIVE_CACHE_TIME_IMMUTABLE = 3600 # Cache archives referred to by an immutable reference for 1 hour
@@ -15,6 +22,7 @@ class Repository
     heads
     tags
     replace
+    #{REF_MERGE_REQUEST}
     #{REF_ENVIRONMENTS}
     #{REF_KEEP_AROUND}
     #{REF_PIPELINES}
@@ -40,14 +48,11 @@ class Repository
   # For example, for entry `:commit_count` there's a method called `commit_count` which
   # stores its data in the `commit_count` cache key.
   CACHED_METHODS = %i(size commit_count readme_path contribution_guide
-                      changelog license_blob license_key gitignore
+                      changelog license_blob license_licensee license_gitaly gitignore
                       gitlab_ci_yml branch_names tag_names branch_count
                       tag_count avatar exists? root_ref merged_branch_names
                       has_visible_content? issue_template_names_hash merge_request_template_names_hash
                       user_defined_metrics_dashboard_paths xcode_project? has_ambiguous_refs?).freeze
-
-  # Methods that use cache_method but only memoize the value
-  MEMOIZED_CACHED_METHODS = %i(license).freeze
 
   # Certain method caches should be refreshed when certain types of files are
   # changed. This Hash maps file types (as returned by Gitlab::FileDetector) to
@@ -55,7 +60,7 @@ class Repository
   METHOD_CACHES_FOR_FILE_TYPES = {
     readme: %i(readme_path),
     changelog: :changelog,
-    license: %i(license_blob license_key license),
+    license: %i(license_blob license_licensee license_gitaly),
     contributing: :contribution_guide,
     gitignore: :gitignore,
     gitlab_ci: :gitlab_ci_yml,
@@ -92,6 +97,10 @@ class Repository
   end
 
   alias_method :raw, :raw_repository
+
+  def flipper_id
+    raw_repository.flipper_id
+  end
 
   # Don't use this! It's going away. Use Gitaly to read or write from repos.
   def path_to_repo
@@ -161,8 +170,8 @@ class Repository
     CommitCollection.new(container, commits, ref)
   end
 
-  def commits_between(from, to)
-    commits = Gitlab::Git::Commit.between(raw_repository, from, to)
+  def commits_between(from, to, limit: nil)
+    commits = Gitlab::Git::Commit.between(raw_repository, from, to, limit: limit)
     commits = Commit.decorate(commits, container) if commits.present?
     commits
   end
@@ -186,12 +195,28 @@ class Repository
     CommitCollection.new(container, commits, ref)
   end
 
+  def list_commits_by(query, ref, author: nil, before: nil, after: nil, limit: 1000)
+    return [] unless exists?
+    return [] unless has_visible_content?
+    return [] unless query.present? && ref.present?
+
+    commits = raw_repository.list_commits_by(
+      query, ref, author: author, before: before, after: after, limit: limit).map do |c|
+      commit(c)
+    end
+    CommitCollection.new(container, commits, ref)
+  end
+
   def find_branch(name)
     raw_repository.find_branch(name)
   end
 
   def find_tag(name)
-    tags.find { |tag| tag.name == name }
+    if @tags.blank?
+      raw_repository.find_tag(name)
+    else
+      tags.find { |tag| tag.name == name }
+    end
   end
 
   def ambiguous_ref?(ref)
@@ -232,10 +257,10 @@ class Repository
     end
   end
 
-  def add_branch(user, branch_name, ref)
+  def add_branch(user, branch_name, ref, expire_cache: true)
     branch = raw_repository.add_branch(branch_name, user: user, target: ref)
 
-    after_create_branch
+    after_create_branch(expire_cache: expire_cache)
 
     branch
   rescue Gitlab::Git::Repository::InvalidRef
@@ -325,9 +350,15 @@ class Repository
 
   def expire_branches_cache
     expire_method_caches(%i(branch_names merged_branch_names branch_count has_visible_content? has_ambiguous_refs?))
+    expire_protected_branches_cache
+
     @local_branches = nil
     @branch_exists_memo = nil
     @branch_names_include = nil
+  end
+
+  def expire_protected_branches_cache
+    ProtectedBranches::CacheService.new(project).refresh if project # rubocop:disable CodeReuse/ServiceClass
   end
 
   def expire_statistics_caches
@@ -502,8 +533,8 @@ class Repository
     end
   end
 
-  def blob_at(sha, path)
-    Blob.decorate(raw_repository.blob_at(sha, path), container)
+  def blob_at(sha, path, limit: Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE)
+    Blob.decorate(raw_repository.blob_at(sha, path, limit: limit), container)
   rescue Gitlab::Git::Repository::NoRepository
     nil
   end
@@ -515,6 +546,8 @@ class Repository
     raw_repository.batch_blobs(items, blob_size_limit: blob_size_limit).map do |blob|
       Blob.decorate(blob, container)
     end
+  rescue Gitlab::Git::Repository::NoRepository
+    []
   end
 
   def root_ref
@@ -618,18 +651,30 @@ class Repository
   cache_method :license_blob
 
   def license_key
-    return unless exists?
-
-    raw_repository.license_short_name
+    license&.key
   end
-  cache_method :license_key
 
   def license
-    return unless license_key
-
-    Licensee::License.new(license_key)
+    if Feature.enabled?(:license_from_gitaly)
+      license_gitaly
+    else
+      license_licensee
+    end
   end
-  memoize_method :license
+
+  def license_licensee
+    return unless exists?
+
+    raw_repository.license(false)
+  end
+  cache_method :license_licensee
+
+  def license_gitaly
+    return unless exists?
+
+    raw_repository.license(true)
+  end
+  cache_method :license_gitaly
 
   def gitignore
     file_on_head(:gitignore)
@@ -650,24 +695,24 @@ class Repository
     @head_commit ||= commit(self.root_ref)
   end
 
-  def head_tree
+  def head_tree(skip_flat_paths: true)
     if head_commit
-      @head_tree ||= Tree.new(self, head_commit.sha, nil)
+      @head_tree ||= Tree.new(self, head_commit.sha, nil, skip_flat_paths: skip_flat_paths)
     end
   end
 
-  def tree(sha = :head, path = nil, recursive: false, pagination_params: nil)
+  def tree(sha = :head, path = nil, recursive: false, skip_flat_paths: true, pagination_params: nil)
     if sha == :head
       return unless head_commit
 
       if path.nil?
-        return head_tree
+        return head_tree(skip_flat_paths: skip_flat_paths)
       else
         sha = head_commit.sha
       end
     end
 
-    Tree.new(self, sha, path, recursive: recursive, pagination_params: pagination_params)
+    Tree.new(self, sha, path, recursive: recursive, skip_flat_paths: skip_flat_paths, pagination_params: pagination_params)
   end
 
   def blob_at_branch(branch_name, path)
@@ -720,19 +765,8 @@ class Repository
     raw_repository.local_branches(sort_by: sort_by, pagination_params: pagination_params)
   end
 
-  def tags_sorted_by(value)
-    case value
-    when 'name_asc'
-      VersionSorter.sort(tags) { |tag| tag.name }
-    when 'name_desc'
-      VersionSorter.rsort(tags) { |tag| tag.name }
-    when 'updated_desc'
-      tags_sorted_by_committed_date.reverse
-    when 'updated_asc'
-      tags_sorted_by_committed_date
-    else
-      tags
-    end
+  def tags_sorted_by(value, pagination_params = nil)
+    raw_repository.tags(sort_by: value, pagination_params: pagination_params)
   end
 
   # Params:
@@ -759,12 +793,12 @@ class Repository
     Commit.order_by(collection: commits, order_by: order_by, sort: sort)
   end
 
-  def branch_names_contains(sha)
-    raw_repository.branch_names_contains_sha(sha)
+  def branch_names_contains(sha, limit: 0)
+    raw_repository.branch_names_contains_sha(sha, limit: limit)
   end
 
-  def tag_names_contains(sha)
-    raw_repository.tag_names_contains_sha(sha)
+  def tag_names_contains(sha, limit: 0)
+    raw_repository.tag_names_contains_sha(sha, limit: limit)
   end
 
   def local_branches
@@ -780,13 +814,19 @@ class Repository
   def create_dir(user, path, **options)
     options[:actions] = [{ action: :create_dir, file_path: path }]
 
-    multi_action(user, **options)
+    commit_files(user, **options)
   end
 
   def create_file(user, path, content, **options)
     options[:actions] = [{ action: :create, file_path: path, content: content }]
 
-    multi_action(user, **options)
+    execute_filemode = options.delete(:execute_filemode)
+
+    unless execute_filemode.nil?
+      options[:actions].push({ action: :chmod, file_path: path, execute_filemode: execute_filemode })
+    end
+
+    commit_files(user, **options)
   end
 
   def update_file(user, path, content, **options)
@@ -795,13 +835,19 @@ class Repository
 
     options[:actions] = [{ action: action, file_path: path, previous_path: previous_path, content: content }]
 
-    multi_action(user, **options)
+    execute_filemode = options.delete(:execute_filemode)
+
+    unless execute_filemode.nil?
+      options[:actions].push({ action: :chmod, file_path: path, execute_filemode: execute_filemode })
+    end
+
+    commit_files(user, **options)
   end
 
   def delete_file(user, path, **options)
     options[:actions] = [{ action: :delete, file_path: path }]
 
-    multi_action(user, **options)
+    commit_files(user, **options)
   end
 
   def with_cache_hooks
@@ -815,14 +861,14 @@ class Repository
     result.newrev
   end
 
-  def multi_action(user, **options)
+  def commit_files(user, **options)
     start_project = options.delete(:start_project)
 
     if start_project
       options[:start_repository] = start_project.repository.raw_repository
     end
 
-    with_cache_hooks { raw.multi_action(user, **options) }
+    with_cache_hooks { raw.commit_files(user, **options) }
   end
 
   def merge(user, source_sha, merge_request, message)
@@ -938,8 +984,12 @@ class Repository
     end
   end
 
-  def fetch_as_mirror(url, forced: false, refmap: :all_refs, prune: true, http_authorization_header: "")
-    fetch_remote(url, refmap: refmap, forced: forced, prune: prune, http_authorization_header: http_authorization_header)
+  def clone_as_mirror(url, http_authorization_header: "", resolved_address: "")
+    import_repository(url, http_authorization_header: http_authorization_header, mirror: true, resolved_address: resolved_address)
+  end
+
+  def fetch_as_mirror(url, forced: false, refmap: :all_refs, prune: true, http_authorization_header: "", resolved_address: "")
+    fetch_remote(url, refmap: refmap, forced: forced, prune: prune, http_authorization_header: http_authorization_header, resolved_address: resolved_address)
   end
 
   def fetch_source_branch!(source_repository, source_branch, local_ref)
@@ -1023,8 +1073,8 @@ class Repository
     blob_data_at(sha, '.lfsconfig')
   end
 
-  def changelog_config(ref = 'HEAD')
-    blob_data_at(ref, Gitlab::Changelog::Config::FILE_PATH)
+  def changelog_config(ref, path)
+    blob_data_at(ref, path)
   end
 
   def fetch_ref(source_repository, source_ref:, target_ref:)
@@ -1046,16 +1096,16 @@ class Repository
     ) do |commit_id|
       merge_request.update!(rebase_commit_sha: commit_id, merge_error: nil)
     end
-  rescue StandardError => error
+  rescue StandardError => e
     merge_request.update!(rebase_commit_sha: nil)
-    raise error
+    raise e
   end
 
   def squash(user, merge_request, message)
-    raw.squash(user, merge_request.id, start_sha: merge_request.diff_start_sha,
-                                       end_sha: merge_request.diff_head_sha,
-                                       author: merge_request.author,
-                                       message: message)
+    raw.squash(user, start_sha: merge_request.diff_start_sha,
+                     end_sha: merge_request.diff_head_sha,
+                     author: merge_request.author,
+                     message: message)
   end
 
   def submodule_links
@@ -1082,13 +1132,20 @@ class Repository
     blob.data
   end
 
-  def create_if_not_exists
+  def create_if_not_exists(default_branch = nil)
     return if exists?
 
-    raw.create_repository
+    raw.create_repository(default_branch)
     after_create
 
     true
+  rescue Gitlab::Git::Repository::RepositoryExists
+    # We do not want to call `#after_create` given that we didn't create the
+    # repo, but we obviously have a mismatch between what's in our exists cache
+    # and actual on-disk state as seen by Gitaly. Let's thus expire our caches.
+    expire_status_cache
+
+    nil
   end
 
   def create_from_bundle(bundle_path)
@@ -1125,9 +1182,24 @@ class Repository
       copy_gitattributes(branch)
       after_change_head
     else
-      container.errors.add(:base, _("Could not change HEAD: branch '%{branch}' does not exist") % { branch: branch })
+      container.after_change_head_branch_does_not_exist(branch)
+
       false
     end
+  end
+
+  def cache
+    @cache ||= Gitlab::RepositoryCache.new(self)
+  end
+
+  def remove_prohibited_branches
+    return unless exists?
+
+    prohibited_branches = raw_repository.branch_names.select { |name| name.match(/\A\h{40}\z/) }
+
+    return if prohibited_branches.blank?
+
+    prohibited_branches.each { |name| raw_repository.delete_branch(name) }
   end
 
   private
@@ -1144,10 +1216,6 @@ class Repository
     ::Commit.new(commit, container) if commit
   end
 
-  def cache
-    @cache ||= Gitlab::RepositoryCache.new(self)
-  end
-
   def redis_set_cache
     @redis_set_cache ||= Gitlab::RepositorySetCache.new(self)
   end
@@ -1160,17 +1228,6 @@ class Repository
     @request_store_cache ||= Gitlab::RepositoryCache.new(self, backend: Gitlab::SafeRequestStore)
   end
 
-  def tags_sorted_by_committed_date
-    # Annotated tags can point to any object (e.g. a blob), but generally
-    # tags point to a commit. If we don't have a commit, then just default
-    # to putting the tag at the end of the list.
-    default = Time.current
-
-    tags.sort_by do |tag|
-      tag.dereferenced_target&.committed_date || default
-    end
-  end
-
   def repository_event(event, tags = {})
     Gitlab::Metrics.add_event(event, tags)
   end
@@ -1179,7 +1236,8 @@ class Repository
     Gitlab::Git::Repository.new(shard,
                                 disk_path + '.git',
                                 repo_type.identifier_for_container(container),
-                                container.full_path)
+                                container.full_path,
+                                container: container)
   end
 end
 

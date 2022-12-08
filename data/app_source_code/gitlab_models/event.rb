@@ -10,39 +10,38 @@ class Event < ApplicationRecord
   include UsageStatistics
   include ShaAttribute
 
-  default_scope { reorder(nil) } # rubocop:disable Cop/DefaultScope
-
   ACTIONS = HashWithIndifferentAccess.new(
-    created:    1,
-    updated:    2,
-    closed:     3,
-    reopened:   4,
-    pushed:     5,
-    commented:  6,
-    merged:     7,
-    joined:     8, # User joined project
-    left:       9, # User left project
-    destroyed:  10,
-    expired:    11, # User left project due to expiry
-    approved:   12
+    created: 1,
+    updated: 2,
+    closed: 3,
+    reopened: 4,
+    pushed: 5,
+    commented: 6,
+    merged: 7,
+    joined: 8, # User joined project
+    left: 9, # User left project
+    destroyed: 10,
+    expired: 11, # User left project due to expiry
+    approved: 12
   ).freeze
 
   private_constant :ACTIONS
 
   WIKI_ACTIONS = [:created, :updated, :destroyed].freeze
-
   DESIGN_ACTIONS = [:created, :updated, :destroyed].freeze
+  TEAM_ACTIONS = [:joined, :left, :expired].freeze
+  ISSUE_ACTIONS = [:created, :updated, :closed, :reopened].freeze
 
   TARGET_TYPES = HashWithIndifferentAccess.new(
-    issue:          Issue,
-    milestone:      Milestone,
-    merge_request:  MergeRequest,
-    note:           Note,
-    project:        Project,
-    snippet:        Snippet,
-    user:           User,
-    wiki:           WikiPage::Meta,
-    design:         DesignManagement::Design
+    issue: Issue,
+    milestone: Milestone,
+    merge_request: MergeRequest,
+    note: Note,
+    project: Project,
+    snippet: Snippet,
+    user: User,
+    wiki: WikiPage::Meta,
+    design: DesignManagement::Design
   ).freeze
 
   RESET_PROJECT_ACTIVITY_INTERVAL = 1.hour
@@ -130,10 +129,11 @@ class Event < ApplicationRecord
 
     # Update Gitlab::ContributionsCalendar#activity_dates if this changes
     def contributions
-      where("action = ? OR (target_type IN (?) AND action IN (?)) OR (target_type = ? AND action = ?)",
-            actions[:pushed],
-            %w(MergeRequest Issue), [actions[:created], actions[:closed], actions[:merged]],
-            "Note", actions[:commented])
+      where(
+        'action IN (?) OR (target_type IN (?) AND action IN (?))',
+        [actions[:pushed], actions[:commented]],
+        %w(MergeRequest Issue), [actions[:created], actions[:closed], actions[:merged]]
+      )
     end
 
     def limit_recent(limit = 20, offset = nil)
@@ -213,6 +213,10 @@ class Event < ApplicationRecord
     target_type == 'DesignManagement::Design'
   end
 
+  def work_item?
+    target_type == 'WorkItem'
+  end
+
   def milestone
     target if milestone?
   end
@@ -274,6 +278,7 @@ class Event < ApplicationRecord
       "opened"
     end
   end
+
   # rubocop: enable Metrics/CyclomaticComplexity
   # rubocop: enable Metrics/PerceivedComplexity
 
@@ -353,7 +358,9 @@ class Event < ApplicationRecord
     # hence we add the extra WHERE clause for last_activity_at.
     Project.unscoped.where(id: project_id)
       .where('last_activity_at <= ?', RESET_PROJECT_ACTIVITY_INTERVAL.ago)
-      .update_all(last_activity_at: created_at)
+      .touch_all(:last_activity_at, time: created_at)
+
+    Gitlab::InactiveProjectsDeletionWarningTracker.new(project.id).reset
   end
 
   def authored_by?(user)
@@ -366,16 +373,18 @@ class Event < ApplicationRecord
     Event._to_partial_path
   end
 
+  def has_no_project_and_group?
+    project_id.nil? && group_id.nil?
+  end
+
   protected
 
   def capability
-    @capability ||= begin
-      capabilities.flat_map do |ability, syms|
-        if syms.any? { |sym| send(sym) } # rubocop: disable GitlabSecurity/PublicSend
-          [ability]
-        else
-          []
-        end
+    @capability ||= capabilities.flat_map do |ability, syms|
+      if syms.any? { |sym| send(sym) } # rubocop: disable GitlabSecurity/PublicSend
+        [ability]
+      else
+        []
       end
     end
   end
@@ -390,7 +399,8 @@ class Event < ApplicationRecord
       read_milestone: %i[milestone?],
       read_wiki: %i[wiki_page?],
       read_design: %i[design_note? design?],
-      read_note: %i[note?]
+      read_note: %i[note?],
+      read_work_item: %i[work_item?]
     }
   end
 
@@ -429,14 +439,14 @@ class Event < ApplicationRecord
   def set_last_repository_updated_at
     Project.unscoped.where(id: project_id)
       .where("last_repository_updated_at < ? OR last_repository_updated_at IS NULL", REPOSITORY_UPDATED_AT_INTERVAL.ago)
-      .update_all(last_repository_updated_at: created_at)
+      .touch_all(:last_repository_updated_at, time: created_at)
   end
 
   def design_action_names
     {
-      created: _('uploaded'),
-      updated: _('revised'),
-      destroyed: _('deleted')
+      created: 'added',
+      updated: 'updated',
+      destroyed: 'removed'
     }
   end
 

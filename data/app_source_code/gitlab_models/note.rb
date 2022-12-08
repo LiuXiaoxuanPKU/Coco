@@ -5,6 +5,8 @@
 # A note of this type is never resolvable.
 class Note < ApplicationRecord
   extend ActiveModel::Naming
+  extend Gitlab::Utils::Override
+
   include Gitlab::Utils::StrongMemoize
   include Participable
   include Mentionable
@@ -20,14 +22,23 @@ class Note < ApplicationRecord
   include ThrottledTouch
   include FromUnion
   include Sortable
+  include EachBatch
 
-  cache_markdown_field :note, pipeline: :note, issuable_state_filter_enabled: true
+  ISSUE_TASK_SYSTEM_NOTE_PATTERN = /\A.*marked\sthe\stask.+as\s(completed|incomplete).*\z/.freeze
+
+  cache_markdown_field :note, pipeline: :note, issuable_reference_expansion_enabled: true
 
   redact_field :note
 
-  TYPES_RESTRICTED_BY_ABILITY = {
+  TYPES_RESTRICTED_BY_PROJECT_ABILITY = {
     branch: :download_code
   }.freeze
+
+  TYPES_RESTRICTED_BY_GROUP_ABILITY = {
+    contact: :read_crm_contact
+  }.freeze
+
+  NON_DIFF_NOTE_TYPES = ['Note', 'DiscussionNote', nil].freeze
 
   # Aliases to make application_helper#edited_time_ago_with_tooltip helper work properly with notes.
   # See https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/10392/diffs#note_28719102
@@ -44,9 +55,12 @@ class Note < ApplicationRecord
   attr_accessor :user_visible_reference_count
 
   # Attribute used to store the attributes that have been changed by quick actions.
-  attr_accessor :commands_changes
+  attr_writer :commands_changes
 
-  default_value_for :system, false
+  # Attribute used to determine whether keep_around_commits will be skipped for diff notes.
+  attr_accessor :skip_keep_around_commits
+
+  attribute :system, default: false
 
   attr_mentionable :note, pipeline: :note
   participant :author
@@ -88,6 +102,11 @@ class Note < ApplicationRecord
   validates :author, presence: true
   validates :discussion_id, presence: true, format: { with: /\A\h{40}\z/ }
 
+  validate :ensure_confidentiality_discussion_compliance
+  validate :ensure_noteable_can_have_confidential_note
+  validate :ensure_note_type_can_be_confidential
+  validate :ensure_confidentiality_not_changed, on: :update
+
   validate unless: [:for_commit?, :importing?, :skip_project_check?] do |note|
     unless note.noteable.try(:project) == note.project
       errors.add(:project, 'does not match noteable project')
@@ -95,6 +114,7 @@ class Note < ApplicationRecord
   end
 
   validate :does_not_exceed_notes_limit?, on: :create, unless: [:system?, :importing?]
+  validate :validate_created_after
 
   # @deprecated attachments are handled by the Upload model.
   #
@@ -108,13 +128,13 @@ class Note < ApplicationRecord
   scope :common, -> { where(noteable_type: ["", nil]) }
   scope :fresh, -> { order_created_asc.with_order_id_asc }
   scope :updated_after, ->(time) { where('updated_at > ?', time) }
-  scope :with_updated_at, ->(time) { where(updated_at: time) }
+  scope :with_discussion_ids, ->(discussion_ids) { where(discussion_id: discussion_ids) }
   scope :with_suggestions, -> { joins(:suggestions) }
-  scope :inc_author_project, -> { includes(:project, :author) }
   scope :inc_author, -> { includes(:author) }
+  scope :inc_note_diff_file, -> { includes(:note_diff_file) }
   scope :with_api_entity_associations, -> { preload(:note_diff_file, :author) }
   scope :inc_relations_for_view, -> do
-    includes(:project, { author: :status }, :updated_by, :resolved_by, :award_emoji,
+    includes({ project: :group }, { author: :status }, :updated_by, :resolved_by, :award_emoji,
              { system_note_metadata: :description_version }, :note_diff_file, :diff_note_positions, :suggestions)
   end
 
@@ -131,7 +151,7 @@ class Note < ApplicationRecord
 
   scope :diff_notes, -> { where(type: %w(LegacyDiffNote DiffNote)) }
   scope :new_diff_notes, -> { where(type: 'DiffNote') }
-  scope :non_diff_notes, -> { where(type: ['Note', 'DiscussionNote', nil]) }
+  scope :non_diff_notes, -> { where(type: NON_DIFF_NOTE_TYPES) }
 
   scope :with_associations, -> do
     # FYI noteable cannot be loaded for LegacyDiffNote for commits
@@ -145,7 +165,10 @@ class Note < ApplicationRecord
   scope :like_note_or_capitalized_note, ->(text) { where('(note LIKE ? OR note LIKE ?)', text, text.capitalize) }
 
   before_validation :nullify_blank_type, :nullify_blank_line_code
-  after_save :keep_around_commit, if: :for_project_noteable?, unless: :importing?
+  # Syncs `confidential` with `internal` as we rename the column.
+  # https://gitlab.com/gitlab-org/gitlab/-/issues/367923
+  before_create :set_internal_flag
+  after_save :keep_around_commit, if: :for_project_noteable?, unless: -> { importing? || skip_keep_around_commits }
   after_save :expire_etag_cache, unless: :importing?
   after_save :touch_noteable, unless: :importing?
   after_destroy :expire_etag_cache
@@ -338,21 +361,11 @@ class Note < ApplicationRecord
     super(noteable_type.to_s.classify.constantize.base_class.to_s)
   end
 
-  def noteable_assignee_or_author?(user)
-    return false unless user
-    return false unless noteable.respond_to?(:author_id)
-    return noteable.assignee_or_author?(user) if [MergeRequest, Issue].include?(noteable.class)
-
-    noteable.author_id == user.id
-  end
-
   def contributor?
     project&.team&.contributor?(self.author_id)
   end
 
   def noteable_author?(noteable)
-    return false unless ::Feature.enabled?(:show_author_on_note, project)
-
     noteable.author == self.author
   end
 
@@ -450,7 +463,7 @@ class Note < ApplicationRecord
   # and all its notes and if we don't care about the discussion's resolvability status.
   def discussion
     strong_memoize(:discussion) do
-      full_discussion = self.noteable.notes.find_discussion(self.discussion_id) if part_of_discussion?
+      full_discussion = self.noteable.notes.find_discussion(self.discussion_id) if self.noteable && part_of_discussion?
       full_discussion || to_discussion
     end
   end
@@ -494,7 +507,15 @@ class Note < ApplicationRecord
     # Instead of calling touch which is throttled via ThrottledTouch concern,
     # we bump the updated_at column directly. This also prevents executing
     # after_commit callbacks that we don't need.
-    update_column(:updated_at, Time.current)
+    attributes_to_update = { updated_at: Time.current }
+
+    # Notes that were edited before the `last_edited_at` column was added, fall back to `updated_at` for the edit time.
+    # We copy this over to the correct column so we don't erroneously change the edit timestamp.
+    if updated_by_id.present? && read_attribute(:last_edited_at).blank?
+      attributes_to_update[:last_edited_at] = updated_at
+    end
+
+    update_columns(attributes_to_update)
   end
 
   def expire_etag_cache
@@ -562,10 +583,10 @@ class Note < ApplicationRecord
     noteable.user_mentions.where(note: self)
   end
 
-  def system_note_with_references_visible_for?(user)
+  def system_note_visible_for?(user)
     return true unless system?
 
-    (!system_note_with_references? || all_referenced_mentionables_allowed?(user)) && system_note_viewable_by?(user)
+    system_note_viewable_by?(user) && all_referenced_mentionables_allowed?(user)
   end
 
   def parent_user
@@ -577,29 +598,127 @@ class Note < ApplicationRecord
   end
 
   def post_processed_cache_key
-    cache_key_items = [cache_key, author.cache_key]
+    cache_key_items = [cache_key, author&.cache_key]
+    cache_key_items << project.team.human_max_access(author&.id) if author.present?
     cache_key_items << Digest::SHA1.hexdigest(redacted_note_html) if redacted_note_html.present?
 
     cache_key_items.join(':')
   end
 
-  private
+  override :user_mention_class
+  def user_mention_class
+    return if noteable.blank?
 
-  # Using this method followed by a call to *save* may result in *ActiveRecord::RecordNotUnique* exception
-  # in a multi-threaded environment. Make sure to use it within a *safe_ensure_unique* block.
-  def model_user_mention
-    return if user_mentions.is_a?(ActiveRecord::NullRelation)
-
-    user_mentions.first_or_initialize
+    noteable.user_mention_class
   end
+
+  override :user_mention_identifier
+  def user_mention_identifier
+    return if noteable.blank?
+
+    noteable.user_mention_identifier.merge({
+      note_id: id
+    })
+  end
+
+  def show_outdated_changes?
+    return false unless for_merge_request?
+    return false unless system?
+    return false unless change_position&.line_range
+
+    change_position.line_range["end"] || change_position.line_range["start"]
+  end
+
+  def commands_changes
+    @commands_changes&.slice(
+      :due_date,
+      :label_ids,
+      :remove_label_ids,
+      :add_label_ids,
+      :canonical_issue_id,
+      :clone_with_notes,
+      :confidential,
+      :create_merge_request,
+      :add_contacts,
+      :remove_contacts,
+      :assignee_ids,
+      :milestone_id,
+      :time_estimate,
+      :spend_time,
+      :discussion_locked,
+      :merge,
+      :rebase,
+      :wip_event,
+      :target_branch,
+      :reviewer_ids,
+      :health_status,
+      :promote_to_epic,
+      :weight,
+      :emoji_award,
+      :todo_event,
+      :subscription_event,
+      :state_event,
+      :title,
+      :tag_message,
+      :tag_name
+    )
+  end
+
+  def mentioned_users(current_user = nil)
+    users = super
+
+    return users unless confidential?
+
+    Ability.users_that_can_read_internal_notes(users, resource_parent)
+  end
+
+  def mentioned_filtered_user_ids_for(references)
+    return super unless confidential?
+
+    user_ids = references.mentioned_user_ids.presence
+
+    return [] if user_ids.blank?
+
+    users = User.where(id: user_ids)
+    Ability.users_that_can_read_internal_notes(users, resource_parent).pluck(:id)
+  end
+
+  # Method necesary while we transition into the new format for task system notes
+  # TODO: https://gitlab.com/gitlab-org/gitlab/-/issues/369923
+  def note
+    return super unless system? && for_issue? && super&.match?(ISSUE_TASK_SYSTEM_NOTE_PATTERN)
+
+    super.sub!('task', 'checklist item')
+  end
+
+  # Method necesary while we transition into the new format for task system notes
+  # TODO: https://gitlab.com/gitlab-org/gitlab/-/issues/369923
+  def note_html
+    return super unless system? && for_issue? && super&.match?(ISSUE_TASK_SYSTEM_NOTE_PATTERN)
+
+    super.sub!('task', 'checklist item')
+  end
+
+  def issuable_ability_name
+    confidential? ? :read_internal_note : :read_note
+  end
+
+  private
 
   def system_note_viewable_by?(user)
     return true unless system_note_metadata
 
-    restriction = TYPES_RESTRICTED_BY_ABILITY[system_note_metadata.action.to_sym]
-    return Ability.allowed?(user, restriction, project) if restriction
+    system_note_viewable_by_project_ability?(user) && system_note_viewable_by_group_ability?(user)
+  end
 
-    true
+  def system_note_viewable_by_project_ability?(user)
+    project_restriction = TYPES_RESTRICTED_BY_PROJECT_ABILITY[system_note_metadata.action.to_sym]
+    !project_restriction || Ability.allowed?(user, project_restriction, project)
+  end
+
+  def system_note_viewable_by_group_ability?(user)
+    group_restriction = TYPES_RESTRICTED_BY_GROUP_ABILITY[system_note_metadata.action.to_sym]
+    !group_restriction || Ability.allowed?(user, group_restriction, project&.group)
   end
 
   def keep_around_commit
@@ -625,12 +744,15 @@ class Note < ApplicationRecord
   end
 
   def all_referenced_mentionables_allowed?(user)
+    return true unless system_note_with_references?
+
     if user_visible_reference_count.present? && total_reference_count.present?
       # if they are not equal, then there are private/confidential references as well
-      user_visible_reference_count > 0 && user_visible_reference_count == total_reference_count
+      total_reference_count == 0 ||
+        user_visible_reference_count > 0 && user_visible_reference_count == total_reference_count
     else
       refs = all_references(user)
-      refs.all.any? && refs.stateful_not_visible_counter == 0
+      refs.all.any? && refs.all_visible?
     end
   end
 
@@ -646,8 +768,55 @@ class Note < ApplicationRecord
     errors.add(:base, _('Maximum number of comments exceeded')) if noteable.notes.count >= Noteable::MAX_NOTES_LIMIT
   end
 
+  def validate_created_after
+    return unless created_at
+    return if created_at >= '1970-01-01'
+
+    errors.add(:created_at, s_('Note|The created date provided is too far in the past.'))
+  end
+
   def noteable_label_url_method
     for_merge_request? ? :project_merge_requests_url : :project_issues_url
+  end
+
+  def ensure_confidentiality_not_changed
+    return unless will_save_change_to_attribute?(:confidential)
+    return unless attribute_change_to_be_saved(:confidential).include?(true)
+
+    errors.add(:confidential, _('can not be changed for existing notes'))
+  end
+
+  def ensure_confidentiality_discussion_compliance
+    return if start_of_discussion?
+
+    if discussion.first_note.confidential? != confidential?
+      errors.add(:confidential, _('reply should have same confidentiality as top-level note'))
+    end
+
+  ensure
+    clear_memoization(:discussion)
+  end
+
+  def ensure_noteable_can_have_confidential_note
+    return unless confidential?
+    return if noteable_can_have_confidential_note?
+
+    errors.add(:confidential, _('can not be set for this resource'))
+  end
+
+  def ensure_note_type_can_be_confidential
+    return unless confidential?
+    return if NON_DIFF_NOTE_TYPES.include?(type)
+
+    errors.add(:confidential, _('can not be set for this type of note'))
+  end
+
+  def noteable_can_have_confidential_note?
+    for_issue?
+  end
+
+  def set_internal_flag
+    self.internal = confidential if confidential
   end
 end
 

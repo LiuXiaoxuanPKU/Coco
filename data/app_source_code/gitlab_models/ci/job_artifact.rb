@@ -2,23 +2,30 @@
 
 module Ci
   class JobArtifact < Ci::ApplicationRecord
+    include Ci::Partitionable
+    include IgnorableColumns
     include AfterCommitQueue
-    include ObjectStorage::BackgroundMove
     include UpdateProjectStatistics
     include UsageStatistics
     include Sortable
     include Artifactable
+    include Lockable
     include FileStoreMounter
     include EachBatch
+    include Gitlab::Utils::StrongMemoize
 
-    TEST_REPORT_FILE_TYPES = %w[junit].freeze
-    COVERAGE_REPORT_FILE_TYPES = %w[cobertura].freeze
-    CODEQUALITY_REPORT_FILE_TYPES = %w[codequality].freeze
-    ACCESSIBILITY_REPORT_FILE_TYPES = %w[accessibility].freeze
     NON_ERASABLE_FILE_TYPES = %w[trace].freeze
-    TERRAFORM_REPORT_FILE_TYPES = %w[terraform].freeze
-    SAST_REPORT_TYPES = %w[sast].freeze
-    SECRET_DETECTION_REPORT_TYPES = %w[secret_detection].freeze
+
+    REPORT_FILE_TYPES = {
+      sast: %w[sast],
+      secret_detection: %w[secret_detection],
+      test: %w[junit],
+      accessibility: %w[accessibility],
+      coverage: %w[cobertura],
+      codequality: %w[codequality],
+      terraform: %w[terraform]
+    }.freeze
+
     DEFAULT_FILE_NAMES = {
       archive: nil,
       metadata: nil,
@@ -43,10 +50,11 @@ module Ci
       dotenv: '.env',
       cobertura: 'cobertura-coverage.xml',
       terraform: 'tfplan.json',
-      cluster_applications: 'gl-cluster-applications.json', # DEPRECATED: https://gitlab.com/gitlab-org/gitlab/-/issues/333441
+      cluster_applications: 'gl-cluster-applications.json', # DEPRECATED: https://gitlab.com/gitlab-org/gitlab/-/issues/361094
       requirements: 'requirements.json',
       coverage_fuzzing: 'gl-coverage-fuzzing.json',
-      api_fuzzing: 'gl-api-fuzzing-report.json'
+      api_fuzzing: 'gl-api-fuzzing-report.json',
+      cyclonedx: 'gl-sbom.cdx.json'
     }.freeze
 
     INTERNAL_TYPES = {
@@ -62,8 +70,9 @@ module Ci
       network_referee: :gzip,
       dotenv: :gzip,
       cobertura: :gzip,
-      cluster_applications: :gzip,
+      cluster_applications: :gzip, # DEPRECATED: https://gitlab.com/gitlab-org/gitlab/-/issues/361094
       lsif: :zip,
+      cyclonedx: :gzip,
 
       # Security reports and license scanning reports are raw artifacts
       # because they used to be fetched by the frontend, but this is not the case anymore.
@@ -110,6 +119,7 @@ module Ci
       secret_detection
       requirements
       cluster_image_scanning
+      cyclonedx
     ].freeze
 
     TYPE_AND_FORMAT_PAIRS = INTERNAL_TYPES.merge(REPORT_TYPES).freeze
@@ -119,17 +129,30 @@ module Ci
     belongs_to :project
     belongs_to :job, class_name: "Ci::Build", foreign_key: :job_id
 
-    mount_file_store_uploader JobArtifactUploader
+    # We will start using this column once we complete https://gitlab.com/gitlab-org/gitlab/-/issues/285597
+    ignore_column :original_filename, remove_with: '14.7', remove_after: '2022-11-22'
 
+    mount_file_store_uploader JobArtifactUploader, skip_store_file: true
+
+    before_save :set_size, if: :file_changed?
+    after_save :store_file_in_transaction!, unless: :store_after_commit?
+    after_commit :store_file_after_transaction!, on: [:create, :update], if: :store_after_commit?
+
+    validates :job, presence: true
     validates :file_format, presence: true, unless: :trace?, on: :create
     validate :validate_file_format!, unless: :trace?, on: :create
-    before_save :set_size, if: :file_changed?
 
     update_project_statistics project_statistics_name: :build_artifacts_size
+    partitionable scope: :job
 
     scope :not_expired, -> { where('expire_at IS NULL OR expire_at > ?', Time.current) }
     scope :for_sha, ->(sha, project_id) { joins(job: :pipeline).where(ci_pipelines: { sha: sha, project_id: project_id }) }
+    scope :for_job_ids, ->(job_ids) { where(job_id: job_ids) }
     scope :for_job_name, ->(name) { joins(:job).where(ci_builds: { name: name }) }
+    scope :created_at_before, ->(time) { where(arel_table[:created_at].lteq(time)) }
+    scope :id_before, ->(id) { where(arel_table[:id].lteq(id)) }
+    scope :id_after, ->(id) { where(arel_table[:id].gt(id)) }
+    scope :ordered_by_id, -> { order(:id) }
 
     scope :with_job, -> { joins(:job).includes(:job) }
 
@@ -139,50 +162,19 @@ module Ci
       where(file_type: types)
     end
 
-    scope :with_reports, -> do
+    scope :all_reports, -> do
       with_file_types(REPORT_TYPES.keys.map(&:to_s))
     end
 
-    scope :sast_reports, -> do
-      with_file_types(SAST_REPORT_TYPES)
-    end
-
-    scope :secret_detection_reports, -> do
-      with_file_types(SECRET_DETECTION_REPORT_TYPES)
-    end
-
-    scope :test_reports, -> do
-      with_file_types(TEST_REPORT_FILE_TYPES)
-    end
-
-    scope :accessibility_reports, -> do
-      with_file_types(ACCESSIBILITY_REPORT_FILE_TYPES)
-    end
-
-    scope :coverage_reports, -> do
-      with_file_types(COVERAGE_REPORT_FILE_TYPES)
-    end
-
-    scope :codequality_reports, -> do
-      with_file_types(CODEQUALITY_REPORT_FILE_TYPES)
-    end
-
-    scope :terraform_reports, -> do
-      with_file_types(TERRAFORM_REPORT_FILE_TYPES)
-    end
-
     scope :erasable, -> do
-      types = self.file_types.reject { |file_type| NON_ERASABLE_FILE_TYPES.include?(file_type) }.values
-
-      where(file_type: types)
+      where(file_type: self.erasable_file_types)
     end
 
     scope :downloadable, -> { where(file_type: DOWNLOADABLE_TYPES) }
     scope :unlocked, -> { joins(job: :pipeline).merge(::Ci::Pipeline.unlocked) }
-    scope :order_expired_desc, -> { order(expire_at: :desc) }
-    scope :with_destroy_preloads, -> { includes(project: [:route, :statistics]) }
+    scope :order_expired_asc, -> { order(expire_at: :asc) }
+    scope :with_destroy_preloads, -> { includes(project: [:route, :statistics, :build_artifacts_size_refresh]) }
 
-    scope :scoped_project, -> { where('ci_job_artifacts.project_id = projects.id') }
     scope :for_project, ->(project) { where(project_id: project) }
     scope :created_in_time_range, ->(from: nil, to: nil) { where(created_at: from..to) }
 
@@ -215,7 +207,8 @@ module Ci
       browser_performance: 24, ## EE-specific
       load_performance: 25, ## EE-specific
       api_fuzzing: 26, ## EE-specific
-      cluster_image_scanning: 27 ## EE-specific
+      cluster_image_scanning: 27, ## EE-specific
+      cyclonedx: 28 ## EE-specific
     }
 
     # `file_location` indicates where actual files are stored.
@@ -238,10 +231,24 @@ module Ci
       end
     end
 
+    def self.of_report_type(report_type)
+      file_types = file_types_for_report(report_type)
+
+      with_file_types(file_types)
+    end
+
+    def self.file_types_for_report(report_type)
+      REPORT_FILE_TYPES.fetch(report_type) { raise ArgumentError, "Unrecognized report type: #{report_type}" }
+    end
+
     def self.associated_file_types_for(file_type)
       return unless file_types.include?(file_type)
 
       [file_type]
+    end
+
+    def self.erasable_file_types
+      self.file_types.keys - NON_ERASABLE_FILE_TYPES
     end
 
     def self.total_size
@@ -250,6 +257,10 @@ module Ci
 
     def self.artifacts_size_for(project)
       self.where(project: project).sum(:size)
+    end
+
+    def self.pluck_job_id
+      pluck(:job_id)
     end
 
     ##
@@ -293,16 +304,16 @@ module Ci
     def expire_in=(value)
       self.expire_at =
         if value
-          ::Gitlab::Ci::Build::Artifacts::ExpireInParser.new(value).seconds_from_now
+          ::Gitlab::Ci::Build::DurationParser.new(value).seconds_from_now
         end
     end
 
-    def archived_trace_exists?
+    def stored?
       file&.file&.exists?
     end
 
     def self.archived_trace_exists_for?(job_id)
-      where(job_id: job_id).trace.take&.archived_trace_exists?
+      where(job_id: job_id).trace.take&.stored?
     end
 
     def self.max_artifact_size(type:, project:)
@@ -325,7 +336,33 @@ module Ci
       }
     end
 
+    def store_after_commit?
+      strong_memoize(:store_after_commit) do
+        trace? && JobArtifactUploader.direct_upload_enabled?
+      end
+    end
+
     private
+
+    def store_file_in_transaction!
+      store_file_now! if saved_change_to_file?
+
+      file_stored_in_transaction_hooks
+    end
+
+    def store_file_after_transaction!
+      store_file_now! if previous_changes.key?(:file)
+
+      file_stored_after_transaction_hooks
+    end
+
+    # method overriden in EE
+    def file_stored_after_transaction_hooks
+    end
+
+    # method overriden in EE
+    def file_stored_in_transaction_hooks
+    end
 
     def set_size
       self.size = file.size

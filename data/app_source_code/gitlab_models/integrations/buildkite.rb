@@ -5,12 +5,25 @@ require "addressable/uri"
 module Integrations
   class Buildkite < BaseCi
     include HasWebHook
-    include ReactiveService
-    extend Gitlab::Utils::Override
+    include ReactivelyCached
 
     ENDPOINT = "https://buildkite.com"
 
-    prop_accessor :project_url, :token
+    field :project_url,
+      title: -> { _('Pipeline URL') },
+      placeholder: "#{ENDPOINT}/example-org/test-pipeline",
+      exposes_secrets: true,
+      required: true
+
+    field :token,
+      type: 'password',
+      title: -> { _('Token') },
+      help: -> do
+        s_('ProjectService|The token you get after you create a Buildkite pipeline with a GitLab repository.')
+      end,
+      non_empty_password_title: -> { s_('ProjectService|Enter new token') },
+      non_empty_password_help: -> { s_('ProjectService|Leave blank to use your current token.') },
+      required: true
 
     validates :project_url, presence: true, public_url: true, if: :activated?
     validates :token, presence: true, if: :activated?
@@ -27,17 +40,21 @@ module Integrations
     end
 
     # Since SSL verification will always be enabled for Buildkite,
-    # we no longer needs to store the boolean.
+    # we no longer need to store the boolean.
     # This is a stub method to work with deprecated API param.
     # TODO: remove enable_ssl_verification after 14.0
     # https://gitlab.com/gitlab-org/gitlab/-/issues/222808
     def enable_ssl_verification=(_value)
-      self.properties.delete('enable_ssl_verification') # Remove unused key
+      self.properties = properties.except('enable_ssl_verification') # Remove unused key
     end
 
     override :hook_url
     def hook_url
-      "#{buildkite_endpoint('webhook')}/deliver/#{webhook_token}"
+      "#{buildkite_endpoint('webhook')}/deliver/{webhook_token}"
+    end
+
+    def url_variables
+      { 'webhook_token' => webhook_token }
     end
 
     def execute(data)
@@ -47,7 +64,7 @@ module Integrations
     end
 
     def commit_status(sha, ref)
-      with_reactive_cache(sha, ref) {|cached| cached[:commit_status] }
+      with_reactive_cache(sha, ref) { |cached| cached[:commit_status] }
     end
 
     def commit_status_path(sha)
@@ -72,22 +89,6 @@ module Integrations
 
     def help
       s_('ProjectService|Run CI/CD pipelines with Buildkite.')
-    end
-
-    def fields
-      [
-        { type: 'text',
-          name: 'token',
-          title: _('Token'),
-          help: s_('ProjectService|The token you get after you create a Buildkite pipeline with a GitLab repository.'),
-          required: true },
-
-        { type: 'text',
-          name: 'project_url',
-          title: _('Pipeline URL'),
-          placeholder: "#{ENDPOINT}/example-org/test-pipeline",
-          required: true }
-      ]
     end
 
     def calculate_reactive_cache(sha, ref)
@@ -137,7 +138,7 @@ module Integrations
     end
 
     def request_options
-      { verify: false, extra_log_info: { project_id: project_id } }
+      { extra_log_info: { project_id: project_id } }
     end
   end
 end

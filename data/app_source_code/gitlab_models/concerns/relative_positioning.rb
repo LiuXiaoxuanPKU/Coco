@@ -135,21 +135,21 @@ module RelativePositioning
     before, after = [before, after].sort_by(&:relative_position) if before && after
 
     RelativePositioning.mover.move(self, before, after)
-  rescue ActiveRecord::QueryCanceled, NoSpaceLeft => e
+  rescue NoSpaceLeft => e
     could_not_move(e)
     raise e
   end
 
   def move_after(before = self)
     RelativePositioning.mover.move(self, before, nil)
-  rescue ActiveRecord::QueryCanceled, NoSpaceLeft => e
+  rescue NoSpaceLeft => e
     could_not_move(e)
     raise e
   end
 
   def move_before(after = self)
     RelativePositioning.mover.move(self, nil, after)
-  rescue ActiveRecord::QueryCanceled, NoSpaceLeft => e
+  rescue NoSpaceLeft => e
     could_not_move(e)
     raise e
   end
@@ -159,9 +159,6 @@ module RelativePositioning
   rescue NoSpaceLeft => e
     could_not_move(e)
     self.relative_position = MAX_POSITION
-  rescue ActiveRecord::QueryCanceled => e
-    could_not_move(e)
-    raise e
   end
 
   def move_to_start
@@ -169,9 +166,24 @@ module RelativePositioning
   rescue NoSpaceLeft => e
     could_not_move(e)
     self.relative_position = MIN_POSITION
-  rescue ActiveRecord::QueryCanceled => e
-    could_not_move(e)
-    raise e
+  end
+
+  def next_object_by_relative_position(ignoring: nil, order: :asc)
+    relation = relative_positioning_scoped_items(ignoring: ignoring).reorder(relative_position: order)
+
+    relation = if order == :asc
+                 relation.where(self.class.arel_table[:relative_position].gt(relative_position))
+               else
+                 relation.where(self.class.arel_table[:relative_position].lt(relative_position))
+               end
+
+    relation.first
+  end
+
+  def relative_positioning_scoped_items(ignoring: nil)
+    relation = self.class.relative_positioning_query_base(self)
+    relation = exclude_self(relation, excluded: ignoring) if ignoring.present?
+    relation
   end
 
   # This method is used during rebalancing - override it to customise the update

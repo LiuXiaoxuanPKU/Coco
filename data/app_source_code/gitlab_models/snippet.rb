@@ -18,8 +18,11 @@ class Snippet < ApplicationRecord
   include CanMoveRepositoryStorage
   include AfterCommitQueue
   extend ::Gitlab::Utils::Override
+  include CreatedAtFilterable
 
   MAX_FILE_COUNT = 10
+
+  DESCRIPTION_LENGTH_MAX = 1.megabyte
 
   cache_markdown_field :title, pipeline: :single_line
   cache_markdown_field :description
@@ -40,6 +43,7 @@ class Snippet < ApplicationRecord
 
   belongs_to :author, class_name: 'User'
   belongs_to :project
+  alias_method :resource_parent, :project
 
   has_many :notes, as: :noteable, dependent: :destroy # rubocop:disable Cop/ActiveRecordDependent
   has_many :user_mentions, class_name: "SnippetUserMention", dependent: :delete_all # rubocop:disable Cop/ActiveRecordDependent
@@ -55,21 +59,10 @@ class Snippet < ApplicationRecord
   validates :title, presence: true, length: { maximum: 255 }
   validates :file_name,
     length: { maximum: 255 }
+  validates :description, bytesize: { maximum: -> { DESCRIPTION_LENGTH_MAX } }, if: :description_changed?
 
   validates :content, presence: true
-  validates :content,
-            length: {
-              maximum: ->(_) { Gitlab::CurrentSettings.snippet_size_limit },
-              message: -> (_, data) do
-                current_value = ActiveSupport::NumberHelper.number_to_human_size(data[:value].size)
-                max_size = ActiveSupport::NumberHelper.number_to_human_size(Gitlab::CurrentSettings.snippet_size_limit)
-
-                _("is too long (%{current_value}). The maximum size is %{max_size}.") % { current_value: current_value, max_size: max_size }
-              end
-            },
-            if: :content_changed?
-
-  validates :visibility_level, inclusion: { in: Gitlab::VisibilityLevel.values }
+  validates :content, bytesize: { maximum: -> { Gitlab::CurrentSettings.snippet_size_limit } }, if: :content_changed?
 
   after_create :create_statistics
 
@@ -91,94 +84,122 @@ class Snippet < ApplicationRecord
   participant :notes_with_associations
 
   attr_spammable :title, spam_title: true
-  attr_spammable :content, spam_description: true
+  attr_spammable :description, spam_description: true
 
   attr_encrypted :secret_token,
-    key:       Settings.attr_encrypted_db_key_base_truncated,
-    mode:      :per_attribute_iv,
+    key: Settings.attr_encrypted_db_key_base_truncated,
+    mode: :per_attribute_iv,
     algorithm: 'aes-256-cbc'
 
-  def self.with_optional_visibility(value = nil)
-    if value
-      where(visibility_level: value)
-    else
-      all
+  class << self
+    # Searches for snippets with a matching title, description or file name.
+    #
+    # This method uses ILIKE on PostgreSQL.
+    #
+    # query - The search query as a String.
+    #
+    # Returns an ActiveRecord::Relation.
+    def search(query)
+      fuzzy_search(query, [:title, :description, :file_name])
     end
-  end
 
-  def self.only_personal_snippets
-    where(project_id: nil)
-  end
-
-  def self.only_project_snippets
-    where.not(project_id: nil)
-  end
-
-  def self.only_include_projects_visible_to(current_user = nil)
-    levels = Gitlab::VisibilityLevel.levels_for_user(current_user)
-
-    joins(:project).where(projects: { visibility_level: levels })
-  end
-
-  def self.only_include_projects_with_snippets_enabled(include_private: false)
-    column = ProjectFeature.access_level_attribute(:snippets)
-    levels = [ProjectFeature::ENABLED, ProjectFeature::PUBLIC]
-
-    levels << ProjectFeature::PRIVATE if include_private
-
-    joins(project: :project_feature)
-      .where(project_features: { column => levels })
-  end
-
-  def self.only_include_authorized_projects(current_user)
-    where(
-      'EXISTS (?)',
-      ProjectAuthorization
-        .select(1)
-        .where('project_id = snippets.project_id')
-        .where(user_id: current_user.id)
-    )
-  end
-
-  def self.for_project_with_user(project, user = nil)
-    return none unless project.snippets_visible?(user)
-
-    if user && project.team.member?(user)
-      project.snippets
-    else
-      project.snippets.public_to_user(user)
+    def parent_class
+      ::Project
     end
-  end
 
-  def self.visible_to_or_authored_by(user)
-    query = where(visibility_level: Gitlab::VisibilityLevel.levels_for_user(user))
-    query.or(where(author_id: user.id))
-  end
+    def sanitized_file_name(file_name)
+      file_name.gsub(/[^a-zA-Z0-9_\-\.]+/, '')
+    end
 
-  def self.reference_prefix
-    '$'
-  end
+    def with_optional_visibility(value = nil)
+      if value
+        where(visibility_level: value)
+      else
+        all
+      end
+    end
 
-  # Pattern used to extract `$123` snippet references from text
-  #
-  # This pattern supports cross-project references.
-  def self.reference_pattern
-    @reference_pattern ||= %r{
+    def only_personal_snippets
+      where(project_id: nil)
+    end
+
+    def only_project_snippets
+      where.not(project_id: nil)
+    end
+
+    def only_include_projects_visible_to(current_user = nil)
+      levels = Gitlab::VisibilityLevel.levels_for_user(current_user)
+
+      joins(:project).where(projects: { visibility_level: levels })
+    end
+
+    def only_include_projects_with_snippets_enabled(include_private: false)
+      column = ProjectFeature.access_level_attribute(:snippets)
+      levels = [ProjectFeature::ENABLED, ProjectFeature::PUBLIC]
+
+      levels << ProjectFeature::PRIVATE if include_private
+
+      joins(project: :project_feature)
+        .where(project_features: { column => levels })
+    end
+
+    def only_include_authorized_projects(current_user)
+      where(
+        'EXISTS (?)',
+        ProjectAuthorization
+          .select(1)
+          .where('project_id = snippets.project_id')
+          .where(user_id: current_user.id)
+      )
+    end
+
+    def for_project_with_user(project, user = nil)
+      return none unless project.snippets_visible?(user)
+
+      if user && project.team.member?(user)
+        project.snippets
+      else
+        project.snippets.public_to_user(user)
+      end
+    end
+
+    def visible_to_or_authored_by(user)
+      query = where(visibility_level: Gitlab::VisibilityLevel.levels_for_user(user))
+      query.or(where(author_id: user.id))
+    end
+
+    def reference_prefix
+      '$'
+    end
+
+    # Pattern used to extract `$123` snippet references from text
+    #
+    # This pattern supports cross-project references.
+    def reference_pattern
+      @reference_pattern ||= %r{
       (#{Project.reference_pattern})?
       #{Regexp.escape(reference_prefix)}(?<snippet>\d+)
     }x
-  end
+    end
 
-  def self.link_reference_pattern
-    @link_reference_pattern ||= super("snippets", /(?<snippet>\d+)/)
-  end
+    def link_reference_pattern
+      @link_reference_pattern ||= super("snippets", /(?<snippet>\d+)/)
+    end
 
-  def self.find_by_id_and_project(id:, project:)
-    Snippet.find_by(id: id, project: project)
-  end
+    def find_by_id_and_project(id:, project:)
+      Snippet.find_by(id: id, project: project)
+    end
 
-  def self.max_file_limit
-    MAX_FILE_COUNT
+    def find_by_project_title_trunc_created_at(project, title, created_at)
+      where(project: project, title: title)
+        .find_by(
+          "date_trunc('second', created_at at time zone :tz) at time zone :tz = :created_at",
+          tz: created_at.zone, created_at: created_at)
+    end
+
+    def max_file_limit
+      MAX_FILE_COUNT
+    end
   end
 
   def initialize(attributes = {})
@@ -209,15 +230,19 @@ class Snippet < ApplicationRecord
     end
   end
 
+  def all_files
+    list_files(default_branch)
+  end
+
   def blob
     @blob ||= Blob.decorate(SnippetBlob.new(self), self)
   end
 
-  def blobs
+  def blobs(paths = [])
     return [] unless repository_exists?
 
-    files = list_files(default_branch)
-    items = files.map { |file| [default_branch, file] }
+    paths = all_files if paths.empty?
+    items = paths.map { |path| [default_branch, path] }
 
     repository.blobs_at(items).compact
   end
@@ -228,10 +253,6 @@ class Snippet < ApplicationRecord
 
   def file_name
     super.to_s
-  end
-
-  def self.sanitized_file_name(file_name)
-    file_name.gsub(/[^a-zA-Z0-9_\-\.]+/, '')
   end
 
   def visibility_level_field
@@ -248,13 +269,7 @@ class Snippet < ApplicationRecord
 
   def check_for_spam?(user:)
     visibility_level_changed?(to: Snippet::PUBLIC) ||
-      (public? && (title_changed? || content_changed?))
-  end
-
-  # snippets are the biggest sources of spam
-  override :allow_possible_spam?
-  def allow_possible_spam?
-    false
+      (public? && (title_changed? || description_changed?))
   end
 
   def spammable_entity_type
@@ -322,24 +337,10 @@ class Snippet < ApplicationRecord
     snippet_repository&.shard_name || Repository.pick_storage_shard
   end
 
-  # Repositories are created with a default branch. This branch
-  # can be different from the default branch set in the platform.
-  # This method changes the `HEAD` file to point to the existing
-  # default branch in case it's different.
-  def change_head_to_default_branch
-    return unless repository.exists?
-    # All snippets must have at least 1 file. Therefore, if
-    # `HEAD` is empty is because it's pointing to the wrong
-    # default branch
-    return unless repository.empty? || list_files('HEAD').empty?
-
-    repository.raw_repository.write_ref('HEAD', "refs/heads/#{default_branch}")
-  end
-
   def create_repository
     return if repository_exists? && snippet_repository
 
-    repository.create_if_not_exists
+    repository.create_if_not_exists(default_branch)
     track_snippet_repository(repository.storage)
   end
 
@@ -349,7 +350,7 @@ class Snippet < ApplicationRecord
   end
 
   def can_cache_field?(field)
-    field != :content || MarkupHelper.gitlab_markdown?(file_name)
+    field != :content || Gitlab::MarkupHelper.gitlab_markdown?(file_name)
   end
 
   def hexdigest
@@ -370,23 +371,6 @@ class Snippet < ApplicationRecord
 
   def multiple_files?
     list_files.size > 1
-  end
-
-  class << self
-    # Searches for snippets with a matching title, description or file name.
-    #
-    # This method uses ILIKE on PostgreSQL.
-    #
-    # query - The search query as a String.
-    #
-    # Returns an ActiveRecord::Relation.
-    def search(query)
-      fuzzy_search(query, [:title, :description, :file_name])
-    end
-
-    def parent_class
-      ::Project
-    end
   end
 end
 

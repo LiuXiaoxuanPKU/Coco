@@ -5,6 +5,9 @@ module BulkImports
     class BaseConfig
       include Gitlab::Utils::StrongMemoize
 
+      UPLOADS_RELATION = 'uploads'
+      SELF_RELATION = 'self'
+
       def initialize(portable)
         @portable = portable
       end
@@ -22,15 +25,33 @@ module BulkImports
       end
 
       def export_path
-        strong_memoize(:export_path) do
-          relative_path = File.join(base_export_path, SecureRandom.hex)
-
-          ::Gitlab::ImportExport.export_path(relative_path: relative_path)
-        end
+        @export_path ||= Dir.mktmpdir('bulk_imports')
       end
 
       def portable_relations
-        import_export_config.dig(:tree, portable_class_sym).keys.map(&:to_s) - skipped_relations
+        tree_relations + file_relations + self_relation - skipped_relations
+      end
+
+      def self_relation?(relation)
+        relation == SELF_RELATION
+      end
+
+      def tree_relation?(relation)
+        tree_relations.include?(relation)
+      end
+
+      def file_relation?(relation)
+        file_relations.include?(relation)
+      end
+
+      def tree_relation_definition_for(relation)
+        return unless tree_relation?(relation)
+
+        portable_tree[:include].find { |include| include[relation.to_sym] }
+      end
+
+      def portable_relations_tree
+        @portable_relations_tree ||= attributes_finder.find_relations_tree(portable_class_sym).deep_stringify_keys
       end
 
       private
@@ -44,7 +65,7 @@ module BulkImports
       end
 
       def import_export_config
-        ::Gitlab::ImportExport::Config.new(config: import_export_yaml).to_h
+        @config ||= ::Gitlab::ImportExport::Config.new(config: import_export_yaml).to_h
       end
 
       def portable_class
@@ -55,20 +76,24 @@ module BulkImports
         @portable_class_sym ||= portable_class.to_s.demodulize.underscore.to_sym
       end
 
-      def portable_relations_tree
-        @portable_relations_tree ||= attributes_finder.find_relations_tree(portable_class_sym).deep_stringify_keys
-      end
-
       def import_export_yaml
         raise NotImplementedError
       end
 
-      def base_export_path
-        raise NotImplementedError
+      def tree_relations
+        import_export_config.dig(:tree, portable_class_sym).keys.map(&:to_s)
+      end
+
+      def file_relations
+        [UPLOADS_RELATION]
       end
 
       def skipped_relations
         []
+      end
+
+      def self_relation
+        [SELF_RELATION]
       end
     end
   end

@@ -2,8 +2,11 @@
 
 module ContainerRegistry
   class Event
+    include Gitlab::Utils::StrongMemoize
+
     ALLOWED_ACTIONS = %w(push delete).freeze
     PUSH_ACTION = 'push'
+    DELETE_ACTION = 'delete'
     EVENT_TRACKING_CATEGORY = 'container_registry:notification'
 
     attr_reader :event
@@ -17,7 +20,7 @@ module ContainerRegistry
     end
 
     def handle!
-      # no op
+      update_project_statistics
     end
 
     def track!
@@ -39,6 +42,10 @@ module ContainerRegistry
       event['target'].has_key?('tag')
     end
 
+    def target_digest?
+      event['target'].has_key?('digest')
+    end
+
     def target_repository?
       !target_tag? && event['target'].has_key?('repository')
     end
@@ -51,6 +58,10 @@ module ContainerRegistry
       PUSH_ACTION == action
     end
 
+    def action_delete?
+      DELETE_ACTION == action
+    end
+
     def container_repository_exists?
       return unless container_registry_path
 
@@ -58,10 +69,25 @@ module ContainerRegistry
     end
 
     def container_registry_path
-      path = event.dig('target', 'repository')
-      return unless path
+      strong_memoize(:container_registry_path) do
+        path = event.dig('target', 'repository')
+        next unless path
 
-      ContainerRegistry::Path.new(path)
+        ContainerRegistry::Path.new(path)
+      end
+    end
+
+    def project
+      container_registry_path&.repository_project
+    end
+
+    def update_project_statistics
+      return unless supported?
+      return unless target_tag? || (action_delete? && target_digest?)
+      return unless project
+
+      Rails.cache.delete(project.root_ancestor.container_repositories_size_cache_key)
+      ProjectCacheWorker.perform_async(project.id, [], [:container_registry_size])
     end
   end
 end

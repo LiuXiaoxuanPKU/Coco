@@ -16,7 +16,7 @@ module Ci
     belongs_to :owner, class_name: 'User'
     has_one :last_pipeline, -> { order(id: :desc) }, class_name: 'Ci::Pipeline'
     has_many :pipelines
-    has_many :variables, class_name: 'Ci::PipelineScheduleVariable', validate: false
+    has_many :variables, class_name: 'Ci::PipelineScheduleVariable'
 
     validates :cron, unless: :importing?, cron: true, presence: { unless: :importing? }
     validates :cron_timezone, cron_timezone: true, presence: { unless: :importing? }
@@ -24,7 +24,7 @@ module Ci
     validates :description, presence: true
     validates :variables, nested_attributes_duplicates: true
 
-    strip_attributes :cron
+    strip_attributes! :cron
 
     scope :active, -> { where(active: true) }
     scope :inactive, -> { where(active: false) }
@@ -64,6 +64,18 @@ module Ci
 
     def daily_limit
       project.actual_limits.limit_for(:ci_daily_pipeline_schedule_triggers)
+    end
+
+    def ref_for_display
+      return unless ref.present?
+
+      ref.gsub(%r{^refs/(heads|tags)/}, '')
+    end
+
+    def for_tag?
+      return false unless ref.present?
+
+      ref.start_with? 'refs/tags/'
     end
 
     private

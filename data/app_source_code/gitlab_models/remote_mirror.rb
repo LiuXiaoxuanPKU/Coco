@@ -20,9 +20,7 @@ class RemoteMirror < ApplicationRecord
 
   belongs_to :project, inverse_of: :remote_mirrors
 
-  validates :url, presence: true, public_url: { schemes: %w(ssh git http https), allow_blank: true, enforce_user: true }
-
-  before_save :set_new_remote_name, if: :mirror_url_changed?
+  validates :url, presence: true, public_url: { schemes: Project::VALID_MIRROR_PROTOCOLS, allow_blank: true, enforce_user: true }
 
   after_save :set_override_remote_mirror_available, unless: -> { Gitlab::CurrentSettings.current_application_settings.mirror_available }
   after_update :reset_fields, if: :saved_change_to_mirror_url?
@@ -85,10 +83,6 @@ class RemoteMirror < ApplicationRecord
     end
   end
 
-  def remote_name
-    super || fallback_remote_name
-  end
-
   def update_failed?
     update_status == 'failed'
   end
@@ -100,7 +94,6 @@ class RemoteMirror < ApplicationRecord
   def update_repository
     Gitlab::Git::RemoteMirror.new(
       project.repository.raw,
-      remote_name,
       remote_url,
       **options_for_update
     ).update
@@ -135,7 +128,7 @@ class RemoteMirror < ApplicationRecord
   def sync
     return unless sync?
 
-    if recently_scheduled?
+    if schedule_with_delay?
       RepositoryUpdateRemoteMirrorWorker.perform_in(backoff_delay, self.id, Time.current)
     else
       RepositoryUpdateRemoteMirrorWorker.perform_async(self.id, Time.current)
@@ -268,13 +261,8 @@ class RemoteMirror < ApplicationRecord
     super
   end
 
-  def fallback_remote_name
-    return unless id
-
-    "remote_mirror_#{id}"
-  end
-
-  def recently_scheduled?
+  def schedule_with_delay?
+    return false if Feature.enabled?(:remote_mirror_no_delay, project, type: :ops)
     return false unless self.last_update_started_at
 
     self.last_update_started_at >= Time.current - backoff_delay
@@ -294,10 +282,6 @@ class RemoteMirror < ApplicationRecord
     enabled = read_attribute(:enabled)
 
     project.update(remote_mirror_available_overridden: enabled)
-  end
-
-  def set_new_remote_name
-    self.remote_name = "remote_mirror_#{SecureRandom.hex}"
   end
 
   def mirror_url_changed?

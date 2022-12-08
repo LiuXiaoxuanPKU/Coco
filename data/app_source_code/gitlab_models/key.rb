@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require 'digest/md5'
-
 class Key < ApplicationRecord
   include AfterCommitQueue
   include Sortable
-  include Sha256Attribute
+  include ShaAttribute
   include Expirable
   include FromUnion
 
@@ -22,15 +20,23 @@ class Key < ApplicationRecord
   validates :key,
     presence: true,
     length: { maximum: 5000 },
-    format: { with: /\A(ssh|ecdsa)-.*\Z/ }
+    format: { with: /\A(#{Gitlab::SSHPublicKey.supported_algorithms.join('|')})/ }
 
-  validates :fingerprint,
+  validates :fingerprint_sha256,
     uniqueness: true,
     presence: { message: 'cannot be generated' }
 
   validate :key_meets_restrictions
+  validate :expiration, on: :create
+  validate :banned_key, if: :key_changed?
 
   delegate :name, :email, to: :user, prefix: true
+
+  enum usage_type: {
+    auth_and_signing: 0,
+    auth: 1,
+    signing: 2
+  }
 
   after_commit :add_to_authorized_keys, on: :create
   after_create :post_create_hook
@@ -40,13 +46,16 @@ class Key < ApplicationRecord
   after_destroy :refresh_user_cache
 
   alias_attribute :fingerprint_md5, :fingerprint
+  alias_attribute :name, :title
 
   scope :preload_users, -> { preload(:user) }
   scope :for_user, -> (user) { where(user: user) }
-  scope :order_last_used_at_desc, -> { reorder(::Gitlab::Database.nulls_last_order('last_used_at', 'DESC')) }
+  scope :order_last_used_at_desc, -> { reorder(arel_table[:last_used_at].desc.nulls_last) }
+  scope :auth, -> { where(usage_type: [:auth, :auth_and_signing]) }
+  scope :signing, -> { where(usage_type: [:signing, :auth_and_signing]) }
 
   # Date is set specifically in this scope to improve query time.
-  scope :expired_and_not_notified, -> { where(["date(expires_at AT TIME ZONE 'UTC') BETWEEN '2000-01-01' AND CURRENT_DATE AND expiry_notification_delivered_at IS NULL"]) }
+  scope :expired_today_and_not_notified, -> { where(["date(expires_at AT TIME ZONE 'UTC') = CURRENT_DATE AND expiry_notification_delivered_at IS NULL"]) }
   scope :expiring_soon_and_not_notified, -> { where(["date(expires_at AT TIME ZONE 'UTC') > CURRENT_DATE AND date(expires_at AT TIME ZONE 'UTC') < ? AND before_expiry_notification_delivered_at IS NULL", DAYS_TO_EXPIRE.days.from_now.to_date]) }
 
   def self.regular_keys
@@ -121,6 +130,12 @@ class Key < ApplicationRecord
     @public_key ||= Gitlab::SSHPublicKey.new(key)
   end
 
+  def ensure_sha256_fingerprint!
+    return if self.fingerprint_sha256
+
+    save if generate_fingerprint
+  end
+
   private
 
   def generate_fingerprint
@@ -129,8 +144,8 @@ class Key < ApplicationRecord
 
     return unless public_key.valid?
 
-    self.fingerprint_md5 = public_key.fingerprint
-    self.fingerprint_sha256 = public_key.fingerprint("SHA256").gsub("SHA256:", "")
+    self.fingerprint_md5 = public_key.fingerprint unless Gitlab::FIPS.enabled?
+    self.fingerprint_sha256 = public_key.fingerprint_sha256.gsub("SHA256:", "")
   end
 
   def key_meets_restrictions
@@ -143,10 +158,29 @@ class Key < ApplicationRecord
     end
   end
 
+  def banned_key
+    return unless public_key.banned?
+
+    help_page_url = Rails.application.routes.url_helpers.help_page_url(
+      'security/ssh_keys_restrictions',
+      anchor: 'block-banned-or-compromised-keys'
+    )
+
+    errors.add(
+      :key,
+      _('cannot be used because it belongs to a compromised private key. Stop using this key and generate a new one.'),
+      help_page_url: help_page_url
+    )
+  end
+
   def forbidden_key_type_message
     allowed_types = Gitlab::CurrentSettings.allowed_key_types.map(&:upcase)
 
     "type is forbidden. Must be #{Gitlab::Utils.to_exclusive_sentence(allowed_types)}"
+  end
+
+  def expiration
+    errors.add(:key, message: 'has expired') if expired?
   end
 end
 

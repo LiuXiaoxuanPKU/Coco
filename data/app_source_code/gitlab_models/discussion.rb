@@ -25,7 +25,7 @@ class Discussion
             :to_ability_name,
             :editable?,
             :resolved_by_id,
-            :system_note_with_references_visible_for?,
+            :system_note_visible_for?,
             :resource_parent,
             :save,
             to: :first_note
@@ -45,6 +45,14 @@ class Discussion
   def self.build_collection(notes, context_noteable = nil)
     grouped_notes = notes.group_by { |n| n.discussion_id(context_noteable) }
     grouped_notes.values.map { |notes| build(notes, context_noteable) }
+  end
+
+  def self.build_discussions(discussion_ids, context_noteable = nil, preload_note_diff_file: false)
+    notes = Note.where(discussion_id: discussion_ids).fresh
+    notes = notes.inc_note_diff_file if preload_note_diff_file
+
+    grouped_notes = notes.group_by { |n| n.discussion_id }
+    grouped_notes.transform_values { |notes| Discussion.build(notes, context_noteable) }
   end
 
   def self.lazy_find(discussion_id)

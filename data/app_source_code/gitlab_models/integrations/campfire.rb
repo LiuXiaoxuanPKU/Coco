@@ -2,10 +2,42 @@
 
 module Integrations
   class Campfire < Integration
-    include ActionView::Helpers::UrlHelper
+    SUBDOMAIN_REGEXP = %r{\A[a-z](?:[a-z0-9-]*[a-z0-9])?\z}i.freeze
 
-    prop_accessor :token, :subdomain, :room
     validates :token, presence: true, if: :activated?
+    validates :room,
+      allow_blank: true,
+      numericality: { only_integer: true, greater_than: 0 }
+    validates :subdomain,
+      allow_blank: true,
+      format: { with: SUBDOMAIN_REGEXP }, length: { in: 1..63 }
+
+    field :token,
+      type: 'password',
+      title: -> { _('Campfire token') },
+      help: -> { s_('CampfireService|API authentication token from Campfire.') },
+      non_empty_password_title: -> { s_('ProjectService|Enter new token') },
+      non_empty_password_help: -> { s_('ProjectService|Leave blank to use your current token.') },
+      placeholder: '',
+      required: true
+
+    field :subdomain,
+      title: -> { _('Campfire subdomain (optional)') },
+      placeholder: '',
+      exposes_secrets: true,
+      help: -> do
+        ERB::Util.html_escape(
+          s_('CampfireService|The %{code_open}.campfirenow.com%{code_close} subdomain.')
+        ) % {
+          code_open: '<code>'.html_safe,
+          code_close: '</code>'.html_safe
+        }
+      end
+
+    field :room,
+      title: -> { _('Campfire room ID (optional)') },
+      placeholder: '123456',
+      help: -> { s_('CampfireService|From the end of the room URL.') }
 
     def title
       'Campfire'
@@ -16,39 +48,17 @@ module Integrations
     end
 
     def help
-      docs_link = link_to _('Learn more.'), Rails.application.routes.url_helpers.help_page_url('api/services', anchor: 'campfire'), target: '_blank', rel: 'noopener noreferrer'
-      s_('CampfireService|Send notifications about push events to Campfire chat rooms. %{docs_link}').html_safe % { docs_link: docs_link.html_safe }
+      docs_link = ActionController::Base.helpers.link_to _('Learn more.'), Rails.application.routes.url_helpers.help_page_url('api/services', anchor: 'campfire'), target: '_blank', rel: 'noopener noreferrer'
+
+      ERB::Util.html_escape(
+        s_('CampfireService|Send notifications about push events to Campfire chat rooms. %{docs_link}')
+      ) % {
+        docs_link: docs_link.html_safe
+      }
     end
 
     def self.to_param
       'campfire'
-    end
-
-    def fields
-      [
-        {
-          type: 'text',
-          name: 'token',
-          title: _('Campfire token'),
-          placeholder: '',
-          help: s_('CampfireService|API authentication token from Campfire.'),
-          required: true
-        },
-        {
-          type: 'text',
-          name: 'subdomain',
-          title: _('Campfire subdomain (optional)'),
-          placeholder: '',
-          help: s_('CampfireService|The %{code_open}.campfirenow.com%{code_close} subdomain.') % { code_open: '<code>'.html_safe, code_close: '</code>'.html_safe }
-        },
-        {
-          type: 'text',
-          name: 'room',
-          title: _('Campfire room ID (optional)'),
-          placeholder: '123456',
-          help: s_('CampfireService|From the end of the room URL.')
-        }
-      ]
     end
 
     def self.supported_events

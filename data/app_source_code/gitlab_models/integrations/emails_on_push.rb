@@ -6,16 +6,37 @@ module Integrations
 
     RECIPIENTS_LIMIT = 750
 
-    boolean_accessor :send_from_committer_email
-    boolean_accessor :disable_diffs
-    prop_accessor :recipients, :branches_to_be_notified
     validates :recipients, presence: true, if: :validate_recipients?
     validate :number_of_recipients_within_limit, if: :validate_recipients?
 
+    field :send_from_committer_email,
+      type: 'checkbox',
+      title: -> { s_("EmailsOnPushService|Send from committer") },
+      help: -> do
+        @help ||= begin
+          domains = Notify.allowed_email_domains.map { |domain| "user@#{domain}" }.join(", ")
+
+          s_("EmailsOnPushService|Send notifications from the committer's email address if the domain matches the domain used by your GitLab instance (such as %{domains}).") % { domains: domains }
+        end
+      end
+
+    field :disable_diffs,
+      type: 'checkbox',
+      title: -> { s_("EmailsOnPushService|Disable code diffs") },
+      help: -> { s_("EmailsOnPushService|Don't include possibly sensitive code diffs in notification body.") }
+
+    field :branches_to_be_notified,
+      type: 'select',
+      title: -> { s_('Integrations|Branches for which notifications are to be sent') },
+      choices: branch_choices
+
+    field :recipients,
+      type: 'textarea',
+      placeholder: -> { s_('EmailsOnPushService|tanuki@example.com gitlab@example.com') },
+      help: -> { s_('EmailsOnPushService|Emails separated by whitespace.') }
+
     def self.valid_recipients(recipients)
-      recipients.split.select do |recipient|
-        recipient.include?('@')
-      end.uniq(&:downcase)
+      recipients.split.grep(Devise.email_regexp).uniq(&:downcase)
     end
 
     def title
@@ -50,7 +71,7 @@ module Integrations
         recipients,
         push_data,
         send_from_committer_email: send_from_committer_email?,
-        disable_diffs:             disable_diffs?
+        disable_diffs: disable_diffs?
       )
     end
 
@@ -69,30 +90,13 @@ module Integrations
       Gitlab::Utils.to_boolean(self.disable_diffs)
     end
 
-    def fields
-      domains = Notify.allowed_email_domains.map { |domain| "user@#{domain}" }.join(", ")
-      [
-        { type: 'checkbox', name: 'send_from_committer_email', title: s_("EmailsOnPushService|Send from committer"),
-          help: s_("EmailsOnPushService|Send notifications from the committer's email address if the domain matches the domain used by your GitLab instance (such as %{domains}).") % { domains: domains } },
-        { type: 'checkbox', name: 'disable_diffs', title: s_("EmailsOnPushService|Disable code diffs"),
-          help: s_("EmailsOnPushService|Don't include possibly sensitive code diffs in notification body.") },
-        { type: 'select', name: 'branches_to_be_notified', choices: branch_choices },
-        {
-          type: 'textarea',
-          name: 'recipients',
-          placeholder: s_('EmailsOnPushService|tanuki@example.com gitlab@example.com'),
-          help: s_('EmailsOnPushService|Emails separated by whitespace.')
-        }
-      ]
-    end
-
     private
 
     def number_of_recipients_within_limit
       return if recipients.blank?
 
       if self.class.valid_recipients(recipients).size > RECIPIENTS_LIMIT
-        errors.add(:recipients, s_("EmailsOnPushService|can't exceed %{recipients_limit}") % { recipients_limit: RECIPIENTS_LIMIT })
+        errors.add(:recipients, s_("Integrations|can't exceed %{recipients_limit}") % { recipients_limit: RECIPIENTS_LIMIT })
       end
     end
   end

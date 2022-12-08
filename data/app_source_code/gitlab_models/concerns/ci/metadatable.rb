@@ -18,13 +18,23 @@ module Ci
 
       delegate :timeout, to: :metadata, prefix: true, allow_nil: true
       delegate :interruptible, to: :metadata, prefix: false, allow_nil: true
-      delegate :has_exposed_artifacts?, to: :metadata, prefix: false, allow_nil: true
       delegate :environment_auto_stop_in, to: :metadata, prefix: false, allow_nil: true
+      delegate :set_cancel_gracefully, to: :metadata, prefix: false, allow_nil: false
+      delegate :id_tokens, to: :metadata, allow_nil: true
+
       before_create :ensure_metadata
     end
 
+    def has_exposed_artifacts?
+      !!metadata&.has_exposed_artifacts?
+    end
+
+    def cancel_gracefully?
+      !!metadata&.cancel_gracefully?
+    end
+
     def ensure_metadata
-      metadata || build_metadata(project: project)
+      metadata || build_metadata(project: project, partition_id: partition_id)
     end
 
     def degenerated?
@@ -67,6 +77,24 @@ module Ci
 
     def interruptible=(value)
       ensure_metadata.interruptible = value
+    end
+
+    def id_tokens?
+      metadata&.id_tokens.present?
+    end
+
+    def id_tokens=(value)
+      ensure_metadata.id_tokens = value
+    end
+
+    def enqueue_immediately?
+      !!options[:enqueue_immediately]
+    end
+
+    def set_enqueue_immediately!
+      # ensures that even if `config_options: nil` in the database we set the
+      # new value correctly.
+      self.options = options.merge(enqueue_immediately: true)
     end
 
     private

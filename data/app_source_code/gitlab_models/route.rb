@@ -5,6 +5,7 @@ class Route < ApplicationRecord
   include Gitlab::SQL::Pattern
 
   belongs_to :source, polymorphic: true, inverse_of: :route # rubocop:disable Cop/PolymorphicAssociations
+  belongs_to :namespace, inverse_of: :namespace_route
   validates :source, presence: true
 
   validates :path,
@@ -12,7 +13,6 @@ class Route < ApplicationRecord
     presence: true,
     uniqueness: { case_sensitive: false }
 
-  before_validation :delete_conflicting_orphaned_routes
   after_create :delete_conflicting_redirects
   after_update :delete_conflicting_redirects, if: :saved_change_to_path?
   after_update :create_redirect_for_old_path
@@ -39,17 +39,17 @@ class Route < ApplicationRecord
         attributes[:name] = route.name.sub(name_before_last_save, name)
       end
 
-      if attributes.present?
-        old_path = route.path
+      next if attributes.empty?
 
-        # Callbacks must be run manually
-        route.update_columns(attributes.merge(updated_at: Time.current))
+      old_path = route.path
 
-        # We are not calling route.delete_conflicting_redirects here, in hopes
-        # of avoiding deadlocks. The parent (self, in this method) already
-        # called it, which deletes conflicts for all descendants.
-        route.create_redirect(old_path) if attributes[:path]
-      end
+      # Callbacks must be run manually
+      route.update_columns(attributes.merge(updated_at: Time.current))
+
+      # We are not calling route.delete_conflicting_redirects here, in hopes
+      # of avoiding deadlocks. The parent (self, in this method) already
+      # called it, which deletes conflicts for all descendants.
+      route.create_redirect(old_path) if attributes[:path]
     end
   end
 
@@ -69,14 +69,5 @@ class Route < ApplicationRecord
 
   def create_redirect_for_old_path
     create_redirect(path_before_last_save) if saved_change_to_path?
-  end
-
-  def delete_conflicting_orphaned_routes
-    conflicting = self.class.iwhere(path: path)
-    conflicting_orphaned_routes = conflicting.select do |route|
-      route.source.nil?
-    end
-
-    conflicting_orphaned_routes.each(&:destroy)
   end
 end

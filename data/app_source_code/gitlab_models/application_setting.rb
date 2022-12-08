@@ -6,10 +6,11 @@ class ApplicationSetting < ApplicationRecord
   include TokenAuthenticatable
   include ChronicDurationAttribute
   include IgnorableColumns
+  include Sanitizable
 
   ignore_columns %i[elasticsearch_shards elasticsearch_replicas], remove_with: '14.4', remove_after: '2021-09-22'
-  ignore_column :seat_link_enabled, remove_with: '14.4', remove_after: '2021-09-22'
-  ignore_column :cloud_license_enabled, remove_with: '14.4', remove_after: '2021-09-22'
+  ignore_columns %i[static_objects_external_storage_auth_token], remove_with: '14.9', remove_after: '2022-03-22'
+  ignore_column :user_email_lookup_limit, remove_with: '15.0', remove_after: '2022-04-18'
 
   INSTANCE_REVIEW_MIN_USERS = 50
   GRAFANA_URL_ERROR_MESSAGE = 'Please check your Grafana URL setting in ' \
@@ -19,10 +20,12 @@ class ApplicationSetting < ApplicationRecord
     'Admin Area > Settings > General > Kroki'
 
   enum whats_new_variant: { all_tiers: 0, current_tier: 1, disabled: 2 }, _prefix: true
+  enum email_confirmation_setting: { off: 0, soft: 1, hard: 2 }
 
   add_authentication_token_field :runners_registration_token, encrypted: -> { Feature.enabled?(:application_settings_tokens_optional_encryption) ? :optional : :required }
   add_authentication_token_field :health_check_access_token
-  add_authentication_token_field :static_objects_external_storage_auth_token
+  add_authentication_token_field :static_objects_external_storage_auth_token, encrypted: :required
+  add_authentication_token_field :error_tracking_access_token, encrypted: :required
 
   belongs_to :self_monitoring_project, class_name: "Project", foreign_key: 'instance_administration_project_id'
   belongs_to :push_rule
@@ -31,6 +34,8 @@ class ApplicationSetting < ApplicationRecord
   belongs_to :instance_group, class_name: "Group", foreign_key: 'instance_administrators_group_id'
   alias_attribute :instance_group_id, :instance_administrators_group_id
   alias_attribute :instance_administrators_group, :instance_group
+
+  sanitizes! :default_branch_name
 
   def self.kroki_formats_attributes
     {
@@ -70,11 +75,15 @@ class ApplicationSetting < ApplicationRecord
   cache_markdown_field :shared_runners_text, pipeline: :plain_markdown
   cache_markdown_field :after_sign_up_text
 
-  default_value_for :id, 1
-  default_value_for :repository_storages_weighted, {}
-  default_value_for :kroki_formats, {}
+  attribute :id, default: 1
+  attribute :repository_storages_weighted, default: -> { {} }
+  attribute :kroki_formats, default: -> { {} }
 
   chronic_duration_attr_writer :archive_builds_in_human_readable, :archive_builds_in_seconds
+
+  chronic_duration_attr :runner_token_expiration_interval_human_readable, :runner_token_expiration_interval
+  chronic_duration_attr :group_runner_token_expiration_interval_human_readable, :group_runner_token_expiration_interval
+  chronic_duration_attr :project_runner_token_expiration_interval_human_readable, :project_runner_token_expiration_interval
 
   validates :grafana_url,
             system_hook_url: {
@@ -112,7 +121,7 @@ class ApplicationSetting < ApplicationRecord
             if: :help_page_support_url_column_exists?
 
   validates :help_page_documentation_base_url,
-            length: { maximum: 255, message: _("is too long (maximum is %{count} characters)") },
+            length: { maximum: 255, message: N_("is too long (maximum is %{count} characters)") },
             allow_blank: true,
             addressable_url: true
 
@@ -140,12 +149,8 @@ class ApplicationSetting < ApplicationRecord
             if: :akismet_enabled
 
   validates :spam_check_api_key,
-            length: { maximum: 2000, message: _('is too long (maximum is %{count} characters)') },
+            length: { maximum: 2000, message: N_('is too long (maximum is %{count} characters)') },
             allow_blank: true
-
-  validates :spam_check_api_key,
-            presence: true,
-            if: :spam_check_endpoint_enabled
 
   validates :unique_ips_limit_per_user,
             numericality: { greater_than_or_equal_to: 1 },
@@ -163,6 +168,11 @@ class ApplicationSetting < ApplicationRecord
   validate :validate_kroki_url, if: :kroki_enabled
 
   validates :kroki_formats, json_schema: { filename: 'application_setting_kroki_formats' }
+
+  validates :metrics_method_call_threshold,
+           numericality: { greater_than_or_equal_to: 0 },
+           presence: true,
+           if: :prometheus_metrics_enabled
 
   validates :plantuml_url,
             presence: true,
@@ -195,6 +205,10 @@ class ApplicationSetting < ApplicationRecord
             presence: true,
             numericality: { only_integer: true, greater_than: 0 }
 
+  validates :max_export_size,
+            presence: true,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
   validates :max_import_size,
             presence: true,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
@@ -204,10 +218,18 @@ class ApplicationSetting < ApplicationRecord
             numericality: { only_integer: true, greater_than_or_equal_to: 0,
                             less_than: ::Gitlab::Pages::MAX_SIZE / 1.megabyte }
 
+  validates :max_pages_custom_domains_per_project,
+            presence: true,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  validates :jobs_per_stage_page_size,
+            presence: true,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
   validates :default_artifacts_expire_in, presence: true, duration: true
 
   validates :container_expiration_policies_enable_historic_entries,
-            inclusion: { in: [true, false], message: _('must be a boolean value') }
+            inclusion: { in: [true, false], message: N_('must be a boolean value') }
 
   validates :container_registry_token_expire_delay,
             presence: true,
@@ -296,11 +318,12 @@ class ApplicationSetting < ApplicationRecord
                             less_than_or_equal_to: Commit::MAX_DIFF_LINES_SETTING_UPPER_BOUND }
 
   validates :user_default_internal_regex, js_regex: true, allow_nil: true
+  validates :default_preferred_language, presence: true, inclusion: { in: Gitlab::I18n.available_locales }
 
   validates :personal_access_token_prefix,
             format: { with: %r{\A[a-zA-Z0-9_+=/@:.-]+\z},
-                      message: _("can contain only letters of the Base64 alphabet (RFC4648) with the addition of '@', ':' and '.'") },
-            length: { maximum: 20, message: _('is too long (maximum is %{count} characters)') },
+                      message: N_("can contain only letters of the Base64 alphabet (RFC4648) with the addition of '@', ':' and '.'") },
+            length: { maximum: 20, message: N_('is too long (maximum is %{count} characters)') },
             allow_blank: true
 
   validates :commit_email_hostname, format: { with: /\A[^@]+\z/ }
@@ -343,24 +366,58 @@ class ApplicationSetting < ApplicationRecord
 
   validates :snippet_size_limit, numericality: { only_integer: true, greater_than: 0 }
   validates :wiki_page_max_content_bytes, numericality: { only_integer: true, greater_than_or_equal_to: 1.kilobytes }
+  validates :max_yaml_size_bytes, numericality: { only_integer: true, greater_than: 0 }, presence: true
+  validates :max_yaml_depth, numericality: { only_integer: true, greater_than: 0 }, presence: true
 
   validates :email_restrictions, untrusted_regexp: true
 
-  validates :hashed_storage_enabled, inclusion: { in: [true], message: _("Hashed storage can't be disabled anymore for new projects") }
+  validates :hashed_storage_enabled, inclusion: { in: [true], message: N_("Hashed storage can't be disabled anymore for new projects") }
 
   validates :container_registry_delete_tags_service_timeout,
+            :container_registry_cleanup_tags_service_max_list_size,
+            :container_registry_expiration_policies_worker_capacity,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
-  validates :container_registry_cleanup_tags_service_max_list_size,
+  validates :container_registry_expiration_policies_caching,
+            inclusion: { in: [true, false], message: N_('must be a boolean value') }
+
+  validates :container_registry_import_max_tags_count,
+            :container_registry_import_max_retries,
+            :container_registry_import_start_max_retries,
+            :container_registry_import_max_step_duration,
+            :container_registry_pre_import_timeout,
+            :container_registry_import_timeout,
+            allow_nil: false,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
-  validates :container_registry_expiration_policies_worker_capacity,
+  validates :container_registry_pre_import_tags_rate,
+            allow_nil: false,
+            numericality: { greater_than_or_equal_to: 0 }
+  validates :container_registry_import_target_plan, presence: true
+  validates :container_registry_import_created_before, presence: true
+
+  validates :dependency_proxy_ttl_group_policy_worker_capacity,
+            allow_nil: false,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  validates :packages_cleanup_package_file_worker_capacity,
+            :package_registry_cleanup_policies_worker_capacity,
+            allow_nil: false,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   validates :invisible_captcha_enabled,
-            inclusion: { in: [true, false], message: _('must be a boolean value') }
+            inclusion: { in: [true, false], message: N_('must be a boolean value') }
 
-  SUPPORTED_KEY_TYPES.each do |type|
+  validates :invitation_flow_enforcement, :can_create_group,
+            allow_nil: false,
+            inclusion: { in: [true, false], message: N_('must be a boolean value') }
+
+  validates :deactivate_dormant_users_period,
+            presence: true,
+            numericality: { only_integer: true, greater_than_or_equal_to: 90, message: N_("'%{value}' days of inactivity must be greater than or equal to 90") },
+            if: :deactivate_dormant_users?
+
+  Gitlab::SSHPublicKey.supported_types.each do |type|
     validates :"#{type}_key_restriction", presence: true, key_restriction: { type: type }
   end
 
@@ -399,7 +456,7 @@ class ApplicationSetting < ApplicationRecord
             if: :external_authorization_service_enabled
 
   validates :spam_check_endpoint_url,
-            addressable_url: { schemes: %w(grpc) }, allow_blank: true
+            addressable_url: { schemes: %w(tls grpc) }, allow_blank: true
 
   validates :spam_check_endpoint_url,
             presence: true,
@@ -407,7 +464,7 @@ class ApplicationSetting < ApplicationRecord
 
   validates :external_auth_client_key,
             presence: true,
-            if: -> (setting) { setting.external_auth_client_cert.present? }
+            if: ->(setting) { setting.external_auth_client_cert.present? }
 
   validates :lets_encrypt_notification_email,
             devise_email: true,
@@ -429,17 +486,17 @@ class ApplicationSetting < ApplicationRecord
 
   validates :eks_access_key_id,
             length: { in: 16..128 },
-            if: -> (setting) { setting.eks_integration_enabled? && setting.eks_access_key_id.present? }
+            if: ->(setting) { setting.eks_integration_enabled? && setting.eks_access_key_id.present? }
 
   validates :eks_secret_access_key,
             presence: true,
-            if: -> (setting) { setting.eks_integration_enabled? && setting.eks_access_key_id.present? }
+            if: ->(setting) { setting.eks_integration_enabled? && setting.eks_access_key_id.present? }
 
   validates_with X509CertificateCredentialsValidator,
                  certificate: :external_auth_client_cert,
                  pkey: :external_auth_client_key,
                  pass: :external_auth_client_key_pass,
-                 if: -> (setting) { setting.external_auth_client_cert.present? }
+                 if: ->(setting) { setting.external_auth_client_cert.present? }
 
   validates :default_ci_config_path,
     format: { without: %r{(\.{2}|\A/)},
@@ -453,6 +510,9 @@ class ApplicationSetting < ApplicationRecord
   validates :raw_blob_request_limit,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
+  validates :pipeline_limit_per_project_user_sha,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
   validates :ci_jwt_signing_key,
             rsa_key: true, allow_nil: true
 
@@ -460,66 +520,60 @@ class ApplicationSetting < ApplicationRecord
             rsa_key: true, allow_nil: true
 
   validates :rate_limiting_response_text,
-            length: { maximum: 255, message: _('is too long (maximum is %{count} characters)') },
+            length: { maximum: 255, message: N_('is too long (maximum is %{count} characters)') },
             allow_blank: true
 
-  validates :throttle_unauthenticated_requests_per_period,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
+  validates :jira_connect_application_key,
+            length: { maximum: 255, message: N_('is too long (maximum is %{count} characters)') },
+            allow_blank: true
 
-  validates :throttle_unauthenticated_period_in_seconds,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
+  validates :jira_connect_proxy_url,
+            length: { maximum: 255, message: N_('is too long (maximum is %{count} characters)') },
+            allow_blank: true,
+            public_url: true
 
-  validates :throttle_unauthenticated_packages_api_requests_per_period,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
-
-  validates :throttle_unauthenticated_packages_api_period_in_seconds,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
-
-  validates :throttle_authenticated_api_requests_per_period,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
-
-  validates :throttle_authenticated_api_period_in_seconds,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
-
-  validates :throttle_authenticated_web_requests_per_period,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
-
-  validates :throttle_authenticated_web_period_in_seconds,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
-
-  validates :throttle_authenticated_packages_api_requests_per_period,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
-
-  validates :throttle_authenticated_packages_api_period_in_seconds,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
-
-  validates :throttle_protected_paths_requests_per_period,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
-
-  validates :throttle_protected_paths_period_in_seconds,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
+  with_options(presence: true, numericality: { only_integer: true, greater_than: 0 }) do
+    validates :throttle_unauthenticated_api_requests_per_period
+    validates :throttle_unauthenticated_api_period_in_seconds
+    validates :throttle_unauthenticated_requests_per_period
+    validates :throttle_unauthenticated_period_in_seconds
+    validates :throttle_unauthenticated_packages_api_requests_per_period
+    validates :throttle_unauthenticated_packages_api_period_in_seconds
+    validates :throttle_unauthenticated_files_api_requests_per_period
+    validates :throttle_unauthenticated_files_api_period_in_seconds
+    validates :throttle_unauthenticated_deprecated_api_requests_per_period
+    validates :throttle_unauthenticated_deprecated_api_period_in_seconds
+    validates :throttle_authenticated_api_requests_per_period
+    validates :throttle_authenticated_api_period_in_seconds
+    validates :throttle_authenticated_git_lfs_requests_per_period
+    validates :throttle_authenticated_git_lfs_period_in_seconds
+    validates :throttle_authenticated_web_requests_per_period
+    validates :throttle_authenticated_web_period_in_seconds
+    validates :throttle_authenticated_packages_api_requests_per_period
+    validates :throttle_authenticated_packages_api_period_in_seconds
+    validates :throttle_authenticated_files_api_requests_per_period
+    validates :throttle_authenticated_files_api_period_in_seconds
+    validates :throttle_authenticated_deprecated_api_requests_per_period
+    validates :throttle_authenticated_deprecated_api_period_in_seconds
+    validates :throttle_protected_paths_requests_per_period
+    validates :throttle_protected_paths_period_in_seconds
+  end
 
   validates :notes_create_limit,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  validates :search_rate_limit,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  validates :search_rate_limit_unauthenticated,
+    numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   validates :notes_create_limit_allowlist,
             length: { maximum: 100, message: N_('is too long (maximum is 100 entries)') },
             allow_nil: false
 
   validates :admin_mode,
-            inclusion: { in: [true, false], message: _('must be a boolean value') }
+            inclusion: { in: [true, false], message: N_('must be a boolean value') }
 
   validates :external_pipeline_validation_service_url,
             addressable_url: true, allow_blank: true
@@ -532,7 +586,56 @@ class ApplicationSetting < ApplicationRecord
             inclusion: { in: ApplicationSetting.whats_new_variants.keys }
 
   validates :floc_enabled,
-            inclusion: { in: [true, false], message: _('must be a boolean value') }
+            inclusion: { in: [true, false], message: N_('must be a boolean value') }
+
+  enum sidekiq_job_limiter_mode: {
+         Gitlab::SidekiqMiddleware::SizeLimiter::Validator::TRACK_MODE => 0,
+         Gitlab::SidekiqMiddleware::SizeLimiter::Validator::COMPRESS_MODE => 1 # The default
+       }
+
+  validates :sidekiq_job_limiter_mode,
+            inclusion: { in: self.sidekiq_job_limiter_modes }
+  validates :sidekiq_job_limiter_compression_threshold_bytes,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :sidekiq_job_limiter_limit_bytes,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  validates :sentry_enabled,
+    inclusion: { in: [true, false], message: N_('must be a boolean value') }
+  validates :sentry_dsn,
+    addressable_url: true, presence: true, length: { maximum: 255 },
+    if: :sentry_enabled?
+  validates :sentry_clientside_dsn,
+    addressable_url: true, allow_blank: true, length: { maximum: 255 },
+    if: :sentry_enabled?
+  validates :sentry_environment,
+    presence: true, length: { maximum: 255 },
+    if: :sentry_enabled?
+
+  validates :error_tracking_enabled,
+    inclusion: { in: [true, false], message: N_('must be a boolean value') }
+  validates :error_tracking_api_url,
+    presence: true,
+    addressable_url: true,
+    length: { maximum: 255 },
+    if: :error_tracking_enabled?
+
+  validates :users_get_by_id_limit,
+    numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :users_get_by_id_limit_allowlist,
+          length: { maximum: 100, message: N_('is too long (maximum is 100 entries)') },
+          allow_nil: false
+
+  validates :public_runner_releases_url, addressable_url: true, presence: true
+
+  validates :inactive_projects_min_size_mb,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  validates :inactive_projects_delete_after_months,
+            numericality: { only_integer: true, greater_than: 0 }
+
+  validates :inactive_projects_send_warning_email_after_months,
+            numericality: { only_integer: true, greater_than: 0, less_than: :inactive_projects_delete_after_months }
 
   attr_encrypted :asset_proxy_secret_key,
                  mode: :per_attribute_iv,
@@ -560,6 +663,7 @@ class ApplicationSetting < ApplicationRecord
   attr_encrypted :recaptcha_private_key, encryption_options_base_32_aes_256_gcm
   attr_encrypted :recaptcha_site_key, encryption_options_base_32_aes_256_gcm
   attr_encrypted :slack_app_secret, encryption_options_base_32_aes_256_gcm
+  attr_encrypted :slack_app_signing_secret, encryption_options_base_32_aes_256_gcm.merge(encode: false, encode_iv: false)
   attr_encrypted :slack_app_verification_token, encryption_options_base_32_aes_256_gcm
   attr_encrypted :ci_jwt_signing_key, encryption_options_base_32_aes_256_gcm
   attr_encrypted :customers_dot_jwt_signing_key, encryption_options_base_32_aes_256_gcm
@@ -567,20 +671,33 @@ class ApplicationSetting < ApplicationRecord
   attr_encrypted :cloud_license_auth_token, encryption_options_base_32_aes_256_gcm
   attr_encrypted :external_pipeline_validation_service_token, encryption_options_base_32_aes_256_gcm
   attr_encrypted :mailgun_signing_key, encryption_options_base_32_aes_256_gcm.merge(encode: false)
+  attr_encrypted :database_grafana_api_key, encryption_options_base_32_aes_256_gcm.merge(encode: false, encode_iv: false)
+  attr_encrypted :arkose_labs_public_api_key, encryption_options_base_32_aes_256_gcm.merge(encode: false, encode_iv: false)
+  attr_encrypted :arkose_labs_private_api_key, encryption_options_base_32_aes_256_gcm.merge(encode: false, encode_iv: false)
+  attr_encrypted :cube_api_key, encryption_options_base_32_aes_256_gcm
+  attr_encrypted :jitsu_administrator_password, encryption_options_base_32_aes_256_gcm
+  attr_encrypted :telesign_customer_xid, encryption_options_base_32_aes_256_gcm.merge(encode: false, encode_iv: false)
+  attr_encrypted :telesign_api_key, encryption_options_base_32_aes_256_gcm.merge(encode: false, encode_iv: false)
 
   validates :disable_feed_token,
-            inclusion: { in: [true, false], message: _('must be a boolean value') }
+            inclusion: { in: [true, false], message: N_('must be a boolean value') }
+
+  validates :disable_admin_oauth_scopes,
+            inclusion: { in: [true, false], message: N_('must be a boolean value') }
 
   before_validation :ensure_uuid!
   before_validation :coerce_repository_storages_weighted, if: :repository_storages_weighted_changed?
+  before_validation :normalize_default_branch_name
 
   before_save :ensure_runners_registration_token
   before_save :ensure_health_check_access_token
+  before_save :ensure_error_tracking_access_token
 
   after_commit do
     reset_memoized_terms
   end
   after_commit :expire_performance_bar_allowed_user_ids_cache, if: -> { previous_changes.key?('performance_bar_allowed_group_id') }
+  after_commit :reset_deletion_warning_redis_key, if: :saved_change_to_inactive_projects_delete_after_months?
 
   def validate_grafana_url
     validate_url(parsed_grafana_url, :grafana_url, GRAFANA_URL_ERROR_MESSAGE)
@@ -602,6 +719,10 @@ class ApplicationSetting < ApplicationRecord
     !!(sourcegraph_url =~ %r{\Ahttps://(www\.)?sourcegraph\.com})
   end
 
+  def normalize_default_branch_name
+    self.default_branch_name = default_branch_name.presence
+  end
+
   def instance_review_permitted?
     users_count = Rails.cache.fetch('limited_users_count', expires_in: 1.day) do
       ::User.limit(INSTANCE_REVIEW_MIN_USERS + 1).count(:all)
@@ -610,15 +731,27 @@ class ApplicationSetting < ApplicationRecord
     users_count >= INSTANCE_REVIEW_MIN_USERS
   end
 
+  Recursion = Class.new(RuntimeError)
+
   def self.create_from_defaults
+    # this is posssible if calls to create the record depend on application
+    # settings themselves. This was seen in the case of a feature flag called by
+    # `transaction` that ended up requiring application settings to determine metrics behavior.
+    # If something like that happens, we break the loop here, and let the caller decide how to manage it.
+    raise Recursion if Thread.current[:application_setting_create_from_defaults]
+
+    Thread.current[:application_setting_create_from_defaults] = true
+
     check_schema!
 
-    transaction(requires_new: true) do
+    transaction(requires_new: true) do # rubocop:disable Performance/ActiveRecordSubtransactions
       super
     end
   rescue ActiveRecord::RecordNotUnique
     # We already have an ApplicationSetting record, so just return it.
     current_without_cache
+  ensure
+    Thread.current[:application_setting_create_from_defaults] = nil
   end
 
   def self.find_or_create_without_cache
@@ -672,6 +805,10 @@ class ApplicationSetting < ApplicationRecord
     ::AsciidoctorExtensions::Kroki::SUPPORTED_DIAGRAM_NAMES.include?(diagram_type)
   end
 
+  def personal_access_tokens_disabled?
+    false
+  end
+
   private
 
   def parsed_grafana_url
@@ -680,10 +817,10 @@ class ApplicationSetting < ApplicationRecord
 
   def parsed_kroki_url
     @parsed_kroki_url ||= Gitlab::UrlBlocker.validate!(kroki_url, schemes: %w(http https), enforce_sanitization: true)[0]
-  rescue Gitlab::UrlBlocker::BlockedUrlError => error
+  rescue Gitlab::UrlBlocker::BlockedUrlError => e
     self.errors.add(
       :kroki_url,
-      "is not valid. #{error}"
+      "is not valid. #{e}"
     )
   end
 
@@ -694,6 +831,10 @@ class ApplicationSetting < ApplicationRecord
         "must be a valid relative or absolute URL. #{error_message}"
       )
     end
+  end
+
+  def reset_deletion_warning_redis_key
+    Gitlab::InactiveProjectsDeletionWarningTracker.reset_all
   end
 end
 

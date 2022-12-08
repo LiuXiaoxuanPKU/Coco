@@ -12,7 +12,8 @@ module Integrations
           self.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             unless method_defined?(arg)
               def #{arg}
-                data_fields.send('#{arg}') || (properties && properties['#{arg}'])
+                value = data_fields.send('#{arg}')
+                value.nil? ? properties&.dig('#{arg}') : value
               end
             end
 
@@ -43,9 +44,9 @@ module Integrations
     end
 
     included do
-      has_one :issue_tracker_data, autosave: true, inverse_of: :integration, foreign_key: :service_id, class_name: 'Integrations::IssueTrackerData'
-      has_one :jira_tracker_data, autosave: true, inverse_of: :integration, foreign_key: :service_id, class_name: 'Integrations::JiraTrackerData'
-      has_one :open_project_tracker_data, autosave: true, inverse_of: :integration, foreign_key: :service_id, class_name: 'Integrations::OpenProjectTrackerData'
+      has_one :issue_tracker_data, autosave: true, inverse_of: :integration, foreign_key: :integration_id, class_name: 'Integrations::IssueTrackerData'
+      has_one :jira_tracker_data, autosave: true, inverse_of: :integration, foreign_key: :integration_id, class_name: 'Integrations::JiraTrackerData'
+      has_one :zentao_tracker_data, autosave: true, inverse_of: :integration, foreign_key: :integration_id, class_name: 'Integrations::ZentaoTrackerData'
 
       def data_fields
         raise NotImplementedError

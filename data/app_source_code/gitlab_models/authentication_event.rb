@@ -20,9 +20,14 @@ class AuthenticationEvent < ApplicationRecord
   }
 
   scope :for_provider, ->(provider) { where(provider: provider) }
-  scope :ldap, -> { where('provider LIKE ?', 'ldap%')}
+  scope :ldap, -> { where('provider LIKE ?', 'ldap%') }
 
   def self.providers
     STATIC_PROVIDERS | Devise.omniauth_providers.map(&:to_s)
+  end
+
+  def self.initial_login_or_known_ip_address?(user, ip_address)
+    !where(user_id: user).exists? ||
+      where(user_id: user, ip_address: ip_address).success.exists?
   end
 end

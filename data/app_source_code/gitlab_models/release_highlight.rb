@@ -33,7 +33,7 @@ class ReleaseHighlight
       next unless include_item?(item)
 
       begin
-        item.tap {|i| i['body'] = Banzai.render(i['body'], { project: nil }) }
+        item.tap { |i| i['description'] = Banzai.render(i['description'], { project: nil }) }
       rescue StandardError => e
         Gitlab::ErrorTracking.track_exception(e, file_path: file_path)
 
@@ -49,8 +49,12 @@ class ReleaseHighlight
   end
 
   def self.file_paths
-    @file_paths ||= Rails.cache.fetch(self.cache_key('file_paths'), expires_in: CACHE_DURATION) do
-      Dir.glob(FILES_PATH).sort.reverse
+    @file_paths ||= self.relative_file_paths.map { |path| path.prepend(Rails.root.to_s) }
+  end
+
+  def self.relative_file_paths
+    Rails.cache.fetch(self.cache_key('file_paths'), expires_in: CACHE_DURATION) do
+      Dir.glob(FILES_PATH).sort.reverse.map { |path| path.delete_prefix(Rails.root.to_s) }
     end
   end
 
@@ -112,6 +116,6 @@ class ReleaseHighlight
 
     return true unless Gitlab::CurrentSettings.current_application_settings.whats_new_variant_current_tier?
 
-    item['packages']&.include?(current_package)
+    item['available_in']&.include?(current_package)
   end
 end

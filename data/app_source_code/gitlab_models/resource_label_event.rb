@@ -54,7 +54,7 @@ class ResourceLabelEvent < ResourceEvent
   end
 
   def banzai_render_context(field)
-    super.merge(pipeline: :label, only_path: true)
+    super.merge(pipeline: :label, only_path: true, label_url_method: label_url_method)
   end
 
   def refresh_invalid_reference
@@ -91,6 +91,10 @@ class ResourceLabelEvent < ResourceEvent
     end
   end
 
+  def label_url_method
+    issuable.is_a?(MergeRequest) ? :project_merge_requests_url : :project_issues_url
+  end
+
   def expire_etag_cache
     issuable.expire_note_etag_cache
   end
@@ -111,7 +115,7 @@ class ResourceLabelEvent < ResourceEvent
   end
 
   def discussion_id_key
-    [self.class.name, created_at, user_id]
+    [self.class.name, created_at.to_f, user_id]
   end
 end
 

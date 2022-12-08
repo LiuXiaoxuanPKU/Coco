@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class CommitStatus < Ci::ApplicationRecord
+  include Ci::Partitionable
   include Ci::HasStatus
   include Importable
   include AfterCommitQueue
@@ -10,15 +11,22 @@ class CommitStatus < Ci::ApplicationRecord
   include TaggableQueries
 
   self.table_name = 'ci_builds'
+  partitionable scope: :pipeline
 
   belongs_to :user
   belongs_to :project
   belongs_to :pipeline, class_name: 'Ci::Pipeline', foreign_key: :commit_id
   belongs_to :auto_canceled_by, class_name: 'Ci::Pipeline'
+  belongs_to :ci_stage, class_name: 'Ci::Stage', foreign_key: :stage_id
 
   has_many :needs, class_name: 'Ci::BuildNeed', foreign_key: :build_id, inverse_of: :build
 
+  attribute :retried, default: false
+
   enum scheduling_type: { stage: 0, dag: 1 }, _prefix: true
+  # We use `Enums::Ci::CommitStatus.failure_reasons` here so that EE can more easily
+  # extend this `Hash` with new values.
+  enum_with_nil failure_reason: Enums::Ci::CommitStatus.failure_reasons
 
   delegate :commit, to: :pipeline
   delegate :sha, :short_sha, :before_sha, to: :pipeline
@@ -33,7 +41,7 @@ class CommitStatus < Ci::ApplicationRecord
     where(allow_failure: true, status: [:failed, :canceled])
   end
 
-  scope :order_id_desc, -> { order('ci_builds.id DESC') }
+  scope :order_id_desc, -> { order(id: :desc) }
 
   scope :exclude_ignored, -> do
     # We want to ignore failed but allowed to fail jobs.
@@ -48,23 +56,29 @@ class CommitStatus < Ci::ApplicationRecord
   scope :ordered, -> { order(:name) }
   scope :ordered_by_stage, -> { order(stage_idx: :asc) }
   scope :latest_ordered, -> { latest.ordered.includes(project: :namespace) }
-  scope :retried_ordered, -> { retried.ordered.includes(project: :namespace) }
+  scope :retried_ordered, -> { retried.order(name: :asc, id: :desc).includes(project: :namespace) }
   scope :ordered_by_pipeline, -> { order(pipeline_id: :asc) }
   scope :before_stage, -> (index) { where('stage_idx < ?', index) }
   scope :for_stage, -> (index) { where(stage_idx: index) }
   scope :after_stage, -> (index) { where('stage_idx > ?', index) }
+  scope :for_project, -> (project_id) { where(project_id: project_id) }
   scope :for_ref, -> (ref) { where(ref: ref) }
   scope :by_name, -> (name) { where(name: name) }
   scope :in_pipelines, ->(pipelines) { where(pipeline: pipelines) }
-  scope :eager_load_pipeline, -> { eager_load(:pipeline, project: { namespace: :route }) }
   scope :with_pipeline, -> { joins(:pipeline) }
-  scope :updated_at_before, ->(date) { where('updated_at < ?', date) }
-  scope :updated_before, ->(lookback:, timeout:) {
-    where('(ci_builds.created_at BETWEEN ? AND ?) AND (ci_builds.updated_at BETWEEN ? AND ?)', lookback, timeout, lookback, timeout)
+  scope :updated_at_before, ->(date) { where('ci_builds.updated_at < ?', date) }
+  scope :created_at_before, ->(date) { where('ci_builds.created_at < ?', date) }
+  scope :scheduled_at_before, ->(date) {
+    where('ci_builds.scheduled_at IS NOT NULL AND ci_builds.scheduled_at < ?', date)
   }
 
+  # The scope applies `pluck` to split the queries. Use with care.
   scope :for_project_paths, -> (paths) do
-    where(project: Project.where_full_path_in(Array(paths)))
+    # Pluck is used to split this query. Splitting the query is required for database decomposition for `ci_*` tables.
+    # https://docs.gitlab.com/ee/development/database/transaction_guidelines.html#database-decomposition-and-sharding
+    project_ids = Project.where_full_path_in(Array(paths)).pluck(:id)
+
+    for_project(project_ids)
   end
 
   scope :with_preloads, -> do
@@ -86,12 +100,6 @@ class CommitStatus < Ci::ApplicationRecord
 
     merge(or_conditions)
   end
-
-  # We use `Enums::Ci::CommitStatus.failure_reasons` here so that EE can more easily
-  # extend this `Hash` with new values.
-  enum_with_nil failure_reason: Enums::Ci::CommitStatus.failure_reasons
-
-  default_value_for :retried, false
 
   ##
   # We still create some CommitStatuses outside of CreatePipelineService.
@@ -140,7 +148,7 @@ class CommitStatus < Ci::ApplicationRecord
     end
 
     event :drop do
-      transition [:created, :waiting_for_resource, :preparing, :pending, :running, :scheduled] => :failed
+      transition [:created, :waiting_for_resource, :preparing, :pending, :running, :manual, :scheduled] => :failed
     end
 
     event :success do
@@ -164,8 +172,11 @@ class CommitStatus < Ci::ApplicationRecord
     end
 
     before_transition any => :failed do |commit_status, transition|
-      failure_reason = transition.args.first
-      commit_status.failure_reason = CommitStatus.failure_reasons[failure_reason]
+      reason = ::Gitlab::Ci::Build::Status::Reason
+        .fabricate(commit_status, transition.args.first)
+
+      commit_status.failure_reason = reason.failure_reason_enum
+      commit_status.allow_failure = true if reason.force_allow_failure?
     end
 
     before_transition [:skipped, :manual] => :created do |commit_status, transition|
@@ -184,7 +195,8 @@ class CommitStatus < Ci::ApplicationRecord
 
       commit_status.run_after_commit do
         PipelineProcessWorker.perform_async(pipeline_id) unless transition_options[:skip_pipeline_processing]
-        ExpireJobCacheWorker.perform_async(id)
+
+        expire_etag_cache!
       end
     end
 
@@ -215,7 +227,13 @@ class CommitStatus < Ci::ApplicationRecord
   end
 
   def group_name
-    name.to_s.sub(%r{([\b\s:]+((\[.*\])|(\d+[\s:\/\\]+\d+)))+\s*\z}, '').strip
+    # [\b\s:] -> whitespace or column
+    # (\[.*\])|(\d+[\s:\/\\]+\d+) -> variables/matrix or parallel-jobs numbers
+    # {1,3} -> number of times that matches the variables/matrix or parallel-jobs numbers
+    #          we limit this to 3 because of possible abuse
+    regex = %r{([\b\s:]+((\[.*\])|(\d+[\s:\/\\]+\d+))){1,3}\s*\z}
+
+    name.to_s.sub(regex, '').strip
   end
 
   def failed_but_allowed?
@@ -293,11 +311,19 @@ class CommitStatus < Ci::ApplicationRecord
       .update_all(retried: true, processed: true)
   end
 
+  def expire_etag_cache!
+    job_path = Gitlab::Routing.url_helpers.project_build_path(project, id, format: :json)
+
+    Gitlab::EtagCaching::Store.new.touch(job_path)
+  end
+
+  def stage_name
+    ci_stage&.name
+  end
+
   private
 
   def unrecoverable_failure?
     script_failure? || missing_dependency_failure? || archived_failure? || scheduler_failure? || data_integrity_failure?
   end
 end
-
-CommitStatus.prepend_mod_with('CommitStatus')

@@ -66,6 +66,10 @@ module ProjectFeaturesCompatibility
     write_feature_attribute_string(:snippets_access_level, value)
   end
 
+  def package_registry_access_level=(value)
+    write_feature_attribute_string(:package_registry_access_level, value)
+  end
+
   def pages_access_level=(value)
     write_feature_attribute_string(:pages_access_level, value)
   end
@@ -82,12 +86,32 @@ module ProjectFeaturesCompatibility
     write_feature_attribute_string(:operations_access_level, value)
   end
 
+  def monitor_access_level=(value)
+    write_feature_attribute_string(:monitor_access_level, value)
+  end
+
   def security_and_compliance_access_level=(value)
     write_feature_attribute_string(:security_and_compliance_access_level, value)
   end
 
   def container_registry_access_level=(value)
     write_feature_attribute_string(:container_registry_access_level, value)
+  end
+
+  def environments_access_level=(value)
+    write_feature_attribute_string(:environments_access_level, value)
+  end
+
+  def feature_flags_access_level=(value)
+    write_feature_attribute_string(:feature_flags_access_level, value)
+  end
+
+  def releases_access_level=(value)
+    write_feature_attribute_string(:releases_access_level, value)
+  end
+
+  def infrastructure_access_level=(value)
+    write_feature_attribute_string(:infrastructure_access_level, value)
   end
 
   # TODO: Remove this method after we drop support for project create/edit APIs to set the

@@ -3,15 +3,31 @@
 module Integrations
   class Packagist < Integration
     include HasWebHook
-    extend Gitlab::Utils::Override
 
-    prop_accessor :username, :token, :server
+    field :username,
+      title: -> { _('Username') },
+      help: -> { _('Enter your Packagist username.') },
+      placeholder: '',
+      required: true
+
+    field :token,
+      type: 'password',
+      title: -> { _('Token') },
+      help: -> { _('Enter your Packagist token.') },
+      non_empty_password_title: -> { s_('ProjectService|Enter new token') },
+      non_empty_password_help: -> { s_('ProjectService|Leave blank to use your current token.') },
+      placeholder: '',
+      required: true
+
+    field :server,
+      title: -> { s_('Server (optional)') },
+      help: -> { s_('Enter your Packagist server. Defaults to https://packagist.org.') },
+      placeholder: 'https://packagist.org',
+      exposes_secrets: true,
+      required: false
 
     validates :username, presence: true, if: :activated?
     validates :token, presence: true, if: :activated?
-
-    default_value_for :push_events, true
-    default_value_for :tag_push_events, true
 
     def title
       'Packagist'
@@ -23,35 +39,6 @@ module Integrations
 
     def self.to_param
       'packagist'
-    end
-
-    def fields
-      [
-        {
-          type: 'text',
-          name: 'username',
-          title: _('Username'),
-          help: s_('Enter your Packagist username.'),
-          placeholder: '',
-          required: true
-        },
-        {
-          type: 'text',
-          name: 'token',
-          title: _('Token'),
-          help: s_('Enter your Packagist token.'),
-          placeholder: '',
-          required: true
-        },
-        {
-          type: 'text',
-          name: 'server',
-          title: _('Server (optional)'),
-          help: s_('Enter your Packagist server. Defaults to https://packagist.org.'),
-          placeholder: 'https://packagist.org',
-          required: false
-        }
-      ]
     end
 
     def self.supported_events
@@ -67,18 +54,22 @@ module Integrations
     def test(data)
       begin
         result = execute(data)
-        return { success: false, result: result[:message] } if result[:http_status] != 202
-      rescue StandardError => error
-        return { success: false, result: error }
+        return { success: false, result: result.message } if result.payload[:http_status] != 202
+      rescue StandardError => e
+        return { success: false, result: e.message }
       end
 
-      { success: true, result: result[:message] }
+      { success: true, result: result.message }
     end
 
     override :hook_url
     def hook_url
       base_url = server.presence || 'https://packagist.org'
-      "#{base_url}/api/update-package?username=#{username}&apiToken=#{token}"
+      "#{base_url}/api/update-package?username={username}&apiToken={token}"
+    end
+
+    def url_variables
+      { 'username' => username, 'token' => token }
     end
   end
 end

@@ -3,7 +3,6 @@ module DiffPositionableNote
   extend ActiveSupport::Concern
 
   included do
-    delegate :on_text?, :on_image?, to: :position, allow_nil: true
     before_validation :set_original_position, on: :create
     before_validation :update_position, on: :create, if: :on_text?, unless: :importing?
 
@@ -12,12 +11,17 @@ module DiffPositionableNote
     serialize :change_position, Gitlab::Diff::Position # rubocop:disable Cop/ActiveRecordSerialize
 
     validate :diff_refs_match_commit, if: :for_commit?
+    validates :position, json_schema: { filename: "position", hash_conversion: true }
   end
 
   %i(original_position position change_position).each do |meth|
     define_method "#{meth}=" do |new_position|
       if new_position.is_a?(String)
-        new_position = Gitlab::Json.parse(new_position) rescue nil
+        new_position = begin
+          Gitlab::Json.parse(new_position)
+        rescue StandardError
+          nil
+        end
       end
 
       if new_position.is_a?(Hash)
@@ -31,6 +35,14 @@ module DiffPositionableNote
 
       super(new_position)
     end
+  end
+
+  def on_text?
+    !!position&.on_text?
+  end
+
+  def on_image?
+    !!position&.on_image?
   end
 
   def supported?

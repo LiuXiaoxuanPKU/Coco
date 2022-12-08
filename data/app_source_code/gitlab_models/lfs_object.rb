@@ -4,7 +4,6 @@ class LfsObject < ApplicationRecord
   include AfterCommitQueue
   include Checksummable
   include EachBatch
-  include ObjectStorage::BackgroundMove
   include FileStoreMounter
 
   has_many :lfs_objects_projects
@@ -13,8 +12,9 @@ class LfsObject < ApplicationRecord
   scope :with_files_stored_locally, -> { where(file_store: LfsObjectUploader::Store::LOCAL) }
   scope :with_files_stored_remotely, -> { where(file_store: LfsObjectUploader::Store::REMOTE) }
   scope :for_oids, -> (oids) { where(oid: oids) }
+  scope :for_oid_and_size, -> (oid, size) { find_by(oid: oid, size: size) }
 
-  validates :oid, presence: true, uniqueness: true
+  validates :oid, presence: true, uniqueness: true, format: { with: /\A\h{64}\z/ }
 
   mount_file_store_uploader LfsObjectUploader
 
@@ -49,7 +49,7 @@ class LfsObject < ApplicationRecord
   end
 
   def self.calculate_oid(path)
-    self.hexdigest(path)
+    self.sha256_hexdigest(path)
   end
 end
 

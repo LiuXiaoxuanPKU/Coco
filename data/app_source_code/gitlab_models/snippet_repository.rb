@@ -31,7 +31,7 @@ class SnippetRepository < ApplicationRecord
 
     options[:actions] = transform_file_entries(files)
 
-    capture_git_error { repository.multi_action(user, **options) }
+    capture_git_error { repository.commit_files(user, **options) }
   ensure
     Gitlab::ExclusiveLease.cancel(lease_key, uuid)
   end
@@ -44,11 +44,11 @@ class SnippetRepository < ApplicationRecord
          Gitlab::Git::CommitError,
          Gitlab::Git::PreReceiveError,
          Gitlab::Git::CommandError,
-         ArgumentError => error
+         ArgumentError => e
 
-    logger.error(message: "Snippet git error. Reason: #{error.message}", snippet: snippet.id)
+    logger.error(message: "Snippet git error. Reason: #{e.message}", snippet: snippet.id)
 
-    raise commit_error_exception(error)
+    raise commit_error_exception(e)
   end
 
   def transform_file_entries(files)

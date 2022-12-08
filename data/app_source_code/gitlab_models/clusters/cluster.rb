@@ -20,7 +20,6 @@ module Clusters
       Clusters::Applications::Runner.application_name => Clusters::Applications::Runner,
       Clusters::Applications::Jupyter.application_name => Clusters::Applications::Jupyter,
       Clusters::Applications::Knative.application_name => Clusters::Applications::Knative,
-      Clusters::Applications::ElasticStack.application_name => Clusters::Applications::ElasticStack,
       Clusters::Applications::Cilium.application_name => Clusters::Applications::Cilium
     }.freeze
     DEFAULT_ENVIRONMENT = '*'
@@ -51,7 +50,6 @@ module Clusters
     has_one :platform_kubernetes, class_name: 'Clusters::Platforms::Kubernetes', inverse_of: :cluster, autosave: true
 
     has_one :integration_prometheus, class_name: 'Clusters::Integrations::Prometheus', inverse_of: :cluster
-    has_one :integration_elastic_stack, class_name: 'Clusters::Integrations::ElasticStack', inverse_of: :cluster
 
     def self.has_one_cluster_application(name) # rubocop:disable Naming/PredicateName
       application = APPLICATIONS[name.to_s]
@@ -66,7 +64,6 @@ module Clusters
     has_one_cluster_application :runner
     has_one_cluster_application :jupyter
     has_one_cluster_application :knative
-    has_one_cluster_application :elastic_stack
     has_one_cluster_application :cilium
 
     has_many :kubernetes_namespaces
@@ -82,7 +79,7 @@ module Clusters
     validates :namespace_per_environment, inclusion: { in: [true, false] }
     validates :helm_major_version, inclusion: { in: [2, 3] }
 
-    default_value_for :helm_major_version, 3
+    attribute :helm_major_version, default: 3
 
     validate :restrict_modification, on: :update
     validate :no_groups, unless: :group_type?
@@ -102,7 +99,6 @@ module Clusters
     delegate :available?, to: :application_helm, prefix: true, allow_nil: true
     delegate :available?, to: :application_ingress, prefix: true, allow_nil: true
     delegate :available?, to: :application_knative, prefix: true, allow_nil: true
-    delegate :available?, to: :integration_elastic_stack, prefix: true, allow_nil: true
     delegate :available?, to: :integration_prometheus, prefix: true, allow_nil: true
     delegate :external_ip, to: :application_ingress, prefix: true, allow_nil: true
     delegate :external_hostname, to: :application_ingress, prefix: true, allow_nil: true
@@ -136,11 +132,7 @@ module Clusters
     scope :gcp_installed, -> { gcp_provided.joins(:provider_gcp).merge(Clusters::Providers::Gcp.with_status(:created)) }
     scope :aws_installed, -> { aws_provided.joins(:provider_aws).merge(Clusters::Providers::Aws.with_status(:created)) }
 
-    scope :with_available_elasticstack, -> { joins(:application_elastic_stack).merge(::Clusters::Applications::ElasticStack.available) }
-    scope :with_available_cilium, -> { joins(:application_cilium).merge(::Clusters::Applications::Cilium.available) }
     scope :distinct_with_deployed_environments, -> { joins(:environments).merge(::Deployment.success).distinct }
-    scope :preload_elasticstack, -> { preload(:integration_elastic_stack) }
-    scope :preload_environments, -> { preload(:environments) }
 
     scope :managed, -> { where(managed: true) }
     scope :with_persisted_applications, -> { eager_load(*APPLICATIONS_ASSOCIATIONS) }
@@ -148,10 +140,9 @@ module Clusters
     scope :with_management_project, -> { where.not(management_project: nil) }
 
     scope :for_project_namespace, -> (namespace_id) { joins(:projects).where(projects: { namespace_id: namespace_id }) }
+    scope :with_name, -> (name) { where(name: name) }
 
-    # with_application_prometheus scope is deprecated, and scheduled for removal
-    # in %14.0. See https://gitlab.com/groups/gitlab-org/-/epics/4280
-    scope :with_application_prometheus, -> { includes(:application_prometheus).joins(:application_prometheus) }
+    scope :with_integration_prometheus, -> { includes(:integration_prometheus).joins(:integration_prometheus) }
     scope :with_project_http_integrations, -> (project_ids) do
       conditions = { projects: :alert_management_http_integrations }
       includes(conditions).joins(conditions).where(projects: { id: project_ids })
@@ -275,10 +266,6 @@ module Clusters
       integration_prometheus || build_integration_prometheus
     end
 
-    def find_or_build_integration_elastic_stack
-      integration_elastic_stack || build_integration_elastic_stack
-    end
-
     def provider
       if gcp?
         provider_gcp
@@ -310,19 +297,7 @@ module Clusters
     end
 
     def kubeclient
-      platform_kubernetes.kubeclient if kubernetes?
-    end
-
-    def elastic_stack_adapter
-      integration_elastic_stack
-    end
-
-    def elasticsearch_client
-      elastic_stack_adapter&.elasticsearch_client
-    end
-
-    def elastic_stack_available?
-      !!integration_elastic_stack_available?
+      platform_kubernetes&.kubeclient if kubernetes?
     end
 
     def kubernetes_namespace_for(environment, deployable: environment.last_deployable)

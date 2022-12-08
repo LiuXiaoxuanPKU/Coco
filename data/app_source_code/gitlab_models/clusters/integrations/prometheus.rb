@@ -14,12 +14,21 @@ module Clusters
       validates :cluster, presence: true
       validates :enabled, inclusion: { in: [true, false] }
 
+      # Periodically checked and kept up to date for Monitor demo projects
+      enum health_status: {
+        unknown: 0,
+        healthy: 1,
+        unhealthy: 2
+      }
+
       attr_encrypted :alert_manager_token,
         mode: :per_attribute_iv,
         key: Settings.attr_encrypted_db_key_base_32,
         algorithm: 'aes-256-gcm'
 
-      default_value_for(:alert_manager_token) { SecureRandom.hex }
+      after_initialize :set_alert_manager_token, if: :new_record?
+
+      scope :enabled, -> { where(enabled: true) }
 
       after_destroy do
         run_after_commit do
@@ -45,13 +54,17 @@ module Clusters
 
       private
 
+      def set_alert_manager_token
+        self.alert_manager_token = SecureRandom.hex
+      end
+
       def activate_project_integrations
-        ::Clusters::Applications::ActivateServiceWorker
+        ::Clusters::Applications::ActivateIntegrationWorker
           .perform_async(cluster_id, ::Integrations::Prometheus.to_param)
       end
 
       def deactivate_project_integrations
-        ::Clusters::Applications::DeactivateServiceWorker
+        ::Clusters::Applications::DeactivateIntegrationWorker
           .perform_async(cluster_id, ::Integrations::Prometheus.to_param)
       end
     end

@@ -25,12 +25,25 @@ class Compare
     @straight = straight
   end
 
+  # Return a Hash of parameters for passing to a URL helper
+  #
+  # See `namespace_project_compare_url`
+  def to_param
+    {
+      from: @straight ? start_commit_sha : base_commit_sha,
+      to: head_commit_sha
+    }
+  end
+
   def cache_key
     [@project, :compare, diff_refs.hash]
   end
 
   def commits
-    @commits ||= Commit.decorate(@compare.commits, project)
+    @commits ||= begin
+      decorated_commits = Commit.decorate(@compare.commits, project)
+      CommitCollection.new(project, decorated_commits)
+    end
   end
 
   def start_commit
@@ -79,7 +92,7 @@ class Compare
 
   def diff_refs
     Gitlab::Diff::DiffRefs.new(
-      base_sha:  @straight ? start_commit_sha : base_commit_sha,
+      base_sha: @straight ? start_commit_sha : base_commit_sha,
       start_sha: start_commit_sha,
       head_sha: head_commit_sha
     )

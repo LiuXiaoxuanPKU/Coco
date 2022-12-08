@@ -17,6 +17,9 @@ module DesignManagement
 
     # we assume sequential ordering.
     scope :ordered, -> { order(version_id: :asc) }
+    scope :by_design, -> (design) { where(design: design) }
+    scope :by_event, -> (event) { where(event: event) }
+    scope :with_version, -> { preload(:version) }
 
     # For each design, only select the most recent action
     scope :most_recent, -> do

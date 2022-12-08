@@ -23,6 +23,7 @@ module ErrorTracking
 
     self.reactive_cache_key = ->(setting) { [setting.class.model_name.singular, setting.project_id] }
     self.reactive_cache_work_type = :external_dependency
+    self.reactive_cache_hard_limit = ErrorTracking::SentryClient::RESPONSE_SIZE_LIMIT
 
     self.table_name = 'project_error_tracking_settings'
 
@@ -31,19 +32,45 @@ module ErrorTracking
     validates :api_url, length: { maximum: 255 }, public_url: { enforce_sanitization: true, ascii_only: true }, allow_nil: true
 
     validates :enabled, inclusion: { in: [true, false] }
+    validates :integrated, inclusion: { in: [true, false] }
 
-    validates :api_url, presence: { message: 'is a required field' }, if: :enabled
-
-    validate :validate_api_url_path, if: :enabled
-
-    validates :token, presence: { message: 'is a required field' }, if: :enabled
+    with_options if: :sentry_enabled do
+      validates :api_url, presence: { message: 'is a required field' }
+      validates :token, presence: { message: 'is a required field' }
+      validate :validate_api_url_path
+    end
 
     attr_encrypted :token,
       mode: :per_attribute_iv,
       key: Settings.attr_encrypted_db_key_base_32,
       algorithm: 'aes-256-gcm'
 
+    before_validation :reset_token
+
     after_save :clear_reactive_cache!
+
+    # When a user enables the integrated error tracking
+    # we want to immediately provide them with a first
+    # working client key so they have a DSN for Sentry SDK.
+    after_save :create_client_key!
+
+    def sentry_enabled
+      enabled && !integrated_client?
+    end
+
+    def integrated_client?
+      integrated
+    end
+
+    def integrated_enabled?
+      enabled? && integrated_client?
+    end
+
+    def gitlab_dsn
+      strong_memoize(:gitlab_dsn) do
+        client_key&.sentry_dsn
+      end
+    end
 
     def api_url=(value)
       super
@@ -79,7 +106,7 @@ module ErrorTracking
 
     def sentry_client
       strong_memoize(:sentry_client) do
-        ErrorTracking::SentryClient.new(api_url, token)
+        ::ErrorTracking::SentryClient.new(api_url, token)
       end
     end
 
@@ -101,17 +128,22 @@ module ErrorTracking
 
     def issue_details(opts = {})
       with_reactive_cache('issue_details', opts.stringify_keys) do |result|
+        ensure_issue_belongs_to_project!(result[:issue].project_id) if result[:issue]
         result
       end
     end
 
     def issue_latest_event(opts = {})
       with_reactive_cache('issue_latest_event', opts.stringify_keys) do |result|
+        ensure_issue_belongs_to_project!(result[:latest_event].project_id) if result[:latest_event]
         result
       end
     end
 
-    def update_issue(opts = {} )
+    def update_issue(opts = {})
+      issue_to_be_updated = sentry_client.issue_details(issue_id: opts[:issue_id])
+      ensure_issue_belongs_to_project!(issue_to_be_updated.project_id)
+
       handle_exceptions do
         { updated: sentry_client.update_issue(opts) }
       end
@@ -152,6 +184,31 @@ module ErrorTracking
     end
 
     private
+
+    def reset_token
+      if api_url_changed? && !encrypted_token_changed?
+        self.token = nil
+      end
+    end
+
+    def ensure_issue_belongs_to_project!(project_id_from_api)
+      raise 'The Sentry issue appers to be outside of the configured Sentry project' if Integer(project_id_from_api) != ensure_sentry_project_id!
+    end
+
+    def ensure_sentry_project_id!
+      return sentry_project_id if sentry_project_id.present?
+
+      raise("Couldn't find project: #{organization_name} / #{project_name} on Sentry") if sentry_project.nil?
+
+      update!(sentry_project_id: sentry_project.id)
+      sentry_project_id
+    end
+
+    def sentry_project
+      strong_memoize(:sentry_project) do
+        sentry_client.projects.find { |project| project.name == project_name && project.organization_name == organization_name }
+      end
+    end
 
     def add_gitlab_issue_details(issue)
       issue.gitlab_commit = match_gitlab_commit(issue.first_release_version)
@@ -225,6 +282,20 @@ module ErrorTracking
 
       unless api_url_slug(:organization)
         errors.add(:project, 'is a required field')
+      end
+    end
+
+    def client_key
+      # Project can have multiple client keys.
+      # However for UI simplicity we render the first active one for user.
+      # In future we should make it possible to manage client keys from UI.
+      # Issue https://gitlab.com/gitlab-org/gitlab/-/issues/329596
+      project.error_tracking_client_keys.active.first
+    end
+
+    def create_client_key!
+      if enabled? && integrated_client? && !client_key
+        project.error_tracking_client_keys.create!
       end
     end
   end

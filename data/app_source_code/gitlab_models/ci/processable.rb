@@ -3,9 +3,11 @@
 module Ci
   class Processable < ::CommitStatus
     include Gitlab::Utils::StrongMemoize
+    include FromUnion
     extend ::Gitlab::Utils::Override
 
     has_one :resource, class_name: 'Ci::Resource', foreign_key: 'build_id', inverse_of: :processable
+    has_one :sourced_pipeline, class_name: 'Ci::Sources::Pipeline', foreign_key: :source_job_id, inverse_of: :source_job
 
     belongs_to :resource_group, class_name: 'Ci::ResourceGroup', inverse_of: :processables
 
@@ -16,7 +18,7 @@ module Ci
     scope :with_needs, -> (names = nil) do
       needs = Ci::BuildNeed.scoped_build.select(1)
       needs = needs.where(name: names) if names
-      where('EXISTS (?)', needs).preload(:needs)
+      where('EXISTS (?)', needs)
     end
 
     scope :without_needs, -> (names = nil) do
@@ -58,7 +60,8 @@ module Ci
 
       after_transition any => ::Ci::Processable.completed_statuses do |processable|
         next unless processable.with_resource_group?
-        next unless processable.resource_group.release_resource_from(processable)
+
+        processable.resource_group.release_resource_from(processable)
 
         processable.run_after_commit do
           Ci::ResourceGroups::AssignResourceFromResourceGroupWorker
@@ -99,6 +102,27 @@ module Ci
       :legacy_detached_merge_request_pipeline?,
       :merge_train_pipeline?,
       to: :pipeline
+
+    def clone(current_user:, new_job_variables_attributes: [])
+      new_attributes = self.class.clone_accessors.to_h do |attribute|
+        [attribute, public_send(attribute)] # rubocop:disable GitlabSecurity/PublicSend
+      end
+
+      if persisted_environment.present?
+        new_attributes[:metadata_attributes] ||= {}
+        new_attributes[:metadata_attributes][:expanded_environment_name] = expanded_environment_name
+      end
+
+      new_attributes[:user] = current_user
+
+      self.class.new(new_attributes)
+    end
+
+    def retryable?
+      return false if retried? || archived? || deployment_rejected?
+
+      success? || failed? || canceled?
+    end
 
     def aggregated_needs_names
       read_attribute(:aggregated_needs_names)
@@ -169,11 +193,7 @@ module Ci
     end
 
     def all_dependencies
-      if Feature.enabled?(:preload_associations_jobs_request_api_endpoint, project, default_enabled: :yaml)
-        strong_memoize(:all_dependencies) do
-          dependencies.all
-        end
-      else
+      strong_memoize(:all_dependencies) do
         dependencies.all
       end
     end

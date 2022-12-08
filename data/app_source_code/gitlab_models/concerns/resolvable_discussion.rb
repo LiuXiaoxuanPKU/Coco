@@ -30,9 +30,12 @@ module ResolvableDiscussion
 
     delegate  :resolved_at,
               :resolved_by,
-              :resolved_by_push?,
               to: :last_resolved_note,
               allow_nil: true
+  end
+
+  def resolved_by_push?
+    !!last_resolved_note&.resolved_by_push?
   end
 
   def resolvable?
@@ -81,8 +84,7 @@ module ResolvableDiscussion
     return false unless current_user
     return false unless resolvable?
 
-    current_user == self.noteable.try(:author) ||
-      current_user.can?(:resolve_note, self.project)
+    current_user.can?(:resolve_note, self.noteable)
   end
 
   def resolve!(current_user)
@@ -97,6 +99,12 @@ module ResolvableDiscussion
     update { |notes| notes.unresolve! }
   end
 
+  def clear_memoized_values
+    self.class.memoized_values.each do |name|
+      clear_memoization(name)
+    end
+  end
+
   private
 
   def update
@@ -108,8 +116,6 @@ module ResolvableDiscussion
     # Set the notes array to the updated notes
     @notes = notes_relation.fresh.to_a # rubocop:disable Gitlab/ModuleWithInstanceVariables
 
-    self.class.memoized_values.each do |name|
-      clear_memoization(name)
-    end
+    clear_memoized_values
   end
 end

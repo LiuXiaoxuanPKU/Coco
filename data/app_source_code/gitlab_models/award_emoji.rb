@@ -14,15 +14,17 @@ class AwardEmoji < ApplicationRecord
   validates :user, presence: true
   validates :awardable, presence: true, unless: :importing?
 
-  validates :name, presence: true, inclusion: { in: Gitlab::Emoji.emojis_names }
+  validates :name, presence: true, 'gitlab/emoji_name': true
   validates :name, uniqueness: { scope: [:user, :awardable_type, :awardable_id] }, unless: -> { ghost_user? || importing? }
 
   participant :user
 
+  delegate :resource_parent, to: :awardable, allow_nil: true
+
   scope :downvotes, -> { named(DOWNVOTE_NAME) }
   scope :upvotes, -> { named(UPVOTE_NAME) }
-  scope :named, -> (names) { where(name: names) }
-  scope :awarded_by, -> (users) { where(user: users) }
+  scope :named, ->(names) { where(name: names) }
+  scope :awarded_by, ->(users) { where(user: users) }
 
   after_save :expire_cache
   after_destroy :expire_cache
@@ -60,9 +62,19 @@ class AwardEmoji < ApplicationRecord
     self.name == UPVOTE_NAME
   end
 
+  def url
+    return if TanukiEmoji.find_by_alpha_code(name)
+
+    CustomEmoji.for_resource(resource_parent).by_name(name).select(:url).first&.url
+  end
+
   def expire_cache
     awardable.try(:bump_updated_at)
-    awardable.try(:expire_etag_cache)
+    awardable.expire_etag_cache if awardable.is_a?(Note)
     awardable.try(:update_upvotes_count) if upvote?
+  end
+
+  def to_ability_name
+    'emoji'
   end
 end

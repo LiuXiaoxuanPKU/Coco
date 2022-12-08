@@ -4,9 +4,24 @@ require "discordrb/webhooks"
 
 module Integrations
   class Discord < BaseChatNotification
-    include ActionView::Helpers::UrlHelper
-
     ATTACHMENT_REGEX = /: (?<entry>.*?)\n - (?<name>.*)\n*/.freeze
+
+    undef :notify_only_broken_pipelines
+
+    field :webhook,
+      section: SECTION_TYPE_CONNECTION,
+      help: 'e.g. https://discordapp.com/api/webhooks/…',
+      required: true
+
+    field :notify_only_broken_pipelines,
+      type: 'checkbox',
+      section: SECTION_TYPE_CONFIGURATION
+
+    field :branches_to_be_notified,
+      type: 'select',
+      section: SECTION_TYPE_CONFIGURATION,
+      title: -> { s_('Integrations|Branches for which notifications are to be sent') },
+      choices: -> { branch_choices }
 
     def title
       s_("DiscordService|Discord Notifications")
@@ -20,13 +35,13 @@ module Integrations
       "discord"
     end
 
-    def help
-      docs_link = link_to _('How do I set up this service?'), Rails.application.routes.url_helpers.help_page_url('user/project/integrations/discord_notifications'), target: '_blank', rel: 'noopener noreferrer'
-      s_('Send notifications about project events to a Discord channel. %{docs_link}').html_safe % { docs_link: docs_link.html_safe }
+    def fields
+      self.class.fields + build_event_channels
     end
 
-    def event_field(event)
-      # No-op.
+    def help
+      docs_link = ActionController::Base.helpers.link_to _('How do I set up this service?'), Rails.application.routes.url_helpers.help_page_url('user/project/integrations/discord_notifications'), target: '_blank', rel: 'noopener noreferrer'
+      s_('Send notifications about project events to a Discord channel. %{docs_link}').html_safe % { docs_link: docs_link.html_safe }
     end
 
     def default_channel_placeholder
@@ -37,11 +52,23 @@ module Integrations
       %w[push issue confidential_issue merge_request note confidential_note tag_push pipeline wiki_page]
     end
 
-    def default_fields
+    def sections
       [
-        { type: "text", name: "webhook", placeholder: "https://discordapp.com/api/webhooks/…", help: "URL to the webhook for the Discord channel." },
-        { type: "checkbox", name: "notify_only_broken_pipelines" },
-        { type: 'select', name: 'branches_to_be_notified', choices: branch_choices }
+        {
+          type: SECTION_TYPE_CONNECTION,
+          title: s_('Integrations|Connection details'),
+          description: help
+        },
+        {
+          type: SECTION_TYPE_TRIGGER,
+          title: s_('Integrations|Trigger'),
+          description: s_('Integrations|An event will be triggered when one of the following items happen.')
+        },
+        {
+          type: SECTION_TYPE_CONFIGURATION,
+          title: s_('Integrations|Notification settings'),
+          description: s_('Integrations|Configure the scope of notifications.')
+        }
       ]
     end
 
@@ -58,8 +85,8 @@ module Integrations
           embed.timestamp = Time.now.utc
         end
       end
-    rescue RestClient::Exception => error
-      log_error(error.message)
+    rescue RestClient::Exception => e
+      log_error(e.message)
       false
     end
 

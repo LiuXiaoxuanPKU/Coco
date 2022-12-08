@@ -7,12 +7,12 @@ module Namespaces
       include RecursiveScopes
 
       def root_ancestor
-        return self if parent.nil?
-
-        if persisted?
+        if persisted? && !parent_id.nil?
           strong_memoize(:root_ancestor) do
-            recursive_self_and_ancestors.reorder(nil).find_by(parent_id: nil)
+            recursive_ancestors.reorder(nil).find_by(parent_id: nil)
           end
+        elsif parent.nil?
+          self
         else
           parent.root_ancestor
         end
@@ -46,6 +46,7 @@ module Namespaces
         object_hierarchy(self.class.where(id: id))
           .ancestors(upto: top, hierarchy_order: hierarchy_order)
       end
+      alias_method :recursive_ancestors_upto, :ancestors_upto
 
       def self_and_ancestors(hierarchy_order: nil)
         return self.class.where(id: id) unless parent_id
@@ -62,19 +63,17 @@ module Namespaces
 
       # Returns all the descendants of the current namespace.
       def descendants
-        object_hierarchy(self.class.where(parent_id: id))
-          .base_and_descendants
+        object_hierarchy(self.class.where(parent_id: id)).base_and_descendants
       end
       alias_method :recursive_descendants, :descendants
 
       def self_and_descendants
-        object_hierarchy(self.class.where(id: id))
-          .base_and_descendants
+        object_hierarchy(self.class.where(id: id)).base_and_descendants
       end
       alias_method :recursive_self_and_descendants, :self_and_descendants
 
       def self_and_descendant_ids
-        recursive_self_and_descendants.select(:id)
+        object_hierarchy(self.class.where(id: id)).base_and_descendant_ids
       end
       alias_method :recursive_self_and_descendant_ids, :self_and_descendant_ids
 

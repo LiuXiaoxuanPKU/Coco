@@ -11,12 +11,17 @@ module Ci
     InvalidBridgeTypeError = Class.new(StandardError)
     InvalidTransitionError = Class.new(StandardError)
 
+    FORWARD_DEFAULTS = {
+      yaml_variables: true,
+      pipeline_variables: false
+    }.freeze
+
     belongs_to :project
     belongs_to :trigger_request
     has_many :sourced_pipelines, class_name: "::Ci::Sources::Pipeline",
-                                  foreign_key: :source_job_id
+                                 foreign_key: :source_job_id,
+                                 inverse_of: :source_bridge
 
-    has_one :sourced_pipeline, class_name: "::Ci::Sources::Pipeline", foreign_key: :source_job_id
     has_one :downstream_pipeline, through: :sourced_pipeline, source: :pipeline
 
     validates :ref, presence: true
@@ -28,10 +33,10 @@ module Ci
 
     state_machine :status do
       after_transition [:created, :manual, :waiting_for_resource] => :pending do |bridge|
-        next unless bridge.downstream_project
+        next unless bridge.triggers_downstream_pipeline?
 
         bridge.run_after_commit do
-          bridge.schedule_downstream_pipeline!
+          ::Ci::CreateDownstreamPipelineWorker.perform_async(bridge.id)
         end
       end
 
@@ -52,8 +57,8 @@ module Ci
       end
     end
 
-    def self.retry(bridge, current_user)
-      raise NotImplementedError
+    def retryable?
+      false
     end
 
     def self.with_preloads
@@ -64,10 +69,11 @@ module Ci
       )
     end
 
-    def schedule_downstream_pipeline!
-      raise InvalidBridgeTypeError unless downstream_project
-
-      ::Ci::CreateCrossProjectPipelineWorker.perform_async(self.id)
+    def self.clone_accessors
+      %i[pipeline project ref tag options name
+         allow_failure stage stage_idx
+         yaml_variables when description needs_attributes
+         scheduling_type ci_stage partition_id].freeze
     end
 
     def inherit_status_from_downstream!(pipeline)
@@ -104,7 +110,12 @@ module Ci
 
     def downstream_project_path
       strong_memoize(:downstream_project_path) do
-        options&.dig(:trigger, :project)
+        project = options&.dig(:trigger, :project)
+        next unless project
+
+        scoped_variables.to_runner_variables.yield_self do |all_variables|
+          ::ExpandVariables.expand(project, all_variables)
+        end
       end
     end
 
@@ -112,8 +123,16 @@ module Ci
       pipeline if triggers_child_pipeline?
     end
 
+    def triggers_downstream_pipeline?
+      triggers_child_pipeline? || triggers_cross_project_pipeline?
+    end
+
     def triggers_child_pipeline?
       yaml_for_downstream.present?
+    end
+
+    def triggers_cross_project_pipeline?
+      downstream_project_path.present?
     end
 
     def tags
@@ -160,6 +179,10 @@ module Ci
       false
     end
 
+    def outdated_deployment?
+      false
+    end
+
     def expanded_environment_name
     end
 
@@ -197,13 +220,10 @@ module Ci
     end
 
     def downstream_variables
-      variables = scoped_variables.concat(pipeline.persisted_variables)
-
-      variables.to_runner_variables.yield_self do |all_variables|
-        yaml_variables.to_a.map do |hash|
-          { key: hash[:key], value: ::ExpandVariables.expand(hash[:value], all_variables) }
-        end
-      end
+      calculate_downstream_variables
+        .reverse # variables priority
+        .uniq { |var| var[:key] } # only one variable key to pass
+        .reverse
     end
 
     def target_revision_ref
@@ -247,6 +267,76 @@ module Ci
           merge_request: parent_pipeline.merge_request
         }
       }
+    end
+
+    def calculate_downstream_variables
+      expand_variables = scoped_variables
+                           .concat(pipeline.persisted_variables)
+                           .to_runner_variables
+
+      # The order of this list refers to the priority of the variables
+      downstream_yaml_variables(expand_variables) +
+        downstream_pipeline_variables(expand_variables) +
+        downstream_pipeline_schedule_variables(expand_variables)
+    end
+
+    def downstream_yaml_variables(expand_variables)
+      return [] unless forward_yaml_variables?
+
+      yaml_variables.to_a.map do |hash|
+        if hash[:raw] && ci_raw_variables_in_yaml_config_enabled?
+          { key: hash[:key], value: hash[:value], raw: true }
+        else
+          { key: hash[:key], value: ::ExpandVariables.expand(hash[:value], expand_variables) }
+        end
+      end
+    end
+
+    def downstream_pipeline_variables(expand_variables)
+      return [] unless forward_pipeline_variables?
+
+      pipeline.variables.to_a.map do |variable|
+        if variable.raw? && ci_raw_variables_in_yaml_config_enabled?
+          { key: variable.key, value: variable.value, raw: true }
+        else
+          { key: variable.key, value: ::ExpandVariables.expand(variable.value, expand_variables) }
+        end
+      end
+    end
+
+    def downstream_pipeline_schedule_variables(expand_variables)
+      return [] unless forward_pipeline_variables?
+      return [] unless pipeline.pipeline_schedule
+
+      pipeline.pipeline_schedule.variables.to_a.map do |variable|
+        if variable.raw? && ci_raw_variables_in_yaml_config_enabled?
+          { key: variable.key, value: variable.value, raw: true }
+        else
+          { key: variable.key, value: ::ExpandVariables.expand(variable.value, expand_variables) }
+        end
+      end
+    end
+
+    def forward_yaml_variables?
+      strong_memoize(:forward_yaml_variables) do
+        result = options&.dig(:trigger, :forward, :yaml_variables)
+
+        result.nil? ? FORWARD_DEFAULTS[:yaml_variables] : result
+      end
+    end
+
+    def forward_pipeline_variables?
+      strong_memoize(:forward_pipeline_variables) do
+        result = options&.dig(:trigger, :forward, :pipeline_variables)
+
+        result.nil? ? FORWARD_DEFAULTS[:pipeline_variables] : result
+      end
+    end
+
+    def ci_raw_variables_in_yaml_config_enabled?
+      strong_memoize(:ci_raw_variables_in_yaml_config_enabled) do
+        ::Feature.enabled?(:ci_raw_variables_in_yaml_config, project)
+      end
     end
   end
 end

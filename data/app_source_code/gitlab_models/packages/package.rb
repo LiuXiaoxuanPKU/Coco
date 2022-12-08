@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 class Packages::Package < ApplicationRecord
+  include EachBatch
   include Sortable
   include Gitlab::SQL::Pattern
   include UsageStatistics
   include Gitlab::Utils::StrongMemoize
+  include Packages::Installable
 
   DISPLAYABLE_STATUSES = [:default, :error].freeze
-  INSTALLABLE_STATUSES = [:default].freeze
+  INSTALLABLE_STATUSES = [:default, :hidden].freeze
 
   enum package_type: {
     maven: 1,
@@ -20,16 +22,20 @@ class Packages::Package < ApplicationRecord
     debian: 9,
     rubygems: 10,
     helm: 11,
-    terraform_module: 12
+    terraform_module: 12,
+    rpm: 13
   }
 
-  enum status: { default: 0, hidden: 1, processing: 2, error: 3 }
+  enum status: { default: 0, hidden: 1, processing: 2, error: 3, pending_destruction: 4 }
 
   belongs_to :project
   belongs_to :creator, class_name: 'User'
 
   # package_files must be destroyed by ruby code in order to properly remove carrierwave uploads and update project statistics
   has_many :package_files, dependent: :destroy # rubocop:disable Cop/ActiveRecordDependent
+  # TODO: put the installable default scope on the :package_files association once the dependent: :destroy is removed
+  # See https://gitlab.com/gitlab-org/gitlab/-/issues/349191
+  has_many :installable_package_files, -> { installable }, class_name: 'Packages::PackageFile', inverse_of: :package
   has_many :dependency_links, inverse_of: :package, class_name: 'Packages::DependencyLink'
   has_many :tags, inverse_of: :package, class_name: 'Packages::Tag'
   has_one :conan_metadatum, inverse_of: :package, class_name: 'Packages::Conan::Metadatum'
@@ -38,8 +44,10 @@ class Packages::Package < ApplicationRecord
   has_one :nuget_metadatum, inverse_of: :package, class_name: 'Packages::Nuget::Metadatum'
   has_one :composer_metadatum, inverse_of: :package, class_name: 'Packages::Composer::Metadatum'
   has_one :rubygems_metadatum, inverse_of: :package, class_name: 'Packages::Rubygems::Metadatum'
+  has_one :rpm_metadatum, inverse_of: :package, class_name: 'Packages::Rpm::Metadatum'
+  has_one :npm_metadatum, inverse_of: :package, class_name: 'Packages::Npm::Metadatum'
   has_many :build_infos, inverse_of: :package
-  has_many :pipelines, through: :build_infos
+  has_many :pipelines, through: :build_infos, disable_joins: true
   has_one :debian_publication, inverse_of: :package, class_name: 'Packages::Debian::Publication'
   has_one :debian_distribution, through: :debian_publication, source: :distribution, inverse_of: :packages, class_name: 'Packages::Debian::ProjectDistribution'
 
@@ -57,12 +65,17 @@ class Packages::Package < ApplicationRecord
   validates :name, format: { with: Gitlab::Regex.package_name_regex }, unless: -> { conan? || generic? || debian? }
 
   validates :name,
-    uniqueness: { scope: %i[project_id version package_type] }, unless: -> { conan? || debian_package? }
-  validate :unique_debian_package_name, if: :debian_package?
+            uniqueness: {
+              scope: %i[project_id version package_type],
+              conditions: -> { not_pending_destruction }
+            },
+            unless: -> { pending_destruction? || conan? || debian_package? }
 
+  validate :unique_debian_package_name, if: :debian_package?
   validate :valid_conan_package_recipe, if: :conan?
   validate :valid_composer_global_name, if: :composer?
-  validate :package_already_taken, if: :npm?
+  validate :npm_package_already_taken, if: :npm?
+
   validates :name, format: { with: Gitlab::Regex.conan_recipe_component_regex }, if: :conan?
   validates :name, format: { with: Gitlab::Regex.generic_package_name_regex }, if: :generic?
   validates :name, format: { with: Gitlab::Regex.helm_package_regex }, if: :helm?
@@ -92,18 +105,29 @@ class Packages::Package < ApplicationRecord
   scope :for_projects, ->(project_ids) { where(project_id: project_ids) }
   scope :with_name, ->(name) { where(name: name) }
   scope :with_name_like, ->(name) { where(arel_table[:name].matches(name)) }
-  scope :with_normalized_pypi_name, ->(name) { where("LOWER(regexp_replace(name, '[-_.]+', '-', 'g')) = ?", name.downcase) }
+
+  scope :with_normalized_pypi_name, ->(name) do
+    where(
+      "LOWER(regexp_replace(name, ?, '-', 'g')) = ?",
+      Gitlab::Regex::Packages::PYPI_NORMALIZED_NAME_REGEX_STRING,
+      name.downcase
+    )
+  end
+
+  scope :with_case_insensitive_version, ->(version) do
+    where('LOWER(version) = ?', version.downcase)
+  end
+
   scope :search_by_name, ->(query) { fuzzy_search(query, [:name], use_minimum_char_limit: false) }
   scope :with_version, ->(version) { where(version: version) }
   scope :without_version_like, -> (version) { where.not(arel_table[:version].matches(version)) }
   scope :with_package_type, ->(package_type) { where(package_type: package_type) }
   scope :without_package_type, ->(package_type) { where.not(package_type: package_type) }
-  scope :with_status, ->(status) { where(status: status) }
   scope :displayable, -> { with_status(DISPLAYABLE_STATUSES) }
-  scope :installable, -> { with_status(INSTALLABLE_STATUSES) }
-  scope :including_build_info, -> { includes(pipelines: :user) }
-  scope :including_project_route, -> { includes(project: { namespace: :route }) }
+  scope :including_project_route, -> { includes(project: :route) }
+  scope :including_project_namespace_route, -> { includes(project: { namespace: :route }) }
   scope :including_tags, -> { includes(:tags) }
+  scope :including_dependency_links, -> { includes(dependency_links: :dependency) }
 
   scope :with_conan_channel, ->(package_channel) do
     joins(:conan_metadatum).where(packages_conan_metadata: { package_channel: package_channel })
@@ -124,11 +148,14 @@ class Packages::Package < ApplicationRecord
       .where(Packages::Composer::Metadatum.table_name => { target_sha: target })
   end
   scope :preload_composer, -> { preload(:composer_metadatum) }
+  scope :preload_npm_metadatum, -> { preload(:npm_metadatum) }
+  scope :preload_pypi_metadatum, -> { preload(:pypi_metadatum) }
 
   scope :without_nuget_temporary_name, -> { where.not(name: Packages::Nuget::TEMPORARY_PACKAGE_NAME) }
 
   scope :has_version, -> { where.not(version: nil) }
-  scope :preload_files, -> { preload(:package_files) }
+  scope :preload_files, -> { preload(:installable_package_files) }
+  scope :preload_pipelines, -> { preload(pipelines: :user) }
   scope :last_of_each_version, -> { where(id: all.select('MAX(id) AS id').group(:version)) }
   scope :limit_recent, ->(limit) { order_created_desc.limit(limit) }
   scope :select_distinct_name, -> { select(:name).distinct }
@@ -217,33 +244,34 @@ class Packages::Package < ApplicationRecord
 
   def self.keyset_pagination_order(join_class:, column_name:, direction: :asc)
     join_table = join_class.table_name
-    asc_order_expression = Gitlab::Database.nulls_last_order("#{join_table}.#{column_name}", :asc)
-    desc_order_expression = Gitlab::Database.nulls_first_order("#{join_table}.#{column_name}", :desc)
+    asc_order_expression = join_class.arel_table[column_name].asc.nulls_last
+    desc_order_expression = join_class.arel_table[column_name].desc.nulls_first
     order_direction = direction == :asc ? asc_order_expression : desc_order_expression
     reverse_order_direction = direction == :asc ? desc_order_expression : asc_order_expression
     arel_order_classes = ::Gitlab::Pagination::Keyset::ColumnOrderDefinition::AREL_ORDER_CLASSES.invert
 
-    ::Gitlab::Pagination::Keyset::Order.build([
-      ::Gitlab::Pagination::Keyset::ColumnOrderDefinition.new(
-        attribute_name: "#{join_table}_#{column_name}",
-        column_expression: join_class.arel_table[column_name],
-        order_expression: order_direction,
-        reversed_order_expression: reverse_order_direction,
-        order_direction: direction,
-        distinct: false,
-        add_to_projections: true
-      ),
-      ::Gitlab::Pagination::Keyset::ColumnOrderDefinition.new(
-        attribute_name: 'id',
-        order_expression: arel_order_classes[direction].new(Packages::Package.arel_table[:id]),
-        add_to_projections: true
-      )
-    ])
+    ::Gitlab::Pagination::Keyset::Order.build(
+      [
+        ::Gitlab::Pagination::Keyset::ColumnOrderDefinition.new(
+          attribute_name: "#{join_table}_#{column_name}",
+          column_expression: join_class.arel_table[column_name],
+          order_expression: order_direction,
+          reversed_order_expression: reverse_order_direction,
+          order_direction: direction,
+          distinct: false,
+          add_to_projections: true
+        ),
+        ::Gitlab::Pagination::Keyset::ColumnOrderDefinition.new(
+          attribute_name: 'id',
+          order_expression: arel_order_classes[direction].new(Packages::Package.arel_table[:id]),
+          add_to_projections: true
+        )
+      ])
   end
 
   def versions
     project.packages
-           .including_build_info
+           .preload_pipelines
            .including_tags
            .with_name(name)
            .where.not(version: version)
@@ -291,6 +319,32 @@ class Packages::Package < ApplicationRecord
     ::Packages::Maven::Metadata::SyncWorker.perform_async(user.id, project.id, name)
   end
 
+  def create_build_infos!(build)
+    return unless build&.pipeline
+
+    # TODO: use an upsert call when https://gitlab.com/gitlab-org/gitlab/-/issues/339093 is implemented
+    build_infos.find_or_create_by!(pipeline: build.pipeline)
+  end
+
+  def mark_package_files_for_destruction
+    return unless pending_destruction?
+
+    ::Packages::MarkPackageFilesForDestructionWorker.perform_async(id)
+  end
+
+  # As defined in PEP 503 https://peps.python.org/pep-0503/#normalized-names
+  def normalized_pypi_name
+    return name unless pypi?
+
+    name.gsub(/#{Gitlab::Regex::Packages::PYPI_NORMALIZED_NAME_REGEX_STRING}/o, '-').downcase
+  end
+
+  def touch_last_downloaded_at
+    ::Gitlab::Database::LoadBalancing::Session.without_sticky_writes do
+      update_column(:last_downloaded_at, Time.zone.now)
+    end
+  end
+
   private
 
   def composer_tag_version?
@@ -301,6 +355,7 @@ class Packages::Package < ApplicationRecord
     recipe_exists = project.packages
                            .conan
                            .includes(:conan_metadatum)
+                           .not_pending_destruction
                            .with_name(name)
                            .with_version(version)
                            .with_conan_channel(conan_metadatum.package_channel)
@@ -315,17 +370,30 @@ class Packages::Package < ApplicationRecord
     # .default_scoped is required here due to a bug in rails that leaks
     # the scope and adds `self` to the query incorrectly
     # See https://github.com/rails/rails/pull/35186
-    if Packages::Package.default_scoped.composer.with_name(name).where.not(project_id: project_id).exists?
-      errors.add(:name, 'is already taken by another project')
+    package_exists = Packages::Package.default_scoped
+                                      .composer
+                                      .not_pending_destruction
+                                      .with_name(name)
+                                      .where.not(project_id: project_id)
+                                      .exists?
+
+    errors.add(:name, 'is already taken by another project') if package_exists
+  end
+
+  def npm_package_already_taken
+    return unless project
+    return unless follows_npm_naming_convention?
+
+    if project.package_already_taken?(name, version, package_type: :npm)
+      errors.add(:base, _('Package already exists'))
     end
   end
 
-  def package_already_taken
-    return unless project
+  # https://docs.gitlab.com/ee/user/packages/npm_registry/#package-naming-convention
+  def follows_npm_naming_convention?
+    return false unless project&.root_namespace&.path
 
-    if project.package_already_taken?(name)
-      errors.add(:base, _('Package already exists'))
-    end
+    project.root_namespace.path == ::Packages::Npm.scope_of(name)
   end
 
   def unique_debian_package_name
@@ -334,6 +402,7 @@ class Packages::Package < ApplicationRecord
     package_exists = debian_publication.distribution.packages
                             .with_name(name)
                             .with_version(version)
+                            .not_pending_destruction
                             .id_not_in(id)
                             .exists?
 

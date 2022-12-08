@@ -6,6 +6,8 @@ class ProjectImportState < ApplicationRecord
 
   self.table_name = "project_mirror_data"
 
+  after_commit :expire_etag_cache
+
   belongs_to :project, inverse_of: :import_state
 
   validates :project, presence: true
@@ -29,6 +31,10 @@ class ProjectImportState < ApplicationRecord
       transition started: :finished
     end
 
+    event :cancel do
+      transition [:none, :scheduled, :started] => :canceled
+    end
+
     event :fail_op do
       transition [:scheduled, :started] => :failed
     end
@@ -37,6 +43,7 @@ class ProjectImportState < ApplicationRecord
     state :started
     state :finished
     state :failed
+    state :canceled
 
     after_transition [:none, :finished, :failed] => :scheduled do |state, _|
       state.run_after_commit do
@@ -49,12 +56,16 @@ class ProjectImportState < ApplicationRecord
       end
     end
 
-    after_transition any => :finished do |state, _|
+    after_transition any => [:canceled, :finished] do |state, _|
       if state.jid.present?
         Gitlab::SidekiqStatus.unset(state.jid)
 
         state.update_column(:jid, nil)
       end
+    end
+
+    after_transition any => [:canceled, :failed] do |state, _|
+      state.project.remove_import_data
     end
 
     after_transition started: :finished do |state, _|
@@ -63,13 +74,28 @@ class ProjectImportState < ApplicationRecord
       project.reset_cache_and_import_attrs
 
       if Gitlab::ImportSources.importer_names.include?(project.import_type) && project.repo_exists?
-        # rubocop: disable CodeReuse/ServiceClass
         state.run_after_commit do
-          Projects::AfterImportService.new(project).execute
+          Projects::AfterImportWorker.perform_async(project.id)
         end
-        # rubocop: enable CodeReuse/ServiceClass
       end
     end
+  end
+
+  def expire_etag_cache
+    if realtime_changes_path
+      Gitlab::EtagCaching::Store.new.tap do |store|
+        store.touch(realtime_changes_path)
+      rescue Gitlab::EtagCaching::Store::InvalidKeyError
+        # no-op: not every realtime changes endpoint is using etag caching
+      end
+    end
+  end
+
+  def realtime_changes_path
+    Gitlab::Routing.url_helpers.polymorphic_path([:realtime_changes_import, project.import_type.to_sym], format: :json)
+  rescue NoMethodError
+    # polymorphic_path throws NoMethodError when no such path exists
+    nil
   end
 
   def relation_hard_failures(limit:)

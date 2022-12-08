@@ -11,21 +11,22 @@ require 'task_list/filter'
 module Taskable
   COMPLETED          = 'completed'
   INCOMPLETE         = 'incomplete'
-  COMPLETE_PATTERN   = /(\[[xX]\])/.freeze
-  INCOMPLETE_PATTERN = /(\[\s\])/.freeze
+  COMPLETE_PATTERN   = /\[[xX]\]/.freeze
+  INCOMPLETE_PATTERN = /\[[[:space:]]\]/.freeze
   ITEM_PATTERN       = %r{
     ^
-    (?:(?:>\s{0,4})*)          # optional blockquote characters
-    (?:\s*(?:[-+*]|(?:\d+\.)))+  # list prefix (one or more) required - task item has to be always in a list
-    \s+                        # whitespace prefix has to be always presented for a list item
-    (\[\s\]|\[[xX]\])          # checkbox
-    (\s.+)                     # followed by whitespace and some text.
+    (?:(?:>\s{0,4})*)             # optional blockquote characters
+    ((?:\s*(?:[-+*]|(?:\d+\.)))+) # list prefix (one or more) required - task item has to be always in a list
+    \s+                           # whitespace prefix has to be always presented for a list item
+    (                             # checkbox
+      #{COMPLETE_PATTERN}|#{INCOMPLETE_PATTERN}
+    )
+    (\s.+)                        # followed by whitespace and some text.
   }x.freeze
 
   def self.get_tasks(content)
-    content.to_s.scan(ITEM_PATTERN).map do |checkbox, label|
-      # ITEM_PATTERN strips out the hyphen, but Item requires it. Rabble rabble.
-      TaskList::Item.new("- #{checkbox}", label.strip)
+    content.to_s.scan(ITEM_PATTERN).map do |prefix, checkbox, label|
+      TaskList::Item.new("#{prefix} #{checkbox}", label.strip)
     end
   end
 
@@ -58,18 +59,19 @@ module Taskable
   end
 
   # Return a string that describes the current state of this Taskable's task
-  # list items, e.g. "12 of 20 tasks completed"
+  # list items, e.g. "12 of 20 checklist items completed"
   def task_status(short: false)
     return '' if description.blank?
 
-    prep, completed = if short
-                        ['/', '']
-                      else
-                        [' of ', ' completed']
-                      end
-
     sum = tasks.summary
-    "#{sum.complete_count}#{prep}#{sum.item_count} #{'task'.pluralize(sum.item_count)}#{completed}"
+    checklist_item_noun = n_('checklist item', 'checklist items', sum.item_count)
+    if short
+      format(s_('Tasks|%{complete_count}/%{total_count} %{checklist_item_noun}'),
+checklist_item_noun: checklist_item_noun, complete_count: sum.complete_count, total_count: sum.item_count)
+    else
+      format(s_('Tasks|%{complete_count} of %{total_count} %{checklist_item_noun} completed'),
+checklist_item_noun: checklist_item_noun, complete_count: sum.complete_count, total_count: sum.item_count)
+    end
   end
 
   # Return a short string that describes the current state of this Taskable's

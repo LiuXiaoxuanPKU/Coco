@@ -3,6 +3,8 @@
 module DeploymentPlatform
   # rubocop:disable Gitlab/ModuleWithInstanceVariables
   def deployment_platform(environment: nil)
+    return unless self.namespace.certificate_based_clusters_enabled?
+
     @deployment_platform ||= {}
 
     @deployment_platform[environment] ||= find_deployment_platform(environment)

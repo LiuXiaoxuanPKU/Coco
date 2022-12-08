@@ -12,7 +12,7 @@ class MergeRequestContextCommit < ApplicationRecord
   validates :sha, presence: true
   validates :sha, uniqueness: { message: 'has already been added' }
 
-  serialize :trailers, Serializers::Json # rubocop:disable Cop/ActiveRecordSerialize
+  attribute :trailers, :ind_jsonb
   validates :trailers, json_schema: { filename: 'git_trailers' }
 
   # Sort by committed date in descending order to ensure latest commits comes on the top
@@ -26,7 +26,7 @@ class MergeRequestContextCommit < ApplicationRecord
 
   # create MergeRequestContextCommit by given commit sha and it's diff file record
   def self.bulk_insert(rows, **args)
-    Gitlab::Database.main.bulk_insert('merge_request_context_commits', rows, **args) # rubocop:disable Gitlab/BulkInsert
+    ApplicationRecord.legacy_bulk_insert('merge_request_context_commits', rows, **args) # rubocop:disable Gitlab/BulkInsert
   end
 
   def to_commit

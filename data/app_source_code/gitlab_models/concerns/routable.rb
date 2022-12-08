@@ -17,6 +17,9 @@ module Routable
   def self.find_by_full_path(path, follow_redirects: false, route_scope: Route, redirect_route_scope: RedirectRoute)
     return unless path.present?
 
+    # Convert path to string to prevent DB error: function lower(integer) does not exist
+    path = path.to_s
+
     # Case sensitive match first (it's cheaper and the usual case)
     # If we didn't have an exact match, we perform a case insensitive search
     #
@@ -41,7 +44,7 @@ module Routable
     has_one :route, as: :source, autosave: true, dependent: :destroy, inverse_of: :source # rubocop:disable Cop/ActiveRecordDependent
     has_many :redirect_routes, as: :source, autosave: true, dependent: :destroy # rubocop:disable Cop/ActiveRecordDependent
 
-    validates :route, presence: true
+    validates :route, presence: true, unless: -> { is_a?(Namespaces::ProjectNamespace) }
 
     scope :with_route, -> { includes(:route) }
 
@@ -97,7 +100,7 @@ module Routable
 
   def full_name
     # We have to test for persistence as the cache key uses #updated_at
-    return (route&.name || build_full_name) unless persisted? && Feature.enabled?(:cached_route_lookups, self, type: :ops, default_enabled: :yaml)
+    return (route&.name || build_full_name) unless persisted? && Feature.enabled?(:cached_route_lookups, self, type: :ops)
 
     # Return the name as-is if the parent is missing
     return name if route.nil? && parent.nil? && name.present?
@@ -115,7 +118,7 @@ module Routable
 
   def full_path
     # We have to test for persistence as the cache key uses #updated_at
-    return (route&.path || build_full_path) unless persisted? && Feature.enabled?(:cached_route_lookups, self, type: :ops, default_enabled: :yaml)
+    return (route&.path || build_full_path) unless persisted? && Feature.enabled?(:cached_route_lookups, self, type: :ops)
 
     # Return the path as-is if the parent is missing
     return path if route.nil? && parent.nil? && path.present?
@@ -185,9 +188,15 @@ module Routable
 
   def prepare_route
     return unless full_path_changed? || full_name_changed?
+    return if is_a?(Namespaces::ProjectNamespace)
 
     route || build_route(source: self)
     route.path = build_full_path
     route.name = build_full_name
+    route.namespace = if is_a?(Namespace)
+                        self
+                      elsif is_a?(Project)
+                        self.project_namespace
+                      end
   end
 end

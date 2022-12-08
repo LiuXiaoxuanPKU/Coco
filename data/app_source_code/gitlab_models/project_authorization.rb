@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class ProjectAuthorization < ApplicationRecord
+  BATCH_SIZE = 1000
+  SLEEP_DELAY = 0.1
+
   extend SuppressCompositePrimaryKeyWarning
   include FromUnion
 
@@ -9,25 +12,12 @@ class ProjectAuthorization < ApplicationRecord
 
   validates :project, presence: true
   validates :access_level, inclusion: { in: Gitlab::Access.all_values }, presence: true
-  validates :user, uniqueness: { scope: [:project, :access_level] }, presence: true
+  validates :user, uniqueness: { scope: :project }, presence: true
 
   def self.select_from_union(relations)
     from_union(relations)
       .select(['project_id', 'MAX(access_level) AS access_level'])
       .group(:project_id)
-  end
-
-  def self.insert_authorizations(rows, per_batch = 1000)
-    rows.each_slice(per_batch) do |slice|
-      tuples = slice.map do |tuple|
-        tuple.map { |value| connection.quote(value) }
-      end
-
-      connection.execute <<-EOF.strip_heredoc
-      INSERT INTO project_authorizations (user_id, project_id, access_level)
-      VALUES #{tuples.map { |tuple| "(#{tuple.join(', ')})" }.join(', ')}
-      EOF
-    end
   end
 
   # This method overrides its ActiveRecord's version in order to work correctly
@@ -37,6 +27,56 @@ class ProjectAuthorization < ApplicationRecord
   # https://gitlab.com/gitlab-org/gitlab/-/issues/331264
   def self.insert_all(attributes)
     super(attributes, unique_by: connection.schema_cache.primary_keys(table_name))
+  end
+
+  def self.insert_all_in_batches(attributes, per_batch = BATCH_SIZE)
+    add_delay = add_delay_between_batches?(entire_size: attributes.size, batch_size: per_batch)
+    log_details(entire_size: attributes.size) if add_delay
+
+    attributes.each_slice(per_batch) do |attributes_batch|
+      insert_all(attributes_batch)
+      perform_delay if add_delay
+    end
+  end
+
+  def self.delete_all_in_batches_for_project(project:, user_ids:, per_batch: BATCH_SIZE)
+    add_delay = add_delay_between_batches?(entire_size: user_ids.size, batch_size: per_batch)
+    log_details(entire_size: user_ids.size) if add_delay
+
+    user_ids.each_slice(per_batch) do |user_ids_batch|
+      project.project_authorizations.where(user_id: user_ids_batch).delete_all
+      perform_delay if add_delay
+    end
+  end
+
+  def self.delete_all_in_batches_for_user(user:, project_ids:, per_batch: BATCH_SIZE)
+    add_delay = add_delay_between_batches?(entire_size: project_ids.size, batch_size: per_batch)
+    log_details(entire_size: project_ids.size) if add_delay
+
+    project_ids.each_slice(per_batch) do |project_ids_batch|
+      user.project_authorizations.where(project_id: project_ids_batch).delete_all
+      perform_delay if add_delay
+    end
+  end
+
+  private_class_method def self.add_delay_between_batches?(entire_size:, batch_size:)
+    # The reason for adding a delay is to give the replica database enough time to
+    # catch up with the primary when large batches of records are being added/removed.
+    # Hance, we add a delay only if the GitLab installation has a replica database configured.
+    entire_size > batch_size &&
+      !::Gitlab::Database::LoadBalancing.primary_only? &&
+      Feature.enabled?(:enable_minor_delay_during_project_authorizations_refresh)
+  end
+
+  private_class_method def self.log_details(entire_size:)
+    Gitlab::AppLogger.info(
+      entire_size: entire_size,
+      message: 'Project authorizations refresh performed with delay'
+    )
+  end
+
+  private_class_method def self.perform_delay
+    sleep(SLEEP_DELAY)
   end
 end
 

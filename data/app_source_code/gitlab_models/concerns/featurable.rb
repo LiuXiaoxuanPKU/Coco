@@ -30,9 +30,9 @@ module Featurable
 
   STRING_OPTIONS = HashWithIndifferentAccess.new({
     'disabled' => DISABLED,
-    'private'  => PRIVATE,
-    'enabled'  => ENABLED,
-    'public'   => PUBLIC
+    'private' => PRIVATE,
+    'enabled' => ENABLED,
+    'public' => PUBLIC
   }).freeze
 
   class_methods do
@@ -50,7 +50,7 @@ module Featurable
     end
 
     def available_features
-      @available_features
+      @available_features || []
     end
 
     def access_level_attribute(feature)
@@ -74,6 +74,12 @@ module Featurable
       STRING_OPTIONS.key(level)
     end
 
+    def required_minimum_access_level(feature)
+      ensure_feature!(feature)
+
+      Gitlab::Access::GUEST
+    end
+
     def ensure_feature!(feature)
       feature = feature.model_name.plural if feature.respond_to?(:model_name)
       feature = feature.to_sym
@@ -83,15 +89,62 @@ module Featurable
     end
   end
 
+  included do
+    validate :allowed_access_levels
+  end
+
   def access_level(feature)
     public_send(self.class.access_level_attribute(feature)) # rubocop:disable GitlabSecurity/PublicSend
   end
 
-  def feature_available?(feature, user)
-    get_permission(user, feature)
+  def feature_available?(feature, user = nil)
+    has_permission?(user, feature)
   end
 
   def string_access_level(feature)
     self.class.str_from_access_level(access_level(feature))
+  end
+
+  private
+
+  def allowed_access_levels
+    validator = lambda do |field|
+      level = public_send(field) || ENABLED # rubocop:disable GitlabSecurity/PublicSend
+      not_allowed = level > ENABLED
+      self.errors.add(field, "cannot have public visibility level") if not_allowed
+    end
+
+    (self.class.available_features - feature_validation_exclusion).each { |f| validator.call("#{f}_access_level") }
+  end
+
+  # Features that we should exclude from the validation
+  def feature_validation_exclusion
+    []
+  end
+
+  def has_permission?(user, feature)
+    case access_level(feature)
+    when DISABLED
+      false
+    when PRIVATE
+      member?(user, feature)
+    when ENABLED
+      true
+    when PUBLIC
+      true
+    else
+      true
+    end
+  end
+
+  def member?(user, feature)
+    return false unless user
+    return true if user.can_read_all_resources?
+
+    resource_member?(user, feature)
+  end
+
+  def resource_member?(user, feature)
+    raise NotImplementedError
   end
 end

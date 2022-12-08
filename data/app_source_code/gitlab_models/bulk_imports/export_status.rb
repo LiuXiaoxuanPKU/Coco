@@ -13,11 +13,15 @@ module BulkImports
     end
 
     def started?
-      export_status['status'] == Export::STARTED
+      !empty? && export_status['status'] == Export::STARTED
     end
 
     def failed?
-      export_status['status'] == Export::FAILED
+      !empty? && export_status['status'] == Export::FAILED
+    end
+
+    def empty?
+      export_status.nil?
     end
 
     def error
@@ -26,14 +30,18 @@ module BulkImports
 
     private
 
-    attr_reader :client, :entity, :relation
+    attr_reader :client, :entity, :relation, :pipeline_tracker
 
     def export_status
       strong_memoize(:export_status) do
-        fetch_export_status.find { |item| item['relation'] == relation }
+        fetch_export_status&.find { |item| item['relation'] == relation }
+      rescue BulkImports::NetworkError => e
+        raise BulkImports::RetryPipelineError.new(e.message, 2.seconds) if e.retriable?(pipeline_tracker)
+
+        default_error_response(e.message)
+      rescue StandardError => e
+        default_error_response(e.message)
       end
-    rescue StandardError => e
-      { 'status' => Export::FAILED, 'error' => e.message }
     end
 
     def fetch_export_status
@@ -41,7 +49,11 @@ module BulkImports
     end
 
     def status_endpoint
-      "/groups/#{entity.encoded_source_full_path}/export_relations/status"
+      File.join(entity.export_relations_url_path, 'status')
+    end
+
+    def default_error_response(message)
+      { 'status' => Export::FAILED, 'error' => message }
     end
   end
 end

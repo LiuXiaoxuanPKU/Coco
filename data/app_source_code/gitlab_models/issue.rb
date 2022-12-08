@@ -24,31 +24,40 @@ class Issue < ApplicationRecord
   include Todoable
   include FromUnion
   include EachBatch
+  include PgFullTextSearchable
 
   extend ::Gitlab::Utils::Override
 
   DueDateStruct                   = Struct.new(:title, :name).freeze
   NoDueDate                       = DueDateStruct.new('No Due Date', '0').freeze
-  AnyDueDate                      = DueDateStruct.new('Any Due Date', '').freeze
+  AnyDueDate                      = DueDateStruct.new('Any Due Date', 'any').freeze
   Overdue                         = DueDateStruct.new('Overdue', 'overdue').freeze
+  DueToday                        = DueDateStruct.new('Due Today', 'today').freeze
+  DueTomorrow                     = DueDateStruct.new('Due Tomorrow', 'tomorrow').freeze
   DueThisWeek                     = DueDateStruct.new('Due This Week', 'week').freeze
   DueThisMonth                    = DueDateStruct.new('Due This Month', 'month').freeze
   DueNextMonthAndPreviousTwoWeeks = DueDateStruct.new('Due Next Month And Previous Two Weeks', 'next_month_and_previous_two_weeks').freeze
 
   SORTING_PREFERENCE_FIELD = :issues_sort
+  MAX_BRANCH_TEMPLATE = 255
 
-  # Types of issues that should be displayed on lists across the app
-  # for example, project issues list, group issues list and issue boards.
-  # Some issue types, like test cases, should be hidden by default.
-  TYPES_FOR_LIST = %w(issue incident).freeze
+  # Types of issues that should be displayed on issue lists across the app
+  # for example, project issues list, group issues list, and issues dashboard.
+  #
+  # This should be kept consistent with the enums used for the GraphQL issue list query in
+  # https://gitlab.com/gitlab-org/gitlab/-/blob/1379c2d7bffe2a8d809f23ac5ef9b4114f789c07/app/assets/javascripts/issues/list/constants.js#L154-158
+  TYPES_FOR_LIST = %w(issue incident test_case task objective).freeze
+
+  # Types of issues that should be displayed on issue board lists
+  TYPES_FOR_BOARD_LIST = %w(issue incident).freeze
 
   belongs_to :project
-  has_one :namespace, through: :project
+  belongs_to :namespace, inverse_of: :issues
 
   belongs_to :duplicated_to, class_name: 'Issue'
   belongs_to :closed_by, class_name: 'User'
   belongs_to :iteration, foreign_key: 'sprint_id'
-  belongs_to :work_item_type, class_name: 'WorkItem::Type', inverse_of: :work_items
+  belongs_to :work_item_type, class_name: 'WorkItems::Type', inverse_of: :work_items
 
   belongs_to :moved_to, class_name: 'Issue'
   has_one :moved_from, class_name: 'Issue', foreign_key: :moved_to_id
@@ -63,6 +72,7 @@ class Issue < ApplicationRecord
 
   has_many :issue_assignees
   has_many :issue_email_participants
+  has_one :email
   has_many :assignees, class_name: "User", through: :issue_assignees
   has_many :zoom_meetings
   has_many :user_mentions, class_name: "IssueUserMention", dependent: :delete_all # rubocop:disable Cop/ActiveRecordDependent
@@ -74,29 +84,41 @@ class Issue < ApplicationRecord
     end
   end
 
+  has_one :search_data, class_name: 'Issues::SearchData'
   has_one :issuable_severity
   has_one :sentry_issue
   has_one :alert_management_alert, class_name: 'AlertManagement::Alert'
+  has_one :incident_management_issuable_escalation_status, class_name: 'IncidentManagement::IssuableEscalationStatus'
   has_and_belongs_to_many :self_managed_prometheus_alert_events, join_table: :issues_self_managed_prometheus_alert_events # rubocop: disable Rails/HasAndBelongsToMany
   has_and_belongs_to_many :prometheus_alert_events, join_table: :issues_prometheus_alert_events # rubocop: disable Rails/HasAndBelongsToMany
+  has_many :alert_management_alerts, class_name: 'AlertManagement::Alert', inverse_of: :issue, validate: false
   has_many :prometheus_alerts, through: :prometheus_alert_events
+  has_many :issue_customer_relations_contacts, class_name: 'CustomerRelations::IssueContact', inverse_of: :issue
+  has_many :customer_relations_contacts, through: :issue_customer_relations_contacts, source: :contact, class_name: 'CustomerRelations::Contact', inverse_of: :issues
+  has_many :incident_management_timeline_events, class_name: 'IncidentManagement::TimelineEvent', foreign_key: :issue_id, inverse_of: :incident
+
+  alias_attribute :escalation_status, :incident_management_issuable_escalation_status
 
   accepts_nested_attributes_for :issuable_severity, update_only: true
   accepts_nested_attributes_for :sentry_issue
+  accepts_nested_attributes_for :incident_management_issuable_escalation_status, update_only: true
 
   validates :project, presence: true
   validates :issue_type, presence: true
+  validates :namespace, presence: true
+  validates :work_item_type, presence: true
 
-  enum issue_type: {
-    issue: 0,
-    incident: 1,
-    test_case: 2, ## EE-only
-    requirement: 3 ## EE-only
-  }
+  validate :due_date_after_start_date
+  validate :parent_link_confidentiality
+
+  enum issue_type: WorkItems::Type.base_types
 
   alias_method :issuing_parent, :project
+  alias_attribute :issuing_parent_id, :project_id
 
   alias_attribute :external_author, :service_desk_reply_to
+
+  pg_full_text_searchable columns: [{ name: 'title', weight: 'A' }, { name: 'description', weight: 'B' }]
 
   scope :in_projects, ->(project_ids) { where(project_id: project_ids) }
   scope :not_in_projects, ->(project_ids) { where.not(project_id: project_ids) }
@@ -105,35 +127,64 @@ class Issue < ApplicationRecord
   scope :without_due_date, -> { where(due_date: nil) }
   scope :due_before, ->(date) { where('issues.due_date < ?', date) }
   scope :due_between, ->(from_date, to_date) { where('issues.due_date >= ?', from_date).where('issues.due_date <= ?', to_date) }
+  scope :due_today, -> { where(due_date: Date.current) }
   scope :due_tomorrow, -> { where(due_date: Date.tomorrow) }
+
   scope :not_authored_by, ->(user) { where.not(author_id: user) }
 
-  scope :order_due_date_asc, -> { reorder(::Gitlab::Database.nulls_last_order('due_date', 'ASC')) }
-  scope :order_due_date_desc, -> { reorder(::Gitlab::Database.nulls_last_order('due_date', 'DESC')) }
+  scope :order_due_date_asc, -> { reorder(arel_table[:due_date].asc.nulls_last) }
+  scope :order_due_date_desc, -> { reorder(arel_table[:due_date].desc.nulls_last) }
   scope :order_closest_future_date, -> { reorder(Arel.sql('CASE WHEN issues.due_date >= CURRENT_DATE THEN 0 ELSE 1 END ASC, ABS(CURRENT_DATE - issues.due_date) ASC')) }
-  scope :order_relative_position_asc, -> { reorder(::Gitlab::Database.nulls_last_order('relative_position', 'ASC')) }
-  scope :order_relative_position_desc, -> { reorder(::Gitlab::Database.nulls_first_order('relative_position', 'DESC')) }
-  scope :order_closed_date_desc, -> { reorder(closed_at: :desc) }
   scope :order_created_at_desc, -> { reorder(created_at: :desc) }
-  scope :order_severity_asc, -> { includes(:issuable_severity).order('issuable_severities.severity ASC NULLS FIRST') }
-  scope :order_severity_desc, -> { includes(:issuable_severity).order('issuable_severities.severity DESC NULLS LAST') }
+  scope :order_severity_asc, -> do
+    build_keyset_order_on_joined_column(
+      scope: includes(:issuable_severity),
+      attribute_name: 'issuable_severities_severity',
+      column: IssuableSeverity.arel_table[:severity],
+      direction: :asc,
+      nullable: :nulls_first
+    )
+  end
+  scope :order_severity_desc, -> do
+    build_keyset_order_on_joined_column(
+      scope: includes(:issuable_severity),
+      attribute_name: 'issuable_severities_severity',
+      column: IssuableSeverity.arel_table[:severity],
+      direction: :desc,
+      nullable: :nulls_last
+    )
+  end
+  scope :order_escalation_status_asc, -> { includes(:incident_management_issuable_escalation_status).order(IncidentManagement::IssuableEscalationStatus.arel_table[:status].asc.nulls_last).references(:incident_management_issuable_escalation_status) }
+  scope :order_escalation_status_desc, -> { includes(:incident_management_issuable_escalation_status).order(IncidentManagement::IssuableEscalationStatus.arel_table[:status].desc.nulls_last).references(:incident_management_issuable_escalation_status) }
+  scope :order_closed_at_asc, -> { reorder(arel_table[:closed_at].asc.nulls_last) }
+  scope :order_closed_at_desc, -> { reorder(arel_table[:closed_at].desc.nulls_last) }
 
   scope :preload_associated_models, -> { preload(:assignees, :labels, project: :namespace) }
   scope :with_web_entity_associations, -> { preload(:author, project: [:project_feature, :route, namespace: :route]) }
   scope :preload_awardable, -> { preload(:award_emoji) }
-  scope :with_label_attributes, ->(label_attributes) { joins(:labels).where(labels: label_attributes) }
   scope :with_alert_management_alerts, -> { joins(:alert_management_alert) }
   scope :with_prometheus_alert_events, -> { joins(:issues_prometheus_alert_events) }
   scope :with_self_managed_prometheus_alert_events, -> { joins(:issues_self_managed_prometheus_alert_events) }
   scope :with_api_entity_associations, -> {
-    preload(:timelogs, :closed_by, :assignees, :author, :labels,
+    preload(:timelogs, :closed_by, :assignees, :author, :labels, :issuable_severity,
       milestone: { project: [:route, { namespace: :route }] },
-      project: [:route, { namespace: :route }])
+      project: [:project_feature, :route, { namespace: :route }],
+      duplicated_to: { project: [:project_feature] })
   }
   scope :with_issue_type, ->(types) { where(issue_type: types) }
+  scope :without_issue_type, ->(types) { where.not(issue_type: types) }
 
   scope :public_only, -> { where(confidential: false) }
+
   scope :confidential_only, -> { where(confidential: true) }
+
+  scope :without_hidden, -> {
+    if Feature.enabled?(:ban_user_feature_flag)
+      where.not(author_id: Users::BannedUser.all.select(:user_id))
+    else
+      all
+    end
+  }
 
   scope :counts_by_state, -> { reorder(nil).group(:state_id).count }
 
@@ -159,6 +210,11 @@ class Issue < ApplicationRecord
   scope :by_project_id_and_iid, ->(composites) do
     where_composite(%i[project_id iid], composites)
   end
+  scope :with_null_relative_position, -> { where(relative_position: nil) }
+  scope :with_non_null_relative_position, -> { where.not(relative_position: nil) }
+  scope :with_projects_matching_search_data, -> { where('issue_search_data.project_id = issues.project_id') }
+
+  before_validation :ensure_namespace_id, :ensure_work_item_type
 
   after_commit :expire_etag_cache, unless: :importing?
   after_save :ensure_metrics, unless: :importing?
@@ -194,6 +250,8 @@ class Issue < ApplicationRecord
     before_transition closed: :opened do |issue|
       issue.closed_at = nil
       issue.closed_by = nil
+
+      issue.clear_closure_reason_references
     end
   end
 
@@ -214,11 +272,51 @@ class Issue < ApplicationRecord
     def order_upvotes_asc
       reorder(upvotes_count: :asc)
     end
+
+    override :full_search
+    def full_search(query, matched_columns: nil, use_minimum_char_limit: true)
+      return super if query.match?(IssuableFinder::FULL_TEXT_SEARCH_TERM_REGEX)
+
+      super.where(
+        'issues.title NOT SIMILAR TO :pattern OR issues.description NOT SIMILAR TO :pattern',
+        pattern: IssuableFinder::FULL_TEXT_SEARCH_TERM_PATTERN
+      )
+    end
+  end
+
+  def self.participant_includes
+    [:assignees] + super
+  end
+
+  def next_object_by_relative_position(ignoring: nil, order: :asc)
+    array_mapping_scope = -> (id_expression) do
+      relation = Issue.where(Issue.arel_table[:project_id].eq(id_expression))
+
+      if order == :asc
+        relation.where(Issue.arel_table[:relative_position].gt(relative_position))
+      else
+        relation.where(Issue.arel_table[:relative_position].lt(relative_position))
+      end
+    end
+
+    relation = Gitlab::Pagination::Keyset::InOperatorOptimization::QueryBuilder.new(
+      scope: Issue.order(relative_position: order, id: order),
+      array_scope: relative_positioning_parent_projects,
+      array_mapping_scope: array_mapping_scope,
+      finder_query: -> (_, id_expression) { Issue.where(Issue.arel_table[:id].eq(id_expression)) }
+    ).execute
+
+    relation = exclude_self(relation, excluded: ignoring) if ignoring.present?
+
+    relation.take
+  end
+
+  def relative_positioning_parent_projects
+    project.group&.root_ancestor&.all_projects&.select(:id) || Project.id_in(project).select(:id)
   end
 
   def self.relative_positioning_query_base(issue)
-    projects = issue.project.group&.root_ancestor&.all_projects || issue.project
-    in_projects(projects)
+    in_projects(issue.relative_positioning_parent_projects)
   end
 
   def self.relative_positioning_parent_column
@@ -240,7 +338,7 @@ class Issue < ApplicationRecord
   end
 
   def self.link_reference_pattern
-    @link_reference_pattern ||= super("issues", Gitlab::Regex.issue)
+    @link_reference_pattern ||= super(%r{issues(?:\/incident)?}, Gitlab::Regex.issue)
   end
 
   def self.reference_valid?(reference)
@@ -259,8 +357,8 @@ class Issue < ApplicationRecord
         'due_date' => -> { order_due_date_asc.with_order_id_desc },
         'due_date_asc' => -> { order_due_date_asc.with_order_id_desc },
         'due_date_desc' => -> { order_due_date_desc.with_order_id_desc },
-        'relative_position' => -> { order_relative_position_asc.with_order_id_desc },
-        'relative_position_asc' => -> { order_relative_position_asc.with_order_id_desc }
+        'relative_position' => -> { order_by_relative_position },
+        'relative_position_asc' => -> { order_by_relative_position }
       }
     )
   end
@@ -270,58 +368,54 @@ class Issue < ApplicationRecord
     when 'closest_future_date', 'closest_future_date_asc' then order_closest_future_date
     when 'due_date', 'due_date_asc'                       then order_due_date_asc.with_order_id_desc
     when 'due_date_desc'                                  then order_due_date_desc.with_order_id_desc
-    when 'relative_position', 'relative_position_asc'     then order_relative_position_asc.with_order_id_desc
-    when 'severity_asc'                                   then order_severity_asc.with_order_id_desc
-    when 'severity_desc'                                  then order_severity_desc.with_order_id_desc
+    when 'relative_position', 'relative_position_asc'     then order_by_relative_position
+    when 'severity_asc'                                   then order_severity_asc
+    when 'severity_desc'                                  then order_severity_desc
+    when 'escalation_status_asc'                          then order_escalation_status_asc
+    when 'escalation_status_desc'                         then order_escalation_status_desc
+    when 'closed_at', 'closed_at_asc'                     then order_closed_at_asc
+    when 'closed_at_desc'                                 then order_closed_at_desc
     else
       super
     end
   end
 
-  # `with_cte` argument allows sorting when using CTE queries and prevents
-  # errors in postgres when using CTE search optimisation
-  def self.order_by_position_and_priority(with_cte: false)
-    order = Gitlab::Pagination::Keyset::Order.build([column_order_relative_position, column_order_highest_priority, column_order_id_desc])
-
-    order_labels_priority(with_cte: with_cte)
-      .reorder(order)
+  def self.order_by_relative_position
+    reorder(Gitlab::Pagination::Keyset::Order.build([column_order_relative_position, column_order_id_asc]))
   end
 
   def self.column_order_relative_position
     Gitlab::Pagination::Keyset::ColumnOrderDefinition.new(
       attribute_name: 'relative_position',
       column_expression: arel_table[:relative_position],
-      order_expression: Gitlab::Database.nulls_last_order('issues.relative_position', 'ASC'),
-      reversed_order_expression: Gitlab::Database.nulls_last_order('issues.relative_position', 'DESC'),
-      order_direction: :asc,
+      order_expression: Issue.arel_table[:relative_position].asc.nulls_last,
       nullable: :nulls_last,
       distinct: false
     )
   end
 
-  def self.column_order_highest_priority
-    Gitlab::Pagination::Keyset::ColumnOrderDefinition.new(
-      attribute_name: 'highest_priority',
-      column_expression: Arel.sql('highest_priorities.label_priority'),
-      order_expression: Gitlab::Database.nulls_last_order('highest_priorities.label_priority', 'ASC'),
-      reversed_order_expression: Gitlab::Database.nulls_last_order('highest_priorities.label_priority', 'DESC'),
-      order_direction: :asc,
-      nullable: :nulls_last,
-      distinct: false
-    )
-  end
-
-  def self.column_order_id_desc
+  def self.column_order_id_asc
     Gitlab::Pagination::Keyset::ColumnOrderDefinition.new(
       attribute_name: 'id',
-      order_expression: arel_table[:id].desc
+      order_expression: arel_table[:id].asc
     )
   end
 
-  def self.to_branch_name(*args)
-    branch_name = args.map(&:to_s).each_with_index.map do |arg, i|
-      arg.parameterize(preserve_case: i == 0).presence
-    end.compact.join('-')
+  def self.to_branch_name(id, title, project: nil)
+    params = {
+      'id' => id.to_s.parameterize(preserve_case: true),
+      'title' => title.to_s.parameterize
+    }
+    template = project&.issue_branch_template
+
+    branch_name =
+      if template.present?
+        Gitlab::StringPlaceholderReplacer.replace_string_placeholders(template, /(#{params.keys.join('|')})/) do |arg|
+          params[arg]
+        end
+      else
+        params.values.select(&:present?).join('-')
+      end
 
     if branch_name.length > 100
       truncated_string = branch_name[0, 100]
@@ -345,10 +439,6 @@ class Issue < ApplicationRecord
     resource_parent.root_namespace&.issue_repositioning_disabled?
   end
 
-  def hook_attrs
-    Gitlab::HookData::IssueBuilder.new(self).build
-  end
-
   # `from` argument can be a Namespace or Project.
   def to_reference(from = nil, full: false)
     reference = "#{self.class.reference_prefix}#{iid}"
@@ -360,16 +450,14 @@ class Issue < ApplicationRecord
     return to_branch_name unless project.repository.branch_exists?(to_branch_name)
 
     start_counting_from = 2
-    Uniquify.new(start_counting_from).string(-> (counter) { "#{to_branch_name}-#{counter}" }) do |suggested_branch_name|
-      project.repository.branch_exists?(suggested_branch_name)
-    end
-  end
 
-  # Returns boolean if a related branch exists for the current issue
-  # ignores merge requests branchs
-  def has_related_branch?
-    project.repository.branch_names.any? do |branch|
-      /\A#{iid}-(?!\d+-stable)/i =~ branch
+    branch_name_generator = -> (counter) do
+      suffix = counter > 5 ? SecureRandom.hex(8) : counter
+      "#{to_branch_name}-#{suffix}"
+    end
+
+    Uniquify.new(start_counting_from).string(branch_name_generator) do |suggested_branch_name|
+      project.repository.branch_exists?(suggested_branch_name)
     end
   end
 
@@ -386,6 +474,11 @@ class Issue < ApplicationRecord
     !duplicated_to_id.nil?
   end
 
+  def clear_closure_reason_references
+    self.moved_to_id = nil
+    self.duplicated_to_id = nil
+  end
+
   def can_move?(user, to_project = nil)
     if to_project
       return false unless user.can?(:admin_issue, to_project)
@@ -400,7 +493,7 @@ class Issue < ApplicationRecord
     if self.confidential?
       "#{iid}-confidential-issue"
     else
-      self.class.to_branch_name(iid, title)
+      self.class.to_branch_name(iid, title, project: project)
     end
   end
 
@@ -433,8 +526,6 @@ class Issue < ApplicationRecord
   # Returns `true` if the current issue can be viewed by either a logged in User
   # or an anonymous user.
   def visible_to_user?(user = nil)
-    return false unless project && project.feature_available?(:issues, user)
-
     return publicly_visible? unless user
 
     return false unless readable_by?(user)
@@ -486,10 +577,6 @@ class Issue < ApplicationRecord
     ::MergeRequestsClosingIssues.count_for_issue(self.id, user)
   end
 
-  def labels_hook_attrs
-    labels.map(&:hook_attrs)
-  end
-
   def previous_updated_at
     previous_changes['updated_at']&.first || updated_at
   end
@@ -527,6 +614,10 @@ class Issue < ApplicationRecord
     issue_type_supports?(:time_tracking)
   end
 
+  def supports_move_and_clone?
+    issue_type_supports?(:move_and_clone)
+  end
+
   def email_participants_emails
     issue_email_participants.pluck(:email)
   end
@@ -550,20 +641,70 @@ class Issue < ApplicationRecord
   # for performance reasons, check commit: 002ad215818450d2cbbc5fa065850a953dc7ada8
   # Make sure to sync this method with issue_policy.rb
   def readable_by?(user)
-    if user.can_read_all_resources?
+    if !project.issues_enabled?
+      false
+    elsif user.can_read_all_resources?
       true
-    elsif project.owner == user
+    elsif project.personal? && project.team.owner?(user)
       true
     elsif confidential? && !assignee_or_author?(user)
       project.team.member?(user, Gitlab::Access::REPORTER)
+    elsif hidden?
+      false
+    elsif project.public? || (project.internal? && !user.external?)
+      project.feature_available?(:issues, user)
     else
-      project.public? ||
-        project.internal? && !user.external? ||
-        project.team.member?(user)
+      project.team.member?(user)
     end
   end
 
+  def hidden?
+    author&.banned?
+  end
+
+  # Necessary until all issues are backfilled and we add a NOT NULL constraint on the DB
+  def work_item_type
+    super || WorkItems::Type.default_by_type(issue_type)
+  end
+
+  def expire_etag_cache
+    key = Gitlab::Routing.url_helpers.realtime_changes_project_issue_path(project, self)
+    Gitlab::EtagCaching::Store.new.touch(key)
+  end
+
+  def supports_confidentiality?
+    true
+  end
+
   private
+
+  def due_date_after_start_date
+    return unless start_date.present? && due_date.present?
+
+    if due_date < start_date
+      errors.add(:due_date, 'must be greater than or equal to start date')
+    end
+  end
+
+  # Although parent/child relationship can be set only for WorkItems, we
+  # still need to validate it for Issue model too, because both models use
+  # same table.
+  def parent_link_confidentiality
+    return unless persisted?
+
+    if confidential? && WorkItems::ParentLink.has_public_children?(id)
+      errors.add(:base, _('A confidential issue cannot have a parent that already has non-confidential children.'))
+    end
+
+    if !confidential? && WorkItems::ParentLink.has_confidential_parent?(id)
+      errors.add(:base, _('A non-confidential issue cannot have a confidential parent.'))
+    end
+  end
+
+  override :persist_pg_full_text_search_vector
+  def persist_pg_full_text_search_vector(search_vector)
+    Issues::SearchData.upsert({ project_id: project_id, issue_id: id, search_vector: search_vector }, unique_by: %i(project_id issue_id))
+  end
 
   def spammable_attribute_changed?
     title_changed? ||
@@ -573,34 +714,34 @@ class Issue < ApplicationRecord
       confidential_changed?(from: true, to: false)
   end
 
-  # Ensure that the metrics association is safely created and respecting the unique constraint on issue_id
   override :ensure_metrics
   def ensure_metrics
-    if !association(:metrics).loaded? || metrics.blank?
-      metrics_record = Issue::Metrics.safe_find_or_create_by(issue: self)
-      self.metrics = metrics_record
-    end
-
-    metrics.record!
+    Issue::Metrics.record!(self)
   end
 
   def record_create_action
-    Gitlab::UsageDataCounters::IssueActivityUniqueCounter.track_issue_created_action(author: author)
+    Gitlab::UsageDataCounters::IssueActivityUniqueCounter.track_issue_created_action(author: author, project: project)
   end
 
   # Returns `true` if this Issue is visible to everybody.
   def publicly_visible?
-    project.public? && !confidential? && !::Gitlab::ExternalAuthorization.enabled?
-  end
-
-  def expire_etag_cache
-    key = Gitlab::Routing.url_helpers.realtime_changes_project_issue_path(project, self)
-    Gitlab::EtagCaching::Store.new.touch(key)
+    project.public? && project.feature_available?(:issues, nil) &&
+      !confidential? && !hidden? && !::Gitlab::ExternalAuthorization.enabled?
   end
 
   def could_not_move(exception)
     # Symptom of running out of space - schedule rebalancing
-    IssueRebalancingWorker.perform_async(nil, *project.self_or_root_group_ids)
+    Issues::RebalancingWorker.perform_async(nil, *project.self_or_root_group_ids)
+  end
+
+  def ensure_namespace_id
+    self.namespace = project.project_namespace if project
+  end
+
+  def ensure_work_item_type
+    return if work_item_type_id.present? || work_item_type_id_change&.last.present?
+
+    self.work_item_type = WorkItems::Type.default_by_type(issue_type)
   end
 end
 

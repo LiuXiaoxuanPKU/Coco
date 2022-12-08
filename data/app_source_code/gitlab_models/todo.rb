@@ -3,6 +3,7 @@
 class Todo < ApplicationRecord
   include Sortable
   include FromUnion
+  include EachBatch
 
   # Time to wait for todos being removed when not visible for user anymore.
   # Prevents TODOs being removed by mistake, for example, removing access from a user
@@ -30,6 +31,8 @@ class Todo < ApplicationRecord
     DIRECTLY_ADDRESSED => :directly_addressed,
     MERGE_TRAIN_REMOVED => :merge_train_removed
   }.freeze
+
+  ACTIONS_MULTIPLE_ALLOWED = [Todo::MENTIONED, Todo::DIRECTLY_ADDRESSED].freeze
 
   belongs_to :author, class_name: "User"
   belongs_to :note
@@ -67,8 +70,9 @@ class Todo < ApplicationRecord
   scope :for_type, -> (type) { where(target_type: type) }
   scope :for_target, -> (id) { where(target_id: id) }
   scope :for_commit, -> (id) { where(commit_id: id) }
-  scope :with_entity_associations, -> { preload(:target, :author, :note, group: :route, project: [:route, { namespace: :route }]) }
+  scope :with_entity_associations, -> { preload(:target, :author, :note, group: :route, project: [:route, { namespace: [:route, :owner] }]) }
   scope :joins_issue_and_assignees, -> { left_joins(issue: :assignees) }
+  scope :for_internal_notes, -> { joins(:note).where(note: { confidential: true }) }
 
   enum resolved_by_action: { system_done: 0, api_all_done: 1, api_done: 2, mark_all_done: 3, mark_done: 4 }, _prefix: :resolved_by
 
@@ -90,12 +94,13 @@ class Todo < ApplicationRecord
     #
     # Returns an `ActiveRecord::Relation`.
     def for_group_ids_and_descendants(group_ids)
-      groups = Group.groups_including_descendants_by(group_ids)
+      groups = Group.where(id: group_ids).self_and_descendants
 
-      from_union([
-        for_project(Project.for_group(groups)),
-        for_group(groups)
-      ])
+      from_union(
+        [
+          for_project(Project.for_group(groups)),
+          for_group(groups)
+        ])
     end
 
     # Returns `true` if the current user has any todos for the given target with the optional given state.
@@ -143,10 +148,10 @@ class Todo < ApplicationRecord
         target_type_column: "todos.target_type",
         target_column: "todos.target_id",
         project_column: "todos.project_id"
-      ).to_sql
+      ).arel.as('highest_priority')
 
-      select("#{table_name}.*, (#{highest_priority}) AS highest_priority")
-        .order(Gitlab::Database.nulls_last_order('highest_priority', 'ASC'))
+      select(arel_table[Arel.star], highest_priority)
+        .order(Arel.sql('highest_priority').asc.nulls_last)
         .order('todos.created_at')
     end
 
@@ -221,10 +226,18 @@ class Todo < ApplicationRecord
     target_type == AlertManagement::Alert.name
   end
 
+  def for_issue_or_work_item?
+    [Issue.name, WorkItem.name].any? { |klass_name| target_type == klass_name }
+  end
+
   # override to return commits, which are not active record
   def target
     if for_commit?
-      project.commit(commit_id) rescue nil
+      begin
+        project.commit(commit_id)
+      rescue StandardError
+        nil
+      end
     else
       super
     end

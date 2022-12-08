@@ -3,12 +3,24 @@
 module Integrations
   class DroneCi < BaseCi
     include HasWebHook
-    include ReactiveService
-    include ServicePushDataValidations
-    extend Gitlab::Utils::Override
+    include PushDataValidations
+    include ReactivelyCached
+    prepend EnableSslVerification
 
-    prop_accessor :drone_url, :token
-    boolean_accessor :enable_ssl_verification
+    DRONE_SAAS_HOSTNAME = 'cloud.drone.io'
+
+    field :drone_url,
+      title: -> { s_('ProjectService|Drone server URL') },
+      placeholder: 'http://drone.example.com',
+      exposes_secrets: true,
+      required: true
+
+    field :token,
+      type: 'password',
+      help: -> { s_('ProjectService|Token for the Drone project.') },
+      non_empty_password_title: -> { s_('ProjectService|Enter new token') },
+      non_empty_password_help: -> { s_('ProjectService|Leave blank to use your current token.') },
+      required: true
 
     validates :drone_url, presence: true, public_url: true, if: :activated?
     validates :token, presence: true, if: :activated?
@@ -48,8 +60,7 @@ module Integrations
       response = Gitlab::HTTP.try_get(
         commit_status_path(sha, ref),
         verify: enable_ssl_verification,
-        extra_log_info: { project_id: project_id },
-        use_read_total_timeout: true
+        extra_log_info: { project_id: project_id }
       )
 
       status =
@@ -92,28 +103,33 @@ module Integrations
       s_('ProjectService|Run CI/CD pipelines with Drone.')
     end
 
-    def fields
-      [
-        { type: 'text', name: 'token', help: s_('ProjectService|Token for the Drone project.'), required: true },
-        { type: 'text', name: 'drone_url', title: s_('ProjectService|Drone server URL'), placeholder: 'http://drone.example.com', required: true },
-        { type: 'checkbox', name: 'enable_ssl_verification', title: "Enable SSL verification" }
-      ]
-    end
-
     override :hook_url
     def hook_url
-      [drone_url, "/hook", "?owner=#{project.namespace.full_path}", "&name=#{project.path}", "&access_token=#{token}"].join
+      [drone_url, "/hook", "?owner=#{project.namespace.full_path}", "&name=#{project.path}", "&access_token={token}"].join
     end
 
-    override :hook_ssl_verification
-    def hook_ssl_verification
-      !!enable_ssl_verification
+    def url_variables
+      { 'token' => token }
     end
 
     override :update_web_hook!
     def update_web_hook!
       # If using a service template, project may not be available
       super if project
+    end
+
+    def enable_ssl_verification
+      original_value = Gitlab::Utils.to_boolean(properties['enable_ssl_verification'])
+      original_value.nil? ? (new_record? || url_is_saas?) : original_value
+    end
+
+    private
+
+    def url_is_saas?
+      parsed_url = Addressable::URI.parse(drone_url)
+      parsed_url&.scheme == 'https' && parsed_url.hostname == DRONE_SAAS_HOSTNAME
+    rescue Addressable::URI::InvalidURIError
+      false
     end
   end
 end

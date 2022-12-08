@@ -12,7 +12,7 @@ module Spammable
   included do
     has_one :user_agent_detail, as: :subject, dependent: :destroy # rubocop:disable Cop/ActiveRecordDependent
 
-    attr_accessor :spam
+    attr_writer :spam
     attr_accessor :needs_recaptcha
     attr_accessor :spam_log
 
@@ -27,6 +27,10 @@ module Spammable
     end
 
     delegate :ip_address, :user_agent, to: :user_agent_detail, allow_nil: true
+  end
+
+  def spam
+    !!@spam # rubocop:disable Gitlab/ModuleWithInstanceVariables
   end
 
   def submittable_as_spam_by?(current_user)
@@ -74,12 +78,14 @@ module Spammable
   end
 
   def recaptcha_error!
-    self.errors.add(:base, "Your #{spammable_entity_type} has been recognized as spam. "\
-                    "Please, change the content or solve the reCAPTCHA to proceed.")
+    self.errors.add(:base, _("Your %{spammable_entity_type} has been recognized as spam. "\
+                    "Please, change the content or solve the reCAPTCHA to proceed.") \
+                    % { spammable_entity_type: spammable_entity_type })
   end
 
   def unrecoverable_spam_error!
-    self.errors.add(:base, "Your #{spammable_entity_type} has been recognized as spam and has been discarded.")
+    self.errors.add(:base, _("Your %{spammable_entity_type} has been recognized as spam and has been discarded.") \
+                    % { spammable_entity_type: spammable_entity_type })
   end
 
   def spammable_entity_type

@@ -85,8 +85,7 @@ module Packages
         scope :with_codename_or_suite, ->(codename_or_suite) { with_codename(codename_or_suite).or(with_suite(codename_or_suite)) }
 
         mount_file_store_uploader Packages::Debian::DistributionReleaseFileUploader
-        mount_uploader :signed_file, Packages::Debian::DistributionReleaseFileUploader
-        after_save :update_signed_file_store, if: :saved_change_to_signed_file?
+        mount_file_store_uploader Packages::Debian::DistributionReleaseFileUploader, file_field: :signed_file
 
         def component_names
           components.pluck(:name).sort
@@ -96,17 +95,12 @@ module Packages
           architectures.pluck(:name).sort
         end
 
-        def needs_update?
-          !file.exists? || time_duration_expired?
+        def package_files
+          ::Packages::PackageFile.installable
+                                 .for_package_ids(packages.select(:id))
         end
 
         private
-
-        def time_duration_expired?
-          return false unless valid_time_duration_seconds.present?
-
-          updated_at + valid_time_duration_seconds.seconds + 6.hours < Time.current
-        end
 
         def unique_codename_and_suite
           errors.add(:codename, _('has already been taken as Suite')) if codename_exists_as_suite?
@@ -123,12 +117,6 @@ module Packages
           return false unless suite.present?
 
           self.class.with_container(container).with_codename(suite).exists?
-        end
-
-        def update_signed_file_store
-          # The signed_file.object_store is set during `uploader.store!`
-          # which happens after object is inserted/updated
-          self.update_column(:signed_file_store, signed_file.object_store)
         end
       end
     end

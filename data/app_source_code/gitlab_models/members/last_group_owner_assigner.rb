@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Optimization class to fix group member n+1 queries
 class LastGroupOwnerAssigner
   def initialize(group, members)
     @group = group
@@ -7,7 +8,7 @@ class LastGroupOwnerAssigner
   end
 
   def execute
-    @last_blocked_owner = no_owners_in_heirarchy? && group.single_blocked_owner?
+    @last_blocked_owner = no_owners_in_hierarchy? && group.single_blocked_owner?
     @group_single_owner = owners.size == 1
 
     members.each { |member| set_last_owner(member) }
@@ -17,7 +18,7 @@ class LastGroupOwnerAssigner
 
   attr_reader :group, :members, :last_blocked_owner, :group_single_owner
 
-  def no_owners_in_heirarchy?
+  def no_owners_in_hierarchy?
     owners.empty?
   end
 
@@ -39,6 +40,6 @@ class LastGroupOwnerAssigner
   end
 
   def owners
-    @owners ||= group.members_with_parents.owners.load
+    @owners ||= group.member_owners_excluding_project_bots.load
   end
 end

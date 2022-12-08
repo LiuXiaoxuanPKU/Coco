@@ -23,6 +23,8 @@ module Network
     protected
 
     def collect_notes
+      return {} if Feature.enabled?(:disable_network_graph_notes_count, @project, type: :experiment)
+
       h = Hash.new(0)
 
       @project
@@ -211,7 +213,7 @@ module Network
 
       # Visit branching chains
       leaves.each do |l|
-        parents = l.parents(@map).select {|p| p.space == 0}
+        parents = l.parents(@map).select { |p| p.space == 0 }
         parents.each do |p|
           place_chain(p, l.time)
         end

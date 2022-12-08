@@ -7,6 +7,7 @@ module Ci
     include UpdateProjectStatistics
     include Artifactable
     include FileStoreMounter
+    include Lockable
     include Presentable
 
     FILE_SIZE_LIMIT = 10.megabytes.freeze
@@ -50,6 +51,24 @@ module Ci
 
       def find_by_file_type(file_type)
         find_by(file_type: file_type)
+      end
+
+      def create_or_replace_for_pipeline!(pipeline:, file_type:, file:, size:, locked: :unknown)
+        transaction do
+          pipeline.pipeline_artifacts.find_by_file_type(file_type)&.destroy!
+
+          pipeline.pipeline_artifacts.create!(
+            file_type: file_type,
+            project_id: pipeline.project_id,
+            size: size,
+            file: file,
+            file_format: REPORT_TYPES[file_type],
+            expire_at: EXPIRATION_DATE.from_now,
+            locked: locked
+          )
+        end
+      rescue ActiveRecord::ActiveRecordError => err
+        Gitlab::ErrorTracking.track_and_raise_exception(err, { pipeline_id: pipeline.id, file_type: file_type })
       end
     end
 

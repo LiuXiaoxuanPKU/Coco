@@ -4,10 +4,21 @@ require 'asana'
 
 module Integrations
   class Asana < Integration
-    include ActionView::Helpers::UrlHelper
-
-    prop_accessor :api_key, :restrict_to_branch
     validates :api_key, presence: true, if: :activated?
+
+    field :api_key,
+      type: 'password',
+      title: 'API key',
+      help: -> { s_('AsanaService|User Personal Access Token. User must have access to the task. All comments are attributed to this user.') },
+      non_empty_password_title: -> { s_('ProjectService|Enter new API key') },
+      non_empty_password_help: -> { s_('ProjectService|Leave blank to use your current API key.') },
+      # Example Personal Access Token from Asana docs
+      placeholder: '0/68a9e79b868c6789e79a124c30b0',
+      required: true
+
+    field :restrict_to_branch,
+      title: -> { s_('Integrations|Restrict to branch (optional)') },
+      help: -> { s_('AsanaService|Comma-separated list of branches to be automatically inspected. Leave blank to include all branches.') }
 
     def title
       'Asana'
@@ -18,7 +29,7 @@ module Integrations
     end
 
     def help
-      docs_link = link_to _('Learn more.'), Rails.application.routes.url_helpers.help_page_url('user/project/integrations/asana'), target: '_blank', rel: 'noopener noreferrer'
+      docs_link = ActionController::Base.helpers.link_to _('Learn more.'), Rails.application.routes.url_helpers.help_page_url('user/project/integrations/asana'), target: '_blank', rel: 'noopener noreferrer'
       s_('Add commit messages as comments to Asana tasks. %{docs_link}').html_safe % { docs_link: docs_link.html_safe }
     end
 
@@ -26,47 +37,22 @@ module Integrations
       'asana'
     end
 
-    def fields
-      [
-        {
-          type: 'text',
-          name: 'api_key',
-          title: 'API key',
-          help: s_('AsanaService|User Personal Access Token. User must have access to the task. All comments are attributed to this user.'),
-          # Example Personal Access Token from Asana docs
-          placeholder: '0/68a9e79b868c6789e79a124c30b0',
-          required: true
-        },
-        {
-          type: 'text',
-          name: 'restrict_to_branch',
-          title: 'Restrict to branch (optional)',
-          help: s_('AsanaService|Comma-separated list of branches to be automatically inspected. Leave blank to include all branches.')
-        }
-      ]
-    end
-
     def self.supported_events
       %w(push)
     end
 
     def client
-      @_client ||= begin
-        ::Asana::Client.new do |c|
-          c.authentication :access_token, api_key
-        end
+      @_client ||= ::Asana::Client.new do |c|
+        c.authentication :access_token, api_key
       end
     end
 
     def execute(data)
       return unless supported_events.include?(data[:object_kind])
 
-      # check the branch restriction is poplulated and branch is not included
       branch = Gitlab::Git.ref_name(data[:ref])
-      branch_restriction = restrict_to_branch.to_s
-      if branch_restriction.present? && branch_restriction.index(branch).nil?
-        return
-      end
+
+      return unless branch_allowed?(branch)
 
       user = data[:user_name]
       project_name = project.full_name
@@ -104,6 +90,14 @@ module Integrations
           next
         end
       end
+    end
+
+    private
+
+    def branch_allowed?(branch_name)
+      return true if restrict_to_branch.blank?
+
+      restrict_to_branch.to_s.gsub(/\s+/, '').split(',').include?(branch_name)
     end
   end
 end

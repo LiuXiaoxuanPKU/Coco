@@ -2,8 +2,6 @@
 
 module Integrations
   class HangoutsChat < BaseChatNotification
-    include ActionView::Helpers::UrlHelper
-
     def title
       'Google Chat'
     end
@@ -17,18 +15,11 @@ module Integrations
     end
 
     def help
-      docs_link = link_to _('How do I set up a Google Chat webhook?'), Rails.application.routes.url_helpers.help_page_url('user/project/integrations/hangouts_chat'), target: '_blank', rel: 'noopener noreferrer'
+      docs_link = ActionController::Base.helpers.link_to _('How do I set up a Google Chat webhook?'), Rails.application.routes.url_helpers.help_page_url('user/project/integrations/hangouts_chat'), target: '_blank', rel: 'noopener noreferrer'
       s_('Before enabling this integration, create a webhook for the room in Google Chat where you want to receive notifications from this project. %{docs_link}').html_safe % { docs_link: docs_link.html_safe }
     end
 
-    def event_field(event)
-    end
-
     def default_channel_placeholder
-    end
-
-    def webhook_placeholder
-      'https://chat.googleapis.com/v1/spaces…'
     end
 
     def self.supported_events
@@ -38,17 +29,45 @@ module Integrations
 
     def default_fields
       [
-        { type: 'text', name: 'webhook', placeholder: "#{webhook_placeholder}" },
+        { type: 'text', name: 'webhook', help: 'https://chat.googleapis.com/v1/spaces…' },
         { type: 'checkbox', name: 'notify_only_broken_pipelines' },
-        { type: 'select', name: 'branches_to_be_notified', choices: branch_choices }
+        {
+          type: 'select',
+          name: 'branches_to_be_notified',
+          title: s_('Integrations|Branches for which notifications are to be sent'),
+          choices: self.class.branch_choices
+        }
       ]
     end
 
     private
 
     def notify(message, opts)
+      url = webhook.dup
+
+      key = parse_thread_key(message)
+      url = Gitlab::Utils.add_url_parameters(url, { threadKey: key }) if key
+
       simple_text = parse_simple_text_message(message)
-      ::HangoutsChat::Sender.new(webhook).simple(simple_text)
+      ::HangoutsChat::Sender.new(url).simple(simple_text)
+    end
+
+    # Returns an appropriate key for threading messages in google chat
+    def parse_thread_key(message)
+      case message
+      when Integrations::ChatMessage::NoteMessage
+        message.target
+      when Integrations::ChatMessage::IssueMessage
+        "issue #{Issue.reference_prefix}#{message.issue_iid}"
+      when Integrations::ChatMessage::MergeMessage
+        "merge request #{MergeRequest.reference_prefix}#{message.merge_request_iid}"
+      when Integrations::ChatMessage::PushMessage
+        "push #{message.project_name}_#{message.ref}"
+      when Integrations::ChatMessage::PipelineMessage
+        "pipeline #{message.pipeline_id}"
+      when Integrations::ChatMessage::WikiPageMessage
+        "wiki_page #{message.wiki_page_url}"
+      end
     end
 
     def parse_simple_text_message(message)

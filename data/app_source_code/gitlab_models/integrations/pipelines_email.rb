@@ -4,13 +4,32 @@ module Integrations
   class PipelinesEmail < Integration
     include NotificationBranchSelection
 
-    prop_accessor :recipients, :branches_to_be_notified
-    boolean_accessor :notify_only_broken_pipelines, :notify_only_default_branch
+    RECIPIENTS_LIMIT = 30
+
     validates :recipients, presence: true, if: :validate_recipients?
+    validate :number_of_recipients_within_limit, if: :validate_recipients?
+
+    field :recipients,
+      type: 'textarea',
+      help: -> { _('Comma-separated list of email addresses.') },
+      required: true
+
+    field :notify_only_broken_pipelines,
+      type: 'checkbox'
+
+    field :notify_only_default_branch,
+      type: 'checkbox',
+      api_only: true
+
+    field :branches_to_be_notified,
+      type: 'select',
+      title: -> { s_('Integrations|Branches for which notifications are to be sent') },
+      choices: branch_choices
 
     def initialize_properties
-      if properties.nil?
-        self.properties = {}
+      super
+
+      if properties.blank?
         self.notify_only_broken_pipelines = true
         self.branches_to_be_notified = "default"
       elsif !self.notify_only_default_branch.nil?
@@ -49,7 +68,7 @@ module Integrations
       return unless supported_events.include?(data[:object_kind])
       return unless force || should_pipeline_be_notified?(data)
 
-      all_recipients = retrieve_recipients(data)
+      all_recipients = retrieve_recipients
 
       return unless all_recipients.any?
 
@@ -61,26 +80,12 @@ module Integrations
       project&.ci_pipelines&.any?
     end
 
-    def fields
-      [
-        { type: 'textarea',
-          name: 'recipients',
-          help: _('Comma-separated list of email addresses.'),
-          required: true },
-        { type: 'checkbox',
-          name: 'notify_only_broken_pipelines' },
-        { type: 'select',
-          name: 'branches_to_be_notified',
-          choices: branch_choices }
-      ]
-    end
-
     def test(data)
       result = execute(data, force: true)
 
       { success: true, result: result }
-    rescue StandardError => error
-      { success: false, result: error }
+    rescue StandardError => e
+      { success: false, result: e }
     end
 
     def should_pipeline_be_notified?(data)
@@ -98,8 +103,18 @@ module Integrations
       end
     end
 
-    def retrieve_recipients(data)
+    def retrieve_recipients
       recipients.to_s.split(/[,\r\n ]+/).reject(&:empty?)
+    end
+
+    private
+
+    def number_of_recipients_within_limit
+      return if recipients.blank?
+
+      if retrieve_recipients.size > RECIPIENTS_LIMIT
+        errors.add(:recipients, s_("Integrations|can't exceed %{recipients_limit}") % { recipients_limit: RECIPIENTS_LIMIT })
+      end
     end
   end
 end

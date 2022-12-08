@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 module Ci
-  class InstanceVariable < Ci::CiDatabaseRecord
+  class InstanceVariable < Ci::ApplicationRecord
     extend Gitlab::ProcessMemoryCache::Helper
     include Ci::NewHasVariable
     include Ci::Maskable
+    include Ci::RawVariable
     include Limitable
 
     self.limit_name = 'ci_instance_level_variables'

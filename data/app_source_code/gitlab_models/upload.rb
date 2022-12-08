@@ -2,6 +2,7 @@
 
 class Upload < ApplicationRecord
   include Checksummable
+
   # Upper limit for foreground checksum processing
   CHECKSUM_THRESHOLD = 100.megabytes
 
@@ -17,6 +18,8 @@ class Upload < ApplicationRecord
 
   before_save  :calculate_checksum!, if: :foreground_checksummable?
   after_commit :schedule_checksum,   if: :needs_checksum?
+
+  after_commit :update_project_statistics, on: [:create, :destroy], if: :project?
 
   # as the FileUploader is not mounted, the default CarrierWave ActiveRecord
   # hooks are not executed and the file will not be deleted
@@ -49,9 +52,9 @@ class Upload < ApplicationRecord
 
     ##
     # FastDestroyAll concerns
-    def finalize_fast_destroy(keys)
-      keys.each do |store_class, paths|
-        store_class.new.delete_keys_async(paths)
+    def finalize_fast_destroy(items_to_remove)
+      items_to_remove.each do |store_class, keys|
+        store_class.new.delete_keys_async(keys)
       end
     end
   end
@@ -63,11 +66,15 @@ class Upload < ApplicationRecord
     uploader_class.absolute_path(self)
   end
 
+  def relative_path
+    uploader_class.relative_path(self)
+  end
+
   def calculate_checksum!
     self.checksum = nil
     return unless needs_checksum?
 
-    self.checksum = self.class.hexdigest(absolute_path)
+    self.checksum = self.class.sha256_hexdigest(absolute_path)
   end
 
   # Initialize the associated Uploader class with current model
@@ -160,6 +167,14 @@ class Upload < ApplicationRecord
 
   def mount_point
     super&.to_sym
+  end
+
+  def project?
+    model_type == "Project"
+  end
+
+  def update_project_statistics
+    ProjectCacheWorker.perform_async(model_id, [], [:uploads_size])
   end
 end
 

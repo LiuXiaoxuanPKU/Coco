@@ -17,6 +17,18 @@
 #     counter_attribute :storage_size
 #   end
 #
+# It's possible to define a conditional counter attribute. You need to pass a proc
+# that must accept a single argument, the object instance on which this concern is
+# included.
+#
+# @example:
+#
+#   class ProjectStatistics
+#     include CounterAttribute
+#
+#     counter_attribute :conditional_one, if: -> { |object| object.use_counter_attribute? }
+#   end
+#
 # To increment the counter we can use the method:
 #   delayed_increment_counter(:commit_count, 3)
 #
@@ -49,12 +61,15 @@ module CounterAttribute
   WORKER_LOCK_TTL = 10.minutes
 
   class_methods do
-    def counter_attribute(attribute)
-      counter_attributes << attribute
+    def counter_attribute(attribute, if: nil)
+      counter_attributes << {
+        attribute: attribute,
+        if_proc: binding.local_variable_get(:if) # can't read `if` directly
+      }
     end
 
     def counter_attributes
-      @counter_attributes ||= Set.new
+      @counter_attributes ||= []
     end
 
     def after_flush_callbacks
@@ -65,6 +80,14 @@ module CounterAttribute
     def counter_attribute_after_flush(&callback)
       after_flush_callbacks << callback
     end
+  end
+
+  def counter_attribute_enabled?(attribute)
+    counter_attribute = self.class.counter_attributes.find { |registered| registered[:attribute] == attribute }
+    return false unless counter_attribute
+    return true unless counter_attribute[:if_proc]
+
+    counter_attribute[:if_proc].call(self)
   end
 
   # This method must only be called by FlushCounterIncrementsWorker
@@ -82,37 +105,73 @@ module CounterAttribute
     lock_key = counter_lock_key(attribute)
 
     with_exclusive_lease(lock_key) do
+      previous_db_value = read_attribute(attribute)
       increment_key = counter_key(attribute)
       flushed_key = counter_flushed_key(attribute)
       increment_value = steal_increments(increment_key, flushed_key)
+      new_db_value = nil
 
       next if increment_value == 0
 
       transaction do
-        unsafe_update_counters(id, attribute => increment_value)
+        update_counters_with_lease({ attribute => increment_value })
         redis_state { |redis| redis.del(flushed_key) }
+        new_db_value = reset.read_attribute(attribute)
       end
 
       execute_after_flush_callbacks
+
+      log_flush_counter(attribute, increment_value, previous_db_value, new_db_value)
     end
   end
 
   def delayed_increment_counter(attribute, increment)
+    raise ArgumentError, "#{attribute} is not a counter attribute" unless counter_attribute_enabled?(attribute)
+
     return if increment == 0
 
     run_after_commit_or_now do
-      if counter_attribute_enabled?(attribute)
-        redis_state do |redis|
-          redis.incrby(counter_key(attribute), increment)
-        end
+      increment_counter(attribute, increment)
 
-        FlushCounterIncrementsWorker.perform_in(WORKER_DELAY, self.class.name, self.id, attribute)
-      else
-        legacy_increment!(attribute, increment)
-      end
+      FlushCounterIncrementsWorker.perform_in(WORKER_DELAY, self.class.name, self.id, attribute)
     end
 
     true
+  end
+
+  def increment_counter(attribute, increment)
+    if counter_attribute_enabled?(attribute)
+      new_value = redis_state do |redis|
+        redis.incrby(counter_key(attribute), increment)
+      end
+
+      log_increment_counter(attribute, increment, new_value)
+    end
+  end
+
+  def update_counters_with_lease(increments)
+    detect_race_on_record(log_fields: { caller: __method__, attributes: increments.keys }) do
+      self.class.update_counters(id, increments)
+    end
+  end
+
+  def reset_counter!(attribute)
+    if counter_attribute_enabled?(attribute)
+      detect_race_on_record(log_fields: { caller: __method__, attributes: attribute }) do
+        update!(attribute => 0)
+        clear_counter!(attribute)
+      end
+
+      log_clear_counter(attribute)
+    end
+  end
+
+  def get_counter_value(attribute)
+    if counter_attribute_enabled?(attribute)
+      redis_state do |redis|
+        redis.get(counter_key(attribute)).to_i
+      end
+    end
   end
 
   def counter_key(attribute)
@@ -127,12 +186,11 @@ module CounterAttribute
     counter_key(attribute) + ':lock'
   end
 
-  def counter_attribute_enabled?(attribute)
-    Feature.enabled?(:efficient_counter_attribute, project) &&
-      self.class.counter_attributes.include?(attribute)
-  end
-
   private
+
+  def database_lock_key
+    "project:{#{project_id}}:#{self.class}:#{id}"
+  end
 
   def steal_increments(increment_key, flushed_key)
     redis_state do |redis|
@@ -140,12 +198,10 @@ module CounterAttribute
     end
   end
 
-  def legacy_increment!(attribute, increment)
-    increment!(attribute, increment)
-  end
-
-  def unsafe_update_counters(id, increments)
-    self.class.update_counters(id, increments)
+  def clear_counter!(attribute)
+    redis_state do |redis|
+      redis.del(counter_key(attribute))
+    end
   end
 
   def execute_after_flush_callbacks
@@ -164,5 +220,79 @@ module CounterAttribute
     end
   rescue Gitlab::ExclusiveLeaseHelpers::FailedToObtainLockError
     # a worker is already updating the counters
+  end
+
+  # detect_race_on_record uses a lease to monitor access
+  # to the project statistics row. This is needed to detect
+  # concurrent attempts to increment columns, which could result in a
+  # race condition.
+  #
+  # As the purpose is to detect and warn concurrent attempts,
+  # it falls back to direct update on the row if it fails to obtain the lease.
+  #
+  # It does not guarantee that there will not be any concurrent updates.
+  def detect_race_on_record(log_fields: {})
+    return yield unless Feature.enabled?(:counter_attribute_db_lease_for_update, project)
+
+    # Ensure attributes is always an array before we log
+    log_fields[:attributes] = Array(log_fields[:attributes])
+
+    Gitlab::AppLogger.info(
+      message: 'Acquiring lease for project statistics update',
+      project_statistics_id: id,
+      project_id: project.id,
+      **log_fields,
+      **Gitlab::ApplicationContext.current
+    )
+
+    in_lock(database_lock_key, retries: 0) do
+      yield
+    end
+  rescue Gitlab::ExclusiveLeaseHelpers::FailedToObtainLockError
+    Gitlab::AppLogger.warn(
+      message: 'Concurrent project statistics update detected',
+      project_statistics_id: id,
+      project_id: project.id,
+      **log_fields,
+      **Gitlab::ApplicationContext.current
+    )
+
+    yield
+  end
+
+  def log_increment_counter(attribute, increment, new_value)
+    payload = Gitlab::ApplicationContext.current.merge(
+      message: 'Increment counter attribute',
+      attribute: attribute,
+      project_id: project_id,
+      increment: increment,
+      new_counter_value: new_value,
+      current_db_value: read_attribute(attribute)
+    )
+
+    Gitlab::AppLogger.info(payload)
+  end
+
+  def log_flush_counter(attribute, increment, previous_db_value, new_db_value)
+    payload = Gitlab::ApplicationContext.current.merge(
+      message: 'Flush counter attribute to database',
+      attribute: attribute,
+      project_id: project_id,
+      increment: increment,
+      previous_db_value: previous_db_value,
+      new_db_value: new_db_value
+    )
+
+    Gitlab::AppLogger.info(payload)
+  end
+
+  def log_clear_counter(attribute)
+    payload = Gitlab::ApplicationContext.current.merge(
+      message: 'Clear counter attribute',
+      attribute: attribute,
+      project_id: project_id
+    )
+
+    Gitlab::AppLogger.info(payload)
   end
 end

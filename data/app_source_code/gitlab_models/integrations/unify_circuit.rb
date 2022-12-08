@@ -15,16 +15,8 @@ module Integrations
     end
 
     def help
-      'This service sends notifications about projects events to a Unify Circuit conversation.<br />
-      To set up this service:
-      <ol>
-        <li><a href="https://www.circuit.com/unifyportalfaqdetail?articleId=164448">Set up an incoming webhook for your conversation</a>. All notifications will come to this conversation.</li>
-        <li>Paste the <strong>Webhook URL</strong> into the field below.</li>
-        <li>Select events below to enable notifications.</li>
-      </ol>'
-    end
-
-    def event_field(event)
+      docs_link = ActionController::Base.helpers.link_to _('How do I set up this service?'), Rails.application.routes.url_helpers.help_page_url('user/project/integrations/unify_circuit'), target: '_blank', rel: 'noopener noreferrer'
+      s_('Integrations|Send notifications about project events to a Unify Circuit conversation. %{docs_link}').html_safe % { docs_link: docs_link.html_safe }
     end
 
     def default_channel_placeholder
@@ -37,21 +29,27 @@ module Integrations
 
     def default_fields
       [
-        { type: 'text', name: 'webhook', placeholder: "e.g. https://circuit.com/rest/v2/webhooks/incoming/…", required: true },
+        { type: 'text', name: 'webhook', help: 'https://yourcircuit.com/rest/v2/webhooks/incoming/…', required: true },
         { type: 'checkbox', name: 'notify_only_broken_pipelines' },
-        { type: 'select', name: 'branches_to_be_notified', choices: branch_choices }
+        {
+          type: 'select',
+          name: 'branches_to_be_notified',
+          title: s_('Integrations|Branches for which notifications are to be sent'),
+          choices: self.class.branch_choices
+        }
       ]
     end
 
     private
 
     def notify(message, opts)
-      response = Gitlab::HTTP.post(webhook, body: {
+      body = {
         subject: message.project_name,
         text: message.summary,
-        markdown: true,
-        use_read_total_timeout: true
-      }.to_json)
+        markdown: true
+      }
+
+      response = Gitlab::HTTP.post(webhook, body: Gitlab::Json.dump(body))
 
       response if response.success?
     end

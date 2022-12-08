@@ -5,6 +5,8 @@ class Release < ApplicationRecord
   include CacheMarkdownField
   include Importable
   include Gitlab::Utils::StrongMemoize
+  include EachBatch
+  include FromUnion
 
   cache_markdown_field :description
 
@@ -24,16 +26,20 @@ class Release < ApplicationRecord
   before_create :set_released_at
 
   validates :project, :tag, presence: true
+  validates :tag, uniqueness: { scope: :project_id }
+
   validates :description, length: { maximum: Gitlab::Database::MAX_TEXT_SIZE_LIMIT }, if: :description_changed?
   validates_associated :milestone_releases, message: -> (_, obj) { obj[:value].map(&:errors).map(&:full_messages).join(",") }
   validates :links, nested_attributes_duplicates: { scope: :release, child_attributes: %i[name url filepath] }
+  validates :author_id, presence: true, on: :create, if: :validate_release_with_author?
 
   scope :sorted, -> { order(released_at: :desc) }
   scope :preloaded, -> {
     includes(:author, :evidences, :milestones, :links, :sorted_links,
              project: [:project_feature, :route, { namespace: :route }])
   }
-  scope :with_project_and_namespace, -> { includes(project: :namespace) }
+  scope :with_milestones, -> { joins(:milestone_releases) }
+  scope :with_group_milestones, -> { joins(:milestones).where.not(milestones: { group_id: nil }) }
   scope :recent, -> { sorted.limit(MAX_NUMBER_TO_DISPLAY) }
   scope :without_evidence, -> { left_joins(:evidences).where(::Releases::Evidence.arel_table[:id].eq(nil)) }
   scope :released_within_2hrs, -> { where(released_at: Time.zone.now - 1.hour..Time.zone.now + 1.hour) }
@@ -49,7 +55,7 @@ class Release < ApplicationRecord
   MAX_NUMBER_TO_DISPLAY = 3
 
   def to_param
-    CGI.escape(tag)
+    tag
   end
 
   def commit
@@ -88,7 +94,7 @@ class Release < ApplicationRecord
   end
 
   def milestone_titles
-    self.milestones.order_by_dates_and_title.map {|m| m.title }.join(', ')
+    self.milestones.order_by_dates_and_title.map { |m| m.title }.join(', ')
   end
 
   def to_hook_data(action)
@@ -110,6 +116,10 @@ class Release < ApplicationRecord
     strong_memoize(:actual_tag) do
       repository.find_tag(tag)
     end
+  end
+
+  def validate_release_with_author?
+    Feature.enabled?(:validate_release_with_author, self.project)
   end
 
   def set_released_at
