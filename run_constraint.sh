@@ -4,6 +4,7 @@ APPS=('diaspora' 'discourse' 'forem'\
         'spree' 'tracks')
 for APP in "${APPS[@]}"
 do
+  echo "=================${APP}=========================="
   ruby extractor/main.rb --dir data/app_source_code/ --app "$APP"
 done
 python plots/plot_constraint_num.py

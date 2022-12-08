@@ -70,7 +70,8 @@ def plot_stats(stats, outfile):
     step = 300
     maxv = int(max(list(models.values())) / step) * step
     ax.set_xlim(-3.0/2*width, len(labels) - width)
-    ax.set_yticks(list(range(0, maxv + 50, step)))
+    # ax.set_yticks(list(range(0, maxv + 50, step)))
+    # ax.set_yscale("log", nonpositive='clip')
     ax.set_ylabel("Number of constraints", size = 40)
 
     ax.tick_params(axis='both', which='major', labelsize=40)

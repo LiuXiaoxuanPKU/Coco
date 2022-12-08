@@ -213,7 +213,8 @@ class BuiltinExtractor < Extractor
       else
         puts "[Warning] Does not handle complex validates: #{label}, #{other.source}"
         valid_fields = []
-        constraints = []
+        # only keeps format and length constraints
+        constraints = constraints.filter{|f| f.is_a?(LengthConstraint) || f.is_a?(FormatConstraint)}
         next
       end
     end
