@@ -1,5 +1,5 @@
 This folder includes code for constraint extraction.
-To extract constraints, under the extractor folder, run:
+To extract constraints, under the project root folder(not the extractor folder), run:
 ```
 ruby main.rb [options]
         --dir DATADIR

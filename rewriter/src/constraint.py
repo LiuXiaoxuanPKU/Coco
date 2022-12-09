@@ -85,7 +85,11 @@ class NumericalConstraint(Constraint):
             return v <= self.max
 
     def __str__(self) -> str:
-        return "Numerical_table_%s_field_%s_min_%s_max_%s" % (self.table, self.field, self.min, self.max)
+        if self.min < 0:
+            min_name = f'neg{abs(self.min)}'
+        else:
+            min_name = str(self.min)
+        return "Numerical_table_%s_field_%s_min_%s_max_%s" % (self.table, self.field, min_name, self.max)
 
 
 class ForeignKeyConstraint(Constraint):

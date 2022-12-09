@@ -54,7 +54,7 @@ def process_constraints(constraints: list[Constraint]) -> tuple[list[str], list[
     return zip(*keep(map(process_constraint, constraints)))
 
 
-def benchmark(data_dir: str, app: str, *, include_eq: bool = False, repeat=100):
+def benchmark(data_dir: str, app: str, *, include_eq: bool = False, repeat=30):
     rewrites = loader.read_rewrites(
         get_path(FileType.REWRITE_META, app, data_dir, include_eq),
         get_path(FileType.REWRITTEN_QUERY, app, data_dir, include_eq),

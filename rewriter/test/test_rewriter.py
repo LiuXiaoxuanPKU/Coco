@@ -128,16 +128,22 @@ def test_rewrite_spree():
     compare_helper(constraints, sql)
     
 def test_rewrite_mastodon():
-    constraints = loader.read_constraints(get_path(FileType.CONSTRAINT, "mastodon"))
+    constraints = loader.read_constraints(get_path(FileType.CONSTRAINT, "mastodon", "data"), include_all=False, remove_pk=False)
     sql = 'SELECT oauth_applications.* FROM oauth_applications WHERE oauth_applications.id IN (SELECT DISTINCT oauth_access_tokens.application_id FROM oauth_access_tokens WHERE oauth_access_tokens.resource_owner_id = 865 AND oauth_access_tokens.revoked_at IS NULL)'
     compare_helper(constraints, sql)
-
+    
+def test_rewrite_openstreetmap():
+    constraints = loader.read_constraints(get_path(FileType.CONSTRAINT, "openstreetmap", "data"), include_all=False, remove_pk=False)
+    sql = 'SELECT 1 AS "one" FROM users INNER JOIN friends ON users.id = friends.friend_user_id INNER JOIN users AS befriendees_friends ON befriendees_friends.id = friends.friend_user_id WHERE friends.user_id = 4863 AND users.status IN (\'pending\', \'pending\') LIMIT 1;'
+    compare_helper(constraints, sql)
+    
 if __name__ == "__main__":
     # test_get_constraints()
     # test_get_rules()
     # test_simple_enumerate()
-    test_redmine_enumerate()
+    # test_redmine_enumerate()
     # test_add_limit_one_rewrite()
     # test_rewrite_types()
     # test_rewriter_spree()
     # test_rewrite_mastodon()
+    test_rewrite_openstreetmap()

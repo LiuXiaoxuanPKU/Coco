@@ -41,7 +41,7 @@ def read_queries(file: str, offset: int, cnt: int) -> list[str]:
     
 def read_constraints(file: Path, include_all: bool, remove_pk: bool = True) -> list[Constraint]:
     def decode_constraint(table: str, obj: dict[str, Any]):
-        if remove_pk and "type" in obj and obj["type"] == "pk":
+        if remove_pk and obj["ctype"] == "PK":
             return None
         match obj:
             case {"^o": "LengthConstraint", "field_name": field, "ctype": ctype, "min": min, "max": max}:

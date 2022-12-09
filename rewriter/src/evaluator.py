@@ -1,7 +1,7 @@
 import psycopg2
 import re
+import numpy as np
 
-JIT = "on"
 class Evaluator:
     @staticmethod
     def evaluate_query(q, connect_string):
@@ -34,7 +34,7 @@ class Evaluator:
                     nonlocal rows
                     rows = int(re.search(r"\(actual time=.* rows=(\d+).*\)", result[0][0]).group(1))
                     return float(result[-1][0].split(':')[-1].split('ms')[0])
-                return sum(execute(q) for _ in range(repeat)) / repeat, rows
+                return np.median([execute(q) for _ in range(repeat)]), rows
 
     @staticmethod
     def evaluate_cost(q, connect_string):
