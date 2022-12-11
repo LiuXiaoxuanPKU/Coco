@@ -479,7 +479,7 @@ class BuiltinExtractor < Extractor
     fields.each do |field|
       constraints << ForeignKeyConstraint.new(fk_column_name, class_name, field, polymorphic, ConstrainType::CLASS_RELATIONSHIP)
       if !optional
-        constraints << PresenceConstraint.new(fk_column_name, nil, ConstrainType::DATA_VALIDATION)
+        constraints << PresenceConstraint.new(fk_column_name, nil, ConstrainType::OTHER)
       end
     end
     constraints

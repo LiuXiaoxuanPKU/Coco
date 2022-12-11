@@ -7,5 +7,6 @@ do
   echo "=================${APP}=========================="
   ruby extractor/main.rb --dir data/app_source_code/ --app "$APP"
 done
+mkdir data/figures
 python plots/plot_constraint_num.py
 python plots/plot_constraint_dis.py
