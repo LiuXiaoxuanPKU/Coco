@@ -168,7 +168,7 @@ def plot_rewrite_type(data: List[EvalQuery], appname: str, output_dir: str):
     plt.grid(axis='y', color='grey')
     plt.title(APP_NAME[appname], pad=0, size=18)
     plt.tight_layout()
-    plt.savefig(f"{output_dir}/{appname}_type_perf.{suffix}", bbox_inches='tight')
+    plt.savefig(f"{output_dir}/figures/{appname}_type_perf.{suffix}", bbox_inches='tight')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
