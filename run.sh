@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # $data_dir: Source folder $2: Application name
 
+export COSETTE_SMT_TIMEOUT=100000
 if [[ $# -eq 2 ]]; then
   # Expand data directory path
   data_dir="$(realpath $1)"
@@ -33,7 +34,7 @@ if [[ $# -eq 2 ]]; then
 
   rm -rf "$data_dir/rewrites/$2" && mkdir "$data_dir/rewrites/$2"
   # rewrite queries
-  constropt-rewriter "$data_dir" "$2" --cnt 10000 --include-eq 
+  constropt-rewriter "$data_dir" "$2" --cnt 100000 --include-eq
 
   # Run benchmark
   constropt-benchmark "$data_dir" "$2" --include-eq

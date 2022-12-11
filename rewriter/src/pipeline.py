@@ -25,6 +25,7 @@ def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = F
         :param only_rewrite: Only rewrite queries based on constraints, without running any tests, or having communication with the database.
         :param cnt: Number of queries to rewrite.
         :param include_eq: When filtering rewrites, include rewrites with the same cost as the original sql
+        :param single: Run single query through the pipeline for debugging
     """
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
              rule.RemoveJoin, rule.ReplaceOuterJoin, rule.AddLimitOne]
@@ -40,7 +41,7 @@ def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = F
         from mo_sql_parsing import parse, format
         from config import RewriteQuery
         print("=============Single Debug============")
-        sql = "SELECT users.name, users.username FROM users WHERE users.id = $1 ORDER BY users.created_at ASC;"
+        sql = "SELECT 1 AS \"one\" FROM changeset_comments WHERE changeset_comments.id IS NULL LIMIT 1"
         q_obj = parse(sql)
         queries = [RewriteQuery(format(q_obj), q_obj)]
     else:
