@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT spree_store_credits.id AS t0_r0, spree_store_credits.user_id AS t0_r1, spree_store_credits.category_id AS t0_r2, spree_store_credits.created_by_id AS t0_r3, spree_store_credits.amount AS t0_r4, spree_store_credits.amount_used AS t0_r5, spree_store_credits.memo AS t0_r6, spree_store_credits.deleted_at AS t0_r7, spree_store_credits.currency AS t0_r8, spree_store_credits.amount_authorized AS t0_r9, spree_store_credits.originator_id AS t0_r10, spree_store_credits.originator_type AS t0_r11, spree_store_credits.type_id AS t0_r12, spree_store_credits.created_at AS t0_r13, spree_store_credits.updated_at AS t0_r14, spree_store_credits.store_id AS t0_r15, spree_store_credits.public_metadata AS t0_r16, spree_store_credits.private_metadata AS t0_r17, spree_store_credit_types.id AS t1_r0, spree_store_credit_types.name AS t1_r1, spree_store_credit_types.priority AS t1_r2, spree_store_credit_types.created_at AS t1_r3, spree_store_credit_types.updated_at AS t1_r4 FROM spree_store_credits LEFT OUTER JOIN spree_store_credit_types ON spree_store_credit_types.id = spree_store_credits.type_id WHERE spree_store_credits.deleted_at IS NULL AND spree_store_credits.user_id = \"$1\" AND spree_store_credits.store_id = \"$2\" ORDER BY spree_store_credit_types.priority ASC",
+        "cost": 12.24,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT spree_store_credits.id AS t0_r0, spree_store_credits.user_id AS t0_r1, spree_store_credits.category_id AS t0_r2, spree_store_credits.created_by_id AS t0_r3, spree_store_credits.amount AS t0_r4, spree_store_credits.amount_used AS t0_r5, spree_store_credits.memo AS t0_r6, spree_store_credits.deleted_at AS t0_r7, spree_store_credits.currency AS t0_r8, spree_store_credits.amount_authorized AS t0_r9, spree_store_credits.originator_id AS t0_r10, spree_store_credits.originator_type AS t0_r11, spree_store_credits.type_id AS t0_r12, spree_store_credits.created_at AS t0_r13, spree_store_credits.updated_at AS t0_r14, spree_store_credits.store_id AS t0_r15, spree_store_credits.public_metadata AS t0_r16, spree_store_credits.private_metadata AS t0_r17, spree_store_credit_types.id AS t1_r0, spree_store_credit_types.name AS t1_r1, spree_store_credit_types.priority AS t1_r2, spree_store_credit_types.created_at AS t1_r3, spree_store_credit_types.updated_at AS t1_r4 FROM spree_store_credits INNER JOIN spree_store_credit_types ON spree_store_credit_types.id = spree_store_credits.type_id WHERE spree_store_credits.deleted_at IS NULL AND spree_store_credits.user_id = \"$1\" AND spree_store_credits.store_id = \"$2\" ORDER BY spree_store_credit_types.priority ASC",
+            "cost": 12.24,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

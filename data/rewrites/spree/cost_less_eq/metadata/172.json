@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM spree_products LEFT OUTER JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_products_taxons.taxon_id IN (\"$1\", \"$2\") AND spree_products.id = \"$3\" LIMIT 1",
+        "cost": 19.77,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM spree_products INNER JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id WHERE spree_products.deleted_at IS NULL AND spree_products_taxons.taxon_id IN (\"$1\", \"$2\") AND spree_products.id = \"$3\" LIMIT 1",
+            "cost": 19.77,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

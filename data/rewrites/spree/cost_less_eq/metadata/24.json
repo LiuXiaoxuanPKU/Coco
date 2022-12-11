@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM spree_payment_methods_stores WHERE spree_payment_methods_stores.store_id = \"$1\" AND spree_payment_methods_stores.payment_method_id IS NULL LIMIT 1",
+        "cost": 4.31,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM spree_payment_methods_stores WHERE spree_payment_methods_stores.store_id = \"$1\" AND False LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

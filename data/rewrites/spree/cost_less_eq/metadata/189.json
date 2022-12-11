@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT spree_adjustments.* FROM spree_adjustments WHERE spree_adjustments.adjustable_type = \"$1\" AND spree_adjustments.adjustable_id IN (SELECT spree_line_items.id FROM spree_line_items WHERE spree_line_items.order_id IS NULL AND 1 = 0 ORDER BY spree_line_items.created_at ASC) AND spree_adjustments.source_type = \"$2\"",
+        "cost": 8.34,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT spree_adjustments.* FROM spree_adjustments WHERE spree_adjustments.adjustable_type = \"$1\" AND spree_adjustments.adjustable_id IN (SELECT spree_line_items.id FROM spree_line_items WHERE False AND 1 = 0 ORDER BY spree_line_items.created_at ASC) AND spree_adjustments.source_type = \"$2\"",
+            "cost": 8.34,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT spree_properties.* FROM spree_properties INNER JOIN spree_property_prototypes ON spree_properties.id = spree_property_prototypes.property_id WHERE spree_property_prototypes.prototype_id = \"$1\"",
+        "cost": 28.01,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT spree_properties.* FROM spree_properties INNER JOIN spree_property_prototypes ON spree_properties.id = spree_property_prototypes.property_id WHERE spree_property_prototypes.prototype_id = \"$1\" LIMIT 1",
+            "cost": 14.75,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}
