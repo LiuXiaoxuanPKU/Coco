@@ -1,6 +1,6 @@
 CREATE TABLE announcements (
     id integer NOT NULL,
-    character varying(255) text,
+    "text" character varying(255),
     show_until date,
     active boolean  ,
     created_at timestamp without time zone,
@@ -100,7 +100,7 @@ CREATE TABLE bcf_issues (
     work_package_id bigint,
     stage character varying,
     index integer,
-    labels text[]  ,
+    labels character varying(255),
     created_at timestamp(6) without time zone   NOT NULL,
     updated_at timestamp(6) without time zone   NOT NULL
 );
@@ -479,7 +479,7 @@ CREATE TABLE export_card_configurations (
     per_page integer,
     page_size character varying,
     orientation character varying,
-    rows character varying(255),
+    "rows" character varying(255),
     active boolean  ,
     description character varying(255)
 );
@@ -682,7 +682,7 @@ CREATE TABLE meeting_content_journals (
     id integer NOT NULL,
     meeting_id integer,
     author_id integer,
-    character varying(255) text,
+    "text" character varying(255),
     locked boolean
 );
 
@@ -691,7 +691,7 @@ CREATE TABLE meeting_contents (
     type character varying,
     meeting_id integer,
     author_id integer,
-    character varying(255) text,
+    "text" character varying(255),
     lock_version integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -703,7 +703,7 @@ CREATE TABLE meeting_contents_storage (
     type public.meeting_contents_type_storage,
     meeting_id integer,
     author_id integer,
-    character varying(255) text,
+    "text" character varying(255),
     lock_version integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -1024,7 +1024,7 @@ CREATE TABLE relations (
     follows integer   NOT NULL,
     includes integer   NOT NULL,
     requires integer   NOT NULL,
-    count integer   NOT NULL
+    "count" integer   NOT NULL
 );
 
 CREATE TABLE repositories (
@@ -1344,14 +1344,14 @@ CREATE TABLE wiki_content_journals (
     id integer NOT NULL,
     page_id integer NOT NULL,
     author_id integer,
-    character varying(255) text
+    "text" character varying(255)
 );
 
 CREATE TABLE wiki_contents (
     id integer NOT NULL,
     page_id integer NOT NULL,
     author_id integer,
-    character varying(255) text,
+    "text" character varying(255),
     updated_at timestamp without time zone   NOT NULL,
     lock_version integer NOT NULL
 );
