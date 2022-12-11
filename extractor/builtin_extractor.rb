@@ -455,6 +455,7 @@ class BuiltinExtractor < Extractor
     class_name = nil
     fk_column_name = nil
     polymorphic = nil
+    optional = false
     content.each do |node|
       field = handle_symbol_literal_node(node)
       fields << field unless field.nil?
@@ -465,6 +466,7 @@ class BuiltinExtractor < Extractor
         fk_column_name = trim_string(v.source) if !k.nil? && (k == 'foreign_key')
         class_name = trim_string(v.source) if !k.nil? && (k == 'class_name')
         polymorphic = eval(trim_string(v.source)) if !k.nil? && (k == 'polymorphic')
+        optional = true if !k.nil? && k == 'optional' && v.source == 'true'
       end
     end
 
@@ -476,6 +478,9 @@ class BuiltinExtractor < Extractor
 
     fields.each do |field|
       constraints << ForeignKeyConstraint.new(fk_column_name, class_name, field, polymorphic, ConstrainType::CLASS_RELATIONSHIP)
+      if !optional
+        constraints << PresenceConstraint.new(fk_column_name, nil, ConstrainType::DATA_VALIDATION)
+      end
     end
     constraints
   end

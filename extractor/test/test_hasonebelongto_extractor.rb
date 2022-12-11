@@ -20,7 +20,7 @@ class TestBulitin < Test::Unit::TestCase
 
     class_c2 = <<-FOO
     class C2 < Dummy
-      belongs_to :c1
+      belongs_to :c1, optional: true
     end
     FOO
 
@@ -59,7 +59,7 @@ class TestBulitin < Test::Unit::TestCase
 
     class_c0 = <<-FOO
     class Picture < ApplicationRecord
-      belongs_to :imageable, polymorphic: true
+      belongs_to :imageable, polymorphic: true, optional: true
     end
     FOO
 
@@ -113,7 +113,7 @@ class TestBulitin < Test::Unit::TestCase
 
     class_c0 = <<-FOO
     class Picture < ApplicationRecord
-      belongs_to :imageable, polymorphic: true
+      belongs_to :imageable, polymorphic: true, optional: true
     end
     FOO
 
@@ -174,14 +174,14 @@ class TestBulitin < Test::Unit::TestCase
 
     class_c1 = <<-FOO
     class Section < ApplicationRecord
-      belongs_to :document
+      belongs_to :document, optional: true
       has_many :paragraphs
     end
     FOO
 
     class_c2 = <<-FOO
     class Paragraph < ApplicationRecord
-      belongs_to :section
+      belongs_to :section, optional: true
     end
     FOO
 
@@ -223,14 +223,14 @@ class TestBulitin < Test::Unit::TestCase
 
     class_c1 = <<-FOO
     class Account < ApplicationRecord
-      belongs_to :supplier
+      belongs_to :supplier, optional: true
       has_one :account_history
     end
     FOO
 
     class_c2 = <<-FOO
     class AccountHistory < ApplicationRecord
-      belongs_to :account
+      belongs_to :account, optional: true
     end
     FOO
 
