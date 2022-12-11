@@ -85,7 +85,7 @@ class NumericalConstraint(Constraint):
             return v <= self.max
 
     def __str__(self) -> str:
-        if self.min < 0:
+        if self.min is not None and self.min < 0:
             min_name = f'neg{abs(self.min)}'
         else:
             min_name = str(self.min)

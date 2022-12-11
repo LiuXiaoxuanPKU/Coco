@@ -62,7 +62,7 @@ def modify_query(query, constraints):
     return query
 
 def inject(constraint: Path, batch_dir: Path):
-    constraints = loader.read_constraints(constraint, include_all=False)
+    constraints = loader.read_constraints(constraint, include_all=False, remove_pk=False)
     for query in batch_dir.glob("*.batch/*.json"):
         with open(query, "r+") as f:
             mq = modify_query(json.load(f), constraints)

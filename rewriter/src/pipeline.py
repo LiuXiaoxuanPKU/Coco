@@ -15,7 +15,7 @@ from utils import exp_recorder, generate_query_param_rewrites, generate_query_pa
 from config import CONNECT_MAP, FileType, get_path
 from prover import prove
 
-def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = False, cnt: int = 100000, include_eq: bool = False):
+def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = False, cnt: int = 100000, include_eq: bool = False, single: bool=False):
     """ConstrOpt rewriter
 
     Args:
@@ -29,14 +29,23 @@ def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = F
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
              rule.RemoveJoin, rule.ReplaceOuterJoin, rule.AddLimitOne]
     constraint_file = get_path(FileType.CONSTRAINT, app, data_dir)
-    constraints = loader.read_constraints(constraint_file, include_all=False, remove_pk=False)
+    constraints = loader.read_constraints(constraint_file, include_all=False, remove_pk=True)
     if db:
         print("========Only use DB constraints to perform optimization======")
         print("[Before filtering DB constraints] ", len(constraints))
         constraints = [c for c in constraints if c.db == True]
         print("[After filtering DB constraints] ", len(constraints))
-
-    queries = loader.read_queries(get_path(FileType.RAW_QUERY, app, data_dir), 0, cnt)
+    
+    if single:
+        from mo_sql_parsing import parse, format
+        from config import RewriteQuery
+        print("=============Single Debug============")
+        sql = "SELECT users.name, users.username FROM users WHERE users.id = $1 ORDER BY users.created_at ASC;"
+        q_obj = parse(sql)
+        queries = [RewriteQuery(format(q_obj), q_obj)]
+    else:
+        queries = loader.read_queries(get_path(FileType.RAW_QUERY, app, data_dir), 0, cnt)
+            
     rewriter = Rewriter()
     rewriter.set_rules(rules)
     used_tables = []
@@ -102,12 +111,7 @@ def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = F
                 continue 
             
             # ======== Estimate cost and retain those with lower cost than original ======
-            rewritten_queries_lower_cost = []
-            if include_eq:
-                cmp_op = operator.le
-            else:
-                cmp_op = operator.lt
-            
+            rewritten_queries_lower_cost = []            
             # replace placeholder with actual parameters for org and rewrites
             rewritten_queries = enumerate_queries
             succ = generate_query_param_rewrites(q, rewritten_queries, connect_str)
@@ -125,10 +129,17 @@ def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = F
                 print("[Error] Fail to evaluate %s" % q.q_raw_param)
                 continue
             
+            def compare_cost(estimate_cost, org_cost):
+                if include_eq:
+                    cmp_op = operator.le
+                else:
+                    cmp_op = operator.lt
+                return cmp_op(estimate_cost, org_cost)
+                
             for rq in rewritten_queries:
                 try:
                     estimate_cost = Evaluator.evaluate_cost(rq.q_raw_param, connect_str) 
-                    if cmp_op(estimate_cost, org_cost):
+                    if compare_cost(estimate_cost, org_cost):
                         rq.estimate_cost = estimate_cost 
                         rewritten_queries_lower_cost.append(rq)
                     else:

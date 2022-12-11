@@ -112,7 +112,7 @@ def test_rewrite_types():
            rewritten_queries[2].rewrites == [rule.RewriteNullPredicate(c2), rule.RewriteNullPredicate(c1)])
     
 def test_rewrite_spree():
-    constraints = loader.read_constraints(get_path(FileType.CONSTRAINT, "spree"))
+    constraints = loader.read_constraints(get_path(FileType.CONSTRAINT, "spree", "data"), include_all=False, remove_pk=True)
     sql = 'SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = \"$1\" AND spree_stock_items.variant_id IN (\"$2\", \"$3\")'
     compare_helper(constraints, sql)
     sql = 'SELECT DISTINCT spree_shipping_categories.* FROM spree_shipping_categories INNER JOIN spree_products ON spree_products.deleted_at IS NULL AND spree_products.shipping_category_id = spree_shipping_categories.id INNER JOIN spree_variants ON spree_variants.deleted_at IS NULL AND spree_variants.product_id = spree_products.id WHERE spree_variants.id = 4289;'
@@ -123,7 +123,7 @@ def test_rewrite_spree():
     compare_helper(constraints, sql)
     sql = 'SELECT DISTINCT spree_stock_locations.* FROM spree_stock_locations INNER JOIN spree_stock_items ON spree_stock_items.deleted_at IS NULL AND spree_stock_items.stock_location_id = spree_stock_locations.id WHERE spree_stock_locations.active = True AND spree_stock_items.variant_id = 4620;'
     compare_helper(constraints, sql)
-    sql = "SELECT 1 AS one FROM spree_products INNER JOIN friendly_id_slugs ON friendly_id_slugs.deleted_at IS NULL AND friendly_id_slugs.sluggable_type = $1 AND friendly_id_slugs.sluggable_id = spree_products.id WHERE spree_products.id IS NOT NULL AND friendly_id_slugs.sluggable_type = 'Spree::Product' AND friendly_id_slugs.slug = 'product-593-398' LIMIT $2"
+    sql = "SELECT users.name, users.username FROM users WHERE users.id = 7872 ORDER BY users.created_at ASC;"
     print(len(sql))
     compare_helper(constraints, sql)
     
@@ -137,6 +137,11 @@ def test_rewrite_openstreetmap():
     sql = 'SELECT 1 AS "one" FROM users INNER JOIN friends ON users.id = friends.friend_user_id INNER JOIN users AS befriendees_friends ON befriendees_friends.id = friends.friend_user_id WHERE friends.user_id = 4863 AND users.status IN (\'pending\', \'pending\') LIMIT 1;'
     compare_helper(constraints, sql)
     
+def test_rewrite_forem():
+    constraints = loader.read_constraints(get_path(FileType.CONSTRAINT, "forem", "data"), include_all=False, remove_pk=False)
+    sql = 'SELECT users.name, users.username FROM users WHERE users.id = 7872 ORDER BY users.created_at ASC;'
+    compare_helper(constraints, sql)
+    
 if __name__ == "__main__":
     # test_get_constraints()
     # test_get_rules()
@@ -144,6 +149,7 @@ if __name__ == "__main__":
     # test_redmine_enumerate()
     # test_add_limit_one_rewrite()
     # test_rewrite_types()
-    # test_rewriter_spree()
+    # test_rewrite_spree()
     # test_rewrite_mastodon()
-    test_rewrite_openstreetmap()
+    # test_rewrite_openstreetmap()
+    test_rewrite_forem()
