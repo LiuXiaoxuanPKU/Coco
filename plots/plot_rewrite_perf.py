@@ -34,11 +34,35 @@ label_size = 16
 
 
 def get_type(q):
-    if len(q.rewrite_types) > 1:
-        # print(q.rewrite_types)
-        # print(q.timer)
+    before, after = q.before, q.after
+    types = []
+    if before.lower().count("limit") != after.lower().count("limit"):
+        types.append(RewriteType.AddLimitOne.value)
+    if before.lower().count("distinct") != after.lower().count("distinct"):
+        types.append(RewriteType.RemoveDistinct.value)
+    if before.lower().count("join") != after.lower().count("join"):
+        types.append(RewriteType.RemoveJoin.value)
+    if before.lower().count(">") != after.lower().count(">") or \
+       before.lower().count("=") != after.lower().count("=") or \
+       before.lower().count(">=") != after.lower().count(">=") or \
+       before.lower().count("<") != after.lower().count("<") or \
+       before.lower().count("<=") != after.lower().count("<="):
+           types.append(RewriteType.RemovePredicate.value)
+    if before.lower().count("inner") != after.lower().count("inner"):
+        types.append(RewriteType.ReplaceOuterJoin.value)
+    if before.lower().count("null") != after.lower().count("null"):
+        types.append(RewriteType.RewriteNullPredicate.value)
+        
+    if len(types) > 1:
         return "MIX"
-    return RewriteType[q.rewrite_types[0]].value
+    return types[0]
+
+# def get_type(q):
+#     if len(q.rewrite_types) > 1:
+#         # print(q.rewrite_types)
+#         # print(q.timer)
+#         return "MIX"
+#     return RewriteType[q.rewrite_types[0]].value
 
 def group_by(queries: List[EvalQuery], group_boundaries: List[float]):
     def find_group(sp):
@@ -156,5 +180,9 @@ if __name__ == "__main__":
     filename = get_path(FileType.BENCH_REWRITE_PERF, args.app, args.data_dir)
     queries = read_bench_results(filename)
     print(len(queries))
+    for q in queries:
+        print(q.before)
+        print(q.after)
+        print(q.rewrite_types)
     plot_speedup(queries, args.app, args.interval, args.data_dir)
     plot_rewrite_type(queries, args.app, args.data_dir)
