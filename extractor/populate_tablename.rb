@@ -18,7 +18,9 @@ class PopulateTableName
       tablename.slice! "\#{table_name_prefix}"
       tablename.slice! "\#{table_name_suffix}"
 
-      if c[0].source == 'self.table_name_prefix'
+      if c[0].source == 'self.table_name_prefix' && default_table_name.starts_with?(tablename)
+        tablename = default_table_name
+      elsif c[0].source == 'self.table_name_prefix'
         default_table_name = default_table_name.split('/')[-1]
         tablename += default_table_name
       end
