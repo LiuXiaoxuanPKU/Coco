@@ -31,7 +31,7 @@ class PopulateTableName
 
   def tableize(name)
     table_name = name.tableize
-    if name.start_with?('Spree::')
+    while table_name.include?('/')
       slash_idx = table_name.index('/')
       table_name[slash_idx] = '_'
     end

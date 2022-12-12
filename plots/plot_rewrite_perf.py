@@ -114,6 +114,7 @@ def plot_speedup(data: List[EvalQuery], appname: str, interval: int, output_dir:
     p = sns.catplot(x="group", y=None,
                     hue_order=["install constraints", "rewrite",
                                "install constraints + rewrite"],
+                    order=group_boundaries,
                     hue="type", data=data,
                     kind="count",
                     legend=False,
@@ -133,7 +134,7 @@ def plot_speedup(data: List[EvalQuery], appname: str, interval: int, output_dir:
     plt.xlabel("",  size=label_size)
     plt.title(APP_NAME[appname], pad=0, size=18)
     plt.tight_layout()
-    plt.savefig(f"{output_dir}/{appname}_perf.{suffix}", bbox_inches='tight')
+    plt.savefig(f"{output_dir}/figures/{appname}_perf.{suffix}", bbox_inches='tight')
 
 
 def plot_rewrite_type(data: List[EvalQuery], appname: str, output_dir: str):

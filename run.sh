@@ -41,7 +41,7 @@ if [[ $# -eq 2 ]]; then
 
   # plots
   # rewrite perf
-  python plots/plot_rewrite.py --data_dir "$data_dir" --app "$2"
+  python plots/plot_rewrite_perf.py --data_dir "$data_dir" --app "$2"
 else
   echo "Please provide the data directory and application name."
 fi

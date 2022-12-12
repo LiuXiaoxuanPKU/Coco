@@ -55,7 +55,7 @@ class BuiltinExtractor < Extractor
   def extract_unique_name_from_include(ast)
     if ast.source == 'include UniqueName'
       pc = PresenceConstraint.new('name', nil, ConstrainType::DATA_VALIDATION)
-      uc = UniqueConstraint.new('name', nil, false, 'builtin', ConstrainType::DATA_VALIDATION)
+      uc = UniqueConstraint.new(['name'], nil, false, 'builtin', ConstrainType::DATA_VALIDATION)
       [pc, uc]
     else
       []
