@@ -9,9 +9,7 @@ from os.path import dirname, abspath, join
 sys.path.append(join(dirname(dirname(abspath(__file__))), "rewriter/src/"))
 from loader import *
 from config import *
-from str2int_pipeline import *
-import imp
-imp.reload(str2int_pipeline)
+from query_with_cs import *
 
 # Run: under plot directory run: python plot_rewrite_cnt.py
 

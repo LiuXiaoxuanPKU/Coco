@@ -1,10 +1,10 @@
 import argparse
 import traceback
-from loader import Loader
-from config import FileType, get_filename, CONNECT_MAP
+from config import FileType, get_path, CONNECT_MAP
 from extract_rule import ExtractQueryRule
 from utils import GlobalExpRecorder, get_valid_queries
 from constraint import InclusionConstraint, LengthConstraint, FormatConstraint
+from loader import *
 
 name_to_type = {
     'inclusion': InclusionConstraint,
@@ -21,35 +21,26 @@ def main() -> None:
     parser.add_argument('--cnt', type=int, default=100000, help='number of queries to rewrite')
     parser.add_argument("--data_dir", type=str, help="data root dir")
     args = parser.parse_args()
+    get_query_with_cnt(args.app, args.data_dir, args.cnt)
     
-    recorder = GlobalExpRecorder()
-    recorder.record("app_name", args.app)
-    
+def get_query_with_cnt(app: str, data_dir: str, cnt: int = 100000):
     # load query once for each app
     offset = 0
-    queries = Loader.load_queries(get_filename(FileType.RAW_QUERY, args.app, args.data_dir), offset, args.cnt)
-    # queries = get_valid_queries(queries, CONNECT_MAP[args.app])
+    queries = read_queries(get_path(FileType.RAW_QUERY, app, data_dir), offset, cnt)
     
     # count the number of queries with constraints on it
-    all_cs = load_cs(args.app, args.data_dir, 'all')
+    all_cs = load_cs(app, data_dir, 'all')
     all_cnt, warning_cnt = count_queries_with_cs(all_cs, queries, verbal=True)
-    recorder.record("queries_with_cs", all_cnt)
-    recorder.record("warning cnt", warning_cnt)
+    print("q with all cns", all_cnt)
+    return all_cnt
 
-    # count inclusion, length, format constraint query
-    for type_name in name_to_type.keys():
-        cs_type = name_to_type[type_name]
-        filtered_cs = load_cs(args.app, args.data_dir, cs_type)
-        cnt, _ = count_queries_with_cs(filtered_cs, queries, verbal=True)
-        recorder.record(type_name, cnt)
-    recorder.dump(get_filename(FileType.PRECHECK_STR2INT_NUM, args.app, args.data_dir))
 
 #################################
 #        helper functions       #
 #################################
 # return filtered constraints
 def load_cs(appname, datadir, cs_type) -> list:
-    constraints = Loader.load_constraints(get_filename(FileType.CONSTRAINT, appname, datadir))
+    constraints = read_constraints(get_path(FileType.CONSTRAINT, appname, datadir), True)
     if cs_type == 'all':
         return constraints
     filtered_cs = [c for c in constraints if isinstance(c, cs_type)]
