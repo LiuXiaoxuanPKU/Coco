@@ -9,6 +9,9 @@ from os.path import dirname, abspath, join
 sys.path.append(join(dirname(dirname(abspath(__file__))), "rewriter/src/"))
 from loader import *
 from config import *
+from str2int_pipeline import *
+import imp
+imp.reload(str2int_pipeline)
 
 # Run: under plot directory run: python plot_rewrite_cnt.py
 
@@ -23,21 +26,20 @@ ORANGE = "#de8004"
 GREEN = "#28a81d"
 PURPLE = "#955df5"
 RED = "#e3272d"
-colors = {'Redmine':ORANGE, 'Dev.to': BLUE, 'Openproject': RED, 'Mastodon': BLACK, 'Openstreetmap': GREEN, 'spree': PURPLE}
+colors = {'redmine':ORANGE, 'Dev.to': BLUE, 'openproject': RED, 'mastodon': BLACK, 'openstreetmap': GREEN, 'spree': PURPLE}
 data = {} 
 for app in apps:
     data[app] = []
     p_meta = "../data/rewrites/{}/cost_less_eq/metadata".format(app)
-    p_sql = "../data/rewrites/{}/cost_less_eq_sqls".format(app)
-    read_rewrites(Path(p_meta), Path(p_sql), True)
+    p_sql = "../data/rewrites/{}/cost_less_eq/sqls".format(app)
+    qs_verified = len(read_rewrites(Path(p_meta), Path(p_sql), True))
 
     rewrite_f = open('../data/rewrites/{}/rewrite_stats'.format(app))
     rewrite_stats = [int(x) for x in rewrite_f.readline().split(", ")]
 
-    qs_with_cnt = 0
+    qs_with_cnt = get_query_with_cnt(app, "../data")
     data[app].append(qs_with_cnt)
     data[app] += rewrite_stats
-    qs_verified = 0
     data[app].append(qs_verified)
     print("{} app data is {}".format(app, data[app])) 
 
