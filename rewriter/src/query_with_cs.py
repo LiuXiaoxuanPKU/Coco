@@ -6,23 +6,10 @@ from utils import GlobalExpRecorder, get_valid_queries
 from constraint import InclusionConstraint, LengthConstraint, FormatConstraint
 from loader import *
 
-name_to_type = {
-    'inclusion': InclusionConstraint,
-    'length': LengthConstraint,
-    'format': FormatConstraint,
-}
 # =====================================================================
 
 
 # ========================== main function ============================
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--app', default='redmine')
-    parser.add_argument('--cnt', type=int, default=100000, help='number of queries to rewrite')
-    parser.add_argument("--data_dir", type=str, help="data root dir")
-    args = parser.parse_args()
-    get_query_with_cnt(args.app, args.data_dir, args.cnt)
-    
 def get_query_with_cnt(app: str, data_dir: str, cnt: int = 100000):
     # load query once for each app
     offset = 0
@@ -75,6 +62,3 @@ def print_error(q, verbal) -> None:
     else:
         pass
 
-
-if __name__ == "__main__":
-    main()
