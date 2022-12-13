@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = \"$1\"",
+        "cost": 12.61,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT users.username FROM users INNER JOIN podcast_ownerships ON users.id = podcast_ownerships.user_id WHERE podcast_ownerships.podcast_id = \"$1\" LIMIT 1",
+            "cost": 12.61,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

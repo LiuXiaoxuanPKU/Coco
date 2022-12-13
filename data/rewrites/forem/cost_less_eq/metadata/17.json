@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT consumer_apps.platform FROM consumer_apps WHERE consumer_apps.app_bundle = \"$1\"",
+        "cost": 4.43,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT consumer_apps.platform FROM consumer_apps WHERE consumer_apps.app_bundle = \"$1\" LIMIT 1",
+            "cost": 4.43,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

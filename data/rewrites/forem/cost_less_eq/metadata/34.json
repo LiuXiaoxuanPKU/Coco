@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT github_repos.* FROM github_repos WHERE github_repos.user_id = \"$1\" AND github_repos.featured = \"$2\"",
+        "cost": 1041.1,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT github_repos.* FROM github_repos WHERE github_repos.user_id = \"$1\" AND github_repos.featured = \"$2\"",
+            "cost": 1041.0,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT articles.* FROM articles WHERE articles.user_id = \"$1\" AND articles.slug IS NULL LIMIT \"$2\"",
+        "cost": 8.43,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT articles.* FROM articles WHERE articles.user_id = \"$1\" AND False LIMIT \"$2\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

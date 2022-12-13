@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id IN (SELECT users_settings.user_id FROM users_settings WHERE users_settings.feed_url IS NULL) AND users.id = \"$1\"",
+        "cost": 24.93,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id IN (SELECT users_settings.user_id FROM users_settings WHERE users_settings.feed_url IS NULL) AND users.id = \"$1\" LIMIT 1",
+            "cost": 24.93,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "org": {
+        "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle IS NULL AND consumer_apps.platform IS NULL LIMIT \"$1\"",
+        "cost": 8.43,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE consumer_apps.app_bundle IS NULL AND False LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE False AND consumer_apps.platform IS NULL LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT consumer_apps.* FROM consumer_apps WHERE False AND False LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

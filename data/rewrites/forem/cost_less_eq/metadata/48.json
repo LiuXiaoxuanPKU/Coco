@@ -1,0 +1,31 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM feedback_messages LEFT OUTER JOIN users ON users.id = feedback_messages.reporter_id WHERE users.username ILIKE '%username51%'",
+        "cost": 2630.33,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM feedback_messages INNER JOIN users ON users.id = feedback_messages.reporter_id WHERE users.username ILIKE '%username51%'",
+            "cost": 2630.33,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM feedback_messages LEFT OUTER JOIN users ON users.id = feedback_messages.reporter_id WHERE users.username ILIKE '%username51%' LIMIT 1",
+            "cost": 2630.33,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(*) FROM feedback_messages INNER JOIN users ON users.id = feedback_messages.reporter_id WHERE users.username ILIKE '%username51%' LIMIT 1",
+            "cost": 2630.33,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}
