@@ -25,6 +25,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "country_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "state_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -74,16 +80,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -119,6 +115,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "adjustable_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "source_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -127,12 +129,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "source_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "order_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Order",
         "fk_column_name": "order",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "order_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "ForeignKeyConstraint",
@@ -157,16 +171,6 @@
           "closed"
         ],
         "type": "state_machine"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -191,6 +195,12 @@
         "polymorphic": true
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "viewable_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "InclusionConstraint",
         "field_name": "type",
         "ctype": "CLASS_RELATIONSHIP",
@@ -210,16 +220,6 @@
           "Spree::Variant"
         ],
         "type": "polymorphic"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -234,16 +234,6 @@
         "ctype": "DB",
         "min": 0,
         "max": 0
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -271,16 +261,6 @@
         "class_name": "Calculable",
         "fk_column_name": "calculable",
         "polymorphic": true
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -309,12 +289,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "product_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "taxon_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Taxon",
         "fk_column_name": "taxon",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "taxon_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "NumericalConstraint",
@@ -333,16 +325,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -466,16 +448,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -511,6 +483,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "payment_method_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "user_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -523,16 +501,6 @@
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
         "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -572,6 +540,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "stock_location_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "store_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -580,14 +554,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "store_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -617,14 +587,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "variant_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -664,12 +630,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "digital_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "line_item_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Line_item",
         "fk_column_name": "line_item",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "line_item_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -683,16 +661,6 @@
         "ctype": "DATA_VALIDATION",
         "min": 0,
         "max": null
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -722,12 +690,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "variant_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "order_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Order",
         "fk_column_name": "order",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "order_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "ForeignKeyConstraint",
@@ -746,12 +726,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "line_item_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "original_return_item_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::ReturnItem",
         "fk_column_name": "original_return_item",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "original_return_item_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -781,16 +773,6 @@
           "returned"
         ],
         "type": "state_machine"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -836,16 +818,6 @@
         "field_name": "updated_at",
         "ctype": "DB",
         "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -911,6 +883,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "order_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "variant_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -919,12 +897,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "variant_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "tax_category_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::TaxCategory",
         "fk_column_name": "tax_category",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "tax_category_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -938,16 +928,6 @@
         "ctype": "DATA_VALIDATION",
         "min": null,
         "max": 0
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -977,14 +957,10 @@
         "polymorphic": true
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "source_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -1027,6 +1003,12 @@
       },
       {
         "^o": "PresenceConstraint",
+        "field_name": "store_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
         "cond": ""
@@ -1051,16 +1033,6 @@
 
         ],
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -1114,12 +1086,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "menu_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "linked_resource_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Linked_resource",
         "fk_column_name": "linked_resource",
         "polymorphic": true
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "linked_resource_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -1156,16 +1140,6 @@
 
         ],
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -1220,7 +1194,9 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": [
+          "name"
+        ],
         "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
@@ -1231,16 +1207,6 @@
         "field_name": "presentation",
         "ctype": "DATA_VALIDATION",
         "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -1269,12 +1235,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "option_type_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "prototype_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Prototype",
         "fk_column_name": "prototype",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "prototype_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -1292,16 +1270,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -1332,6 +1300,12 @@
       },
       {
         "^o": "PresenceConstraint",
+        "field_name": "option_type_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
+        "^o": "PresenceConstraint",
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
         "cond": ""
@@ -1352,16 +1326,6 @@
         "field_name": "presentation",
         "ctype": "DATA_VALIDATION",
         "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -1390,12 +1354,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "option_value_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "variant_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Variant",
         "fk_column_name": "variant",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "variant_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -1413,16 +1389,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -1533,6 +1499,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "store_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "NumericalConstraint",
         "field_name": "item_count",
         "ctype": "DATA_VALIDATION",
@@ -1580,16 +1552,6 @@
 
         ],
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -1607,6 +1569,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "order_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "promotion_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -1615,14 +1583,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "promotion_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -1668,6 +1632,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "order_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "payment_method_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -1676,12 +1646,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "payment_method_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "source_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Source",
         "fk_column_name": "source",
         "polymorphic": true
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "source_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
@@ -1711,16 +1693,6 @@
           "Spree::Refund"
         ],
         "type": "polymorphic"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -1750,14 +1722,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "payment_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -1783,16 +1751,6 @@
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
         "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -1838,16 +1796,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -1883,14 +1831,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "variant_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -1936,12 +1880,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "tax_category_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "shipping_category_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::ShippingCategory",
         "fk_column_name": "shipping_category",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "shipping_category_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "LengthConstraint",
@@ -1978,16 +1934,6 @@
         "cond": "",
         "case_sensitive": true,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2017,12 +1963,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "product_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "option_type_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::OptionType",
         "fk_column_name": "option_type",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "option_type_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
@@ -2034,16 +1992,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2061,12 +2009,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "product_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "promotion_rule_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::PromotionRule",
         "fk_column_name": "promotion_rule",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "promotion_rule_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
@@ -2078,16 +2038,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2128,12 +2078,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "product_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "property_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Property",
         "fk_column_name": "property",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "property_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -2151,16 +2113,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2215,16 +2167,6 @@
         "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2242,14 +2184,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "promotion_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -2267,12 +2205,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "promotion_action_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "variant_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Variant",
         "fk_column_name": "variant",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "variant_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -2286,16 +2236,6 @@
         "ctype": "DATA_VALIDATION",
         "min": null,
         "max": null
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2321,16 +2261,6 @@
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
         "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2360,14 +2290,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "promotion_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -2385,12 +2311,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "promotion_rule_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "taxon_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Taxon",
         "fk_column_name": "taxon",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "taxon_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
@@ -2402,16 +2340,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2429,12 +2357,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "promotion_rule_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "user_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree.user_class.to_s",
         "fk_column_name": "user",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "UniqueConstraint",
@@ -2446,16 +2386,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2499,16 +2429,6 @@
         "field_name": "presentation",
         "ctype": "DATA_VALIDATION",
         "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2537,12 +2457,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "prototype_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "property_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Property",
         "fk_column_name": "property",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "property_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -2560,16 +2492,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2595,16 +2517,6 @@
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
         "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2622,12 +2534,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "taxon_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "prototype_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Prototype",
         "fk_column_name": "prototype",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "prototype_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -2645,16 +2569,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2690,6 +2604,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "payment_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "reimbursement_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -2706,14 +2626,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "refund_reason_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -2743,24 +2659,20 @@
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
   {
-    "table": "spree_reimbursement/credits",
+    "table": "spree_reimbursement_credits",
     "parent": "Spree::Base",
     "class": "Spree::Reimbursement::Credit",
     "constraints": [
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "amount",
+        "ctype": "DB",
+        "cond": ""
+      },
       {
         "^o": "ForeignKeyConstraint",
         "field_name": "reimbursement_id",
@@ -2768,6 +2680,12 @@
         "class_name": "Reimbursement",
         "fk_column_name": "reimbursement",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reimbursement_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "ForeignKeyConstraint",
@@ -2779,19 +2697,9 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "creditable",
-        "ctype": "DATA_VALIDATION",
+        "field_name": "creditable_id",
+        "ctype": "OTHER",
         "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2831,6 +2739,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "order_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "customer_return_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -2848,16 +2762,6 @@
           "reimbursed"
         ],
         "type": "state_machine"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2900,16 +2804,6 @@
           "Spree::ReimbursementType::StoreCredit"
         ],
         "type": "class_inheritance"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2939,16 +2833,6 @@
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -2978,16 +2862,6 @@
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -3017,16 +2891,6 @@
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -3056,16 +2920,6 @@
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -3093,6 +2947,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "order_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "stock_location_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -3101,12 +2961,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "stock_location_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "return_authorization_reason_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::ReturnAuthorizationReason",
         "fk_column_name": "reason",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "return_authorization_reason_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
@@ -3119,16 +2991,6 @@
           "authorized"
         ],
         "type": "state_machine"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -3158,16 +3020,6 @@
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -3221,12 +3073,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "return_authorization_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "inventory_unit_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Inventory_unit",
         "fk_column_name": "inventory_unit",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "inventory_unit_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "ForeignKeyConstraint",
@@ -3237,12 +3101,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "customer_return_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "reimbursement_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Reimbursement",
         "fk_column_name": "reimbursement",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "reimbursement_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "ForeignKeyConstraint",
@@ -3253,6 +3129,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "exchange_variant_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "preferred_reimbursement_type_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -3261,12 +3143,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "preferred_reimbursement_type_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "override_reimbursement_type_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::ReimbursementType",
         "fk_column_name": "override_reimbursement_type",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "override_reimbursement_type_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
@@ -3296,16 +3190,6 @@
           "persist_acceptance_status_errors"
         ],
         "type": "state_machine"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -3332,21 +3216,13 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": [
+          "name"
+        ],
         "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -3364,6 +3240,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "role_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "user_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -3372,14 +3254,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -3443,6 +3321,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "address_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "order_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -3451,12 +3335,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "order_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "stock_location_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::StockLocation",
         "fk_column_name": "stock_location",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "stock_location_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
@@ -3473,16 +3369,6 @@
           "after_resume"
         ],
         "type": "state_machine"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -3511,21 +3397,13 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": [
+          "name"
+        ],
         "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -3565,16 +3443,6 @@
         "field_name": "display_on",
         "ctype": "DATA_VALIDATION",
         "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -3627,6 +3495,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "shipping_method_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "shipping_category_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -3635,14 +3509,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "shipping_category_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -3660,6 +3530,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "shipping_method_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "zone_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -3668,14 +3544,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "zone_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -3716,12 +3588,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "shipment_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "tax_rate_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::TaxRate",
         "fk_column_name": "tax_rate",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "tax_rate_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "ForeignKeyConstraint",
@@ -3732,14 +3616,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "shipping_method_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -3755,6 +3635,12 @@
         "class_name": "Spree::Country",
         "fk_column_name": "country",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "country_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -3783,16 +3669,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -3830,6 +3706,12 @@
         "polymorphic": true
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "stateful_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "InclusionConstraint",
         "field_name": "stateful_type",
         "ctype": "CLASS_RELATIONSHIP",
@@ -3839,16 +3721,6 @@
           "Spree::Shipment"
         ],
         "type": "polymorphic"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -3884,12 +3756,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "stock_location_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "variant_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Variant",
         "fk_column_name": "variant",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "variant_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -3908,16 +3792,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -3952,7 +3826,9 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": [
+          "name"
+        ],
         "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
@@ -3975,14 +3851,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "country_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -4012,12 +3884,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "stock_item_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "originator_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Originator",
         "fk_column_name": "originator",
         "polymorphic": true
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "originator_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -4031,16 +3915,6 @@
         "ctype": "DATA_VALIDATION",
         "min": 0,
         "max": 0
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -4088,14 +3962,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "destination_location_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -4141,12 +4011,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "default_country_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "checkout_zone_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Zone",
         "fk_column_name": "checkout_zone",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "checkout_zone_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -4187,16 +4069,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -4244,12 +4116,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "category_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::StoreCreditCategory",
         "fk_column_name": "category",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "category_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "ForeignKeyConstraint",
@@ -4260,12 +4144,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "created_by_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "type_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::StoreCreditType",
         "fk_column_name": "credit_type",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "type_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "ForeignKeyConstraint",
@@ -4277,19 +4173,15 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "currency",
-        "ctype": "DATA_VALIDATION",
+        "field_name": "store_id",
+        "ctype": "OTHER",
         "cond": ""
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "currency",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
       }
     ]
   },
@@ -4315,16 +4207,6 @@
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
         "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -4378,12 +4260,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "store_credit_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "originator_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Originator",
         "fk_column_name": "originator",
         "polymorphic": true
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "originator_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "InclusionConstraint",
@@ -4393,16 +4287,6 @@
           "Spree::StockTransfer"
         ],
         "type": "polymorphic"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -4428,16 +4312,6 @@
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
         "cond": ""
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -4466,12 +4340,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "store_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "payment_method_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::PaymentMethod",
         "fk_column_name": "payment_method",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "payment_method_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -4489,16 +4375,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -4539,12 +4415,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "store_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "product_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Product",
         "fk_column_name": "product",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "product_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -4562,16 +4450,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -4612,12 +4490,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "store_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "promotion_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Promotion",
         "fk_column_name": "promotion",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "promotion_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -4635,16 +4525,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -4680,16 +4560,6 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -4728,19 +4598,15 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "name",
-        "ctype": "DATA_VALIDATION",
+        "field_name": "tax_category_id",
+        "ctype": "OTHER",
         "cond": ""
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
       }
     ]
   },
@@ -4798,6 +4664,12 @@
         "class_name": "Spree::Taxonomy",
         "fk_column_name": "taxonomy",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "taxonomy_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -4870,16 +4742,6 @@
         "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -4943,14 +4805,10 @@
         "polymorphic": null
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "store_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   },
@@ -4986,22 +4844,18 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "product_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "tax_category_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::TaxCategory",
         "fk_column_name": "tax_category",
         "polymorphic": null
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -5048,12 +4902,24 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "variant_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "wishlist_id",
         "ctype": "CLASS_RELATIONSHIP",
         "class_name": "Spree::Wishlist",
         "fk_column_name": "wishlist",
         "polymorphic": null
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "wishlist_id",
+        "ctype": "OTHER",
+        "cond": ""
       },
       {
         "^o": "PresenceConstraint",
@@ -5067,16 +4933,6 @@
         "ctype": "DATA_VALIDATION",
         "min": 0,
         "max": null
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -5134,6 +4990,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "user_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "store_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -5143,19 +5005,15 @@
       },
       {
         "^o": "PresenceConstraint",
-        "field_name": "name",
-        "ctype": "DATA_VALIDATION",
+        "field_name": "store_id",
+        "ctype": "OTHER",
         "cond": ""
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "name",
+        "ctype": "DATA_VALIDATION",
+        "cond": ""
       }
     ]
   },
@@ -5184,21 +5042,13 @@
       },
       {
         "^o": "UniqueConstraint",
-        "field_name": "name",
+        "field_name": [
+          "name"
+        ],
         "ctype": "DATA_VALIDATION",
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
-      },
-      {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
       }
     ]
   },
@@ -5228,6 +5078,12 @@
         "polymorphic": null
       },
       {
+        "^o": "PresenceConstraint",
+        "field_name": "zone_id",
+        "ctype": "OTHER",
+        "cond": ""
+      },
+      {
         "^o": "ForeignKeyConstraint",
         "field_name": "zoneable_id",
         "ctype": "CLASS_RELATIONSHIP",
@@ -5236,14 +5092,10 @@
         "polymorphic": true
       },
       {
-        "^o": "UniqueConstraint",
-        "field_name": [
-          "id"
-        ],
-        "ctype": "PK",
-        "cond": "",
-        "case_sensitive": false,
-        "type": "pk"
+        "^o": "PresenceConstraint",
+        "field_name": "zoneable_id",
+        "ctype": "OTHER",
+        "cond": ""
       }
     ]
   }
