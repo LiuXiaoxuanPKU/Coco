@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT badge_achievements.* FROM badge_achievements WHERE badge_achievements.id IS NULL LIMIT \"$1\"",
+        "cost": 4.3,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT badge_achievements.* FROM badge_achievements WHERE False LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

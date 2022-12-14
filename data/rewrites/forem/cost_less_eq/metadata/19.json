@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.id IS NULL LIMIT \"$1\"",
+        "cost": 4.33,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT podcast_episodes.* FROM podcast_episodes WHERE False LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

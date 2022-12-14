@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT users.* FROM users WHERE users.username IS NULL LIMIT \"$1\"",
+        "cost": 8.3,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT users.* FROM users WHERE False LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

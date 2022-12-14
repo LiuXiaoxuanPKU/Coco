@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.unspent_credits_count) AS unspent_credits_count FROM users LEFT JOIN credits AS credits ON users.id = credits.user_id AND credits.spent = False GROUP BY users.id ORDER BY users.id ASC LIMIT \"$1\"",
+        "cost": 18093.59,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.unspent_credits_count) AS unspent_credits_count FROM users INNER JOIN credits AS credits ON users.id = credits.user_id AND credits.spent = False GROUP BY users.id ORDER BY users.id ASC LIMIT \"$1\"",
+            "cost": 13654.75,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

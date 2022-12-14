@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT comments.* FROM comments WHERE comments.id IS NULL LIMIT \"$1\"",
+        "cost": 6.8,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT comments.* FROM comments WHERE False LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}
