@@ -54,8 +54,9 @@ def get_type(q):
         types.append(RewriteType.RewriteNullPredicate.value)
         
     if len(types) > 1:
-        return "MIX"
-    return types[0]
+        types.append("MIX")
+
+    return types
 
 # def get_type(q):
 #     if len(q.rewrite_types) > 1:
@@ -82,22 +83,23 @@ def group_by(queries: List[EvalQuery], group_boundaries: List[float]):
     for q in queries:
         for stage in [Stage.CONSTRAINT, Stage.REWRITE, Stage.CONSTRAINT_REWRITE]:
             speedup = q.timer[Stage.BASE][0] / q.timer[stage][0]
-            speedups.append(speedup)
-            sqls.append(q.before)
-            groups.append(find_group(speedup))
-            rewrite_type = get_type(q)
-            rewrite_types.append(rewrite_type)
-            types.append(STAGE_NAME[stage])
+            current_types = get_type(q)
+            for ct in current_types:
+                speedups.append(speedup)
+                sqls.append(q.before)
+                groups.append(find_group(speedup))
+                rewrite_types.append(ct)
+                types.append(STAGE_NAME[stage])
 
-            if stage == Stage.CONSTRAINT_REWRITE and speedup <= 0.95:
-                if rewrite_type not in slowdown_type_qs:
-                    slowdown_type_qs[rewrite_type] = []
-                slowdown_type_qs[rewrite_type].append(speedup)
+                if stage == Stage.CONSTRAINT_REWRITE and speedup <= 0.95:
+                    if ct not in slowdown_type_qs:
+                        slowdown_type_qs[ct] = []
+                    slowdown_type_qs[ct].append(speedup)
 
-            if stage == Stage.CONSTRAINT_REWRITE and speedup >= 1.05:
-                if rewrite_type not in speedup_type_qs:
-                    speedup_type_qs[rewrite_type] = []
-                speedup_type_qs[rewrite_type].append(speedup)
+                if stage == Stage.CONSTRAINT_REWRITE and speedup >= 1.05:
+                    if ct not in speedup_type_qs:
+                        speedup_type_qs[ct] = []
+                    speedup_type_qs[ct].append(speedup)
 
     for t in slowdown_type_qs:
         print(t, np.median(slowdown_type_qs[t]))
@@ -143,11 +145,11 @@ def plot_rewrite_type(data: List[EvalQuery], appname: str, output_dir: str):
     data = group_by(queries, group_boundaries)
     data = data[data["sql"] != "none"]
     data = data[data["type"] != "install constraints"]
-    p = sns.catplot(x="rewrite_type", y="sp", ci=75, capsize=.1,
+    p = sns.catplot(x="rewrite_type", y="sp", errorbar=('ci', 75), capsize=.1,
                     order=["AL", "ES", "PI/E", "JI/E", "RD", "MIX"],
                     hue="type", kind="bar", data=data,
                     legend=False,
-                    height=3, aspect=6/3,  # estimator=median,
+                    height=3, aspect=6/3, # estimator='median',
                     palette={"rewrite": "#ff7f0e", "install constraints + rewrite": "#2ca02c"})
     plt.ylabel("")
     plt.xlabel("", size=label_size)
@@ -162,8 +164,8 @@ def plot_rewrite_type(data: List[EvalQuery], appname: str, output_dir: str):
         # plt.yticks([0, 1, 2, 3, 4, 5, 6])
     elif appname == "mastodon":
         plt.ylabel("Average Speedup", size=label_size)
-    elif appname == "forem":
-        plt.yticks([0, 3, 6, 9, 12, 15])
+    # elif appname == "forem":
+    #     plt.yticks([0, 3, 6, 9, 12, 15])
     else:
         plt.ylabel("")
     plt.grid(axis='y', color='grey')
