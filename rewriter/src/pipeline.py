@@ -15,7 +15,9 @@ from utils import exp_recorder, generate_query_param_rewrites, generate_query_pa
 from config import CONNECT_MAP, FileType, get_path
 from prover import prove
 
-def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = False, cnt: int = 100000, include_eq: bool = False, single: bool=False):
+def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = False, \
+            cnt: int = 100000, include_eq: bool = False, \
+            single: bool = False, only_prover: bool = False):
     """ConstrOpt rewriter
 
     Args:
@@ -26,11 +28,17 @@ def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = F
         :param cnt: Number of queries to rewrite.
         :param include_eq: When filtering rewrites, include rewrites with the same cost as the original sql
         :param single: Run single query through the pipeline for debugging
+        :param only_prover: Only run prover
     """
     rules = [rule.RemovePredicate, rule.RemoveDistinct, rule.RewriteNullPredicate,
              rule.RemoveJoin, rule.ReplaceOuterJoin, rule.AddLimitOne]
     constraint_file = get_path(FileType.CONSTRAINT, app, data_dir)
     constraints = loader.read_constraints(constraint_file, include_all=False, remove_pk=True)
+    
+    run_rewrite = only_rewrite or (not only_prover)
+    run_test = (not only_rewrite) and (not only_prover)
+    run_prover = not only_rewrite
+
     if db:
         print("========Only use DB constraints to perform optimization======")
         print("[Before filtering DB constraints] ", len(constraints))
@@ -44,7 +52,7 @@ def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = F
         sql = "SELECT 1 AS \"one\" FROM changeset_comments WHERE changeset_comments.id IS NULL LIMIT 1"
         q_obj = parse(sql)
         queries = [RewriteQuery(format(q_obj), q_obj)]
-    else:
+    elif run_rewrite:
         queries = loader.read_queries(get_path(FileType.RAW_QUERY, app, data_dir), 0, cnt)
             
     rewriter = Rewriter()
@@ -75,7 +83,7 @@ def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = F
             pickle.dump(enumerate_cnts, f)
         with open(get_path(FileType.ENUMERATE_TIME, app, data_dir), "wb") as f:
             pickle.dump(enumerate_times, f)
-    else:
+    elif run_rewrite:
         rewrite_cnt = 0
         total_candidate_cnt = []
 
@@ -184,12 +192,15 @@ def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = F
             total_candidate_cnt.append(len(rewritten_queries_lower_cost_after_test))
             ProveDumper.dump_param_rewrite(app, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, include_eq, data_dir)
             ProveDumper.dump_metadata(app, q, rewritten_queries_lower_cost_after_test, rewrite_cnt, include_eq, data_dir)
-    stats_file = get_path(FileType.REWRITE_STATS, app, data_dir)
-    stats_file.parent.mkdir(parents=True, exist_ok=True)
-    stats_file.write_text(f"{enumerate_cnt}, {lower_cost_cnt}, {lower_cost_pass_test_cnt}")
     
-    print("========  Running prover  ========")
-    prove(get_path(FileType.REWRITTEN_QUERY, app, data_dir), constraint_file)
+    if run_rewrite:
+        stats_file = get_path(FileType.REWRITE_STATS, app, data_dir)
+        stats_file.parent.mkdir(parents=True, exist_ok=True)
+        stats_file.write_text(f"{enumerate_cnt}, {lower_cost_cnt}, {lower_cost_pass_test_cnt}")
+
+    if run_prover: 
+        print("========  Running prover  ========")
+        prove(get_path(FileType.REWRITTEN_QUERY, app, data_dir), constraint_file)
 
 def main():
     clize.run(rewrite)
