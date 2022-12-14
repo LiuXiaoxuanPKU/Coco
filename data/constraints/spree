@@ -80,6 +80,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -171,6 +187,22 @@
           "closed"
         ],
         "type": "state_machine"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -220,6 +252,22 @@
           "Spree::Variant"
         ],
         "type": "polymorphic"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -234,6 +282,22 @@
         "ctype": "DB",
         "min": 0,
         "max": 0
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -261,6 +325,22 @@
         "class_name": "Calculable",
         "fk_column_name": "calculable",
         "polymorphic": true
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -325,6 +405,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -448,6 +544,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -500,6 +612,22 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -558,6 +686,22 @@
         "field_name": "store_id",
         "ctype": "OTHER",
         "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -590,6 +734,22 @@
         "^o": "PresenceConstraint",
         "field_name": "variant_id",
         "ctype": "OTHER",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -661,6 +821,22 @@
         "ctype": "DATA_VALIDATION",
         "min": 0,
         "max": null
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -773,6 +949,22 @@
           "returned"
         ],
         "type": "state_machine"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -817,6 +1009,22 @@
         "^o": "PresenceConstraint",
         "field_name": "updated_at",
         "ctype": "DB",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -928,6 +1136,22 @@
         "ctype": "DATA_VALIDATION",
         "min": null,
         "max": 0
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -960,6 +1184,22 @@
         "^o": "PresenceConstraint",
         "field_name": "source_id",
         "ctype": "OTHER",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -1033,6 +1273,22 @@
 
         ],
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -1140,6 +1396,22 @@
 
         ],
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -1207,6 +1479,22 @@
         "field_name": "presentation",
         "ctype": "DATA_VALIDATION",
         "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -1270,6 +1558,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -1325,6 +1629,22 @@
         "^o": "PresenceConstraint",
         "field_name": "presentation",
         "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -1389,6 +1709,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -1552,6 +1888,22 @@
 
         ],
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -1586,6 +1938,22 @@
         "^o": "PresenceConstraint",
         "field_name": "promotion_id",
         "ctype": "OTHER",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -1693,6 +2061,22 @@
           "Spree::Refund"
         ],
         "type": "polymorphic"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -1726,6 +2110,22 @@
         "field_name": "payment_id",
         "ctype": "OTHER",
         "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -1750,6 +2150,22 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -1796,6 +2212,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -1834,6 +2266,22 @@
         "^o": "PresenceConstraint",
         "field_name": "variant_id",
         "ctype": "OTHER",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -1934,6 +2382,22 @@
         "cond": "",
         "case_sensitive": true,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -1992,6 +2456,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2038,6 +2518,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2113,6 +2609,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2167,6 +2679,22 @@
         "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2187,6 +2715,22 @@
         "^o": "PresenceConstraint",
         "field_name": "promotion_id",
         "ctype": "OTHER",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -2236,6 +2780,22 @@
         "ctype": "DATA_VALIDATION",
         "min": null,
         "max": null
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2260,6 +2820,22 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -2293,6 +2869,22 @@
         "^o": "PresenceConstraint",
         "field_name": "promotion_id",
         "ctype": "OTHER",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -2340,6 +2932,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2386,6 +2994,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2428,6 +3052,22 @@
         "^o": "PresenceConstraint",
         "field_name": "presentation",
         "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -2492,6 +3132,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2516,6 +3172,22 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -2569,6 +3241,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2630,6 +3318,22 @@
         "field_name": "refund_reason_id",
         "ctype": "OTHER",
         "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2659,6 +3363,22 @@
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2699,6 +3419,22 @@
         "^o": "PresenceConstraint",
         "field_name": "creditable_id",
         "ctype": "OTHER",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -2762,6 +3498,22 @@
           "reimbursed"
         ],
         "type": "state_machine"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2804,6 +3556,22 @@
           "Spree::ReimbursementType::StoreCredit"
         ],
         "type": "class_inheritance"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2833,6 +3601,22 @@
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2862,6 +3646,22 @@
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2891,6 +3691,22 @@
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2920,6 +3736,22 @@
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -2991,6 +3823,22 @@
           "authorized"
         ],
         "type": "state_machine"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -3020,6 +3868,22 @@
         "cond": "",
         "case_sensitive": true,
         "type": "db-index"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -3190,6 +4054,22 @@
           "persist_acceptance_status_errors"
         ],
         "type": "state_machine"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -3223,6 +4103,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -3257,6 +4153,22 @@
         "^o": "PresenceConstraint",
         "field_name": "user_id",
         "ctype": "OTHER",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -3369,6 +4281,22 @@
           "after_resume"
         ],
         "type": "state_machine"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -3404,6 +4332,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -3442,6 +4386,22 @@
         "^o": "PresenceConstraint",
         "field_name": "display_on",
         "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -3513,6 +4473,22 @@
         "field_name": "shipping_category_id",
         "ctype": "OTHER",
         "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -3547,6 +4523,22 @@
         "^o": "PresenceConstraint",
         "field_name": "zone_id",
         "ctype": "OTHER",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -3620,6 +4612,22 @@
         "field_name": "shipping_method_id",
         "ctype": "OTHER",
         "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -3669,6 +4677,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -3721,6 +4745,22 @@
           "Spree::Shipment"
         ],
         "type": "polymorphic"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -3792,6 +4832,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -3855,6 +4911,22 @@
         "field_name": "country_id",
         "ctype": "OTHER",
         "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -3915,6 +4987,22 @@
         "ctype": "DATA_VALIDATION",
         "min": 0,
         "max": 0
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -3965,6 +5053,22 @@
         "^o": "PresenceConstraint",
         "field_name": "destination_location_id",
         "ctype": "OTHER",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -4069,6 +5173,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -4182,6 +5302,22 @@
         "field_name": "currency",
         "ctype": "DATA_VALIDATION",
         "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -4206,6 +5342,22 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -4287,6 +5439,22 @@
           "Spree::StockTransfer"
         ],
         "type": "polymorphic"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -4311,6 +5479,22 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -4375,6 +5559,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -4450,6 +5650,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -4525,6 +5741,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -4560,6 +5792,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -4606,6 +5854,22 @@
         "^o": "PresenceConstraint",
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
@@ -4742,6 +6006,22 @@
         "ctype": "DATA_VALIDATION",
         "min": -1,
         "max": -1
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -4809,6 +6089,22 @@
         "field_name": "store_id",
         "ctype": "OTHER",
         "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -4856,6 +6152,22 @@
         "class_name": "Spree::TaxCategory",
         "fk_column_name": "tax_category",
         "polymorphic": null
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -4933,6 +6245,22 @@
         "ctype": "DATA_VALIDATION",
         "min": 0,
         "max": null
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -5014,6 +6342,22 @@
         "field_name": "name",
         "ctype": "DATA_VALIDATION",
         "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -5049,6 +6393,22 @@
         "cond": "",
         "case_sensitive": false,
         "type": "builtin"
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
+        "cond": ""
       }
     ]
   },
@@ -5095,6 +6455,22 @@
         "^o": "PresenceConstraint",
         "field_name": "zoneable_id",
         "ctype": "OTHER",
+        "cond": ""
+      },
+      {
+        "^o": "UniqueConstraint",
+        "field_name": [
+          "id"
+        ],
+        "ctype": "PK",
+        "cond": "",
+        "case_sensitive": false,
+        "type": "pk"
+      },
+      {
+        "^o": "PresenceConstraint",
+        "field_name": "id",
+        "ctype": "PK",
         "cond": ""
       }
     ]
