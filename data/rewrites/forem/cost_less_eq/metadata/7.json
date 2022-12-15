@@ -1,7 +1,7 @@
 {
     "org": {
         "sql": "SELECT articles.* FROM articles WHERE articles.id IS NULL LIMIT \"$1\"",
-        "cost": 7.46,
+        "cost": 33.06,
         "rewrite_types": []
     },
     "rewrites": [

@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT 1 AS one FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = \"$1\" LIMIT 1",
-        "cost": 247.61,
+        "sql": "SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.type_of_user = \"$2\"",
+        "cost": 130.91,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT 1 AS one FROM users LIMIT 1",
-            "cost": 0.26,
+            "sql": "SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.type_of_user = \"$2\" LIMIT 1",
+            "cost": 130.91,
             "rewrite_types": [
-                "RemoveJoin"
+                "AddLimitOne"
             ]
         }
     ]

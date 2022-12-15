@@ -1,28 +1,13 @@
 {
     "org": {
-        "sql": "SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = \"$1\" AND tag_adjustments.status = \"$2\"",
-        "cost": 542.83,
+        "sql": "SELECT users.id FROM users WHERE users.id IN (SELECT users_settings.user_id FROM users_settings WHERE users_settings.feed_url IS NULL) ORDER BY users.id ASC LIMIT \"$1\"",
+        "cost": 24.83,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = \"$1\" AND tag_adjustments.status = \"$2\"",
-            "cost": 0.0,
-            "rewrite_types": [
-                "RewriteNullPredicate"
-            ]
-        },
-        {
-            "sql": "SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = \"$1\" AND tag_adjustments.status = \"$2\" LIMIT 1",
-            "cost": 0.0,
-            "rewrite_types": [
-                "AddLimitOne",
-                "RewriteNullPredicate"
-            ]
-        },
-        {
-            "sql": "SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = \"$1\" AND tag_adjustments.status = \"$2\" LIMIT 1",
-            "cost": 542.83,
+            "sql": "SELECT users.id FROM users WHERE users.id IN (SELECT users_settings.user_id FROM users_settings WHERE users_settings.feed_url IS NULL LIMIT 1) ORDER BY users.id ASC LIMIT \"$1\"",
+            "cost": 13.42,
             "rewrite_types": [
                 "AddLimitOne"
             ]

@@ -1,7 +1,7 @@
 {
     "org": {
         "sql": "SELECT organizations.* FROM organizations WHERE organizations.slug IS NULL LIMIT \"$1\"",
-        "cost": 8.29,
+        "cost": 12.1,
         "rewrite_types": []
     },
     "rewrites": [

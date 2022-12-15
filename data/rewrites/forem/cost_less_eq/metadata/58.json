@@ -1,13 +1,13 @@
 {
     "org": {
         "sql": "SELECT users.* FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = \"$1\"",
-        "cost": 247.61,
+        "cost": 692.56,
         "rewrite_types": []
     },
     "rewrites": [
         {
             "sql": "SELECT users.* FROM users INNER JOIN organization_memberships ON users.id = organization_memberships.user_id WHERE organization_memberships.organization_id = \"$1\" LIMIT 1",
-            "cost": 247.61,
+            "cost": 14.44,
             "rewrite_types": [
                 "AddLimitOne"
             ]

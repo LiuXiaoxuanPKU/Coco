@@ -1,13 +1,13 @@
 {
     "org": {
         "sql": "SELECT podcast_episodes.id, podcast_episodes.media_url FROM podcast_episodes WHERE podcast_episodes.podcast_id = \"$1\"",
-        "cost": 12.12,
+        "cost": 179.28,
         "rewrite_types": []
     },
     "rewrites": [
         {
             "sql": "SELECT podcast_episodes.id, podcast_episodes.media_url FROM podcast_episodes WHERE podcast_episodes.podcast_id = \"$1\" LIMIT 1",
-            "cost": 6.3,
+            "cost": 4.38,
             "rewrite_types": [
                 "AddLimitOne"
             ]

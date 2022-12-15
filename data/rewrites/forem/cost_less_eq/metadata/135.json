@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT classified_listings.id, classified_listings.body_markdown, classified_listings.bumped_at, classified_listings.cached_tag_list, classified_listings.classified_listing_category_id, classified_listings.created_at, classified_listings.expires_at, classified_listings.location, classified_listings.organization_id, classified_listings.originally_published_at, classified_listings.processed_html, classified_listings.published, classified_listings.slug, classified_listings.title, classified_listings.updated_at, classified_listings.user_id FROM classified_listings WHERE classified_listings.id IS NULL LIMIT \"$1\"",
+        "cost": 12.34,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT classified_listings.id, classified_listings.body_markdown, classified_listings.bumped_at, classified_listings.cached_tag_list, classified_listings.classified_listing_category_id, classified_listings.created_at, classified_listings.expires_at, classified_listings.location, classified_listings.organization_id, classified_listings.originally_published_at, classified_listings.processed_html, classified_listings.published, classified_listings.slug, classified_listings.title, classified_listings.updated_at, classified_listings.user_id FROM classified_listings WHERE False LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

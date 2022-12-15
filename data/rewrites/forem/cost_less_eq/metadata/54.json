@@ -1,7 +1,7 @@
 {
     "org": {
         "sql": "SELECT 1 AS one FROM organization_memberships WHERE organization_memberships.user_id = \"$1\" AND organization_memberships.organization_id IS NULL LIMIT 1",
-        "cost": 4.3,
+        "cost": 8.3,
         "rewrite_types": []
     },
     "rewrites": [

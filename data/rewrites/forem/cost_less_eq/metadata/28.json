@@ -1,7 +1,7 @@
 {
     "org": {
         "sql": "SELECT follows.* FROM follows WHERE follows.id IS NULL AND follows.followable_type = \"$1\" LIMIT \"$2\"",
-        "cost": 4.31,
+        "cost": 219.46,
         "rewrite_types": []
     },
     "rewrites": [

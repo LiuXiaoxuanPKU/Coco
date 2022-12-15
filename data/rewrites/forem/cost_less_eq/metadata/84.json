@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT feedback_messages.* FROM feedback_messages LEFT OUTER JOIN users ON users.id = feedback_messages.reporter_id WHERE users.username ILIKE '%username51%' ORDER BY feedback_messages.created_at DESC LIMIT \"$1\" OFFSET \"$2\"",
-        "cost": 2630.33,
+        "sql": "SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\" ORDER BY organizations.name ASC",
+        "cost": 451.46,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT feedback_messages.* FROM feedback_messages INNER JOIN users ON users.id = feedback_messages.reporter_id WHERE users.username ILIKE '%username51%' ORDER BY feedback_messages.created_at DESC LIMIT \"$1\" OFFSET \"$2\"",
-            "cost": 2630.33,
+            "sql": "SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = \"$1\" ORDER BY organizations.name ASC LIMIT 1",
+            "cost": 450.18,
             "rewrite_types": [
-                "ReplaceOuterJoin"
+                "AddLimitOne"
             ]
         }
     ]

@@ -1,7 +1,7 @@
 {
     "org": {
         "sql": "SELECT users.* FROM users WHERE users.username IS NULL LIMIT \"$1\"",
-        "cost": 8.3,
+        "cost": 20.77,
         "rewrite_types": []
     },
     "rewrites": [

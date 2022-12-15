@@ -1,7 +1,7 @@
 {
     "org": {
         "sql": "SELECT 1 AS one FROM organizations WHERE organizations.secret IS NULL LIMIT 1",
-        "cost": 4.43,
+        "cost": 4.35,
         "rewrite_types": []
     },
     "rewrites": [

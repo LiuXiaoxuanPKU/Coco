@@ -1,15 +1,15 @@
 {
     "org": {
-        "sql": "SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.unspent_credits_count) AS unspent_credits_count FROM users LEFT JOIN credits AS credits ON users.id = credits.user_id AND credits.spent = False GROUP BY users.id ORDER BY users.id ASC LIMIT \"$1\"",
-        "cost": 18093.59,
+        "sql": "SELECT podcast_episodes.* FROM podcast_episodes INNER JOIN podcasts ON podcasts.id = podcast_episodes.podcast_id WHERE podcast_episodes.podcast_id = \"$1\" AND podcast_episodes.reachable = \"$2\" AND podcasts.published = \"$3\" AND podcast_episodes.slug = \"$4\" LIMIT \"$5\"",
+        "cost": 187.71,
         "rewrite_types": []
     },
     "rewrites": [
         {
-            "sql": "SELECT users.id, users.id, COUNT(credits.id) * 1 AS count, MAX(users.unspent_credits_count) AS unspent_credits_count FROM users INNER JOIN credits AS credits ON users.id = credits.user_id AND credits.spent = False GROUP BY users.id ORDER BY users.id ASC LIMIT \"$1\"",
-            "cost": 13654.75,
+            "sql": "SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.podcast_id = \"$1\" AND podcast_episodes.reachable = \"$2\" AND podcast_episodes.slug = \"$4\" LIMIT \"$5\"",
+            "cost": 179.39,
             "rewrite_types": [
-                "ReplaceOuterJoin"
+                "RemoveJoin"
             ]
         }
     ]

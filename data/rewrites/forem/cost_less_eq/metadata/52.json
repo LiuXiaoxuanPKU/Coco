@@ -1,7 +1,7 @@
 {
     "org": {
         "sql": "SELECT devices.* FROM devices WHERE devices.user_id = \"$1\" AND devices.token = \"$2\" AND devices.platform = \"$3\" AND devices.consumer_app_id IS NULL LIMIT \"$4\"",
-        "cost": 8.31,
+        "cost": 8.44,
         "rewrite_types": []
     },
     "rewrites": [
