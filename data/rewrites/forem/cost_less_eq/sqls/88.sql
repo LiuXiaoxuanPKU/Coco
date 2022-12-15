@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.organization_id = 2 AND notifications.notifiable_id = 5415 AND notifications.notifiable_type = 'Article' AND notifications.action IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.organization_id = 2 AND notifications.notifiable_id = 8366 AND notifications.notifiable_type = 'Article' AND notifications.action = 'ofgssdvtxkycarzwaxipklspsiglkinhcxiplclfwwyaxmrderhkhahmrppjteygbwpfyznlfapvoztli' LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE False AND notifications.organization_id = 2 AND notifications.notifiable_id = 5415 AND notifications.notifiable_type = 'Article' AND notifications.action IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM notifications WHERE False AND notifications.organization_id = 2 AND notifications.notifiable_id = 8366 AND notifications.notifiable_type = 'Article' AND notifications.action = 'ofgssdvtxkycarzwaxipklspsiglkinhcxiplclfwwyaxmrderhkhahmrppjteygbwpfyznlfapvoztli' LIMIT 1;

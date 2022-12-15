@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT feedback_messages.* FROM feedback_messages LEFT OUTER JOIN users ON users.id = feedback_messages.reporter_id WHERE users.username ILIKE '%username51%' ORDER BY feedback_messages.created_at DESC LIMIT 4 OFFSET 1;
+SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 2643 ORDER BY organizations.name ASC;
 -- Rewritten Queries
-SELECT feedback_messages.* FROM feedback_messages INNER JOIN users ON users.id = feedback_messages.reporter_id WHERE users.username ILIKE '%username51%' ORDER BY feedback_messages.created_at DESC LIMIT 4 OFFSET 1;
+SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 2643 ORDER BY organizations.name ASC LIMIT 1;

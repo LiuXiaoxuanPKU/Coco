@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.user_id = 6923 AND articles.title = ' That Good Night Quo consectetur' LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.user_id = 1030 AND articles.title = 'goxrfaoyhytvibtcfydrxehoyteelccgqijrsapkslpixnbxknfrnttrjpnxxatbchisiwehzejgqvaokmuejweldlxgshg' LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM articles WHERE False AND articles.user_id = 6923 AND articles.title = ' That Good Night Quo consectetur' LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.user_id = 1030 AND articles.title = 'goxrfaoyhytvibtcfydrxehoyteelccgqijrsapkslpixnbxknfrnttrjpnxxatbchisiwehzejgqvaokmuejweldlxgshg' LIMIT 1;

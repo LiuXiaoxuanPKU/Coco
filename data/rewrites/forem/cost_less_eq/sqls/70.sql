@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT DISTINCT collections.* FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 1358 ORDER BY collections.created_at DESC;
+SELECT reactions.* FROM reactions WHERE reactions.category IN ('like', 'unicorn', 'thinking', 'hands', 'like') AND reactions.reactable_id = 2740 AND reactions.reactable_type = 'User' AND reactions.user_id = 6502;
 -- Rewritten Queries
-SELECT collections.* FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 1358 ORDER BY collections.created_at DESC;
+SELECT reactions.* FROM reactions WHERE reactions.category IN ('like', 'unicorn', 'thinking', 'hands', 'like') AND reactions.reactable_id = 2740 AND reactions.reactable_type = 'User' AND reactions.user_id = 6502 LIMIT 1;

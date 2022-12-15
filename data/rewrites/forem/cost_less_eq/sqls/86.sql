@@ -2053,10 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'User' AND reactions.reactable_id = articles.id WHERE articles.id = 6359 ORDER BY articles.id ASC LIMIT 2;
+SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 8054 AND notification_subscriptions.notifiable_type = 'Article' AND notification_subscriptions.config = 'only_author_comments';
 -- Rewritten Queries
-SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = 6359 ORDER BY articles.id ASC LIMIT 2;
-SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = 6359 ORDER BY articles.id ASC LIMIT 2;
-SELECT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = 6359 ORDER BY articles.id ASC LIMIT 2;
-SELECT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = 6359 ORDER BY articles.id ASC LIMIT 2;
-SELECT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'User' AND reactions.reactable_id = articles.id WHERE articles.id = 6359 ORDER BY articles.id ASC LIMIT 2;
+SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 8054 AND notification_subscriptions.notifiable_type = 'Article' AND notification_subscriptions.config = 'only_author_comments' LIMIT 1;

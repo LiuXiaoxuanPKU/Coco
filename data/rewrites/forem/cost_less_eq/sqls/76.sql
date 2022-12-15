@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT articles.* FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:10:54.765698' AND articles.user_id IS NULL ORDER BY articles.published_at DESC LIMIT 7;
+SELECT organizations.id FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 4;
 -- Rewritten Queries
-SELECT articles.* FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:10:54.765698' AND False ORDER BY articles.published_at DESC LIMIT 7;
+SELECT organizations.id FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 4 LIMIT 1;

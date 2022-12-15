@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM articles WHERE articles.slug IS NULL AND articles.user_id = 4083 LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE articles.slug IS NULL AND articles.user_id = 802 LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM articles WHERE False AND articles.user_id = 4083 LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.user_id = 802 LIMIT 1;

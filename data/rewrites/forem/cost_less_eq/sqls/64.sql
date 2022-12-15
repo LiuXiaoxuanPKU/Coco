@@ -2053,8 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'pending';
+SELECT users.id FROM users WHERE users.id IN (SELECT users_settings.user_id FROM users_settings WHERE users_settings.feed_url IS NULL) ORDER BY users.id ASC LIMIT 1;
 -- Rewritten Queries
-SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'pending';
-SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'pending' LIMIT 1;
-SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'pending' LIMIT 1;
+SELECT users.id FROM users WHERE users.id IN (SELECT users_settings.user_id FROM users_settings WHERE users_settings.feed_url IS NULL LIMIT 1) ORDER BY users.id ASC LIMIT 1;

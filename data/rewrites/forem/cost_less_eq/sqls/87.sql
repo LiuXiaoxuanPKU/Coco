@@ -2053,6 +2053,10 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id IS NULL AND notifications.organization_id = 2 AND notifications.notifiable_id = 8366 AND notifications.notifiable_type = 'Comment' AND notifications.action = 'ofgssdvtxkycarzwaxipklspsiglkinhcxiplclfwwyaxmrderhkhahmrppjteygbwpfyznlfapvoztli' LIMIT 1;
+SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 6931 ORDER BY articles.id ASC LIMIT 2;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE False AND notifications.organization_id = 2 AND notifications.notifiable_id = 8366 AND notifications.notifiable_type = 'Comment' AND notifications.action = 'ofgssdvtxkycarzwaxipklspsiglkinhcxiplclfwwyaxmrderhkhahmrppjteygbwpfyznlfapvoztli' LIMIT 1;
+SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = 6931 ORDER BY articles.id ASC LIMIT 2;
+SELECT DISTINCT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = 6931 ORDER BY articles.id ASC LIMIT 2;
+SELECT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = 6931 ORDER BY articles.id ASC LIMIT 2;
+SELECT articles.id AS alias_0, articles.id FROM articles WHERE articles.id = 6931 ORDER BY articles.id ASC LIMIT 2;
+SELECT articles.id AS alias_0, articles.id FROM articles LEFT OUTER JOIN reactions ON reactions.reactable_type = 'Comment' AND reactions.reactable_id = articles.id WHERE articles.id = 6931 ORDER BY articles.id ASC LIMIT 2;

@@ -2053,6 +2053,8 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = 3342 AND organization_memberships.type_of_user = 'admin';
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'pending';
 -- Rewritten Queries
-SELECT organization_memberships.organization_id FROM organization_memberships WHERE organization_memberships.user_id = 3342 AND organization_memberships.type_of_user = 'admin' LIMIT 1;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'pending';
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE False AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'pending' LIMIT 1;
+SELECT tag_adjustments.tag_name FROM tag_adjustments WHERE tag_adjustments.article_id IS NULL AND tag_adjustments.adjustment_type = 'addition' AND tag_adjustments.status = 'pending' LIMIT 1;

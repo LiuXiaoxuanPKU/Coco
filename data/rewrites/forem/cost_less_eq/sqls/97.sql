@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT users.id, users.username, users.comments_count, users.badge_achievements_count, users.last_comment_at FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 9495 LIMIT 10 OFFSET 1;
+SELECT users.id, users.id, COUNT(credits.id) * 1 AS "count", MAX(users.unspent_credits_count) AS unspent_credits_count FROM users LEFT JOIN credits AS credits ON users.id = credits.user_id AND credits.spent = False GROUP BY users.id ORDER BY users.id ASC LIMIT 5;
 -- Rewritten Queries
-SELECT users.id, users.username, users.comments_count, users.badge_achievements_count, users.last_comment_at FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 9495 LIMIT 10 OFFSET 1;
+SELECT users.id, users.id, COUNT(credits.id) * 1 AS "count", MAX(users.unspent_credits_count) AS unspent_credits_count FROM users INNER JOIN credits AS credits ON users.id = credits.user_id AND credits.spent = False GROUP BY users.id ORDER BY users.id ASC LIMIT 5;

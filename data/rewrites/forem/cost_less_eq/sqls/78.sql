@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 3248 AND organization_memberships.type_of_user = 'admin' AND organization_memberships.organization_id IS NULL LIMIT 1;
+SELECT reactions.reactable_id FROM reactions WHERE reactions.category = 'readinglist' AND reactions.user_id = 6512 AND reactions.reactable_type = 'Comment' AND reactions.status <> 'archived' ORDER BY reactions.created_at DESC;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 3248 AND organization_memberships.type_of_user = 'admin' AND False LIMIT 1;
+SELECT reactions.reactable_id FROM reactions WHERE reactions.category = 'readinglist' AND reactions.user_id = 6512 AND reactions.reactable_type = 'Comment' AND reactions.status <> 'archived' ORDER BY reactions.created_at DESC LIMIT 1;

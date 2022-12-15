@@ -2053,8 +2053,8 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 8205 AND articles.user_id = 9742 AND articles.title IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 9440 AND articles.user_id = 5040 AND articles.title IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 8205 AND articles.user_id = 9742 AND articles.title IS NULL LIMIT 1;
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 8205 AND articles.user_id = 9742 AND False LIMIT 1;
-SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 8205 AND articles.user_id = 9742 AND False LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 9440 AND articles.user_id = 5040 AND articles.title IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown IS NULL AND articles.id <> 9440 AND articles.user_id = 5040 AND False LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE False AND articles.id <> 9440 AND articles.user_id = 5040 AND False LIMIT 1;

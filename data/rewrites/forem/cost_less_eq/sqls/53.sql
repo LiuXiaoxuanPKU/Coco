@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT devices.* FROM devices WHERE devices.user_id = 3053 AND devices.token IS NULL AND devices.platform = 'Android' AND devices.consumer_app_id = 2065 LIMIT 8;
+SELECT devices.* FROM devices WHERE devices.user_id = 3053 AND devices.token IS NULL AND devices.platform = 'Android' AND devices.consumer_app_id = 8260 LIMIT 8;
 -- Rewritten Queries
-SELECT devices.* FROM devices WHERE devices.user_id = 3053 AND False AND devices.platform = 'Android' AND devices.consumer_app_id = 2065 LIMIT 8;
+SELECT devices.* FROM devices WHERE devices.user_id = 3053 AND False AND devices.platform = 'Android' AND devices.consumer_app_id = 8260 LIMIT 8;

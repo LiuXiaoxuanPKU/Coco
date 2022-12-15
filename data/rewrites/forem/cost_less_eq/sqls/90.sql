@@ -2053,6 +2053,8 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 3592 AND notifications.organization_id IS NULL AND notifications.notifiable_id IS NULL AND notifications.notifiable_type = 'Article' AND notifications.action IS NULL LIMIT 1;
+SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 2169 AND (users.username ILIKE '%greg%' OR users.name ILIKE '%greg%');
 -- Rewritten Queries
-SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 3592 AND notifications.organization_id IS NULL AND False AND notifications.notifiable_type = 'Article' AND notifications.action IS NULL LIMIT 1;
+SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 2169 AND (users.username ILIKE '%greg%' OR users.name ILIKE '%greg%');
+SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 2169 AND (users.username ILIKE '%greg%' OR users.name ILIKE '%greg%') LIMIT 1;
+SELECT users.* FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 2169 AND (users.username ILIKE '%greg%' OR users.name ILIKE '%greg%') LIMIT 1;

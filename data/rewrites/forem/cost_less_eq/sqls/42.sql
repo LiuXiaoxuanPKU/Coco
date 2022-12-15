@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown = 'exyewzrf' AND articles.user_id = 423 AND articles.title IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown = 'exyewzrf' AND articles.user_id = 9363 AND articles.title IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM articles WHERE articles.body_markdown = 'exyewzrf' AND articles.user_id = 423 AND False LIMIT 1;
+SELECT 1 AS "one" FROM articles WHERE articles.body_markdown = 'exyewzrf' AND articles.user_id = 9363 AND False LIMIT 1;

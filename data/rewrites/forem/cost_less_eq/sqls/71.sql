@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT COUNT(*) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 5044;
+SELECT DISTINCT collections.* FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 1358 ORDER BY collections.created_at DESC;
 -- Rewritten Queries
-SELECT COUNT(*) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 5044 LIMIT 1;
+SELECT collections.* FROM collections INNER JOIN articles ON articles.collection_id = collections.id WHERE collections.user_id = 1358 ORDER BY collections.created_at DESC;

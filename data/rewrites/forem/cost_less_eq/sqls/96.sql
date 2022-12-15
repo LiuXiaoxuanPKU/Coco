@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT users.id, users.id, COUNT(credits.id) * 1 AS "count", MAX(users.unspent_credits_count) AS unspent_credits_count FROM users LEFT JOIN credits AS credits ON users.id = credits.user_id AND credits.spent = False GROUP BY users.id ORDER BY users.id ASC LIMIT 5;
+SELECT podcast_episodes.* FROM podcast_episodes INNER JOIN podcasts ON podcasts.id = podcast_episodes.podcast_id WHERE podcast_episodes.podcast_id = 9874 AND podcast_episodes.reachable = True AND podcasts.published = False AND podcast_episodes.slug = 'ptgxwavtupqespjqoxwpnmkgnanorvwrenevfjwwemdiacdrovckcrgkbavxeeyzfmcekepuqcvjmmvptajxlbkvqkjafhterczytdmigfrcoxiezrpoxhqikbfqggwldibetxjwdlrunpnydhwqewhihmkmrqrngwflgboxepycfhowpfrloglxdkrpcyueastqghufpytouigrjywjvhqiergudlbhndewulgeeecfvytathoiqwzlnv' LIMIT 8;
 -- Rewritten Queries
-SELECT users.id, users.id, COUNT(credits.id) * 1 AS "count", MAX(users.unspent_credits_count) AS unspent_credits_count FROM users INNER JOIN credits AS credits ON users.id = credits.user_id AND credits.spent = False GROUP BY users.id ORDER BY users.id ASC LIMIT 5;
+SELECT podcast_episodes.* FROM podcast_episodes WHERE podcast_episodes.podcast_id = 9874 AND podcast_episodes.reachable = True AND podcast_episodes.slug = 'ptgxwavtupqespjqoxwpnmkgnanorvwrenevfjwwemdiacdrovckcrgkbavxeeyzfmcekepuqcvjmmvptajxlbkvqkjafhterczytdmigfrcoxiezrpoxhqikbfqggwldibetxjwdlrunpnydhwqewhihmkmrqrngwflgboxepycfhowpfrloglxdkrpcyueastqghufpytouigrjywjvhqiergudlbhndewulgeeecfvytathoiqwzlnv' LIMIT 8;

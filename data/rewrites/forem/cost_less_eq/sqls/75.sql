@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT organizations.id FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 3;
+SELECT 1 AS "one" FROM users INNER JOIN users_roles ON users_roles.user_id = users.id INNER JOIN roles ON roles.id = users_roles.role_id WHERE users_roles.role_id = 4017 LIMIT 1 OFFSET 1;
 -- Rewritten Queries
-SELECT organizations.id FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 3 LIMIT 1;
+SELECT 1 AS "one" FROM users INNER JOIN users_roles ON users_roles.user_id = users.id WHERE users_roles.role_id = 4017 LIMIT 1 OFFSET 1;

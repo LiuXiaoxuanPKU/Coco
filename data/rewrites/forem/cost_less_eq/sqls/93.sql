@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id IN (SELECT users_settings.user_id FROM users_settings WHERE users_settings.feed_url IS NULL) AND users.id = 4200;
+SELECT users.id, users.id, COUNT(credits.id) * 1 AS "count", MAX(users.credits_count) AS credits_count FROM users LEFT JOIN credits AS credits ON users.id = credits.user_id AND credits.id > 0 GROUP BY users.id ORDER BY users.id ASC LIMIT 9;
 -- Rewritten Queries
-SELECT users.id, users_settings.feed_url FROM users INNER JOIN users_settings ON users_settings.user_id = users.id WHERE users.id IN (SELECT users_settings.user_id FROM users_settings WHERE users_settings.feed_url IS NULL) AND users.id = 4200 LIMIT 1;
+SELECT users.id, users.id, COUNT(credits.id) * 1 AS "count", MAX(users.credits_count) AS credits_count FROM users INNER JOIN credits AS credits ON users.id = credits.user_id AND credits.id > 0 GROUP BY users.id ORDER BY users.id ASC LIMIT 9;

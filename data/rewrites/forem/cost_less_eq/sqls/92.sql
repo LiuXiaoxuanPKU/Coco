@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT users.id, users.id, COUNT(credits.id) * 1 AS "count", MAX(users.credits_count) AS credits_count FROM users LEFT JOIN credits AS credits ON users.id = credits.user_id AND credits.id > 0 GROUP BY users.id ORDER BY users.id ASC LIMIT 9;
+SELECT users.* FROM users INNER JOIN follows ON follows.followable_type = 'User' AND follows.followable_id = users.id WHERE follows.blocked = 'false' AND follows.follower_id = 9340 AND follows.follower_type = 'User' AND follows.followable_type = 'User';
 -- Rewritten Queries
-SELECT users.id, users.id, COUNT(credits.id) * 1 AS "count", MAX(users.credits_count) AS credits_count FROM users INNER JOIN credits AS credits ON users.id = credits.user_id AND credits.id > 0 GROUP BY users.id ORDER BY users.id ASC LIMIT 9;
+SELECT users.* FROM users INNER JOIN follows ON follows.followable_type = 'User' AND follows.followable_id = users.id WHERE follows.blocked = 'false' AND follows.follower_id = 9340 AND follows.follower_type = 'User' AND follows.followable_type = 'User' LIMIT 1;

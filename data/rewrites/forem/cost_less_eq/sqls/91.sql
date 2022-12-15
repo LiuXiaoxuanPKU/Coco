@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT users.* FROM users INNER JOIN follows ON follows.followable_type = 'User' AND follows.followable_id = users.id WHERE follows.blocked = 'false' AND follows.follower_id = 934 AND follows.follower_type = 'User' AND follows.followable_type = 'User';
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 3592 AND notifications.organization_id IS NULL AND notifications.notifiable_id IS NULL AND notifications.notifiable_type = 'Comment' AND notifications.action IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT users.* FROM users INNER JOIN follows ON follows.followable_type = 'User' AND follows.followable_id = users.id WHERE follows.blocked = 'false' AND follows.follower_id = 934 AND follows.follower_type = 'User' AND follows.followable_type = 'User' LIMIT 1;
+SELECT 1 AS "one" FROM notifications WHERE notifications.user_id = 3592 AND notifications.organization_id IS NULL AND False AND notifications.notifiable_type = 'Comment' AND notifications.action IS NULL LIMIT 1;

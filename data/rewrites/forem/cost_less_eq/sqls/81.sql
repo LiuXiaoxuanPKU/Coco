@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 3557 AND organizations.id = 3319;
+SELECT SUM(organizations.unspent_credits_count) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 4108;
 -- Rewritten Queries
-SELECT organizations.* FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 3557 AND organizations.id = 3319 LIMIT 1;
+SELECT SUM(organizations.unspent_credits_count) FROM organizations INNER JOIN organization_memberships ON organizations.id = organization_memberships.organization_id WHERE organization_memberships.user_id = 4108 LIMIT 1;

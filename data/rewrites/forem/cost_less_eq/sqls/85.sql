@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 8054 AND notification_subscriptions.notifiable_type = 'Article' AND notification_subscriptions.config = 'only_author_comments';
+SELECT feedback_messages.* FROM feedback_messages LEFT OUTER JOIN users ON users.id = feedback_messages.reporter_id WHERE users.username ILIKE '%username51%' ORDER BY feedback_messages.created_at DESC LIMIT 4 OFFSET 1;
 -- Rewritten Queries
-SELECT notification_subscriptions.user_id FROM notification_subscriptions WHERE notification_subscriptions.notifiable_id = 8054 AND notification_subscriptions.notifiable_type = 'Article' AND notification_subscriptions.config = 'only_author_comments' LIMIT 1;
+SELECT feedback_messages.* FROM feedback_messages INNER JOIN users ON users.id = feedback_messages.reporter_id WHERE users.username ILIKE '%username51%' ORDER BY feedback_messages.created_at DESC LIMIT 4 OFFSET 1;

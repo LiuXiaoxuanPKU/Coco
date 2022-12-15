@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 6044 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 480 AND reactions.category IN ('unicorn', 'unicorn');
+SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 6044 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 480 AND reactions.category IN ('like', 'thumbsup');
 -- Rewritten Queries
-SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 6044 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 480 AND reactions.category IN ('unicorn', 'unicorn') LIMIT 1;
+SELECT reactions.* FROM reactions WHERE reactions.reactable_id = 6044 AND reactions.reactable_type = 'Comment' AND reactions.user_id = 480 AND reactions.category IN ('like', 'thumbsup') LIMIT 1;

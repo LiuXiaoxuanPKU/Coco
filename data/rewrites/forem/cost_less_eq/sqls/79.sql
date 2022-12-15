@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 5378 AND organization_memberships.type_of_user IN ('admin', 'guest') AND organization_memberships.organization_id IS NULL LIMIT 1;
+SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 5841 AND organization_memberships.type_of_user = 'admin' AND organization_memberships.organization_id IS NULL LIMIT 1;
 -- Rewritten Queries
-SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 5378 AND organization_memberships.type_of_user IN ('admin', 'guest') AND False LIMIT 1;
+SELECT 1 AS "one" FROM organization_memberships WHERE organization_memberships.user_id = 5841 AND organization_memberships.type_of_user = 'admin' AND False LIMIT 1;

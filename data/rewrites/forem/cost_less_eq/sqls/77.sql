@@ -2053,6 +2053,6 @@ CREATE TABLE welcome_notifications (
 
 
 -- Original Query
-SELECT reactions.reactable_id FROM reactions WHERE reactions.category = 'thinking' AND reactions.user_id = 6512 AND reactions.reactable_type = 'Comment' AND reactions.status <> 'valid' ORDER BY reactions.created_at DESC;
+SELECT articles.* FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:10:54.765698' AND articles.user_id IS NULL ORDER BY articles.published_at DESC LIMIT 7;
 -- Rewritten Queries
-SELECT reactions.reactable_id FROM reactions WHERE reactions.category = 'thinking' AND reactions.user_id = 6512 AND reactions.reactable_type = 'Comment' AND reactions.status <> 'valid' ORDER BY reactions.created_at DESC LIMIT 1;
+SELECT articles.* FROM articles WHERE articles.published = False AND published_at <= '2022-02-27 07:10:54.765698' AND False ORDER BY articles.published_at DESC LIMIT 7;
