@@ -8,6 +8,12 @@ from loader import *
 from config import *
 from plot_config import APP_NAME
 
+# redmine app data is [3161, 2032, 1510, 1345, 722]
+# forem app data is [4415, 466, 255, 139, 50]
+# openproject app data is [12944, 10510, 9012, 8627, 1068]
+# mastodon app data is [6950, 990, 848, 484, 62]
+# spree app data is [4261, 3642, 2146, 692, 556]
+# openstreetmap app data is [4796, 132, 85, 74, 34]
 
 
 BLUE = "#1AA7EC"
