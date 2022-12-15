@@ -22,5 +22,5 @@ jobs:
         name: constropt
         extraPullNames: cosette
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-    - run: nix build
+    - run: nix build --accept-flake-config --show-trace
     - run: nix flake check
