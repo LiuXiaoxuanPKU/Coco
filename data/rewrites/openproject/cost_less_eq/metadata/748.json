@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT relations.* FROM relations WHERE relations.to_id IS NULL AND relations.hierarchy = \"$1\" AND relations.relates = \"$2\" AND relations.duplicates = \"$3\" AND relations.follows = \"$4\" AND relations.blocks = \"$5\" AND relations.includes = \"$6\" AND relations.requires = \"$7\" LIMIT \"$8\"",
+        "cost": 6.33,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT relations.* FROM relations WHERE False AND relations.hierarchy = \"$1\" AND relations.relates = \"$2\" AND relations.duplicates = \"$3\" AND relations.follows = \"$4\" AND relations.blocks = \"$5\" AND relations.includes = \"$6\" AND relations.requires = \"$7\" LIMIT \"$8\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

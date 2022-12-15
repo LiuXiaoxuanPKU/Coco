@@ -1,0 +1,37 @@
+{
+    "org": {
+        "sql": "SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields LEFT OUTER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id LEFT OUTER JOIN projects ON projects.id = custom_fields_projects.project_id LEFT OUTER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id LEFT OUTER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id IN (160, 161, 162, 163, 164) AND types.id IN (205, 206, 207, 208, 209) OR custom_fields.is_for_all = True)",
+        "cost": 353.78,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields INNER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id LEFT OUTER JOIN projects ON projects.id = custom_fields_projects.project_id LEFT OUTER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id LEFT OUTER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id IN (160, 161, 162, 163, 164) AND types.id IN (205, 206, 207, 208, 209) OR custom_fields.is_for_all = True)",
+            "cost": 101.7,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields LEFT OUTER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id INNER JOIN projects ON projects.id = custom_fields_projects.project_id LEFT OUTER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id LEFT OUTER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id IN (160, 161, 162, 163, 164) AND types.id IN (205, 206, 207, 208, 209) OR custom_fields.is_for_all = True)",
+            "cost": 101.7,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields LEFT OUTER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id LEFT OUTER JOIN projects ON projects.id = custom_fields_projects.project_id INNER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id LEFT OUTER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id IN (160, 161, 162, 163, 164) AND types.id IN (205, 206, 207, 208, 209) OR custom_fields.is_for_all = True)",
+            "cost": 277.18,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT projects.id AS project_id, types.id AS type_id, custom_fields.id AS custom_field_id FROM custom_fields LEFT OUTER JOIN custom_fields_projects ON custom_fields_projects.custom_field_id = custom_fields.id LEFT OUTER JOIN projects ON projects.id = custom_fields_projects.project_id LEFT OUTER JOIN custom_fields_types ON custom_fields_types.custom_field_id = custom_fields.id INNER JOIN types ON types.id = custom_fields_types.type_id WHERE custom_fields.type = 'WorkPackageCustomField' AND (projects.id IN (160, 161, 162, 163, 164) AND types.id IN (205, 206, 207, 208, 209) OR custom_fields.is_for_all = True)",
+            "cost": 277.18,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

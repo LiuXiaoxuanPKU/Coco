@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT versions.* FROM versions WHERE versions.id IS NULL LIMIT \"$1\"",
+        "cost": 4.31,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT versions.* FROM versions WHERE False LIMIT \"$1\"",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

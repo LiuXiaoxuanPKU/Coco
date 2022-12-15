@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT projects.* FROM projects WHERE projects.active = True ORDER BY projects.created_at DESC LIMIT \"$1\"",
+        "cost": 1040.33,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT projects.* FROM projects WHERE projects.active = True ORDER BY projects.created_at DESC LIMIT \"$1\"",
+            "cost": 640.29,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        }
+    ]
+}

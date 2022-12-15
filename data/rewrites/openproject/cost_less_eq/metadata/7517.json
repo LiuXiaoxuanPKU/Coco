@@ -1,0 +1,90 @@
+{
+    "org": {
+        "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, wikis.project_id AS project_id, wiki_pages.title AS wiki_title, wiki_pages.slug AS wiki_slug FROM journals INNER JOIN wiki_content_journals ON journals.data_id = wiki_content_journals.id AND journals.data_type = 'Journal::WikiContentJournal' INNER JOIN wiki_pages ON wiki_content_journals.page_id = wiki_pages.id INNER JOIN wikis ON wiki_pages.wiki_id = wikis.id INNER JOIN projects ON projects.id = wikis.project_id WHERE journals.journable_type = 'WikiContent' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('wiki') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+        "cost": 56.12,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, wikis.project_id AS project_id, wiki_pages.title AS wiki_title, wiki_pages.slug AS wiki_slug FROM journals INNER JOIN wiki_content_journals ON journals.data_id = wiki_content_journals.id AND journals.data_type = 'Journal::WikiContentJournal' INNER JOIN wiki_pages ON wiki_content_journals.page_id = wiki_pages.id INNER JOIN wikis ON wiki_pages.wiki_id = wikis.id INNER JOIN projects ON projects.id = wikis.project_id WHERE journals.journable_type = 'WikiContent' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 21.33,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, wikis.project_id AS project_id, wiki_pages.title AS wiki_title, wiki_pages.slug AS wiki_slug FROM journals INNER JOIN wiki_content_journals ON journals.data_id = wiki_content_journals.id AND journals.data_type = 'Journal::WikiContentJournal' INNER JOIN wiki_pages ON wiki_content_journals.page_id = wiki_pages.id INNER JOIN wikis ON wiki_pages.wiki_id = wikis.id INNER JOIN projects ON projects.id = wikis.project_id WHERE journals.journable_type = 'WikiContent' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 21.63,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, wikis.project_id AS project_id, wiki_pages.title AS wiki_title, wiki_pages.slug AS wiki_slug FROM journals INNER JOIN wiki_content_journals ON journals.data_id = wiki_content_journals.id AND journals.data_type = 'Journal::WikiContentJournal' INNER JOIN wiki_pages ON wiki_content_journals.page_id = wiki_pages.id INNER JOIN wikis ON wiki_pages.wiki_id = wikis.id INNER JOIN projects ON projects.id = wikis.project_id WHERE journals.journable_type = 'WikiContent' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 21.67,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, wikis.project_id AS project_id, wiki_pages.title AS wiki_title, wiki_pages.slug AS wiki_slug FROM journals INNER JOIN wiki_content_journals ON journals.data_id = wiki_content_journals.id AND journals.data_type = 'Journal::WikiContentJournal' INNER JOIN wiki_pages ON wiki_content_journals.page_id = wiki_pages.id INNER JOIN wikis ON wiki_pages.wiki_id = wikis.id INNER JOIN projects ON projects.id = wikis.project_id WHERE journals.journable_type = 'WikiContent' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('wiki') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 22.18,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, wikis.project_id AS project_id, wiki_pages.title AS wiki_title, wiki_pages.slug AS wiki_slug FROM journals INNER JOIN wiki_content_journals ON journals.data_id = wiki_content_journals.id AND journals.data_type = 'Journal::WikiContentJournal' INNER JOIN wiki_pages ON wiki_content_journals.page_id = wiki_pages.id INNER JOIN wikis ON wiki_pages.wiki_id = wikis.id INNER JOIN projects ON projects.id = wikis.project_id WHERE journals.journable_type = 'WikiContent' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 29.23,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, wikis.project_id AS project_id, wiki_pages.title AS wiki_title, wiki_pages.slug AS wiki_slug FROM journals INNER JOIN wiki_content_journals ON journals.data_id = wiki_content_journals.id AND journals.data_type = 'Journal::WikiContentJournal' INNER JOIN wiki_pages ON wiki_content_journals.page_id = wiki_pages.id INNER JOIN wikis ON wiki_pages.wiki_id = wikis.id INNER JOIN projects ON projects.id = wikis.project_id WHERE journals.journable_type = 'WikiContent' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 29.53,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, wikis.project_id AS project_id, wiki_pages.title AS wiki_title, wiki_pages.slug AS wiki_slug FROM journals INNER JOIN wiki_content_journals ON journals.data_id = wiki_content_journals.id AND journals.data_type = 'Journal::WikiContentJournal' INNER JOIN wiki_pages ON wiki_content_journals.page_id = wiki_pages.id INNER JOIN wikis ON wiki_pages.wiki_id = wikis.id INNER JOIN projects ON projects.id = wikis.project_id WHERE journals.journable_type = 'WikiContent' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 29.62,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, wikis.project_id AS project_id, wiki_pages.title AS wiki_title, wiki_pages.slug AS wiki_slug FROM journals INNER JOIN wiki_content_journals ON journals.data_id = wiki_content_journals.id AND journals.data_type = 'Journal::WikiContentJournal' INNER JOIN wiki_pages ON wiki_content_journals.page_id = wiki_pages.id INNER JOIN wikis ON wiki_pages.wiki_id = wikis.id INNER JOIN projects ON projects.id = wikis.project_id WHERE journals.journable_type = 'WikiContent' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('wiki') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 30.13,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, wikis.project_id AS project_id, wiki_pages.title AS wiki_title, wiki_pages.slug AS wiki_slug FROM journals INNER JOIN wiki_content_journals ON journals.data_id = wiki_content_journals.id AND journals.data_type = 'Journal::WikiContentJournal' INNER JOIN wiki_pages ON wiki_content_journals.page_id = wiki_pages.id INNER JOIN wikis ON wiki_pages.wiki_id = wikis.id INNER JOIN projects ON projects.id = wikis.project_id WHERE journals.journable_type = 'WikiContent' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('wiki') AND projects.active = True WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 56.1,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, wikis.project_id AS project_id, wiki_pages.title AS wiki_title, wiki_pages.slug AS wiki_slug FROM journals INNER JOIN wiki_content_journals ON journals.data_id = wiki_content_journals.id AND journals.data_type = 'Journal::WikiContentJournal' INNER JOIN wiki_pages ON wiki_content_journals.page_id = wiki_pages.id INNER JOIN wikis ON wiki_pages.wiki_id = wikis.id INNER JOIN projects ON projects.id = wikis.project_id WHERE journals.journable_type = 'WikiContent' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('wiki') AND projects.active = True WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 56.12,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

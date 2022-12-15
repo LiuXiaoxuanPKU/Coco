@@ -1,0 +1,46 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT users.* FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 21 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON users.type = 'User' AND (roles.id = member_roles.role_id OR member_roles.role_id IS NULL AND roles.builtin = 1) OR users.type = 'AnonymousUser' AND roles.builtin = 2 LEFT OUTER JOIN role_permissions ON roles.id = role_permissions.role_id AND role_permissions.permission = 'view_work_packages' WHERE users.type IN (\"$1\", \"$2\", \"$3\") AND (roles.id IS NOT NULL AND role_permissions.id IS NOT NULL OR users.admin = True)",
+        "cost": 7515668.07,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT DISTINCT users.* FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 21 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON users.type = 'User' AND (roles.id = member_roles.role_id OR member_roles.role_id IS NULL AND roles.builtin = 1) OR users.type = 'AnonymousUser' AND roles.builtin = 2 LEFT OUTER JOIN role_permissions ON roles.id = role_permissions.role_id AND role_permissions.permission = 'view_work_packages' WHERE users.type IN (\"$1\", \"$2\", \"$3\") AND (roles.id IS NOT NULL AND role_permissions.id IS NOT NULL OR users.admin = True) LIMIT 1",
+            "cost": 7514748.67,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT users.* FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 21 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON users.type = 'User' AND (roles.id = member_roles.role_id OR member_roles.role_id IS NULL AND roles.builtin = 1) OR users.type = 'AnonymousUser' AND roles.builtin = 2 LEFT OUTER JOIN role_permissions ON roles.id = role_permissions.role_id AND role_permissions.permission = 'view_work_packages' WHERE users.type IN (\"$1\", \"$2\", \"$3\") AND (True AND role_permissions.id IS NOT NULL OR users.admin = True) LIMIT 1",
+            "cost": 7514748.67,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT users.* FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 21 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON users.type = 'User' AND (roles.id = member_roles.role_id OR member_roles.role_id IS NULL AND roles.builtin = 1) OR users.type = 'AnonymousUser' AND roles.builtin = 2 LEFT OUTER JOIN role_permissions ON roles.id = role_permissions.role_id AND role_permissions.permission = 'view_work_packages' WHERE users.type IN (\"$1\", \"$2\", \"$3\") AND (roles.id IS NOT NULL AND True OR users.admin = True) LIMIT 1",
+            "cost": 7514748.67,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT users.* FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 21 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON users.type = 'User' AND (roles.id = member_roles.role_id OR member_roles.role_id IS NULL AND roles.builtin = 1) OR users.type = 'AnonymousUser' AND roles.builtin = 2 LEFT OUTER JOIN role_permissions ON roles.id = role_permissions.role_id AND role_permissions.permission = 'view_work_packages' WHERE users.type IN (\"$1\", \"$2\", \"$3\") AND (True AND role_permissions.id IS NOT NULL OR users.admin = True)",
+            "cost": 7515668.07,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT users.* FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 21 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON users.type = 'User' AND (roles.id = member_roles.role_id OR member_roles.role_id IS NULL AND roles.builtin = 1) OR users.type = 'AnonymousUser' AND roles.builtin = 2 LEFT OUTER JOIN role_permissions ON roles.id = role_permissions.role_id AND role_permissions.permission = 'view_work_packages' WHERE users.type IN (\"$1\", \"$2\", \"$3\") AND (roles.id IS NOT NULL AND True OR users.admin = True)",
+            "cost": 7515668.07,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

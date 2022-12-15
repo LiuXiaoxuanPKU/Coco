@@ -1,0 +1,127 @@
+{
+    "org": {
+        "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = \"$1\" AND relations.hierarchy <> \"$2\" AND relations.relates = \"$3\" AND relations.duplicates = \"$4\" AND relations.follows = \"$5\" AND relations.blocks = \"$6\" AND relations.includes = \"$7\" AND relations.requires = \"$8\" AND 1 = 0) OR work_packages.id = \"$9\"",
+        "cost": 295.93,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = \"$1\" AND relations.hierarchy <> \"$2\" AND relations.relates = \"$3\" AND relations.duplicates = \"$4\" AND relations.follows = \"$5\" AND relations.blocks = \"$6\" AND relations.includes = \"$7\" AND relations.requires = \"$8\" AND 1 = 0) OR work_packages.id = \"$9\" LIMIT 1",
+            "cost": 0.06,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = \"$1\" AND relations.hierarchy <> \"$2\" AND relations.relates = \"$3\" AND relations.duplicates = \"$4\" AND relations.follows = \"$5\" AND relations.blocks = \"$6\" AND relations.includes = \"$7\" AND relations.requires = \"$8\" AND 1 = 0 LIMIT 1) OR work_packages.id = \"$9\" LIMIT 1",
+            "cost": 0.06,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages WHERE 1 = 0) OR work_packages.id = \"$9\" LIMIT 1",
+            "cost": 0.06,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages WHERE 1 = 0 LIMIT 1) OR work_packages.id = \"$9\" LIMIT 1",
+            "cost": 0.06,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = \"$1\" AND relations.hierarchy <> \"$2\" AND relations.relates = \"$3\" AND relations.duplicates = \"$4\" AND relations.follows = \"$5\" AND relations.blocks = \"$6\" AND relations.includes = \"$7\" AND relations.requires = \"$8\" AND 1 = 0) OR work_packages.id = \"$9\" LIMIT 1",
+            "cost": 0.07,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = \"$1\" AND relations.hierarchy <> \"$2\" AND relations.relates = \"$3\" AND relations.duplicates = \"$4\" AND relations.follows = \"$5\" AND relations.blocks = \"$6\" AND relations.includes = \"$7\" AND relations.requires = \"$8\" AND 1 = 0 LIMIT 1) OR work_packages.id = \"$9\" LIMIT 1",
+            "cost": 0.07,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages WHERE 1 = 0) OR work_packages.id = \"$9\" LIMIT 1",
+            "cost": 0.07,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages WHERE 1 = 0 LIMIT 1) OR work_packages.id = \"$9\" LIMIT 1",
+            "cost": 0.07,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = \"$1\" AND relations.hierarchy <> \"$2\" AND relations.relates = \"$3\" AND relations.duplicates = \"$4\" AND relations.follows = \"$5\" AND relations.blocks = \"$6\" AND relations.includes = \"$7\" AND relations.requires = \"$8\" AND 1 = 0) OR work_packages.id = \"$9\"",
+            "cost": 295.91,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages WHERE 1 = 0) OR work_packages.id = \"$9\"",
+            "cost": 295.91,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = \"$1\" AND relations.hierarchy <> \"$2\" AND relations.relates = \"$3\" AND relations.duplicates = \"$4\" AND relations.follows = \"$5\" AND relations.blocks = \"$6\" AND relations.includes = \"$7\" AND relations.requires = \"$8\" AND 1 = 0 LIMIT 1) OR work_packages.id = \"$9\"",
+            "cost": 295.92,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT work_packages.id FROM work_packages WHERE 1 = 0 LIMIT 1) OR work_packages.id = \"$9\"",
+            "cost": 295.92,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages INNER JOIN relations ON work_packages.id = relations.to_id WHERE relations.from_id = \"$1\" AND relations.hierarchy <> \"$2\" AND relations.relates = \"$3\" AND relations.duplicates = \"$4\" AND relations.follows = \"$5\" AND relations.blocks = \"$6\" AND relations.includes = \"$7\" AND relations.requires = \"$8\" AND 1 = 0 LIMIT 1) OR work_packages.id = \"$9\"",
+            "cost": 295.93,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages WHERE 1 = 0) OR work_packages.id = \"$9\"",
+            "cost": 295.93,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT work_packages.id FROM work_packages WHERE work_packages.id IN (SELECT DISTINCT work_packages.id FROM work_packages WHERE 1 = 0 LIMIT 1) OR work_packages.id = \"$9\"",
+            "cost": 295.93,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

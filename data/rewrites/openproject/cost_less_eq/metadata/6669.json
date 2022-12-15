@@ -1,0 +1,320 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id LEFT OUTER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+        "cost": 84.6,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 66.25,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 66.25,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 66.25,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 66.25,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id INNER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 66.62,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id INNER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 66.62,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id INNER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 67.08,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id INNER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 67.08,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id INNER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id LEFT OUTER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 67.61,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id INNER JOIN projects ON projects.id = froms_relations.project_id LEFT OUTER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 67.61,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id INNER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 67.61,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id INNER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id LEFT OUTER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 67.61,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id INNER JOIN projects ON projects.id = froms_relations.project_id LEFT OUTER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 67.61,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id INNER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 67.61,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations INNER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 72.14,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations INNER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 72.14,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id LEFT OUTER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 73.13,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id LEFT OUTER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 73.13,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 77.72,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 77.72,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 77.72,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 77.72,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id INNER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 78.1,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id INNER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 78.1,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id INNER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 78.56,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id INNER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 78.56,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations INNER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id LEFT OUTER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 79.02,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations INNER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id LEFT OUTER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 79.02,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id INNER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id LEFT OUTER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 79.09,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id INNER JOIN projects ON projects.id = froms_relations.project_id LEFT OUTER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 79.09,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id INNER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 79.09,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id INNER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id LEFT OUTER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 79.09,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id INNER JOIN projects ON projects.id = froms_relations.project_id LEFT OUTER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 79.09,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id INNER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 79.09,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations INNER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True))",
+            "cost": 83.61,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations INNER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 83.61,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT relations.id) FROM relations LEFT OUTER JOIN work_packages ON work_packages.id = relations.to_id LEFT OUTER JOIN work_packages AS froms_relations ON froms_relations.id = relations.from_id LEFT OUTER JOIN projects ON projects.id = froms_relations.project_id LEFT OUTER JOIN enabled_modules ON enabled_modules.project_id = projects.id WHERE relations.hierarchy = \"$1\" AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND to_id NOT IN ('716') AND from_id IN (SELECT work_packages.id FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)) LIMIT 1",
+            "cost": 84.6,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

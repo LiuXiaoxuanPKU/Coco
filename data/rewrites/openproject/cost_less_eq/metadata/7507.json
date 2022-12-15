@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT custom_values.id AS t0_r0, custom_values.customized_type AS t0_r1, custom_values.customized_id AS t0_r2, custom_values.custom_field_id AS t0_r3, custom_values.value AS t0_r4, custom_fields.id AS t1_r0, custom_fields.type AS t1_r1, custom_fields.field_format AS t1_r2, custom_fields.regexp AS t1_r3, custom_fields.min_length AS t1_r4, custom_fields.max_length AS t1_r5, custom_fields.is_required AS t1_r6, custom_fields.is_for_all AS t1_r7, custom_fields.is_filter AS t1_r8, custom_fields.position AS t1_r9, custom_fields.searchable AS t1_r10, custom_fields.editable AS t1_r11, custom_fields.visible AS t1_r12, custom_fields.multi_value AS t1_r13, custom_fields.default_value AS t1_r14, custom_fields.name AS t1_r15, custom_fields.created_at AS t1_r16, custom_fields.updated_at AS t1_r17, custom_fields.content_right_to_left AS t1_r18 FROM custom_values LEFT OUTER JOIN custom_fields ON custom_fields.id = custom_values.custom_field_id WHERE custom_values.customized_id = \"$1\" AND custom_values.customized_type = \"$2\" ORDER BY custom_fields.position",
+        "cost": 1427.65,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT custom_values.id AS t0_r0, custom_values.customized_type AS t0_r1, custom_values.customized_id AS t0_r2, custom_values.custom_field_id AS t0_r3, custom_values.value AS t0_r4, custom_fields.id AS t1_r0, custom_fields.type AS t1_r1, custom_fields.field_format AS t1_r2, custom_fields.regexp AS t1_r3, custom_fields.min_length AS t1_r4, custom_fields.max_length AS t1_r5, custom_fields.is_required AS t1_r6, custom_fields.is_for_all AS t1_r7, custom_fields.is_filter AS t1_r8, custom_fields.position AS t1_r9, custom_fields.searchable AS t1_r10, custom_fields.editable AS t1_r11, custom_fields.visible AS t1_r12, custom_fields.multi_value AS t1_r13, custom_fields.default_value AS t1_r14, custom_fields.name AS t1_r15, custom_fields.created_at AS t1_r16, custom_fields.updated_at AS t1_r17, custom_fields.content_right_to_left AS t1_r18 FROM custom_values INNER JOIN custom_fields ON custom_fields.id = custom_values.custom_field_id WHERE custom_values.customized_id = \"$1\" AND custom_values.customized_type = \"$2\" ORDER BY custom_fields.position",
+            "cost": 1427.65,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

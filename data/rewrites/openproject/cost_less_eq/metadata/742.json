@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT projects.* FROM projects INNER JOIN (SELECT projects.id, versions.id AS version_id, projects.lft, projects.rgt, versions.sharing FROM projects INNER JOIN versions ON projects.id = versions.project_id WHERE versions.id = 12) AS sharing ON True",
+        "cost": 570.03,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT projects.* FROM projects",
+            "cost": 461.01,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,46 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT news.id AS t0_r0, news.project_id AS t0_r1, news.title AS t0_r2, news.summary AS t0_r3, news.description AS t0_r4, news.author_id AS t0_r5, news.created_at AS t0_r6, news.comments_count AS t0_r7, news.updated_at AS t0_r8, projects.id AS t1_r0, projects.name AS t1_r1, projects.description AS t1_r2, projects.public AS t1_r3, projects.parent_id AS t1_r4, projects.created_at AS t1_r5, projects.updated_at AS t1_r6, projects.identifier AS t1_r7, projects.lft AS t1_r8, projects.rgt AS t1_r9, projects.active AS t1_r10, projects.templated AS t1_r11 FROM news LEFT OUTER JOIN projects ON projects.id = news.project_id LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 4869 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('news') AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL ORDER BY news.id DESC LIMIT \"$1\" OFFSET \"$2\"",
+        "cost": 383.59,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT news.id AS t0_r0, news.project_id AS t0_r1, news.title AS t0_r2, news.summary AS t0_r3, news.description AS t0_r4, news.author_id AS t0_r5, news.created_at AS t0_r6, news.comments_count AS t0_r7, news.updated_at AS t0_r8, projects.id AS t1_r0, projects.name AS t1_r1, projects.description AS t1_r2, projects.public AS t1_r3, projects.parent_id AS t1_r4, projects.created_at AS t1_r5, projects.updated_at AS t1_r6, projects.identifier AS t1_r7, projects.lft AS t1_r8, projects.rgt AS t1_r9, projects.active AS t1_r10, projects.templated AS t1_r11 FROM news LEFT OUTER JOIN projects ON projects.id = news.project_id LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 4869 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('news') AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL ORDER BY news.id DESC LIMIT \"$1\" OFFSET \"$2\"",
+            "cost": 383.49,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT news.id AS t0_r0, news.project_id AS t0_r1, news.title AS t0_r2, news.summary AS t0_r3, news.description AS t0_r4, news.author_id AS t0_r5, news.created_at AS t0_r6, news.comments_count AS t0_r7, news.updated_at AS t0_r8, projects.id AS t1_r0, projects.name AS t1_r1, projects.description AS t1_r2, projects.public AS t1_r3, projects.parent_id AS t1_r4, projects.created_at AS t1_r5, projects.updated_at AS t1_r6, projects.identifier AS t1_r7, projects.lft AS t1_r8, projects.rgt AS t1_r9, projects.active AS t1_r10, projects.templated AS t1_r11 FROM news INNER JOIN projects ON projects.id = news.project_id LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 4869 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('news') AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL ORDER BY news.id DESC LIMIT \"$1\" OFFSET \"$2\"",
+            "cost": 383.49,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT news.id AS t0_r0, news.project_id AS t0_r1, news.title AS t0_r2, news.summary AS t0_r3, news.description AS t0_r4, news.author_id AS t0_r5, news.created_at AS t0_r6, news.comments_count AS t0_r7, news.updated_at AS t0_r8, projects.id AS t1_r0, projects.name AS t1_r1, projects.description AS t1_r2, projects.public AS t1_r3, projects.parent_id AS t1_r4, projects.created_at AS t1_r5, projects.updated_at AS t1_r6, projects.identifier AS t1_r7, projects.lft AS t1_r8, projects.rgt AS t1_r9, projects.active AS t1_r10, projects.templated AS t1_r11 FROM news LEFT OUTER JOIN projects ON projects.id = news.project_id LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 4869 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('news') AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL ORDER BY news.id DESC LIMIT \"$1\" OFFSET \"$2\"",
+            "cost": 383.49,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT news.id AS t0_r0, news.project_id AS t0_r1, news.title AS t0_r2, news.summary AS t0_r3, news.description AS t0_r4, news.author_id AS t0_r5, news.created_at AS t0_r6, news.comments_count AS t0_r7, news.updated_at AS t0_r8, projects.id AS t1_r0, projects.name AS t1_r1, projects.description AS t1_r2, projects.public AS t1_r3, projects.parent_id AS t1_r4, projects.created_at AS t1_r5, projects.updated_at AS t1_r6, projects.identifier AS t1_r7, projects.lft AS t1_r8, projects.rgt AS t1_r9, projects.active AS t1_r10, projects.templated AS t1_r11 FROM news INNER JOIN projects ON projects.id = news.project_id LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 4869 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('news') AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL ORDER BY news.id DESC LIMIT \"$1\" OFFSET \"$2\"",
+            "cost": 383.59,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT news.id AS t0_r0, news.project_id AS t0_r1, news.title AS t0_r2, news.summary AS t0_r3, news.description AS t0_r4, news.author_id AS t0_r5, news.created_at AS t0_r6, news.comments_count AS t0_r7, news.updated_at AS t0_r8, projects.id AS t1_r0, projects.name AS t1_r1, projects.description AS t1_r2, projects.public AS t1_r3, projects.parent_id AS t1_r4, projects.created_at AS t1_r5, projects.updated_at AS t1_r6, projects.identifier AS t1_r7, projects.lft AS t1_r8, projects.rgt AS t1_r9, projects.active AS t1_r10, projects.templated AS t1_r11 FROM news LEFT OUTER JOIN projects ON projects.id = news.project_id LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 4869 AND projects.active = True INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('news') AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL ORDER BY news.id DESC LIMIT \"$1\" OFFSET \"$2\"",
+            "cost": 383.59,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

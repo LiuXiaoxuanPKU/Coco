@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT derived_start_date, derived_due_date FROM (SELECT LEAST(MIN(descendants_work_packages.start_date), MIN(descendants_work_packages.due_date)) AS derived_start_date, GREATEST(MAX(descendants_work_packages.start_date), MAX(descendants_work_packages.due_date)) AS derived_due_date FROM work_packages LEFT OUTER JOIN relations ON relations.hierarchy <> \"$1\" AND relations.relates = \"$2\" AND relations.duplicates = \"$3\" AND relations.follows = \"$4\" AND relations.blocks = \"$5\" AND relations.includes = \"$6\" AND relations.requires = \"$7\" AND relations.from_id = work_packages.id LEFT OUTER JOIN work_packages AS descendants_work_packages ON descendants_work_packages.id = relations.to_id WHERE work_packages.id = \"$8\" GROUP BY work_packages.id) AS subquery",
+        "cost": 24.96,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT derived_start_date, derived_due_date FROM (SELECT LEAST(MIN(descendants_work_packages.start_date), MIN(descendants_work_packages.due_date)) AS derived_start_date, GREATEST(MAX(descendants_work_packages.start_date), MAX(descendants_work_packages.due_date)) AS derived_due_date FROM work_packages LEFT OUTER JOIN relations ON relations.hierarchy <> \"$1\" AND relations.relates = \"$2\" AND relations.duplicates = \"$3\" AND relations.follows = \"$4\" AND relations.blocks = \"$5\" AND relations.includes = \"$6\" AND relations.requires = \"$7\" AND relations.from_id = work_packages.id LEFT OUTER JOIN work_packages AS descendants_work_packages ON descendants_work_packages.id = relations.to_id WHERE work_packages.id = \"$8\" GROUP BY work_packages.id) AS subquery LIMIT 1",
+            "cost": 24.96,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

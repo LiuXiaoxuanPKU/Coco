@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT work_packages.* FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)",
+        "cost": 77.25,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT work_packages.* FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True)",
+            "cost": 66.01,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        }
+    ]
+}

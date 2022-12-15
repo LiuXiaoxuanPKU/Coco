@@ -1,0 +1,31 @@
+{
+    "org": {
+        "sql": "SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND wiki_id IS NULL",
+        "cost": 8.3,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND False",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND False LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT wiki_pages.* FROM wiki_pages WHERE slug LIKE 'wiki-title%' AND wiki_id IS NULL LIMIT 1",
+            "cost": 8.3,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

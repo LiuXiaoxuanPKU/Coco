@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT work_packages.* FROM work_packages WHERE work_packages.id NOT IN (SELECT relations.from_id FROM relations WHERE relations.follows <> 0 AND relations.hierarchy = 0 AND relations.relates = 0 AND relations.duplicates = 0 AND relations.blocks = 0 AND relations.includes = 0 AND relations.requires = 0 AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND relations.to_id = 253)",
+        "cost": 278.44,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT work_packages.* FROM work_packages WHERE work_packages.id NOT IN (SELECT relations.from_id FROM relations WHERE relations.follows <> 0 AND relations.hierarchy = 0 AND relations.relates = 0 AND relations.duplicates = 0 AND relations.blocks = 0 AND relations.includes = 0 AND relations.requires = 0 AND hierarchy + relates + duplicates + follows + blocks + includes + requires = 1 AND relations.to_id = 253 LIMIT 1)",
+            "cost": 278.44,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

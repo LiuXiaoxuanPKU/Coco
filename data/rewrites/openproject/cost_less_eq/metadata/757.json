@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT users.* FROM users WHERE LOWER(login) LIKE '%login%' OR LOWER(CONCAT(firstname, ' ', lastname)) LIKE '%login%' OR LOWER(CONCAT(lastname, ' ', firstname)) LIKE '%login%' OR LOWER(mail) LIKE '%login%' ORDER BY users.type ASC, users.login ASC, users.lastname ASC, users.firstname ASC, users.mail ASC",
+        "cost": 1934.15,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT users.* FROM users WHERE LOWER(login) LIKE '%login%' OR LOWER(CONCAT(firstname, ' ', lastname)) LIKE '%login%' OR LOWER(CONCAT(lastname, ' ', firstname)) LIKE '%login%' OR LOWER(mail) LIKE '%login%' ORDER BY users.type ASC, users.login ASC, users.lastname ASC, users.firstname ASC, users.mail ASC LIMIT 1",
+            "cost": 55.68,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 324 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 2 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.active = \"$1\" LIMIT 1",
+        "cost": 150.89,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 324 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 2 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.active = \"$1\" LIMIT 1",
+            "cost": 150.89,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}

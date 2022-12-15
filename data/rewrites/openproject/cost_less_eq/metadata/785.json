@@ -1,0 +1,252 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) AND members.project_id IS NULL",
+        "cost": 24.94,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False",
+            "cost": 0.01,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False",
+            "cost": 0.01,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False",
+            "cost": 0.01,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False",
+            "cost": 0.01,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False LIMIT 1",
+            "cost": 0.01,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False LIMIT 1",
+            "cost": 0.01,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False LIMIT 1",
+            "cost": 0.01,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id INNER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False LIMIT 1",
+            "cost": 0.01,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False",
+            "cost": 0.01,
+            "rewrite_types": [
+                "RemoveJoin",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False",
+            "cost": 0.01,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveJoin",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False",
+            "cost": 0.01,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveJoin",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False",
+            "cost": 0.01,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveJoin",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False LIMIT 1",
+            "cost": 0.01,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False LIMIT 1",
+            "cost": 0.01,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveJoin",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False LIMIT 1",
+            "cost": 0.01,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveJoin",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR False) AND False LIMIT 1",
+            "cost": 0.01,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveJoin",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) AND members.project_id IS NULL",
+            "cost": 24.94,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) AND members.project_id IS NULL",
+            "cost": 24.94,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) AND members.project_id IS NULL LIMIT 1",
+            "cost": 24.94,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) AND members.project_id IS NULL LIMIT 1",
+            "cost": 24.94,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) AND members.project_id IS NULL LIMIT 1",
+            "cost": 24.94,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) AND members.project_id IS NULL",
+            "cost": 24.94,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) AND members.project_id IS NULL",
+            "cost": 24.94,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) AND members.project_id IS NULL",
+            "cost": 24.94,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) AND members.project_id IS NULL",
+            "cost": 24.94,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) AND members.project_id IS NULL LIMIT 1",
+            "cost": 24.94,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members INNER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) AND members.project_id IS NULL LIMIT 1",
+            "cost": 24.94,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id INNER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) AND members.project_id IS NULL LIMIT 1",
+            "cost": 24.94,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT members.id) FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL) AND members.project_id IS NULL LIMIT 1",
+            "cost": 24.94,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        }
+    ]
+}

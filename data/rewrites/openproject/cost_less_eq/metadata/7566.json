@@ -1,0 +1,1051 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+        "cost": 2169.17,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.17,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.17,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.17,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.17,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.17,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.17,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.17,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.17,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.28,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.28,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.28,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.28,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.28,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.28,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.28,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.28,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.56,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.56,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.56,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.56,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.56,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.56,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.56,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.56,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.66,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.66,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.66,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.66,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.66,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.66,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 365.66,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 365.66,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 484.57,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 484.57,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 484.57,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 484.57,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 484.57,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 484.57,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 484.57,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 484.57,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 515.42,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 515.42,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 515.42,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 515.42,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 515.42,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 515.42,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 515.42,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 515.42,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 640.54,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 640.54,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 640.54,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 640.54,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 640.54,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 640.54,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 640.54,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 640.54,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 671.39,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 671.39,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 671.39,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 671.39,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 671.39,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 671.39,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1)",
+            "cost": 671.39,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL LIMIT 1) LIMIT 1",
+            "cost": 671.39,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 718.16,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 718.16,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 718.16,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 718.16,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 718.16,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 718.16,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 718.16,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 718.16,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 736.25,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 736.25,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 736.25,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 736.25,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 736.25,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 736.25,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 736.25,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 736.25,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 953.33,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 953.33,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 953.33,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 953.33,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 953.33,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 953.33,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 953.33,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 953.33,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 973.47,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 973.47,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 973.47,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 973.47,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 973.47,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 973.47,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 973.47,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 973.47,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 1258.93,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 1258.93,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 1258.93,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 1258.93,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 1266.96,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 1266.96,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 1266.96,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 1266.96,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 1288.37,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 1288.37,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 1288.37,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 1288.37,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 1296.11,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 1296.11,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects INNER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 1296.11,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 1296.11,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 1306.46,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 1306.46,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 1306.46,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 1306.46,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 1314.2,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 1314.2,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 1314.2,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 1314.2,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 2169.17,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 2169.17,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL)",
+            "cost": 2169.17,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 2169.17,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 2169.17,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 2169.17,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT COUNT(DISTINCT projects.id) FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True INNER JOIN role_permissions ON role_permissions.permission IN ('manage_members') INNER JOIN roles AS permission_roles ON permission_roles.id = role_permissions.role_id LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON assigned_roles.id = permission_roles.id AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL AND projects.id IN (SELECT DISTINCT projects.id FROM projects LEFT OUTER JOIN members ON projects.id = members.project_id AND members.user_id = 5413 AND projects.active = True LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles AS assigned_roles ON 1 = 1 AND projects.active = True AND (assigned_roles.id = member_roles.role_id OR projects.public = True AND assigned_roles.builtin = 1 AND member_roles.id IS NULL) WHERE assigned_roles.id IS NOT NULL) LIMIT 1",
+            "cost": 2169.17,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

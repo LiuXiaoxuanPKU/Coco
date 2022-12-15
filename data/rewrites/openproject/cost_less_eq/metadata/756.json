@@ -1,0 +1,63 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) LIMIT 1",
+        "cost": 73.58,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True) LIMIT 1",
+            "cost": 0.63,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True) LIMIT 1",
+            "cost": 0.74,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) LIMIT 1",
+            "cost": 8.03,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) LIMIT 1",
+            "cost": 8.29,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) LIMIT 1",
+            "cost": 66.01,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1) LIMIT 1",
+            "cost": 73.57,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM work_packages WHERE work_packages.project_id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1) LIMIT 1",
+            "cost": 73.58,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

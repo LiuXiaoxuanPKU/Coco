@@ -1,0 +1,156 @@
+{
+    "org": {
+        "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id INNER JOIN projects ON projects.id = work_package_journals.project_id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+        "cost": 86.7,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 ORDER BY journals.id DESC LIMIT 10",
+            "cost": 20.11,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 ORDER BY journals.id DESC LIMIT 10",
+            "cost": 20.11,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 ORDER BY journals.id DESC LIMIT 10",
+            "cost": 20.11,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 ORDER BY journals.id DESC LIMIT 10",
+            "cost": 20.11,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 ORDER BY journals.id DESC LIMIT 10",
+            "cost": 20.11,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 ORDER BY journals.id DESC LIMIT 10",
+            "cost": 20.11,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 ORDER BY journals.id DESC LIMIT 10",
+            "cost": 20.11,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 ORDER BY journals.id DESC LIMIT 10",
+            "cost": 20.11,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id INNER JOIN projects ON projects.id = work_package_journals.project_id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 21.14,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id INNER JOIN projects ON projects.id = work_package_journals.project_id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 21.44,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id INNER JOIN projects ON projects.id = work_package_journals.project_id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 21.52,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id INNER JOIN projects ON projects.id = work_package_journals.project_id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 22.04,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id INNER JOIN projects ON projects.id = work_package_journals.project_id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 29.09,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id INNER JOIN projects ON projects.id = work_package_journals.project_id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 29.39,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id INNER JOIN projects ON projects.id = work_package_journals.project_id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 29.47,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id INNER JOIN projects ON projects.id = work_package_journals.project_id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 29.99,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id INNER JOIN projects ON projects.id = work_package_journals.project_id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 86.68,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, work_package_journals.subject AS subject, work_package_journals.project_id AS project_id, statuses.name AS status_name, statuses.is_closed AS status_closed, types.name AS type_name FROM journals INNER JOIN work_package_journals ON journals.data_id = work_package_journals.id AND journals.data_type = 'Journal::WorkPackageJournal' INNER JOIN types ON work_package_journals.type_id = types.id INNER JOIN statuses ON work_package_journals.status_id = statuses.id INNER JOIN projects ON projects.id = work_package_journals.project_id WHERE journals.journable_type = 'WorkPackage' AND journals.user_id = 653 AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('work_package_tracking') AND projects.active = True WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 10",
+            "cost": 86.7,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

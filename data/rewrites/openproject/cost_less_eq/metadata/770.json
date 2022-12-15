@@ -1,0 +1,63 @@
+{
+    "org": {
+        "sql": "SELECT user_id FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id LEFT OUTER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.builtin = \"$1\" AND roles.type = \"$2\" AND roles.id = \"$3\" AND members.project_id = \"$4\" ORDER BY position",
+        "cost": 39.23,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT user_id FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE roles.builtin = \"$1\" AND roles.type = \"$2\" AND roles.id = \"$3\" AND members.project_id = \"$4\" ORDER BY position",
+            "cost": 30.92,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT user_id FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE roles.builtin = \"$1\" AND roles.type = \"$2\" AND roles.id = \"$3\" AND members.project_id = \"$4\" ORDER BY position",
+            "cost": 30.92,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT user_id FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE roles.builtin = \"$1\" AND roles.type = \"$2\" AND roles.id = \"$3\" AND members.project_id = \"$4\" ORDER BY position LIMIT 1",
+            "cost": 30.92,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT user_id FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id WHERE roles.builtin = \"$1\" AND roles.type = \"$2\" AND roles.id = \"$3\" AND members.project_id = \"$4\" ORDER BY position LIMIT 1",
+            "cost": 30.92,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT user_id FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.builtin = \"$1\" AND roles.type = \"$2\" AND roles.id = \"$3\" AND members.project_id = \"$4\" ORDER BY position",
+            "cost": 39.23,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT user_id FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id LEFT OUTER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.builtin = \"$1\" AND roles.type = \"$2\" AND roles.id = \"$3\" AND members.project_id = \"$4\" ORDER BY position LIMIT 1",
+            "cost": 39.23,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT user_id FROM roles INNER JOIN member_roles ON member_roles.role_id = roles.id INNER JOIN members ON members.id = member_roles.member_id INNER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE roles.builtin = \"$1\" AND roles.type = \"$2\" AND roles.id = \"$3\" AND members.project_id = \"$4\" ORDER BY position LIMIT 1",
+            "cost": 39.23,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

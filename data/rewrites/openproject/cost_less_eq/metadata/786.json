@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM (SELECT DISTINCT members.id FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL)) AS subquery_for_count",
+        "cost": 44.64,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM (SELECT DISTINCT members.id FROM members LEFT OUTER JOIN projects ON projects.id = members.project_id LEFT OUTER JOIN member_roles ON member_roles.member_id = members.id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE members.user_id = \"$1\" AND (projects.active = True OR project_id IS NULL)) AS subquery_for_count LIMIT 1",
+            "cost": 44.64,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

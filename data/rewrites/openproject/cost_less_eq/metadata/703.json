@@ -1,0 +1,31 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM relations WHERE relations.from_id IS NULL AND relations.to_id = \"$1\" AND relations.id IS NOT NULL LIMIT 1",
+        "cost": 6.31,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM relations WHERE False AND relations.to_id = \"$1\" AND relations.id IS NOT NULL LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM relations WHERE False AND relations.to_id = \"$1\" AND True LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate",
+                "RewriteNullPredicate"
+            ]
+        },
+        {
+            "sql": "SELECT 1 AS one FROM relations WHERE relations.from_id IS NULL AND relations.to_id = \"$1\" AND True LIMIT 1",
+            "cost": 6.31,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

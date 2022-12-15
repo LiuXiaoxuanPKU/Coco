@@ -1,0 +1,314 @@
+{
+    "org": {
+        "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('forums') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC",
+        "cost": 192.98,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 175.05,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 175.05,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 175.05,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 175.05,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 175.05,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 175.05,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 175.05,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 175.05,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 175.05,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 175.05,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 175.05,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 175.05,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 175.05,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 175.05,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 175.05,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 175.05,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC",
+            "cost": 176.27,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 176.27,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True) ORDER BY journals.id DESC",
+            "cost": 176.49,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 176.49,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC",
+            "cost": 176.58,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 176.58,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('forums') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC",
+            "cost": 177.18,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('forums') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 177.18,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC",
+            "cost": 184.22,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 184.22,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True) ORDER BY journals.id DESC",
+            "cost": 184.44,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 184.44,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC",
+            "cost": 184.52,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 184.52,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('forums') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC",
+            "cost": 185.12,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('forums') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 185.12,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('forums') AND projects.active = True WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC",
+            "cost": 192.96,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('forums') AND projects.active = True WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 192.96,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('forums') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 192.98,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('forums') AND projects.active = True WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC",
+            "cost": 192.98,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, message_journals.subject AS message_subject, message_journals.content AS message_content, message_journals.parent_id AS message_parent_id, forums.id AS forum_id, forums.name AS forum_name, forums.project_id AS project_id FROM journals INNER JOIN message_journals ON journals.data_id = message_journals.id AND journals.data_type = 'Journal::MessageJournal' INNER JOIN forums ON message_journals.forum_id = forums.id INNER JOIN projects ON projects.id = forums.project_id WHERE journals.journable_type = 'Message' AND journals.created_at >= '2022-01-19' AND journals.created_at <= '2022-02-18' AND (projects.id = 380 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('forums') AND projects.active = True WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 192.98,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

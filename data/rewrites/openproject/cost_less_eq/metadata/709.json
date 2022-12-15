@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT 1 AS one FROM journals WHERE journals.version = \"$1\" AND journals.journable_id IS NULL AND journals.journable_type = \"$2\" LIMIT 1",
+        "cost": 7.96,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT 1 AS one FROM journals WHERE journals.version = \"$1\" AND False AND journals.journable_type = \"$2\" LIMIT 1",
+            "cost": 0.0,
+            "rewrite_types": [
+                "RewriteNullPredicate"
+            ]
+        }
+    ]
+}

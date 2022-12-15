@@ -1,0 +1,314 @@
+{
+    "org": {
+        "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('repository') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC",
+        "cost": 1150.9,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1132.75,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC",
+            "cost": 1134.2,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1134.2,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True) ORDER BY journals.id DESC",
+            "cost": 1134.28,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1134.28,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC",
+            "cost": 1134.5,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1134.5,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('repository') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC",
+            "cost": 1135.14,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('repository') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1135.14,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC",
+            "cost": 1142.1,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1142.1,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True) ORDER BY journals.id DESC",
+            "cost": 1142.23,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1142.23,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC",
+            "cost": 1142.4,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT DISTINCT projects.id FROM projects WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1142.4,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('repository') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC",
+            "cost": 1143.09,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity' LIMIT 1) AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('repository') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1143.09,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('repository') AND projects.active = True WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC",
+            "cost": 1150.88,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('repository') AND projects.active = True WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1150.88,
+            "rewrite_types": [
+                "AddLimitOne",
+                "RemoveDistinct"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('repository') AND projects.active = True WHERE projects.active = True) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1150.9,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('repository') AND projects.active = True WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC",
+            "cost": 1150.9,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT journals.id AS event_id, journals.created_at AS event_datetime, journals.user_id AS event_author, journals.notes AS event_description, journals.version AS version, journals.journable_id AS journable_id, changeset_journals.revision AS revision, changeset_journals.comments AS comments, changeset_journals.committed_on AS committed_on, repositories.project_id AS project_id, repositories.type AS repository_type FROM journals INNER JOIN changeset_journals ON journals.data_id = changeset_journals.id AND journals.data_type = 'Journal::ChangesetJournal' INNER JOIN repositories ON changeset_journals.repository_id = repositories.id INNER JOIN projects ON projects.id = repositories.project_id WHERE journals.journable_type = 'Changeset' AND changeset_journals.committed_on >= '2022-01-19' AND changeset_journals.committed_on <= '2022-02-18' AND (projects.id = 384 OR projects.lft > 1 AND projects.rgt < 2) AND projects.id IN (SELECT enabled_modules.project_id FROM enabled_modules WHERE name = 'activity') AND projects.id IN (SELECT DISTINCT projects.id FROM projects INNER JOIN enabled_modules ON projects.id = enabled_modules.project_id AND enabled_modules.name IN ('repository') AND projects.active = True WHERE projects.active = True LIMIT 1) ORDER BY journals.id DESC LIMIT 1",
+            "cost": 1150.9,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

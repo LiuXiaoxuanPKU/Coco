@@ -1,0 +1,48 @@
+{
+    "org": {
+        "sql": "SELECT DISTINCT roles.id FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id LEFT OUTER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE member_roles.member_id = \"$1\"",
+        "cost": 17.92,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT DISTINCT roles.id FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = \"$1\"",
+            "cost": 16.61,
+            "rewrite_types": [
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT DISTINCT roles.id FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = \"$1\"",
+            "cost": 16.61,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT roles.id FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = \"$1\"",
+            "cost": 16.61,
+            "rewrite_types": [
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT roles.id FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id WHERE member_roles.member_id = \"$1\"",
+            "cost": 16.61,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "RemoveDistinct",
+                "RemoveJoin"
+            ]
+        },
+        {
+            "sql": "SELECT roles.id FROM roles INNER JOIN member_roles ON roles.id = member_roles.role_id LEFT OUTER JOIN role_permissions ON role_permissions.role_id = roles.id WHERE member_roles.member_id = \"$1\"",
+            "cost": 17.92,
+            "rewrite_types": [
+                "RemoveDistinct"
+            ]
+        }
+    ]
+}

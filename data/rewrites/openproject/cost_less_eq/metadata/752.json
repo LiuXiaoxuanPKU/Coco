@@ -1,0 +1,61 @@
+{
+    "org": {
+        "sql": "SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 40 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 118)",
+        "cost": 25.67,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users INNER JOIN members ON users.id = members.user_id AND members.project_id = 40 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 118)",
+            "cost": 25.67,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 40 INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 118)",
+            "cost": 25.67,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 40 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 118)",
+            "cost": 25.67,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        },
+        {
+            "sql": "SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 40 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 118) LIMIT 1",
+            "cost": 25.67,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users INNER JOIN members ON users.id = members.user_id AND members.project_id = 40 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 118) LIMIT 1",
+            "cost": 25.67,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 40 INNER JOIN member_roles ON members.id = member_roles.member_id LEFT OUTER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 118) LIMIT 1",
+            "cost": 25.67,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        },
+        {
+            "sql": "SELECT roles.* FROM roles WHERE roles.id IN (SELECT roles.id FROM users LEFT OUTER JOIN members ON users.id = members.user_id AND members.project_id = 40 LEFT OUTER JOIN member_roles ON members.id = member_roles.member_id INNER JOIN roles ON roles.id = member_roles.role_id WHERE users.id = 118) LIMIT 1",
+            "cost": 25.67,
+            "rewrite_types": [
+                "ReplaceOuterJoin",
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

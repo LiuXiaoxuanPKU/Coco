@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT COUNT(*) FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id IN ('3') AND users.failed_login_count >= 20 AND users.last_failed_login_on > '2022-02-17 04:42:34.419472'",
+        "cost": 28.02,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT COUNT(*) FROM members INNER JOIN users ON users.id = members.user_id WHERE members.project_id IN ('3') AND users.failed_login_count >= 20 AND users.last_failed_login_on > '2022-02-17 04:42:34.419472' LIMIT 1",
+            "cost": 28.02,
+            "rewrite_types": [
+                "AddLimitOne"
+            ]
+        }
+    ]
+}

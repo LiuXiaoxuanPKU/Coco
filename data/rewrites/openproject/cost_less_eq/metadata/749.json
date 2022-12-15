@@ -1,0 +1,16 @@
+{
+    "org": {
+        "sql": "SELECT custom_values.value FROM custom_values LEFT OUTER JOIN custom_fields ON custom_fields.id = custom_values.custom_field_id WHERE custom_values.customized_id = \"$1\" AND custom_values.customized_type = \"$2\" AND custom_values.custom_field_id = \"$3\" ORDER BY custom_fields.position",
+        "cost": 19.54,
+        "rewrite_types": []
+    },
+    "rewrites": [
+        {
+            "sql": "SELECT custom_values.value FROM custom_values INNER JOIN custom_fields ON custom_fields.id = custom_values.custom_field_id WHERE custom_values.customized_id = \"$1\" AND custom_values.customized_type = \"$2\" AND custom_values.custom_field_id = \"$3\" ORDER BY custom_fields.position",
+            "cost": 19.53,
+            "rewrite_types": [
+                "ReplaceOuterJoin"
+            ]
+        }
+    ]
+}
