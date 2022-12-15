@@ -61,6 +61,7 @@ def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = F
     if only_rewrite:
         enumerate_cnts = []
         enumerate_times = []
+        i = 0
         for q in tqdm(queries):
             start = time.time()
             # =================Enumerate Candidates================
@@ -78,11 +79,14 @@ def rewrite(data_dir: str, app: str, *, db: bool = False, only_rewrite: bool = F
             enumerate_times.append(end - start)
             start = end 
             used_tables += get_sqlobj_table(q.q_obj)
-
-        with open(get_path(FileType.ENUMERATE_CNT, app, data_dir), "wb") as f:
-            pickle.dump(enumerate_cnts, f)
-        with open(get_path(FileType.ENUMERATE_TIME, app, data_dir), "wb") as f:
-            pickle.dump(enumerate_times, f)
+            
+            # checkpoint every 100 iter
+            if i % 100 == 0:
+                with open(get_path(FileType.ENUMERATE_CNT, app, data_dir), "wb") as f:
+                    pickle.dump(enumerate_cnts, f)
+                with open(get_path(FileType.ENUMERATE_TIME, app, data_dir), "wb") as f:
+                    pickle.dump(enumerate_times, f)
+            i += 1
     elif run_rewrite:
         rewrite_cnt = 0
         total_candidate_cnt = []

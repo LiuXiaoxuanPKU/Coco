@@ -53,6 +53,9 @@ def plot_stats(stats, outfile):
     dup_values = list(dups.values())
     model_wo_dups = np.array(list(models.values())) - np.array(dup_values)
     db_wo_dups = np.array(list(dbs.values())) - np.array(dup_values)
+    overlap_percentage = sum(dup_values) / (model_wo_dups.sum() + db_wo_dups.sum() + sum(dup_values))
+    print(f"overlap percentage: {overlap_percentage}")
+    
 
     fig, ax = plt.subplots()
     fig.set_size_inches(20, 8)

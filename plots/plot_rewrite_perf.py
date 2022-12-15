@@ -10,18 +10,9 @@ sys.path.append(join(dirname(dirname(abspath(__file__))), "rewriter/src/"))
 from shared import EvalQuery, Stage
 from config import RewriteType, FileType, get_path
 from loader import read_bench_results
-
+from plot_config import APP_NAME
 
 suffix = "pdf"
-
-APP_NAME = {
-    "redmine": "Redmine",
-    "forem": "Dev.to",
-    "openproject": "OpenProject",
-    "mastodon": "Mastodon",
-    "spree": "Spree",
-    "openstreetmap": "Openstreetmap"
-}
 
 STAGE_NAME = {
     Stage.CONSTRAINT: "install constraints",
