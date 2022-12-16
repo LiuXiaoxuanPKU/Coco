@@ -4,5 +4,7 @@
 result
 
 data/rewrites/
+data/postgres/
+data/dump/
 
 *__pycache__*
