@@ -1,9 +1,9 @@
-# ConstrOpt Overview
+# Coco Overview
 This is the official repository for [Leveraging Applicaton Data Constraints to Optimize Database-Backed Web Applications](https://arxiv.org/abs/2205.02954) by Xiaoxuan Liu, Shuxian Wang, Mengzhu Sun, Sicheng Pan, Ge Li, Siddharth Jha, Cong Yan, Junwen Yang, and Alvin Chueng. 
-Here we present `ConstrOpt`, the first tool that identifies data relationships by analyzing the programs that generate and maintain the persist data. Once identified,`ConstrOpt` leverages the found constraints to optimize the application's physical design and query execution by rewriting queries. Instead of developing a fixed set of predefined rewriting rules, `ConstrOpt` employs an enumerate-test-verify technique to automatically exploit the discovered data constraints to improve query execution. 
+Here we present `Coco`, the first tool that identifies data relationships by analyzing the programs that generate and maintain the persist data. Once identified,`Coco` leverages the found constraints to optimize the application's physical design and query execution by rewriting queries. Instead of developing a fixed set of predefined rewriting rules, `Coco` employs an enumerate-test-verify technique to automatically exploit the discovered data constraints to improve query execution. 
 
 # Install and Run
-requirements: we need a linux system to run `ConstrOpt`
+requirements: we need a linux system to run `Coco`
 1. Install nix, the package manager
 ```
 sh <(curl -L https://nixos.org/nix/install) --daemon
